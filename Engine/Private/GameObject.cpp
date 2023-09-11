@@ -40,11 +40,6 @@ HRESULT CGameObject::Render()
 	return S_OK;
 }
 
-CComponent* CGameObject::Get_Component(const wstring& _strName)
-{
-	return nullptr;
-}
-
 HRESULT CGameObject::Add_Component(_uint iLevelIndex, const wstring & strPrototypeTag, const wstring & strComponentTag, _Inout_ CComponent** ppOut, void * pArg)
 {
 	/* 추가하려는 컴포넌트가 이미 있는 경우 실패 리턴 */

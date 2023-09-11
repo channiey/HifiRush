@@ -41,7 +41,7 @@ public: /* For.Component_Manager */
 	HRESULT Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, class CComponent* pPrototype);
 	class CComponent* Clone_Component(_uint iLevelIndex, const wstring& strPrototypeTag, void* pArg = nullptr);
 
-public:			/* For.Thread_Manager */
+public:	/* For.Thread_Manager */
 	HRESULT	Set_MultiThreading(const _uint& iNumThread);
 	void Finish_MultiThreading();
 	template <class F, class... Args>

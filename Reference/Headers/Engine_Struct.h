@@ -1,5 +1,6 @@
 #ifndef Engine_Struct_h__
 #define Engine_Struct_h__
+#include "Base.h"
 
 namespace Engine
 {
@@ -53,6 +54,5 @@ namespace Engine
 	}LIGHT_DESC;
 
 }
-
 
 #endif // Engine_Struct_h__

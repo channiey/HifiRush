@@ -10,6 +10,7 @@ enum COMPONTENT_TYPE
 	COM_VIBUFFER,
 	COM_SHADER,
 
+	//COM_STATEMACHING,
 	//COM_TEXTURE,
 	//COM_TRANSFORM,
 	//COM_MODEL,
@@ -47,7 +48,7 @@ class ENGINE_DLL CComponent abstract : public CBase
 {
 protected:
 	CComponent(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CComponent(const CComponent& rhs);
+	explicit CComponent(const CComponent& rhs);
 	virtual ~CComponent() = default;
 
 public:
@@ -58,6 +59,9 @@ public:
 	const _bool& Is_Active() const { return m_bActive; }
 
 public:
+	const class CGameObject* const Get_Owner() const { return m_pOwner; }
+
+public:
 	/* Active 이벤트 처리를 위한 가상함수화, 오버라이드시 __super::Active()먼저 호출 필요 */
 	virtual void Set_Active(const _bool& bActive) { m_bActive = bActive; }
 
@@ -66,6 +70,8 @@ protected:
 	ID3D11DeviceContext*	m_pContext = { nullptr };
 
 	_bool					m_bActive = { TRUE };
+
+	class CGameObject*		m_pOwner = { nullptr };
 
 public:
 	virtual CComponent* Clone(void* pArg) = 0;

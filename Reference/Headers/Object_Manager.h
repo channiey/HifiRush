@@ -5,7 +5,6 @@
 /* 게임내에 사용될 객체들을 만들어내기위한 원형객체들을 보관한다.(원본) */
 /* 게임내에 사용될 객체들을 보관한다.(사본) */
 
-
 BEGIN(Engine)
 
 class CObject_Manager final : public CBase
@@ -19,6 +18,7 @@ public: /* Life Cycle*/
 	HRESULT Reserve_Manager(_uint iNumLevels);
 	void Tick(_float fTimeDelta);
 	void LateTick(_float fTimeDelta);
+	void FinishTick();
 
 public: /* Container Func */
 	/* 원형을 추가한여 벡터에 추가한다. -> 클라 로딩에서 생성하여 받아온다. */

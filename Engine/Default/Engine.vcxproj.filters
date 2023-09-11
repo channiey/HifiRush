@@ -100,6 +100,15 @@
     <Filter Include="01.Utiltiy\03.Component\MonoBehaviour %28Not Using%29">
       <UniqueIdentifier>{09aed11d-2cb8-4746-ac39-0391fe350fae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utiltiy\02.GameObject\Pool">
+      <UniqueIdentifier>{637c5240-9306-49f7-973b-880c130035ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Component\StateMachine">
+      <UniqueIdentifier>{9d3e1fd1-7be8-4ae6-a653-7c608f8b8489}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Component\StateMachine\State">
+      <UniqueIdentifier>{80ab0f71-c9ec-4845-af60-5d0db3c98c59}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -180,6 +189,12 @@
     <ClInclude Include="..\Public\MonoBehaviour.h">
       <Filter>01.Utiltiy\03.Component\MonoBehaviour %28Not Using%29</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\State.h">
+      <Filter>01.Utiltiy\03.Component\StateMachine\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\StateMachine.h">
+      <Filter>01.Utiltiy\03.Component\StateMachine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -247,6 +262,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\MonoBehaviour.cpp">
       <Filter>01.Utiltiy\03.Component\MonoBehaviour %28Not Using%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State.cpp">
+      <Filter>01.Utiltiy\03.Component\StateMachine\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\StateMachine.cpp">
+      <Filter>01.Utiltiy\03.Component\StateMachine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -129,7 +129,7 @@ HRESULT CGameInstance::Add_Prototype(_uint iLevelIndex, const wstring & strProto
 	return m_pComponent_Manager->Add_Prototype(iLevelIndex, strPrototypeTag, pPrototype);
 }
 
-CComponent * CGameInstance::Clone_Component(_uint iLevelIndex, const wstring & strPrototypeTag, void * pArg)
+CComponent * CGameInstance::Clone_Component(_uint iLevelIndex, const wstring& strPrototypeTag, void* pArg)
 {
 	if (nullptr == m_pComponent_Manager)
 		return nullptr;
