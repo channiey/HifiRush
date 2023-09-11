@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="00.System">
+      <UniqueIdentifier>{b2d479a3-55d6-47ab-adab-d90b4a5e750c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy">
+      <UniqueIdentifier>{a3529259-ffc5-412e-9d9a-1e872134cec1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\99.Super">
+      <UniqueIdentifier>{27ae1524-ddaa-40e8-a2b1-7074a841dcc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Defines">
+      <UniqueIdentifier>{cd0b9cfb-78f2-4c46-84e0-e82bbe5dae30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\00.Timer">
+      <UniqueIdentifier>{cbd524ed-ae40-470c-b6d8-00f9f1af5ac8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\01.Device">
+      <UniqueIdentifier>{1e2af600-6e9e-45e6-b2d3-0760ec2d75b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\01.Device\Graphic">
+      <UniqueIdentifier>{2c4888b0-db31-45ba-aa7a-78d5f0a2132d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\01.Device\Input">
+      <UniqueIdentifier>{75b2ff63-23ce-4fa2-8ece-495b3ab3039f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\01.Device\Sound">
+      <UniqueIdentifier>{17de0ee4-1c0e-4c51-976d-f48e8f089447}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\00.Timer\Manager">
+      <UniqueIdentifier>{a30b1084-b34e-419d-bb1d-1f1f5c8d3fd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\00.GameInstance">
+      <UniqueIdentifier>{aa6f228e-028d-4efd-b2f3-39052d369412}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\01.Level">
+      <UniqueIdentifier>{d2acafff-f010-42f6-92f5-eb2ab8db46b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\01.Level\Manager">
+      <UniqueIdentifier>{d401dff7-3c68-47ac-9107-431b908baa1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\91.BroadCast">
+      <UniqueIdentifier>{d35a6d7b-db5e-4150-bcc3-9626d664ded4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\91.BroadCast\Event">
+      <UniqueIdentifier>{76036d10-16b1-4848-b3c0-c0d04152ebb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\91.BroadCast\BroadCast">
+      <UniqueIdentifier>{5a206849-cf86-43e2-9d09-a27b95c0d14a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\90.Optimization">
+      <UniqueIdentifier>{55d3fbb0-0e3f-4e1e-9b56-3426f593aab2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\90.Optimization\Profiler">
+      <UniqueIdentifier>{4a9a07fc-c7dd-4f2b-85d6-1f700ce09cb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\98.Utils">
+      <UniqueIdentifier>{4c2c40ea-fcb7-46be-97fa-297ebbd16da4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\98.Utils\Math">
+      <UniqueIdentifier>{c03b4996-fe0b-44ac-974d-d45af3832b2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\98.Utils\File">
+      <UniqueIdentifier>{c475d78d-b6e2-4468-8842-370f53cc40f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\98.Utils\String">
+      <UniqueIdentifier>{6c37fc30-6743-4cc9-a76b-4591f0e254ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\90.Optimization\MultiThread">
+      <UniqueIdentifier>{ec2fa25f-940a-45c1-af9e-55a040f3e642}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\02.GameObject">
+      <UniqueIdentifier>{68ba6cd0-6b14-4dc9-9336-cec267f20f0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\02.GameObject\Manager">
+      <UniqueIdentifier>{e5b6768b-8e62-4930-8c6b-a6f1199ff91f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\02.GameObject\Manager\Layer">
+      <UniqueIdentifier>{8c2666f7-7eb6-4c1f-98fa-b493cdf2443c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Component">
+      <UniqueIdentifier>{2f7b0f55-c192-41e7-bb1e-3795db1aeefc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Component\Renderer">
+      <UniqueIdentifier>{15fe4fbd-6c18-467c-9742-0006c1b4371d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Component\Manager">
+      <UniqueIdentifier>{7968f281-42c6-4235-8f9b-215c2a933d89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Component\VIBuffer">
+      <UniqueIdentifier>{054960ac-dff2-4681-be68-e0df69143c6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Component\VIBuffer\Rect">
+      <UniqueIdentifier>{412829eb-f2b5-4760-823b-3dbd9992a3cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Component\Shader">
+      <UniqueIdentifier>{59f190c9-1d8f-4887-9b11-d64f61406c89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Component\MonoBehaviour %28Not Using%29">
+      <UniqueIdentifier>{09aed11d-2cb8-4746-ac39-0391fe350fae}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\public\Base.h">
+      <Filter>01.Utiltiy\99.Super</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Defines.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Macro.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Struct.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Typedef.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Function.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Timer.h">
+      <Filter>00.System\00.Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Timer_Manager.h">
+      <Filter>00.System\00.Timer\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Graphic_Device.h">
+      <Filter>00.System\01.Device\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\GameInstance.h">
+      <Filter>01.Utiltiy\00.GameInstance</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Level.h">
+      <Filter>01.Utiltiy\01.Level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Level_Manager.h">
+      <Filter>01.Utiltiy\01.Level\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\GameObject.h">
+      <Filter>01.Utiltiy\02.GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Object_Manager.h">
+      <Filter>01.Utiltiy\02.GameObject\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Layer.h">
+      <Filter>01.Utiltiy\02.GameObject\Manager\Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Component.h">
+      <Filter>01.Utiltiy\03.Component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Renderer.h">
+      <Filter>01.Utiltiy\03.Component\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Component_Manager.h">
+      <Filter>01.Utiltiy\03.Component\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\VIBuffer.h">
+      <Filter>01.Utiltiy\03.Component\VIBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Rect.h">
+      <Filter>01.Utiltiy\03.Component\VIBuffer\Rect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Shader.h">
+      <Filter>01.Utiltiy\03.Component\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SimpleMath.h">
+      <Filter>01.Utiltiy\98.Utils\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\FileUtils.h">
+      <Filter>01.Utiltiy\98.Utils\File</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\StringUtils.h">
+      <Filter>01.Utiltiy\98.Utils\String</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Thread_Manager.h">
+      <Filter>01.Utiltiy\90.Optimization\MultiThread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonoBehaviour.h">
+      <Filter>01.Utiltiy\03.Component\MonoBehaviour %28Not Using%29</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\private\Base.cpp">
+      <Filter>01.Utiltiy\99.Super</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Timer.cpp">
+      <Filter>00.System\00.Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Timer_Manager.cpp">
+      <Filter>00.System\00.Timer\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Graphic_Device.cpp">
+      <Filter>00.System\01.Device\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\GameInstance.cpp">
+      <Filter>01.Utiltiy\00.GameInstance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Level.cpp">
+      <Filter>01.Utiltiy\01.Level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Level_Manager.cpp">
+      <Filter>01.Utiltiy\01.Level\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\GameObject.cpp">
+      <Filter>01.Utiltiy\02.GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_Manager.cpp">
+      <Filter>01.Utiltiy\02.GameObject\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Layer.cpp">
+      <Filter>01.Utiltiy\02.GameObject\Manager\Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Component.cpp">
+      <Filter>01.Utiltiy\03.Component</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Renderer.cpp">
+      <Filter>01.Utiltiy\03.Component\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Component_Manager.cpp">
+      <Filter>01.Utiltiy\03.Component\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer.cpp">
+      <Filter>01.Utiltiy\03.Component\VIBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Rect.cpp">
+      <Filter>01.Utiltiy\03.Component\VIBuffer\Rect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Shader.cpp">
+      <Filter>01.Utiltiy\03.Component\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Public\Engine_Struct.cpp">
+      <Filter>99.Defines</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SimpleMath.cpp">
+      <Filter>01.Utiltiy\98.Utils\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\FileUtils.cpp">
+      <Filter>01.Utiltiy\98.Utils\File</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\StringUtils.cpp">
+      <Filter>01.Utiltiy\98.Utils\String</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Thread_Manager.cpp">
+      <Filter>01.Utiltiy\90.Optimization\MultiThread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonoBehaviour.cpp">
+      <Filter>01.Utiltiy\03.Component\MonoBehaviour %28Not Using%29</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Public\SimpleMath.inl">
+      <Filter>01.Utiltiy\98.Utils\Math</Filter>
+    </None>
+  </ItemGroup>
+</Project>
