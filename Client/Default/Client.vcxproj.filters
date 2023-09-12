@@ -43,6 +43,15 @@
     <Filter Include="90.ScriptFiles">
       <UniqueIdentifier>{3c9e2427-b6cd-4253-a95e-f4d0c787cee7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Player">
+      <UniqueIdentifier>{8c788c76-03cd-4d87-8f0c-9b9fe84197ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\StateMachine">
+      <UniqueIdentifier>{9112ed79-8c75-43d4-9f70-fa125b385b58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player\StateMachine\State">
+      <UniqueIdentifier>{c2f33d3c-e99a-4675-8309-ccaeec085fc6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

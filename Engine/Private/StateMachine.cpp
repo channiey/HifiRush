@@ -9,8 +9,15 @@ CStateMachine::CStateMachine(ID3D11Device * pDevice, ID3D11DeviceContext * pCont
 
 CStateMachine::CStateMachine(const CStateMachine & rhs)
 	: CComponent(rhs)
+	, m_pStates(rhs.m_pStates)
+	, m_pCurState(rhs.m_pCurState)
 {
+	for (auto& Pair : m_pStates)
+	{
+		Safe_AddRef(Pair.second);
+	}
 
+	Safe_AddRef(m_pCurState);
 }
 
 HRESULT CStateMachine::Initialize_Prototype()
