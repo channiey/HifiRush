@@ -5,9 +5,9 @@ CState::CState()
 
 }
 
-CState::CState(const CState& rhs)
-{
-}
+//CState::CState(const CState& rhs)
+//{
+//}
 
 
 void CState::Free()

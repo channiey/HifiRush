@@ -52,6 +52,24 @@
     <Filter Include="02.GameObjects\Player\StateMachine\State">
       <UniqueIdentifier>{c2f33d3c-e99a-4675-8309-ccaeec085fc6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster">
+      <UniqueIdentifier>{d8a59102-c15d-4530-9b3a-1b805113122c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\BehaviourTree">
+      <UniqueIdentifier>{0bd0f243-b8b2-4027-b9b8-3ebef4375173}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\NPC">
+      <UniqueIdentifier>{400c1cb4-75ac-4a99-bc55-470322a4b2a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\NPC\BehaviourTree">
+      <UniqueIdentifier>{207d0508-a741-48ad-9799-79381a8db791}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\NPC\BehaviourTree\Node">
+      <UniqueIdentifier>{7eaab9ba-f843-43ce-b19a-2e07c2861e5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\BehaviourTree\Node">
+      <UniqueIdentifier>{62e468e1-c067-4119-9433-31c56f9bc1fe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

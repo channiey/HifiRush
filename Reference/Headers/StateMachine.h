@@ -22,10 +22,11 @@ public:
 	virtual HRESULT LateTick();
 
 public:
-	const CState* const Get_CurState() const { return m_pCurState; }
-	const wstring& Get_CurStateName() const { return m_pCurState->Get_Name(); }
+	const class CState* const Get_CurState() const { return m_pCurState; }
+	const wstring& Get_CurStateName() const;
 
 public:
+	/* TODO 스테이트 머신 외부에서 스테이트를 세팅할 수 있게 하는 것이 맞는 걸까? */
 	HRESULT Set_State(const wstring& strStateTag);
 
 public:
@@ -36,8 +37,8 @@ private:
 	class CState* m_pCurState = { nullptr };
 
 private:
-	const _bool& Has_State(const wstring& strStateTag);
-	CState* Find_State(const wstring& strStateTag);
+	const _bool Has_State(const wstring& strStateTag);
+	class CState* Find_State(const wstring& strStateTag);
 	HRESULT Change_State(const wstring& strStateTag);
 
 public:

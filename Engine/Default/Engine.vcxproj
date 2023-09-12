@@ -117,6 +117,10 @@
       <AdditionalDependencies>d3d11.lib;Effects11d.lib;DirectXTKd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../ThirdPartyLib/</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -160,6 +164,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h" />
+    <ClInclude Include="..\Public\BehaviourTree.h" />
+    <ClInclude Include="..\Public\Blackboard.h" />
     <ClInclude Include="..\public\Component.h" />
     <ClInclude Include="..\public\Component_Manager.h" />
     <ClInclude Include="..\Public\Engine_Defines.h" />
@@ -175,6 +181,12 @@
     <ClInclude Include="..\public\Level.h" />
     <ClInclude Include="..\public\Level_Manager.h" />
     <ClInclude Include="..\Public\MonoBehaviour.h" />
+    <ClInclude Include="..\Public\Node.h" />
+    <ClInclude Include="..\Public\Node_Action.h" />
+    <ClInclude Include="..\Public\Node_Parallel.h" />
+    <ClInclude Include="..\Public\Node_Root.h" />
+    <ClInclude Include="..\Public\Node_Selector.h" />
+    <ClInclude Include="..\Public\Node_Sequence.h" />
     <ClInclude Include="..\public\Object_Manager.h" />
     <ClInclude Include="..\public\Renderer.h" />
     <ClInclude Include="..\public\Shader.h" />
@@ -191,6 +203,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp" />
+    <ClCompile Include="..\Private\BehaviourTree.cpp" />
+    <ClCompile Include="..\Private\Blackboard.cpp" />
     <ClCompile Include="..\private\Component.cpp" />
     <ClCompile Include="..\private\Component_Manager.cpp" />
     <ClCompile Include="..\Private\FileUtils.cpp" />
@@ -201,6 +215,12 @@
     <ClCompile Include="..\private\Level.cpp" />
     <ClCompile Include="..\private\Level_Manager.cpp" />
     <ClCompile Include="..\Private\MonoBehaviour.cpp" />
+    <ClCompile Include="..\Private\Node.cpp" />
+    <ClCompile Include="..\Private\Node_Action.cpp" />
+    <ClCompile Include="..\Private\Node_Parallel.cpp" />
+    <ClCompile Include="..\Private\Node_Root.cpp" />
+    <ClCompile Include="..\Private\Node_Selector.cpp" />
+    <ClCompile Include="..\Private\Node_Sequence.cpp" />
     <ClCompile Include="..\private\Object_Manager.cpp" />
     <ClCompile Include="..\private\Renderer.cpp" />
     <ClCompile Include="..\private\Shader.cpp" />

@@ -97,9 +97,6 @@
     <Filter Include="01.Utiltiy\03.Component\Shader">
       <UniqueIdentifier>{59f190c9-1d8f-4887-9b11-d64f61406c89}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utiltiy\03.Component\MonoBehaviour %28Not Using%29">
-      <UniqueIdentifier>{09aed11d-2cb8-4746-ac39-0391fe350fae}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utiltiy\02.GameObject\Pool">
       <UniqueIdentifier>{637c5240-9306-49f7-973b-880c130035ee}</UniqueIdentifier>
     </Filter>
@@ -111,6 +108,39 @@
     </Filter>
     <Filter Include="01.Utiltiy\03.Component\Texture">
       <UniqueIdentifier>{53971819-f4f6-455f-b9f4-cb373d914fd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Component\BehaviourTree">
+      <UniqueIdentifier>{23a6d698-a399-41e5-bb42-392d34d90484}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Component\MonoBehaviour">
+      <UniqueIdentifier>{09aed11d-2cb8-4746-ac39-0391fe350fae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Component\BehaviourTree\BlackBoard">
+      <UniqueIdentifier>{c6b485d2-db76-4803-be6a-08947c066b8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Component\BehaviourTree\Nodes">
+      <UniqueIdentifier>{63022527-327c-452e-be61-693a766817e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Component\BehaviourTree\Nodes\Root">
+      <UniqueIdentifier>{92462c25-c76a-4b27-9a54-a41bf069360d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Component\BehaviourTree\Nodes\Action">
+      <UniqueIdentifier>{0e455717-1df9-4968-95ad-542b2ff1d096}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Component\BehaviourTree\Nodes\Composit">
+      <UniqueIdentifier>{c0ee0fa2-70b3-46cd-a531-886d74a361ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Component\BehaviourTree\Nodes\Composit\Selector">
+      <UniqueIdentifier>{1a6d97ec-eac7-4b6a-8c3d-c91e08691fc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Component\BehaviourTree\Nodes\Composit\Sequence">
+      <UniqueIdentifier>{faf92d62-3793-4f5e-9583-95c2401d196b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Component\BehaviourTree\Nodes\Decorator">
+      <UniqueIdentifier>{80834f17-9ebf-44d3-9463-70efc5999ea8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Component\BehaviourTree\Nodes\Composit\Parallel">
+      <UniqueIdentifier>{14dad74e-6e8e-4583-8ead-0085300c449a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -190,7 +220,7 @@
       <Filter>01.Utiltiy\90.Optimization\MultiThread</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\MonoBehaviour.h">
-      <Filter>01.Utiltiy\03.Component\MonoBehaviour %28Not Using%29</Filter>
+      <Filter>01.Utiltiy\03.Component\MonoBehaviour</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State.h">
       <Filter>01.Utiltiy\03.Component\StateMachine\State</Filter>
@@ -200,6 +230,30 @@
     </ClInclude>
     <ClInclude Include="..\Public\Texture.h">
       <Filter>01.Utiltiy\03.Component\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BehaviourTree.h">
+      <Filter>01.Utiltiy\03.Component\BehaviourTree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Node.h">
+      <Filter>01.Utiltiy\03.Component\BehaviourTree\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Blackboard.h">
+      <Filter>01.Utiltiy\03.Component\BehaviourTree\BlackBoard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Node_Action.h">
+      <Filter>01.Utiltiy\03.Component\BehaviourTree\Nodes\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Node_Selector.h">
+      <Filter>01.Utiltiy\03.Component\BehaviourTree\Nodes\Composit\Selector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Node_Sequence.h">
+      <Filter>01.Utiltiy\03.Component\BehaviourTree\Nodes\Composit\Sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Node_Root.h">
+      <Filter>01.Utiltiy\03.Component\BehaviourTree\Nodes\Root</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Node_Parallel.h">
+      <Filter>01.Utiltiy\03.Component\BehaviourTree\Nodes\Composit\Parallel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -267,7 +321,7 @@
       <Filter>01.Utiltiy\90.Optimization\MultiThread</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\MonoBehaviour.cpp">
-      <Filter>01.Utiltiy\03.Component\MonoBehaviour %28Not Using%29</Filter>
+      <Filter>01.Utiltiy\03.Component\MonoBehaviour</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State.cpp">
       <Filter>01.Utiltiy\03.Component\StateMachine\State</Filter>
@@ -277,6 +331,30 @@
     </ClCompile>
     <ClCompile Include="..\Private\Texture.cpp">
       <Filter>01.Utiltiy\03.Component\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BehaviourTree.cpp">
+      <Filter>01.Utiltiy\03.Component\BehaviourTree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Blackboard.cpp">
+      <Filter>01.Utiltiy\03.Component\BehaviourTree\BlackBoard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Node.cpp">
+      <Filter>01.Utiltiy\03.Component\BehaviourTree\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Node_Action.cpp">
+      <Filter>01.Utiltiy\03.Component\BehaviourTree\Nodes\Action</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Node_Selector.cpp">
+      <Filter>01.Utiltiy\03.Component\BehaviourTree\Nodes\Composit\Selector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Node_Sequence.cpp">
+      <Filter>01.Utiltiy\03.Component\BehaviourTree\Nodes\Composit\Sequence</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Node_Root.cpp">
+      <Filter>01.Utiltiy\03.Component\BehaviourTree\Nodes\Root</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Node_Parallel.cpp">
+      <Filter>01.Utiltiy\03.Component\BehaviourTree\Nodes\Composit\Parallel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

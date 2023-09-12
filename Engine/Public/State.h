@@ -2,18 +2,19 @@
    
 /* 해당 클래스를 상속받아 클라이언트에서 상태를 정의한다. */
 /* 상태는 enum과 enum string으로 지칭하며, 스테이트머신에는 클라이언트로부터 넘어온 enum string을 가지고 스테이트를 관리한다.*/
+/* 플레이어의 상태라면, 플레이어 내에 정의한다. */
 
 #include "Base.h"
 #include "Engine_Defines.h"
 
 BEGIN(Engine)
 
-class ENGINE_DLL CState abstract : public CBase
+class ENGINE_DLL CState : public CBase
 {
 
 protected:
 	CState();
-	CState(const CState& rhs);
+	//CState(const CState& rhs);
 	virtual ~CState() = default;
 
 public:
@@ -32,10 +33,10 @@ private:
 
 private:
 	/* Tick, LateTick 공용*/
-	virtual const wstring& Check_Transition() PURE; 
+	//virtual const wstring& Check_Transition() PURE; 
 
 private:
-	virtual CState* Clone(void* pArg) = 0;
+	//virtual CState* Clone(void* pArg) = 0;
 	virtual void Free();
 };
 

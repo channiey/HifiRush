@@ -1,0 +1,107 @@
+#include "..\Public\BehaviourTree.h"
+
+#include "Node.h" /* TODO 상호 참조 가능 위험*/
+#include "Blackboard.h"
+
+CBehaviourTree::CBehaviourTree(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+	: CComponent(pDevice, pContext)
+{
+
+}
+
+CBehaviourTree::CBehaviourTree(const CBehaviourTree & rhs)
+	: CComponent(rhs)
+	, m_eState(rhs.m_eState)
+	, m_pRootNode(rhs.m_pRootNode)
+	, m_pBlackboard(rhs.m_pBlackboard)
+{
+
+}
+
+HRESULT CBehaviourTree::Initialize_Prototype()
+{
+	return S_OK;
+}
+
+HRESULT CBehaviourTree::Initialize(void * pArg)
+{
+	return S_OK;
+}
+
+HRESULT CBehaviourTree::Tick(const _float& fTimeDelta)
+{
+	/* 루트 노드의 실행 결과로 성공 혹은 실패로 나왔다면 실행을 중지한다. */
+	
+	if (nullptr == m_pRootNode || NODE_STATE::RUNNING != m_eState)
+		return E_FAIL;
+
+	m_eState = m_pRootNode->Evaluate(fTimeDelta);
+
+	//if (NODE_STATE::RUNNING == m_eState) return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CBehaviourTree::LateTick(const _float& fTimeDelta)
+{	
+	/* 루트 노드의 실행 결과로 성공 혹은 실패로 나왔다면 실행을 중지한다. */
+
+	if (nullptr == m_pRootNode || NODE_STATE::RUNNING != m_eState)
+		return E_FAIL;
+
+	m_eState = m_pRootNode->Evaluate(fTimeDelta);
+
+	//if (NODE_STATE::RUNNING == m_eState) return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CBehaviourTree::Set_RootNode(CNode* const pRootNode)
+{
+	NULL_CHECK_RETURN(pRootNode, E_FAIL);
+	
+	m_pRootNode = pRootNode;
+
+	Safe_AddRef(m_pRootNode);
+
+	return S_OK;
+}
+
+HRESULT CBehaviourTree::Set_Blackboard(CBlackboard* const pBlackboard)
+{
+	NULL_CHECK_RETURN(pBlackboard, E_FAIL);
+
+	m_pBlackboard = pBlackboard;
+
+	Safe_AddRef(m_pBlackboard);
+
+	return S_OK;
+}
+
+HRESULT CBehaviourTree::Set_Active(const _bool& bActive)
+{
+	if (m_bActive == bActive) return E_FAIL;
+
+	FAILED_CHECK_RETURN(__super::Set_Active(bActive), E_FAIL);
+	
+	//...
+
+	return S_OK;
+}
+
+CComponent * CBehaviourTree::Clone(void * pArg)
+{
+	CBehaviourTree*	pInstance = new CBehaviourTree(*this);
+
+	if (FAILED(pInstance->Initialize(pArg)))
+	{
+		MSG_BOX("Failed to Cloned : CBehaviourTree");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+void CBehaviourTree::Free()
+{
+	__super::Free();
+}

@@ -54,6 +54,11 @@ HRESULT CStateMachine::LateTick()
 	return S_OK;
 }
 
+const wstring& CStateMachine::Get_CurStateName() const
+{
+	return m_pCurState->Get_Name(); 
+}
+
 HRESULT CStateMachine::Set_State(const wstring& strStateTag)
 {
 	/* TODO 여기서 레퍼런스 카운트 어떻게 해야 할까? */
@@ -83,7 +88,7 @@ HRESULT CStateMachine::Add_State(const wstring& strStateTag, CState* pState)
 	return S_OK;
 }
 
-const _bool& CStateMachine::Has_State(const wstring& strStateTag)
+const _bool CStateMachine::Has_State(const wstring& strStateTag)
 {
 	auto iter = m_pStates.find(strStateTag);
 

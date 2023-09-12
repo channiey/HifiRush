@@ -9,9 +9,11 @@ enum COMPONTENT_TYPE
 	COM_RENDERER,
 	COM_VIBUFFER,
 	COM_SHADER,
+	COM_TEXTURE,
 
-	//COM_STATEMACHING,
-	//COM_TEXTURE,
+	COM_STATEMACHINE,
+	COM_BEHAVIOURTREE,
+
 	//COM_TRANSFORM,
 	//COM_MODEL,
 	//COM_COLLIDER,
@@ -29,9 +31,12 @@ static wstring gStrComponentType[COM_END]
 {
 	L"Com_Renderer",
 	L"Com_VIBuffer",
-	L"Com_Shader"
+	L"Com_Shader",
+	L"Com_Texture"
 
-	//L"Com_Texture",
+	L"Com_StateMachine",
+	L"Com_BehaviourTree"
+
 	//L"Com_Transform",
 	//L"Com_Model",
 	//L"Com_Collider",
@@ -63,7 +68,7 @@ public:
 
 public:
 	/* Active 이벤트 처리를 위한 가상함수화, 오버라이드시 __super::Active()먼저 호출 필요 */
-	virtual void Set_Active(const _bool& bActive) { m_bActive = bActive; }
+	virtual HRESULT Set_Active(const _bool& bActive) { m_bActive = bActive; return S_OK; }
 
 protected:
 	ID3D11Device*			m_pDevice = { nullptr };
