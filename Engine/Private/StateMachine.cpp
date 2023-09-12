@@ -15,8 +15,6 @@ CStateMachine::CStateMachine(const CStateMachine & rhs)
 
 HRESULT CStateMachine::Initialize_Prototype()
 {
-	
-
 	return S_OK;
 }
 
@@ -25,32 +23,40 @@ HRESULT CStateMachine::Initialize(void * pArg)
 	return S_OK;
 }
 
-CState* CStateMachine::Tick(const _float& fTimeDelta)
+HRESULT CStateMachine::Tick(const _float& fTimeDelta)
 {
-	NULL_CHECK_RETURN(m_pCurState, nullptr);
+	NULL_CHECK_RETURN(m_pCurState, E_FAIL);
 
-	CState* pState = m_pCurState->Tick(fTimeDelta);
+	const wstring& strStateName = m_pCurState->Tick(fTimeDelta);
+	
+	if (strStateName != m_pCurState->Get_Name())
+		return Change_State(strStateName);
 
-	if (pState != m_pCurState)
-		Change_State(pState);
-
-	/* 현재 상태 유지*/
-
-	return nullptr;
+	return S_OK;
 }
 
-CState* CStateMachine::LateTick()
+HRESULT CStateMachine::LateTick()
 {
-	NULL_CHECK_RETURN(m_pCurState, nullptr);
+	NULL_CHECK_RETURN(m_pCurState, E_FAIL);
 
-	if (m_pCurState->LateTick() != m_pCurState)
-	{
-		/* 상태의 변환 */
-	}
+	const wstring& strStateName = m_pCurState->LateTick();
 
-	/* 현재 상태 유지*/
+	if (strStateName != m_pCurState->Get_Name())
+		return Change_State(strStateName);
 
-	return nullptr;
+	return S_OK;
+}
+
+HRESULT CStateMachine::Set_State(const wstring& strStateTag)
+{
+	/* TODO 여기서 레퍼런스 카운트 어떻게 해야 할까? */
+
+	CState* pState = Find_State(strStateTag);
+
+	if (nullptr == pState)
+		return E_FAIL;
+
+	return (Change_State(pState->Get_Name()));
 }
 
 HRESULT CStateMachine::Add_State(const wstring& strStateTag, CState* pState)
@@ -58,7 +64,14 @@ HRESULT CStateMachine::Add_State(const wstring& strStateTag, CState* pState)
 	if (nullptr == pState || Has_State(strStateTag))
 		return E_FAIL;
 	
+	pState->Set_Name(strStateTag);
+
 	m_pStates.emplace(strStateTag, pState);
+	
+	if (nullptr == m_pCurState)
+		m_pCurState = pState;
+
+	Safe_AddRef(m_pCurState);
 
 	return S_OK;
 }
@@ -73,8 +86,30 @@ const _bool& CStateMachine::Has_State(const wstring& strStateTag)
 	return true;
 }
 
-HRESULT CStateMachine::Change_State(CState* pState)
+CState* CStateMachine::Find_State(const wstring& strStateTag)
 {
+	auto iter = m_pStates.find(strStateTag);
+
+	if (m_pStates.end() == iter)
+		return nullptr;
+
+	return iter->second;
+}
+
+HRESULT CStateMachine::Change_State(const wstring& strStateTag)
+{
+	CState* pNextState = Find_State(strStateTag);
+
+	NULL_CHECK_RETURN(pNextState, E_FAIL);
+
+	m_pCurState->Exit();
+	Safe_Release(m_pCurState);
+
+	m_pCurState = pNextState;
+	Safe_AddRef(m_pCurState);
+
+	m_pCurState->Enter();
+
 	return S_OK;
 }
 
@@ -93,4 +128,12 @@ CComponent * CStateMachine::Clone(void * pArg)
 void CStateMachine::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pCurState);
+
+	for (auto& Pair : m_pStates)
+	{
+		Safe_Release(Pair.second);
+	}
+	m_pStates.clear();
 }
