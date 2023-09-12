@@ -1,8 +1,10 @@
 #pragma once
 
 #include "Shader.h"
+#include "Texture.h"
 #include "Renderer.h"
 #include "VIBuffer_Rect.h"
+
 #include "MonoBehaviour.h"
 
 /* 컴포넌트들의 원형을 보관한다. */

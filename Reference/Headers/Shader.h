@@ -17,10 +17,10 @@ public:
 
 public:
 	/* 1. 셰이더 상수 테이블의 값을 채운다. */
-	HRESULT Bind_Matrix(char* pConstantName, const _float4x4* pMatrix);
-	HRESULT Bind_Matrices(char* pConstantName, const _float4x4* pMatrices, _uint iNumMatrices);
-	HRESULT Bind_Texture(char * pConstantName, ID3D11ShaderResourceView* pSRV);
-	HRESULT Bind_Textures(char * pConstantName, ID3D11ShaderResourceView ** ppSRVs, _uint iNumTextures);
+	HRESULT Bind_Matrix(const char* pConstantName, const _float4x4* pMatrix) const;
+	HRESULT Bind_Matrices(const char* pConstantName, const _float4x4* pMatrices, _uint iNumMatrices)const;
+	HRESULT Bind_Texture(const char * pConstantName, ID3D11ShaderResourceView* pSRV)const;
+	HRESULT Bind_Textures(const char * pConstantName, ID3D11ShaderResourceView ** ppSRVs, _uint iNumTextures)const;
 	
 	/* 2. 그리기 시작 (반드시 해당 함수 호출전에 셰이더 상수테이블에 값이 세팅 되어 있어야 한다. */
 	HRESULT	Begin(_uint iPassIndex);

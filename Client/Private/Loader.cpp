@@ -16,6 +16,11 @@ CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 
 _uint APIENTRY ThreadEntry(void* pArg)
 {
+	/* DX가 사용하는 모든 컴 객체를 초기화한다.  */
+	/* ID3D11Device는 공유 스레드이므로 스레드간 동시 접근이 가능하지만 */
+	/* ID3D11DeviceContext는 단일 스레드 접근만 허용하므로 스레드 동기화를 필요로 한다. */
+	HRESULT hr = CoInitializeEx(nullptr, 0);
+
 	/* 새롭게 생성된 스레드가 일한다. */
 	CLoader*		pLoader = (CLoader*)pArg;
 
@@ -72,7 +77,9 @@ HRESULT CLoader::Loading_For_Level_Logo()
 	/* For.Texture */
 	m_strLoading = TEXT("Loding... : Texture");
 	{
-
+		if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_BackGround"),
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2))))
+			return E_FAIL;
 	}
 	
 	/* For.Mesh */

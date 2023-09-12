@@ -109,6 +109,9 @@
     <Filter Include="01.Utiltiy\03.Component\StateMachine\State">
       <UniqueIdentifier>{80ab0f71-c9ec-4845-af60-5d0db3c98c59}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utiltiy\03.Component\Texture">
+      <UniqueIdentifier>{53971819-f4f6-455f-b9f4-cb373d914fd4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -195,6 +198,9 @@
     <ClInclude Include="..\Public\StateMachine.h">
       <Filter>01.Utiltiy\03.Component\StateMachine</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Texture.h">
+      <Filter>01.Utiltiy\03.Component\Texture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -268,6 +274,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\StateMachine.cpp">
       <Filter>01.Utiltiy\03.Component\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Texture.cpp">
+      <Filter>01.Utiltiy\03.Component\Texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

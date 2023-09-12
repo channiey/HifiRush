@@ -74,7 +74,7 @@ HRESULT CShader::Initialize(void * pArg)
 }
 
 
-HRESULT CShader::Bind_Matrix(char* pConstantName, const _float4x4* pMatrix)
+HRESULT CShader::Bind_Matrix(const char* pConstantName, const _float4x4* pMatrix) const
 {
 	/* pConstantName이름에 해당하는 타입을 고려하지않은 전역변수를 컨트롤하는 객체를 얻어온다 .*/
 	ID3DX11EffectVariable*		pVariable = m_pEffect->GetVariableByName(pConstantName);
@@ -88,7 +88,7 @@ HRESULT CShader::Bind_Matrix(char* pConstantName, const _float4x4* pMatrix)
 	return pMatrixVariable->SetMatrix((const _float*)pMatrix);
 }
 
-HRESULT CShader::Bind_Matrices(char * pConstantName, const _float4x4* pMatrices, _uint iNumMatrices)
+HRESULT CShader::Bind_Matrices(const char * pConstantName, const _float4x4* pMatrices, _uint iNumMatrices)const 
 {
 	ID3DX11EffectVariable*		pVariable = m_pEffect->GetVariableByName(pConstantName);
 	if (nullptr == pVariable)
@@ -101,7 +101,7 @@ HRESULT CShader::Bind_Matrices(char * pConstantName, const _float4x4* pMatrices,
 	return pMatrix->SetMatrixArray((_float*)pMatrices, 0, iNumMatrices);
 }
 
-HRESULT CShader::Bind_Texture(char * pConstantName, ID3D11ShaderResourceView* pSRV)
+HRESULT CShader::Bind_Texture(const char * pConstantName, ID3D11ShaderResourceView* pSRV) const
 {
 	ID3DX11EffectVariable*		pVariable = m_pEffect->GetVariableByName(pConstantName);
 	if (nullptr == pVariable)
@@ -114,7 +114,7 @@ HRESULT CShader::Bind_Texture(char * pConstantName, ID3D11ShaderResourceView* pS
 	return pSRVariable->SetResource(pSRV);	
 }
 
-HRESULT CShader::Bind_Textures(char * pConstantName, ID3D11ShaderResourceView** ppSRVs, _uint iNumTextures)
+HRESULT CShader::Bind_Textures(const char * pConstantName, ID3D11ShaderResourceView** ppSRVs, _uint iNumTextures) const
 {
 	ID3DX11EffectVariable*		pVariable = m_pEffect->GetVariableByName(pConstantName);
 	if (nullptr == pVariable)

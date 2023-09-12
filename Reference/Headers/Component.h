@@ -71,6 +71,8 @@ protected:
 
 	_bool					m_bActive = { TRUE };
 
+	_bool					m_bClone = { FALSE };
+	/* 아직 미사용 */
 	class CGameObject*		m_pOwner = { nullptr };
 
 public:
