@@ -1,5 +1,8 @@
 #pragma once
 
+/* 상태들을 관리한다. */
+/* 각 상태에서의 행동, 조건, 전이 등은 각 상태에 정의한다. */
+
 #include "Component.h"
 
 BEGIN(Engine)
@@ -14,6 +17,11 @@ private:
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg) override;
+	class CState* Tick(const _float& fTimeDelta);
+	class CState* LateTick();
+
+public:
+	HRESULT Add_State(const wstring& strStateTag, class CState* pState);
 
 	/*
 	
@@ -28,6 +36,14 @@ public:
 		확인할 것 스트링 컨버팅
 
 	*/
+
+private:
+	map<const wstring, class CState*> m_pStates;
+	class CState* m_pCurState = { nullptr };
+
+private:
+	const _bool& Has_State(const wstring& strStateTag);
+	HRESULT Change_State(class CState* pState);
 
 
 public:

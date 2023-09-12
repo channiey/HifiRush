@@ -13,15 +13,16 @@ protected:
 
 public:
 	virtual HRESULT Enter() PURE;
-	virtual void Tick(const _float& fimeDelta)  PURE;
-	virtual void LateTick(const _float& fimeDelta) PURE;
+	virtual CState* Tick(const _float& fimeDelta)  PURE;
+	virtual CState* LateTick() PURE;
 	virtual void Exit() PURE;
 
 //protected:
-//	virtual Check_Condition(const _float& fimeDelta);
+//	virtual Check_Condition(const _float& fimeDelta) {};
 
 private:
 	class CStateMachine* m_pStateMachine = { nullptr };
+	wstring	m_pTag = {};
 
 private:
 	virtual void Free();
