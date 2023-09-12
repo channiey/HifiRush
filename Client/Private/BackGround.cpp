@@ -82,6 +82,7 @@ HRESULT CBackGround::Bind_ShaderResources()
 	XMStoreFloat4x4(&IdentityMatrix, XMMatrixIdentity());
 
 	/* 셰이더 전역변수로 던져야 할 값들을 던지자. */
+
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &IdentityMatrix)))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &IdentityMatrix)))

@@ -33,6 +33,7 @@ HRESULT CTexture::Initialize_Prototype(const wstring & strTextureFilePath, _uint
 		/* .dds, .png, .jpg, .bmp */		
 		_tchar		szExt[MAX_PATH] = TEXT("");
 
+		/* Full path에서 얻고 싶은 정보를 매개변수로 전달하여 얻어온다. (Ext == 확장자) */
 		_wsplitpath_s(szTextureFilePath, nullptr, 0, nullptr, 0, nullptr, 0, szExt, MAX_PATH);
 
 		HRESULT		hr = 0;
@@ -44,10 +45,12 @@ HRESULT CTexture::Initialize_Prototype(const wstring & strTextureFilePath, _uint
 		}
 		else if(false == lstrcmp(szExt, TEXT(".tga")))
 		{
-			return E_FAIL;
+			/* DirectXTK로 tga를 생성할 수 없다. */
+			return E_FAIL; 
 		}
 		else
 		{
+			/* 확장자가 dds, tga를 제외한 경우는 모두 아래 함수를 통해 생성한다. jpg, png 등*/
 			hr = CreateWICTextureFromFile(m_pDevice, szTextureFilePath, nullptr, &pSRV);
 		}
 
@@ -56,7 +59,6 @@ HRESULT CTexture::Initialize_Prototype(const wstring & strTextureFilePath, _uint
 
 		m_ppSRVs[i] = pSRV;
 	}
-
 
 	return S_OK;
 }

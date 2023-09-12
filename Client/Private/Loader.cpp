@@ -47,6 +47,8 @@ HRESULT CLoader::Initialize(LEVEL_ID eNextLevel)
 
 _int CLoader::Loading()
 {
+	/* 모든 레벨에서 사용되는 컴포넌트 원형은 MainApp에서 생성한다. */
+
 	EnterCriticalSection(&m_Critical_Section);
 
 	HRESULT		hr = 0;
@@ -60,7 +62,6 @@ _int CLoader::Loading()
 		hr = Loading_For_Level_GamePlay();
 		break;
 	}
-
 	if (FAILED(hr))
 		return -1;	
 

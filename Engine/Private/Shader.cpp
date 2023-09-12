@@ -77,6 +77,9 @@ HRESULT CShader::Initialize(void * pArg)
 HRESULT CShader::Bind_Matrix(const char* pConstantName, const _float4x4* pMatrix) const
 {
 	/* pConstantName이름에 해당하는 타입을 고려하지않은 전역변수를 컨트롤하는 객체를 얻어온다 .*/
+
+	/* 셰이더로부터 상수테이블에 존재하는 전역 변수를 얻어오기 위한 과정 */
+
 	ID3DX11EffectVariable*		pVariable = m_pEffect->GetVariableByName(pConstantName);
 	if (nullptr == pVariable)
 		return E_FAIL;
