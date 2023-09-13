@@ -9,12 +9,12 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL CState : public CBase
+class ENGINE_DLL CState abstract : public CBase
 {
 
 protected:
 	CState();
-	//CState(const CState& rhs);
+	CState(const CState& rhs);
 	virtual ~CState() = default;
 
 public:
@@ -33,10 +33,9 @@ private:
 
 private:
 	/* Tick, LateTick °ø¿ë*/
-	//virtual const wstring& Check_Transition() PURE; 
+	virtual const wstring& Check_Transition() PURE; 
 
 private:
-	//virtual CState* Clone(void* pArg) = 0;
 	virtual void Free();
 };
 
