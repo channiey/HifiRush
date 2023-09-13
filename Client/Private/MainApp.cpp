@@ -1,21 +1,20 @@
 #include "..\Default\stdafx.h"
 #include "..\Public\MainApp.h"
-
 #include "GameInstance.h"
 #include "Level_Loading.h"
+#include "ImGui_Manager.h"
 
 CMainApp::CMainApp()	
 	: m_pGameInstance(CGameInstance::GetInstance())
+	, m_pImGui_Manager(CImGui_Manager::GetInstance())
 {	
-
 	Safe_AddRef(m_pGameInstance);
+	Safe_AddRef(m_pImGui_Manager);
 }
-
 
 HRESULT CMainApp::Initialize()
 {
 	/* 1-1. 그래픽, 사운드, 입력 장치를 초기화한다. */
-
 	GRAPHIC_DESC		GraphicDesc;
 	ZeroMemory(&GraphicDesc, sizeof GraphicDesc);
 
@@ -38,6 +37,7 @@ HRESULT CMainApp::Initialize()
 	/* 1-4. 게임내에서 사용할 여러 자원(텍스쳐, 모델, 객체) 들을 준비한다. */
 
 	/* 1-5. ImGui Manager을 세팅한다. */
+	FAILED_CHECK_RETURN(m_pImGui_Manager->Initialize(m_pDevice, m_pContext), E_FAIL);
 
 	return S_OK;
 }
@@ -54,13 +54,13 @@ HRESULT CMainApp::Render()
 	FAILED_CHECK_RETURN(m_pGameInstance->Clear_BackBuffer_View(_float4(0.5f, 0.5f, 0.5f, 1.f)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Clear_DepthStencil_View(), E_FAIL);
 	{
-		/* 게임 내 객체 렌더링*/
+		/* 게임 내 객체 렌더링 */
 		FAILED_CHECK_RETURN(m_pRenderer->Draw_RenderObjects(), E_FAIL);
 
-		/* ImGui */
+		/* ImGui 업데이트 및 렌더링 */
+		FAILED_CHECK_RETURN(m_pImGui_Manager->Render(), E_FAIL);
 	}
 	FAILED_CHECK_RETURN(m_pGameInstance->Present(), E_FAIL);
-
 	return S_OK;
 }
 
@@ -130,12 +130,13 @@ void Client::CMainApp::Free()
 
 	Safe_Release(m_pRenderer);
 
+	Safe_Release(m_pImGui_Manager);
+	Safe_Release(m_pImGui_Manager);
+
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
 
 	Safe_Release(m_pGameInstance);
 
 	CGameInstance::Release_Engine();
-	
-
 }

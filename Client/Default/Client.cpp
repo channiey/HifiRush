@@ -1,6 +1,11 @@
 #include "../Default/stdafx.h"
+#include "imgui_impl_win32.h"
+
 #include "Client.h"
 #include "../Public/Client_Defines.h"
+
+/* ImGui */
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);// IMGUI
 
 #include "MainApp.h"
 #include "GameInstance.h"
@@ -71,7 +76,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_float		fTimeAcc = 0.f;
     const _float    fFpsLimit = 5000.f;
 
-
 	while (true)
 	{
 		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
@@ -87,7 +91,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		fTimeAcc += pGameInstance->Compute_TimeDelta(TEXT("Timer_Default"));
 
-		if (fTimeAcc >= /*1.f / fFpsLimit*/0.f)
+		if (fTimeAcc >= 1.f / fFpsLimit/*0.f*/)
 		{
 			pMainApp->Tick(pGameInstance->Compute_TimeDelta(TEXT("Timer_60")));
 			pMainApp->Render();
@@ -134,7 +138,9 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+       CW_USEDEFAULT, 0,
+       rc.right - rc.left, rc.bottom - rc.top,
+       nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)
    {
@@ -151,6 +157,10 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    /* ImGui */
+    if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam)) 
+        return true;
+
     switch (message)
     {
     case WM_COMMAND:

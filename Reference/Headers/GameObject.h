@@ -25,6 +25,7 @@ public:
 
 public:
 	const wstring& Get_Name() const { return m_strName; }
+	const wstring& Get_Layer() const { return m_strLayer; }
 	const _uint& Get_PickID() const { return m_iPickID; }
 
 	class CComponent* Get_Transform() const { return nullptr; }
@@ -45,6 +46,7 @@ protected:
 	map<const wstring, class CComponent*>		m_Components;
 
 	_bool					m_bActive = { TRUE };
+	wstring					m_strLayer = { };
 	wstring					m_strName = { };
 
 	/* 피킹 처리를 위한 고유 아이디 */

@@ -48,7 +48,7 @@ HRESULT CRenderer::Render_Priority()
 {
 	for (auto& pGameObject : m_RenderObjects[RG_PRIORITY])
 	{
-		if (nullptr != pGameObject && pGameObject->Is_Active())
+		if (nullptr != pGameObject/* && pGameObject->Is_Active()*/)
 			pGameObject->Render();
 
 		Safe_Release(pGameObject);
@@ -62,7 +62,7 @@ HRESULT CRenderer::Render_NonLight()
 {
 	for (auto& pGameObject : m_RenderObjects[RG_NONLIGHT])
 	{
-		if (nullptr != pGameObject && pGameObject->Is_Active())
+		if (nullptr != pGameObject/* && pGameObject->Is_Active()*/)
 			pGameObject->Render();
 
 		Safe_Release(pGameObject);
@@ -76,7 +76,7 @@ HRESULT CRenderer::Render_NonBlend()
 {
 	for (auto& pGameObject : m_RenderObjects[RG_NONBLEND])
 	{
-		if (nullptr != pGameObject && pGameObject->Is_Active())
+		if (nullptr != pGameObject/* && pGameObject->Is_Active()*/)
 			pGameObject->Render();
 
 		Safe_Release(pGameObject);
@@ -90,7 +90,7 @@ HRESULT CRenderer::Render_Blend()
 {
 	for (auto& pGameObject : m_RenderObjects[RG_BLEND])
 	{
-		if (nullptr != pGameObject && pGameObject->Is_Active())
+		if (nullptr != pGameObject/* && pGameObject->Is_Active()*/)
 			pGameObject->Render();
 
 		Safe_Release(pGameObject);
@@ -104,7 +104,7 @@ HRESULT CRenderer::Render_UI()
 {
 	for (auto& pGameObject : m_RenderObjects[RG_UI])
 	{
-		if (nullptr != pGameObject && pGameObject->Is_Active())
+		if (nullptr != pGameObject/* && pGameObject->Is_Active()*/)
 			pGameObject->Render();
 
 		Safe_Release(pGameObject);

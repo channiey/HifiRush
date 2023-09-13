@@ -30,6 +30,7 @@ private:
 	ID3D11DeviceContext*	m_pContext = { nullptr };
 
 	CRenderer*				m_pRenderer = { nullptr };
+	class CImGui_Manager* m_pImGui_Manager = { nullptr };
 
 private:
 	HRESULT Open_Level(LEVEL_ID eLEVEL_ID);
