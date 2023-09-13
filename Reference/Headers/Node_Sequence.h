@@ -12,14 +12,15 @@ protected:
 	CNode_Sequence(const CNode_Sequence& rhs);
 	virtual ~CNode_Sequence() = default;
 
-public:
-	virtual const NODE_STATE Tick(const _float& fTimeDelta);
+public:	
+	virtual HRESULT Initialize_Node();
+	virtual const NODE_STATE Evaluate(const _float& fTimeDelta);
 
 public:
 	HRESULT Add_ChildNode(CNode* pChildNode) override;
 
 private:
-	virtual CNode* Clone(void* pArg);
+	static CNode_Sequence* Create(void* pArg = nullptr);
 	virtual void Free();
 };
 

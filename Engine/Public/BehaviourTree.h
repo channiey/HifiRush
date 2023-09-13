@@ -73,6 +73,7 @@ private:
 	class CBlackboard* m_pBlackboard = { nullptr };
 
 public:
+	static CBehaviourTree* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CComponent* Clone(void* pArg) override;
 	virtual void Free() override;
 };

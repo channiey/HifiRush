@@ -2,19 +2,20 @@
 
 CNode_Action::CNode_Action()
 {
-	m_eType = NODE_TYPE::ACTION;
 }
 
 CNode_Action::CNode_Action(const CNode_Action& rhs)
 {
 }
 
-
-CNode* CNode_Action::Clone(void* pArg)
+HRESULT CNode_Action::Initialize_Node()
 {
-	return nullptr;
+	m_eType = NODE_TYPE::ACTION;
+
+	return S_OK;
 }
 
 void CNode_Action::Free()
 {
+	__super::Free();
 }

@@ -2,14 +2,18 @@
 
 CNode_Root::CNode_Root()
 {
-	m_eType = NODE_TYPE::ROOT;
 }
 
 CNode_Root::CNode_Root(const CNode_Root& rhs)
 {
-
 }
 
+HRESULT CNode_Root::Initialize_Node()
+{
+	m_eType = NODE_TYPE::ROOT;
+
+	return S_OK;
+}
 
 const NODE_STATE CNode_Root::Evaluate(const _float& fTimeDelta)
 {
@@ -31,12 +35,21 @@ HRESULT CNode_Root::Add_ChildNode(CNode* pChildNode)
 	return S_OK;
 }
 
-CNode* CNode_Root::Clone(void* pArg)
+CNode_Root* CNode_Root::Create(void* pArg)
 {
-	return nullptr;
+	CNode_Root* pInstance = new CNode_Root();
+
+	if (FAILED(pInstance->Initialize_Node()))
+	{
+		MSG_BOX("Failed to Created : CNode_Root");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
 }
 
 void CNode_Root::Free()
 {
+	__super::Free();
 }
 

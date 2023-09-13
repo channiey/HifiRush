@@ -2,12 +2,16 @@
 
 CNode_Sequence::CNode_Sequence()
 {
-	m_eType = NODE_TYPE::SEQUENCE;
-
 }
 
 CNode_Sequence::CNode_Sequence(const CNode_Sequence& rhs)
 {
+}
+
+HRESULT CNode_Sequence::Initialize_Node()
+{
+	m_eType = NODE_TYPE::SEQUENCE;
+	return S_OK;
 }
 
 const NODE_STATE CNode_Sequence::Evaluate(const _float& fTimeDelta)
@@ -37,11 +41,20 @@ HRESULT CNode_Sequence::Add_ChildNode(CNode* pChildNode)
 	return S_OK;
 }
 
-CNode* CNode_Sequence::Clone(void* pArg)
+CNode_Sequence* CNode_Sequence::Create(void* pArg)
 {
-	return nullptr;
+	CNode_Sequence* pInstance = new CNode_Sequence();
+
+	if (FAILED(pInstance->Initialize_Node()))
+	{
+		MSG_BOX("Failed to Created : CNode_Sequence");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
 }
 
 void CNode_Sequence::Free()
 {
+	__super::Free();
 }

@@ -19,8 +19,8 @@ enum class NODE_TYPE
 
 	/* Composit */
 	/* 여러 개의 자식노드를 가질 수 있다.*/
-	SEQUENCE, /* Child중 하나라도 Failure를 반환할 때까지 실행*/
-	SELECTOR, /* Child중 하나라도 Success를 반환할 때까지 실행*/
+	SEQUENCE, /* Child중 하나라도 Failure or Running을 반환할 때까지 실행*/
+	SELECTOR, /* Child중 하나라도 Success or Running을 반환할 때까지 실행*/
 	PARALLEL, /* Child가 어떤 값을 반환하든, 모든 child를 순차적으로 실행한다. */
 
 
@@ -73,6 +73,7 @@ private:
 	class CBlackboard* m_pBlackboard = { nullptr };
 
 public:
+	static CBehaviourTree* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CComponent* Clone(void* pArg) override;
 	virtual void Free() override;
 };

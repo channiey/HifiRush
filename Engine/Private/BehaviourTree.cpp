@@ -15,7 +15,10 @@ CBehaviourTree::CBehaviourTree(const CBehaviourTree & rhs)
 	, m_pRootNode(rhs.m_pRootNode)
 	, m_pBlackboard(rhs.m_pBlackboard)
 {
+	Safe_AddRef(m_pRootNode);
+	Safe_AddRef(m_pBlackboard);
 
+	/* 노드 타고 내려가면서 레퍼런스 카운트 다 늘려줘야 한다. */
 }
 
 HRESULT CBehaviourTree::Initialize_Prototype()
@@ -89,6 +92,19 @@ HRESULT CBehaviourTree::Set_Active(const _bool& bActive)
 	return S_OK;
 }
 
+CBehaviourTree* CBehaviourTree::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+{
+	CBehaviourTree* pInstance = new CBehaviourTree(pDevice, pContext);
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		MSG_BOX("Failed to Created : CBehaviourTree");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
 CComponent * CBehaviourTree::Clone(void * pArg)
 {
 	CBehaviourTree*	pInstance = new CBehaviourTree(*this);
@@ -103,5 +119,10 @@ CComponent * CBehaviourTree::Clone(void * pArg)
 }
 void CBehaviourTree::Free()
 {
+	Safe_Release(m_pRootNode);
+	Safe_Release(m_pRootNode);
+
+	Safe_Release(m_pBlackboard);
+
 	__super::Free();
 }

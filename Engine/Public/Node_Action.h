@@ -14,13 +14,14 @@ protected:
 	virtual ~CNode_Action() = default;
 
 public:
+	virtual HRESULT Initialize_Node();
 	virtual const NODE_STATE Evaluate(const _float& fTimeDelta) PURE;
+
 public:
 	/* 액션은 Leaf 노드로서 자식 노드를 갖지 않는다.*/
 	HRESULT Add_ChildNode(CNode* pChildNode) override { return E_FAIL; }
 
 private:
-	virtual CNode* Clone(void* pArg) PURE;
 	virtual void Free();
 };
 

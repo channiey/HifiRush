@@ -2,12 +2,17 @@
 
 CNode_Parallel::CNode_Parallel()
 {
-	m_eType = NODE_TYPE::PARALLEL;
-
 }
 
 CNode_Parallel::CNode_Parallel(const CNode_Parallel& rhs)
 {
+}
+
+HRESULT CNode_Parallel::Initialize_Node()
+{
+	m_eType = NODE_TYPE::PARALLEL;
+
+	return S_OK;
 }
 
 const NODE_STATE CNode_Parallel::Evaluate(const _float& fTimeDelta)
@@ -46,11 +51,20 @@ HRESULT CNode_Parallel::Add_ChildNode(CNode* pChildNode)
 	return S_OK;
 }
 
-CNode* CNode_Parallel::Clone(void* pArg)
+CNode_Parallel* CNode_Parallel::Create(void* pArg)
 {
-	return nullptr;
+	CNode_Parallel* pInstance = new CNode_Parallel();
+
+	if (FAILED(pInstance->Initialize_Node()))
+	{
+		MSG_BOX("Failed to Created : CNode_Parallel");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
 }
 
 void CNode_Parallel::Free()
 {
+	__super::Free();
 }

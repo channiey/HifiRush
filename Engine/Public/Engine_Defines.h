@@ -3,7 +3,7 @@
 /* Warning */
 #pragma warning (disable : 4251)
 #pragma warning (disable : 4038) /* warning STL4038: The contents of <filesystem> are available only with C++17 or later. */
-#pragma warning (disable : 4244) /* stringUtils */
+#pragma warning (disable : 4244) /* string utils */
 
 /* DX*/
 #include <d3d11.h>

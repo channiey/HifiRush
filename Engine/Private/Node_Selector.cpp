@@ -2,12 +2,17 @@
 
 CNode_Selector::CNode_Selector()
 {
-	m_eType = NODE_TYPE::SELECTOR;
-
 }
 
 CNode_Selector::CNode_Selector(const CNode_Selector& rhs)
 {
+}
+
+HRESULT CNode_Selector::Initialize_Node()
+{
+	m_eType = NODE_TYPE::SELECTOR;
+
+	return S_OK;
 }
 
 const NODE_STATE CNode_Selector::Evaluate(const _float& fTimeDelta)
@@ -37,11 +42,20 @@ HRESULT CNode_Selector::Add_ChildNode(CNode* pChildNode)
 	return S_OK;
 }
 
-CNode* CNode_Selector::Clone(void* pArg)
+CNode_Selector* CNode_Selector::Create(void* pArg)
 {
-	return nullptr;
+	CNode_Selector* pInstance = new CNode_Selector();
+
+	if (FAILED(pInstance->Initialize_Node()))
+	{
+		MSG_BOX("Failed to Created : CNode_Selector");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
 }
 
 void CNode_Selector::Free()
 {
+	__super::Free();
 }

@@ -13,13 +13,14 @@ protected:
 	virtual ~CNode_Parallel() = default;
 
 public:
-	virtual const NODE_STATE Tick(const _float& fTimeDelta);
+	virtual HRESULT Initialize_Node();
+	virtual const NODE_STATE Evaluate(const _float& fTimeDelta);
 
 public:
 	HRESULT Add_ChildNode(CNode* pChildNode) override;
 
 private:
-	virtual CNode* Clone(void* pArg);
+	static CNode_Parallel* Create(void* pArg = nullptr);
 	virtual void Free();
 };
 

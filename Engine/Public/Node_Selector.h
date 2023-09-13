@@ -13,6 +13,7 @@ protected:
 	virtual ~CNode_Selector() = default;
 
 public:
+	virtual HRESULT Initialize_Node();
 	virtual const NODE_STATE Evaluate(const _float& fTimeDelta);
 
 
@@ -20,7 +21,7 @@ public:
 	HRESULT Add_ChildNode(CNode* pChildNode) override;
 
 private:
-	virtual CNode* Clone(void* pArg);
+	static CNode_Selector* Create(void* pArg = nullptr);
 	virtual void Free();
 };
 
