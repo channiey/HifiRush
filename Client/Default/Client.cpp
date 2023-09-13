@@ -1,11 +1,12 @@
 #include "../Default/stdafx.h"
+
 #include "imgui_impl_win32.h"
 
 #include "Client.h"
 #include "../Public/Client_Defines.h"
 
-/* ImGui */
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);// IMGUI
+
 
 #include "MainApp.h"
 #include "GameInstance.h"

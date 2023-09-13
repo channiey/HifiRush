@@ -1,4 +1,9 @@
-#include "../Default/stdafx.h"
+#include "C:\Users\ChanYoon\Desktop\Programming\Projects\WaveTale\StudyProject\MainFramework\Client\Default\stdafx.h"
+
+#ifndef IMGUI_DEFINE_MATH_OPERATORS
+#define IMGUI_DEFINE_MATH_OPERATORS
+#endif
+
 // dear imgui: Renderer Backend for DirectX11
 // This needs to be used along with a Platform Backend (e.g. Win32)
 
