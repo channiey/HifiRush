@@ -36,11 +36,16 @@ namespace Engine
 	typedef		XMFLOAT3					_float3;
 	typedef		XMFLOAT4					_float4;
 
+	typedef		XMVECTOR					_vector;
 	typedef		FXMVECTOR					_fvector;
+	typedef		GXMVECTOR					_gvector;
+	typedef		HXMVECTOR					_hvector;
+	typedef		CXMVECTOR					_cvector;
 
-	typedef		XMMATRIX					_matrix;
-	typedef		FXMMATRIX					_fmatrix;
 	typedef		XMFLOAT4X4					_float4x4;
+
+	typedef		FXMMATRIX					_fmatrix;
+	typedef		XMMATRIX					_matrix;
 }
 
 #endif // Engine_Typedef_h__

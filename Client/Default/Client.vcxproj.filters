@@ -31,9 +31,6 @@
     <Filter Include="02.GameObjects\BackGround">
       <UniqueIdentifier>{327a42a0-45f0-4b4d-b8cd-bb209baedc94}</UniqueIdentifier>
     </Filter>
-    <Filter Include="97.ShaderFiles">
-      <UniqueIdentifier>{a631185a-1555-4b19-8534-272c809d77b7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="98.Default\ImGui">
       <UniqueIdentifier>{1937ed4e-d435-43b8-956f-09b97fe7c7ef}</UniqueIdentifier>
     </Filter>
@@ -69,6 +66,12 @@
     </Filter>
     <Filter Include="02.GameObjects\Monster\BehaviourTree\Node">
       <UniqueIdentifier>{62e468e1-c067-4119-9433-31c56f9bc1fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96.ShaderFiles">
+      <UniqueIdentifier>{a631185a-1555-4b19-8534-272c809d77b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui">
+      <UniqueIdentifier>{700840b3-8278-4149-aec5-245a4d69cf58}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -142,7 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
-      <Filter>97.ShaderFiles</Filter>
+      <Filter>96.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

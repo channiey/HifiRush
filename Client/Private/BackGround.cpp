@@ -72,6 +72,9 @@ HRESULT CBackGround::Ready_Components()
 		TEXT("Com_Texture"), (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
 
+	/* Com_Transform */
+
+
 	return S_OK;
 }
 

@@ -17,13 +17,13 @@ namespace Client
 
 		LEVEL_END
 	};
-	static const char* gStrLevelID[LEVEL_END]
+	static const wchar_t* gStrLevelID[LEVEL_END]
 	{
-		"LEVEL_STATIC",
-		"LEVEL_LOADING",
-		"LEVEL_LOGO",
-		"LEVEL_GAMEPLAY",
-		"LEVEL_ENDING"
+		L"LEVEL_STATIC",
+		L"LEVEL_LOADING",
+		L"LEVEL_LOGO",
+		L"LEVEL_GAMEPLAY",
+		L"LEVEL_ENDING"
 	};
 
 	/* Layer */
@@ -41,17 +41,17 @@ namespace Client
 
 		LAYER_END
 	};
-	static const char* gStrLayerID[LAYER_END]
+	static const wchar_t* gStrLayerID[LAYER_END]
 	{
-		"Layer_Camera",
-		"Layer_BackGround",
-		"Layer_Enviornment",
-		"Layer_Player",
-		"Layer_Monster",
-		"Layer_Npc",
-		"Layer_Projectile",
-		"Layer_Effect",
-		"Layer_Ui",
+		L"Layer_Camera",
+		L"Layer_BackGround",
+		L"Layer_Enviornment",
+		L"Layer_Player",
+		L"Layer_Monster",
+		L"Layer_Npc",
+		L"Layer_Projectile",
+		L"Layer_Effect",
+		L"Layer_Ui",
 	};
 
 	/* Window */

@@ -10,11 +10,11 @@ enum COMPONTENT_TYPE
 	COM_VIBUFFER,
 	COM_SHADER,
 	COM_TEXTURE,
+	COM_TRANSFORM,
 
 	COM_STATEMACHINE,
 	COM_BEHAVIOURTREE,
 
-	//COM_TRANSFORM,
 	//COM_MODEL,
 	//COM_COLLIDER,
 	//COM_NAVIMESH,
@@ -33,11 +33,11 @@ static wstring gStrComponentType[COM_END]
 	L"Com_VIBuffer",
 	L"Com_Shader",
 	L"Com_Texture"
+	L"Com_Transform",
 
 	L"Com_StateMachine",
 	L"Com_BehaviourTree"
 
-	//L"Com_Transform",
 	//L"Com_Model",
 	//L"Com_Collider",
 	//L"Com_Navimesh",

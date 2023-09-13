@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "Base.h"
+#include "Base.h" /* TODO 순환 참조 오류 가능성 존재 */
 
 #if (defined(WIN32) || defined(WINAPI_FAMILY)) && !(defined(_XBOX_ONE) && defined(_TITLE)) && !defined(_GAMING_XBOX)
 #include <dxgi1_2.h>

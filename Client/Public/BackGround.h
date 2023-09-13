@@ -7,6 +7,7 @@ BEGIN(Engine)
 class CShader;
 class CTexture;
 class CRenderer;
+class CTransform;
 class CVIBuffer_Rect;
 END
 
@@ -33,7 +34,8 @@ private:
 	/* Component */
 	CRenderer*				m_pRendererCom = { nullptr };
 	CShader*				m_pShaderCom = { nullptr };
-	CTexture* m_pTextureCom = { nullptr };
+	CTexture*				m_pTextureCom = { nullptr };
+	CTransform*				m_pTransformCom = { nullptr };
 	CVIBuffer_Rect*			m_pVIBufferCom = { nullptr };
 
 private:

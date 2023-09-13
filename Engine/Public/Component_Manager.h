@@ -3,6 +3,7 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "Renderer.h"
+#include "Transform.h"
 #include "VIBuffer_Rect.h"
 
 #include "MonoBehaviour.h"

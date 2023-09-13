@@ -11,7 +11,7 @@ CLevel_Logo::CLevel_Logo(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 
 HRESULT CLevel_Logo::Initialize()
 {
-	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
+	if (FAILED(Ready_Layer_BackGround(gStrLayerID[LAYER_BACKGROUND])))
 		return E_FAIL;
 
 	return S_OK;
@@ -24,7 +24,7 @@ HRESULT CLevel_Logo::Tick(_float fTimeDelta)
 
 HRESULT CLevel_Logo::LateTick(_float fTimeDelta)
 {
-	SetWindowText(g_hWnd, TEXT("Level : Logo"));
+	SetWindowText(g_hWnd, gStrLevelID[LEVEL_LOGO]);
 
 	if (GetKeyState(VK_RETURN) & 0x8000)
 	{
