@@ -49,9 +49,17 @@ void CGameInstance::Tick(_float fTimeDelta)
 {
 	m_pObject_Manager->Tick(fTimeDelta);
 	m_pLevel_Manager->Tick(fTimeDelta);
+}
 
+void CGameInstance::LateTick(_float fTimeDelta)
+{
 	m_pObject_Manager->LateTick(fTimeDelta);
 	m_pLevel_Manager->LateTick(fTimeDelta);
+}
+
+void CGameInstance::FinishTick()
+{
+	m_pObject_Manager->FinishTick();
 }
 
 void CGameInstance::Clear(_uint iLevelIndex)
@@ -119,6 +127,67 @@ HRESULT CGameInstance::Add_GameObject(_uint iLevelIndex, const wstring & strLaye
 		return E_FAIL;
 
 	return m_pObject_Manager->Add_GameObject(iLevelIndex, strLayerTag, strPrototypeTag, pArg);
+}
+
+HRESULT CGameInstance::Delete_GameObject(_uint iLevelIndex, CGameObject* pObj)
+{
+	if (nullptr == m_pObject_Manager)
+		return E_FAIL;
+
+	return m_pObject_Manager->Delete_GameObject(iLevelIndex, pObj);
+}
+
+HRESULT CGameInstance::Reserve_Pool(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag, const _uint& iNumObj, void* pArg)
+{
+	if (nullptr == m_pObject_Manager)
+		return E_FAIL;
+
+	return m_pObject_Manager->Reserve_Pool(iLevelIndex, strLayerTag, strPrototypeTag, iNumObj, pArg);
+}
+
+CGameObject* CGameInstance::Pop_Pool(_uint iLevelIndex, const wstring& strPrototypeTag)
+{
+	if (nullptr == m_pObject_Manager)
+		return nullptr;
+
+	return m_pObject_Manager->Pop_Pool(iLevelIndex, strPrototypeTag);
+}
+
+HRESULT CGameInstance::Return_Pool(_uint iLevelIndex, CGameObject* pObj)
+{
+	if (nullptr == m_pObject_Manager)
+		return E_FAIL;
+
+	return m_pObject_Manager->Return_Pool(iLevelIndex, pObj);
+}
+
+map<const wstring, class CLayer*>* CGameInstance::Get_Layers(_uint iLevelIndex)
+{
+	if (nullptr == m_pObject_Manager)
+		return nullptr;
+
+	return m_pObject_Manager->Get_Layers(iLevelIndex);
+}
+
+list<class CGameObject*>* CGameInstance::Get_Objects(_uint iLevelIndex, const wstring& strLayerTag)
+{
+	if (nullptr == m_pObject_Manager)
+		return nullptr;
+
+	return m_pObject_Manager->Get_Objects(iLevelIndex, strLayerTag);
+}
+
+CGameObject* CGameInstance::Get_Player()
+{
+	return nullptr;
+}
+
+map<const wstring, class CGameObject*>* CGameInstance::Get_Prototypes()
+{
+	if (nullptr == m_pObject_Manager)
+		return nullptr;
+
+	return m_pObject_Manager->Get_Prototypes();
 }
 
 HRESULT CGameInstance::Add_Prototype(_uint iLevelIndex, const wstring & strPrototypeTag, CComponent * pPrototype)

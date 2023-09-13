@@ -1,4 +1,5 @@
-#include "../Default/stdafx.h"
+//#include "../Default/stdafx.h"
+#include "C:\Users\ChanYoon\Desktop\Programming\Projects\WaveTale\StudyProject\MainFramework\Client\Default\stdafx.h"
 // dear imgui, v1.90 WIP
 // (main code and documentation)
 
@@ -942,7 +943,6 @@ CODE
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_MATH_OPERATORS
 #endif
-
 #include "imgui.h"
 #ifndef IMGUI_DISABLE
 #include "imgui_internal.h"
@@ -1928,7 +1928,7 @@ const char* ImStrSkipBlank(const char* str)
 #define STB_SPRINTF_IMPLEMENTATION
 #endif
 #ifdef IMGUI_STB_SPRINTF_FILENAME
-#include IMGUI_STB_SPRINTF_FILENAME
+//#include IMGUI_STB_SPRINTF_FILENAME /* TODO : 에러 떠서 지움*/
 #else
 #include "stb_sprintf.h"
 #endif
@@ -20775,6 +20775,8 @@ void ImGui::UpdateDebugToolStackQueries() {}
 // Prefer just including imgui_internal.h from your code rather than using this define. If a declaration is missing from imgui_internal.h add it or request it on the github.
 #ifdef IMGUI_INCLUDE_IMGUI_USER_INL
 #include "imgui_user.inl"
+
+
 #endif
 
 //-----------------------------------------------------------------------------

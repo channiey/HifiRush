@@ -1,18 +1,15 @@
 #include "..\Default\stdafx.h"
-//#ifdef _DEBUG
-//
-//#ifndef IMGUI_DEFINE_MATH_OPERATORS
-//#define IMGUI_DEFINE_MATH_OPERATORS
-//#endif
+
+#ifndef IMGUI_DEFINE_MATH_OPERATORS
+#define IMGUI_DEFINE_MATH_OPERATORS
+#endif
 
 #include "../ImGui/imgui.h" 
 #include "../ImGui/imgui_impl_win32.h" 
 #include "../ImGui/imgui_impl_dx11.h" 
 
 #include "ImGui_Manager.h"
-
 #include "GameInstance.h"
-
 #include "GameObject.h"
 
 IMPLEMENT_SINGLETON(CImGui_Manager)
@@ -86,25 +83,15 @@ HRESULT CImGui_Manager::ImGui_SetUp(ID3D11Device* pDevice, ID3D11DeviceContext* 
 
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
-	// io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;      // Enable Multi-Viewport / Platform Windows
-
-	/*ImGuiStyle& style = ImGui::GetStyle();
-	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-	{
-		style.WindowRounding = 0.0f;
-		style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-	}*/
-
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;   // Enable Keyboard Controls
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;       // Enable Docking
+	//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;     // Enable Multi-Viewport / Platform Windows
 
 	ImGui::StyleColorsClassic();
 
-	if (!ImGui_ImplWin32_Init(g_hWnd))
-		return E_FAIL;
+	if (!ImGui_ImplWin32_Init(g_hWnd)) return E_FAIL;
 
-	if (!ImGui_ImplDX11_Init(pDevice, pContext))
-		return E_FAIL;
+	if (!ImGui_ImplDX11_Init(pDevice, pContext)) return E_FAIL;
 
 	return S_OK;
 }
@@ -126,7 +113,6 @@ HRESULT CImGui_Manager::ImGui_Render()
 }
 
 #pragma endregion
-
 
 
 void CImGui_Manager::Show_Window_Demo()

@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "C:\Users\ChanYoon\Desktop\Programming\Projects\WaveTale\StudyProject\MainFramework\Client\Default\stdafx.h"
 // dear imgui, v1.90 WIP
 // (demo code)
 
@@ -94,7 +94,9 @@ Index of this file:
 #if defined(_MSC_VER) && !defined(_CRT_SECURE_NO_WARNINGS)
 #define _CRT_SECURE_NO_WARNINGS
 #endif
-
+#ifndef IMGUI_DEFINE_MATH_OPERATORS
+#define IMGUI_DEFINE_MATH_OPERATORS
+#endif
 #include "imgui.h"
 #ifndef IMGUI_DISABLE
 

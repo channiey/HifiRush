@@ -25,7 +25,7 @@ public:
 
 		WINDOW_END
 	};
-	enum INSPECTOR_TYPE	 /* 컴포넌트 대부분 포함 시켜라 */
+	enum INSPECTOR_TYPE	 /* 컴포넌 트 대부분 포함 시켜라 */
 	{
 		INS_PREFABS,
 		INS_PHYSICX,
@@ -62,13 +62,11 @@ public:
 public:
 	void			Set_Active(const _bool& bActive) { m_bActive = bActive; }
 
-private: /* For.ImGui Default */
+private: 
 	HRESULT			ImGui_SetUp(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	void			ImGui_Tick();
 	HRESULT			ImGui_Render();
 	void			Show_Window_Demo();
-
-
 
 private:
 	CGameInstance* m_pGameInstance = { nullptr };

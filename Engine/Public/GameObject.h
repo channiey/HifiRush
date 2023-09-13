@@ -36,6 +36,7 @@ public:
 	/* Active 이벤트 처리를 위한 가상함수화, 오버라이드시 __super::Active()먼저 호출 필요 */
 	virtual void Set_Active(const _bool& bActive) { m_bActive = bActive; }
 	void Set_Name(const wstring& strName) { m_strName = strName; }
+	void Set_Layer(const wstring& strLayer) { m_strLayer = strLayer; }
 
 protected:
 	ID3D11Device*			m_pDevice = { nullptr };
@@ -45,6 +46,7 @@ protected:
 	/* 검색을 고려하는 이유?! : 타 객체가 현재 객체의 정보(컴포넌트)를 참조하고자 하는 경우가 빈번하다. */
 	map<const wstring, class CComponent*>		m_Components;
 
+	/* UnActive 상태라면 라이프 사이클 함수를 타지 않는다. */
 	_bool					m_bActive = { TRUE };
 	wstring					m_strLayer = { };
 	wstring					m_strName = { };

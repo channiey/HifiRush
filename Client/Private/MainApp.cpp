@@ -44,8 +44,9 @@ HRESULT CMainApp::Initialize()
 
 void CMainApp::Tick(_float fTimeDelta)
 {
-	/* Update and LateUpdate */
 	m_pGameInstance->Tick(fTimeDelta);
+
+	m_pGameInstance->LateTick(fTimeDelta);
 }
 
 HRESULT CMainApp::Render()
@@ -67,6 +68,7 @@ HRESULT CMainApp::Render()
 HRESULT CMainApp::FinishTick()
 {
 	/* 이벤트 매니저와 같은 브로드 캐스팅 작업 */
+	m_pGameInstance->FinishTick();
 
 	/* 프로파일링 데이터 초기화 */
 

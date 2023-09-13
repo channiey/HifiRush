@@ -35,7 +35,7 @@ const NODE_STATE CNode_Parallel::Evaluate(const _float& fTimeDelta)
 		{
 			case NODE_STATE::FAILURE: bAnyFailure = TRUE; break;
 			case NODE_STATE::RUNNING: bAnyRunning = TRUE; break;
-			default: break;	
+			default : break;	
 		}
 	}
 

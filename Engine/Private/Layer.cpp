@@ -20,11 +20,45 @@ HRESULT CLayer::Add_GameObject(CGameObject * pGameObject)
 	return S_OK;
 }
 
+HRESULT CLayer::Delete_GameObject(CGameObject* pGameObject)
+{
+	auto iter = find(m_GameObjects.begin(), m_GameObjects.end(), pGameObject);
+
+	if (m_GameObjects.end() == iter)
+		return E_FAIL;
+
+	m_GameObjects.erase(iter);
+	Safe_Release(pGameObject); /* TODO : iter는 Safe_Release()가 안되네? */
+
+	return S_OK;
+}
+
+HRESULT CLayer::Erase_GameObject(CGameObject* pGameObject)
+{
+	auto iter = find(m_GameObjects.begin(), m_GameObjects.end(), pGameObject);
+
+	if (m_GameObjects.end() == iter)
+		return E_FAIL;
+
+	m_GameObjects.erase(iter);
+
+	return S_OK;
+}
+
+HRESULT CLayer::Push_GameObject(CGameObject* pGameObject)
+{
+	if (nullptr == pGameObject)
+		return E_FAIL;
+
+	m_GameObjects.push_back(pGameObject);
+
+	return S_OK;
+}
+
 void CLayer::Tick(_float fTimeDelta)
 {
 	for (auto& pGameObject : m_GameObjects)
 	{
-		/* 객체가 UnActive 상태라면 continue */
 		if (nullptr != pGameObject && pGameObject->Is_Active())
 			pGameObject->Tick(fTimeDelta);
 	}
@@ -34,7 +68,6 @@ void CLayer::LateTick(_float fTimeDelta)
 {
 	for (auto& pGameObject : m_GameObjects)
 	{		
-		/* 객체가 UnActive 상태라면 continue */
 		if (nullptr != pGameObject && pGameObject->Is_Active())
 			pGameObject->LateTick(fTimeDelta);
 	}
