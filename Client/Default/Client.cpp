@@ -1,11 +1,15 @@
 #include "../Default/stdafx.h"
 
+#ifdef _DEBUG
 #include "imgui_impl_win32.h"
+#endif // _DEBUG
 
 #include "Client.h"
 #include "../Public/Client_Defines.h"
 
+#ifdef _DEBUG
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);// IMGUI
+#endif // _DEBUG
 
 
 #include "MainApp.h"
@@ -159,8 +163,10 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     /* ImGui */
+#ifdef _DEBUG
     if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam)) 
         return true;
+#endif // _DEBUG
 
     switch (message)
     {

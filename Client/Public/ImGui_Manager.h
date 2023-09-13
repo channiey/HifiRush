@@ -1,3 +1,4 @@
+#ifdef _DEBUG
 #pragma once
 
 #include "Client_Defines.h"
@@ -80,3 +81,5 @@ public:
 
 END
 
+
+#endif // _DEBUG

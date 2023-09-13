@@ -31,7 +31,9 @@ private:
 
 	CRenderer*				m_pRenderer = { nullptr };
 
+#ifdef _DEBUG
 	class CImGui_Manager* m_pImGui_Manager = { nullptr };
+#endif // _DEBUG
 
 private:
 	HRESULT Open_Level(LEVEL_ID eLEVEL_ID);

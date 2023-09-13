@@ -1,4 +1,5 @@
-#include "..\Default\stdafx.h"
+#ifdef _DEBUG
+#include "../Default/stdafx.h"
 
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_MATH_OPERATORS
@@ -131,3 +132,5 @@ void CImGui_Manager::Free()
 	ImGui::DestroyContext();
 }
 
+
+#endif // _DEBUG
