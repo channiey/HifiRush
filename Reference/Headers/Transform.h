@@ -24,21 +24,20 @@ private:
 	virtual ~CTransform() = default;
 
 public:
-	/* 월드 공간상에서의 행렬의 각 행 정보(라, 업, 룩, 포)를 리턴한다. */
-	_vector Get_State(STATE eState) { return XMLoadFloat4x4(&m_WorldMatrix).r[eState]; }
+	virtual HRESULT Initialize_Prototype() override;
+	virtual HRESULT Initialize(void* pArg) override;
 
+public:
+	_vector Get_State(STATE eState) { return XMLoadFloat4x4(&m_WorldMatrix).r[eState]; }
+	const _float3& Get_Scale();
 	const _float& Get_Speed() const { return m_tTrans.fSpeedPerSec; }
 	const _float& Get_RotRad() const { return m_tTrans.fRotRadPerSec; }
 
-	/* 월드행렬에 각 행에 필요한 정보를 넣어줄꺼야. */
 	void Set_State(STATE eState, _fvector vState);
-
+	void Set_Scale(const _float3& vScale);
+	void Set_Rotation(_fvector vAxis, _float fRadian);
 	void Set_Speed(const _float& fSpeed) { m_tTrans.fSpeedPerSec = fSpeed; }
 	void Set_RotRad(const _float& fRotRad) { m_tTrans.fRotRadPerSec = fRotRad; }
-
-public:
-	virtual HRESULT Initialize_Prototype() override;
-	virtual HRESULT Initialize(void* pArg) override;
 
 public:
 	void Move_Forward(_float fTimeDelta);
@@ -46,8 +45,13 @@ public:
 	void Move_Left(_float fTimeDelta);
 	void Move_Right(_float fTimeDelta);
 
-	void Fix_Rotation(_fvector vAxis, _float fRadian);
-	void Turn(_fvector vAxis, _float fTimeDelta);
+	void Roatate(_fvector vAxis, _float fTimeDelta);
+
+	void LookAt(_fvector vPoint);
+	void Chase(_fvector vPoint, _float fTimeDelta, _float fMargin = 0.1f);
+
+public:
+	HRESULT Bind_ShaderResources(class CShader* pShader, const char* pConstantName);
 
 private:
 	/* DX에서 기하 자료형은 크게 2가지로 나뉜다. ~float과 ~vector(matrix) */

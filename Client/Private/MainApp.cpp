@@ -107,7 +107,9 @@ HRESULT CMainApp::Ready_Prototype_Components()
 		return E_FAIL;	
 
 	/* For.Prototype_Component_Transform */
-
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
+		CTransform::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	/* For.Prototype_Component_Shader_VtxPosTex */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),

@@ -25,6 +25,23 @@ HRESULT CBackGround::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	/* 직교 투영을 위한 변수 세팅 */
+
+	/* 윈도우 좌표 (크기) */
+	m_fSizeX = g_iWinSizeX * 0.5f;
+	m_fSizeY = g_iWinSizeY * 0.5f;
+	/* 윈도우 좌표 (중점) */
+	m_fX = g_iWinSizeX * 0.5f;
+	m_fY = g_iWinSizeY * 0.5f;
+
+	m_pTransformCom->Set_Scale(_float3(m_fSizeX, m_fSizeY, 1.f));
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
+		XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
+
+	/* UI는 별도의 뷰 행렬과 투영행렬로 그린다. */
+	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
+	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(g_iWinSizeX, g_iWinSizeY, 0.f, 1.f));
+
 	return S_OK;
 }
 
@@ -73,24 +90,28 @@ HRESULT CBackGround::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Transform */
+	CTransform::TRANSFORM_DESC		TransformDesc;
+	ZeroMemory(&TransformDesc, sizeof TransformDesc);
 
+	TransformDesc.fSpeedPerSec = 5.f;
+	TransformDesc.fRotRadPerSec = XMConvertToRadians(90.0f);
+
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
+		TEXT("Com_Transform"), (CComponent**)&m_pTransformCom, &TransformDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }
 
 HRESULT CBackGround::Bind_ShaderResources()
 {
-	_float4x4		IdentityMatrix;
-
-	XMStoreFloat4x4(&IdentityMatrix, XMMatrixIdentity());
-
 	/* 셰이더 전역변수로 던져야 할 값들을 던지자. */
 
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &IdentityMatrix)))
+	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &IdentityMatrix)))
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &IdentityMatrix)))
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
 		return E_FAIL;
 
 	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
@@ -131,6 +152,7 @@ void CBackGround::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pVIBufferCom);
