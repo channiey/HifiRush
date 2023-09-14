@@ -102,6 +102,11 @@ private: /* For. Show Sub Window*/
 
 
 private:
+	HRESULT			Save_Level();
+
+
+
+private:
 	CGameInstance* m_pGameInstance = { nullptr };
 
 	_bool			m_bActive = { TRUE };

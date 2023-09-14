@@ -3,8 +3,15 @@
 /* 클라이언트에 존재하는 모든 클래스가 인클루드해야할 내용을 담는다. */
 #include <process.h>
 
+#include "Engine_Defines.h" /* TODO 상호 참조 오류 가능성 존재*/
+
+using namespace std;
 namespace Client
 {
+	/* Window */
+	const unsigned int		g_iWinSizeX = 1280;
+	const unsigned int		g_iWinSizeY = 720;
+
 	/* Level */
 	enum LEVEL_ID
 	{
@@ -24,6 +31,14 @@ namespace Client
 		L"LEVEL_LOGO",
 		L"LEVEL_GAMEPLAY",
 		L"LEVEL_ENDING"
+	};
+	static const std::wstring gStrLevelPath[LEVEL_END]
+	{
+		TEXT("../Bin/Resources/Data/Level/Level_Static"),
+		TEXT("../Bin/Resources/Data/Level/Level_Loading"),
+		TEXT("../Bin/Resources/Data/Level/Level_Logo"),
+		TEXT("../Bin/Resources/Data/Level/Level_Gameplay"),
+		TEXT("../Bin/Resources/Data/Level/Level_Ending"),
 	};
 
 	/* Layer */
@@ -54,9 +69,7 @@ namespace Client
 		L"Layer_Ui",
 	};
 
-	/* Window */
-	const unsigned int		g_iWinSizeX = 1280;
-	const unsigned int		g_iWinSizeY = 720;
+
 }
 
 extern HWND g_hWnd;

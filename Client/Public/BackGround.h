@@ -40,7 +40,7 @@ private:
 
 private: /* UI - 직교 투영을 위한 변수 */
 	_float					m_fX, m_fY, m_fSizeX, m_fSizeY;
-	_float4x4				m_ViewMatrix, m_ProjMatrix;
+	Matrix					m_ViewMatrix, m_ProjMatrix;
 
 private:
 	HRESULT Ready_Components();

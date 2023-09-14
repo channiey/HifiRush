@@ -2,17 +2,19 @@
 
 #include "Base.h"
 
+BEGIN(Engine)
+
 enum FileMode : uint8
 {
 	Write,
 	Read,
 };
 
-class FileUtils
+class ENGINE_DLL CFileUtils final : public CBase
 {
 public:
-	FileUtils();
-	~FileUtils();
+	CFileUtils();
+	~CFileUtils();
 
 	void Open(wstring filePath, FileMode mode);
 
@@ -54,3 +56,4 @@ private:
 	HANDLE _handle = INVALID_HANDLE_VALUE;
 };
 
+END

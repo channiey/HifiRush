@@ -28,14 +28,14 @@ public:
 	virtual HRESULT Initialize(void* pArg) override;
 
 public:
-	_vector Get_State(STATE eState) { return XMLoadFloat4x4(&m_WorldMatrix).r[eState]; }
-	const _float3 Get_Scale();
+	Vec4 Get_State(STATE eState) { return XMLoadFloat4x4(&m_WorldMatrix).r[eState]; }
+	const Vec3 Get_Scale();
 	const _float& Get_Speed() const { return m_tTrans.fSpeedPerSec; }
 	const _float& Get_RotRad() const { return m_tTrans.fRotRadPerSec; }
 
-	void Set_State(STATE eState, _fvector vState);
-	void Set_Scale(const _float3& vScale);
-	void Set_Rotation(_fvector vAxis, _float fRadian);
+	void Set_State(STATE eState, Vec4 vState);
+	void Set_Scale(const Vec3& vScale);
+	void Set_Rotation(Vec4 vAxis, _float fRadian);
 	void Set_Speed(const _float& fSpeed) { m_tTrans.fSpeedPerSec = fSpeed; }
 	void Set_RotRad(const _float& fRotRad) { m_tTrans.fRotRadPerSec = fRotRad; }
 
@@ -45,10 +45,10 @@ public:
 	void Move_Left(_float fTimeDelta);
 	void Move_Right(_float fTimeDelta);
 
-	void Roatate(_fvector vAxis, _float fTimeDelta);
+	void Roatate(Vec4 vAxis, _float fTimeDelta);
 
-	void LookAt(_fvector vPoint);
-	void Chase(_fvector vPoint, _float fTimeDelta, _float fMargin = 0.1f);
+	void LookAt(Vec3 vPoint);
+	void Chase(Vec3 vPoint, _float fTimeDelta, _float fMargin = 0.1f);
 
 public:
 	HRESULT Bind_ShaderResources(class CShader* pShader, const char* pConstantName);
@@ -56,7 +56,7 @@ public:
 private:
 	/* DX에서 기하 자료형은 크게 2가지로 나뉜다. ~float과 ~vector(matrix) */
 	/* 뒤가 ~float으로 끝난다면 저장용, ~vector나 ~matrix로 끝난다면 저장 + 연산용이다. */
-	_float4x4			m_WorldMatrix = {};
+	Matrix			m_WorldMatrix = {};
 	TRANSFORM_DESC		m_tTrans = {};
 
 public:

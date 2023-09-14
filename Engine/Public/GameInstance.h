@@ -4,9 +4,6 @@
 
 #include "Thread_Manager.h"
 
-/* 클라이언트개발자가 엔진의 기능을 이용하고자할 때 접촉하는 객체.  */
-/* 클라이언트에 보여줘야할 함수들을 모두 정의하고 있는다. */
-
 BEGIN(Engine)
 
 class ENGINE_DLL CGameInstance final : public CBase
@@ -34,7 +31,7 @@ public: /* For.Graphic_Device */
 
 public: /* For.Level_Manager */
 	HRESULT Open_Level(_uint iLevelIndex, class CLevel* pNewLevel);
-	const _uint& Get_CurLevelIndex();
+	const _uint Get_CurLevelIndex();
 
 public: /* For.Object_Manager */
 

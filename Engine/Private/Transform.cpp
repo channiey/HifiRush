@@ -15,18 +15,7 @@ CTransform::CTransform(const CTransform & rhs)
 
 HRESULT CTransform::Initialize_Prototype()
 {
-	/* XMFloat4x4 -> XMMatrix*/
-	/*XMLoadFloat4x4(&m_WorldMatrix);*/
-
-	/* XMMatrix -> XMFloat4x4*/
-	XMStoreFloat4x4(&m_WorldMatrix, XMMatrixIdentity());
-
-	/*_float3		vTmp;
-	_vector		vTmp1;
-
-	vTmp1 = XMLoadFloat3(&vTmp);
-
-	XMStoreFloat3(&vTmp, vTmp1);*/
+	m_WorldMatrix = Matrix::Identity;
 
 	return S_OK;
 }
@@ -46,17 +35,12 @@ HRESULT CTransform::Initialize(void* pArg)
 	return S_OK;
 }
 
-const _float3 CTransform::Get_Scale()
+const Vec3 CTransform::Get_Scale()
 {
-	/* XMVector3Length : 인자로 받은 벡터의 길이를 리턴 벡터 원소 모두에 똑같이 할당한다. */
-	/* 벡터의 길이가 2라면 2, 2, 2 벡터를 반환한다. */
-
-	return _float3(XMVectorGetX(XMVector3Length(Get_State(STATE_RIGHT))),
-		XMVectorGetX(XMVector3Length(Get_State(STATE_UP))),
-		XMVectorGetX(XMVector3Length(Get_State(STATE_LOOK))));
+	return _float3(m_WorldMatrix.Right().Length(), m_WorldMatrix.Up().Length(), m_WorldMatrix.Forward().Length());
 }
 
-void CTransform::Set_State(STATE eState, _fvector vState)
+void CTransform::Set_State(STATE eState, Vec4 vState)
 {
 	_matrix		StateMatrix;
 
@@ -67,11 +51,11 @@ void CTransform::Set_State(STATE eState, _fvector vState)
 	XMStoreFloat4x4(&m_WorldMatrix, StateMatrix);
 }
 
-void CTransform::Set_Scale(const _float3& vScale)
+void CTransform::Set_Scale(const Vec3& vScale)
 {
-	_vector		vRight = Get_State(STATE_RIGHT);
-	_vector		vUp = Get_State(STATE_UP);
-	_vector		vLook = Get_State(STATE_LOOK);
+	Vec4		vRight = Get_State(STATE_RIGHT);
+	Vec4		vUp = Get_State(STATE_UP);
+	Vec4		vLook = Get_State(STATE_LOOK);
 
 	Set_State(STATE_RIGHT, XMVector3Normalize(vRight) * vScale.x);
 	Set_State(STATE_UP, XMVector3Normalize(vUp) * vScale.y);
@@ -129,15 +113,15 @@ void CTransform::Move_Right(_float fTimeDelta)
 	Set_State(STATE_POSITION, vPosition);
 }
 
-void CTransform::Set_Rotation(_fvector vAxis, _float fRadian)
+void CTransform::Set_Rotation(Vec4 vAxis, _float fRadian)
 {
-	_float3		vScaled = Get_Scale();
+	Vec3		vScaled = Get_Scale();
 
 	/* 항등상태 기준으로 정해준 각도만큼 회전시켜놓는다. */
 	/* Right, Up, Look를 회전시킨다. */
-	_vector		vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f) * vScaled.x;
-	_vector		vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f) * vScaled.y;
-	_vector		vLook = XMVectorSet(0.f, 0.f, 1.f, 0.f) * vScaled.z;
+	Vec4		vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f) * vScaled.x;
+	Vec4		vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f) * vScaled.y;
+	Vec4		vLook = XMVectorSet(0.f, 0.f, 1.f, 0.f) * vScaled.z;
 
 	_matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, fRadian);
 
@@ -152,14 +136,14 @@ void CTransform::Set_Rotation(_fvector vAxis, _float fRadian)
 	Set_State(STATE_LOOK, vLook);
 }
 
-void CTransform::Roatate(_fvector vAxis, _float fTimeDelta)
+void CTransform::Roatate(Vec4 vAxis, _float fTimeDelta)
 {
 	/* 현재 상태기준 정해준 각도만큼 회전시켜놓는다. */
-	_vector		vRight = Get_State(STATE_RIGHT);
-	_vector		vUp = Get_State(STATE_UP);
-	_vector		vLook = Get_State(STATE_LOOK);
+	Vec4		vRight = Get_State(STATE_RIGHT);
+	Vec4		vUp = Get_State(STATE_UP);
+	Vec4		vLook = Get_State(STATE_LOOK);
 
-	_matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, m_tTrans.fRotRadPerSec * fTimeDelta);
+	Matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, m_tTrans.fRotRadPerSec * fTimeDelta);
 
 	vRight	= XMVector4Transform(vRight, RotationMatrix);
 	vUp		= XMVector4Transform(vUp, RotationMatrix);
@@ -170,25 +154,25 @@ void CTransform::Roatate(_fvector vAxis, _float fTimeDelta)
 	Set_State(STATE_LOOK, vLook);
 }
 
-void CTransform::LookAt(_fvector vPoint)
+void CTransform::LookAt(Vec3 vPoint)
 {
-	_float3		vScaled = Get_Scale();
+	Vec3		vScaled = Get_Scale();
 
-	_vector		vPosition = Get_State(STATE_POSITION);
-	_vector		vLook = XMVector3Normalize(vPoint - vPosition) * vScaled.z;
-	_vector		vRight = XMVector3Normalize(XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook)) * vScaled.x;
-	_vector		vUp = XMVector3Normalize(XMVector3Cross(vLook, vRight)) * vScaled.y;
+	Vec4		vPosition = Get_State(STATE_POSITION);
+	Vec4		vLook = XMVector3Normalize(vPoint - vPosition) * vScaled.z;
+	Vec4		vRight = XMVector3Normalize(XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook)) * vScaled.x;
+	Vec4		vUp = XMVector3Normalize(XMVector3Cross(vLook, vRight)) * vScaled.y;
 
 	Set_State(STATE_RIGHT, vRight);
 	Set_State(STATE_UP, vUp);
 	Set_State(STATE_LOOK, vLook);
 }
 
-void CTransform::Chase(_fvector vPoint, _float fTimeDelta, _float fMargin)
+void CTransform::Chase(Vec3 vPoint, _float fTimeDelta, _float fMargin)
 {
-	_vector		vPosition = Get_State(STATE_POSITION);
+	Vec4		vPosition = Get_State(STATE_POSITION);
 
-	_vector		vDir = vPoint - vPosition;
+	Vec3		vDir = vPoint - vPosition;
 
 	if (XMVectorGetX(XMVector3Length(vDir)) > fMargin)
 		vPosition += XMVector3Normalize(vDir) * m_tTrans.fSpeedPerSec * fTimeDelta;

@@ -41,7 +41,7 @@ namespace DirectX
 
         //------------------------------------------------------------------------------
         // 2D rectangle
-        struct Rectangle
+        struct Rectangle 
         {
             long x;
             long y;
@@ -600,6 +600,7 @@ namespace DirectX
         Matrix operator/ (const Matrix& M1, const Matrix& M2) noexcept;
             // Element-wise divide
         Matrix operator* (float S, const Matrix& M) noexcept;
+
 
 
         //-----------------------------------------------------------------------------
@@ -4812,6 +4813,7 @@ using Vec4 = DirectX::SimpleMath::Vector4;
 using Matrix = DirectX::SimpleMath::Matrix;
 using Quaternion = DirectX::SimpleMath::Quaternion;
 using Ray = DirectX::SimpleMath::Ray;
+
 
 #ifdef __clang__
 #pragma clang diagnostic pop

@@ -1,11 +1,11 @@
 #include "FileUtils.h"
 
-FileUtils::FileUtils()
+CFileUtils::CFileUtils()
 {
 
 }
 
-FileUtils::~FileUtils()
+CFileUtils::~CFileUtils()
 {
 	if (_handle != INVALID_HANDLE_VALUE)
 	{
@@ -15,7 +15,7 @@ FileUtils::~FileUtils()
 }
 
 
-void FileUtils::Open(wstring filePath, FileMode mode)
+void CFileUtils::Open(wstring filePath, FileMode mode)
 {
 	if (mode == FileMode::Write)
 	{
@@ -47,13 +47,13 @@ void FileUtils::Open(wstring filePath, FileMode mode)
 }
 
 
-void FileUtils::Write(void* data, uint32 dataSize)
+void CFileUtils::Write(void* data, uint32 dataSize)
 {
 	uint32 numOfBytes = 0;
 	assert(::WriteFile(_handle, data, dataSize, reinterpret_cast<LPDWORD>(&numOfBytes), nullptr));
 }
 
-void FileUtils::Write(const string& data)
+void CFileUtils::Write(const string& data)
 {
 	uint32 size = (uint32)data.size();
 	Write(size);
@@ -64,13 +64,13 @@ void FileUtils::Write(const string& data)
 	Write((void*)data.data(), size);
 }
 
-void FileUtils::Read(void** data, uint32 dataSize)
+void CFileUtils::Read(void** data, uint32 dataSize)
 {
 	uint32 numOfBytes = 0;
 	assert(::ReadFile(_handle, *data, dataSize, reinterpret_cast<LPDWORD>(&numOfBytes), nullptr));
 }
 
-void FileUtils::Read(OUT string& data)
+void CFileUtils::Read(OUT string& data)
 {
 	uint32 size = Read<uint32>();
 

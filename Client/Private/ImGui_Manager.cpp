@@ -16,6 +16,7 @@
 #include "Transform.h"
 
 #include "StringUtils.h"
+#include "FileUtils.h"
 
 IMPLEMENT_SINGLETON(CImGui_Manager)
 
@@ -295,24 +296,42 @@ HRESULT CImGui_Manager::Show_Window_Object_Transform()
 		Safe_AddRef(pTransform);
 		{
 			/* TODO 실제 적용 필요 */
-			_float3 fVec;
+			Vec4 vVec;
 
 			/* Position */
-			XMStoreFloat3(&fVec, pTransform->Get_State(CTransform::STATE_POSITION));
-			float fPos[3] = { fVec.x, fVec.y, fVec.z };
-			ImGui::InputFloat3("Pos", fPos, "%.2f");
+			vVec = pTransform->Get_State(CTransform::STATE_POSITION);
+			_float fPos[3] = { vVec.x, vVec.y, vVec.z };
+			if (ImGui::InputFloat3("Pos", fPos, "%.2f"))
+			{
+				pTransform->Set_State(CTransform::STATE_POSITION, Vec4(fPos[0], fPos[1], fPos[2], 1));
+			}
 
 			/* TODO 로테이션값 어떻게 가져오냐? */
 
 			/* Rotation */
-			XMStoreFloat3(&fVec, pTransform->Get_State(CTransform::STATE_POSITION));
-			float fRot[3] = { fVec.x, fVec.y, fVec.z };
+			vVec = pTransform->Get_State(CTransform::STATE_POSITION);
+			_float fRot[3] = { vVec.x, vVec.y, vVec.z };
 			ImGui::InputFloat3("Rot", fRot, "%.2f");
 
 			/* Scale*/
-			fVec = pTransform->Get_Scale();
-			float fSacle[3] = { fVec.x, fVec.y, fVec.z };
-			ImGui::InputFloat3("Scale", fSacle, "%.2f");
+			vVec = pTransform->Get_Scale();
+			_float fSacle[3] = { vVec.x, vVec.y, vVec.z };
+			if (ImGui::InputFloat3("Scale", fSacle, "%.2f"))
+			{
+				pTransform->Set_Scale(Vec3(fSacle[0], fSacle[1], fSacle[2]));
+			}
+
+			/* Move Speed */
+			_float fSpeedPerSec = pTransform->Get_Speed();
+			if (ImGui::InputFloat("Speed/s", &fSpeedPerSec, 0.01f, 1.0f, "%.2f"))
+				pTransform->Set_Speed(fSpeedPerSec);
+
+
+			/* Rot Speed */
+			_float fRotSpeed = pTransform->Get_RotRad();
+			if (ImGui::InputFloat("Rot/s", &fSpeedPerSec, 0.01f, 1.0f, "%.2f"))
+				pTransform->Set_Speed(fRotSpeed);
+
 
 		}
 		Safe_Release(pTransform);
@@ -405,7 +424,7 @@ HRESULT CImGui_Manager::Show_Window_Hierarachy_Levels()
 			const char* strLevel = StringUtils::WC2C(gStrLevelID[i]);
 			if (ImGui::Button(strLevel))
 			{
-
+				iHierarachyIndexLevel = i;
 			}
 			delete strLevel;
 		}
@@ -474,7 +493,7 @@ HRESULT CImGui_Manager::Show_Window_Hierarachy_Objects()
 	/* 선택한 레벨, 레이어의 오브젝트들을 가져온다.*/
 	list<class CGameObject*>* pGameObjects = m_pGameInstance->Get_Objects(LEVEL_LOGO, strHierarachyIndexLayer);
 
-	if (ImGui::BeginListBox("##listbox 1", ImVec2(-FLT_MIN, 10 * ImGui::GetTextLineHeightWithSpacing())))
+	if (ImGui::BeginListBox("##listbox 1", ImVec2(-FLT_MIN, 8 * ImGui::GetTextLineHeightWithSpacing())))
 	{
 		if (nullptr == pGameObjects)
 		{
@@ -576,6 +595,25 @@ HRESULT CImGui_Manager::Show_Window_Sub_Prefabs()
 
 	}
 	ImGui::End();
+
+	return S_OK;
+}
+
+HRESULT CImGui_Manager::Save_Level()
+{
+
+	CFileUtils file;
+
+	file.Open(gStrLevelPath[iHierarachyIndexLevel], FileMode::Write);
+
+	// for 레이어 개수
+	// for 오브젝트 개수
+
+
+	// 레이어
+	// 이름
+	// 트랜스폼
+	// 액티브
 
 	return S_OK;
 }

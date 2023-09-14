@@ -142,16 +142,16 @@ RECT DirectX::SimpleMath::Viewport::ComputeDisplayArea(DXGI_SCALING scaling, UIN
 }
 #endif
 
-RECT DirectX::SimpleMath::Viewport::ComputeTitleSafeArea(UINT backBufferWidth, UINT backBufferHeight) noexcept
-{
-    float safew = (float(backBufferWidth) + 19.f) / 20.f;
-    float safeh = (float(backBufferHeight) + 19.f) / 20.f;
-
-    RECT rct;
-    rct.left = static_cast<LONG>(safew);
-    rct.top = static_cast<LONG>(safeh);
-    rct.right = static_cast<LONG>(float(backBufferWidth) - safew + 0.5f);
-    rct.bottom = static_cast<LONG>(float(backBufferHeight) - safeh + 0.5f);
-
-    return rct;
-}
+//RECT DirectX::SimpleMath::Viewport::ComputeTitleSafeArea(UINT backBufferWidth, UINT backBufferHeight) noexcept
+//{
+//    float safew = (float(backBufferWidth) + 19.f) / 20.f;
+//    float safeh = (float(backBufferHeight) + 19.f) / 20.f;
+//
+//    RECT rct;
+//    rct.left = static_cast<LONG>(safew);
+//    rct.top = static_cast<LONG>(safeh);
+//    rct.right = static_cast<LONG>(float(backBufferWidth) - safew + 0.5f);
+//    rct.bottom = static_cast<LONG>(float(backBufferHeight) - safeh + 0.5f);
+//
+//    return rct;
+//}
