@@ -46,7 +46,7 @@ HRESULT CTransform::Initialize(void* pArg)
 	return S_OK;
 }
 
-const _float3& CTransform::Get_Scale()
+const _float3 CTransform::Get_Scale()
 {
 	/* XMVector3Length : 인자로 받은 벡터의 길이를 리턴 벡터 원소 모두에 똑같이 할당한다. */
 	/* 벡터의 길이가 2라면 2, 2, 2 벡터를 반환한다. */

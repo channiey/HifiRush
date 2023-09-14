@@ -29,7 +29,7 @@ public:
 
 public:
 	_vector Get_State(STATE eState) { return XMLoadFloat4x4(&m_WorldMatrix).r[eState]; }
-	const _float3& Get_Scale();
+	const _float3 Get_Scale();
 	const _float& Get_Speed() const { return m_tTrans.fSpeedPerSec; }
 	const _float& Get_RotRad() const { return m_tTrans.fRotRadPerSec; }
 

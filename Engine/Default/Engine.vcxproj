@@ -110,6 +110,7 @@
       <AdditionalIncludeDirectories>../Public/</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ConformanceMode>Default</ConformanceMode>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -225,7 +226,9 @@
     <ClCompile Include="..\private\Object_Manager.cpp" />
     <ClCompile Include="..\private\Renderer.cpp" />
     <ClCompile Include="..\private\Shader.cpp" />
-    <ClCompile Include="..\Private\SimpleMath.cpp" />
+    <ClCompile Include="..\Private\SimpleMath.cpp">
+      <IncludeInUnityFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</IncludeInUnityFile>
+    </ClCompile>
     <ClCompile Include="..\Private\State.cpp" />
     <ClCompile Include="..\Private\StateMachine.cpp" />
     <ClCompile Include="..\Private\Texture.cpp" />

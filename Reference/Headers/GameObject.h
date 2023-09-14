@@ -28,9 +28,9 @@ public:
 	const wstring& Get_Layer() const { return m_strLayer; }
 	const _uint& Get_PickID() const { return m_iPickID; }
 
-	class CComponent* Get_Transform() const { return nullptr; }
-	class CComponent* Get_Collider() const { return nullptr; }
-	const class CComponent* const Get_Component(const wstring& strComponentTag) { return Find_Component(strComponentTag); };
+	class CTransform* const Get_Transform();
+	
+	class CComponent* const Get_Component(const wstring& strComponentTag) { return Find_Component(strComponentTag); };
 	map<const wstring, class CComponent*>& Get_Components() { return m_Components; }
 
 public:

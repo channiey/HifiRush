@@ -13,6 +13,8 @@
 #include "GameInstance.h"
 #include "GameObject.h"
 
+#include "Transform.h"
+
 #include "StringUtils.h"
 
 IMPLEMENT_SINGLETON(CImGui_Manager)
@@ -130,7 +132,11 @@ HRESULT CImGui_Manager::ImGui_Render()
 
 HRESULT CImGui_Manager::Show_Window_Profiler()
 {
-	if(ImGui::Begin(str_WindowType[WINDOW_PROFILER]))
+	ImGuiWindowFlags window_flags = 0;
+	window_flags |= ImGuiWindowFlags_NoMove;
+	window_flags |= ImGuiWindowFlags_NoResize;
+
+	if(ImGui::Begin(str_WindowType[WINDOW_PROFILER], NULL, window_flags))
 	{
 		ImGui::SeparatorText("Status");
 		{
@@ -171,7 +177,11 @@ HRESULT CImGui_Manager::Show_Window_Profiler()
 
 HRESULT CImGui_Manager::Show_Window_Object()
 {
-	if (ImGui::Begin(str_WindowType[WINDOW_OBJECT_INFO]))
+	ImGuiWindowFlags window_flags = 0;
+	window_flags |= ImGuiWindowFlags_NoMove;
+	window_flags |= ImGuiWindowFlags_NoResize;
+
+	if (ImGui::Begin(str_WindowType[WINDOW_OBJECT_INFO], NULL, window_flags))
 	{
 		ImGui::SeparatorText("Object_Info");
 		{
@@ -195,7 +205,11 @@ HRESULT CImGui_Manager::Show_Window_Object()
 
 HRESULT CImGui_Manager::Show_Window_Hierarachy()
 {
-	if (ImGui::Begin(str_WindowType[WINDOW_HIEARACHY]))
+	ImGuiWindowFlags window_flags = 0;
+	window_flags |= ImGuiWindowFlags_NoMove;
+	window_flags |= ImGuiWindowFlags_NoResize;
+
+	if (ImGui::Begin(str_WindowType[WINDOW_HIEARACHY], NULL, window_flags))
 	{
 		ImGui::SeparatorText("Function");
 		{
@@ -258,29 +272,59 @@ HRESULT CImGui_Manager::Show_Window_Object_Info()
 
 
 	/* Active */
-	_bool bActive = FALSE;
-
 	if (nullptr != m_pCurObject)
 		bActive = m_pCurObject->Is_Active();
 
-	ImGui::Checkbox("Active", &bActive);
+	if (ImGui::Checkbox("Active", &bActive))
+	{
+		if (nullptr != m_pCurObject)
+			m_pCurObject->Set_Active(bActive);
+	}
 
 	return S_OK;
 }
 
 HRESULT CImGui_Manager::Show_Window_Object_Transform()
 {
-	/* Position */
-	float vPos[3] = { 0.10f, 0.20f, 0.50f };
-	ImGui::InputFloat3("Position", vPos, "%.2f");
+	NULL_CHECK_RETURN(m_pCurObject, E_FAIL);
+	
+	CTransform* pTransform = m_pCurObject->Get_Transform();
 
-	/* Rotation */
-	float vRot[3] = { 0.10f, 0.20f, 0.50f };
-	ImGui::InputFloat3("Rotation", vRot, "%.2f");
+	if(nullptr != pTransform)
+	{
+		Safe_AddRef(pTransform);
+		{
+			/* TODO 실제 적용 필요 */
+			_float3 fVec;
 
-	/* Scale*/
-	float vSacle[3] = { 0.10f, 0.20f, 0.50f };
-	ImGui::InputFloat3("Scale", vSacle, "%.2f");
+			/* Position */
+			XMStoreFloat3(&fVec, pTransform->Get_State(CTransform::STATE_POSITION));
+			float fPos[3] = { fVec.x, fVec.y, fVec.z };
+			ImGui::InputFloat3("Pos", fPos, "%.2f");
+
+			/* TODO 로테이션값 어떻게 가져오냐? */
+
+			/* Rotation */
+			XMStoreFloat3(&fVec, pTransform->Get_State(CTransform::STATE_POSITION));
+			float fRot[3] = { fVec.x, fVec.y, fVec.z };
+			ImGui::InputFloat3("Rot", fRot, "%.2f");
+
+			/* Scale*/
+			fVec = pTransform->Get_Scale();
+			float fSacle[3] = { fVec.x, fVec.y, fVec.z };
+			ImGui::InputFloat3("Scale", fSacle, "%.2f");
+
+		}
+		Safe_Release(pTransform);
+	}
+	else
+	{
+		float fZero[3] = { 0.f, 0.f, 0.f };
+		ImGui::InputFloat3("Pos", fZero, "%.2f");
+		ImGui::InputFloat3("Rot", fZero, "%.2f");
+		ImGui::InputFloat3("Scale", fZero, "%.2f");
+	}
+	
 
 	return S_OK;
 }

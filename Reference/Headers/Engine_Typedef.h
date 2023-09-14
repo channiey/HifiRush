@@ -46,6 +46,7 @@ namespace Engine
 
 	typedef		FXMMATRIX					_fmatrix;
 	typedef		XMMATRIX					_matrix;
+
 }
 
 #endif // Engine_Typedef_h__

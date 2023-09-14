@@ -8,6 +8,7 @@
 /* DX*/
 #include <d3d11.h>
 #include <DirectXMath.h>
+#include "SimpleMath.h"
 #include <DirectXCollision.h>
 #include <d3dcompiler.h>
 #include <Effect11\d3dx11effect.h>
@@ -42,6 +43,8 @@ using namespace DirectX;
 #include "Engine_Struct.h"
 #include "Engine_Function.h"
 
+#include "SimpleMath.h"
+
 /* Memory Leak */
 #ifdef _DEBUG
 
@@ -67,3 +70,5 @@ using namespace DirectX;
 using namespace Engine;
 using namespace std;
 using std::thread;
+
+
