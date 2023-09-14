@@ -1,8 +1,9 @@
 #pragma once
 
 #include "Base.h"
+BEGIN(Engine)
 
-class StringUtils
+class ENGINE_DLL StringUtils
 {
 public:
 	static bool StartsWith(string str, string comp);
@@ -14,8 +15,18 @@ public:
 	static wstring ToWString(string value);
 	static string ToString(wstring value);
 
+	static char* WC2C(const wchar_t* _in)
+	{
+		/* 리턴 사용후 반드시 메모리 해제 필요 */
 
-	
+		/* const wchar_t* -> char */
+
+		int strSize = WideCharToMultiByte(CP_ACP, 0, _in, -1, NULL, 0, NULL, NULL);
+		char* pStr = new char[WideCharToMultiByte(CP_ACP, 0, _in, -1, NULL, 0, NULL, NULL)];
+		WideCharToMultiByte(CP_ACP, 0, _in, -1, pStr, strSize, 0, 0);
+
+		return pStr;
+	}
 	
 	//cf. wstring -> string -> const char*
 
@@ -48,15 +59,5 @@ public:
 	//	return std::string(ws.begin(), ws.end());
 	//}
 
-	//static char* WC2C(const wchar_t* _in)
-	//{
-	//	/* const wchar_t* -> char */
-	//	int strSize = WideCharToMultiByte(CP_ACP, 0, _in, -1, NULL, 0, NULL, NULL);
-	//	char* pStr = new char[WideCharToMultiByte(CP_ACP, 0, _in, -1, NULL, 0, NULL, NULL)];
-	//	WideCharToMultiByte(CP_ACP, 0, _in, -1, pStr, strSize, 0, 0);
-
-	//	return pStr;
-	//}
-
 };
-
+END

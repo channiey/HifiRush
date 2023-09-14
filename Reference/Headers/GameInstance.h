@@ -34,18 +34,22 @@ public: /* For.Graphic_Device */
 
 public: /* For.Level_Manager */
 	HRESULT Open_Level(_uint iLevelIndex, class CLevel* pNewLevel);
+	const _uint& Get_CurLevelIndex();
 
 public: /* For.Object_Manager */
-	map<const wstring, class CGameObject*>* Get_Prototypes();
-	map<const wstring, class CLayer*>* Get_Layers(_uint iLevelIndex);
-	list<class CGameObject*>* Get_Objects(_uint iLevelIndex, const wstring& strLayerTag);
-	class CGameObject* Get_Player();
-	HRESULT Add_Prototype(const wstring& strPrototypeTag, class CGameObject* pPrototype);
-	HRESULT Add_GameObject(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag, void* pArg = nullptr);
-	HRESULT	Delete_GameObject(_uint iLevelIndex, class CGameObject* pObj);
-	HRESULT	Reserve_Pool(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag, const _uint& iNumObj, void* pArg);
-	class CGameObject* Pop_Pool(_uint iLevelIndex, const wstring& strPrototypeTag);
-	HRESULT	Return_Pool(_uint iLevelIndex, class CGameObject* pObj);
+
+	map<const wstring, class CGameObject*>*		Get_Prototypes();
+	map<const wstring, class CLayer*>*			Get_Layers(_uint iLevelIndex);
+	list<class CGameObject*>*					Get_Objects(_uint iLevelIndex, const wstring& strLayerTag);
+	class CGameObject*							Get_Player();
+
+	HRESULT										Add_Prototype(const wstring& strPrototypeTag, class CGameObject* pPrototype);
+	HRESULT										Add_GameObject(const _uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag, void* pArg = nullptr);
+	HRESULT										Delete_GameObject(const _uint iLevelIndex, class CGameObject* pObj);
+
+	HRESULT										Reserve_Pool(const _uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag, const _uint& iNumObj, void* pArg);
+	class CGameObject*							Pop_Pool(const _uint iLevelIndex, const wstring& strPrototypeTag);
+	HRESULT										Return_Pool(const _uint iLevelIndex, class CGameObject* pObj);
 
 public: /* For.Component_Manager */
 	HRESULT Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, class CComponent* pPrototype);

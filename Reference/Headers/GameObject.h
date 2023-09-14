@@ -31,6 +31,7 @@ public:
 	class CComponent* Get_Transform() const { return nullptr; }
 	class CComponent* Get_Collider() const { return nullptr; }
 	const class CComponent* const Get_Component(const wstring& strComponentTag) { return Find_Component(strComponentTag); };
+	map<const wstring, class CComponent*>& Get_Components() { return m_Components; }
 
 public:
 	/* Active 이벤트 처리를 위한 가상함수화, 오버라이드시 __super::Active()먼저 호출 필요 */

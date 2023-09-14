@@ -23,7 +23,7 @@ public:
 	void LateTick(_float fTimeDelta);
 
 public:
-	const _uint& Get_CurLevel() const { return m_iCurrentLevelIndex; }
+	const _uint& Get_CurLevelIndex() const { return m_iCurrentLevelIndex; }
 
 public:
 	HRESULT Open_Level(_uint iLevelIndex, class CLevel* pNewLevel);

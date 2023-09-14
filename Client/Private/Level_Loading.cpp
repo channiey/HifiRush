@@ -7,6 +7,11 @@
 #include "Level_Logo.h"
 #include "Level_GamePlay.h"
 
+#ifdef _DEBUG
+#include "ImGui_Manager.h"
+#endif // _DEBUG
+
+
 CLevel_Loading::CLevel_Loading(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -15,6 +20,10 @@ CLevel_Loading::CLevel_Loading(ID3D11Device * pDevice, ID3D11DeviceContext * pCo
 
 HRESULT CLevel_Loading::Initialize(LEVEL_ID eNextLevel)
 {
+#ifdef _DEBUG
+	FAILED_CHECK_RETURN(CImGui_Manager::GetInstance()->Clear_ReferenceData(), E_FAIL);
+#endif // _DEBUG
+
 	m_eNextLevel = eNextLevel;
 
 	/* m_eNextLevel 에 대한 로딩작업을 수행한다. */

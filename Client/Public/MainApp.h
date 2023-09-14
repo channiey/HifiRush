@@ -32,7 +32,7 @@ private:
 	CRenderer*				m_pRenderer = { nullptr };
 
 #ifdef _DEBUG
-	class CImGui_Manager* m_pImGui_Manager = { nullptr };
+	class CImGui_Manager*  m_pImGui_Manager = { nullptr };
 #endif // _DEBUG
 
 private:

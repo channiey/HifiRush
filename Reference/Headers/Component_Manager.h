@@ -6,6 +6,9 @@
 #include "Transform.h"
 #include "VIBuffer_Rect.h"
 
+#include "StateMachine.h"
+#include "BehaviourTree.h"
+
 #include "MonoBehaviour.h"
 
 /* 컴포넌트들의 원형을 보관한다. */

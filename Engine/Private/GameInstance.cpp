@@ -88,14 +88,15 @@ HRESULT CGameInstance::Clear_BackBuffer_View(_float4 vClearColor)
 {
 	if (nullptr == m_pGraphic_Device)
 		return E_FAIL;
+
 	return m_pGraphic_Device->Clear_BackBuffer_View(vClearColor);
 }
 
 HRESULT CGameInstance::Clear_DepthStencil_View()
 {
-
 	if (nullptr == m_pGraphic_Device)
 		return E_FAIL;
+
 	return m_pGraphic_Device->Clear_DepthStencil_View();
 }
 
@@ -103,6 +104,7 @@ HRESULT CGameInstance::Present()
 {
 	if (nullptr == m_pGraphic_Device)
 		return E_FAIL;
+
 	return m_pGraphic_Device->Present();
 }
 
@@ -110,7 +112,16 @@ HRESULT CGameInstance::Open_Level(_uint iLevelIndex, CLevel * pNewLevel)
 {
 	if (nullptr == m_pLevel_Manager)
 		return E_FAIL;
+
 	return m_pLevel_Manager->Open_Level(iLevelIndex, pNewLevel);
+}
+
+const _uint& CGameInstance::Get_CurLevelIndex()
+{
+	if (nullptr == m_pLevel_Manager)
+		return E_FAIL;
+
+	return m_pLevel_Manager->Get_CurLevelIndex();
 }
 
 HRESULT CGameInstance::Add_Prototype(const wstring & strPrototypeTag, CGameObject * pPrototype)
@@ -121,7 +132,7 @@ HRESULT CGameInstance::Add_Prototype(const wstring & strPrototypeTag, CGameObjec
 	return m_pObject_Manager->Add_Prototype(strPrototypeTag, pPrototype);	
 }
 
-HRESULT CGameInstance::Add_GameObject(_uint iLevelIndex, const wstring & strLayerTag, const wstring & strPrototypeTag, void * pArg)
+HRESULT CGameInstance::Add_GameObject(const _uint iLevelIndex, const wstring & strLayerTag, const wstring & strPrototypeTag, void * pArg)
 {
 	if (nullptr == m_pObject_Manager)
 		return E_FAIL;
@@ -129,7 +140,7 @@ HRESULT CGameInstance::Add_GameObject(_uint iLevelIndex, const wstring & strLaye
 	return m_pObject_Manager->Add_GameObject(iLevelIndex, strLayerTag, strPrototypeTag, pArg);
 }
 
-HRESULT CGameInstance::Delete_GameObject(_uint iLevelIndex, CGameObject* pObj)
+HRESULT CGameInstance::Delete_GameObject(const _uint iLevelIndex, CGameObject* pObj)
 {
 	if (nullptr == m_pObject_Manager)
 		return E_FAIL;
@@ -137,7 +148,7 @@ HRESULT CGameInstance::Delete_GameObject(_uint iLevelIndex, CGameObject* pObj)
 	return m_pObject_Manager->Delete_GameObject(iLevelIndex, pObj);
 }
 
-HRESULT CGameInstance::Reserve_Pool(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag, const _uint& iNumObj, void* pArg)
+HRESULT CGameInstance::Reserve_Pool(const _uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag, const _uint& iNumObj, void* pArg)
 {
 	if (nullptr == m_pObject_Manager)
 		return E_FAIL;
@@ -145,7 +156,7 @@ HRESULT CGameInstance::Reserve_Pool(_uint iLevelIndex, const wstring& strLayerTa
 	return m_pObject_Manager->Reserve_Pool(iLevelIndex, strLayerTag, strPrototypeTag, iNumObj, pArg);
 }
 
-CGameObject* CGameInstance::Pop_Pool(_uint iLevelIndex, const wstring& strPrototypeTag)
+CGameObject* CGameInstance::Pop_Pool(const _uint iLevelIndex, const wstring& strPrototypeTag)
 {
 	if (nullptr == m_pObject_Manager)
 		return nullptr;
@@ -153,7 +164,7 @@ CGameObject* CGameInstance::Pop_Pool(_uint iLevelIndex, const wstring& strProtot
 	return m_pObject_Manager->Pop_Pool(iLevelIndex, strPrototypeTag);
 }
 
-HRESULT CGameInstance::Return_Pool(_uint iLevelIndex, CGameObject* pObj)
+HRESULT CGameInstance::Return_Pool(const _uint iLevelIndex, CGameObject* pObj)
 {
 	if (nullptr == m_pObject_Manager)
 		return E_FAIL;

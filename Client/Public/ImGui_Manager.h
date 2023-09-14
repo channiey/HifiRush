@@ -19,33 +19,41 @@ public:
 	enum WINDOW_TYPE
 	{
 		WINDOW_PROFILER,
-		WINDOW_OBJECT,
+		WINDOW_OBJECT_INFO,
 		WINDOW_HIEARACHY,
-		WINDOW_INSPECTOR,
 		WINDOW_DEMO,
+		WINDOW_SUB,
 
 		WINDOW_END
 	};
-	enum INSPECTOR_TYPE	 /* 컴포넌 트 대부분 포함 시켜라 */
-	{
-		INS_PREFABS,
-		INS_PHYSICX,
-		INS_NAVI,
-		INS_ANIM,
-		INS_LIGHT,
-		INS_CAM,
-		INS_EFFECT,
-		INS_WATER,
-
-		INS_END
-	};
-	const char* STR_WINDOW_TYPE[WINDOW_END] =
+	const char* str_WindowType[WINDOW_END] =
 	{
 		"Profiler",
-		"Object",
+		"Object Info",
 		"Hierarachy",
-		"Inspector",
-		"Demo"
+		"Demo",
+		"Sub Window"
+	};
+	enum SUB_WINDOW_TYPE	
+	{
+		SUB_WINDOW_PREFABS,
+
+		/* Components */
+	/*	SUB_WINDOW_NAVI,
+		SUB_WINDOW_PHYSICX,
+		SUB_WINDOW_MODEL,
+		SUB_WINDOW_LIGHT,
+		SUB_WINDOW_CAM,
+		SUB_WINDOW_EFFECT,
+		SUB_WINDOW_WATER,*/
+
+
+		SUB_WINDOW_END
+	};
+	const char* str_SubWindowType[SUB_WINDOW_END] =
+	{
+		"Prefabs"
+	
 	};
 
 
@@ -58,22 +66,51 @@ public:
 	HRESULT			Render();
 
 public:
-	const _bool& Is_Active() const { return m_bActive; }
+	const _bool&	Is_Active() const { return m_bActive; }
 
 public:
 	void			Set_Active(const _bool& bActive) { m_bActive = bActive; }
+
+public:
+	HRESULT			Clear_ReferenceData();
 
 private: 
 	HRESULT			ImGui_SetUp(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	void			ImGui_Tick();
 	HRESULT			ImGui_Render();
-	void			Show_Window_Demo();
+
+private: /* For. Show Window */
+	HRESULT			Show_Window_Profiler();
+	HRESULT			Show_Window_Object();
+	HRESULT			Show_Window_Hierarachy();
+	HRESULT			Show_Window_Demo();
+	HRESULT			Show_Window_Sub();
+
+private: /* For. Show Window - Objcet */
+	HRESULT			Show_Window_Object_Info();
+	HRESULT			Show_Window_Object_Transform();
+	HRESULT			Show_Window_Object_Components();
+
+private: /* For. Show Window - Hierarachy */
+	HRESULT			Show_Window_Hierarachy_Tool();
+	HRESULT			Show_Window_Hierarachy_Levels();
+	HRESULT			Show_Window_Hierarachy_Layers();
+	HRESULT			Show_Window_Hierarachy_Objects();
+
+private: /* For. Show Sub Window*/
+	HRESULT			Show_Window_Sub_Prefabs();
+
 
 private:
 	CGameInstance* m_pGameInstance = { nullptr };
 
 	_bool			m_bActive = { TRUE };
 	_bool			m_bWindowsActive[WINDOW_END];
+	_bool			m_bWindowSubsActive[SUB_WINDOW_END];
+
+	class CGameObject*  m_pCurObject = { nullptr };
+	_bool				m_bCurObjDeleted = FALSE;
+	class CGameObject*  m_pPrefabObj = { nullptr };
 
 public:
 	virtual void	Free() override;
