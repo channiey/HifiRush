@@ -3,8 +3,14 @@
 
 #include "GameInstance.h"
 
+#pragma region Level_Logo
 #include "BackGround.h"
+#pragma endregion
+
+#pragma region Level_GamePlay
 #include "Terrain.h"
+#pragma endregion
+
 
 CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: m_pDevice(pDevice)
@@ -14,13 +20,12 @@ CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	Safe_AddRef(m_pContext);
 }
 
-// unsigned(__stdcall* _beginthreadex_proc_type)(void*);
-
 _uint APIENTRY ThreadEntry(void* pArg)
 {
 	/* DX가 사용하는 모든 컴 객체를 초기화한다.  */
 	/* ID3D11Device는 공유 스레드이므로 스레드간 동시 접근이 가능하지만 */
 	/* ID3D11DeviceContext는 단일 스레드 접근만 허용하므로 스레드 동기화를 필요로 한다. */
+
 	HRESULT hr = CoInitializeEx(nullptr, 0);
 
 	/* 새롭게 생성된 스레드가 일한다. */
@@ -37,9 +42,7 @@ HRESULT CLoader::Initialize(LEVEL_ID eNextLevel)
 
 	m_eNextLevel = eNextLevel;
 
-	/* 새로운 스레드를 만들자. */
-	/* 스레드 : 내 코드를 읽어주는 하나의 흐름? */
-	/* 3 : 생성한 스레드가 호출해야하는 함수의 주소 */
+	/* 생성한 스레드가 호출해야하는 함수의 주소를 3번째 인자로 넣어준다. */
 	m_hThread = (HANDLE)_beginthreadex(nullptr, 0, ThreadEntry, this, 0, nullptr);
 	if (0 == m_hThread)
 		return E_FAIL;
@@ -49,7 +52,7 @@ HRESULT CLoader::Initialize(LEVEL_ID eNextLevel)
 
 _int CLoader::Loading()
 {
-	/* 모든 레벨에서 사용되는 컴포넌트 원형은 MainApp에서 생성한다. */
+	/* 참고로 모든 레벨에서 사용되는 컴포넌트 원형은 MainApp에서 생성한다. */
 
 	EnterCriticalSection(&m_Critical_Section);
 
@@ -162,7 +165,6 @@ HRESULT CLoader::Loading_For_Level_GamePlay()
 
 	}
 	
-
 	m_strLoading = TEXT("Loading Finish");
 	m_isFinished = true;
 

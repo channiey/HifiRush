@@ -21,7 +21,7 @@ CMainApp::CMainApp()
 
 HRESULT CMainApp::Initialize()
 {
-	/* 1-1. 그래픽, 사운드, 입력 장치를 초기화한다. */
+	/* 1-1. 디바이스(그래픽, 사운드, 입력)를 초기화한다. */
 	GRAPHIC_DESC		GraphicDesc;
 	ZeroMemory(&GraphicDesc, sizeof GraphicDesc);
 

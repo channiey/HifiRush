@@ -267,6 +267,9 @@
     <ClInclude Include="..\Public\VIBuffer_Terrain.h">
       <Filter>01.Utiltiy\03.Component\VIBuffer\Terrain</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Profiler_Manager.h">
+      <Filter>01.Utiltiy\90.Optimization\Profiler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -373,6 +376,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_Terrain.cpp">
       <Filter>01.Utiltiy\03.Component\VIBuffer\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Profiler_Manager.cpp">
+      <Filter>01.Utiltiy\90.Optimization\Profiler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

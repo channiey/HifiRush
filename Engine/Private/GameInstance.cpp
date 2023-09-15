@@ -3,6 +3,7 @@
 #include "Graphic_Device.h"
 #include "Level_Manager.h"
 #include "Object_Manager.h"
+#include "Profiler_Manager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -13,6 +14,7 @@ CGameInstance::CGameInstance()
 	, m_pObject_Manager(CObject_Manager::GetInstance())
 	, m_pComponent_Manager(CComponent_Manager::GetInstance())
 	, m_pThread_Manager(CThread_Manager::GetInstance())
+	, m_pProfiler_Manager(CProfiler_Manager::GetInstance())
 {
 	Safe_AddRef(m_pComponent_Manager);
 	Safe_AddRef(m_pObject_Manager);
@@ -20,6 +22,7 @@ CGameInstance::CGameInstance()
 	Safe_AddRef(m_pGraphic_Device);
 	Safe_AddRef(m_pTimer_Manager);
 	Safe_AddRef(m_pThread_Manager);
+	Safe_AddRef(m_pProfiler_Manager);
 }
 
 HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHIC_DESC& GraphicDesc, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext)
@@ -60,12 +63,12 @@ void CGameInstance::LateTick(_float fTimeDelta)
 void CGameInstance::FinishTick()
 {
 	m_pObject_Manager->FinishTick();
+	m_pProfiler_Manager->FinishTick();
 }
 
 void CGameInstance::Clear(_uint iLevelIndex)
 {
 	m_pObject_Manager->Clear(iLevelIndex);
-	// m_pComponent_Manager->Clear(iLevelIndex);
 }
 
 _float CGameInstance::Compute_TimeDelta(const wstring & strTimerTag)
@@ -242,6 +245,8 @@ void CGameInstance::Release_Engine()
 	CTimer_Manager::GetInstance()->DestroyInstance();		
 	CGraphic_Device::GetInstance()->DestroyInstance();
 	CThread_Manager::GetInstance()->DestroyInstance();
+	CProfiler_Manager::GetInstance()->DestroyInstance();
+
 }
 
 void CGameInstance::Free()
@@ -252,4 +257,5 @@ void CGameInstance::Free()
 	Safe_Release(m_pGraphic_Device);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pThread_Manager);
+	Safe_Release(m_pProfiler_Manager);
 }

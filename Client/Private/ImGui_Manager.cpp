@@ -157,15 +157,35 @@ HRESULT CImGui_Manager::Show_Window_Profiler()
 		ImGui::SeparatorText("Windows");
 		{
 			if (ImGui::Button(str_WindowType[WINDOW_OBJECT_INFO]))
+			{
 				m_bWindowsActive[WINDOW_OBJECT_INFO] = !m_bWindowsActive[WINDOW_OBJECT_INFO];
+
+				if (!m_bWindowsActive[WINDOW_OBJECT_INFO])
+				{
+					for (int i = 0; i < SUB_WINDOW_END; ++i)
+					{
+						if (SUB_WINDOW_PREFABS == i) continue;
+
+						m_bWindowSubsActive[i] = FALSE;
+					}
+				}
+			}
 			ImGui::SameLine();
 
 			if (ImGui::Button(str_WindowType[WINDOW_HIEARACHY]))
+			{
 				m_bWindowsActive[WINDOW_HIEARACHY] = !m_bWindowsActive[WINDOW_HIEARACHY];
+
+				if (!m_bWindowsActive[WINDOW_HIEARACHY])
+					if (m_bWindowSubsActive[SUB_WINDOW_PREFABS])
+						m_bWindowSubsActive[SUB_WINDOW_PREFABS] = FALSE;
+			}
 			ImGui::SameLine();
 
 			if (ImGui::Button(str_WindowType[WINDOW_DEMO]))
+			{
 				m_bWindowsActive[WINDOW_DEMO] = !m_bWindowsActive[WINDOW_DEMO];
+			}
 			ImGui::SameLine();
 
 			
@@ -383,7 +403,7 @@ HRESULT CImGui_Manager::Show_Window_Object_Components()
 
 #pragma region Show Window Hierarachy
 
-static _uint	iHierarachyIndexLevel = 0;
+static _uint	iHierarachyIndexLevel = -1;
 static _uint	iHierarachyIndexLayer = 0;
 static _uint	iHierarachyIndexObject = 0;
 
@@ -414,11 +434,10 @@ HRESULT CImGui_Manager::Show_Window_Hierarachy_Tool()
 
 HRESULT CImGui_Manager::Show_Window_Hierarachy_Levels()
 {
-	iHierarachyIndexLevel = m_pGameInstance->Get_CurLevelIndex();
 	{
-		for (int i = LEVEL_GAMEPLAY; i < LEVEL_ENDING; ++i)
+		for (int i = LEVEL_LOGO; i < LEVEL_ENDING; ++i)
 		{
-			if (i > LEVEL_GAMEPLAY)
+			if (i > LEVEL_LOGO)
 				ImGui::SameLine();
 
 			const char* strLevel = StringUtils::WC2C(gStrLevelID[i]);
@@ -491,7 +510,7 @@ HRESULT CImGui_Manager::Show_Window_Hierarachy_Objects()
 
 
 	/* 선택한 레벨, 레이어의 오브젝트들을 가져온다.*/
-	list<class CGameObject*>* pGameObjects = m_pGameInstance->Get_Objects(LEVEL_LOGO, strHierarachyIndexLayer);
+	list<class CGameObject*>* pGameObjects = m_pGameInstance->Get_Objects(iHierarachyIndexLevel, strHierarachyIndexLayer);
 
 	if (ImGui::BeginListBox("##listbox 1", ImVec2(-FLT_MIN, 8 * ImGui::GetTextLineHeightWithSpacing())))
 	{

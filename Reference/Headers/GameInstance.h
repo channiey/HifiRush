@@ -34,7 +34,6 @@ public: /* For.Level_Manager */
 	const _uint Get_CurLevelIndex();
 
 public: /* For.Object_Manager */
-
 	map<const wstring, class CGameObject*>*		Get_Prototypes();
 	map<const wstring, class CLayer*>*			Get_Layers(_uint iLevelIndex);
 	list<class CGameObject*>*					Get_Objects(_uint iLevelIndex, const wstring& strLayerTag);
@@ -58,6 +57,10 @@ public:	/* For.Thread_Manager */
 	template <class F, class... Args>
 	HRESULT	Add_Command(F&& f, Args&&... args) { return (m_pThread_Manager->Add_Command(f, args...)); }
 
+public: /* For.Profiler_Manager */
+
+
+
 private:
 	class CTimer_Manager*			m_pTimer_Manager = { nullptr };
 	class CGraphic_Device*			m_pGraphic_Device = { nullptr };
@@ -65,6 +68,7 @@ private:
 	class CObject_Manager*			m_pObject_Manager = { nullptr };
 	class CComponent_Manager*		m_pComponent_Manager = { nullptr };
 	class CThread_Manager*			m_pThread_Manager = { nullptr };
+	class CProfiler_Manager*		m_pProfiler_Manager = { nullptr };
 
 public:
 	static void Release_Engine();
