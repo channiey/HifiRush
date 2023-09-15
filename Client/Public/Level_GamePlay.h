@@ -16,6 +16,9 @@ public:
 	virtual HRESULT Tick(_float fTimeDelta) override;
 	virtual HRESULT LateTick(_float fTimeDelta) override;
 
+private:
+	HRESULT Ready_Layer_BackGround(const wstring& strLayerTag);
+
 public:
 	static class CLevel_GamePlay* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual void Free() override;

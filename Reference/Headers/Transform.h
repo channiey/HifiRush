@@ -15,7 +15,7 @@ public:
 	typedef struct tagTransformDesc
 	{
 		_float		fSpeedPerSec = { 0.f };
-		_float		fRotRadPerSec = { 0.0f };
+		_float		fRotRadPerSec = { 0.f };
 	}TRANSFORM_DESC;
 
 private:
@@ -48,15 +48,14 @@ public:
 	void Roatate(Vec4 vAxis, _float fTimeDelta);
 
 	void LookAt(Vec3 vPoint);
+	void LookAt_LandObj(Vec3 vPoint);
 	void Chase(Vec3 vPoint, _float fTimeDelta, _float fMargin = 0.1f);
 
 public:
 	HRESULT Bind_ShaderResources(class CShader* pShader, const char* pConstantName);
 
 private:
-	/* DX에서 기하 자료형은 크게 2가지로 나뉜다. ~float과 ~vector(matrix) */
-	/* 뒤가 ~float으로 끝난다면 저장용, ~vector나 ~matrix로 끝난다면 저장 + 연산용이다. */
-	Matrix			m_WorldMatrix = {};
+	Matrix				m_WorldMatrix = {};
 	TRANSFORM_DESC		m_tTrans = {};
 
 public:

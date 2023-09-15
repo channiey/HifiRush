@@ -73,6 +73,9 @@
     <Filter Include="97.ImGui">
       <UniqueIdentifier>{700840b3-8278-4149-aec5-245a4d69cf58}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Terrain">
+      <UniqueIdentifier>{39cbdfb5-bb6c-40ec-a138-fdd9bc2c1663}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -135,6 +138,9 @@
     <ClInclude Include="..\Public\ImGui_Manager.h">
       <Filter>97.ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Terrain.h">
+      <Filter>02.GameObjects\Terrain</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -185,6 +191,9 @@
     <ClCompile Include="..\Private\ImGui_Manager.cpp">
       <Filter>97.ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Terrain.cpp">
+      <Filter>02.GameObjects\Terrain</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -196,6 +205,9 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
+      <Filter>96.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
       <Filter>96.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

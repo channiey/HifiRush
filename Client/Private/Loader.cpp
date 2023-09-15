@@ -2,7 +2,9 @@
 #include "..\Public\Loader.h"
 
 #include "GameInstance.h"
+
 #include "BackGround.h"
+#include "Terrain.h"
 
 CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: m_pDevice(pDevice)
@@ -103,21 +105,27 @@ HRESULT CLoader::Loading_For_Level_Logo()
 			return E_FAIL;
 	}
 
-	Safe_Release(pGameInstance);
 
 	m_strLoading = TEXT("Loading Finish");
 	m_isFinished = true;
+
+	Safe_Release(pGameInstance);
 
 	return S_OK;
 }
 
 HRESULT CLoader::Loading_For_Level_GamePlay()
 {
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
 
 	/* For.Texture */
 	m_strLoading = TEXT("Loding... : Texture");
 	{
-
+		/* For.Prototype_Component_Texture_Terrain*/
+		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain"),
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Tile0.jpg")))))
+			return E_FAIL;
 	}
 
 	/* For.Mesh */
@@ -126,15 +134,39 @@ HRESULT CLoader::Loading_For_Level_GamePlay()
 
 	}
 
+	/* For.VIBuffer */
+	m_strLoading = TEXT("Loding... : VIBuffer");
+	{
+		/* For.Prototype_Component_VIBuffer_Terrain*/
+		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
+			CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Height1.bmp")))))
+			return E_FAIL;
+	}
+
+
 	/* For.Shader */
 	m_strLoading = TEXT("Loding... : Shader");
 	{
+		/* For.Prototype_Component_Shader_VtxNorTex*/
+		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxNorTex"),
+			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl"), VTXNORTEX::Elements, VTXNORTEX::iNumElements))))
+			return E_FAIL;
+	}
+
+	/* For.GameObject */
+	m_strLoading = TEXT("Loding... : Prototype");
+	{
+		/* For.Prototype_GameObject_Terrain*/
+		if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Terrain"), CTerrain::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 
 	}
 	
 
 	m_strLoading = TEXT("Loading Finish");
 	m_isFinished = true;
+
+	Safe_Release(pGameInstance);
 
 	return S_OK;
 }

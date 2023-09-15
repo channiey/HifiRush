@@ -168,6 +168,20 @@ void CTransform::LookAt(Vec3 vPoint)
 	Set_State(STATE_LOOK, vLook);
 }
 
+void CTransform::LookAt_LandObj(Vec3 vPoint)
+{
+	Vec4		vLook = vPoint - Get_State(CTransform::STATE_POSITION);
+
+	Vec3		vScale = Get_Scale();
+
+	Vec4		vRight = XMVector3Normalize(XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook)) * vScale.x;
+
+	vLook = XMVector3Normalize(XMVector3Cross(vRight, Get_State(CTransform::STATE_UP))) * vScale.z;
+
+	Set_State(CTransform::STATE_RIGHT, vRight);
+	Set_State(CTransform::STATE_LOOK, vLook);
+}
+
 void CTransform::Chase(Vec3 vPoint, _float fTimeDelta, _float fMargin)
 {
 	Vec4		vPosition = Get_State(STATE_POSITION);
