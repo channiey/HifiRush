@@ -30,8 +30,8 @@ void CImGui_Window_Main_Hierarachy::Show_Window()
 	window_flags |= ImGuiWindowFlags_NoMove;
 	window_flags |= ImGuiWindowFlags_NoResize;
 
-	if (m_bLayerEvent)
-		m_bLayerEvent = FALSE;
+	if (m_bLayerEvent) m_bLayerEvent = FALSE;
+	if (m_bObjectEvent) m_bObjectEvent = FALSE;
 
 	if (ImGui::Begin(m_pImGui_Manager->str_MainWindowType[m_pImGui_Manager->WINDOW_MAIN_HIEARACHY], NULL, window_flags))
 	{
@@ -137,12 +137,8 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Layers()
 	{
 		m_pGameInstance->Delete_Layer(m_pImGui_Manager->m_iIndex_CurLevelID, m_pImGui_Manager->m_strIndex_CurLayer);
 		
-		m_pImGui_Manager->m_iIndex_CurLayerID = -1;
-		m_pImGui_Manager->m_strIndex_CurLayer = L"";
-
-		m_pImGui_Manager->m_iIndex_CurObject = -1;
-		m_pImGui_Manager->m_strIndex_CurObject = L"";
-		m_pImGui_Manager->m_pCurObject = nullptr;
+		m_pImGui_Manager->Reset_Index_CurLayer();
+		m_pImGui_Manager->Reset_Index_CurObject();
 
 		m_bLayerEvent = TRUE;
 	}
@@ -206,12 +202,14 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Objects()
 	ImGui::SameLine();
 
 	/* 오브젝트 삭제 */
-	if (ImGui::Button("Delete"))
+	if (ImGui::Button("Remove")) 
 	{
 		if (nullptr != m_pImGui_Manager->m_pCurObject)
 		{
-			/*FAILED_CHECK_RETURN(m_pGameInstance->Delete_GameObject(m_pGameInstance->Get_CurLevelIndex(), m_pCurObject), E_FAIL);
-			m_bCurObjDeleted = TRUE;*/
+			m_pGameInstance->Delete_GameObject(m_pGameInstance->Get_CurLevelIndex(), m_pImGui_Manager->m_pCurObject);
+			m_pImGui_Manager->Reset_Index_CurObject();
+
+			m_bObjectEvent = TRUE;
 		}
 	}
 
@@ -227,10 +225,15 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Objects()
 
 	if (ImGui::BeginListBox("##listbox 1", ImVec2(-FLT_MIN, 6 * ImGui::GetTextLineHeightWithSpacing())))
 	{
-		if (nullptr == pGameObjects || m_bLayerEvent)
+		if (nullptr == pGameObjects || m_bLayerEvent || m_bObjectEvent)
 		{
 			ImGui::EndListBox();
 			return;
+		}
+
+		if ((*pGameObjects).empty())
+		{
+			m_pImGui_Manager->Reset_Index_CurObject();
 		}
 
 		if (nullptr != pGameObjects && !(*pGameObjects).empty())
@@ -307,7 +310,7 @@ void CImGui_Window_Main_Hierarachy::Show_MiniLayers()
 				if (ImGui::Selectable(strLayer, is_selected))
 				{
 					m_pGameInstance->Add_Layer(m_pGameInstance->Get_CurLevelIndex(), gStrLayerID[i]);
-					m_iTemp = i;
+					m_iTemp = (_uint)i;
 				}
 				delete strLayer;
 

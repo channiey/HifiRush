@@ -72,13 +72,6 @@ HRESULT CImGui_Manager::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* p
 
 HRESULT CImGui_Manager::Render()
 {
-	/* 이전 프레임 이벤트 체크 및 반영 */
-	if (m_bCurObjDeleted)
-	{
-		m_pCurObject = nullptr;
-		m_bCurObjDeleted = FALSE;
-	}
-
 	/* 메인 윈도우를 렌더링 한다. */
 	ImGui_Tick();
 	{
@@ -130,6 +123,24 @@ HRESULT CImGui_Manager::ImGui_Render()
 	return S_OK;
 }
 
+void CImGui_Manager::Reset_Index_CurLevel()
+{
+	m_iIndex_CurLevelID = -1;
+}
+
+void CImGui_Manager::Reset_Index_CurLayer()
+{
+	m_iIndex_CurLayerID = -1;
+	m_strIndex_CurLayer = L"";
+}
+
+void CImGui_Manager::Reset_Index_CurObject()
+{
+	m_iIndex_CurObject = -1;
+	m_strIndex_CurObject = L"";
+	m_pCurObject = nullptr;
+}
+
 
 void CImGui_Manager::Set_Active_Main_Window(const WINDOW_MAIN_TYPE& eType, const _bool& bActive)
 {
@@ -161,8 +172,6 @@ HRESULT CImGui_Manager::Clear_ReferenceData()
 	m_strIndex_CurObject = {};
 	m_strIndex_PrefabObject = {};
 	
-	m_bCurObjDeleted = FALSE;
-
 	return S_OK;
 }
 

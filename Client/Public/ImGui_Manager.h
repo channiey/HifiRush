@@ -65,26 +65,34 @@ private:
 	void		ImGui_Tick();
 	HRESULT		ImGui_Render();
 
+private:
+	/* 현재 정보를 초기화 한다. */
+	void		Reset_Index_CurLevel();
+	void		Reset_Index_CurLayer();
+	void		Reset_Index_CurObject();
 
 private:
 	CGameInstance*					m_pGameInstance = { nullptr };
 
 	vector<class CImGui_Window*>	m_pMainWindows;
 
-	class CGameObject*				m_pCurObject = { nullptr };
-
-	class CGameObject*				m_pPrefabObj = { nullptr };
-
+	/* 현재 Level 정보 */
 	_uint							m_iIndex_CurLevelID = { LEVEL_END };
+	
+	/* 현재 Layer 정보 */
 	_uint							m_iIndex_CurLayerID = { LAYER_END };
+	wstring							m_strIndex_CurLayer = {};
+
+	/* 현재 Object 정보 */
+	class CGameObject*				m_pCurObject = { nullptr };
+	wstring							m_strIndex_CurObject = {};
 	_uint							m_iIndex_CurObject = 0;
+	
+	/* 현재 Prefab Object 정보*/
+	class CGameObject*				m_pPrefabObj = { nullptr };
+	wstring							m_strIndex_PrefabObject = {};
 	_uint							m_iIndex_PrefabObject = 0;
 
-	wstring							m_strIndex_CurLayer = {};
-	wstring							m_strIndex_CurObject = {};
-	wstring							m_strIndex_PrefabObject = {};
-
-	_bool							m_bCurObjDeleted = FALSE;
 
 private: /* Friend Class */
 	friend class CImGui_Window_Main_Controller;

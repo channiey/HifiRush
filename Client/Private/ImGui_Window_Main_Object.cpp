@@ -144,6 +144,8 @@ void CImGui_Window_Main_Object::Show_Object_Transform()
 		ImGui::InputFloat3("Pos", fZero, "%.2f");
 		ImGui::InputFloat3("Rot", fZero, "%.2f");
 		ImGui::InputFloat3("Scale", fZero, "%.2f");
+		ImGui::InputFloat("Speed/s", &fZero[0], 0.01f, 1.0f, "%.2f");
+		ImGui::InputFloat("Rot/s", &fZero[0], 0.01f, 1.0f, "%.2f");
 	}
 }
 

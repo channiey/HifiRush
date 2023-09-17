@@ -37,7 +37,8 @@ private:
 
 	/* 레이어 이벤트가 발생한 경우 예외처리를 위한 변수 */
 	_bool		m_bLayerEvent = FALSE;
-	
+	_bool		m_bObjectEvent = FALSE;
+
 	_uint		m_iTemp = 0;
 
 public:
