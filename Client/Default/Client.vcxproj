@@ -183,6 +183,15 @@
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\ImGui_Manager.h" />
+    <ClInclude Include="..\Public\ImGui_Manager_Copy.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui_Window.h" />
+    <ClInclude Include="..\Public\ImGui_Window_Main_Controller.h" />
+    <ClInclude Include="..\Public\ImGui_Window_Main_Demo.h" />
+    <ClInclude Include="..\Public\ImGui_Window_Main_Hierarachy.h" />
+    <ClInclude Include="..\Public\ImGui_Window_Main_Object.h" />
+    <ClInclude Include="..\Public\ImGui_Window_Sub_Prefabs.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\public\Level_Logo.h" />
@@ -228,6 +237,15 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <IncludeInUnityFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</IncludeInUnityFile>
     </ClCompile>
+    <ClCompile Include="..\Private\ImGui_Manager_Copy.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_Window.cpp" />
+    <ClCompile Include="..\Private\ImGui_Window_Main_Controller.cpp" />
+    <ClCompile Include="..\Private\ImGui_Window_Main_Demo.cpp" />
+    <ClCompile Include="..\Private\ImGui_Window_Main_Hierarachy.cpp" />
+    <ClCompile Include="..\Private\ImGui_Window_Main_Object.cpp" />
+    <ClCompile Include="..\Private\ImGui_Window_Sub_Prefabs.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\private\Level_Logo.cpp" />

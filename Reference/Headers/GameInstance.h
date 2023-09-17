@@ -35,8 +35,8 @@ public: /* For.Level_Manager */
 
 public: /* For.Object_Manager */
 	map<const wstring, class CGameObject*>*		Get_Prototypes();
-	map<const wstring, class CLayer*>*			Get_Layers(_uint iLevelIndex);
-	list<class CGameObject*>*					Get_Objects(_uint iLevelIndex, const wstring& strLayerTag);
+	map<const wstring, class CLayer*>*			Get_All_Layer(_uint iLevelIndex);
+	list<class CGameObject*>*					Get_Layer(_uint iLevelIndex, const wstring& strLayerTag);
 	class CGameObject*							Get_Player();
 
 	HRESULT										Add_Prototype(const wstring& strPrototypeTag, class CGameObject* pPrototype);
@@ -46,6 +46,9 @@ public: /* For.Object_Manager */
 	HRESULT										Reserve_Pool(const _uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag, const _uint& iNumObj, void* pArg);
 	class CGameObject*							Pop_Pool(const _uint iLevelIndex, const wstring& strPrototypeTag);
 	HRESULT										Return_Pool(const _uint iLevelIndex, class CGameObject* pObj);
+
+	HRESULT										Add_Layer(_uint iLevelIndex, const wstring& strLayerTag);
+	HRESULT										Delete_Layer(_uint iLevelIndex, const wstring& strLayerTag);
 
 public: /* For.Component_Manager */
 	HRESULT Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, class CComponent* pPrototype);

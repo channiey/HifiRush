@@ -12,18 +12,30 @@ class CObject_Manager final : public CBase
 	DECLARE_SINGLETON(CObject_Manager)
 
 private:
-	enum EVENT_TYPE { OBJ_ADD, OBJ_DEL, POP_FROM_POOL, RETURN_TO_POOL, END_EVT };
+	typedef map<const wstring, class CLayer*>				LAYERS;
+	typedef map<const wstring, queue<class CGameObject*>*>	POOLS;
+	typedef queue<class CGameObject*>						POOL;
+
+	enum EVENT_TYPE { OBJ_ADD, OBJ_DEL, POP_FROM_POOL, RETURN_TO_POOL, LAYER_ADD, LAYER_DEL, END_EVT };
 
 	typedef struct EventDesc
 	{
 		_uint				iLevelIndex	= 0;
 		class CGameObject*	pObj		= { nullptr };
+		class CLayer*		pLayer = { nullptr };
 
 		EventDesc(const _uint& _iLevelIndex, class CGameObject* _pObj)
-			: iLevelIndex(_iLevelIndex), pObj(_pObj) 
+			: iLevelIndex(_iLevelIndex), pObj(_pObj), pLayer(nullptr)
 		{
 			Safe_AddRef(pObj);
 		}
+
+		EventDesc(const _uint& _iLevelIndex, class CLayer* _pLayer)
+			: iLevelIndex(_iLevelIndex), pLayer(_pLayer), pObj(nullptr)
+		{
+			//Safe_AddRef(pLayer); /*이거 왜 오류 뜨지? 게임오브젝트는 안 뜨는데?*/
+		}
+
 
 	}EVENT_DESC;
 
@@ -39,8 +51,8 @@ public:
 
 public: 
 	map<const wstring, class CGameObject*>* Get_Prototypes() { return &m_Prototypes; } 
-	map<const wstring, class CLayer*>* Get_Layers(_uint iLevelIndex);						/* 특정 레벨의 모든 레이어를 가져온다. */
-	list<class CGameObject*>* Get_Objects(_uint iLevelIndex, const wstring& strLayerTag);	/* 특정 레벨의 특정 레이어를 가져온다. */
+	LAYERS* Get_All_Layer(_uint iLevelIndex);													/* 특정 레벨의 모든 레이어를 가져온다. */
+	list<class CGameObject*>* Get_Layer(_uint iLevelIndex, const wstring& strLayerTag);	/* 특정 레벨의 특정 레이어를 가져온다. */
 	class CGameObject* Get_Player();
 
 public:
@@ -56,23 +68,25 @@ public:
 	class CGameObject* Pop_Pool(_uint iLevelIndex, const wstring& strPrototypeTag);
 	HRESULT	Return_Pool(_uint iLevelIndex, class CGameObject* pObj);
 
+	/* 레이어의 추가 삭제 이벤트 */
+	HRESULT Add_Layer(_uint iLevelIndex, const wstring& strLayerTag);
+	HRESULT Delete_Layer(_uint iLevelIndex, const wstring& strLayerTag);
+
 	void Clear(_uint iLevelIndex);
 
 private:
 	_uint													m_iNumLevels = { 0 };
 	
-	/* 원형 및 클론 컨테이너 */
+	/* 원형(레벨별로 생성하되 하나의 컨테이너) 및 클론 컨테이너(레벨별 컨테이너) */
 	map<const wstring, class CGameObject*>					m_Prototypes;				/* 원형 객체를 레벨별로 보관 <레벨 이름, 객체 이름> */
-	map<const wstring, class CLayer*>*						m_pLayers = { nullptr };	/* 사본 객체들을 레벨별로 보관. -맵 배열(레벨별)이다. 맵은 <레이어 이름(오브젝트 종류 이름) - 해당 종류 오브젝트 리스트> 구성되어 있다.*/
-	typedef map<const wstring, class CLayer*>				LAYERS;
+	LAYERS*													m_pLayers = { nullptr };	/* 사본 객체들을 레벨별로 보관. -맵 배열(레벨별)이다. 맵은 <레이어 이름(오브젝트 종류 이름) - 해당 종류 오브젝트 리스트> 구성되어 있다.*/
 
 	/* 추가, 삭제 이벤트 컨테이너 */
 	list<EVENT_DESC>										m_Events[END_EVT];
 
 	/* 풀링 이벤트 컨테이너 */
-	map<const wstring, queue<class CGameObject*>*>*			m_pPools = { nullptr }; /* 레벨 별, 오브젝트별 풀을 생성한다. 맵 배열 구성이며, 하나의 맵이 하나의 레벨을 뜻하며, 키는 오브젝트 이름, 밸류는 오브젝트 벡터이다. */
-	typedef map<const wstring, queue<class CGameObject*>*>	POOLS;
-	typedef queue<class CGameObject*>						POOL;
+	POOLS*			m_pPools = { nullptr }; /* 레벨 별, 오브젝트별 풀을 생성한다. 맵 배열 구성이며, 하나의 맵이 하나의 레벨을 뜻하며, 키는 오브젝트 이름, 밸류는 오브젝트 벡터이다. */
+
 
 private:
 	class CGameObject* Find_Prototype(const wstring& strPrototypeTag);

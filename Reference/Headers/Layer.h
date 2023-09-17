@@ -4,6 +4,7 @@
 
 /* 레이어의 사본 객체들을 리스트에 보관한다. */
 /* Ex. 몬스터 레이어라면 몬스터 종류 객체들이 리스트에 보관되어 있다. */
+
 BEGIN(Engine)
 
 class CLayer final : public CBase
@@ -13,12 +14,16 @@ private:
 	virtual ~CLayer() = default;
 
 public:
-	list<class CGameObject*>* Get_Objects() { return &m_GameObjects; }
-
-public:
-	HRESULT Initialize();
+	HRESULT Initialize(const wstring& strLayerTag);
 	void Tick(_float fTimeDelta);
 	void LateTick(_float fTimeDelta);
+
+public:
+	list<class CGameObject*>* Get_Objects() { return &m_GameObjects; }
+	const wstring& Get_Name() const { return m_strName; }
+
+public:
+	void Set_Name(const wstring& strName) { m_strName = strName; }
 
 public:
 	HRESULT Add_GameObject(class CGameObject* pGameObject);
@@ -29,9 +34,10 @@ public:
 
 private:
 	list<class CGameObject*>	m_GameObjects;
+	wstring						m_strName;
 
 public:
-	static CLayer* Create();
+	static CLayer* Create(const wstring& strLayerTag);
 	virtual void Free() override;
 };
 

@@ -76,6 +76,33 @@
     <Filter Include="02.GameObjects\Terrain">
       <UniqueIdentifier>{39cbdfb5-bb6c-40ec-a138-fdd9bc2c1663}</UniqueIdentifier>
     </Filter>
+    <Filter Include="97.ImGui\Manager">
+      <UniqueIdentifier>{ae665d5d-3931-498f-b439-76f319cca696}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\Window">
+      <UniqueIdentifier>{58e9641a-5e91-4bbe-8558-7dcc06dd06e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\Window\00.Controller">
+      <UniqueIdentifier>{d5ec2c91-2d9e-4e57-95a5-576bf7b84325}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\Window\01.Object">
+      <UniqueIdentifier>{ae165aa8-c601-4dfd-811c-cb5d819d7134}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\Window\02.Hierarachy">
+      <UniqueIdentifier>{3bf209e3-4602-41fc-b34a-09431189ee60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\Window\03.Sub">
+      <UniqueIdentifier>{f6477610-fb6a-48a9-9359-e3b145365c49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\Window\04.Demo">
+      <UniqueIdentifier>{d900bdc0-016c-4311-a8b5-aa79439f9305}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\Window\03.Sub\00.Object_Components">
+      <UniqueIdentifier>{7d62c950-b215-4662-a74f-672e4bb8d4d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\Window\03.Sub\01.Hierarachy_Prefabs">
+      <UniqueIdentifier>{fec1a2e0-72f7-4c59-a278-4159940fa0fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -135,11 +162,32 @@
     <ClInclude Include="..\ImGui\imstb_truetype.h">
       <Filter>98.Default\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\ImGui_Manager.h">
-      <Filter>97.ImGui</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Terrain.h">
       <Filter>02.GameObjects\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui_Manager.h">
+      <Filter>97.ImGui\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui_Window.h">
+      <Filter>97.ImGui\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui_Window_Main_Controller.h">
+      <Filter>97.ImGui\Window\00.Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui_Window_Main_Object.h">
+      <Filter>97.ImGui\Window\01.Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui_Window_Main_Hierarachy.h">
+      <Filter>97.ImGui\Window\02.Hierarachy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui_Window_Main_Demo.h">
+      <Filter>97.ImGui\Window\04.Demo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui_Manager_Copy.h">
+      <Filter>97.ImGui\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui_Window_Sub_Prefabs.h">
+      <Filter>97.ImGui\Window\03.Sub\01.Hierarachy_Prefabs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -188,11 +236,32 @@
     <ClCompile Include="..\ImGui\imgui_widgets.cpp">
       <Filter>98.Default\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\ImGui_Manager.cpp">
-      <Filter>97.ImGui</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Terrain.cpp">
       <Filter>02.GameObjects\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_Manager.cpp">
+      <Filter>97.ImGui\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_Window.cpp">
+      <Filter>97.ImGui\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_Window_Main_Controller.cpp">
+      <Filter>97.ImGui\Window\00.Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_Window_Main_Demo.cpp">
+      <Filter>97.ImGui\Window\04.Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_Window_Main_Hierarachy.cpp">
+      <Filter>97.ImGui\Window\02.Hierarachy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_Window_Main_Object.cpp">
+      <Filter>97.ImGui\Window\01.Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_Manager_Copy.cpp">
+      <Filter>97.ImGui\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_Window_Sub_Prefabs.cpp">
+      <Filter>97.ImGui\Window\03.Sub\01.Hierarachy_Prefabs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

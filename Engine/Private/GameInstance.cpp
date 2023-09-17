@@ -175,20 +175,36 @@ HRESULT CGameInstance::Return_Pool(const _uint iLevelIndex, CGameObject* pObj)
 	return m_pObject_Manager->Return_Pool(iLevelIndex, pObj);
 }
 
-map<const wstring, class CLayer*>* CGameInstance::Get_Layers(_uint iLevelIndex)
+HRESULT CGameInstance::Add_Layer(_uint iLevelIndex, const wstring& strLayerTag)
 {
 	if (nullptr == m_pObject_Manager)
-		return nullptr;
+		return E_FAIL;
 
-	return m_pObject_Manager->Get_Layers(iLevelIndex);
+	return m_pObject_Manager->Add_Layer(iLevelIndex, strLayerTag);
 }
 
-list<class CGameObject*>* CGameInstance::Get_Objects(_uint iLevelIndex, const wstring& strLayerTag)
+HRESULT CGameInstance::Delete_Layer(_uint iLevelIndex, const wstring& strLayerTag)
+{
+	if (nullptr == m_pObject_Manager)
+		return E_FAIL;
+
+	return m_pObject_Manager->Delete_Layer(iLevelIndex, strLayerTag);
+}
+
+map<const wstring, class CLayer*>* CGameInstance::Get_All_Layer(_uint iLevelIndex)
 {
 	if (nullptr == m_pObject_Manager)
 		return nullptr;
 
-	return m_pObject_Manager->Get_Objects(iLevelIndex, strLayerTag);
+	return m_pObject_Manager->Get_All_Layer(iLevelIndex);
+}
+
+list<class CGameObject*>* CGameInstance::Get_Layer(_uint iLevelIndex, const wstring& strLayerTag)
+{
+	if (nullptr == m_pObject_Manager)
+		return nullptr;
+
+	return m_pObject_Manager->Get_Layer(iLevelIndex, strLayerTag);
 }
 
 CGameObject* CGameInstance::Get_Player()

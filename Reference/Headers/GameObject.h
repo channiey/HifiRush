@@ -25,7 +25,7 @@ public:
 
 public:
 	const wstring& Get_Name() const { return m_strName; }
-	const wstring& Get_Layer() const { return m_strLayer; }
+	const wstring& Get_LayerTag() const { return m_strLayer; }
 	const _uint& Get_PickID() const { return m_iPickID; }
 
 	class CTransform* const Get_Transform();
@@ -37,7 +37,7 @@ public:
 	/* Active 이벤트 처리를 위한 가상함수화, 오버라이드시 __super::Active()먼저 호출 필요 */
 	virtual void Set_Active(const _bool& bActive) { m_bActive = bActive; }
 	void Set_Name(const wstring& strName) { m_strName = strName; }
-	void Set_Layer(const wstring& strLayer) { m_strLayer = strLayer; }
+	void Set_LayerTag(const wstring& strLayer) { m_strLayer = strLayer; }
 
 protected:
 	ID3D11Device*			m_pDevice = { nullptr };

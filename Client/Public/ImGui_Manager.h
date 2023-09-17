@@ -16,44 +16,34 @@ class CImGui_Manager final : public CBase
 	DECLARE_SINGLETON(CImGui_Manager)
 
 public:
-	enum WINDOW_TYPE
+	enum WINDOW_MAIN_TYPE
 	{
-		WINDOW_PROFILER,
-		WINDOW_OBJECT_INFO,
-		WINDOW_HIEARACHY,
-		WINDOW_DEMO,
-		WINDOW_SUB,
+		WINDOW_MAIN_PROFILER,
 
-		WINDOW_END
+		WINDOW_MAIN_OBJECT_INFO,
+		WINDOW_MAIN_HIEARACHY,
+		WINDOW_MAIN_DEMO,
+
+		WINDOW_MAIN_END
 	};
-	const char* str_WindowType[WINDOW_END] =
+	const char* str_MainWindowType[WINDOW_MAIN_END] =
 	{
 		"Profiler",
 		"Object Info",
 		"Hierarachy",
 		"Demo",
-		"Sub Window"
 	};
-	enum SUB_WINDOW_TYPE	
+
+	enum WINDOW_SUB_TYPE
 	{
-		SUB_WINDOW_PREFABS,
-
-		/* Components */
-	/*	SUB_WINDOW_NAVI,
-		SUB_WINDOW_PHYSICX,
-		SUB_WINDOW_MODEL,
-		SUB_WINDOW_LIGHT,
-		SUB_WINDOW_CAM,
-		SUB_WINDOW_EFFECT,
-		SUB_WINDOW_WATER,*/
-
-
-		SUB_WINDOW_END
+		WINDOW_SUB_PREFABS,
+		WINDOW_SUB_MINI_LAYERS,
+		WINDOW_SUB_END
 	};
-	const char* str_SubWindowType[SUB_WINDOW_END] =
+	const char* str_SubWindowType[WINDOW_SUB_END] =
 	{
-		"Prefabs"
-	
+		"Prefabs",
+		"Layers Choice"
 	};
 
 
@@ -62,60 +52,47 @@ private:
 	virtual ~CImGui_Manager() = default;
 
 public:
-	HRESULT			Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	HRESULT			Render();
+	HRESULT		Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	HRESULT		Render();
 
 public:
-	const _bool&	Is_Active() const { return m_bActive; }
+	void		Set_Active_Main_Window(const WINDOW_MAIN_TYPE& eType, const _bool& bActive);
 
-public:
-	void			Set_Active(const _bool& bActive) { m_bActive = bActive; }
+	HRESULT		Clear_ReferenceData();
 
-public:
-	HRESULT			Clear_ReferenceData();
-
-private: 
-	HRESULT			ImGui_SetUp(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	void			ImGui_Tick();
-	HRESULT			ImGui_Render();
-
-private: /* For. Show Window */
-	HRESULT			Show_Window_Profiler();
-	HRESULT			Show_Window_Object();
-	HRESULT			Show_Window_Hierarachy();
-	HRESULT			Show_Window_Demo();
-	HRESULT			Show_Window_Sub();
-
-private: /* For. Show Window - Objcet */
-	HRESULT			Show_Window_Object_Info();
-	HRESULT			Show_Window_Object_Transform();
-	HRESULT			Show_Window_Object_Components();
-
-private: /* For. Show Window - Hierarachy */
-	HRESULT			Show_Window_Hierarachy_Tool();
-	HRESULT			Show_Window_Hierarachy_Levels();
-	HRESULT			Show_Window_Hierarachy_Layers();
-	HRESULT			Show_Window_Hierarachy_Objects();
-
-private: /* For. Show Sub Window*/
-	HRESULT			Show_Window_Sub_Prefabs();
+private:
+	HRESULT		ImGui_SetUp(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	void		ImGui_Tick();
+	HRESULT		ImGui_Render();
 
 
 private:
-	HRESULT			Save_Level();
+	CGameInstance*					m_pGameInstance = { nullptr };
 
+	vector<class CImGui_Window*>	m_pMainWindows;
 
+	class CGameObject*				m_pCurObject = { nullptr };
 
-private:
-	CGameInstance* m_pGameInstance = { nullptr };
+	class CGameObject*				m_pPrefabObj = { nullptr };
 
-	_bool			m_bActive = { TRUE };
-	_bool			m_bWindowsActive[WINDOW_END];
-	_bool			m_bWindowSubsActive[SUB_WINDOW_END];
+	_uint							m_iIndex_CurLevelID = { LEVEL_END };
+	_uint							m_iIndex_CurLayerID = { LAYER_END };
+	_uint							m_iIndex_CurObject = 0;
+	_uint							m_iIndex_PrefabObject = 0;
 
-	class CGameObject*  m_pCurObject = { nullptr };
-	_bool				m_bCurObjDeleted = FALSE;
-	class CGameObject*  m_pPrefabObj = { nullptr };
+	wstring							m_strIndex_CurLayer = {};
+	wstring							m_strIndex_CurObject = {};
+	wstring							m_strIndex_PrefabObject = {};
+
+	_bool							m_bCurObjDeleted = FALSE;
+
+private: /* Friend Class */
+	friend class CImGui_Window_Main_Controller;
+	friend class CImGui_Window_Main_Object;
+	friend class CImGui_Window_Main_Hierarachy;
+	friend class CImGui_Window_Main_Demo;
+
+	friend class CImGui_Window_Sub_Prefabs;
 
 public:
 	virtual void	Free() override;

@@ -1,6 +1,7 @@
 #include "..\Public\Object_Manager.h"
 #include "Layer.h"
 #include "GameObject.h"
+#include "Layer.h"
 
 IMPLEMENT_SINGLETON(CObject_Manager)
 
@@ -49,7 +50,7 @@ HRESULT CObject_Manager::Add_GameObject(_uint iLevelIndex, const wstring & strLa
 
 	/* 이름과 레이어를 세팅한다. */
 	pGameObject->Set_Name(strPrototypeTag);
-	pGameObject->Set_Layer(strLayerTag);
+	pGameObject->Set_LayerTag(strLayerTag);
 
 	/* 이벤트를 설정한 뒤 리스트에 추가한다. */
 	EVENT_DESC tEvent(iLevelIndex, pGameObject);
@@ -94,7 +95,7 @@ HRESULT CObject_Manager::Reserve_Pool(_uint iLevelIndex, const wstring& strLayer
 
 		/* 이름과 레이어를 세팅한다. */
 		pGameObject->Set_Name(strPrototypeTag);
-		pGameObject->Set_Layer(strLayerTag);
+		pGameObject->Set_LayerTag(strLayerTag);
 
 		pPool->push(pGameObject);
 	}
@@ -177,10 +178,32 @@ void CObject_Manager::LateTick(_float fTimeDelta)
 
 void CObject_Manager::FinishTick()
 {
-	/* 1-1. 삭제 이벤트 */
+	/* 0-1 레이어 삭제 이벤트 */
+	for (auto& iterEvent : m_Events[LAYER_DEL])
+	{
+		m_pLayers[iterEvent.iLevelIndex].erase(iterEvent.pLayer->Get_Name());
+
+		Safe_Release(iterEvent.pLayer);
+	}
+	m_Events[LAYER_DEL].clear();
+
+
+	/* 0-2 레이어 추가 이벤트 */
+	for (auto& iterEvent : m_Events[LAYER_ADD])
+	{
+		/* 혹시라도 그 전에 추가된 레이어가 있는지 한번 더 검사한다. */
+		if (nullptr == Find_Layer(iterEvent.iLevelIndex, iterEvent.pLayer->Get_Name()))
+		{
+			m_pLayers[iterEvent.iLevelIndex].emplace(iterEvent.pLayer->Get_Name(), iterEvent.pLayer);
+		}
+	}
+	m_Events[LAYER_ADD].clear();
+
+
+	/* 1-1. 오브젝트 삭제 이벤트 */
 	for (auto& iter : m_Events[OBJ_DEL])
 	{
-		CLayer* pLayer = Find_Layer(iter.iLevelIndex, iter.pObj->Get_Layer());
+		CLayer* pLayer = Find_Layer(iter.iLevelIndex, iter.pObj->Get_LayerTag());
 
 		if (nullptr != pLayer)
 			pLayer->Delete_GameObject(iter.pObj);
@@ -190,10 +213,10 @@ void CObject_Manager::FinishTick()
 	m_Events[OBJ_DEL].clear();
 
 
-	/* 1-2. Retuen 이벤트 (layer To pool) */
+	/* 1-2. 오브젝트 Return 이벤트 (layer To pool) */
 	for (auto& iter : m_Events[RETURN_TO_POOL])
 	{
-		CLayer* pLayer = Find_Layer(iter.iLevelIndex, iter.pObj->Get_Layer());
+		CLayer* pLayer = Find_Layer(iter.iLevelIndex, iter.pObj->Get_LayerTag());
 
 		if (nullptr != pLayer)
 			pLayer->Erase_GameObject(iter.pObj);
@@ -203,10 +226,10 @@ void CObject_Manager::FinishTick()
 	m_Events[RETURN_TO_POOL].clear();
 
 
-	/* 2-1. Pop 이벤트 (pool To Layer) */
+	/* 2-1. 오브젝트 Pop 이벤트 (pool To Layer) */
 	for (auto& iter : m_Events[POP_FROM_POOL])
 	{
-		CLayer* pLayer = Find_Layer(iter.iLevelIndex, iter.pObj->Get_Layer());
+		CLayer* pLayer = Find_Layer(iter.iLevelIndex, iter.pObj->Get_LayerTag());
 
 		if (nullptr != pLayer)
 			pLayer->Push_GameObject(iter.pObj);
@@ -218,18 +241,18 @@ void CObject_Manager::FinishTick()
 	m_Events[POP_FROM_POOL].clear();
 
 
-	/* 2-2. 추가 이벤트 */
+	/* 2-2. 오브젝트 추가 이벤트 */
 	for (auto& iter : m_Events[OBJ_ADD])
 	{
-		CLayer* pLayer = Find_Layer(iter.iLevelIndex, iter.pObj->Get_Layer());
+		CLayer* pLayer = Find_Layer(iter.iLevelIndex, iter.pObj->Get_LayerTag());
 
 		if (nullptr == pLayer)
 		{
-			pLayer = CLayer::Create();
+			pLayer = CLayer::Create(iter.pObj->Get_LayerTag());
 
 			pLayer->Add_GameObject(iter.pObj);
 
-			m_pLayers[iter.iLevelIndex].emplace(iter.pObj->Get_Layer(), pLayer);
+			m_pLayers[iter.iLevelIndex].emplace(iter.pObj->Get_LayerTag(), pLayer);
 		}
 		else 
 			pLayer->Add_GameObject(iter.pObj);
@@ -240,7 +263,7 @@ void CObject_Manager::FinishTick()
 	m_Events[OBJ_ADD].clear();
 }
 
-map<const wstring, class CLayer*>* CObject_Manager::Get_Layers(_uint iLevelIndex)
+map<const wstring, class CLayer*>* CObject_Manager::Get_All_Layer(_uint iLevelIndex)
 {
 	if (iLevelIndex >= m_iNumLevels)
 		return nullptr;
@@ -248,7 +271,7 @@ map<const wstring, class CLayer*>* CObject_Manager::Get_Layers(_uint iLevelIndex
 	return &m_pLayers[iLevelIndex];
 }
 
-list<class CGameObject*>* CObject_Manager::Get_Objects(_uint iLevelIndex, const wstring& strLayerTag)
+list<class CGameObject*>* CObject_Manager::Get_Layer(_uint iLevelIndex, const wstring& strLayerTag)
 {
 	CLayer* pLayer = Find_Layer(iLevelIndex, strLayerTag);
 
@@ -261,6 +284,46 @@ list<class CGameObject*>* CObject_Manager::Get_Objects(_uint iLevelIndex, const 
 CGameObject* CObject_Manager::Get_Player()
 {
 	return nullptr;
+}
+
+HRESULT CObject_Manager::Add_Layer(_uint iLevelIndex, const wstring& strLayerTag)
+{
+	if (iLevelIndex >= m_iNumLevels)
+		return E_FAIL;
+
+	CLayer* pLayer = Find_Layer(iLevelIndex, strLayerTag);
+
+	if (nullptr == pLayer)
+	{
+		pLayer = CLayer::Create(strLayerTag);
+		
+		/* 이벤트를 추가한다. */
+		EVENT_DESC tEvent(iLevelIndex, pLayer);
+		m_Events[LAYER_ADD].push_back(tEvent);
+
+		return S_OK;
+	}
+	else
+		return E_FAIL;
+}
+
+HRESULT CObject_Manager::Delete_Layer(_uint iLevelIndex, const wstring& strLayerTag)
+{
+	if (iLevelIndex >= m_iNumLevels)
+		return E_FAIL;
+
+	CLayer* pLayer = Find_Layer(iLevelIndex, strLayerTag);
+
+	if (nullptr == pLayer)
+		return E_FAIL;
+	else
+	{
+		/* 이벤트를 추가한다. */
+		EVENT_DESC tEvent(iLevelIndex, pLayer);
+		m_Events[LAYER_DEL].push_back(tEvent);
+	}
+
+	return S_OK;
 }
 
 void CObject_Manager::Clear(_uint iLevelIndex)

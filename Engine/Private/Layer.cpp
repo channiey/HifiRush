@@ -5,8 +5,10 @@ CLayer::CLayer()
 {
 }
 
-HRESULT CLayer::Initialize()
+HRESULT CLayer::Initialize(const wstring& strLayerTag)
 {
+	m_strName = strLayerTag;
+
 	return S_OK;
 }
 
@@ -73,11 +75,11 @@ void CLayer::LateTick(_float fTimeDelta)
 	}
 }
 
-CLayer * CLayer::Create()
+CLayer * CLayer::Create(const wstring& strLayerTag)
 {
 	CLayer*	pInstance = new CLayer();
 
-	if (FAILED(pInstance->Initialize()))
+	if (FAILED(pInstance->Initialize(strLayerTag)))
 	{
 		MSG_BOX("Failed to Created : CLayer");
 		Safe_Release(pInstance);
