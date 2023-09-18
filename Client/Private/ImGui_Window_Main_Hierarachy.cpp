@@ -195,8 +195,10 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Objects()
 	{
 		if (nullptr != m_pImGui_Manager->m_pCurObject)
 		{
-			/*FAILED_CHECK_RETURN(m_pGameInstance->Delete_GameObject(m_pGameInstance->Get_CurLevelIndex(), m_pCurObject), E_FAIL);
-			m_bCurObjDeleted = TRUE;*/
+			m_pGameInstance->Add_GameObject(
+				m_pImGui_Manager->m_iIndex_CurLevelID,
+				m_pImGui_Manager->m_strIndex_CurLayer,
+				m_pImGui_Manager->m_pCurObject->Get_Name());
 		}
 	}
 	ImGui::SameLine();
@@ -249,6 +251,8 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Objects()
 				/* 리스트박스에서 오브젝트를 선택한 경우*/
 				if (ImGui::Selectable(strObject, is_selected))
 				{
+					m_pImGui_Manager->m_iIndex_CurObject = i;
+
 					/* 선택한 오브젝트가 이전 프레임에서 선택된 오브젝트와 같다면 아무것도 하지 않는다. */
 					if (m_pImGui_Manager->m_pCurObject == obj)
 					{
@@ -296,21 +300,21 @@ void CImGui_Window_Main_Hierarachy::Show_MiniLayers()
 	if (ImGui::Begin(m_pImGui_Manager->str_SubWindowType[m_pImGui_Manager->WINDOW_SUB_MINI_LAYERS]))
 	{
 		/* 종료 버튼 */
-		if (ImGui::Button("Finish")) m_bShowMiniLayer = FALSE;
+		//if (ImGui::Button("Finish")) m_bShowMiniLayer = FALSE;
 
 		/* 클라이언트에 정의되어 있는 레이어 목록을 순회하며 나열한다. */
-		if (ImGui::BeginListBox("##listbox 513", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
+		if (ImGui::BeginListBox("##listbox 513", ImVec2(-FLT_MIN, 6 * ImGui::GetTextLineHeightWithSpacing())))
 		{
 			for (size_t i = 0; i < LAYER_END; i++)
 			{
-				const bool is_selected = (m_iTemp == i);
+				const bool is_selected = (m_iTempMiniLayer == i);
 
 				const char* strLayer = StringUtils::WC2C(gStrLayerID[i]);
 				/* 특정 레이어가 선택 되었다면 해당 레이어를 게임인스턴스에 추가한다. */
 				if (ImGui::Selectable(strLayer, is_selected))
 				{
 					m_pGameInstance->Add_Layer(m_pGameInstance->Get_CurLevelIndex(), gStrLayerID[i]);
-					m_iTemp = (_uint)i;
+					m_iTempMiniLayer = (_uint)i;
 				}
 				delete strLayer;
 

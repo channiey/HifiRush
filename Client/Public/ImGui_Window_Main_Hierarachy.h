@@ -39,7 +39,8 @@ private:
 	_bool		m_bLayerEvent = FALSE;
 	_bool		m_bObjectEvent = FALSE;
 
-	_uint		m_iTemp = 0;
+	/* Temp */
+	_uint		m_iTempMiniLayer = 0;
 
 public:
 	static CImGui_Window_Main_Hierarachy* Create();

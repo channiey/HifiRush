@@ -2,6 +2,7 @@
 #include "../Default/stdafx.h"
 
 #include "ImGui_Window_Sub_Prefabs.h"
+#include "GameObject.h"
 #include "StringUtils.h"
 
 CImGui_Window_Sub_Prefabs::CImGui_Window_Sub_Prefabs()
@@ -24,11 +25,10 @@ void CImGui_Window_Sub_Prefabs::Show_Window()
 		/* 인스턴스화 */
 		if (ImGui::Button("instantiate"))
 		{
-			/* 레벨 인덱스, 레이어 태그, 오브젝트 이름을 매개변수로 해당 프로토타입을 클론한다. */
-
-			/* 클론 위치는 현재 화면의 중앙으로 한다.*/
-
-			/* 하이어러키의 현재 오브젝트를 이 오브젝트로 변경한다. */
+			m_pGameInstance->Add_GameObject(
+				m_pImGui_Manager->m_iIndex_CurLevelID,
+				m_pImGui_Manager->m_strIndex_CurLayer,
+				m_pImGui_Manager->m_pPrefabObj->Get_Name());
 		}
 		ImGui::SameLine();
 
@@ -66,6 +66,7 @@ void CImGui_Window_Sub_Prefabs::Show_Window()
 				{
 					m_pImGui_Manager->m_strIndex_PrefabObject = Pair.first.c_str();
 					m_pImGui_Manager->m_iIndex_PrefabObject = i;
+					m_pImGui_Manager->m_pPrefabObj = Pair.second;
 				}
 				delete strPrefabObj;
 

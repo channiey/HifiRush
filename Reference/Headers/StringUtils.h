@@ -12,6 +12,19 @@ public:
 	static void Replace(OUT string& str, string comp, string rep);
 	static void Replace(OUT wstring& str, wstring comp, wstring rep);
 
+	/* 두 문자열을 결합해서 리턴한다. */
+	static const wstring Combine(const wstring& str1, const wstring& str2);
+	/* n번째부터 마지막까지의 문자열을 자르고, 앞에 남은 문자열을 리턴한다. */
+	static const wstring Remove_LastNumChar(const wstring& str, const _uint& iNumCutWord);
+	/* n번째부터 마지막까지의 문자열만 리턴한다. */
+	static const wstring Get_LastNumChar(const wstring& str, const _uint& iNumCutWord);
+
+	/* 해당 문자열이 숫자인지 확인한다.*/
+	static const _bool& Is_Digit(const wstring& str);
+
+	/* 해당 문자열이 고유 클론 번호를 갖고 있는지 리턴한다. */
+	static const _bool Has_ClonePin(const wstring& str);
+
 	static wstring ToWString(string value);
 	static string ToString(wstring value);
 

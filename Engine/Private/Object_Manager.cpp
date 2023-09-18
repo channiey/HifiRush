@@ -3,6 +3,8 @@
 #include "GameObject.h"
 #include "Layer.h"
 
+#include "StringUtils.h"
+
 IMPLEMENT_SINGLETON(CObject_Manager)
 
 CObject_Manager::CObject_Manager()
@@ -38,8 +40,19 @@ HRESULT CObject_Manager::Add_Prototype(const wstring & strPrototypeTag, CGameObj
 
 HRESULT CObject_Manager::Add_GameObject(_uint iLevelIndex, const wstring & strLayerTag, const wstring & strPrototypeTag, void * pArg)
 {
-	/* 복제할 사본을 찾는다. */
-	CGameObject*		pPrototype = Find_Prototype(strPrototypeTag);
+	/* 복제할 원본 찾는다. */
+	CGameObject* pPrototype = nullptr;
+
+	/* 클론 고유 번호가 존재하는 경우, 원형을 찾기 위해 클론 고유 번호를 지운다. */
+	if (StringUtils::Has_ClonePin(strPrototypeTag))
+	{
+		pPrototype = Find_Prototype(StringUtils::Remove_LastNumChar(strPrototypeTag, CLONE_PIN_MAX_DIGIT));
+	}
+	else
+	{
+		pPrototype = Find_Prototype(strPrototypeTag);
+	}
+
 	if (nullptr == pPrototype)
 		return E_FAIL;
 
@@ -48,8 +61,12 @@ HRESULT CObject_Manager::Add_GameObject(_uint iLevelIndex, const wstring & strLa
 	if (nullptr == pGameObject)
 		return E_FAIL;
 
-	/* 이름과 레이어를 세팅한다. */
-	pGameObject->Set_Name(strPrototypeTag);
+	/* 클론 고유 번호를 지운 이름을 세팅한다. */
+	if (StringUtils::Has_ClonePin(strPrototypeTag))
+		pGameObject->Set_Name(StringUtils::Remove_LastNumChar(strPrototypeTag, CLONE_PIN_MAX_DIGIT));
+	else
+		pGameObject->Set_Name(strPrototypeTag);
+
 	pGameObject->Set_LayerTag(strLayerTag);
 
 	/* 이벤트를 설정한 뒤 리스트에 추가한다. */
@@ -221,6 +238,9 @@ void CObject_Manager::FinishTick()
 		if (nullptr != pLayer)
 			pLayer->Erase_GameObject(iter.pObj);
 
+		/* 클론 고유 번호를 지운다. (이름만 남겨둔다) */
+		iter.pObj->Set_Name(StringUtils::Remove_LastNumChar(iter.pObj->Get_Name(), CLONE_PIN_MAX_DIGIT));
+
 		Safe_Release(iter.pObj);
 	}
 	m_Events[RETURN_TO_POOL].clear();
@@ -232,7 +252,12 @@ void CObject_Manager::FinishTick()
 		CLayer* pLayer = Find_Layer(iter.iLevelIndex, iter.pObj->Get_LayerTag());
 
 		if (nullptr != pLayer)
+		{
+			/* 클론 고유번호를 부여한다.*/
+			iter.pObj->Set_Name(pLayer->Get_CloneNameWithPin(iter.pObj->Get_Name()));
+
 			pLayer->Push_GameObject(iter.pObj);
+		}
 
 		iter.pObj->Set_Active(TRUE);
 		
@@ -250,12 +275,19 @@ void CObject_Manager::FinishTick()
 		{
 			pLayer = CLayer::Create(iter.pObj->Get_LayerTag());
 
+			/* 클론 고유번호를 부여한다.*/
+			iter.pObj->Set_Name(pLayer->Get_CloneNameWithPin(iter.pObj->Get_Name()));
+
 			pLayer->Add_GameObject(iter.pObj);
 
 			m_pLayers[iter.iLevelIndex].emplace(iter.pObj->Get_LayerTag(), pLayer);
 		}
-		else 
+		else
+		{
+			/* 클론 고유번호를 부여한다.*/
+			iter.pObj->Set_Name(pLayer->Get_CloneNameWithPin(iter.pObj->Get_Name()));
 			pLayer->Add_GameObject(iter.pObj);
+		}
 
 		Safe_Release(iter.pObj);
 	}

@@ -70,6 +70,7 @@ private:
 	void		Reset_Index_CurLevel();
 	void		Reset_Index_CurLayer();
 	void		Reset_Index_CurObject();
+	void		Reset_Index_PrefabObject();
 
 private:
 	CGameInstance*					m_pGameInstance = { nullptr };

@@ -1,6 +1,9 @@
 #ifndef Engine_Macro_h__
 #define Engine_Macro_h__
 
+/* Clone */
+#define			CLONE_PIN_MAX_DIGIT 4
+
 /* Msg */
 #ifndef			MSG_BOX
 #define			MSG_BOX(_message)			MessageBox(nullptr, TEXT(_message), L"System Message", MB_OK)

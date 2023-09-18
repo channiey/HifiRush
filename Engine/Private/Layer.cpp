@@ -1,6 +1,8 @@
 #include "..\Public\Layer.h"
 #include "GameObject.h"
 
+#include "StringUtils.h"
+
 CLayer::CLayer()
 {
 }
@@ -10,6 +12,47 @@ HRESULT CLayer::Initialize(const wstring& strLayerTag)
 	m_strName = strLayerTag;
 
 	return S_OK;
+}
+
+const wstring CLayer::Get_CloneNameWithPin(const wstring& strName)
+{
+	_int CloneMaxNum = -1;
+	wstring strPin = L"";
+
+	for (auto& iter : m_GameObjects)
+	{
+		if (nullptr == iter) continue;
+
+		/* 클론 고유 번호를 자른 이름과 비교한다. */
+		if (strName == StringUtils::Remove_LastNumChar(iter->Get_Name(), CLONE_PIN_MAX_DIGIT))
+		{
+			/* 이름이 같다면 고유번호만 갖고와서 대소비교를 통해 최댓값에 저장할지를 결정한다. */
+			/* 언더바를 제외하기 위해 - 1을 한다. */
+			_int iPinNum = stoi(StringUtils::Get_LastNumChar(iter->Get_Name(), CLONE_PIN_MAX_DIGIT - 1));
+
+			if (CloneMaxNum < iPinNum)
+				CloneMaxNum = iPinNum;
+		}
+	}
+
+	/* 최댓값이 -1이라는 것은 해당 이름과 같은 클론이 없으므로 고유번호를 000으로 세팅한다. */
+	if (-1 == CloneMaxNum)
+		return strName + L"_000";
+	else if(0 == CloneMaxNum) /* 0이라는 것은 클론이 딱 하나 존재한다는 것*/
+		return strName + L"_001";
+	else /* 아니라면 최댓갑에 + 1을 하여 고유 번호로 세팅한다. */
+	{
+		_int iPinNum = CloneMaxNum + 1;
+
+		if (0 == iPinNum / 10)
+			strPin = L"_00" + to_wstring(iPinNum);
+		else if (0 == iPinNum / 100)
+			strPin = L"_0" + to_wstring(iPinNum);
+		else
+			strPin = L"_" + to_wstring(iPinNum);
+
+		return strName + strPin;
+	}
 }
 
 HRESULT CLayer::Add_GameObject(CGameObject * pGameObject)

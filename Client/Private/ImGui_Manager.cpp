@@ -72,7 +72,7 @@ HRESULT CImGui_Manager::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* p
 
 HRESULT CImGui_Manager::Render()
 {
-	/* 메인 윈도우를 렌더링 한다. */
+	/* 메인 윈도우들을 렌더링 한다. */
 	ImGui_Tick();
 	{
 		for (auto& iter : m_pMainWindows)
@@ -141,6 +141,13 @@ void CImGui_Manager::Reset_Index_CurObject()
 	m_pCurObject = nullptr;
 }
 
+void CImGui_Manager::Reset_Index_PrefabObject()
+{
+	m_strIndex_PrefabObject = L"";
+	m_iIndex_PrefabObject = -1;
+	m_pPrefabObj = nullptr;
+}
+
 
 void CImGui_Manager::Set_Active_Main_Window(const WINDOW_MAIN_TYPE& eType, const _bool& bActive)
 {
@@ -149,6 +156,7 @@ void CImGui_Manager::Set_Active_Main_Window(const WINDOW_MAIN_TYPE& eType, const
 
 	CImGui_Window* pWindow = m_pMainWindows[eType];
 	Safe_AddRef(pWindow);
+
 	if (nullptr == pWindow)
 	{
 		Safe_Release(pWindow);
@@ -161,17 +169,11 @@ void CImGui_Manager::Set_Active_Main_Window(const WINDOW_MAIN_TYPE& eType, const
 
 HRESULT CImGui_Manager::Clear_ReferenceData()
 {
-	m_pCurObject = nullptr;
+	Reset_Index_CurLevel();
+	Reset_Index_CurLayer();
+	Reset_Index_CurObject();
+	Reset_Index_PrefabObject();	
 
-	m_iIndex_CurLevelID = { LEVEL_END };
-	m_iIndex_CurLayerID = { LAYER_END };
-	m_iIndex_CurObject = 0;
-	m_iIndex_PrefabObject = 0;
-
-	m_strIndex_CurLayer = {};
-	m_strIndex_CurObject = {};
-	m_strIndex_PrefabObject = {};
-	
 	return S_OK;
 }
 

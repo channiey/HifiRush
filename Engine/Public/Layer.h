@@ -22,6 +22,9 @@ public:
 	list<class CGameObject*>* Get_Objects() { return &m_GameObjects; }
 	const wstring& Get_Name() const { return m_strName; }
 
+	/* 클론의 고유 번호를 세팅한 이름을 리턴한다. */
+	const wstring Get_CloneNameWithPin(const wstring& strName);
+
 public:
 	void Set_Name(const wstring& strName) { m_strName = strName; }
 

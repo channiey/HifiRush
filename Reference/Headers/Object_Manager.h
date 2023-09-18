@@ -85,8 +85,7 @@ private:
 	list<EVENT_DESC>										m_Events[END_EVT];
 
 	/* 풀링 이벤트 컨테이너 */
-	POOLS*			m_pPools = { nullptr }; /* 레벨 별, 오브젝트별 풀을 생성한다. 맵 배열 구성이며, 하나의 맵이 하나의 레벨을 뜻하며, 키는 오브젝트 이름, 밸류는 오브젝트 벡터이다. */
-
+	POOLS*													m_pPools = { nullptr }; /* 레벨 별, 오브젝트별 풀을 생성한다. 맵 배열 구성이며, 하나의 맵이 하나의 레벨을 뜻하며, 키는 오브젝트 이름, 밸류는 오브젝트 벡터이다. */
 
 private:
 	class CGameObject* Find_Prototype(const wstring& strPrototypeTag);
