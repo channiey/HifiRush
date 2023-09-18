@@ -1,6 +1,8 @@
 #ifndef Engine_Macro_h__
 #define Engine_Macro_h__
 
+#define	VK_MAX				0xff
+
 /* Clone */
 #define			CLONE_PIN_MAX_DIGIT 4
 

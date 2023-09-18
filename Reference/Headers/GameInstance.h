@@ -61,7 +61,7 @@ public:	/* For.Thread_Manager */
 	HRESULT	Add_Command(F&& f, Args&&... args) { return (m_pThread_Manager->Add_Command(f, args...)); }
 
 public: /* For.Profiler_Manager */
-
+	const PROFILER_DESC Get_ProfillingData() const;
 
 
 private:

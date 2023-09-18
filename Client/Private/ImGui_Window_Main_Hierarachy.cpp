@@ -176,6 +176,7 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Layers()
 			{
 				m_pImGui_Manager->m_strIndex_CurLayer = Pair.first.c_str();
 				m_pImGui_Manager->m_iIndex_CurLayerID = i;
+				m_pImGui_Manager->Reset_Index_CurObject();
 			}
 			else /* 만약 리스트에서 선택된 레이어가 없고, 현재 세팅된 레이어도 없다면 첫번째 레이어로 현재 레이어를 세팅한다. */
 			{
@@ -300,8 +301,6 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Objects()
 		}
 		ImGui::EndListBox();
 	}
-
-
 }
 
 void CImGui_Window_Main_Hierarachy::Show_MiniLayers()

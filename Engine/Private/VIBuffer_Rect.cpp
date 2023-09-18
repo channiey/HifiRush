@@ -87,6 +87,8 @@ HRESULT CVIBuffer_Rect::Initialize_Prototype()
 	Safe_Delete_Array(pIndices);
 #pragma endregion
 
+	m_iNumTirs = 2;
+
 	return S_OK;
 }
 

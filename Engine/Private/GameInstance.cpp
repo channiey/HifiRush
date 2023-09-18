@@ -252,6 +252,18 @@ void CGameInstance::Finish_MultiThreading()
 	m_pThread_Manager->Finish_MultiThreading();
 }
 
+const PROFILER_DESC CGameInstance::Get_ProfillingData() const
+{
+	if (nullptr == m_pProfiler_Manager)
+	{
+		PROFILER_DESC desc;
+		ZeroMemory(&desc, sizeof(PROFILER_DESC));
+
+		return desc;
+	}
+	return m_pProfiler_Manager->Get_Status();
+}
+
 void CGameInstance::Release_Engine()
 {
 	CGameInstance::GetInstance()->DestroyInstance();

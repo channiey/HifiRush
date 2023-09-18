@@ -1,5 +1,9 @@
 #include "..\Public\VIBuffer.h"
 
+#ifdef _DEBUG
+#include "Profiler_Manager.h"
+#endif // _DEBUG
+
 CVIBuffer::CVIBuffer(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CComponent(pDevice, pContext)
 	, m_pVB(nullptr)
@@ -19,6 +23,7 @@ CVIBuffer::CVIBuffer(const CVIBuffer & rhs)
 	, m_eIndexFormat(rhs.m_eIndexFormat)
 	, m_eTopology(rhs.m_eTopology)
 	, m_iNumVBs(rhs.m_iNumVBs)
+	, m_iNumTirs(rhs.m_iNumTirs)
 {
 	Safe_AddRef(m_pVB);
 	Safe_AddRef(m_pIB);	
@@ -36,6 +41,13 @@ HRESULT CVIBuffer::Initialize(void * pArg)
 
 HRESULT CVIBuffer::Render()
 {
+#ifdef _DEBUG
+	CProfiler_Manager::GetInstance()->Add_Batches();
+
+	CProfiler_Manager::GetInstance()->Add_Tris(m_iNumTirs);
+#endif // _DEBUG
+
+
 	ID3D11Buffer*	pVertexBuffers[] = {
 		m_pVB, 		
 	};

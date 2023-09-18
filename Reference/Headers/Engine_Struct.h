@@ -43,6 +43,18 @@ namespace Engine
 
 	}LIGHT_DESC;
 
+	typedef struct tagProfilerDesc
+	{
+		/* https://shkim0811.tistory.com/42 */
+
+		_float fFPS = 0.f;
+		_uint iTris = 0;
+		_uint iBatches = 0;
+		_uint iSetPassCall = 0;
+		_uint iAnim = 0;
+
+	}PROFILER_DESC;
+
 	typedef struct ENGINE_DLL tagVertex_Position_Texcoord
 	{
 		XMFLOAT3		vPosition;

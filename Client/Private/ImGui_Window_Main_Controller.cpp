@@ -3,7 +3,6 @@
 
 #include "ImGui_Window_Main_Controller.h"
 
-
 CImGui_Window_Main_Controller::CImGui_Window_Main_Controller()
 {
 }
@@ -22,18 +21,20 @@ void CImGui_Window_Main_Controller::Show_Window()
 	if (ImGui::Begin(m_pImGui_Manager->str_MainWindowType[m_pImGui_Manager->WINDOW_MAIN_CONTROLLER], NULL, window_flags))
 	{
 		/* 프로파일러 데이터를 보여준다. */
-		ImGui::SeparatorText("Status");
+		ImGui::SeparatorText("Statistics");
 		{
+			PROFILER_DESC desc = m_pGameInstance->Get_ProfillingData();
+
 			ImGuiIO& io = ImGui::GetIO(); (void)io;
 			ImGui::Text("FPS : %.1f", io.Framerate);
 
-			ImGui::Text("Tris : %d", 100);
+			ImGui::Text("Tris : %d", desc.iTris);
 			ImGui::SameLine();
-			ImGui::Text("  Animation : %d", 100);
+			ImGui::Text("  Animations : %d", desc.iAnim);
 
-			ImGui::Text("Draw Call : %d", 100);
+			ImGui::Text("Batches : %d", desc.iBatches);
 			ImGui::SameLine();
-			ImGui::Text("  SetPass Call : %d", 100);
+			ImGui::Text("  SetPass calls : %d", desc.iSetPassCall);
 
 		}
 

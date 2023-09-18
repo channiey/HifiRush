@@ -5,7 +5,7 @@
 #pragma warning (disable : 4038) /* warning STL4038: The contents of <filesystem> are available only with C++17 or later. */
 #pragma warning (disable : 4244) /* string utils */
 
-/* DX*/
+/* DX (순서 함부로 바꿨다가 Simple Math랑 충돌 일어난다.) */
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include "SimpleMath.h"
@@ -15,6 +15,7 @@
 #include <DirectXTK\DDSTextureLoader.h>
 #include <DirectXTK\WICTextureLoader.h>
 using namespace DirectX;
+
 
 /* STL */
 #include <iostream>

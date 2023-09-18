@@ -37,6 +37,8 @@ protected:
 	D3D11_PRIMITIVE_TOPOLOGY	m_eTopology;				/* 정점을 어떻게 그릴 것인지 */
 	_uint						m_iNumVBs = { 0 };			/* 버텍스 버퍼의 갯수 - 후반에는 여러 개의 버텍스 버퍼 사용 가능*/
 
+	_uint						m_iNumTirs = { 0 };			/* 삼각형 갯수 */
+
 protected:
 	/* 자식 버퍼 개체에서 사용한다.*/
 	HRESULT Create_Buffer(_Inout_ ID3D11Buffer** ppOut);

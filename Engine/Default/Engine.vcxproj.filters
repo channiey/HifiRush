@@ -270,6 +270,9 @@
     <ClInclude Include="..\Public\Profiler_Manager.h">
       <Filter>01.Utiltiy\90.Optimization\Profiler</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Input_Device.h">
+      <Filter>00.System\01.Device\Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -379,6 +382,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Profiler_Manager.cpp">
       <Filter>01.Utiltiy\90.Optimization\Profiler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Input_Device.cpp">
+      <Filter>00.System\01.Device\Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
