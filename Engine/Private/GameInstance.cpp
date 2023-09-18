@@ -298,7 +298,7 @@ _long CGameInstance::Get_DIMMoveState(MOUSEMOVESTATE eMouseMoveID)
 	return m_pInput_Device->Get_DIMouseMove(eMouseMoveID);
 }
 
-const _bool& CGameInstance::Key_Up(const _int& _iKey)
+const _bool CGameInstance::Key_Up(const _int& _iKey)
 {
 	if (nullptr == m_pInput_Device)
 		return FALSE;
@@ -306,7 +306,7 @@ const _bool& CGameInstance::Key_Up(const _int& _iKey)
 	return m_pInput_Device->Key_Up(_iKey);
 }
 
-const _bool& CGameInstance::Key_Down(const _int& _iKey)
+const _bool CGameInstance::Key_Down(const _int& _iKey)
 {
 	if (nullptr == m_pInput_Device)
 		return FALSE;
@@ -314,7 +314,7 @@ const _bool& CGameInstance::Key_Down(const _int& _iKey)
 	return m_pInput_Device->Key_Down(_iKey);
 }
 
-const _bool& CGameInstance::Key_Pressing(const _int& _iKey)
+const _bool CGameInstance::Key_Pressing(const _int& _iKey)
 {
 	if (nullptr == m_pInput_Device)
 		return FALSE;

@@ -67,9 +67,9 @@ public:  /* For.Input_Device */
 	_char Get_DIKState(_uchar eKeyID);
 	_char Get_DIMKeyState(MOUSEKEYSTATE eMouseKeyID);
 	_long Get_DIMMoveState(MOUSEMOVESTATE eMouseMoveID);
-	const _bool& Key_Up(const _int& _iKey);
-	const _bool& Key_Down(const _int& _iKey);
-	const _bool& Key_Pressing(const _int& _iKey);
+	const _bool Key_Up(const _int& _iKey);
+	const _bool Key_Down(const _int& _iKey);
+	const _bool Key_Pressing(const _int& _iKey);
 
 private:
 	class CTimer_Manager*			m_pTimer_Manager = { nullptr };
