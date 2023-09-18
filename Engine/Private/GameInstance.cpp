@@ -4,11 +4,13 @@
 #include "Level_Manager.h"
 #include "Object_Manager.h"
 #include "Profiler_Manager.h"
+#include "Input_Device.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
 CGameInstance::CGameInstance()
 	: m_pTimer_Manager(CTimer_Manager::GetInstance())
+	, m_pInput_Device(CInput_Device::GetInstance())
 	, m_pGraphic_Device(CGraphic_Device::GetInstance())
 	, m_pLevel_Manager(CLevel_Manager::GetInstance())
 	, m_pObject_Manager(CObject_Manager::GetInstance())
@@ -22,10 +24,11 @@ CGameInstance::CGameInstance()
 	Safe_AddRef(m_pGraphic_Device);
 	Safe_AddRef(m_pTimer_Manager);
 	Safe_AddRef(m_pThread_Manager);
+	Safe_AddRef(m_pInput_Device);
 	Safe_AddRef(m_pProfiler_Manager);
 }
 
-HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHIC_DESC& GraphicDesc, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext)
+HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, HINSTANCE hInst, const GRAPHIC_DESC& GraphicDesc, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext)
 {
 	/* 그래픽디바이스 초기화 처리. */
 	if (FAILED(m_pGraphic_Device->Ready_Graphic_Device(GraphicDesc.hWnd, GraphicDesc.eWinMode, GraphicDesc.iWinSizeX, GraphicDesc.iWinSizeY, ppDevice, ppContext)))
@@ -34,6 +37,8 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHIC_DESC& G
 	/* 사운드디바이스 초기화 처리. */
 
 	/* 입력디바이스 초기화 처리. */
+	if (FAILED(m_pInput_Device->Initialize(hInst, GraphicDesc.hWnd)))
+		return E_FAIL;
 
 	/* 오브젝트 매니저의 예약 처리. */
 	if (FAILED(m_pObject_Manager->Reserve_Manager(iNumLevels)))
@@ -50,6 +55,11 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHIC_DESC& G
 
 void CGameInstance::Tick(_float fTimeDelta)
 {
+	NULL_CHECK(m_pLevel_Manager);
+	NULL_CHECK(m_pObject_Manager);
+	NULL_CHECK(m_pInput_Device);
+
+	m_pInput_Device->Tick();
 	m_pObject_Manager->Tick(fTimeDelta);
 	m_pLevel_Manager->Tick(fTimeDelta);
 }
@@ -264,6 +274,54 @@ const PROFILER_DESC CGameInstance::Get_ProfillingData() const
 	return m_pProfiler_Manager->Get_Status();
 }
 
+_char CGameInstance::Get_DIKState(_uchar eKeyID)
+{
+	if (nullptr == m_pInput_Device)
+		return 0;
+
+	return m_pInput_Device->Get_DIKeyState(eKeyID);
+}
+
+_char CGameInstance::Get_DIMKeyState(MOUSEKEYSTATE eMouseKeyID)
+{
+	if (nullptr == m_pInput_Device)
+		return 0;
+
+	return m_pInput_Device->Get_DIMouseState(eMouseKeyID);
+}
+
+_long CGameInstance::Get_DIMMoveState(MOUSEMOVESTATE eMouseMoveID)
+{
+	if (nullptr == m_pInput_Device)
+		return 0;
+
+	return m_pInput_Device->Get_DIMouseMove(eMouseMoveID);
+}
+
+const _bool& CGameInstance::Key_Up(const _int& _iKey)
+{
+	if (nullptr == m_pInput_Device)
+		return FALSE;
+
+	return m_pInput_Device->Key_Up(_iKey);
+}
+
+const _bool& CGameInstance::Key_Down(const _int& _iKey)
+{
+	if (nullptr == m_pInput_Device)
+		return FALSE;
+
+	return m_pInput_Device->Key_Down(_iKey);
+}
+
+const _bool& CGameInstance::Key_Pressing(const _int& _iKey)
+{
+	if (nullptr == m_pInput_Device)
+		return FALSE;
+
+	return m_pInput_Device->Key_Pressing(_iKey);
+}
+
 void CGameInstance::Release_Engine()
 {
 	CGameInstance::GetInstance()->DestroyInstance();
@@ -271,10 +329,10 @@ void CGameInstance::Release_Engine()
 	CObject_Manager::GetInstance()->DestroyInstance();
 	CComponent_Manager::GetInstance()->DestroyInstance();
 	CTimer_Manager::GetInstance()->DestroyInstance();		
+	CInput_Device::GetInstance()->DestroyInstance();
 	CGraphic_Device::GetInstance()->DestroyInstance();
 	CThread_Manager::GetInstance()->DestroyInstance();
 	CProfiler_Manager::GetInstance()->DestroyInstance();
-
 }
 
 void CGameInstance::Free()
@@ -282,6 +340,7 @@ void CGameInstance::Free()
 	Safe_Release(m_pComponent_Manager);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pLevel_Manager);
+	Safe_Release(m_pInput_Device);
 	Safe_Release(m_pGraphic_Device);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pThread_Manager);

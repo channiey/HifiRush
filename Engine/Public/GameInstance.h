@@ -14,7 +14,7 @@ private:
 	virtual ~CGameInstance() = default;
 
 public: /* For.GameInstance */
-	HRESULT Initialize_Engine(_uint iNumLevels, const GRAPHIC_DESC& GraphicDesc, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext);
+	HRESULT Initialize_Engine(_uint iNumLevels, HINSTANCE hInst, const GRAPHIC_DESC& GraphicDesc, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext);
 	void Tick(_float fTimeDelta);
 	void LateTick(_float fTimeDelta);
 	void FinishTick();
@@ -34,21 +34,21 @@ public: /* For.Level_Manager */
 	const _uint Get_CurLevelIndex();
 
 public: /* For.Object_Manager */
-	map<const wstring, class CGameObject*>*		Get_Prototypes();
-	map<const wstring, class CLayer*>*			Get_All_Layer(_uint iLevelIndex);
-	list<class CGameObject*>*					Get_Layer(_uint iLevelIndex, const wstring& strLayerTag);
-	class CGameObject*							Get_Player();
+	map<const wstring, class CGameObject*>*	Get_Prototypes();
+	map<const wstring, class CLayer*>* Get_All_Layer(_uint iLevelIndex);
+	list<class CGameObject*>* Get_Layer(_uint iLevelIndex, const wstring& strLayerTag);
+	class CGameObject* Get_Player();
 
-	HRESULT										Add_Prototype(const wstring& strPrototypeTag, class CGameObject* pPrototype);
-	class CGameObject*							Add_GameObject(const _uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag, void* pArg = nullptr);
-	HRESULT										Delete_GameObject(const _uint iLevelIndex, class CGameObject* pObj);
+	HRESULT	Add_Prototype(const wstring& strPrototypeTag, class CGameObject* pPrototype);
+	class CGameObject* Add_GameObject(const _uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag, void* pArg = nullptr);
+	HRESULT Delete_GameObject(const _uint iLevelIndex, class CGameObject* pObj);
 
-	HRESULT										Reserve_Pool(const _uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag, const _uint& iNumObj, void* pArg);
-	class CGameObject*							Pop_Pool(const _uint iLevelIndex, const wstring& strPrototypeTag);
-	HRESULT										Return_Pool(const _uint iLevelIndex, class CGameObject* pObj);
+	HRESULT Reserve_Pool(const _uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag, const _uint& iNumObj, void* pArg);
+	class CGameObject* Pop_Pool(const _uint iLevelIndex, const wstring& strPrototypeTag);
+	HRESULT Return_Pool(const _uint iLevelIndex, class CGameObject* pObj);
 
-	HRESULT										Add_Layer(_uint iLevelIndex, const wstring& strLayerTag);
-	HRESULT										Delete_Layer(_uint iLevelIndex, const wstring& strLayerTag);
+	HRESULT Add_Layer(_uint iLevelIndex, const wstring& strLayerTag);
+	HRESULT Delete_Layer(_uint iLevelIndex, const wstring& strLayerTag);
 
 public: /* For.Component_Manager */
 	HRESULT Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, class CComponent* pPrototype);
@@ -63,6 +63,13 @@ public:	/* For.Thread_Manager */
 public: /* For.Profiler_Manager */
 	const PROFILER_DESC Get_ProfillingData() const;
 
+public:  /* For.Input_Device */
+	_char Get_DIKState(_uchar eKeyID);
+	_char Get_DIMKeyState(MOUSEKEYSTATE eMouseKeyID);
+	_long Get_DIMMoveState(MOUSEMOVESTATE eMouseMoveID);
+	const _bool& Key_Up(const _int& _iKey);
+	const _bool& Key_Down(const _int& _iKey);
+	const _bool& Key_Pressing(const _int& _iKey);
 
 private:
 	class CTimer_Manager*			m_pTimer_Manager = { nullptr };
@@ -72,6 +79,8 @@ private:
 	class CComponent_Manager*		m_pComponent_Manager = { nullptr };
 	class CThread_Manager*			m_pThread_Manager = { nullptr };
 	class CProfiler_Manager*		m_pProfiler_Manager = { nullptr };
+	class CInput_Device*			m_pInput_Device = { nullptr };
+
 
 public:
 	static void Release_Engine();

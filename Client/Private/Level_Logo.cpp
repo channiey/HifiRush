@@ -20,7 +20,6 @@ HRESULT CLevel_Logo::Initialize()
 	return S_OK;
 }
 
-
 HRESULT CLevel_Logo::Tick(_float fTimeDelta)
 {
 	return S_OK;
@@ -30,7 +29,7 @@ HRESULT CLevel_Logo::LateTick(_float fTimeDelta)
 {
 	SetWindowText(g_hWnd, gStrLevelID[LEVEL_LOGO]);
 
-	if (GetKeyState(VK_RETURN) & 0x8000)
+	if (CGameInstance::GetInstance()->Key_Down(VK_SPACE))
 	{
 		CGameInstance*	pGameInstance = CGameInstance::GetInstance();
 		Safe_AddRef(pGameInstance);

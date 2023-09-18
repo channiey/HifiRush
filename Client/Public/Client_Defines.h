@@ -67,6 +67,7 @@ namespace Client
 	};
 }
 
+extern HINSTANCE g_hInst;
 extern HWND g_hWnd;
 
 using namespace Client;

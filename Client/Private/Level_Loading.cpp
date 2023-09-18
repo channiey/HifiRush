@@ -51,8 +51,8 @@ HRESULT CLevel_Loading::LateTick(_float fTimeDelta)
 
 	SetWindowText(g_hWnd, strLoadingText.c_str());
 
-	if (GetKeyState(VK_SPACE) & 0x8000)
-	{	
+	if (CGameInstance::GetInstance()->Key_Down(VK_SPACE))
+	{
 		if (true == m_pLoader->Get_Finished())
 		{
 			CGameInstance*	pGameInstance = CGameInstance::GetInstance();

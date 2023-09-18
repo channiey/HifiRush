@@ -16,6 +16,8 @@
 #include <DirectXTK\WICTextureLoader.h>
 using namespace DirectX;
 
+#define DIRECTINPUT_VERSION	0x0800
+#include <dinput.h>
 
 /* STL */
 #include <iostream>
@@ -71,5 +73,3 @@ using namespace DirectX;
 using namespace Engine;
 using namespace std;
 using std::thread;
-
-

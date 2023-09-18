@@ -1,9 +1,7 @@
 /* TODO 이거 엔진 디파인에 선언하면 왜 심플매스랑 충돌나지? */
-#define DIRECTINPUT_VERSION	0x0800
-#include <dinput.h>
+#pragma once
 
 #include "Base.h"
-
 
 BEGIN(Engine)
 
@@ -12,27 +10,28 @@ class CInput_Device final : public CBase
 	DECLARE_SINGLETON(CInput_Device)
 
 private:
-	CInput_Device(void);
-	virtual ~CInput_Device(void);
+	CInput_Device();
+	virtual ~CInput_Device() = default;
 	
 public:
-	HRESULT					Ready_InputDev(HINSTANCE hInst, HWND hWnd);
+	HRESULT	Initialize(HINSTANCE hInst, HWND hWnd);
 	/* 매 업데이트마다 인풋 상태를 갱신한다. */
-	void					Tick(void);
+	void Tick();
 
 public:
-	// API 때 사용하던 키 인풋 함수
+	/* User */
 	_bool Key_Up(const _int& _iKey);
 	_bool Key_Down(const _int& _iKey);
 	_bool Key_Pressing(const _int& _iKey);
 
-	_byte Get_DIKeyState(_ubyte byKeyID) { 
+	/* DX */
+	_char Get_DIKeyState(_ubyte byKeyID) {
 		return m_byKeyState[byKeyID]; 
 	}
-	_byte Get_DIMouseState(MOUSEKEYSTATE eMouse) { 
+	_char Get_DIMouseState(MOUSEKEYSTATE eMouse) {
 		return m_tMouseState.rgbButtons[eMouse]; 	
 	}
-	_long Get_DIMouseMove(MOUSEMOVESTATE eMouseState)	{ 
+	_long Get_DIMouseMove(MOUSEMOVESTATE eMouseState)	{
 		return *(((_long*)&m_tMouseState) + eMouseState); 
 	} 
 
@@ -60,20 +59,16 @@ public:
 	*/
 
 private:
-	LPDIRECTINPUT8			m_pInputSDK = nullptr;	
+	LPDIRECTINPUT8			m_pInputSDK = nullptr;
+	LPDIRECTINPUTDEVICE8	m_pKeyboard = nullptr;
+	LPDIRECTINPUTDEVICE8	m_pMouse = nullptr;
 
 private:
-	LPDIRECTINPUTDEVICE8	m_pKeyBoard = nullptr;	
-	LPDIRECTINPUTDEVICE8	m_pMouse	= nullptr;	
-
-private:
-	_byte					m_byKeyState[256];		
+	_byte					m_byKeyState[256] = { 0 };
 	DIMOUSESTATE			m_tMouseState;	
-
 	bool					m_bKeyState[VK_MAX];
 
 public:
-	virtual void			Free(void);
-
+	virtual void			Free();
 };
 END
