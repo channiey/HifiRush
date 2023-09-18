@@ -9,6 +9,8 @@ CInput_Device::CInput_Device()
 
 _bool CInput_Device::Key_Pressing(const _int& _iKey)
 {
+	if (!m_bFocus) return FALSE;
+
 	if (GetAsyncKeyState(_iKey) & 0x8000)
 		return true;
 
@@ -17,6 +19,8 @@ _bool CInput_Device::Key_Pressing(const _int& _iKey)
 
 _bool CInput_Device::Key_Down(const _int& _iKey)
 {
+	if (!m_bFocus) return FALSE;
+
 	if (!m_bKeyState[_iKey] && (GetAsyncKeyState(_iKey) & 0x8000))
 	{
 		m_bKeyState[_iKey] = !m_bKeyState[_iKey];
@@ -34,6 +38,8 @@ _bool CInput_Device::Key_Down(const _int& _iKey)
 
 _bool CInput_Device::Key_Up(const _int& _iKey)
 {
+	if (!m_bFocus) return FALSE;
+
 	if (m_bKeyState[_iKey] && !(GetAsyncKeyState(_iKey) & 0x8000))
 	{
 		m_bKeyState[_iKey] = !m_bKeyState[_iKey];
@@ -80,8 +86,12 @@ HRESULT CInput_Device::Initialize(HINSTANCE hInstance, HWND hWnd)
 
 void CInput_Device::Tick()
 {
-	m_pKeyboard->GetDeviceState(256, m_byKeyState);
-	m_pMouse->GetDeviceState(sizeof(m_tMouseState), &m_tMouseState);
+	m_bFocus = GetFocus();
+	if (m_bFocus)
+	{
+		m_pKeyboard->GetDeviceState(256, m_byKeyState);
+		m_pMouse->GetDeviceState(sizeof(m_tMouseState), &m_tMouseState);
+	}
 }
 
 void CInput_Device::Free()

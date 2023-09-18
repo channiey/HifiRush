@@ -8,6 +8,8 @@
 using namespace std;
 namespace Client
 {
+#define FPS_LIMIT		1000.f
+
 	/* Window */
 	const unsigned int		g_iWinSizeX = 1280;
 	const unsigned int		g_iWinSizeY = 720;

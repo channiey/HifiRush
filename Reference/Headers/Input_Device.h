@@ -26,12 +26,15 @@ public:
 
 	/* DX */
 	_char Get_DIKeyState(_ubyte byKeyID) {
+		if (!m_bFocus) return 0;
 		return m_byKeyState[byKeyID]; 
 	}
 	_char Get_DIMouseState(MOUSEKEYSTATE eMouse) {
+		if (!m_bFocus) return 0;
 		return m_tMouseState.rgbButtons[eMouse]; 	
 	}
 	_long Get_DIMouseMove(MOUSEMOVESTATE eMouseState)	{
+		if (!m_bFocus) return 0;
 		return *(((_long*)&m_tMouseState) + eMouseState); 
 	} 
 
@@ -66,7 +69,9 @@ private:
 private:
 	_byte					m_byKeyState[256] = { 0 };
 	DIMOUSESTATE			m_tMouseState;	
-	bool					m_bKeyState[VK_MAX];
+	_bool					m_bKeyState[VK_MAX];
+
+	HWND					m_bFocus{};
 
 public:
 	virtual void			Free();

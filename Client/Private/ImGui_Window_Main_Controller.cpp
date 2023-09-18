@@ -26,7 +26,7 @@ void CImGui_Window_Main_Controller::Show_Window()
 			PROFILER_DESC desc = m_pGameInstance->Get_ProfillingData();
 
 			ImGuiIO& io = ImGui::GetIO(); (void)io;
-			ImGui::Text("FPS : %.1f", io.Framerate);
+			ImGui::Text("FPS : %.1f(%.2f ms)", io.Framerate, FPS_LIMIT / io.Framerate);
 
 			ImGui::Text("Tris : %d", desc.iTris);
 			ImGui::SameLine();

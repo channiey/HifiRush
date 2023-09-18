@@ -132,8 +132,8 @@ void CImGui_Window_Main_Object::Show_Object_Transform()
 
 				/* Rot Speed */
 				_float fRotSpeed = pTransform->Get_RotRad();
-				if (ImGui::InputFloat("Rot/s", &fSpeedPerSec, 0.01f, 1.0f, "%.2f"))
-					pTransform->Set_Speed(fRotSpeed);
+				if (ImGui::InputFloat("Rot/s", &fRotSpeed, 0.01f, 1.0f, "%.2f"))
+					pTransform->Set_RotRad(fRotSpeed);
 			}
 			Safe_Release(pTransform);
 		}
