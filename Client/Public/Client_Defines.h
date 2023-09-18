@@ -17,11 +17,9 @@ namespace Client
 	{
 		LEVEL_STATIC,
 		LEVEL_LOADING,
-
 		LEVEL_LOGO,
 		LEVEL_GAMEPLAY,
 		LEVEL_ENDING,
-
 		LEVEL_END
 	};
 	static const wchar_t* gStrLevelID[LEVEL_END]
@@ -34,26 +32,25 @@ namespace Client
 	};
 	static const std::wstring gStrLevelPath[LEVEL_END]
 	{
-		TEXT("../Bin/Resources/Data/Level/Level_Static"),
-		TEXT("../Bin/Resources/Data/Level/Level_Loading"),
-		TEXT("../Bin/Resources/Data/Level/Level_Logo"),
-		TEXT("../Bin/Resources/Data/Level/Level_Gameplay"),
-		TEXT("../Bin/Resources/Data/Level/Level_Ending"),
+		TEXT("../Bin/Resources/Data/Level/Level_Static.level"),
+		TEXT("../Bin/Resources/Data/Level/Level_Loading.level"),
+		TEXT("../Bin/Resources/Data/Level/Level_Logo.level"),
+		TEXT("../Bin/Resources/Data/Level/Level_Gameplay.level"),
+		TEXT("../Bin/Resources/Data/Level/Level_Ending.level"),
 	};
 
 	/* Layer */
 	enum LAYER_ID
 	{
 		LAYER_CAMERA,
-		LAYER_BACKGROUND,	// 스카이박스, 로고 등 
-		LAYER_ENVIORNMENT,	// 고정, 애미네이션, 상호작용
+		LAYER_BACKGROUND,	
+		LAYER_ENVIORNMENT,	
 		LAYER_PLAYER,
 		LAYER_MONSTER,
 		LAYER_NPC,
 		LAYER_PROJECTILE,
 		LAYER_EFFECT,
 		LAYER_UI,
-
 		LAYER_END
 	};
 	static const wchar_t* gStrLayerID[LAYER_END]
@@ -68,8 +65,6 @@ namespace Client
 		L"Layer_Effect",
 		L"Layer_Ui",
 	};
-
-
 }
 
 extern HWND g_hWnd;

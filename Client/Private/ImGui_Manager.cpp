@@ -32,39 +32,43 @@ CImGui_Manager::CImGui_Manager()
 
 HRESULT CImGui_Manager::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	Safe_AddRef(pDevice);
-	Safe_AddRef(pContext);
+	m_pDevice = pDevice;
+	m_pContext = pContext;
+
+	Safe_AddRef(m_pDevice);
+	Safe_AddRef(m_pContext);
 
 	if (FAILED(ImGui_SetUp(pDevice, pContext)))
 	{
-		Safe_Release(pDevice);
-		Safe_Release(pContext);
+		Safe_Release(m_pDevice);
+		Safe_Release(m_pContext);
 		return E_FAIL;
 	}
-
-	Safe_Release(pDevice);
-	Safe_Release(pContext);
 
 	m_pMainWindows.reserve(WINDOW_MAIN_END);
 
 	/* Create Main_Window Profiler */
 	CImGui_Window* pWindow = CImGui_Window_Main_Controller::Create();
 	NULL_CHECK_RETURN(pWindow, E_FAIL);
+	pWindow->Set_Active(TRUE);
 	m_pMainWindows.push_back(pWindow);
 
 	/* Create Main_Window Object */
 	pWindow = CImGui_Window_Main_Object::Create();
 	NULL_CHECK_RETURN(pWindow, E_FAIL);
+	pWindow->Set_Active(FALSE);
 	m_pMainWindows.push_back(pWindow);
 
 	/* Create Main_Window Hierarachy */
 	pWindow = CImGui_Window_Main_Hierarachy::Create();
 	NULL_CHECK_RETURN(pWindow, E_FAIL);
+	pWindow->Set_Active(FALSE);
 	m_pMainWindows.push_back(pWindow);
 
 	/* Create Main_Window Demo */
 	pWindow = CImGui_Window_Main_Demo::Create();
 	NULL_CHECK_RETURN(pWindow, E_FAIL);
+	pWindow->Set_Active(FALSE);
 	m_pMainWindows.push_back(pWindow);
 
 	return S_OK;
@@ -180,6 +184,9 @@ HRESULT CImGui_Manager::Clear_ReferenceData()
 void CImGui_Manager::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pDevice);
+	Safe_Release(m_pContext);
 
 	for (auto& pMainWIndow : m_pMainWindows)
 		Safe_Release(pMainWIndow);

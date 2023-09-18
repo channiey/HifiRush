@@ -20,7 +20,7 @@ public:
 	static const wstring Get_LastNumChar(const wstring& str, const _uint& iNumCutWord);
 
 	/* 해당 문자열이 숫자인지 확인한다.*/
-	static const _bool& Is_Digit(const wstring& str);
+	static const _bool Is_Digit(const wstring& str);
 
 	/* 해당 문자열이 고유 클론 번호를 갖고 있는지 리턴한다. */
 	static const _bool Has_ClonePin(const wstring& str);

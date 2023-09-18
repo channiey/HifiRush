@@ -15,7 +15,9 @@ HRESULT CImGui_Window_Main_Demo::Initialize()
 
 void CImGui_Window_Main_Demo::Show_Window()
 {
+	_bool bDemo = TRUE;
 
+	ImGui::ShowDemoWindow(&bDemo);
 }
 
 void CImGui_Window_Main_Demo::Clear_Reference_Data()

@@ -30,6 +30,7 @@ private:
 private:
 	/* 레이어 추가 삭제를 위해, 레이어를 선택할 수 있는 창 */
 	void Show_MiniLayers();
+	void Save_LevelData();
 
 private:
 

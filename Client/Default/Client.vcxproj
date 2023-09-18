@@ -183,9 +183,6 @@
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\ImGui_Manager.h" />
-    <ClInclude Include="..\Public\ImGui_Manager_Copy.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="..\Public\ImGui_Window.h" />
     <ClInclude Include="..\Public\ImGui_Window_Main_Controller.h" />
     <ClInclude Include="..\Public\ImGui_Window_Main_Demo.h" />
@@ -236,9 +233,6 @@
     <ClCompile Include="..\Private\ImGui_Manager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <IncludeInUnityFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</IncludeInUnityFile>
-    </ClCompile>
-    <ClCompile Include="..\Private\ImGui_Manager_Copy.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\ImGui_Window.cpp" />
     <ClCompile Include="..\Private\ImGui_Window_Main_Controller.cpp" />

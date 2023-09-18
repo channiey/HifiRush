@@ -18,7 +18,7 @@ class CImGui_Manager final : public CBase
 public:
 	enum WINDOW_MAIN_TYPE
 	{
-		WINDOW_MAIN_PROFILER,
+		WINDOW_MAIN_CONTROLLER,
 
 		WINDOW_MAIN_OBJECT_INFO,
 		WINDOW_MAIN_HIEARACHY,
@@ -28,7 +28,7 @@ public:
 	};
 	const char* str_MainWindowType[WINDOW_MAIN_END] =
 	{
-		"Profiler",
+		"Controller",
 		"Object Info",
 		"Hierarachy",
 		"Demo",
@@ -94,6 +94,9 @@ private:
 	wstring							m_strIndex_PrefabObject = {};
 	_uint							m_iIndex_PrefabObject = 0;
 
+private:
+	ID3D11Device* m_pDevice = { nullptr };
+	ID3D11DeviceContext* m_pContext = { nullptr };
 
 private: /* Friend Class */
 	friend class CImGui_Window_Main_Controller;

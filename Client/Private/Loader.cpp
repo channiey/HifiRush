@@ -2,14 +2,8 @@
 #include "..\Public\Loader.h"
 
 #include "GameInstance.h"
-
-#pragma region Level_Logo
 #include "BackGround.h"
-#pragma endregion
-
-#pragma region Level_GamePlay
 #include "Terrain.h"
-#pragma endregion
 
 
 CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
@@ -77,14 +71,22 @@ _int CLoader::Loading()
 
 HRESULT CLoader::Loading_For_Level_Logo()
 {
+	/* 로고 레벨 로딩 단계에서 모든 오브젝트와 컴포넌트 원형을 생성해둔다. */
+	/* 그리고 각 레벨에서는 레벨의 데이터를 읽어 필요한 원형을 클론해서 사용한다. */
+
 	CGameInstance*		pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
-	/* For.Texture */
 	m_strLoading = TEXT("Loding... : Texture");
 	{
+		/* For.Prototype_Component_Texture_BackGround*/
 		if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_BackGround"),
 			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2))))
+			return E_FAIL;
+
+		/* For.Prototype_Component_Texture_Terrain*/
+		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain"),
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Tile0.jpg")))))
 			return E_FAIL;
 	}
 	
@@ -94,20 +96,35 @@ HRESULT CLoader::Loading_For_Level_Logo()
 
 	}
 
+	/* For.VIBuffer */
+	m_strLoading = TEXT("Loding... : VIBuffer");
+	{
+		/* For.Prototype_Component_VIBuffer_Terrain*/
+		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
+			CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Height1.bmp")))))
+			return E_FAIL;
+	}
+
 	/* For.Shader */
 	m_strLoading = TEXT("Loding... : Shader");
 	{
-
+		/* For.Prototype_Component_Shader_VtxNorTex*/
+		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxNorTex"),
+			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl"), VTXNORTEX::Elements, VTXNORTEX::iNumElements))))
+			return E_FAIL;
 	}
 
 	/* For.GameObject */
 	m_strLoading = TEXT("Loding... : Prototype");
 	{
 		/* For.Prototype_GameObject_BackGround */
-		if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BackGround"), CBackGround::Create(m_pDevice, m_pContext))))
+		if (FAILED(pGameInstance->Add_Prototype(TEXT("BackGround"), CBackGround::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Terrain*/
+		if (FAILED(pGameInstance->Add_Prototype(TEXT("Terrain"), CTerrain::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 	}
-
 
 	m_strLoading = TEXT("Loading Finish");
 	m_isFinished = true;
@@ -125,10 +142,10 @@ HRESULT CLoader::Loading_For_Level_GamePlay()
 	/* For.Texture */
 	m_strLoading = TEXT("Loding... : Texture");
 	{
-		/* For.Prototype_Component_Texture_Terrain*/
-		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain"),
-			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Tile0.jpg")))))
-			return E_FAIL;
+		///* For.Prototype_Component_Texture_Terrain*/
+		//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain"),
+		//	CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Tile0.jpg")))))
+		//	return E_FAIL;
 	}
 
 	/* For.Mesh */
@@ -140,29 +157,28 @@ HRESULT CLoader::Loading_For_Level_GamePlay()
 	/* For.VIBuffer */
 	m_strLoading = TEXT("Loding... : VIBuffer");
 	{
-		/* For.Prototype_Component_VIBuffer_Terrain*/
-		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
-			CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Height1.bmp")))))
-			return E_FAIL;
+		///* For.Prototype_Component_VIBuffer_Terrain*/
+		//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
+		//	CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Height1.bmp")))))
+		//	return E_FAIL;
 	}
 
 
 	/* For.Shader */
 	m_strLoading = TEXT("Loding... : Shader");
 	{
-		/* For.Prototype_Component_Shader_VtxNorTex*/
-		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxNorTex"),
-			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl"), VTXNORTEX::Elements, VTXNORTEX::iNumElements))))
-			return E_FAIL;
+		///* For.Prototype_Component_Shader_VtxNorTex*/
+		//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxNorTex"),
+		//	CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl"), VTXNORTEX::Elements, VTXNORTEX::iNumElements))))
+		//	return E_FAIL;
 	}
 
 	/* For.GameObject */
 	m_strLoading = TEXT("Loding... : Prototype");
 	{
-		/* For.Prototype_GameObject_Terrain*/
-		if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Terrain"), CTerrain::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-
+		///* For.Prototype_GameObject_Terrain*/
+		//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Terrain"), CTerrain::Create(m_pDevice, m_pContext))))
+		//	return E_FAIL;
 	}
 	
 	m_strLoading = TEXT("Loading Finish");

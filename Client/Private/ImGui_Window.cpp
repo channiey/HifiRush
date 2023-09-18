@@ -27,7 +27,7 @@ void CImGui_Window::Set_Active(const _bool& bActive)
 {
 	m_bActive = bActive;
 
-	if (!m_pChildWindows.empty())
+	if (!m_pChildWindows.empty() && !bActive)
 	{
 		for (auto& Pair : m_pChildWindows)
 			Pair.second->Set_Active(bActive);

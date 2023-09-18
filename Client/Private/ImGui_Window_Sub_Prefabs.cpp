@@ -25,14 +25,19 @@ void CImGui_Window_Sub_Prefabs::Show_Window()
 		/* 인스턴스화 */
 		if (ImGui::Button("instantiate"))
 		{
-			m_pGameInstance->Add_GameObject(
-				m_pImGui_Manager->m_iIndex_CurLevelID,
-				m_pImGui_Manager->m_strIndex_CurLayer,
-				m_pImGui_Manager->m_pPrefabObj->Get_Name());
+			if (-1 != m_pImGui_Manager->m_iIndex_CurLevelID
+				&& L"" != m_pImGui_Manager->m_strIndex_CurLayer
+				&& nullptr != m_pImGui_Manager->m_pPrefabObj)
+			{
+				m_pGameInstance->Add_GameObject(
+					m_pImGui_Manager->m_iIndex_CurLevelID,
+					m_pImGui_Manager->m_strIndex_CurLayer,
+					m_pImGui_Manager->m_pPrefabObj->Get_Name());
+			}
 		}
 		ImGui::SameLine();
 
-		/* 프로토 타입 검색*/
+		/* 프로토 타입 검색 */
 		if (ImGui::Button("Find"))
 		{
 

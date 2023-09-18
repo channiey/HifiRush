@@ -6,7 +6,11 @@
 #include "ImGui_Window_Sub_Prefabs.h"
 
 #include "StringUtils.h"
+#include "FileUtils.h"
+
 #include "GameObject.h"
+#include "Level_Loading.h"
+#include "Layer.h"
 
 CImGui_Window_Main_Hierarachy::CImGui_Window_Main_Hierarachy()
 {
@@ -90,8 +94,7 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_FunctionButton()
 
 	if (ImGui::Button("Save"))
 	{
-
-
+		Save_LevelData();
 	}
 	ImGui::SameLine();
 
@@ -112,7 +115,13 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Levels()
 		if (ImGui::Button(strLevel))
 		{
 			/* 버튼을 눌렀다면 해당 버튼의 인덱스를 현재 레벨로 지정한다. */
-			m_pImGui_Manager->m_iIndex_CurLevelID = i;
+			//m_pImGui_Manager->m_iIndex_CurLevelID = i;
+
+			m_pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pImGui_Manager->m_pDevice, m_pImGui_Manager->m_pContext, (LEVEL_ID)i));
+			
+			m_pImGui_Manager->Set_Active_Main_Window(m_pImGui_Manager->WINDOW_MAIN_OBJECT_INFO, FALSE);
+			m_pImGui_Manager->Set_Active_Main_Window(m_pImGui_Manager->WINDOW_MAIN_HIEARACHY, FALSE);
+			m_pImGui_Manager->Set_Active_Main_Window(m_pImGui_Manager->WINDOW_MAIN_DEMO, FALSE);
 		}
 		else
 		{
@@ -325,6 +334,45 @@ void CImGui_Window_Main_Hierarachy::Show_MiniLayers()
 		}
 	}
 	ImGui::End();
+}
+
+void CImGui_Window_Main_Hierarachy::Save_LevelData()
+{
+	shared_ptr<CFileUtils> file = make_shared<CFileUtils>();
+	file->Open(gStrLevelPath[m_pImGui_Manager->m_iIndex_CurLevelID], FileMode::Write);
+
+	/* 현재 레벨의 모든 레이어를 가져온다. */
+	map<const wstring, class CLayer*>* pLayers = m_pGameInstance->Get_All_Layer(m_pImGui_Manager->m_iIndex_CurLevelID);
+	NULL_CHECK(pLayers);
+
+	file->Write<size_t>(pLayers->size());
+
+	/* 현재 레벨의 모든 레이어를 순회한다. */
+	for (auto& Pair : *pLayers)
+	{
+		if (nullptr == Pair.second) continue;
+
+		file->Write<size_t>(Pair.second->Get_Objects()->size());
+
+		/* 레이어 내에 오브젝트 리스트를 순회한다. */
+		for (auto& obj : *Pair.second->Get_Objects())
+		{
+			/* 이름 */
+			wstring strName = StringUtils::Remove_LastNumChar(obj->Get_Name(), CLONE_PIN_MAX_DIGIT);
+			file->Write<string>(StringUtils::ToString(strName));
+
+			/* 레이어 */
+			file->Write<string>(StringUtils::ToString(obj->Get_LayerTag()));
+
+			/* 액티브 여부 */
+			file->Write<_bool>(obj->Is_Active());
+
+			/* 트랜스폼 */
+			file->Write<Matrix>(obj->Get_Transform()->Get_WorldMat());
+			file->Write<_float>(obj->Get_Transform()->Get_Speed());
+			file->Write<_float>(obj->Get_Transform()->Get_RotRad());
+		}
+	}
 }
 
 CImGui_Window_Main_Hierarachy* CImGui_Window_Main_Hierarachy::Create()

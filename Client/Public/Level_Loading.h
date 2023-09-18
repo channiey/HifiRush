@@ -22,6 +22,9 @@ public:
 	virtual HRESULT Tick(_float fTimeDelta) override;
 	virtual HRESULT LateTick(_float fTimeDelta) override;
 
+public:
+	static HRESULT Parse_LevelData(const _uint& iLevelID);
+
 private:
 	/* 로딩 다음레벨. */
 	LEVEL_ID			m_eNextLevel = { LEVEL_END };

@@ -76,7 +76,7 @@ const wstring StringUtils::Get_LastNumChar(const wstring& str, const _uint& iNum
 }
 
 
-const _bool& StringUtils::Is_Digit(const wstring& str)
+const _bool StringUtils::Is_Digit(const wstring& str)
 {
 	/* atoi는 문자일경우 0, 숫자일 경우 해당 숫자를 반환한다. */
 	/* 하지만 숫자 0일 경우에도 0을 반환하므로 추가 조건을 건다. */

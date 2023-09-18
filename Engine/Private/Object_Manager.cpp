@@ -38,28 +38,24 @@ HRESULT CObject_Manager::Add_Prototype(const wstring & strPrototypeTag, CGameObj
 	return S_OK;
 }
 
-HRESULT CObject_Manager::Add_GameObject(_uint iLevelIndex, const wstring & strLayerTag, const wstring & strPrototypeTag, void * pArg)
+class CGameObject* CObject_Manager::Add_GameObject(_uint iLevelIndex, const wstring & strLayerTag, const wstring & strPrototypeTag, void * pArg)
 {
-	/* 복제할 원본 찾는다. */
 	CGameObject* pPrototype = nullptr;
 
+	/* 복제할 원본 찾는다. */
 	/* 클론 고유 번호가 존재하는 경우, 원형을 찾기 위해 클론 고유 번호를 지운다. */
 	if (StringUtils::Has_ClonePin(strPrototypeTag))
-	{
 		pPrototype = Find_Prototype(StringUtils::Remove_LastNumChar(strPrototypeTag, CLONE_PIN_MAX_DIGIT));
-	}
 	else
-	{
 		pPrototype = Find_Prototype(strPrototypeTag);
-	}
 
 	if (nullptr == pPrototype)
-		return E_FAIL;
+		return nullptr;
 
 	/* 원형을 복제하여 사본을 만든다. */
 	CGameObject*		pGameObject = pPrototype->Clone(pArg);
 	if (nullptr == pGameObject)
-		return E_FAIL;
+		return nullptr;
 
 	/* 클론 고유 번호를 지운 이름을 세팅한다. */
 	if (StringUtils::Has_ClonePin(strPrototypeTag))
@@ -73,7 +69,7 @@ HRESULT CObject_Manager::Add_GameObject(_uint iLevelIndex, const wstring & strLa
 	EVENT_DESC tEvent(iLevelIndex, pGameObject);
 	m_Events[OBJ_ADD].push_back(tEvent);
 
-	return S_OK;
+	return pGameObject;
 }
 
 HRESULT CObject_Manager::Delete_GameObject(_uint iLevelIndex, CGameObject* pObj)

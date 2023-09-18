@@ -19,7 +19,7 @@ void CImGui_Window_Main_Controller::Show_Window()
 	window_flags |= ImGuiWindowFlags_NoMove;
 	window_flags |= ImGuiWindowFlags_NoResize;
 
-	if (ImGui::Begin(m_pImGui_Manager->str_MainWindowType[m_pImGui_Manager->WINDOW_MAIN_PROFILER], NULL, window_flags))
+	if (ImGui::Begin(m_pImGui_Manager->str_MainWindowType[m_pImGui_Manager->WINDOW_MAIN_CONTROLLER], NULL, window_flags))
 	{
 		/* 프로파일러 데이터를 보여준다. */
 		ImGui::SeparatorText("Status");

@@ -32,12 +32,14 @@ public:
 	const Vec3 Get_Scale();
 	const _float& Get_Speed() const { return m_tTrans.fSpeedPerSec; }
 	const _float& Get_RotRad() const { return m_tTrans.fRotRadPerSec; }
+	const Matrix& Get_WorldMat() const { return m_WorldMatrix; }
 
 	void Set_State(STATE eState, Vec4 vState);
 	void Set_Scale(const Vec3& vScale);
 	void Set_Rotation(Vec4 vAxis, _float fRadian);
 	void Set_Speed(const _float& fSpeed) { m_tTrans.fSpeedPerSec = fSpeed; }
 	void Set_RotRad(const _float& fRotRad) { m_tTrans.fRotRadPerSec = fRotRad; }
+	void Set_WorldMat(const Matrix& matrix) { m_WorldMatrix = matrix; }
 
 public:
 	void Move_Forward(_float fTimeDelta);

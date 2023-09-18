@@ -4,8 +4,13 @@
 #include "GameInstance.h"
 #include "Loader.h"
 
+#include "GameObject.h"
+
 #include "Level_Logo.h"
 #include "Level_GamePlay.h"
+
+#include "StringUtils.h"
+#include "FileUtils.h"
 
 #ifdef _DEBUG
 #include "ImGui_Manager.h"
@@ -75,6 +80,54 @@ HRESULT CLevel_Loading::LateTick(_float fTimeDelta)
 		}
 	}
 
+
+	return S_OK;
+}
+
+HRESULT CLevel_Loading::Parse_LevelData(const _uint& iLevelID)
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+	shared_ptr<CFileUtils> file = make_shared<CFileUtils>();
+	file->Open(gStrLevelPath[iLevelID], FileMode::Read);
+
+	/* 현재 레벨의 전체 레이어 갯수 */
+	const size_t countLayer = file->Read<size_t>();
+
+	for (size_t i = 0; i < countLayer; i++)
+	{
+		/* 현재 레이어의 전체 오브젝트 갯수 */
+		const size_t countObject = file->Read<size_t>();
+
+		for (size_t i = 0; i < countObject; i++)
+		{
+			/* 읽을 메인 데이터 */
+			wstring strName = StringUtils::ToWString(file->Read<string>());
+			wstring strLayer = StringUtils::ToWString(file->Read<string>());
+			_bool	bActive = file->Read<_bool>();
+			Matrix	tMatrix = file->Read<Matrix>();
+			_float	fSpeed = file->Read<_float>();
+			_float	fRot = file->Read<_float>();
+
+			/* 읽은 데이터를 바탕으로 파싱한다. */
+			{
+				CGameObject* pObj = pGameInstance->Add_GameObject(iLevelID, strLayer, strName);
+				if (nullptr == pObj) continue;
+
+				pObj->Set_Active(bActive);
+
+				CTransform* pTransform = pObj->Get_Transform();
+				if (nullptr == pTransform) continue;
+
+				pTransform->Set_WorldMat(tMatrix);
+				pTransform->Set_Speed(fSpeed);
+				pTransform->Set_RotRad(fSpeed);
+			}
+		}
+	}
+
+	Safe_Release(pGameInstance);
 
 	return S_OK;
 }

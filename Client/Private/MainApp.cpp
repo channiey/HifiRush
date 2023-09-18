@@ -69,7 +69,8 @@ HRESULT CMainApp::Render()
 
 		/* ImGui 업데이트 및 렌더링 */
 #ifdef _DEBUG
-		FAILED_CHECK_RETURN(m_pImGui_Manager->Render(), E_FAIL);
+		if(LEVEL_LOADING != m_pGameInstance->Get_CurLevelIndex())
+			FAILED_CHECK_RETURN(m_pImGui_Manager->Render(), E_FAIL);
 #endif // _DEBUG
 	}
 	FAILED_CHECK_RETURN(m_pGameInstance->Present(), E_FAIL);

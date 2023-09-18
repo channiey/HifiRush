@@ -135,10 +135,10 @@ HRESULT CGameInstance::Add_Prototype(const wstring & strPrototypeTag, CGameObjec
 	return m_pObject_Manager->Add_Prototype(strPrototypeTag, pPrototype);	
 }
 
-HRESULT CGameInstance::Add_GameObject(const _uint iLevelIndex, const wstring & strLayerTag, const wstring & strPrototypeTag, void * pArg)
+class CGameObject* CGameInstance::Add_GameObject(const _uint iLevelIndex, const wstring & strLayerTag, const wstring & strPrototypeTag, void * pArg)
 {
 	if (nullptr == m_pObject_Manager)
-		return E_FAIL;
+		return nullptr;
 
 	return m_pObject_Manager->Add_GameObject(iLevelIndex, strLayerTag, strPrototypeTag, pArg);
 }
@@ -150,7 +150,7 @@ HRESULT CGameInstance::Delete_GameObject(const _uint iLevelIndex, CGameObject* p
 
 	return m_pObject_Manager->Delete_GameObject(iLevelIndex, pObj);
 }
-
+ 
 HRESULT CGameInstance::Reserve_Pool(const _uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag, const _uint& iNumObj, void* pArg)
 {
 	if (nullptr == m_pObject_Manager)

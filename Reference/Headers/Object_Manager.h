@@ -60,7 +60,7 @@ public:
 	HRESULT	Add_Prototype(const wstring& strPrototypeTag, class CGameObject* pPrototype);	/* 원형을 생성하여 원형 벡터에 추가한다. (클라 로딩에서 생성하여 받아온다) */
 
 	/* 클론 오브젝트의 추가, 삭제 이벤트 */
-	HRESULT	Add_GameObject(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag, void* pArg); /* 사본을 생성하여 레이어에 추가한다. - 원형을 제외한 모든 게임오브젝트는 이 함수를 통해 생성(복제)된다. */
+	class CGameObject* Add_GameObject(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag, void* pArg); /* 사본을 생성하여 레이어에 추가한다. - 원형을 제외한 모든 게임오브젝트는 이 함수를 통해 생성(복제)된다. */
 	HRESULT	Delete_GameObject(_uint iLevelIndex, class CGameObject* pObj);					/* TODO 고유 아이디로 해도 괜찮을 듯 */
 
 	/* 클론 오브젝트의 풀링 이벤트 */
