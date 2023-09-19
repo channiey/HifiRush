@@ -55,7 +55,7 @@ protected:
 	/* UnActive 상태라면 라이프 사이클 함수를 타지 않는다. */
 	_bool					m_bActive = { TRUE };
 	/* 렌더 여부를 나타내며, 해당 변수가 false라면 아예 렌더콜을 호출하지 않는다. */
-	_bool					m_bRender = { TRUE };
+	_bool					m_bRender = { TRUE };	
 	wstring					m_strLayer = { };
 	wstring					m_strName = { };
 

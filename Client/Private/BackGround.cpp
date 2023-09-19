@@ -91,11 +91,8 @@ HRESULT CBackGround::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Transform */
-	CTransform::TRANSFORM_DESC		TransformDesc;
-	ZeroMemory(&TransformDesc, sizeof TransformDesc);
-
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
-		TEXT("Com_Transform"), (CComponent**)&m_pTransformCom, &TransformDesc)))
+		TEXT("Com_Transform"), (CComponent**)&m_pTransformCom)))
 		return E_FAIL;
 
 	return S_OK;

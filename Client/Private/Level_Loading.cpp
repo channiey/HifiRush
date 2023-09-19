@@ -106,9 +106,8 @@ HRESULT CLevel_Loading::Parse_LevelData(const _uint& iLevelID)
 			wstring strName = StringUtils::ToWString(file->Read<string>());
 			wstring strLayer = StringUtils::ToWString(file->Read<string>());
 			_bool	bActive = file->Read<_bool>();
+			_bool	bRender = file->Read<_bool>();
 			Matrix	tMatrix = file->Read<Matrix>();
-			_float	fSpeed = file->Read<_float>();
-			_float	fRot = file->Read<_float>();
 
 			/* 읽은 데이터를 바탕으로 파싱한다. */
 			{
@@ -116,13 +115,12 @@ HRESULT CLevel_Loading::Parse_LevelData(const _uint& iLevelID)
 				if (nullptr == pObj) continue;
 
 				pObj->Set_Active(bActive);
+				pObj->Set_Render(bRender);
 
 				CTransform* pTransform = pObj->Get_Transform();
 				if (nullptr == pTransform) continue;
 
 				pTransform->Set_WorldMat(tMatrix);
-				pTransform->Set_Speed(fSpeed);
-				pTransform->Set_RotRad(fSpeed);
 			}
 		}
 	}

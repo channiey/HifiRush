@@ -67,6 +67,13 @@ namespace Client
 		L"Layer_Effect",
 		L"Layer_Ui",
 	};
+
+	typedef struct tagTransformDesc
+	{
+		_float		fSpeedPerSec = { 0.f }; /* 초당 이동속도 */
+		_float		fRotRadPerSec = { 0.f }; /* 초당 회전량 */
+
+	}TRANSFORM_DESC;
 }
 
 extern HINSTANCE g_hInst;

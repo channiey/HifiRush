@@ -11,13 +11,6 @@ class ENGINE_DLL CTransform final : public CComponent
 public:
 	enum STATE { STATE_RIGHT, STATE_UP, STATE_LOOK, STATE_POSITION, STATE_END };
 
-public:
-	typedef struct tagTransformDesc
-	{
-		_float		fSpeedPerSec = { 0.f };
-		_float		fRotRadPerSec = { 0.f };
-	}TRANSFORM_DESC;
-
 private:
 	CTransform(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CTransform(const CTransform& rhs);
@@ -27,46 +20,44 @@ public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
 
-public: /* Only Transform */
-	const Vec4 Get_State(STATE eState) { return XMLoadFloat4x4(&m_WorldMatrix).r[eState]; }
-	const Vec3 Get_Scale();
-	const Vec3 Get_Rotation();
-	const _float& Get_Speed() const { return m_tTrans.fSpeedPerSec; }
-	const _float& Get_RotRad() const { return m_tTrans.fRotRadPerSec; }
-	const Matrix& Get_WorldMat() const { return m_WorldMatrix; }
-	const Matrix Get_WorldMatrix_Inverse() { return m_WorldMatrix.Invert(); }
+public: /* Get */
+	const Vec3	Get_Scale();
+	const Vec3	Get_Rotation(); /* Euler */
+	const Vec4	Get_Position()  const { return static_cast<Vec4>(m_WorldMatrix.m[STATE_POSITION]); } /* TODO 릴리즈 불안 가능성*/
 
+	const Vec4	Get_Right()		const { return static_cast<Vec4>(m_WorldMatrix.m[STATE_RIGHT]); }
+	const Vec4	Get_Left()		const { return -(static_cast<Vec4>(m_WorldMatrix.m[STATE_RIGHT])); }
+	const Vec4	Get_Up()		const { return static_cast<Vec4>(m_WorldMatrix.m[STATE_UP]); }
+	const Vec4	Get_Down()		const { return -(static_cast<Vec4>(m_WorldMatrix.m[STATE_UP])); }
+	const Vec4	Get_Forward()	const { return static_cast<Vec4>(m_WorldMatrix.m[STATE_LOOK]); }
+	const Vec4	Get_Backward()	const { return -(static_cast<Vec4>(m_WorldMatrix.m[STATE_LOOK])); }
+
+	const Matrix&	Get_WorldMat() const { return m_WorldMatrix; }
+
+public: /* Set */
+	void	Set_Scale(const Vec3& vScale);
+
+	void	Rotate(Vec3& vEulers);
+
+	void	Translate(const Vec3 vTranslation);
+	void	Translate(const Vec4 vTranslation) { Translate(vTranslation.ToVec3()); }
+	void	Set_Position(Vec4& vPos) { static_cast<Vec4>(m_WorldMatrix.m[STATE_POSITION]) = vPos; }
+
+	void	Set_WorldMat(const Matrix& matrix) { memcpy(&m_WorldMatrix, &matrix, sizeof(Matrix)); }
+
+	const Vec3	ToEulerAngles(Quaternion quat); /* Quat To Euler*/
+
+public: /* Other */
+	const Vec4 Get_State(STATE eState) { return XMLoadFloat4x4(&m_WorldMatrix).r[STATE_POSITION]; }
 	void Set_State(STATE eState, Vec4 vState);
-	void Set_Scale(const Vec3& vScale);
-	void Set_Rotation(Vec4 vAxis, _float fRadian);
-	void Set_Speed(const _float& fSpeed) { m_tTrans.fSpeedPerSec = fSpeed; }
-	void Set_RotRad(const _float& fRotRad) { m_tTrans.fRotRadPerSec = fRotRad; }
-	void Set_WorldMat(const Matrix& matrix) { m_WorldMatrix = matrix; }
-
-	const Vec3 ToEulerAngles(Quaternion quat);
-
-
-public: /* User Convenient */
-	void Move_Forward(_float fTimeDelta);
-	void Move_Backward(_float fTimeDelta);
-	void Move_Left(_float fTimeDelta);
-	void Move_Right(_float fTimeDelta);
-
-	void Roatate(Vec4 vAxis, _float fTimeDelta);
-
-	void Rotate_World(Vec4 vAxis, _float fRadian);
-	void Rotate_Local(Vec4 vAxis, _float fRadian);
 
 	void LookAt(Vec4 vPoint);
-	void LookAt_LandObj(Vec3 vPoint);
-	void Chase(Vec3 vPoint, _float fTimeDelta, _float fMargin = 0.1f);
 
 public:
 	HRESULT Bind_ShaderResources(class CShader* pShader, const char* pConstantName);
 
 private:
 	Matrix				m_WorldMatrix = {};
-	TRANSFORM_DESC		m_tTrans = {};
 
 public:
 	static CTransform* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

@@ -21,6 +21,7 @@ public:
 
 private:
 	_float	m_fMouseSensitive = { 0.0f };
+	TRANSFORM_DESC m_tTransDesc = {};
 
 private:
 	HRESULT Ready_Components();

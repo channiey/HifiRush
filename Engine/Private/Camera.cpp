@@ -36,7 +36,7 @@ void CCamera::Tick(_float fTimeDelta)
 	
 	/* 뷰 스페이스 변환 행렬은 카메라 월드 변환 역행렬이다. */
 
-	m_pPipeLine->Set_Transform(CPipeLine::D3DTS_VIEW, m_pTransformCom->Get_WorldMatrix_Inverse());
+	m_pPipeLine->Set_Transform(CPipeLine::D3DTS_VIEW, m_pTransformCom->Get_WorldMat().Invert());
 	m_pPipeLine->Set_Transform(CPipeLine::D3DTS_PROJ, XMMatrixPerspectiveFovLH(m_tCamDesc.fFovy, m_tCamDesc.fAspect, m_tCamDesc.fNear, m_tCamDesc.fFar));
 }
 

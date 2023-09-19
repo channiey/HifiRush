@@ -151,6 +151,19 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Layers()
 
 		m_bLayerEvent = TRUE;
 	}
+	ImGui::SameLine();
+
+	/* 레이어 렌더 */
+	if (ImGui::Button("Render"))
+	{
+		/*if (nullptr != m_pImGui_Manager->m_pCurObject)
+		{
+			m_pGameInstance->Delete_GameObject(m_pGameInstance->Get_CurLevelIndex(), m_pImGui_Manager->m_pCurObject);
+			m_pImGui_Manager->Reset_Index_CurObject();
+
+			m_bObjectEvent = TRUE;
+		}*/
+	}
 
 	/* 선택한 레벨의 레이어들을 가져온다.*/
 	map<const wstring, class CLayer*>* pLayers = m_pGameInstance->Get_All_Layer(m_pImGui_Manager->m_iIndex_CurLevelID);
@@ -230,6 +243,7 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Objects()
 			m_bObjectEvent = TRUE;
 		}
 	}
+
 
 	/* 오브젝트 검색 */
 	//ImGui::Button("Find");
@@ -372,10 +386,12 @@ void CImGui_Window_Main_Hierarachy::Save_LevelData()
 			/* 액티브 여부 */
 			file->Write<_bool>(obj->Is_Active());
 
+			/* 렌더 여부 */
+			file->Write<_bool>(obj->Is_Render());
+
 			/* 트랜스폼 */
 			file->Write<Matrix>(obj->Get_Transform()->Get_WorldMat());
-			file->Write<_float>(obj->Get_Transform()->Get_Speed());
-			file->Write<_float>(obj->Get_Transform()->Get_RotRad());
+
 		}
 	}
 }

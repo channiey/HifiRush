@@ -22,34 +22,27 @@ HRESULT CTransform::Initialize_Prototype()
 
 HRESULT CTransform::Initialize(void* pArg)
 {
-	if (nullptr != pArg)
-	{
-		TRANSFORM_DESC	TransformDesc;
-
-		memmove(&TransformDesc, pArg, sizeof TransformDesc);
-
-		m_tTrans.fSpeedPerSec = TransformDesc.fSpeedPerSec;
-		m_tTrans.fRotRadPerSec = TransformDesc.fRotRadPerSec;
-	}
-
 	return S_OK;
 }
 
 const Vec3 CTransform::Get_Scale()
 {
-	return _float3(m_WorldMatrix.Right().Length(), m_WorldMatrix.Up().Length(), m_WorldMatrix.Forward().Length());
+	Vec3 vScale, vTemp;
+	Quaternion quatTemp;
+
+	m_WorldMatrix.Decompose(vScale, quatTemp, vTemp);
+
+	return vScale;
 }
 
 const Vec3 CTransform::Get_Rotation()
 {
-	Quaternion quat{};
+	Vec3 vTemp;
+	Quaternion quatTemp;
 
-	Vec3 vScale = Get_Scale();
-	Vec3 vPos = { m_WorldMatrix._41, m_WorldMatrix._42, m_WorldMatrix._43 };
+	m_WorldMatrix.Decompose(vTemp, quatTemp, vTemp);
 
-	m_WorldMatrix.Decompose(vScale, quat, vPos);
-
-	return ToEulerAngles(quat);
+	return ToEulerAngles(quatTemp);
 }
 
 void CTransform::Set_State(STATE eState, Vec4 vState)
@@ -65,13 +58,71 @@ void CTransform::Set_State(STATE eState, Vec4 vState)
 
 void CTransform::Set_Scale(const Vec3& vScale)
 {
-	Vec4		vRight = Get_State(STATE_RIGHT);
-	Vec4		vUp = Get_State(STATE_UP);
-	Vec4		vLook = Get_State(STATE_LOOK);
+	for (_int i = 0; i < 3; ++i)
+	{
+		Vec3 v(m_WorldMatrix.m[i][0], m_WorldMatrix.m[i][1], m_WorldMatrix.m[i][2]);
+		v.Normalize();
 
-	Set_State(STATE_RIGHT, XMVector3Normalize(vRight) * vScale.x);
-	Set_State(STATE_UP, XMVector3Normalize(vUp) * vScale.y);
-	Set_State(STATE_LOOK, XMVector3Normalize(vLook) * vScale.z);
+		for (_int j = 0; j < 3; ++j)
+			m_WorldMatrix.m[i][j] = *(((_float*)&v) + j) * *(((_float*)&vScale) + j);
+	}
+
+	//Vec4		vRight = Get_Right();
+	//Vec4		vUp = Get_Up();
+	//Vec4		vLook = Get_Forward();
+
+	//Set_State(STATE_RIGHT, XMVector3Normalize(vRight) * vScale.x);
+	//Set_State(STATE_UP, XMVector3Normalize(vUp) * vScale.y);
+	//Set_State(STATE_LOOK, XMVector3Normalize(vLook) * vScale.z);
+}
+
+void CTransform::Rotate(Vec3& vEulers)
+{
+	Matrix matRotation = Matrix::Identity;
+	Quaternion quat = Quaternion::Identity;
+
+	/* CreateFromAxisAngle(Vector3 axis, float angle) */
+	/* axis = 회전 중심으로 사용할 단위 벡터 */
+	/* angle = 위 벡터를 중심으로 회전할 각도(라디안) */
+
+	if (0.f != vEulers.y)
+	{
+		/* 내 y축을 기준으로 오일러 y만큼 회전한 쿼터니언을 구한다. */
+		Vec3 v(m_WorldMatrix.m[1]);
+		quat = Quaternion::CreateFromAxisAngle(v, XMConvertToRadians(vEulers.y));
+	}
+	if (0.f != vEulers.x)
+	{
+		/* 내 x축을 기준으로 오일러 x만큼 회전한 쿼터니언을 구해 이전 쿼터니언에 곱한다. */
+
+		Vec3 v(m_WorldMatrix.m[0]);
+		quat *= Quaternion::CreateFromAxisAngle(v, XMConvertToRadians(vEulers.x));
+	}
+	if (0.f != vEulers.z)
+	{
+		Vec3 v(m_WorldMatrix.m[2]);
+		quat *= Quaternion::CreateFromAxisAngle(v, XMConvertToRadians(vEulers.z));
+	}
+
+	/* 회전이 반영된 쿼터니언으로부터 회전행렬을 만든다. */
+	matRotation = Matrix::CreateFromQuaternion(quat);
+
+	for (_uint i = 0; i < 3; ++i)
+	{
+		/* 회전 행렬으로부터 이번 축의 방향벡터를 구한다. */
+		Vec3 v(m_WorldMatrix.m[i]);
+		v = Vec3::TransformNormal(v, matRotation);
+
+		/* 위 방향벡터를 월드 행렬에 세팅한다. */
+		for (_uint j = 0; j < 3; ++j)
+			m_WorldMatrix.m[i][j] = *((_float*)&v + j);
+	}
+}
+
+void CTransform::Translate(const Vec3 vTranslation)
+{
+	for (_uint i = 0; i < 3; ++i)
+		*((_float*)(&m_WorldMatrix.m[3]) + i) += *((_float*)&vTranslation + i);
 }
 
 HRESULT CTransform::Bind_ShaderResources(CShader* pShader, const char* pConstantName)
@@ -103,130 +154,6 @@ const Vec3 CTransform::ToEulerAngles(Quaternion quat)
 	return angles;
 }
 
-void CTransform::Move_Forward(_float fTimeDelta)
-{
-	_vector		vLook = Get_State(STATE_LOOK);
-
-	_vector		vPosition = Get_State(STATE_POSITION);
-
-	vPosition += XMVector3Normalize(vLook) * m_tTrans.fSpeedPerSec * fTimeDelta;
-
-	Set_State(STATE_POSITION, vPosition);
-}
-
-void CTransform::Move_Backward(_float fTimeDelta)
-{
-	_vector		vLook = Get_State(STATE_LOOK);
-
-	_vector		vPosition = Get_State(STATE_POSITION);
-
-	vPosition -= XMVector3Normalize(vLook) * m_tTrans.fSpeedPerSec * fTimeDelta;
-
-	Set_State(STATE_POSITION, vPosition);
-}
-
-void CTransform::Move_Left(_float fTimeDelta)
-{
-	_vector		vRight = Get_State(STATE_RIGHT);
-
-	_vector		vPosition = Get_State(STATE_POSITION);
-
-	vPosition -= XMVector3Normalize(vRight) * m_tTrans.fSpeedPerSec * fTimeDelta;
-
-	Set_State(STATE_POSITION, vPosition);
-}
-
-void CTransform::Move_Right(_float fTimeDelta)
-{
-	_vector		vRight = Get_State(STATE_RIGHT);
-
-	_vector		vPosition = Get_State(STATE_POSITION);
-
-	vPosition += XMVector3Normalize(vRight) * m_tTrans.fSpeedPerSec * fTimeDelta;
-
-	Set_State(STATE_POSITION, vPosition);
-}
-
-void CTransform::Set_Rotation(Vec4 vAxis, _float fRadian)
-{
-	/* 항등상태 기준으로 정해준 각도만큼 회전시켜놓는다. */
-	Vec3		vScaled = Get_Scale();
-
-	/* Right, Up, Look를 회전시킨다. */
-	Vec4		vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f) * vScaled.x;
-	Vec4		vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f) * vScaled.y;
-	Vec4		vLook = XMVectorSet(0.f, 0.f, 1.f, 0.f) * vScaled.z;
-
-	_matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, fRadian);
-
-	vRight	= XMVector4Transform(vRight, RotationMatrix);
-	vUp		= XMVector4Transform(vUp, RotationMatrix);
-	vLook	= XMVector4Transform(vLook, RotationMatrix);
-	/*XMVector3TransformNormal();
-	XMVector3TransformCoord();*/
-
-	Set_State(STATE_RIGHT, vRight);
-	Set_State(STATE_UP, vUp);
-	Set_State(STATE_LOOK, vLook);
-}
-
-void CTransform::Roatate(Vec4 vAxis, _float fTimeDelta)
-{
-	/* 현재 상태기준 정해준 각도만큼 회전시켜놓는다. */
-	Vec4		vRight = Get_State(STATE_RIGHT);
-	Vec4		vUp = Get_State(STATE_UP);
-	Vec4		vLook = Get_State(STATE_LOOK);
-
-	Matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, m_tTrans.fRotRadPerSec * fTimeDelta);
-
-	vRight	= XMVector4Transform(vRight, RotationMatrix);
-	vUp		= XMVector4Transform(vUp, RotationMatrix);
-	vLook	= XMVector4Transform(vLook, RotationMatrix);
-
-	Set_State(STATE_RIGHT, vRight);
-	Set_State(STATE_UP, vUp);
-	Set_State(STATE_LOOK, vLook);
-}
-
-void CTransform::Rotate_World(Vec4 vAxis, _float fRadian)
-{
-	/* 항등상태 기준으로 정해준 각도만큼 회전시켜놓는다. */
-	Vec3		vScaled = Get_Scale();
-
-	/* Right, Up, Look를 회전시킨다. */
-	Vec4		vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f) * vScaled.x;
-	Vec4		vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f) * vScaled.y;
-	Vec4		vLook = XMVectorSet(0.f, 0.f, 1.f, 0.f) * vScaled.z;
-
-	_matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, fRadian);
-
-	vRight = XMVector4Transform(vRight, RotationMatrix);
-	vUp = XMVector4Transform(vUp, RotationMatrix);
-	vLook = XMVector4Transform(vLook, RotationMatrix);
-
-
-	Set_State(STATE_RIGHT, vRight);
-	Set_State(STATE_UP, vUp);
-	Set_State(STATE_LOOK, vLook);
-}
-
-void CTransform::Rotate_Local(Vec4 vAxis, _float fRadian)
-{
-	Vec4		vRight = Get_State(STATE_RIGHT);
-	Vec4		vUp = Get_State(STATE_UP);
-	Vec4		vLook = Get_State(STATE_LOOK);
-
-	Matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, fRadian);
-
-	vRight = XMVector4Transform(vRight, RotationMatrix);
-	vUp = XMVector4Transform(vUp, RotationMatrix);
-	vLook = XMVector4Transform(vLook, RotationMatrix);
-
-	Set_State(STATE_RIGHT, vRight);
-	Set_State(STATE_UP, vUp);
-	Set_State(STATE_LOOK, vLook);
-}
-
 void CTransform::LookAt(Vec4 vPoint)
 {
 	Vec3		vScaled = Get_Scale();
@@ -239,32 +166,6 @@ void CTransform::LookAt(Vec4 vPoint)
 	Set_State(STATE_RIGHT, vRight);
 	Set_State(STATE_UP, vUp);
 	Set_State(STATE_LOOK, vLook);
-}
-
-void CTransform::LookAt_LandObj(Vec3 vPoint)
-{
-	Vec4		vLook = vPoint - Get_State(CTransform::STATE_POSITION);
-
-	Vec3		vScale = Get_Scale();
-
-	Vec4		vRight = XMVector3Normalize(XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook)) * vScale.x;
-
-	vLook = XMVector3Normalize(XMVector3Cross(vRight, Get_State(CTransform::STATE_UP))) * vScale.z;
-
-	Set_State(CTransform::STATE_RIGHT, vRight);
-	Set_State(CTransform::STATE_LOOK, vLook);
-}
-
-void CTransform::Chase(Vec3 vPoint, _float fTimeDelta, _float fMargin)
-{
-	Vec4		vPosition = Get_State(STATE_POSITION);
-
-	Vec3		vDir = vPoint - vPosition;
-
-	if (XMVectorGetX(XMVector3Length(vDir)) > fMargin)
-		vPosition += XMVector3Normalize(vDir) * m_tTrans.fSpeedPerSec * fTimeDelta;
-
-	Set_State(STATE_POSITION, vPosition);
 }
 
 CTransform * CTransform::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)

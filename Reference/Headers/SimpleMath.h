@@ -326,6 +326,10 @@ namespace DirectX
             static const Vector3 Left;
             static const Vector3 Forward;
             static const Vector3 Backward;
+
+            ///* User */
+            //Vector4 ToVec4Nor() const  noexcept { return Vector4(x, y, z, 0); }
+            //Vector4 ToVec4Coord() const  noexcept { return Vector4(x, y, z, 1); }
         };
 
         // Binary operators
@@ -441,6 +445,10 @@ namespace DirectX
             static const Vector4 UnitY;
             static const Vector4 UnitZ;
             static const Vector4 UnitW;
+            
+            /* User */
+            Vector3 ToVec3() const  noexcept { return Vector3(x, y, z); }
+
         };
 
         // Binary operators

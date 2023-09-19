@@ -38,11 +38,12 @@ HRESULT CCamera_Debug::Initialize(void * pArg)
 	m_tCamDesc.fFar = 300.0f;
 
 	/* 카메라 베이스 클래스의 트랜스폼 정보를 세팅한다. */
-	m_pTransformCom->Set_Speed(10.f);
-	m_pTransformCom->Set_RotRad(XMConvertToRadians(90.0f));
 
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, m_tCamDesc.vEye);
 	m_pTransformCom->LookAt(m_tCamDesc.vAt);
+
+	m_tTransDesc.fSpeedPerSec = 10.f;
+	m_tTransDesc.fRotRadPerSec = 90.f;
 	
 	return S_OK;
 }
@@ -52,21 +53,21 @@ void CCamera_Debug::Tick(_float fTimeDelta)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
-	if (pGameInstance->Key_Pressing('A'))
-	{
-		m_pTransformCom->Move_Left(fTimeDelta);
-	}
-	if (pGameInstance->Key_Pressing('D'))
-	{
-		m_pTransformCom->Move_Right(fTimeDelta);
-	}
 	if (pGameInstance->Key_Pressing('W'))
 	{
-		m_pTransformCom->Move_Forward(fTimeDelta);
+		m_pTransformCom->Translate(m_pTransformCom->Get_Forward() * m_tTransDesc.fSpeedPerSec * fTimeDelta);
 	}
 	if (pGameInstance->Key_Pressing('S'))
 	{
-		m_pTransformCom->Move_Backward(fTimeDelta);
+		m_pTransformCom->Translate(m_pTransformCom->Get_Backward() * m_tTransDesc.fSpeedPerSec * fTimeDelta);
+	}
+	if (pGameInstance->Key_Pressing('A'))
+	{
+		m_pTransformCom->Translate(m_pTransformCom->Get_Left() * m_tTransDesc.fSpeedPerSec * fTimeDelta);
+	}
+	if (pGameInstance->Key_Pressing('D'))
+	{
+		m_pTransformCom->Translate(m_pTransformCom->Get_Right() * m_tTransDesc.fSpeedPerSec * fTimeDelta);
 	}
 
 	__super::Tick(fTimeDelta);
