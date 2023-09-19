@@ -4,7 +4,6 @@
 CTransform::CTransform(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CComponent(pDevice, pContext)
 {
-
 }
 
 CTransform::CTransform(const CTransform & rhs)
@@ -66,60 +65,102 @@ void CTransform::Set_Scale(const Vec3& vScale)
 		for (_int j = 0; j < 3; ++j)
 			m_WorldMatrix.m[i][j] = *(((_float*)&v) + j) * *(((_float*)&vScale) + j);
 	}
-
-	//Vec4		vRight = Get_Right();
-	//Vec4		vUp = Get_Up();
-	//Vec4		vLook = Get_Forward();
-
-	//Set_State(STATE_RIGHT, XMVector3Normalize(vRight) * vScale.x);
-	//Set_State(STATE_UP, XMVector3Normalize(vUp) * vScale.y);
-	//Set_State(STATE_LOOK, XMVector3Normalize(vLook) * vScale.z);
 }
 
-void CTransform::Rotate(Vec3& vEulers)
+void CTransform::Set_Rotation(const Vec3& vEulers, const _bool& bWorld)
+{
+	// 각 회전 축에 대한 쿼터니언을 초기화합니다.
+	Quaternion quatX = Quaternion::Identity;
+	Quaternion quatY = Quaternion::Identity;
+	Quaternion quatZ = Quaternion::Identity;
+
+	// 오일러 각도를 90도 범위 내로 조정합니다.
+	Vec3 clampedEulers = vEulers;
+	clampedEulers.x = fmodf(clampedEulers.x, 360.0f);
+	clampedEulers.y = fmodf(clampedEulers.y, 360.0f);
+	clampedEulers.z = fmodf(clampedEulers.z, 360.0f);
+
+	// 쿼터니언을 순서대로 결합합니다.
+	Quaternion finalQuat = Quaternion::Identity;
+
+	// X 축 회전을 추가합니다.
+	if (clampedEulers.x != 0.0f)
+	{
+		Vec3 xAxis = bWorld ? Vec3::Right : static_cast<Vec3>(m_WorldMatrix.m[0]);
+		quatX = Quaternion::CreateFromAxisAngle(xAxis, XMConvertToRadians(clampedEulers.x));
+		finalQuat *= quatX;
+	}
+
+	// Y 축 회전을 추가합니다.
+	if (clampedEulers.y != 0.0f)
+	{
+		Vec3 yAxis = bWorld ? Vec3::Up : static_cast<Vec3>(m_WorldMatrix.m[1]);
+		quatY = Quaternion::CreateFromAxisAngle(yAxis, XMConvertToRadians(clampedEulers.y));
+		finalQuat *= quatY;
+	}
+
+	// Z 축 회전을 추가합니다.
+	if (clampedEulers.z != 0.0f)
+	{
+		Vec3 zAxis = bWorld ? Vec3::Forward : static_cast<Vec3>(m_WorldMatrix.m[2]);
+		quatZ = Quaternion::CreateFromAxisAngle(zAxis, XMConvertToRadians(clampedEulers.z));
+		finalQuat *= quatZ;
+	}
+
+	// 현재의 스케일과 위치 정보를 추출합니다.
+	Vec3 scale = Get_Scale();
+	Vec3 position = Get_Position().ToVec3();
+
+	// 쿼터니언을 회전 행렬로 변환합니다.
+	Matrix matRotation = Matrix::CreateFromQuaternion(finalQuat);
+
+	// 스케일 및 위치 정보를 적용한 최종 변환 행렬을 생성합니다.
+	matRotation.m[3][0] = position.x;
+	matRotation.m[3][1] = position.y;
+	matRotation.m[3][2] = position.z;
+	matRotation.m[0][0] *= scale.x;
+	matRotation.m[1][1] *= scale.y;
+	matRotation.m[2][2] *= scale.z;
+
+	// 월드 행렬을 최종 변환 행렬로 설정합니다.
+	m_WorldMatrix = matRotation;
+}
+
+void CTransform::Rotate(const Vec3& vEulers, const _bool& bWorld)
 {
 	Matrix matRotation = Matrix::Identity;
 	Quaternion quat = Quaternion::Identity;
-
-	/* CreateFromAxisAngle(Vector3 axis, float angle) */
-	/* axis = 회전 중심으로 사용할 단위 벡터 */
-	/* angle = 위 벡터를 중심으로 회전할 각도(라디안) */
+	Vec3 vAxis;
 
 	if (0.f != vEulers.y)
 	{
-		/* 내 y축을 기준으로 오일러 y만큼 회전한 쿼터니언을 구한다. */
-		Vec3 v(m_WorldMatrix.m[1]);
-		quat = Quaternion::CreateFromAxisAngle(v, XMConvertToRadians(vEulers.y));
+		Vec3 vAxis = bWorld ? Vec3::Up : static_cast<Vec3>(m_WorldMatrix.m[1]);
+		quat = Quaternion::CreateFromAxisAngle(vAxis, XMConvertToRadians(vEulers.y)); /* 매개변수 : 회전 중심으로 사용할 벡터, 회전 각도(라디안) */
 	}
 	if (0.f != vEulers.x)
 	{
-		/* 내 x축을 기준으로 오일러 x만큼 회전한 쿼터니언을 구해 이전 쿼터니언에 곱한다. */
-
-		Vec3 v(m_WorldMatrix.m[0]);
-		quat *= Quaternion::CreateFromAxisAngle(v, XMConvertToRadians(vEulers.x));
+		Vec3 vAxis = bWorld ? Vec3::Right : static_cast<Vec3>(m_WorldMatrix.m[0]);
+		quat *= Quaternion::CreateFromAxisAngle(vAxis, XMConvertToRadians(vEulers.x));
 	}
 	if (0.f != vEulers.z)
 	{
-		Vec3 v(m_WorldMatrix.m[2]);
-		quat *= Quaternion::CreateFromAxisAngle(v, XMConvertToRadians(vEulers.z));
+		Vec3 vAxis = bWorld ? Vec3::Forward : static_cast<Vec3>(m_WorldMatrix.m[2]);
+		quat *= Quaternion::CreateFromAxisAngle(vAxis, XMConvertToRadians(vEulers.z));
 	}
 
-	/* 회전이 반영된 쿼터니언으로부터 회전행렬을 만든다. */
 	matRotation = Matrix::CreateFromQuaternion(quat);
 
 	for (_uint i = 0; i < 3; ++i)
 	{
-		/* 회전 행렬으로부터 이번 축의 방향벡터를 구한다. */
 		Vec3 v(m_WorldMatrix.m[i]);
 		v = Vec3::TransformNormal(v, matRotation);
 
-		/* 위 방향벡터를 월드 행렬에 세팅한다. */
 		for (_uint j = 0; j < 3; ++j)
 			m_WorldMatrix.m[i][j] = *((_float*)&v + j);
 	}
 }
 
-void CTransform::Translate(const Vec3 vTranslation)
+void CTransform::Translate(const Vec3& vTranslation)
 {
 	for (_uint i = 0; i < 3; ++i)
 		*((_float*)(&m_WorldMatrix.m[3]) + i) += *((_float*)&vTranslation + i);
@@ -140,16 +181,29 @@ const Vec3 CTransform::ToEulerAngles(Quaternion quat)
 	double sinr_cosp = 2 * (quat.w * quat.x + quat.y * quat.z);
 	double cosr_cosp = 1 - 2 * (quat.x * quat.x + quat.y * quat.y);
 	angles.x = std::atan2(sinr_cosp, cosr_cosp);
-
+	if (-0.f == angles.x) angles.x = 0.f;
 	// pitch (y-axis rotation)
-	double sinp = std::sqrt(1 + 2 * (quat.w * quat.y - quat.x * quat.z));
+
+	/**/
+	/*double sinp = std::sqrt(1 + 2 * (quat.w * quat.y - quat.x * quat.z));
 	double cosp = std::sqrt(1 - 2 * (quat.w * quat.y - quat.x * quat.z));
-	angles.y = 2 * std::atan2(sinp, cosp) - 3.14159f / 2;
+	angles.y = 2 * std::atan2(sinp, cosp) - XM_PI / 2;*/
+
+	/* GPT 기반 수정 */
+	/*
+		atan2 함수의 결과 범위는 - π에서 π 또는 - 180에서 180도입니다.
+		그러나 위 코드에서는 sinp와 cosp 값을 사용하여 atan2 함수로부터 얻은 값을 2배하고 XM_PI / 2를 뺀 값을 angles.y에 저장하려고 합니다.
+		이렇게 하면 유효한 오일러 각도가 아닐 수 있으며 원하는 결과를 얻을 수 없을 수 있습니다.
+	*/
+	
+	angles.y = std::atan2(2 * (quat.w * quat.y + quat.x * quat.z), 1 - 2 * (quat.y * quat.y + quat.z * quat.z));
+	if (-0.f == angles.y) angles.y = 0.f;
 
 	// yaw (z-axis rotation)
 	double siny_cosp = 2 * (quat.w * quat.z + quat.x * quat.y);
 	double cosy_cosp = 1 - 2 * (quat.y * quat.y + quat.z * quat.z);
 	angles.z = std::atan2(siny_cosp, cosy_cosp);
+	if (-0.f == angles.z) angles.z = 0.f;
 
 	return angles;
 }

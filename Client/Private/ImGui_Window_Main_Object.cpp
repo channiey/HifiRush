@@ -104,6 +104,8 @@ void CImGui_Window_Main_Object::Show_Object_Info()
 
 }
 
+_float fRotPrev[3] = { 0.f, 0.f, 0.f };
+
 void CImGui_Window_Main_Object::Show_Object_Transform()
 {
 	if (nullptr != pObject)
@@ -126,22 +128,22 @@ void CImGui_Window_Main_Object::Show_Object_Transform()
 
 				
 				/* Rotation */
-				Vec3 vRot = pTransform->Get_Rotation();
+				Vec3 vRot = pTransform->Get_Rotation(); /* Euler */
 				_float fRot[3] = { XMConvertToDegrees(vRot.x), XMConvertToDegrees(vRot.y), XMConvertToDegrees(vRot.z) };
 				if (ImGui::InputFloat3("Rot", fRot, "%.1f"))
 				{
-					/*if (vRot.x != fRot[0])
+					if (XMConvertToDegrees(vRot.x) != fRot[0] || XMConvertToDegrees(vRot.y) != fRot[1] || XMConvertToDegrees(vRot.z) != fRot[2])
 					{
-						pTransform->Rotate_Local(pTransform->Get_State(CTransform::STATE_RIGHT), XMConvertToRadians(fRot[0]));
+						if (fRot[0] != fRotPrev[0] || fRot[1] != fRotPrev[1] || fRot[2] != fRotPrev[2])
+						{
+							for (size_t i = 0; i < 3; i++)
+								fRotPrev[i] = fRot[i];
+							
+							vRot = { fRot[0], fRot[1], fRot[2] };
+
+							pTransform->Set_Rotation(vRot, TRUE);
+						}
 					}
-					else if (vRot.y != fRot[1])
-					{
-						pTransform->Rotate_Local(pTransform->Get_State(CTransform::STATE_UP), XMConvertToRadians(fRot[1]));
-					}
-					else if (vRot.z != fRot[2])
-					{
-						pTransform->Rotate_Local(pTransform->Get_State(CTransform::STATE_LOOK), XMConvertToRadians(fRot[2]));
-					}*/
 				}
 
 				/* Scale*/
