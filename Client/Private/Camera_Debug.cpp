@@ -1,6 +1,7 @@
 #include "..\Default\stdafx.h"
 #include "..\Public\Camera_Debug.h"
 
+#include "GameInstance.h"
 CCamera_Debug::CCamera_Debug(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CCamera(pDevice, pContext)
 {
@@ -41,31 +42,36 @@ HRESULT CCamera_Debug::Initialize(void * pArg)
 	m_pTransformCom->Set_RotRad(XMConvertToRadians(90.0f));
 
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, m_tCamDesc.vEye);
-	m_pTransformCom->LookAt(XMLoadFloat4(&m_tCamDesc.vAt));
+	m_pTransformCom->LookAt(m_tCamDesc.vAt);
 	
 	return S_OK;
 }
 
 void CCamera_Debug::Tick(_float fTimeDelta)
 {
-	if (GetKeyState(VK_LEFT) & 0x8000)
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+	if (pGameInstance->Key_Pressing('A'))
 	{
 		m_pTransformCom->Move_Left(fTimeDelta);
 	}
-	if (GetKeyState(VK_RIGHT) & 0x8000)
+	if (pGameInstance->Key_Pressing('D'))
 	{
 		m_pTransformCom->Move_Right(fTimeDelta);
 	}
-	if (GetKeyState(VK_UP) & 0x8000)
+	if (pGameInstance->Key_Pressing('W'))
 	{
 		m_pTransformCom->Move_Forward(fTimeDelta);
 	}
-	if (GetKeyState(VK_DOWN) & 0x8000)
+	if (pGameInstance->Key_Pressing('S'))
 	{
 		m_pTransformCom->Move_Backward(fTimeDelta);
 	}
 
 	__super::Tick(fTimeDelta);
+
+	Safe_Release(pGameInstance);
 }
 
 void CCamera_Debug::LateTick(_float fTimeDelta)

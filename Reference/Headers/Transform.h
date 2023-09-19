@@ -35,8 +35,11 @@ public:
 	const Matrix& Get_WorldMat() const { return m_WorldMatrix; }
 	const Matrix Get_WorldMatrix_Inverse()
 	{
-		Matrix m = XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_WorldMatrix));
+		Matrix m = m_WorldMatrix.Invert();
 		return m;
+		//_float4x4 WorldMatrixInverse = m_WorldMatrix;
+		//XMStoreFloat4x4(&WorldMatrixInverse, XMMatrixInverse(nullptr, XMLoadFloat4x4(&WorldMatrixInverse)));
+		//return WorldMatrixInverse;
 	}
 
 	void Set_State(STATE eState, Vec4 vState);
@@ -54,7 +57,7 @@ public:
 
 	void Roatate(Vec4 vAxis, _float fTimeDelta);
 
-	void LookAt(Vec3 vPoint);
+	void LookAt(Vec4 vPoint);
 	void LookAt_LandObj(Vec3 vPoint);
 	void Chase(Vec3 vPoint, _float fTimeDelta, _float fMargin = 0.1f);
 

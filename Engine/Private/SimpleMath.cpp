@@ -8,7 +8,7 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //-------------------------------------------------------------------------------------
 
-#include "SimpleMath_.h"
+#include "SimpleMath.h"
 
 /****************************************************************************
  *
@@ -18,7 +18,7 @@
 
 namespace DirectX
 {
-    namespace SimpleMath_
+    namespace SimpleMath
     {
         const Vector2 Vector2::Zero = { 0.f, 0.f };
         const Vector2 Vector2::One = { 1.f, 1.f };

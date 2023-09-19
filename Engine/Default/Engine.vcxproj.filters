@@ -216,7 +216,7 @@
     <ClInclude Include="..\public\Shader.h">
       <Filter>01.Utiltiy\03.Components\Component\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\SimpleMath_.h">
+    <ClInclude Include="..\Public\SimpleMath.h">
       <Filter>01.Utiltiy\98.Utils\Math</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\FileUtils.h">
@@ -335,7 +335,7 @@
     <ClCompile Include="..\Public\Engine_Struct.cpp">
       <Filter>99.Defines</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\SimpleMath_.cpp">
+    <ClCompile Include="..\Private\SimpleMath.cpp">
       <Filter>01.Utiltiy\98.Utils\Math</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\FileUtils.cpp">

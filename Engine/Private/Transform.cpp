@@ -154,7 +154,7 @@ void CTransform::Roatate(Vec4 vAxis, _float fTimeDelta)
 	Set_State(STATE_LOOK, vLook);
 }
 
-void CTransform::LookAt(Vec3 vPoint)
+void CTransform::LookAt(Vec4 vPoint)
 {
 	Vec3		vScaled = Get_Scale();
 

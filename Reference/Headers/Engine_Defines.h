@@ -71,4 +71,4 @@ using namespace std;
 using std::thread;
 
 /* Utility */
-#include "SimpleMath_.h"
+#include "SimpleMath.h"

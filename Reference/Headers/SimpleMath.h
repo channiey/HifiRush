@@ -14,6 +14,10 @@
 #include <dxgi1_2.h>
 #endif
 
+/* RECT등 자료형 인식문제 해결을 위해 임시로 추가 ㄴ*/
+#include <windows.h>
+//#include <windef.h>
+
 #include <cassert>
 #include <cstddef>
 #include <cstring>
@@ -3267,8 +3271,8 @@ namespace DirectX
             using namespace DirectX;
             XMMATRIX M = XMLoadFloat4x4(this);
             Matrix R;
-            XMVECTOR det;
-            XMStoreFloat4x4(&R, XMMatrixInverse(&det, M));
+            //XMVECTOR det;
+            XMStoreFloat4x4(&R, XMMatrixInverse(nullptr, M));
             return R;
         }
 
