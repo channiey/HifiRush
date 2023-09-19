@@ -27,20 +27,14 @@ public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
 
-public:
+public: /* Only Transform */
 	const Vec4 Get_State(STATE eState) { return XMLoadFloat4x4(&m_WorldMatrix).r[eState]; }
 	const Vec3 Get_Scale();
+	const Vec3 Get_Rotation();
 	const _float& Get_Speed() const { return m_tTrans.fSpeedPerSec; }
 	const _float& Get_RotRad() const { return m_tTrans.fRotRadPerSec; }
 	const Matrix& Get_WorldMat() const { return m_WorldMatrix; }
-	const Matrix Get_WorldMatrix_Inverse()
-	{
-		Matrix m = m_WorldMatrix.Invert();
-		return m;
-		//_float4x4 WorldMatrixInverse = m_WorldMatrix;
-		//XMStoreFloat4x4(&WorldMatrixInverse, XMMatrixInverse(nullptr, XMLoadFloat4x4(&WorldMatrixInverse)));
-		//return WorldMatrixInverse;
-	}
+	const Matrix Get_WorldMatrix_Inverse() { return m_WorldMatrix.Invert(); }
 
 	void Set_State(STATE eState, Vec4 vState);
 	void Set_Scale(const Vec3& vScale);
@@ -49,7 +43,10 @@ public:
 	void Set_RotRad(const _float& fRotRad) { m_tTrans.fRotRadPerSec = fRotRad; }
 	void Set_WorldMat(const Matrix& matrix) { m_WorldMatrix = matrix; }
 
-public:
+	const Vec3 ToEulerAngles(Quaternion quat);
+
+
+public: /* User Convenient */
 	void Move_Forward(_float fTimeDelta);
 	void Move_Backward(_float fTimeDelta);
 	void Move_Left(_float fTimeDelta);

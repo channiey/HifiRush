@@ -205,10 +205,16 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Objects()
 	{
 		if (nullptr != m_pImGui_Manager->m_pCurObject)
 		{
-			m_pGameInstance->Add_GameObject(
-				m_pImGui_Manager->m_iIndex_CurLevelID,
-				m_pImGui_Manager->m_strIndex_CurLayer,
-				m_pImGui_Manager->m_pCurObject->Get_Name());
+			CGameObject* pClone = m_pGameInstance->Add_GameObject(
+										m_pImGui_Manager->m_iIndex_CurLevelID,
+										m_pImGui_Manager->m_strIndex_CurLayer,
+										m_pImGui_Manager->m_pCurObject->Get_Name());
+			if (nullptr != pClone)
+			{
+				Safe_AddRef(pClone);
+				pClone->Get_Transform()->Set_WorldMat(m_pImGui_Manager->m_pCurObject->Get_Transform()->Get_WorldMat());
+				Safe_Release(pClone);
+			}
 		}
 	}
 	ImGui::SameLine();

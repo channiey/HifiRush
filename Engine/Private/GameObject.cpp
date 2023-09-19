@@ -48,6 +48,14 @@ CTransform* const CGameObject::Get_Transform()
 	return dynamic_cast<CTransform*>(Get_Component(TEXT("Com_Transform")));
 }
 
+CMonoBehaviour* const CGameObject::Get_MonoBehaviour(const _uint& iIndex)
+{
+	if(m_MonoBehaviours.size() > iIndex)
+		return nullptr;
+	
+	return m_MonoBehaviours[iIndex];
+}
+
 HRESULT CGameObject::Add_Component(_uint iLevelIndex, const wstring & strPrototypeTag, const wstring & strComponentTag, _Inout_ CComponent** ppOut, void * pArg)
 {
 	/* 추가하려는 컴포넌트가 이미 있는 경우 실패 리턴 */

@@ -110,11 +110,25 @@ void CImGui_Window_Main_Object::Show_Object_Transform()
 					pTransform->Set_State(CTransform::STATE_POSITION, Vec4(fPos[0], fPos[1], fPos[2], 1));
 				}
 
-				/* TODO 로테이션값 어떻게 가져오냐? */
+				
 				/* Rotation */
-				vVec = pTransform->Get_State(CTransform::STATE_POSITION);
-				_float fRot[3] = { vVec.x, vVec.y, vVec.z };
-				ImGui::InputFloat3("Rot", fRot, "%.2f");
+				Vec3 vRot = pTransform->Get_Rotation();
+				_float fRot[3] = { XMConvertToDegrees(vRot.x), XMConvertToDegrees(vRot.y), XMConvertToDegrees(vRot.z) };
+				if (ImGui::InputFloat3("Rot", fRot, "%.2f"))
+				{
+					if (vRot.x != fRot[0])
+					{
+
+					}
+					else if (vRot.y != fRot[1])
+					{
+
+					}
+					else if (vRot.z != fRot[2])
+					{
+
+					}
+				}
 
 				/* Scale*/
 				vVec = pTransform->Get_Scale();

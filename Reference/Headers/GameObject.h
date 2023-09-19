@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Base.h"
-
 BEGIN(Engine)
 
 class ENGINE_DLL CGameObject abstract : public CBase
@@ -32,6 +31,9 @@ public:
 	
 	class CComponent* const Get_Component(const wstring& strComponentTag) { return Find_Component(strComponentTag); };
 	map<const wstring, class CComponent*>& Get_Components() { return m_Components; }
+	class CMonoBehaviour* const Get_MonoBehaviour(const _uint& iIndex);
+	vector<class CMonoBehaviour*>& Get_MonoBehaviours() { return m_MonoBehaviours; }
+
 
 public:
 	/* Active 이벤트 처리를 위한 가상함수화, 오버라이드시 __super::Active()먼저 호출 필요 */
@@ -46,6 +48,7 @@ protected:
 	/* 특정 컴포넌트의 검색을 용이하게 하기 위해서. */
 	/* 검색을 고려하는 이유?! : 타 객체가 현재 객체의 정보(컴포넌트)를 참조하고자 하는 경우가 빈번하다. */
 	map<const wstring, class CComponent*>		m_Components;
+	vector<class CMonoBehaviour*>				m_MonoBehaviours;
 
 	/* UnActive 상태라면 라이프 사이클 함수를 타지 않는다. */
 	_bool					m_bActive = { TRUE };

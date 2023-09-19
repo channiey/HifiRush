@@ -40,6 +40,18 @@ const Vec3 CTransform::Get_Scale()
 	return _float3(m_WorldMatrix.Right().Length(), m_WorldMatrix.Up().Length(), m_WorldMatrix.Forward().Length());
 }
 
+const Vec3 CTransform::Get_Rotation()
+{
+	Quaternion quat{};
+
+	Vec3 vScale = Get_Scale();
+	Vec3 vPos = { m_WorldMatrix._41, m_WorldMatrix._42, m_WorldMatrix._43 };
+
+	m_WorldMatrix.Decompose(vScale, quat, vPos);
+
+	return ToEulerAngles(quat);
+}
+
 void CTransform::Set_State(STATE eState, Vec4 vState)
 {
 	_matrix		StateMatrix;
@@ -67,6 +79,28 @@ HRESULT CTransform::Bind_ShaderResources(CShader* pShader, const char* pConstant
 	/* 셰이더에 월드 행렬을 바인딩한다. */
 
 	return pShader->Bind_Matrix(pConstantName, &m_WorldMatrix);
+}
+
+const Vec3 CTransform::ToEulerAngles(Quaternion quat)
+{
+	Vec3 angles;
+
+	// roll (x-axis rotation)
+	double sinr_cosp = 2 * (quat.w * quat.x + quat.y * quat.z);
+	double cosr_cosp = 1 - 2 * (quat.x * quat.x + quat.y * quat.y);
+	angles.x = std::atan2(sinr_cosp, cosr_cosp);
+
+	// pitch (y-axis rotation)
+	double sinp = std::sqrt(1 + 2 * (quat.w * quat.y - quat.x * quat.z));
+	double cosp = std::sqrt(1 - 2 * (quat.w * quat.y - quat.x * quat.z));
+	angles.y = 2 * std::atan2(sinp, cosp) - 3.14159f / 2;
+
+	// yaw (z-axis rotation)
+	double siny_cosp = 2 * (quat.w * quat.z + quat.x * quat.y);
+	double cosy_cosp = 1 - 2 * (quat.y * quat.y + quat.z * quat.z);
+	angles.z = std::atan2(siny_cosp, cosy_cosp);
+
+	return angles;
 }
 
 void CTransform::Move_Forward(_float fTimeDelta)
