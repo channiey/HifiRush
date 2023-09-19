@@ -126,6 +126,29 @@ void CTransform::Set_Rotation(const Vec3& vEulers, const _bool& bWorld)
 	m_WorldMatrix = matRotation;
 }
 
+void CTransform::Set_Rotation(const Vec3& vAxis, const _float fRad)
+{
+	_float3		vScaled = Get_Scale();
+
+	/* 항등상태 기준으로 정해준 각도만큼 회전시켜놓는다. */
+	/* Right, Up, Look를 회전시킨다. */
+	_vector		vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f) * vScaled.x;
+	_vector		vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f) * vScaled.y;
+	_vector		vLook = XMVectorSet(0.f, 0.f, 1.f, 0.f) * vScaled.z;
+
+	_matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, XMConvertToRadians(fRad));
+
+	vRight = XMVector4Transform(vRight, RotationMatrix);
+	vUp = XMVector4Transform(vUp, RotationMatrix);
+	vLook = XMVector4Transform(vLook, RotationMatrix);
+	/*XMVector3TransformNormal();
+	XMVector3TransformCoord();*/
+
+	Set_State(STATE_RIGHT, vRight);
+	Set_State(STATE_UP, vUp);
+	Set_State(STATE_LOOK, vLook);
+}
+
 void CTransform::Rotate(const Vec3& vEulers, const _bool& bWorld)
 {
 	Matrix matRotation = Matrix::Identity;

@@ -255,7 +255,7 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Objects()
 	/* 선택한 레벨, 레이어의 오브젝트들을 가져온다.*/
 	list<class CGameObject*>* pGameObjects = m_pGameInstance->Get_Layer(m_pImGui_Manager->m_iIndex_CurLevelID, m_pImGui_Manager->m_strIndex_CurLayer);
 
-	if (ImGui::BeginListBox("##listbox 1", ImVec2(-FLT_MIN, 6 * ImGui::GetTextLineHeightWithSpacing())))
+	if (ImGui::BeginListBox("##listbox 1", ImVec2(-FLT_MIN, 8 * ImGui::GetTextLineHeightWithSpacing())))
 	{
 		if (nullptr == pGameObjects || m_bLayerEvent || m_bObjectEvent)
 		{

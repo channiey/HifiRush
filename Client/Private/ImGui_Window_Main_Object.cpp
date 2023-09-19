@@ -134,14 +134,26 @@ void CImGui_Window_Main_Object::Show_Object_Transform()
 				{
 					if (XMConvertToDegrees(vRot.x) != fRot[0] || XMConvertToDegrees(vRot.y) != fRot[1] || XMConvertToDegrees(vRot.z) != fRot[2])
 					{
-						if (fRot[0] != fRotPrev[0] || fRot[1] != fRotPrev[1] || fRot[2] != fRotPrev[2])
+						if (fRot[0] != fRotPrev[0])
 						{
 							for (size_t i = 0; i < 3; i++)
 								fRotPrev[i] = fRot[i];
 							
-							vRot = { fRot[0], fRot[1], fRot[2] };
-
-							pTransform->Set_Rotation(vRot, TRUE);
+							/*vRot = { fRot[0], fRot[1], fRot[2] };
+							pTransform->Set_Rotation(vRot, TRUE);*/
+							pTransform->Set_Rotation(Vec3{ 1, 0, 0 }, fRot[0]);
+						}
+						else if (fRot[1] != fRotPrev[1])
+						{
+							for (size_t i = 0; i < 3; i++)
+								fRotPrev[i] = fRot[i];
+							pTransform->Set_Rotation(Vec3{ 0, 1, 0 }, fRot[1]);
+						}
+						else if (fRot[2] != fRotPrev[2])
+						{
+							for (size_t i = 0; i < 3; i++)
+								fRotPrev[i] = fRot[i];
+							pTransform->Set_Rotation(Vec3{ 0, 0, 1 }, fRot[2]);
 						}
 					}
 				}
