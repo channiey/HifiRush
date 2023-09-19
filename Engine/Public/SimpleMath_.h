@@ -14,6 +14,10 @@
 #include <dxgi1_2.h>
 #endif
 
+/* RECT등 자료형 인식문제 해결을 위해 임시로 추가 ㄴ*/
+#include <windows.h>
+//#include <windef.h>
+
 #include <cassert>
 #include <cstddef>
 #include <cstring>
@@ -30,7 +34,7 @@
 
 namespace DirectX 
 {
-    namespace SimpleMath
+    namespace SimpleMath_
     {
         struct Vector2;
         struct Vector3;
@@ -4672,9 +4676,9 @@ namespace DirectX
 // Support for SimpleMath and Standard C++ Library containers
 namespace std
 {
-    template<> struct less<DirectX::SimpleMath::Rectangle>
+    template<> struct less<DirectX::SimpleMath_::Rectangle>
     {
-        bool operator()(const DirectX::SimpleMath::Rectangle& r1, const DirectX::SimpleMath::Rectangle& r2) const noexcept
+        bool operator()(const DirectX::SimpleMath_::Rectangle& r1, const DirectX::SimpleMath_::Rectangle& r2) const noexcept
         {
             return ((r1.x < r2.x)
                     || ((r1.x == r2.x) && (r1.y < r2.y))
@@ -4683,17 +4687,17 @@ namespace std
         }
     };
 
-    template<> struct less<DirectX::SimpleMath::Vector2>
+    template<> struct less<DirectX::SimpleMath_::Vector2>
     {
-        bool operator()(const DirectX::SimpleMath::Vector2& V1, const DirectX::SimpleMath::Vector2& V2) const noexcept
+        bool operator()(const DirectX::SimpleMath_::Vector2& V1, const DirectX::SimpleMath_::Vector2& V2) const noexcept
         {
             return ((V1.x < V2.x) || ((V1.x == V2.x) && (V1.y < V2.y)));
         }
     };
 
-    template<> struct less<DirectX::SimpleMath::Vector3>
+    template<> struct less<DirectX::SimpleMath_::Vector3>
     {
-        bool operator()(const DirectX::SimpleMath::Vector3& V1, const DirectX::SimpleMath::Vector3& V2) const noexcept
+        bool operator()(const DirectX::SimpleMath_::Vector3& V1, const DirectX::SimpleMath_::Vector3& V2) const noexcept
         {
             return ((V1.x < V2.x)
                     || ((V1.x == V2.x) && (V1.y < V2.y))
@@ -4701,9 +4705,9 @@ namespace std
         }
     };
 
-    template<> struct less<DirectX::SimpleMath::Vector4>
+    template<> struct less<DirectX::SimpleMath_::Vector4>
     {
-        bool operator()(const DirectX::SimpleMath::Vector4& V1, const DirectX::SimpleMath::Vector4& V2) const noexcept
+        bool operator()(const DirectX::SimpleMath_::Vector4& V1, const DirectX::SimpleMath_::Vector4& V2) const noexcept
         {
             return ((V1.x < V2.x)
                     || ((V1.x == V2.x) && (V1.y < V2.y))
@@ -4712,9 +4716,9 @@ namespace std
         }
     };
 
-    template<> struct less<DirectX::SimpleMath::Matrix>
+    template<> struct less<DirectX::SimpleMath_::Matrix>
     {
-        bool operator()(const DirectX::SimpleMath::Matrix& M1, const DirectX::SimpleMath::Matrix& M2) const noexcept
+        bool operator()(const DirectX::SimpleMath_::Matrix& M1, const DirectX::SimpleMath_::Matrix& M2) const noexcept
         {
             if (M1._11 != M2._11) return M1._11 < M2._11;
             if (M1._12 != M2._12) return M1._12 < M2._12;
@@ -4737,9 +4741,9 @@ namespace std
         }
     };
 
-    template<> struct less<DirectX::SimpleMath::Plane>
+    template<> struct less<DirectX::SimpleMath_::Plane>
     {
-        bool operator()(const DirectX::SimpleMath::Plane& P1, const DirectX::SimpleMath::Plane& P2) const noexcept
+        bool operator()(const DirectX::SimpleMath_::Plane& P1, const DirectX::SimpleMath_::Plane& P2) const noexcept
         {
             return ((P1.x < P2.x)
                     || ((P1.x == P2.x) && (P1.y < P2.y))
@@ -4748,9 +4752,9 @@ namespace std
         }
     };
 
-    template<> struct less<DirectX::SimpleMath::Quaternion>
+    template<> struct less<DirectX::SimpleMath_::Quaternion>
     {
-        bool operator()(const DirectX::SimpleMath::Quaternion& Q1, const DirectX::SimpleMath::Quaternion& Q2) const noexcept
+        bool operator()(const DirectX::SimpleMath_::Quaternion& Q1, const DirectX::SimpleMath_::Quaternion& Q2) const noexcept
         {
             return ((Q1.x < Q2.x)
                     || ((Q1.x == Q2.x) && (Q1.y < Q2.y))
@@ -4759,9 +4763,9 @@ namespace std
         }
     };
 
-    template<> struct less<DirectX::SimpleMath::Color>
+    template<> struct less<DirectX::SimpleMath_::Color>
     {
-        bool operator()(const DirectX::SimpleMath::Color& C1, const DirectX::SimpleMath::Color& C2) const noexcept
+        bool operator()(const DirectX::SimpleMath_::Color& C1, const DirectX::SimpleMath_::Color& C2) const noexcept
         {
             return ((C1.x < C2.x)
                     || ((C1.x == C2.x) && (C1.y < C2.y))
@@ -4770,9 +4774,9 @@ namespace std
         }
     };
 
-    template<> struct less<DirectX::SimpleMath::Ray>
+    template<> struct less<DirectX::SimpleMath_::Ray>
     {
-        bool operator()(const DirectX::SimpleMath::Ray& R1, const DirectX::SimpleMath::Ray& R2) const noexcept
+        bool operator()(const DirectX::SimpleMath_::Ray& R1, const DirectX::SimpleMath_::Ray& R2) const noexcept
         {
             if (R1.position.x != R2.position.x) return R1.position.x < R2.position.x;
             if (R1.position.y != R2.position.y) return R1.position.y < R2.position.y;
@@ -4786,9 +4790,9 @@ namespace std
         }
     };
 
-    template<> struct less<DirectX::SimpleMath::Viewport>
+    template<> struct less<DirectX::SimpleMath_::Viewport>
     {
-        bool operator()(const DirectX::SimpleMath::Viewport& vp1, const DirectX::SimpleMath::Viewport& vp2) const noexcept
+        bool operator()(const DirectX::SimpleMath_::Viewport& vp1, const DirectX::SimpleMath_::Viewport& vp2) const noexcept
         {
             if (vp1.x != vp2.x) return (vp1.x < vp2.x);
             if (vp1.y != vp2.y) return (vp1.y < vp2.y);
@@ -4807,12 +4811,12 @@ namespace std
 
 
 
-using Vec2 = DirectX::SimpleMath::Vector2;
-using Vec3 = DirectX::SimpleMath::Vector3;
-using Vec4 = DirectX::SimpleMath::Vector4;
-using Matrix = DirectX::SimpleMath::Matrix;
-using Quaternion = DirectX::SimpleMath::Quaternion;
-using Ray = DirectX::SimpleMath::Ray;
+using Vec2 = DirectX::SimpleMath_::Vector2;
+using Vec3 = DirectX::SimpleMath_::Vector3;
+using Vec4 = DirectX::SimpleMath_::Vector4;
+using Matrix = DirectX::SimpleMath_::Matrix;
+using Quaternion = DirectX::SimpleMath_::Quaternion;
+using Ray = DirectX::SimpleMath_::Ray;
 
 
 #ifdef __clang__

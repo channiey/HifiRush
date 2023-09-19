@@ -38,6 +38,23 @@ void CImGui_Window_Main_Controller::Show_Window()
 
 		}
 
+		/* 카메라 관련 버튼을 나열한다. */
+		ImGui::SeparatorText("Camera");
+		{
+			/* 렌더 타겟 뷰*/
+			if (ImGui::Button("RTV"))
+			{
+
+			}
+			ImGui::SameLine();
+
+			/* 디버그 카메라*/
+			if (ImGui::Button("Debug Cam"))
+			{
+
+			}
+		}
+
 		/* 각 메인 윈도우 버튼을 보여준다. */
 		ImGui::SeparatorText("Windows");
 		{
@@ -69,7 +86,6 @@ void CImGui_Window_Main_Controller::Show_Window()
 					!m_pImGui_Manager->m_pMainWindows[m_pImGui_Manager->WINDOW_MAIN_DEMO]->Is_Active());
 
 			}
-			ImGui::SameLine();
 		}
 	}
 	ImGui::End();

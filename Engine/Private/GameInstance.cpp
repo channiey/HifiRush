@@ -17,7 +17,10 @@ CGameInstance::CGameInstance()
 	, m_pComponent_Manager(CComponent_Manager::GetInstance())
 	, m_pThread_Manager(CThread_Manager::GetInstance())
 	, m_pProfiler_Manager(CProfiler_Manager::GetInstance())
+	, m_pPipeLine(CPipeLine::GetInstance())
+
 {
+	Safe_AddRef(m_pPipeLine);
 	Safe_AddRef(m_pComponent_Manager);
 	Safe_AddRef(m_pObject_Manager);
 	Safe_AddRef(m_pLevel_Manager);
@@ -48,7 +51,9 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, HINSTANCE hInst, cons
 	if (FAILED(m_pComponent_Manager->Reserve_Manager(iNumLevels)))
 		return E_FAIL;
 
-	/* ImGui 매니저 초기화 처리 */
+	/* 파이프 라인의 초기화 처리 */
+	if (FAILED(m_pPipeLine->Initialize()))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -58,10 +63,15 @@ void CGameInstance::Tick(_float fTimeDelta)
 	NULL_CHECK(m_pLevel_Manager);
 	NULL_CHECK(m_pObject_Manager);
 	NULL_CHECK(m_pInput_Device);
+	NULL_CHECK(m_pPipeLine);
 
 	m_pInput_Device->Tick();
+
 	m_pObject_Manager->Tick(fTimeDelta);
 	m_pLevel_Manager->Tick(fTimeDelta);
+
+	/* 카메라는 게임오브젝트이다. 따라서 카메라의 월드행렬이 갱신된 후에, 뷰행렬과 투영행렬을 구하도록 한다. */
+	m_pPipeLine->Tick();
 }
 
 void CGameInstance::LateTick(_float fTimeDelta)
@@ -322,6 +332,38 @@ const _bool CGameInstance::Key_Pressing(const _int& _iKey)
 	return m_pInput_Device->Key_Pressing(_iKey);
 }
 
+HRESULT CGameInstance::Bind_TransformToShader(CShader* pShader, const char* pConstantName, CPipeLine::TRANSFORM_STATE eState)
+{
+	if (nullptr == m_pPipeLine)
+		return E_FAIL;
+
+	return m_pPipeLine->Bind_TransformToShader(pShader, pConstantName, eState);
+}
+
+Matrix CGameInstance::Get_Transform(const CPipeLine::TRANSFORM_STATE& eState) const
+{
+	if (nullptr == m_pPipeLine)
+		return Matrix();
+
+	return m_pPipeLine->Get_Transform(eState);
+}
+
+Matrix CGameInstance::Get_Transform_Inverse(const CPipeLine::TRANSFORM_STATE& eState) const
+{
+	if (nullptr == m_pPipeLine)
+		return Matrix();
+
+	return m_pPipeLine->Get_Transform_Inverse(eState);
+}
+
+Vec4 CGameInstance::Get_CamPosition(const CPipeLine::TRANSFORM_STATE& eState) const
+{
+	if (nullptr == m_pPipeLine)
+		return Vec4();
+
+	return m_pPipeLine->Get_CamPosition(eState);
+}
+
 void CGameInstance::Release_Engine()
 {
 	CGameInstance::GetInstance()->DestroyInstance();
@@ -332,11 +374,13 @@ void CGameInstance::Release_Engine()
 	CInput_Device::GetInstance()->DestroyInstance();
 	CGraphic_Device::GetInstance()->DestroyInstance();
 	CThread_Manager::GetInstance()->DestroyInstance();
+	CPipeLine::GetInstance()->DestroyInstance();
 	CProfiler_Manager::GetInstance()->DestroyInstance();
 }
 
 void CGameInstance::Free()
 {
+	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pComponent_Manager);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pLevel_Manager);

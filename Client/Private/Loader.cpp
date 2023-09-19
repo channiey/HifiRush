@@ -2,6 +2,8 @@
 #include "..\Public\Loader.h"
 
 #include "GameInstance.h"
+
+#include "Camera_Debug.h"
 #include "BackGround.h"
 #include "Terrain.h"
 
@@ -118,11 +120,16 @@ HRESULT CLoader::Loading_For_Level_Logo()
 	m_strLoading = TEXT("Loding... : Prototype");
 	{
 		/* For.Prototype_GameObject_BackGround */
-		if (FAILED(pGameInstance->Add_Prototype(TEXT("BackGround"), CBackGround::Create(m_pDevice, m_pContext))))
+		if (FAILED(pGameInstance->Add_Prototype(TEXT("Ui_BackGround"), CBackGround::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For.Prototype_GameObject_Terrain*/
-		if (FAILED(pGameInstance->Add_Prototype(TEXT("Terrain"), CTerrain::Create(m_pDevice, m_pContext))))
+		if (FAILED(pGameInstance->Add_Prototype(TEXT("Env_Terrain"), CTerrain::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Camera_Debug */
+		if (FAILED(pGameInstance->Add_Prototype(TEXT("Camera_Debug"),
+			CCamera_Debug::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 	}
 

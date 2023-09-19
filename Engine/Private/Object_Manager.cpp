@@ -1,7 +1,6 @@
 #include "..\Public\Object_Manager.h"
 #include "Layer.h"
-#include "GameObject.h"
-#include "Layer.h"
+//#include "GameObject.h"
 
 #include "StringUtils.h"
 

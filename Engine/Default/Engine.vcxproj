@@ -168,6 +168,9 @@
     <ClInclude Include="..\public\Base.h" />
     <ClInclude Include="..\Public\BehaviourTree.h" />
     <ClInclude Include="..\Public\Blackboard.h" />
+    <ClInclude Include="..\Public\Camera.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\public\Component.h" />
     <ClInclude Include="..\public\Component_Manager.h" />
     <ClInclude Include="..\Public\Engine_Defines.h" />
@@ -194,10 +197,11 @@
     <ClInclude Include="..\Public\Node_Selector.h" />
     <ClInclude Include="..\Public\Node_Sequence.h" />
     <ClInclude Include="..\public\Object_Manager.h" />
+    <ClInclude Include="..\Public\PipeLine.h" />
     <ClInclude Include="..\Public\Profiler_Manager.h" />
     <ClInclude Include="..\public\Renderer.h" />
     <ClInclude Include="..\public\Shader.h" />
-    <ClInclude Include="..\Public\SimpleMath.h" />
+    <ClInclude Include="..\Public\SimpleMath_.h" />
     <ClInclude Include="..\Public\State.h" />
     <ClInclude Include="..\Public\StateMachine.h" />
     <ClInclude Include="..\Public\Texture.h" />
@@ -214,6 +218,10 @@
     <ClCompile Include="..\private\Base.cpp" />
     <ClCompile Include="..\Private\BehaviourTree.cpp" />
     <ClCompile Include="..\Private\Blackboard.cpp" />
+    <ClCompile Include="..\Private\Camera.cpp">
+      <IncludeInUnityFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</IncludeInUnityFile>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\private\Component.cpp" />
     <ClCompile Include="..\private\Component_Manager.cpp" />
     <ClCompile Include="..\Private\FileUtils.cpp" />
@@ -237,11 +245,14 @@
     <ClCompile Include="..\Private\Node_Selector.cpp" />
     <ClCompile Include="..\Private\Node_Sequence.cpp" />
     <ClCompile Include="..\private\Object_Manager.cpp" />
+    <ClCompile Include="..\Private\PipeLine.cpp">
+      <IncludeInUnityFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</IncludeInUnityFile>
+    </ClCompile>
     <ClCompile Include="..\Private\Profiler_Manager.cpp" />
     <ClCompile Include="..\private\Renderer.cpp" />
     <ClCompile Include="..\private\Shader.cpp" />
-    <ClCompile Include="..\Private\SimpleMath.cpp">
-      <IncludeInUnityFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</IncludeInUnityFile>
+    <ClCompile Include="..\Private\SimpleMath_.cpp">
+      <IncludeInUnityFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</IncludeInUnityFile>
     </ClCompile>
     <ClCompile Include="..\Private\State.cpp" />
     <ClCompile Include="..\Private\StateMachine.cpp" />
@@ -250,7 +261,9 @@
     <ClCompile Include="..\Private\Timer.cpp" />
     <ClCompile Include="..\Private\Timer_Manager.cpp" />
     <ClCompile Include="..\Private\StringUtils.cpp" />
-    <ClCompile Include="..\Private\Transform.cpp" />
+    <ClCompile Include="..\Private\Transform.cpp">
+      <IncludeInUnityFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</IncludeInUnityFile>
+    </ClCompile>
     <ClCompile Include="..\private\VIBuffer.cpp" />
     <ClCompile Include="..\private\VIBuffer_Rect.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Terrain.cpp" />

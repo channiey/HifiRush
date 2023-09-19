@@ -2,6 +2,7 @@
 
 #include "Component_Manager.h"
 
+#include "PipeLine.h"
 #include "Thread_Manager.h"
 
 BEGIN(Engine)
@@ -71,6 +72,12 @@ public:  /* For.Input_Device */
 	const _bool Key_Down(const _int& _iKey);
 	const _bool Key_Pressing(const _int& _iKey);
 
+public: /* For.PipeLine */
+	HRESULT Bind_TransformToShader(class CShader* pShader, const char* pConstantName, CPipeLine::TRANSFORM_STATE eState);
+	Matrix Get_Transform(const CPipeLine::TRANSFORM_STATE& eState) const;
+	Matrix Get_Transform_Inverse(const CPipeLine::TRANSFORM_STATE& eState) const;
+	Vec4 Get_CamPosition(const CPipeLine::TRANSFORM_STATE& eState) const;
+
 private:
 	class CTimer_Manager*			m_pTimer_Manager = { nullptr };
 	class CGraphic_Device*			m_pGraphic_Device = { nullptr };
@@ -80,7 +87,7 @@ private:
 	class CThread_Manager*			m_pThread_Manager = { nullptr };
 	class CProfiler_Manager*		m_pProfiler_Manager = { nullptr };
 	class CInput_Device*			m_pInput_Device = { nullptr };
-
+	class CPipeLine*				m_pPipeLine = { nullptr };
 
 public:
 	static void Release_Engine();

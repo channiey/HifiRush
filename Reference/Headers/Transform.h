@@ -28,11 +28,16 @@ public:
 	virtual HRESULT Initialize(void* pArg) override;
 
 public:
-	Vec4 Get_State(STATE eState) { return XMLoadFloat4x4(&m_WorldMatrix).r[eState]; }
+	const Vec4 Get_State(STATE eState) { return XMLoadFloat4x4(&m_WorldMatrix).r[eState]; }
 	const Vec3 Get_Scale();
 	const _float& Get_Speed() const { return m_tTrans.fSpeedPerSec; }
 	const _float& Get_RotRad() const { return m_tTrans.fRotRadPerSec; }
 	const Matrix& Get_WorldMat() const { return m_WorldMatrix; }
+	const Matrix Get_WorldMatrix_Inverse()
+	{
+		Matrix m = XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_WorldMatrix));
+		return m;
+	}
 
 	void Set_State(STATE eState, Vec4 vState);
 	void Set_Scale(const Vec3& vScale);
