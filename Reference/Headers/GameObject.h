@@ -21,6 +21,7 @@ public:
 
 public:
 	const _bool& Is_Active() const { return m_bActive; }
+	const _bool& Is_Render() const { return m_bRender; }
 
 public:
 	const wstring& Get_Name() const { return m_strName; }
@@ -34,10 +35,11 @@ public:
 	class CMonoBehaviour* const Get_MonoBehaviour(const _uint& iIndex);
 	vector<class CMonoBehaviour*>& Get_MonoBehaviours() { return m_MonoBehaviours; }
 
-
 public:
 	/* Active 이벤트 처리를 위한 가상함수화, 오버라이드시 __super::Active()먼저 호출 필요 */
 	virtual void Set_Active(const _bool& bActive) { m_bActive = bActive; }
+	/* 렌더 여부를 나타낸다. 해당 변수가 false라면 렌더 콜을 호출하지 않는다. */
+	virtual void Set_Render(const _bool& bRender) { m_bRender = bRender; }
 	void Set_Name(const wstring& strName) { m_strName = strName; }
 	void Set_LayerTag(const wstring& strLayer) { m_strLayer = strLayer; }
 
@@ -52,6 +54,8 @@ protected:
 
 	/* UnActive 상태라면 라이프 사이클 함수를 타지 않는다. */
 	_bool					m_bActive = { TRUE };
+	/* 렌더 여부를 나타내며, 해당 변수가 false라면 아예 렌더콜을 호출하지 않는다. */
+	_bool					m_bRender = { TRUE };
 	wstring					m_strLayer = { };
 	wstring					m_strName = { };
 

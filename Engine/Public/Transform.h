@@ -54,6 +54,9 @@ public: /* User Convenient */
 
 	void Roatate(Vec4 vAxis, _float fTimeDelta);
 
+	void Rotate_World(Vec4 vAxis, _float fRadian);
+	void Rotate_Local(Vec4 vAxis, _float fRadian);
+
 	void LookAt(Vec4 vPoint);
 	void LookAt_LandObj(Vec3 vPoint);
 	void Chase(Vec3 vPoint, _float fTimeDelta, _float fMargin = 0.1f);

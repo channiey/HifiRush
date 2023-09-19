@@ -13,6 +13,7 @@ CGameObject::CGameObject(const CGameObject & rhs)
 	: m_pDevice(rhs.m_pDevice)
 	, m_pContext(rhs.m_pContext)
 	, m_bActive(rhs.m_bActive)
+	, m_bRender(rhs.m_bRender)
 	, m_strLayer(rhs.m_strLayer)
 	, m_strName(rhs.m_strName)
 {

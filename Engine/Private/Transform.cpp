@@ -149,9 +149,9 @@ void CTransform::Move_Right(_float fTimeDelta)
 
 void CTransform::Set_Rotation(Vec4 vAxis, _float fRadian)
 {
+	/* 항등상태 기준으로 정해준 각도만큼 회전시켜놓는다. */
 	Vec3		vScaled = Get_Scale();
 
-	/* 항등상태 기준으로 정해준 각도만큼 회전시켜놓는다. */
 	/* Right, Up, Look를 회전시킨다. */
 	Vec4		vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f) * vScaled.x;
 	Vec4		vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f) * vScaled.y;
@@ -182,6 +182,45 @@ void CTransform::Roatate(Vec4 vAxis, _float fTimeDelta)
 	vRight	= XMVector4Transform(vRight, RotationMatrix);
 	vUp		= XMVector4Transform(vUp, RotationMatrix);
 	vLook	= XMVector4Transform(vLook, RotationMatrix);
+
+	Set_State(STATE_RIGHT, vRight);
+	Set_State(STATE_UP, vUp);
+	Set_State(STATE_LOOK, vLook);
+}
+
+void CTransform::Rotate_World(Vec4 vAxis, _float fRadian)
+{
+	/* 항등상태 기준으로 정해준 각도만큼 회전시켜놓는다. */
+	Vec3		vScaled = Get_Scale();
+
+	/* Right, Up, Look를 회전시킨다. */
+	Vec4		vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f) * vScaled.x;
+	Vec4		vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f) * vScaled.y;
+	Vec4		vLook = XMVectorSet(0.f, 0.f, 1.f, 0.f) * vScaled.z;
+
+	_matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, fRadian);
+
+	vRight = XMVector4Transform(vRight, RotationMatrix);
+	vUp = XMVector4Transform(vUp, RotationMatrix);
+	vLook = XMVector4Transform(vLook, RotationMatrix);
+
+
+	Set_State(STATE_RIGHT, vRight);
+	Set_State(STATE_UP, vUp);
+	Set_State(STATE_LOOK, vLook);
+}
+
+void CTransform::Rotate_Local(Vec4 vAxis, _float fRadian)
+{
+	Vec4		vRight = Get_State(STATE_RIGHT);
+	Vec4		vUp = Get_State(STATE_UP);
+	Vec4		vLook = Get_State(STATE_LOOK);
+
+	Matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, fRadian);
+
+	vRight = XMVector4Transform(vRight, RotationMatrix);
+	vUp = XMVector4Transform(vUp, RotationMatrix);
+	vLook = XMVector4Transform(vLook, RotationMatrix);
 
 	Set_State(STATE_RIGHT, vRight);
 	Set_State(STATE_UP, vUp);

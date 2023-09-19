@@ -6,6 +6,7 @@
 #include "GameObject.h"
 #include "StringUtils.h"
 
+
 CImGui_Window_Main_Object::CImGui_Window_Main_Object()
 {
 }
@@ -88,6 +89,19 @@ void CImGui_Window_Main_Object::Show_Object_Info()
 		if (nullptr != pObject)
 			pObject->Set_Active(bActive);
 	}
+	ImGui::SameLine();
+
+	/* Render */
+	_bool bRender = TRUE;
+	if (nullptr != pObject)
+		bRender = pObject->Is_Render();
+
+	if (ImGui::Checkbox("Render", &bRender))
+	{
+		if (nullptr != pObject)
+			pObject->Set_Render(bRender);
+	}
+
 }
 
 void CImGui_Window_Main_Object::Show_Object_Transform()
@@ -118,15 +132,15 @@ void CImGui_Window_Main_Object::Show_Object_Transform()
 				{
 					if (vRot.x != fRot[0])
 					{
-
+						pTransform->Rotate_Local(pTransform->Get_State(CTransform::STATE_RIGHT), XMConvertToRadians(fRot[0]));
 					}
 					else if (vRot.y != fRot[1])
 					{
-
+						pTransform->Rotate_Local(pTransform->Get_State(CTransform::STATE_UP), XMConvertToRadians(fRot[1]));
 					}
 					else if (vRot.z != fRot[2])
 					{
-
+						pTransform->Rotate_Local(pTransform->Get_State(CTransform::STATE_LOOK), XMConvertToRadians(fRot[2]));
 					}
 				}
 
