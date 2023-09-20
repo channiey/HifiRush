@@ -154,6 +154,12 @@
     <Filter Include="01.Utiltiy\03.Components\Component\VIBuffer\Terrain">
       <UniqueIdentifier>{bff16c8f-d141-445c-92b9-6d775c2283a9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\Camera">
+      <UniqueIdentifier>{7a6f9cb4-3336-48ef-9244-69267287abfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\Camera\Manager">
+      <UniqueIdentifier>{02fb4a5e-a2ca-46bf-8156-e5f9ed1eb2f3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -403,6 +409,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Component.cpp">
       <Filter>01.Utiltiy\03.Components\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="FileName.cpp">
+      <Filter>01.Utiltiy\03.Components\Component\Camera\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

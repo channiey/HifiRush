@@ -268,6 +268,7 @@
     <ClCompile Include="..\private\VIBuffer_Rect.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Terrain.cpp" />
     <ClCompile Include="..\Public\Engine_Struct.cpp" />
+    <ClCompile Include="FileName.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Public\SimpleMath.inl" />
