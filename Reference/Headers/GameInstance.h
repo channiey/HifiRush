@@ -2,6 +2,7 @@
 
 #include "Component_Manager.h"
 
+#include "Input_Device.h"
 #include "PipeLine.h"
 #include "Thread_Manager.h"
 
@@ -66,8 +67,8 @@ public: /* For.Profiler_Manager */
 
 public:  /* For.Input_Device */
 	_char Get_DIKState(_uchar eKeyID);
-	_char Get_DIMKeyState(MOUSEKEYSTATE eMouseKeyID);
-	_long Get_DIMMoveState(MOUSEMOVESTATE eMouseMoveID);
+	_char Get_DIMKeyState(CInput_Device::MOUSEKEYSTATE eMouseKeyID);
+	_long Get_DIMMoveState(CInput_Device::MOUSEMOVESTATE eMouseMoveID);
 	const _bool Key_Up(const _int& _iKey);
 	const _bool Key_Down(const _int& _iKey);
 	const _bool Key_Pressing(const _int& _iKey);

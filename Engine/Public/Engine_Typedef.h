@@ -3,10 +3,6 @@
 
 namespace Engine
 {
-	enum MOUSEKEYSTATE { DIM_LB, DIM_RB, DIM_MB, DIM_END };	// 마우스 버튼 타입
-
-	enum MOUSEMOVESTATE { DIMS_X, DIMS_Y, DIMS_Z, DIMS_END };	// 마우스 좌표 타입, z는 스크롤
-
 	typedef		bool						_bool;
 
 	typedef		signed char					_byte;

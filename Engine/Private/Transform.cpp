@@ -183,6 +183,24 @@ void CTransform::Rotate(const Vec3& vEulers, const _bool& bWorld)
 	}
 }
 
+void CTransform::Rotate(const Vec4& vAxis, const _float& fRad)
+{
+	/* 현재 상태기준 정해준 각도만큼 회전시켜놓는다. */
+	_vector		vRight = Get_State(STATE_RIGHT);
+	_vector		vUp = Get_State(STATE_UP);
+	_vector		vLook = Get_State(STATE_LOOK);
+
+	_matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, fRad);
+
+	vRight = XMVector4Transform(vRight, RotationMatrix);
+	vUp = XMVector4Transform(vUp, RotationMatrix);
+	vLook = XMVector4Transform(vLook, RotationMatrix);
+
+	Set_State(STATE_RIGHT, vRight);
+	Set_State(STATE_UP, vUp);
+	Set_State(STATE_LOOK, vLook);
+}
+
 void CTransform::Translate(const Vec3& vTranslation)
 {
 	for (_uint i = 0; i < 3; ++i)

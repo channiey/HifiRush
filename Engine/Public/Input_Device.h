@@ -9,6 +9,10 @@ class CInput_Device final : public CBase
 {
 	DECLARE_SINGLETON(CInput_Device)
 
+public:
+	enum MOUSEKEYSTATE { MKS_LBUTTON, MKS_RBUTTON, MKS_WHEELBUTTON, MKS_XBUTTON, MKS_END };
+	enum MOUSEMOVESTATE { MMS_X, MMS_Y, MMS_WHEEL, MMS_END };
+
 private:
 	CInput_Device();
 	virtual ~CInput_Device() = default;

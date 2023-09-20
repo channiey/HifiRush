@@ -27,6 +27,9 @@ HRESULT CCamera_Debug::Initialize(void * pArg)
 	/* 파생 클래스의 단독 데이터를 세팅한다. */
 	m_fMouseSensitive = 1.f;
 
+	m_tTransDesc.fSpeedPerSec = 50.f;
+	m_tTransDesc.fRotRadPerSec = XMConvertToRadians(90.f);
+
 	/* 카메라 베이스 클래스의 초기 구조체 데이터를 세팅한다. */
 	ZeroMemory(&m_tCamDesc, sizeof(CAMERA_DESC));
 
@@ -38,21 +41,38 @@ HRESULT CCamera_Debug::Initialize(void * pArg)
 	m_tCamDesc.fFar = 300.0f;
 
 	/* 카메라 베이스 클래스의 트랜스폼 정보를 세팅한다. */
-
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, m_tCamDesc.vEye);
 	m_pTransformCom->LookAt(m_tCamDesc.vAt);
 
-	m_tTransDesc.fSpeedPerSec = 10.f;
-	m_tTransDesc.fRotRadPerSec = 90.f;
-	
 	return S_OK;
 }
 
 void CCamera_Debug::Tick(_float fTimeDelta)
 {
-	CGameInstance* pGameInstance = CGameInstance::GetInstance();
-	Safe_AddRef(pGameInstance);
+	Move(fTimeDelta);
 
+	__super::Tick(fTimeDelta);
+}
+
+void CCamera_Debug::LateTick(_float fTimeDelta)
+{
+}
+
+HRESULT CCamera_Debug::Ready_Components()
+{
+	/* Com_Transform */
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
+		TEXT("Com_Transform"), (CComponent**)&m_pTransformCom)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+void CCamera_Debug::Move(const _float& fTimeDelta)
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	/* Translation */
 	if (pGameInstance->Key_Pressing('W'))
 	{
 		m_pTransformCom->Translate(m_pTransformCom->Get_Forward() * m_tTransDesc.fSpeedPerSec * fTimeDelta);
@@ -70,23 +90,25 @@ void CCamera_Debug::Tick(_float fTimeDelta)
 		m_pTransformCom->Translate(m_pTransformCom->Get_Right() * m_tTransDesc.fSpeedPerSec * fTimeDelta);
 	}
 
-	__super::Tick(fTimeDelta);
+	/* Rotation */
 
-	Safe_Release(pGameInstance);
-}
+	_long	MouseMove = 0l;
 
-void CCamera_Debug::LateTick(_float fTimeDelta)
-{
-}
+	if (pGameInstance->Key_Pressing(VK_LBUTTON))
+	{
+		if (MouseMove = pGameInstance->Get_DIMMoveState(CInput_Device::MMS_X))
+		{
+			m_pTransformCom->Rotate(Vec4{ 0, 1, 0, 0}, MouseMove * m_fMouseSensitive * m_tTransDesc.fRotRadPerSec * fTimeDelta);
+		}
 
-HRESULT CCamera_Debug::Ready_Components()
-{
-	/* Com_Transform */
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
-		TEXT("Com_Transform"), (CComponent**)&m_pTransformCom)))
-		return E_FAIL;
+		if (MouseMove = pGameInstance->Get_DIMMoveState(CInput_Device::MMS_Y))
+		{
+			m_pTransformCom->Rotate(m_pTransformCom->Get_Right(), MouseMove * m_fMouseSensitive * m_tTransDesc.fRotRadPerSec * fTimeDelta);
+		}
+	}
 
-	return S_OK;
+
+	RELEASE_INSTANCE(CGameInstance);
 }
 
 CCamera_Debug * CCamera_Debug::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)

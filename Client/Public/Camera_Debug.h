@@ -25,6 +25,7 @@ private:
 
 private:
 	HRESULT Ready_Components();
+	void Move(const _float& fTimeDelta);
 
 public:
 	static CCamera_Debug* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

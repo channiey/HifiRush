@@ -89,6 +89,31 @@
 		}
 
 
+/* Instance */
+#define GET_INSTANCE(CLASSNAME)	[](){											\
+	CLASSNAME*	pInstance = CLASSNAME::GetInstance();							\
+	if(nullptr == pInstance) {													\
+	char	szMessage[MAX_PATH] = "";											\
+	strcpy_s(szMessage, typeid(CLASSNAME).name());								\
+	strcat_s(szMessage, "is nullptr");											\
+	MessageBoxA(0, szMessage, nullptr, MB_OK);}									\
+	else {																		\
+	pInstance->AddRef();}														\
+	return pInstance;															\
+	}();
+
+#define RELEASE_INSTANCE(CLASSNAME)	[](){										\
+	CLASSNAME*	pInstance = CLASSNAME::GetInstance();							\
+	if(nullptr == pInstance) {													\
+	char	szMessage[MAX_PATH] = "";											\
+	strcpy_s(szMessage, typeid(CLASSNAME).name());								\
+	strcat_s(szMessage, "is nullptr");											\
+	MessageBoxA(0, szMessage, nullptr, MB_OK);}									\
+	else {																		\
+	pInstance->Release();}														\
+	}();
+
+
 /* Thread (반드시 GameInstance.h 인클루드 필요)*/
 #define START_MULTI_THREADING(num)\
 			{ CGameInstance::GetInstance()->Set_MultiThreading(num); }

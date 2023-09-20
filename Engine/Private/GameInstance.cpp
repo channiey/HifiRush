@@ -4,7 +4,6 @@
 #include "Level_Manager.h"
 #include "Object_Manager.h"
 #include "Profiler_Manager.h"
-#include "Input_Device.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -292,7 +291,7 @@ _char CGameInstance::Get_DIKState(_uchar eKeyID)
 	return m_pInput_Device->Get_DIKeyState(eKeyID);
 }
 
-_char CGameInstance::Get_DIMKeyState(MOUSEKEYSTATE eMouseKeyID)
+_char CGameInstance::Get_DIMKeyState(CInput_Device::MOUSEKEYSTATE eMouseKeyID)
 {
 	if (nullptr == m_pInput_Device)
 		return 0;
@@ -300,7 +299,7 @@ _char CGameInstance::Get_DIMKeyState(MOUSEKEYSTATE eMouseKeyID)
 	return m_pInput_Device->Get_DIMouseState(eMouseKeyID);
 }
 
-_long CGameInstance::Get_DIMMoveState(MOUSEMOVESTATE eMouseMoveID)
+_long CGameInstance::Get_DIMMoveState(CInput_Device::MOUSEMOVESTATE eMouseMoveID)
 {
 	if (nullptr == m_pInput_Device)
 		return 0;
