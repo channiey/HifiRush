@@ -43,14 +43,22 @@ void CFileUtils::Open(wstring filePath, FileMode mode)
 		);
 	}
 
+#ifdef _DEBUG
 	assert(_handle != INVALID_HANDLE_VALUE);
+#endif // _DEBUG
+
 }
 
 
 void CFileUtils::Write(void* data, uint32 dataSize)
 {
 	uint32 numOfBytes = 0;
+
+#ifdef _DEBUG
 	assert(::WriteFile(_handle, data, dataSize, reinterpret_cast<LPDWORD>(&numOfBytes), nullptr));
+#else
+	WriteFile(_handle, data, dataSize, reinterpret_cast<LPDWORD>(&numOfBytes), nullptr);
+#endif // _DEBUG
 }
 
 void CFileUtils::Write(const string& data)
@@ -67,7 +75,13 @@ void CFileUtils::Write(const string& data)
 void CFileUtils::Read(void** data, uint32 dataSize)
 {
 	uint32 numOfBytes = 0;
+
+#ifdef _DEBUG
 	assert(::ReadFile(_handle, *data, dataSize, reinterpret_cast<LPDWORD>(&numOfBytes), nullptr));
+#else
+	ReadFile(_handle, *data, dataSize, reinterpret_cast<LPDWORD>(&numOfBytes), nullptr);
+#endif // _DEBUG
+
 }
 
 void CFileUtils::Read(OUT string& data)
