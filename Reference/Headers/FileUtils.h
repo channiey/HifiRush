@@ -26,7 +26,7 @@ public:
 #ifdef _DEBUG
 		assert(::WriteFile(_handle, &data, sizeof(T), (LPDWORD)&numOfBytes, nullptr));
 #else
-		WriteFile(_handle, &data, sizeof(T), (LPDWORD)&numOfBytes, nullptr)
+		WriteFile(_handle, &data, sizeof(T), (LPDWORD)&numOfBytes, nullptr);
 #endif // _DEBUG
 
 	}

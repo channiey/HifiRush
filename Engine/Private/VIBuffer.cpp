@@ -44,7 +44,7 @@ HRESULT CVIBuffer::Render()
 #ifdef _DEBUG
 	CProfiler_Manager::GetInstance()->Add_Batches();
 
-	CProfiler_Manager::GetInstance()->Add_Tris(m_iNumTirs);
+	//CProfiler_Manager::GetInstance()->Add_Tris(m_iNumTirs);
 #endif // _DEBUG
 
 

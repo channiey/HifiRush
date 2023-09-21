@@ -91,6 +91,18 @@ HRESULT CShader::Bind_Matrix(const char* pConstantName, const _float4x4* pMatrix
 	return pMatrixVariable->SetMatrix((const _float*)pMatrix);
 }
 
+HRESULT CShader::Bind_RawValue(const char* pConstantName, const void* pData, _uint iSize)
+{
+	/* 셰이더에 자료형을 특정하지 않은 데이터를 세팅한다. */
+	/* Matrix(전치 발생), bool, Texture은 이 함수를 사용할 수 없다. */
+
+	ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pConstantName);
+	if (nullptr == pVariable)
+		return E_FAIL;
+
+	return pVariable->SetRawValue(pData, 0, iSize);
+}
+
 HRESULT CShader::Bind_Matrices(const char * pConstantName, const _float4x4* pMatrices, _uint iNumMatrices)const 
 {
 	ID3DX11EffectVariable*		pVariable = m_pEffect->GetVariableByName(pConstantName);

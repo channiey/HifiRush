@@ -355,12 +355,12 @@ Matrix CGameInstance::Get_Transform_Inverse(const CPipeLine::TRANSFORM_STATE& eS
 	return m_pPipeLine->Get_Transform_Inverse(eState);
 }
 
-Vec4 CGameInstance::Get_CamPosition(const CPipeLine::TRANSFORM_STATE& eState) const
+Vec4 CGameInstance::Get_CamPosition() const
 {
 	if (nullptr == m_pPipeLine)
 		return Vec4();
 
-	return m_pPipeLine->Get_CamPosition(eState);
+	return m_pPipeLine->Get_CamPosition();
 }
 
 void CGameInstance::Release_Engine()

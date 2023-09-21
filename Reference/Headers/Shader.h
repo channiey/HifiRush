@@ -16,8 +16,9 @@ public:
 	virtual HRESULT Initialize(void* pArg) override;
 
 public:
-	/* 1. 셰이더 상수 테이블의 값을 채운다. */
+	/* 1. 셰이더 상수 테이블의 값을 채운다. (되도록 이 함수들의 자료형은 바꾸지 않도록 한다. */
 	HRESULT Bind_Matrix(const char* pConstantName, const _float4x4* pMatrix) const;
+	HRESULT Bind_RawValue(const char* pConstantName, const void* pData, _uint iSize);
 	HRESULT Bind_Matrices(const char* pConstantName, const _float4x4* pMatrices, _uint iNumMatrices)const;
 	HRESULT Bind_Texture(const char * pConstantName, ID3D11ShaderResourceView* pSRV)const;
 	HRESULT Bind_Textures(const char * pConstantName, ID3D11ShaderResourceView ** ppSRVs, _uint iNumTextures)const;

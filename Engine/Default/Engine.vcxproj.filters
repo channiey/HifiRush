@@ -285,11 +285,11 @@
     <ClInclude Include="..\Public\PipeLine.h">
       <Filter>01.Utiltiy\04.PipeLine</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Camera.h">
-      <Filter>01.Utiltiy\02.GameObject\Camera</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Component.h">
       <Filter>01.Utiltiy\03.Components\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera.h">
+      <Filter>01.Utiltiy\02.GameObject\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -404,14 +404,14 @@
     <ClCompile Include="..\Private\PipeLine.cpp">
       <Filter>01.Utiltiy\04.PipeLine</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Camera.cpp">
-      <Filter>01.Utiltiy\02.GameObject\Camera</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Component.cpp">
       <Filter>01.Utiltiy\03.Components\Component</Filter>
     </ClCompile>
     <ClCompile Include="FileName.cpp">
       <Filter>01.Utiltiy\03.Components\Component\Camera\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera.cpp">
+      <Filter>01.Utiltiy\02.GameObject\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

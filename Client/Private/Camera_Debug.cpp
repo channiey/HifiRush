@@ -27,7 +27,7 @@ HRESULT CCamera_Debug::Initialize(void * pArg)
 	/* 파생 클래스의 단독 데이터를 세팅한다. */
 	m_fMouseSensitive = 1.f;
 
-	m_tTransDesc.fSpeedPerSec = 50.f;
+	m_tTransDesc.fSpeedPerSec = 80.f;
 	m_tTransDesc.fRotRadPerSec = XMConvertToRadians(90.f);
 
 	/* 카메라 베이스 클래스의 초기 구조체 데이터를 세팅한다. */

@@ -77,7 +77,7 @@ public: /* For.PipeLine */
 	HRESULT Bind_TransformToShader(class CShader* pShader, const char* pConstantName, CPipeLine::TRANSFORM_STATE eState);
 	Matrix Get_Transform(const CPipeLine::TRANSFORM_STATE& eState) const;
 	Matrix Get_Transform_Inverse(const CPipeLine::TRANSFORM_STATE& eState) const;
-	Vec4 Get_CamPosition(const CPipeLine::TRANSFORM_STATE& eState) const;
+	Vec4 Get_CamPosition() const;
 
 private:
 	class CTimer_Manager*			m_pTimer_Manager = { nullptr };

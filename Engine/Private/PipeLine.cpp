@@ -21,10 +21,11 @@ HRESULT CPipeLine::Initialize()
 
 void CPipeLine::Tick()
 {
+	/* 뷰, 투영 역행렬을 계산한다. */
 	for (size_t i = 0; i < D3DTS_END; i++)
 		m_TransformMatrices_Inverse[i] = m_TransformMatrices[i].Invert();
-		//XMStoreFloat4x4(&m_TransformMatrices_Inverse[i], XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_TransformMatrices[i])));
 
+	/* 뷰 스페이스 변환 행렬은 카메라 월드 변환 역행렬이므로 뷰스페이스 변환 행렬의 역행렬은 카메라 월드 변환 행렬 */
 	memcpy(&m_vCamPosition, &m_TransformMatrices_Inverse[D3DTS_VIEW].m[3][0], sizeof(Vec4));	
 }
 
