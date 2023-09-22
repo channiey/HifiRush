@@ -90,6 +90,8 @@ HRESULT CLevel_Loading::Parse_LevelData(const _uint& iLevelID)
 	Safe_AddRef(pGameInstance);
 
 	shared_ptr<CFileUtils> file = make_shared<CFileUtils>();
+	if (nullptr == file) return E_FAIL;
+
 	file->Open(gStrLevelPath[iLevelID], FileMode::Read);
 
 	/* 현재 레벨의 전체 레이어 갯수 */

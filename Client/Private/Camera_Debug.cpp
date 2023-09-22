@@ -38,7 +38,7 @@ HRESULT CCamera_Debug::Initialize(void * pArg)
 	m_tCamDesc.fFovy = XMConvertToRadians(60.0f);
 	m_tCamDesc.fAspect = g_iWinSizeX / (_float)g_iWinSizeY;
 	m_tCamDesc.fNear = 0.2f;
-	m_tCamDesc.fFar = 300.0f;
+	m_tCamDesc.fFar = 1000.0f;
 
 	/* 카메라 베이스 클래스의 트랜스폼 정보를 세팅한다. */
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, m_tCamDesc.vEye);

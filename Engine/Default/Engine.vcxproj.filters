@@ -160,6 +160,9 @@
     <Filter Include="01.Utiltiy\03.Components\Component\Camera\Manager">
       <UniqueIdentifier>{02fb4a5e-a2ca-46bf-8156-e5f9ed1eb2f3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\RigidBody">
+      <UniqueIdentifier>{f323bfa5-b507-4b16-aed8-fb05902b379f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">

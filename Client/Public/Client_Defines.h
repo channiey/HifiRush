@@ -9,6 +9,7 @@ using namespace std;
 namespace Client
 {
 #define FPS_LIMIT		1000.f
+#define IS_MULTI_THREAD 
 
 	/* Window */
 	const unsigned int		g_iWinSizeX = 1280;

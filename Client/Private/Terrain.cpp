@@ -72,6 +72,11 @@ HRESULT CTerrain::Ready_Components()
 	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain"),
 		TEXT("Com_Texture"), (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
+	
+	/* Com_Texture_Mask*/
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain_Mask"),
+		TEXT("Com_Texture_Mask"), (CComponent**)&m_pTextureCom[TEX_MASK])))
+		return E_FAIL;
 
 	/* Com_Transform */
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
@@ -86,22 +91,24 @@ HRESULT CTerrain::Bind_ShaderResources()
 	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
 
-	CGameInstance* pGameInstance = CGameInstance::GetInstance();
-	Safe_AddRef(pGameInstance);
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+	{
+		if (FAILED(pGameInstance->Bind_TransformToShader(m_pShaderCom, "g_ViewMatrix", CPipeLine::D3DTS_VIEW)))
+			return E_FAIL;
 
-	if (FAILED(pGameInstance->Bind_TransformToShader(m_pShaderCom, "g_ViewMatrix", CPipeLine::D3DTS_VIEW)))
+		if (FAILED(pGameInstance->Bind_TransformToShader(m_pShaderCom, "g_ProjMatrix", CPipeLine::D3DTS_PROJ)))
+			return E_FAIL;
+
+		Vec4 vCamPos = pGameInstance->Get_CamPosition();
+		if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition", &vCamPos, sizeof(_float4))))
+			return E_FAIL;
+	}
+	RELEASE_INSTANCE(CGameInstance);
+
+	if (FAILED(m_pTextureCom[TEX_DIFFUSE]->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture")))
 		return E_FAIL;
 
-	if (FAILED(pGameInstance->Bind_TransformToShader(m_pShaderCom, "g_ProjMatrix", CPipeLine::D3DTS_PROJ)))
-		return E_FAIL;
-
-	Vec4 vCamPos = pGameInstance->Get_CamPosition();
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition", &vCamPos, sizeof(_float4))))
-		return E_FAIL;
-
-	Safe_Release(pGameInstance);
-
-	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_DiffuseTexture", 0)))
+	if (FAILED(m_pTextureCom[TEX_MASK]->Bind_ShaderResources(m_pShaderCom, "g_MaskTexture")))
 		return E_FAIL;
 
 	return S_OK;
@@ -138,8 +145,10 @@ void CTerrain::Free()
 	__super::Free();
 
 	Safe_Release(m_pTransformCom);
-	Safe_Release(m_pTextureCom);
-	Safe_Release(m_pShaderCom);
+
+	for (auto& pTextureCom : m_pTextureCom)
+		Safe_Release(pTextureCom);	Safe_Release(m_pShaderCom);
+
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pRendererCom);
 }
