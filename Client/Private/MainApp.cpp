@@ -43,14 +43,16 @@ HRESULT CMainApp::Initialize()
 
 	/* 1-4. 게임내에서 사용할 여러 자원(텍스쳐, 모델, 객체) 들을 준비한다. */
 
-	/* 1-5. ImGui Manager을 세팅한다. */
 #ifdef _DEBUG
+	/* 1-5. ImGui Manager을 세팅한다. */
 	FAILED_CHECK_RETURN(m_pImGui_Manager->Initialize(m_pDevice, m_pContext), E_FAIL);
 #endif // _DEBUG
 
+#ifdef _DEBUG
 	/* 1-6. 테스트 코드를 실행한다. */
 	if (FAILED(Test_CreateAndSave_Texture_inDynamic()))
 		return E_FAIL;
+#endif // _DEBUG
 
 	return S_OK;
 }
