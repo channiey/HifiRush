@@ -47,7 +47,7 @@ namespace Client
 	{
 		LAYER_CAMERA,
 		LAYER_BACKGROUND,	
-		LAYER_ENVIORNMENT,	
+		LAYER_ENVIORNMENT,	/* Static과 Interaction으로 세분화 필요 */
 		LAYER_PLAYER,
 		LAYER_MONSTER,
 		LAYER_NPC,

@@ -1,5 +1,7 @@
 #pragma once
 
+/* '바이너리 파일' 입출력을 편하게 사용하기 위함 */
+
 #include "Base.h"
 
 BEGIN(Engine)
