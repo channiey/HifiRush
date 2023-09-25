@@ -13,13 +13,15 @@ CVIBuffer_Rect::CVIBuffer_Rect(const CVIBuffer_Rect & rhs)
 
 HRESULT CVIBuffer_Rect::Initialize_Prototype()
 {
-	m_iVertexStride = sizeof(VTXPOSTEX); /* 정점하나의 크기 .*/
+	m_iNumVBs = 1;
 	m_iNumVertices = 4;
+	m_iVertexStride = sizeof(VTXPOSTEX); /* 정점하나의 크기 .*/
+
 	m_iIndexStride = 2; /* 인덱스 하나의 크기. 2 or 4 */
 	m_iNumIndices = 6;
 	m_eIndexFormat = m_iIndexStride == 2 ? DXGI_FORMAT_R16_UINT : DXGI_FORMAT_R32_UINT;
+	
 	m_eTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	m_iNumVBs = 1;
 
 #pragma region VERTEX_BUFFER
 
@@ -87,9 +89,6 @@ HRESULT CVIBuffer_Rect::Initialize_Prototype()
 	Safe_Delete_Array(pIndices);
 #pragma endregion
 
-#ifdef _DEBUG
-	m_iNumTirs = 2;
-#endif // _DEBUG
 
 	return S_OK;
 }

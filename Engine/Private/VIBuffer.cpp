@@ -23,7 +23,6 @@ CVIBuffer::CVIBuffer(const CVIBuffer & rhs)
 	, m_eIndexFormat(rhs.m_eIndexFormat)
 	, m_eTopology(rhs.m_eTopology)
 	, m_iNumVBs(rhs.m_iNumVBs)
-	, m_iNumTirs(rhs.m_iNumTirs)
 {
 	Safe_AddRef(m_pVB);
 	Safe_AddRef(m_pIB);	

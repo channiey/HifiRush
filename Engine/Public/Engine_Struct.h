@@ -4,44 +4,21 @@
 
 namespace Engine
 {
-	typedef struct tagGraphicDesc
+	typedef struct tagKeyFrame
 	{
-		enum WINMODE { WINMODE_FULL, WINMODE_WIN, WINMODE_END };
+		float		fTime;
 
-		HWND		hWnd;
-		WINMODE		eWinMode;
-		unsigned int	iWinSizeX, iWinSizeY;
+		XMFLOAT3	vScale;
+		XMFLOAT4	vRotation;
+		XMFLOAT3	vPosition;
 
-	}GRAPHIC_DESC;
+	}KEYFRAME;
 
-	typedef struct tagLightDesc
+	typedef struct tagMaterialDesc
 	{
-		enum TYPE { TYPE_POINT, TYPE_DIRECTIONAL, TYPE_END };
+		class CTexture* pTexture[AI_TEXTURE_TYPE_MAX];
 
-		TYPE			eType;
-
-		XMFLOAT4		vDirection;
-
-		XMFLOAT4		vPosition;
-		float			fRange;
-
-		/* 분산광 */
-		/* 각도에 따라 밝기가 다 르다(명암) -> 람베르트 공식('코사인') */
-		XMFLOAT4		vDiffuse;
-
-		/* 환경, 주변광 (태양)*/
-		/* 수많은 반사를 거쳐 광원이 불분명함, '일정한(같은)' 밝기와 색으로 표현된다. */
-		XMFLOAT4		vAmbient;
-
-		/* '반사'광, 하이라이트 */
-		/* 한 방향으로 완전히 반사되는 빛 -> 퐁 공식 */
-		XMFLOAT4		vSpecular;
-
-		/* Emissive */
-		/* 외곽선 추출시 사용 주로 림라이트라 부름 */
-		/* 노말과 Eye의 각이 클수록(90도에 가까울수록) 색상이 강해짐*/
-
-	}LIGHT_DESC;
+	}MATERIALDESC;
 
 	typedef struct tagProfilerDesc
 	{
@@ -54,6 +31,30 @@ namespace Engine
 		_uint iAnim = 0;
 
 	}PROFILER_DESC;
+
+	typedef struct tagLineIndices16
+	{
+		unsigned short		_0, _1;
+
+	}LINEINDICES16;
+
+	typedef struct tagLineIndices32
+	{
+		unsigned long		_0, _1;
+
+	}LINEINDICES32;
+
+	typedef struct tagFaceIndices16
+	{
+		unsigned short		_0, _1, _2;
+
+	}FACEINDICES16;
+
+	typedef struct tagFaceIndices32
+	{
+		unsigned long		_0, _1, _2;
+
+	}FACEINDICES32;
 
 	typedef struct ENGINE_DLL tagVertex_Position_Texcoord
 	{
@@ -75,6 +76,46 @@ namespace Engine
 		static const D3D11_INPUT_ELEMENT_DESC	Elements[iNumElements];
 
 	}VTXNORTEX;
+
+	typedef struct tagVertexModel
+	{
+		XMFLOAT3		vPosition;
+		XMFLOAT3		vNormal;
+		XMFLOAT2		vTexture;
+		XMFLOAT3		vTangent;
+	}VTXMODEL;
+
+	typedef struct ENGINE_DLL tagVertexModel_Declaration
+	{
+		static const unsigned int iNumElements = 4;
+		static const D3D11_INPUT_ELEMENT_DESC Elements[iNumElements];
+	}VTXMODEL_DECLARATION;
+
+	typedef struct tagVertexAnimModel
+	{
+		XMFLOAT3		vPosition;
+		XMFLOAT3		vNormal;
+		XMFLOAT2		vTexture;
+		XMFLOAT3		vTangent;
+		XMUINT4			vBlendIndex; /* 이 정점에 영향을 주는 뼈의 인덱스 네개. */
+		XMFLOAT4		vBlendWeight; /* 영향르 주고 있는 각 뼈대의 영향 비율 */
+	}VTXANIMMODEL;
+
+	typedef struct ENGINE_DLL tagVertexAnimModel_Declaration
+	{
+		static const unsigned int iNumElements = 6;
+		static const D3D11_INPUT_ELEMENT_DESC Elements[iNumElements];
+	}VTXANIMMODEL_DECLARATION;
+
+	typedef struct tagGraphicDesc
+	{
+		enum WINMODE { WINMODE_FULL, WINMODE_WIN, WINMODE_END };
+
+		HWND		hWnd;
+		WINMODE		eWinMode;
+		unsigned int	iWinSizeX, iWinSizeY;
+
+	}GRAPHIC_DESC;
 }
 
 #endif // Engine_Struct_h__

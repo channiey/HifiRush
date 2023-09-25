@@ -5,7 +5,17 @@
 #pragma warning (disable : 4038) /* warning STL4038: The contents of <filesystem> are available only with C++17 or later. */
 #pragma warning (disable : 4244) /* string utils */
 
-/* DX (순서 함부로 바꿨다가 Simple Math랑 충돌 일어난다.) */
+/* DX (순서 함부로 바꿨다가 충돌 일어난다.) */
+#include <Assimp/scene.h>
+#include <Assimp/Importer.hpp>
+#include <Assimp/postprocess.h>
+
+#include <DirectXTK/PrimitiveBatch.h>
+#include <DirectXTK/Effects.h>
+#include <DirectXTK/VertexTypes.h>
+#include <DirectXTK/SpriteBatch.h>
+#include <DirectXTK/SpriteFont.h>
+
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <DirectXCollision.h>
@@ -15,6 +25,7 @@
 #include <DirectXTK\WICTextureLoader.h>
 #include <DirectXTK\ScreenGrab.h>
 using namespace DirectX;
+
 
 #define DIRECTINPUT_VERSION	0x0800
 #include <dinput.h>

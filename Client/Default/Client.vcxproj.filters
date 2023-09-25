@@ -109,6 +109,24 @@
     <Filter Include="02.GameObjects\Camera\Target">
       <UniqueIdentifier>{5a473209-8b19-4c2d-9fe7-42a15c3bf6bd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Light">
+      <UniqueIdentifier>{ec62a095-9b5c-473b-8346-ae77c4962129}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Environment">
+      <UniqueIdentifier>{19639fc5-bbcb-4d89-8030-1ca3fff62c92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Environment\Skeletal">
+      <UniqueIdentifier>{8fb0483e-5266-43dc-92e3-d568cc733951}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Environment\Static">
+      <UniqueIdentifier>{e151be76-84ac-4349-93d8-75c7d1b50d66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Light\Directional">
+      <UniqueIdentifier>{fd10c28d-7c9b-481f-9e12-de5b00b280bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Light\Point">
+      <UniqueIdentifier>{de47ffd3-fa1f-4589-a855-282a1afa93d4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

@@ -128,9 +128,6 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const wstring& strHeightMapFileP
 				XMVector3Normalize(XMLoadFloat3(&pVertices[iIndices[2]].vNormal) + vNormal));
 			XMStoreFloat3(&pVertices[iIndices[3]].vNormal,
 				XMVector3Normalize(XMLoadFloat3(&pVertices[iIndices[3]].vNormal) + vNormal));
-#ifdef _DEBUG
-			m_iNumTirs += 2;
-#endif // _DEBUG
 		}
 	}
 #pragma endregion
