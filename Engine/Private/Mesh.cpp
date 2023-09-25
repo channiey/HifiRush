@@ -1,19 +1,19 @@
-#include "..\Public\MeshContainer.h"
+#include "..\Public\Mesh.h"
 #include "HierarchyNode.h"
 
-CMeshContainer::CMeshContainer(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+CMesh::CMesh(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CVIBuffer(pDevice, pContext)
 {
 }
 
-CMeshContainer::CMeshContainer(const CMeshContainer & rhs)
+CMesh::CMesh(const CMesh & rhs)
 	: CVIBuffer(rhs)	
 	, m_iMaterialIndex(rhs.m_iMaterialIndex)
 {
 	strcpy_s(m_szName, rhs.m_szName);
 }
 
-HRESULT CMeshContainer::Initialize_Prototype(CModel::TYPE eModelType, const aiMesh * pAIMesh, CModel* pModel, _fmatrix PivotMatrix)
+HRESULT CMesh::Initialize_Prototype(CModel::TYPE eModelType, const aiMesh * pAIMesh, CModel* pModel, _fmatrix PivotMatrix)
 {
 	/* 이 메시와 이름이 같은 뼈대가 존재한다면. 
 	이 뼈대의 행렬을 메시를 구성하는 정점에 곱해질 수 있도록 유도하낟. */
@@ -77,12 +77,12 @@ HRESULT CMeshContainer::Initialize_Prototype(CModel::TYPE eModelType, const aiMe
 	return S_OK;
 }
 
-HRESULT CMeshContainer::Initialize(void * pArg)
+HRESULT CMesh::Initialize(void * pArg)
 {
 	return S_OK;
 }
 
-HRESULT CMeshContainer::SetUp_HierarchyNodes(CModel * pModel, aiMesh* pAIMesh)
+HRESULT CMesh::SetUp_HierarchyNodes(CModel * pModel, aiMesh* pAIMesh)
 {
 	/* 현재 메시에 영향을 주는 뼈들을 순회하며 행렬정보를 저장하고, 뼈들을 컨테이너에 모아둔다. */
 
@@ -120,7 +120,7 @@ HRESULT CMeshContainer::SetUp_HierarchyNodes(CModel * pModel, aiMesh* pAIMesh)
 	return S_OK;
 }
 
-void CMeshContainer::SetUp_BoneMatrices(_float4x4 * pBoneMatrices, _fmatrix PivotMatrix)
+void CMesh::SetUp_BoneMatrices(_float4x4 * pBoneMatrices, _fmatrix PivotMatrix)
 {
 	/* 메시의 정점을 그리기위해 셰이더에 넘기기위한 뼈행렬의 배열을 구성한다. */
 
@@ -137,7 +137,7 @@ void CMeshContainer::SetUp_BoneMatrices(_float4x4 * pBoneMatrices, _fmatrix Pivo
 	
 }
 
-HRESULT CMeshContainer::Ready_Vertices(const aiMesh* pAIMesh, _fmatrix PivotMatrix)
+HRESULT CMesh::Ready_Vertices(const aiMesh* pAIMesh, _fmatrix PivotMatrix)
 {
 	m_iNumVBs = 1;
 	m_iNumVertices = pAIMesh->mNumVertices;
@@ -181,7 +181,7 @@ HRESULT CMeshContainer::Ready_Vertices(const aiMesh* pAIMesh, _fmatrix PivotMatr
 	return S_OK;
 }
 
-HRESULT CMeshContainer::Ready_AnimVertices(const aiMesh* pAIMesh, CModel* pModel)
+HRESULT CMesh::Ready_AnimVertices(const aiMesh* pAIMesh, CModel* pModel)
 {
 	m_iNumVBs = 1;
 	m_iNumVertices = pAIMesh->mNumVertices;
@@ -258,33 +258,33 @@ HRESULT CMeshContainer::Ready_AnimVertices(const aiMesh* pAIMesh, CModel* pModel
 	return S_OK;
 }
 
-CMeshContainer * CMeshContainer::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, CModel::TYPE eModelType, const aiMesh * pAIMesh, CModel* pModel, _fmatrix PivotMatrix)
+CMesh * CMesh::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, CModel::TYPE eModelType, const aiMesh * pAIMesh, CModel* pModel, _fmatrix PivotMatrix)
 {
-	CMeshContainer*			pInstance = new CMeshContainer(pDevice, pContext);
+	CMesh*			pInstance = new CMesh(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype(eModelType, pAIMesh, pModel, PivotMatrix)))
 	{
-		MSG_BOX("Failed To Created : CMeshContainer");
+		MSG_BOX("Failed To Created : CMesh");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-CComponent * CMeshContainer::Clone(void * pArg)
+CComponent * CMesh::Clone(void * pArg)
 {
-	CMeshContainer*			pInstance = new CMeshContainer(*this);
+	CMesh*			pInstance = new CMesh(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed To Cloned : CMeshContainer");
+		MSG_BOX("Failed To Cloned : CMesh");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CMeshContainer::Free()
+void CMesh::Free()
 {
 	__super::Free();
 

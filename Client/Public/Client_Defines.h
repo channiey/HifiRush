@@ -47,11 +47,11 @@ namespace Client
 	{
 		LAYER_CAMERA,
 		LAYER_BACKGROUND,	
-		LAYER_ENVIORNMENT,	/* Static과 Interaction으로 세분화 필요 */
+		LAYER_ENVIORNMENT,	/* Static과 Interactable으로 세분화 필요 */
 		LAYER_PLAYER,
 		LAYER_MONSTER,
 		LAYER_NPC,
-		LAYER_PROJECTILE,
+		LAYER_PROJECTILE,	/* 조명 및 트리거 추가 필요 */
 		LAYER_EFFECT,
 		LAYER_UI,
 		LAYER_END

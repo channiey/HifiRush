@@ -172,11 +172,11 @@
     <Filter Include="01.Utiltiy\03.Components\Component\Model\HierarachyNode">
       <UniqueIdentifier>{9aa9b747-c0aa-4efd-af76-f85e4df08191}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utiltiy\03.Components\Component\Model\MeshContainer">
-      <UniqueIdentifier>{33d5f9dd-8d2b-4218-88b7-4e547100f382}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utiltiy\03.Components\Component\Model\Animation\Channel">
       <UniqueIdentifier>{f6132321-be0f-4fb8-9d49-7b53d56acc50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\Model\Mesh">
+      <UniqueIdentifier>{33d5f9dd-8d2b-4218-88b7-4e547100f382}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -315,8 +315,8 @@
     <ClInclude Include="..\Public\HierarchyNode.h">
       <Filter>01.Utiltiy\03.Components\Component\Model\HierarachyNode</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\MeshContainer.h">
-      <Filter>01.Utiltiy\03.Components\Component\Model\MeshContainer</Filter>
+    <ClInclude Include="..\Public\Mesh.h">
+      <Filter>01.Utiltiy\03.Components\Component\Model\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Animation.h">
       <Filter>01.Utiltiy\03.Components\Component\Model\Animation</Filter>
@@ -452,8 +452,8 @@
     <ClCompile Include="..\Private\HierarchyNode.cpp">
       <Filter>01.Utiltiy\03.Components\Component\Model\HierarachyNode</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\MeshContainer.cpp">
-      <Filter>01.Utiltiy\03.Components\Component\Model\MeshContainer</Filter>
+    <ClCompile Include="..\Private\Mesh.cpp">
+      <Filter>01.Utiltiy\03.Components\Component\Model\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Animation.cpp">
       <Filter>01.Utiltiy\03.Components\Component\Model\Animation</Filter>

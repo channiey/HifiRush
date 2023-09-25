@@ -1,5 +1,5 @@
 #include "..\Public\Model.h"
-#include "MeshContainer.h"
+#include "Mesh.h"
 #include "Texture.h"
 #include "HierarchyNode.h"
 #include "Animation.h"
@@ -26,19 +26,18 @@ CModel::CModel(const CModel & rhs)
 	, m_iNumAnimations(rhs.m_iNumAnimations)
 	
 {
-	for (auto& pMeshContainer : m_Meshes)
-		Safe_AddRef(pMeshContainer);
+	/* Meshes */
+	for (auto& pMesh : m_Meshes)
+		Safe_AddRef(pMesh);
 
-
+	/* Materials */
 	for (auto& Material : m_Materials)
-	{
 		for (_uint i = 0; i < AI_TEXTURE_TYPE_MAX; ++i)
 			Safe_AddRef(Material.pTexture[i]);
-	}
 
+	/* Animations */
 	for (auto& pAnimation : m_Animations)
 		Safe_AddRef(pAnimation);
-
 }
 
 CHierarchyNode * CModel::Get_HierarchyNode(const char * pNodeName)
@@ -84,7 +83,7 @@ HRESULT CModel::Initialize_Prototype(TYPE eType, const char * pModelFilePath, co
 	if (nullptr == m_pAIScene)
 		return E_FAIL;	
 
-	if (FAILED(Ready_MeshContainers(PivotMatrix)))
+	if (FAILED(Ready_Meshes(PivotMatrix)))
 		return E_FAIL;
 
 	if (FAILED(Ready_Materials(pModelFilePath)))
@@ -98,30 +97,28 @@ HRESULT CModel::Initialize_Prototype(TYPE eType, const char * pModelFilePath, co
 
 HRESULT CModel::Initialize(void * pArg)
 {
-	/* 이 모델 전체의 뼈의 정보(aiNode)를 로드한다. (단순 노드 연결) */
+	/* 본 정보 순회 세팅 */
 	Ready_HierarchyNodes(m_pAIScene->mRootNode, nullptr, 0);
 
-	/* Deep Copy + SetUp Hierarchy (노드별 본과 메시의 연결 및 세팅) */
 	if (TYPE_ANIM == m_eModelType)
 	{
-		_uint		iNumMeshes = 0;
+		_uint			iNumMeshes = 0;
+		vector<CMesh*>	Meshes; 
 
-		vector<CMeshContainer*>		MeshContainers; 
-
+		/* 메시 깊은 복사 */
 		for (auto& pPrototype : m_Meshes)
 		{
-			CMeshContainer*		pMeshContainer = (CMeshContainer*)pPrototype->Clone();
+			CMesh*		pMeshContainer = (CMesh*)pPrototype->Clone();
 			if (nullptr == pMeshContainer)
 				return E_FAIL;
 
-			MeshContainers.push_back(pMeshContainer);
+			Meshes.push_back(pMeshContainer);
 
 			Safe_Release(pPrototype);
 		}
-
 		m_Meshes.clear();
+		m_Meshes = Meshes;
 
-		m_Meshes = MeshContainers;
 
 		/* 메시를 순회하며, 메시에 대한 뼈 정보를 노드에 세팅한다. */
 		for (auto& pMeshContainer : m_Meshes)
@@ -131,7 +128,7 @@ HRESULT CModel::Initialize(void * pArg)
 		}
 	}
 
-	/* Deep Copy */
+	/* 애니메이션 깊은 복사 */
 	vector<CAnimation*>		Animations;
 	for (auto& pPrototype : m_Animations)
 	{
@@ -143,9 +140,7 @@ HRESULT CModel::Initialize(void * pArg)
 
 		Safe_Release(pPrototype);
 	}
-
 	m_Animations.clear();
-
 	m_Animations = Animations;
 
 	return S_OK;
@@ -164,12 +159,12 @@ HRESULT CModel::SetUp_OnShader(CShader * pShader, _uint iMaterialIndex, aiTextur
 
 HRESULT CModel::Play_Animation(_float fTimeDelta)
 {
-	/* 애니메이션을 재생한다. */
 	/* 1. 해당 애니메이션에서 사용하는 모든 뼈들의 Transformation 행렬을 갱신한다. */
 	/* 2. Transformation을 최상위 부모로부터 자식으로 계속 누적시켜간다.(CombinedTransformation) */
 	/* 3. 애니메이션에 의해 움직인 뼈들의 CombinedTransfromation을 세팅한다. */
 
 	if (m_iCurrentAnimIndex >= m_iNumAnimations) return E_FAIL;
+
 	/* Relative */
 	/* 현재 재생하고자하는 애니메이션이 제어해야할 뼈들의 지역행렬을 갱신해낸다. */
 	m_Animations[m_iCurrentAnimIndex]->Play_Animation(fTimeDelta);
@@ -185,14 +180,14 @@ HRESULT CModel::Play_Animation(_float fTimeDelta)
 
 HRESULT CModel::Render(CShader* pShader, _uint iMeshIndex, _uint iPassIndex)
 {
-	_float4x4		BoneMatrices[600];
+	_float4x4		BoneMatrices[MAX_BONES];
 
 	if (TYPE_ANIM == m_eModelType) 
 	{
 		m_Meshes[iMeshIndex]->SetUp_BoneMatrices(BoneMatrices, XMLoadFloat4x4(&m_PivotMatrix));
 
 		/* 모델 정점의 스키닝. */
-   		if (FAILED(pShader->Bind_RawValue("g_BoneMatrices", BoneMatrices, sizeof(_float4x4) * 600)))
+   		if (FAILED(pShader->Bind_RawValue("g_BoneMatrices", BoneMatrices, sizeof(_float4x4) * MAX_BONES)))
 			return E_FAIL;
 	}
 
@@ -203,20 +198,15 @@ HRESULT CModel::Render(CShader* pShader, _uint iMeshIndex, _uint iPassIndex)
 	return S_OK;
 }
 
-HRESULT CModel::Ready_MeshContainers(_fmatrix PivotMatrix)
+HRESULT CModel::Ready_Meshes(_fmatrix PivotMatrix)
 {
-	/* 모델 -> 메시(여러개) -> 각 메시의 정점, 인덱스*/
-	
-	/* 모델을 구성하는 메시들을 만든다. */
-	/* 모델은 여러개의 메시로 구성되어있다. */
-	/* 각 메시의 정점들과 인덱스들을 구성한다. */
-
 	/* 메시의 갯수를 얻어온다. */
 	m_iNumMeshes = m_pAIScene->mNumMeshes;
 	
+	/* 메시 정보를 파싱하여 메시를 생성한다. */
 	for (_uint i = 0; i < m_iNumMeshes; ++i)
 	{
-		CMeshContainer*		pMeshContainer = CMeshContainer::Create(m_pDevice, m_pContext, m_eModelType, m_pAIScene->mMeshes[i], this, PivotMatrix);
+		CMesh*		pMeshContainer = CMesh::Create(m_pDevice, m_pContext, m_eModelType, m_pAIScene->mMeshes[i], this, PivotMatrix);
 		if (nullptr == pMeshContainer)
 			return E_FAIL;
 
@@ -228,14 +218,13 @@ HRESULT CModel::Ready_MeshContainers(_fmatrix PivotMatrix)
 
 HRESULT CModel::Ready_Materials(const char* pModelFilePath)
 {
-	/* 머테리얼정보다.(빛을 받았을때 리턴해야할 색상정보.) */
-	/* 모델마다정의?, 정점마다정의? 픽셀마다 정의(o) 텍스쳐로 표현된다. */
+	/* 매태리얼은 빛을 받았을 때 리턴해야할 색상 정보를 나타낸다. */
+	/* 매태리얼은 픽셀마다 정의된다 (모델마다X, 정점마다X) -> 텍스처로 표현된다. */
 
 	if (nullptr == m_pAIScene)
 		return E_FAIL;
 
-	/* 이 모델은 몇개의 머테리얼 정보를 이용하는가. */
-	/* 머테리얼(MATERIALDESC) : 텍스쳐[디퓨즈or앰비언트or노말or이미시브 등등등 ] */
+	/* 매태리얼 갯수를 얻어온다. */
 	m_iNumMaterials = m_pAIScene->mNumMaterials;
 
 	for (_uint i = 0; i < m_iNumMaterials; ++i)
@@ -300,6 +289,7 @@ HRESULT CModel::Ready_HierarchyNodes(aiNode* pNode, CHierarchyNode* pParent, _ui
 
 	m_HierarchyNodes.push_back(pHierarchyNode);
 
+	/* 재귀 (전위 순회) */
 	for (_uint i = 0; i < pNode->mNumChildren; ++i)
 		Ready_HierarchyNodes(pNode->mChildren[i], pHierarchyNode, iDepth);
 
@@ -308,20 +298,13 @@ HRESULT CModel::Ready_HierarchyNodes(aiNode* pNode, CHierarchyNode* pParent, _ui
 
 HRESULT CModel::Ready_Animations()
 {
-	/* 애니메이션의 정보를 읽어서 저장한다.  */
-	/* 애니메이션 정보 : 애니메이션이 재생되는데 걸리는 총 시간(Duration),  애니메이션의 재생속도(mTickPerSecond), 몇개의 채널(mNumChannels) 에 영향르 주는가. 각채널의 정보(aiNodeAnim)(mChannels) */
-	/* mChannel(aiNodeAnim, 애니메이션이 움직이는 뼈) 에 대한 정보를 구성하여 객체화한다.(CChannel) */
-	/* 채널 : 뼈. 이 뼈는 한 애니메이션 안에서 사용된다. 그 애니메이션 안에서 어떤 시간, 시간, 시간, 시간대에 어떤 상태를 표현하면 되는지에 대한 정보(keyframe)들을 다므낟. */
-	/* keyframe : 어떤시간?, 상태(vScale, vRotation, vPosition) */
-
+	/* 모델이 사용하는 애니메이션의 갯수를 받아온다. */
 	m_iNumAnimations = m_pAIScene->mNumAnimations;
 
-	/* 모델이 들고 있는 애니메이션 갯수만큼 애니메이션을 생성한다. */
 	for (_uint i = 0; i < m_pAIScene->mNumAnimations; ++i)
 	{
 		aiAnimation*		pAIAnimation = m_pAIScene->mAnimations[i];
 
-		/*I 애니메이션 마다 객체화 하는 이유 : 현재 재생 시간에 맞는 채널들의 뼈 상태를 셋팅한다. (조난 빡세다) 함수로 만들어야지뭐. */
 		CAnimation*			pAnimation = CAnimation::Create(pAIAnimation);
 		if (nullptr == pAnimation)
 			return E_FAIL;

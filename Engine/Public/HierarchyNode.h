@@ -32,7 +32,7 @@ private:
 	_float4x4			m_Transformation; /* Relative(부모 기준) - 여기다가 부모의 m_CombinedTransformation을 곱하면 루트 기준으로 변환 */
 	_float4x4			m_CombinedTransformation; /* Global(루트 기준) */
 	CHierarchyNode*		m_pParent = nullptr;
-	_uint				m_iDepth = 0;
+	_uint				m_iDepth = 0; /* 트리에서의 깊이값, 즉 몇차 자식이냐 */
 
 public:
 	static CHierarchyNode* Create(aiNode* pAINode, class CHierarchyNode* pParent, _uint iDepth);

@@ -1,6 +1,6 @@
 #pragma once
 
-/* 모델을 구성하는 하나의 메시. */
+/* 모델을 구성하는 하나의 메시의 정보를 나타낸다. */
 /* 이 메시를 구성하는 정점, 인덱스 버퍼를 보관한다. */
 /* 이 메시에 영향을 주는 뼈의 정보와, 메시를 그리기 위한 매태리얼 정보를 보관한다. */
 
@@ -9,12 +9,12 @@
 
 BEGIN(Engine)
 
-class CMeshContainer final : public CVIBuffer
+class CMesh final : public CVIBuffer
 {
 private:
-	CMeshContainer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CMeshContainer(const CMeshContainer& rhs);
-	virtual ~CMeshContainer() = default;
+	CMesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CMesh(const CMesh& rhs);
+	virtual ~CMesh() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype(CModel::TYPE eModelType, const aiMesh* pAIMesh, class CModel* pModel, _fmatrix PivotMatrix);
@@ -40,7 +40,7 @@ private:
 	HRESULT Ready_AnimVertices(const aiMesh* pAIMesh, CModel* pModel);
 
 public:
-	static CMeshContainer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CModel::TYPE eModelType, const aiMesh* pAIMesh, class CModel* pModel, _fmatrix PivotMatrix);
+	static CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CModel::TYPE eModelType, const aiMesh* pAIMesh, class CModel* pModel, _fmatrix PivotMatrix);
 	virtual CComponent* Clone(void* pArg = nullptr) override;
 	virtual void Free() override;
 };

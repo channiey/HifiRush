@@ -115,9 +115,6 @@
     <Filter Include="02.GameObjects\Environment">
       <UniqueIdentifier>{19639fc5-bbcb-4d89-8030-1ca3fff62c92}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Environment\Skeletal">
-      <UniqueIdentifier>{8fb0483e-5266-43dc-92e3-d568cc733951}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Environment\Static">
       <UniqueIdentifier>{e151be76-84ac-4349-93d8-75c7d1b50d66}</UniqueIdentifier>
     </Filter>
@@ -126,6 +123,9 @@
     </Filter>
     <Filter Include="02.GameObjects\Light\Point">
       <UniqueIdentifier>{de47ffd3-fa1f-4589-a855-282a1afa93d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Environment\Interactable">
+      <UniqueIdentifier>{8fb0483e-5266-43dc-92e3-d568cc733951}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -212,6 +212,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\Camera_Debug.h">
       <Filter>02.GameObjects\Camera\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp">
+      <Filter>96.ShaderFiles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -301,6 +304,12 @@
       <Filter>96.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
+      <Filter>96.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxModel.hlsl">
+      <Filter>96.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimModel.hlsl">
       <Filter>96.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

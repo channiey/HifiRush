@@ -192,7 +192,7 @@
     <ClInclude Include="..\public\Layer.h" />
     <ClInclude Include="..\public\Level.h" />
     <ClInclude Include="..\public\Level_Manager.h" />
-    <ClInclude Include="..\Public\MeshContainer.h" />
+    <ClInclude Include="..\Public\Mesh.h" />
     <ClInclude Include="..\Public\Model.h" />
     <ClInclude Include="..\Public\MonoBehaviour.h" />
     <ClInclude Include="..\Public\Node.h" />
@@ -245,7 +245,7 @@
     <ClCompile Include="..\private\Layer.cpp" />
     <ClCompile Include="..\private\Level.cpp" />
     <ClCompile Include="..\private\Level_Manager.cpp" />
-    <ClCompile Include="..\Private\MeshContainer.cpp" />
+    <ClCompile Include="..\Private\Mesh.cpp" />
     <ClCompile Include="..\Private\Model.cpp" />
     <ClCompile Include="..\Private\MonoBehaviour.cpp" />
     <ClCompile Include="..\Private\Node.cpp" />
