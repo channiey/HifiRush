@@ -1,5 +1,4 @@
-#include "C:\Users\ChanYoon\Desktop\Programming\Projects\WaveTale\StudyProject\MainFramework\Client\Default\stdafx.h"
-
+#include "../Default/stdafx.h"
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_MATH_OPERATORS
 #endif

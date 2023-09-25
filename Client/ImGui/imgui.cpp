@@ -1,5 +1,4 @@
-//#include "../Default/stdafx.h"
-#include "C:\Users\ChanYoon\Desktop\Programming\Projects\WaveTale\StudyProject\MainFramework\Client\Default\stdafx.h"
+#include "../Default/stdafx.h"
 // dear imgui, v1.90 WIP
 // (main code and documentation)
 
