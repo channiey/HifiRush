@@ -22,7 +22,6 @@ HRESULT CRenderer::Add_RenderGroup(RENDERGROUP eRenderGroup, CGameObject * pGame
 		return E_FAIL;
 
 	m_RenderObjects[eRenderGroup].push_back(pGameObject);
-
 	Safe_AddRef(pGameObject);
 
 	return S_OK;
@@ -138,5 +137,4 @@ CComponent * CRenderer::Clone(void * pArg)
 void CRenderer::Free()
 {
 	__super::Free();
-
 }

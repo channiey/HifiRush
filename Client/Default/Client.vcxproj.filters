@@ -67,9 +67,6 @@
     <Filter Include="97.ImGui">
       <UniqueIdentifier>{700840b3-8278-4149-aec5-245a4d69cf58}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Terrain">
-      <UniqueIdentifier>{39cbdfb5-bb6c-40ec-a138-fdd9bc2c1663}</UniqueIdentifier>
-    </Filter>
     <Filter Include="97.ImGui\Manager">
       <UniqueIdentifier>{ae665d5d-3931-498f-b439-76f319cca696}</UniqueIdentifier>
     </Filter>
@@ -126,6 +123,21 @@
     </Filter>
     <Filter Include="02.GameObjects\Environment\Interactable">
       <UniqueIdentifier>{8fb0483e-5266-43dc-92e3-d568cc733951}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\01.GamePlay\00.Proto">
+      <UniqueIdentifier>{b4248e0b-da12-45df-acaf-494f8e50ae75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\01.GamePlay\03.Level_Boss">
+      <UniqueIdentifier>{e49f063f-84b0-47dc-81eb-542d4a103122}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\01.GamePlay\01.Level_00">
+      <UniqueIdentifier>{8501a2da-fead-442c-a8a6-46c59345adad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\01.GamePlay\02.Level_01">
+      <UniqueIdentifier>{cd2cc360-906f-418b-aeb7-25824b6233ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Environment\Static\Terrain">
+      <UniqueIdentifier>{39cbdfb5-bb6c-40ec-a138-fdd9bc2c1663}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -184,7 +196,7 @@
       <Filter>98.Default\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Terrain.h">
-      <Filter>02.GameObjects\Terrain</Filter>
+      <Filter>02.GameObjects\Environment\Static\Terrain</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ImGui_Manager.h">
       <Filter>97.ImGui\Manager</Filter>
@@ -215,6 +227,9 @@
     </ClInclude>
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp">
       <Filter>96.ShaderFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player.h">
+      <Filter>02.GameObjects\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -261,7 +276,7 @@
       <Filter>98.Default\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Terrain.cpp">
-      <Filter>02.GameObjects\Terrain</Filter>
+      <Filter>02.GameObjects\Environment\Static\Terrain</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ImGui_Manager.cpp">
       <Filter>97.ImGui\Manager</Filter>
@@ -289,6 +304,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Camera_Debug.cpp">
       <Filter>02.GameObjects\Camera\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player.cpp">
+      <Filter>02.GameObjects\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -3,6 +3,7 @@
 
 #include "GameInstance.h"
 
+#include "Player.h"
 #include "Camera_Debug.h"
 #include "BackGround.h"
 #include "Terrain.h"
@@ -100,12 +101,6 @@ HRESULT CLoader::Loading_For_Level_Logo()
 			return E_FAIL;
 	}
 	
-	/* For.Mesh */
-	m_strLoading = TEXT("Loding... : Mesh");
-	{
-
-	}
-
 	/* For.VIBuffer */
 	m_strLoading = TEXT("Loding... : VIBuffer");
 	{
@@ -115,6 +110,20 @@ HRESULT CLoader::Loading_For_Level_Logo()
 			return E_FAIL;
 	}
 
+	/* For.Model */
+	m_strLoading = TEXT("Loding... : Model");
+	{
+ 		_matrix		PivotMatrix = XMMatrixIdentity();
+
+		/* For.Prototype_Component_Model_Chai */
+		PivotMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f));
+		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Chai"),
+			CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Chai/", "ch0000.fbx", PivotMatrix))))
+			return E_FAIL;
+
+	}
+
+
 	/* For.Shader */
 	m_strLoading = TEXT("Loding... : Shader");
 	{
@@ -122,10 +131,20 @@ HRESULT CLoader::Loading_For_Level_Logo()
 		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxNorTex"),
 			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl"), VTXNORTEX::Elements, VTXNORTEX::iNumElements))))
 			return E_FAIL;
+
+		/* For.Prototype_Component_Shader_Model */
+		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_Model"),
+			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxModel.hlsl"), VTXMODEL_DECLARATION::Elements, VTXMODEL_DECLARATION::iNumElements))))
+			return E_FAIL;
+
+		/* For.Prototype_Component_Shader_AnimModel */
+		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_AnimModel"),
+			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxAnimModel.hlsl"), VTXANIMMODEL_DECLARATION::Elements, VTXANIMMODEL_DECLARATION::iNumElements))))
+			return E_FAIL;
 	}
 
-	/* For.GameObject */
-	m_strLoading = TEXT("Loding... : Prototype");
+	/* For.Prototype GameObject */
+	m_strLoading = TEXT("Loding... : Prototype Object");
 	{
 		/* For.Prototype_GameObject_BackGround */
 		if (FAILED(pGameInstance->Add_Prototype(TEXT("Ui_BackGround"), CBackGround::Create(m_pDevice, m_pContext))))
@@ -138,6 +157,11 @@ HRESULT CLoader::Loading_For_Level_Logo()
 		/* For.Prototype_GameObject_Camera_Debug */
 		if (FAILED(pGameInstance->Add_Prototype(TEXT("Camera_Debug"),
 			CCamera_Debug::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Player_Chai */
+		if (FAILED(pGameInstance->Add_Prototype(TEXT("Player_Chai"),
+			CPlayer::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 	}
 
@@ -153,37 +177,6 @@ HRESULT CLoader::Loading_For_Level_GamePlay()
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
-
-	/* For.Texture */
-	m_strLoading = TEXT("Loding... : Texture");
-	{
-
-	}
-
-	/* For.Mesh */
-	m_strLoading = TEXT("Loding... : Mesh");
-	{
-
-	}
-
-	/* For.VIBuffer */
-	m_strLoading = TEXT("Loding... : VIBuffer");
-	{
-
-	}
-
-
-	/* For.Shader */
-	m_strLoading = TEXT("Loding... : Shader");
-	{
-
-	}
-
-	/* For.GameObject */
-	m_strLoading = TEXT("Loding... : Prototype");
-	{
-		
-	}
 	
 	m_strLoading = TEXT("Loading Finish");
 	m_isFinished = true;

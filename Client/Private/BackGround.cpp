@@ -39,7 +39,7 @@ HRESULT CBackGround::Initialize(void* pArg)
 
 	/* UI는 별도의 뷰 행렬과 투영행렬로 그린다. */
 
-	m_ViewMatrix = Matrix();
+	m_ViewMatrix = Matrix::Identity;
 
 	m_ProjMatrix = Matrix::CreateOrthographic(g_iWinSizeX, g_iWinSizeY, 0.f, 1.f);
 

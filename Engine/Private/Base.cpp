@@ -13,7 +13,7 @@ unsigned long CBase::AddRef()
 
 unsigned long CBase::Release()
 {
-	/* 삭제하낟. */
+	/* 삭제한다. */
 	if (0 == m_dwRefCnt)
 	{
 		Free();
@@ -24,7 +24,7 @@ unsigned long CBase::Release()
 	}
 	else
 	{
-		/* 감소하낟. */
+		/* 감소한다. */
 		return m_dwRefCnt--;
 	}
 }

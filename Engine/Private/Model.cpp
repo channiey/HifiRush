@@ -344,11 +344,12 @@ void CModel::Free()
 {
 	__super::Free();
 
+	/* HierarachyNode */
 	for (auto& pHierarchyNode : m_HierarchyNodes)
 		Safe_Release(pHierarchyNode);
-
 	m_HierarchyNodes.clear();
 
+	/* Material */
 	for (auto& Material : m_Materials)
 	{
 		for (_uint i = 0; i < AI_TEXTURE_TYPE_MAX; ++i)
@@ -356,14 +357,14 @@ void CModel::Free()
 	}
 	m_Materials.clear();
 
+	/* Meshes */
 	for (auto& pMeshContainer : m_Meshes)
 		Safe_Release(pMeshContainer);
-
 	m_Meshes.clear();
 
+	/* Animations */
 	for (auto& pAnimation : m_Animations)
 		Safe_Release(pAnimation);
-
 	m_Animations.clear();
 
 	m_Importer.FreeScene();

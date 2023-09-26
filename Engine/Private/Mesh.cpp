@@ -102,7 +102,6 @@ HRESULT CMesh::SetUp_HierarchyNodes(CModel* pModel, aiMesh* pAIMesh)
 		pHierarchyNode->Set_OffsetMatrix(XMMatrixTranspose(XMLoadFloat4x4(&OffsetMatrix)));
 
 		m_Bones.push_back(pHierarchyNode);
-
 		Safe_AddRef(pHierarchyNode);
 	}
 
@@ -117,7 +116,7 @@ HRESULT CMesh::SetUp_HierarchyNodes(CModel* pModel, aiMesh* pAIMesh)
 		m_iNumBones = 1;
 
 		m_Bones.push_back(pNode);
-
+		Safe_AddRef(pNode);
 	}
 
 	return S_OK;
@@ -294,5 +293,4 @@ void CMesh::Free()
 		Safe_Release(pHierarchyNode);
 
 	m_Bones.clear();
-
 }

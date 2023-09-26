@@ -50,7 +50,6 @@ HRESULT CAnimation::Initialize(CModel* pModel)
 			return E_FAIL;		
 
 		m_HierarchyNodes.push_back(pNode);
-		
 		Safe_AddRef(pNode);
 	}
 
@@ -117,13 +116,13 @@ CAnimation * CAnimation::Clone(CModel* pModel)
 
 void CAnimation::Free()
 {
+	/* Channel */
 	for (auto& pChannel : m_Channels)
 		Safe_Release(pChannel);
-
 	m_Channels.clear();
 
+	/* HierarachyNode */
 	for (auto& pHierarchyNode : m_HierarchyNodes)
 		Safe_Release(pHierarchyNode);
-
 	m_HierarchyNodes.clear();
 }

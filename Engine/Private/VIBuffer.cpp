@@ -53,12 +53,16 @@ HRESULT CVIBuffer::Render()
 		0, 
 	};
 
+	/* 버텍스 버퍼들을 할당한다. */
 	m_pContext->IASetVertexBuffers(0, m_iNumVertexBuffers, pVertexBuffers, iStrides, iOffsets);
-
+	
+	/* 인덱스 버퍼를 할당한다. */
 	m_pContext->IASetIndexBuffer(m_pIB, m_eIndexFormat, 0);
 
+	/* 해당 정점들을 어떤 방식으로 그릴꺼야. */
 	m_pContext->IASetPrimitiveTopology(m_eTopology);
 
+	/* 인덱스가 가르키는 정점을 활용하여 그린다. */
 	m_pContext->DrawIndexed(m_iNumPrimitives * m_iNumIndicesofPrimitive, 0, 0);
 
 	return S_OK;

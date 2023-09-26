@@ -13,7 +13,6 @@ CTexture::CTexture(const CTexture & rhs)
 {
 	for (size_t i = 0; i < m_iNumTextures; i++)	
 		Safe_AddRef(m_ppSRVs[i]);
-	
 }
 
 HRESULT CTexture::Initialize_Prototype(const wstring & strTextureFilePath, _uint iNumTextures)

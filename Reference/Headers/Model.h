@@ -26,10 +26,11 @@ public:
 	_uint Get_MaterialIndex(_uint iMeshIndex);
 	_matrix Get_PivotMatrix() { return XMLoadFloat4x4(&m_PivotMatrix); }
 	const _uint Get_AnimationCount() const { return m_iNumAnimations; }
+	const _uint Get_CurAnimationIndex() const { return m_iCurrentAnimIndex; }
 
 public:
 	/* 현재 재생할 애니메이션 인덱스를 설정한다.*/
-	void Set_AnimIndex(_uint iAnimIndex) { m_iNumAnimations < iAnimIndex ? m_iCurrentAnimIndex : iAnimIndex; }
+	void Set_AnimIndex(_uint iAnimIndex) { m_iCurrentAnimIndex = iAnimIndex; }
 
 public:
 	/* 현재 애니메이션이 제어해야할 뼈의 상태를 갱신한다. */
@@ -41,12 +42,13 @@ public: /* Render */
 	/* 스키닝 후, 셰이더에 정점을 전달한다. */
 	HRESULT Render(class CShader* pShader, _uint iMeshIndex, _uint iPassIndex = 0);
 
-private: 
+private: /* 원형만 갖는다. */
 	const aiScene*				m_pAIScene = nullptr;
 	Assimp::Importer			m_Importer;
 	_float4x4					m_PivotMatrix;
 	TYPE						m_eModelType = TYPE_END;
 
+private: /* 클론이 갖는다. */
 	/* aiNode */
 	vector<class CHierarchyNode*>			m_HierarchyNodes;
 
