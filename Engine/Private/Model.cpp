@@ -40,25 +40,7 @@ CModel::CModel(const CModel & rhs)
 		Safe_AddRef(pAnimation);
 }
 
-CHierarchyNode * CModel::Get_HierarchyNode(const char * pNodeName)
-{
-	auto	iter = find_if(m_HierarchyNodes.begin(), m_HierarchyNodes.end(), [&](CHierarchyNode* pNode) 
-	{
-		return !strcmp(pNodeName, pNode->Get_Name());
-	});
-
-	if (iter == m_HierarchyNodes.end())
-		return nullptr;
-
-	return *iter;	
-}
-
-_uint CModel::Get_MaterialIndex(_uint iMeshIndex)
-{
-	return m_Meshes[iMeshIndex]->Get_MaterialIndex();
-}
-
-HRESULT CModel::Initialize_Prototype(TYPE eType, const char * pModelFilePath, const char * pModelFileName, _fmatrix PivotMatrix)
+HRESULT CModel::Initialize_Prototype(TYPE eType, const char* pModelFilePath, const char* pModelFileName, _fmatrix PivotMatrix)
 {
 	XMStoreFloat4x4(&m_PivotMatrix, PivotMatrix);
 
@@ -81,7 +63,7 @@ HRESULT CModel::Initialize_Prototype(TYPE eType, const char * pModelFilePath, co
 	m_pAIScene = m_Importer.ReadFile(szFullPath, iFlag);
 
 	if (nullptr == m_pAIScene)
-		return E_FAIL;	
+		return E_FAIL;
 
 	if (FAILED(Ready_Meshes(PivotMatrix)))
 		return E_FAIL;
@@ -95,7 +77,7 @@ HRESULT CModel::Initialize_Prototype(TYPE eType, const char * pModelFilePath, co
 	return S_OK;
 }
 
-HRESULT CModel::Initialize(void * pArg)
+HRESULT CModel::Initialize(void* pArg)
 {
 	/* 본 정보 순회 세팅 */
 	Ready_HierarchyNodes(m_pAIScene->mRootNode, nullptr, 0);
@@ -103,12 +85,12 @@ HRESULT CModel::Initialize(void * pArg)
 	if (TYPE_ANIM == m_eModelType)
 	{
 		_uint			iNumMeshes = 0;
-		vector<CMesh*>	Meshes; 
+		vector<CMesh*>	Meshes;
 
 		/* 메시 깊은 복사 */
 		for (auto& pPrototype : m_Meshes)
 		{
-			CMesh*		pMeshContainer = (CMesh*)pPrototype->Clone();
+			CMesh* pMeshContainer = (CMesh*)pPrototype->Clone();
 			if (nullptr == pMeshContainer)
 				return E_FAIL;
 
@@ -132,7 +114,7 @@ HRESULT CModel::Initialize(void * pArg)
 	vector<CAnimation*>		Animations;
 	for (auto& pPrototype : m_Animations)
 	{
-		CAnimation*		pAnimation = pPrototype->Clone(this);
+		CAnimation* pAnimation = pPrototype->Clone(this);
 		if (nullptr == pAnimation)
 			return E_FAIL;
 
@@ -144,6 +126,24 @@ HRESULT CModel::Initialize(void * pArg)
 	m_Animations = Animations;
 
 	return S_OK;
+}
+
+CHierarchyNode * CModel::Get_HierarchyNode(const char * pNodeName)
+{
+	auto	iter = find_if(m_HierarchyNodes.begin(), m_HierarchyNodes.end(), [&](CHierarchyNode* pNode) 
+	{
+		return !strcmp(pNodeName, pNode->Get_Name());
+	});
+
+	if (iter == m_HierarchyNodes.end())
+		return nullptr;
+
+	return *iter;	
+}
+
+_uint CModel::Get_MaterialIndex(_uint iMeshIndex)
+{
+	return m_Meshes[iMeshIndex]->Get_MaterialIndex();
 }
 
 HRESULT CModel::SetUp_OnShader(CShader * pShader, _uint iMaterialIndex, aiTextureType eTextureType, const char * pConstantName)

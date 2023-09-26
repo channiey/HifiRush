@@ -25,7 +25,13 @@ HRESULT CPlayer::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_pModelCom->Set_AnimIndex(2);
+	/* Temporary Initaial Setting */
+	{
+		m_pModelCom->Set_AnimIndex(2);
+
+		const _float fMag = 0.1f;
+		m_pTransformCom->Set_Scale(Vec3(fMag, fMag, fMag));
+	}
 
 	return S_OK;
 }
@@ -78,7 +84,7 @@ HRESULT CPlayer::Ready_Components()
 
 HRESULT CPlayer::Bind_ShaderResources()
 {
-	/* 셰이더 전역변수에 데이터를 던진다. */
+	/* WVP 상태 행렬을 셰이더에 던진다. */
 	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
 
@@ -93,6 +99,7 @@ HRESULT CPlayer::Bind_ShaderResources()
 	}
 	RELEASE_INSTANCE(CGameInstance);
 
+	/* 현재 모델의 렌더링을 위한 버퍼 정보를 전달한다. */
 	_uint		iNumMeshes = m_pModelCom->Get_NumMeshes();
 	for (_uint i = 0; i < iNumMeshes; ++i)
 	{

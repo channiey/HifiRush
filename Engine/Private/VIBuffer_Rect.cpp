@@ -53,8 +53,8 @@ HRESULT CVIBuffer_Rect::Initialize_Prototype()
 #pragma endregion
 
 #pragma region INDEXBUFFER
-	m_iNumPrimitives = 2; // m_iIndexStride
-	m_iIndexSizeofPrimitive = sizeof(FACEINDICES16); // m_iNumIndices
+	m_iNumPrimitives = 2;
+	m_iIndexSizeofPrimitive = sizeof(FACEINDICES16); 
 	m_iNumIndicesofPrimitive = 3;
 	m_eIndexFormat = DXGI_FORMAT_R16_UINT;
 	m_eTopology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;

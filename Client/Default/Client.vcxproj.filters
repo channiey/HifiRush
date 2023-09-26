@@ -34,33 +34,6 @@
     <Filter Include="98.Default\None">
       <UniqueIdentifier>{11978b59-520d-430c-8090-add27548551a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Player">
-      <UniqueIdentifier>{8c788c76-03cd-4d87-8f0c-9b9fe84197ec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Player\StateMachine">
-      <UniqueIdentifier>{9112ed79-8c75-43d4-9f70-fa125b385b58}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Player\StateMachine\State">
-      <UniqueIdentifier>{c2f33d3c-e99a-4675-8309-ccaeec085fc6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Monster">
-      <UniqueIdentifier>{d8a59102-c15d-4530-9b3a-1b805113122c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Monster\BehaviourTree">
-      <UniqueIdentifier>{0bd0f243-b8b2-4027-b9b8-3ebef4375173}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\NPC">
-      <UniqueIdentifier>{400c1cb4-75ac-4a99-bc55-470322a4b2a8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\NPC\BehaviourTree">
-      <UniqueIdentifier>{207d0508-a741-48ad-9799-79381a8db791}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\NPC\BehaviourTree\Node">
-      <UniqueIdentifier>{7eaab9ba-f843-43ce-b19a-2e07c2861e5e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Monster\BehaviourTree\Node">
-      <UniqueIdentifier>{62e468e1-c067-4119-9433-31c56f9bc1fe}</UniqueIdentifier>
-    </Filter>
     <Filter Include="96.ShaderFiles">
       <UniqueIdentifier>{a631185a-1555-4b19-8534-272c809d77b7}</UniqueIdentifier>
     </Filter>
@@ -109,20 +82,11 @@
     <Filter Include="02.GameObjects\Light">
       <UniqueIdentifier>{ec62a095-9b5c-473b-8346-ae77c4962129}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Environment">
-      <UniqueIdentifier>{19639fc5-bbcb-4d89-8030-1ca3fff62c92}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Environment\Static">
-      <UniqueIdentifier>{e151be76-84ac-4349-93d8-75c7d1b50d66}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Light\Directional">
       <UniqueIdentifier>{fd10c28d-7c9b-481f-9e12-de5b00b280bc}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\Light\Point">
       <UniqueIdentifier>{de47ffd3-fa1f-4589-a855-282a1afa93d4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Environment\Interactable">
-      <UniqueIdentifier>{8fb0483e-5266-43dc-92e3-d568cc733951}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.Levels\01.GamePlay\00.Proto">
       <UniqueIdentifier>{b4248e0b-da12-45df-acaf-494f8e50ae75}</UniqueIdentifier>
@@ -136,8 +100,68 @@
     <Filter Include="01.Levels\01.GamePlay\02.Level_01">
       <UniqueIdentifier>{cd2cc360-906f-418b-aeb7-25824b6233ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Character">
+      <UniqueIdentifier>{61401bf3-d2cc-46e0-9502-ab143843e14a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Character\NPC">
+      <UniqueIdentifier>{400c1cb4-75ac-4a99-bc55-470322a4b2a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Character\NPC\BehaviourTree">
+      <UniqueIdentifier>{207d0508-a741-48ad-9799-79381a8db791}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Character\NPC\BehaviourTree\Node">
+      <UniqueIdentifier>{7eaab9ba-f843-43ce-b19a-2e07c2861e5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Character\Player">
+      <UniqueIdentifier>{8c788c76-03cd-4d87-8f0c-9b9fe84197ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Character\Player\StateMachine">
+      <UniqueIdentifier>{9112ed79-8c75-43d4-9f70-fa125b385b58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Character\Player\StateMachine\State">
+      <UniqueIdentifier>{c2f33d3c-e99a-4675-8309-ccaeec085fc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Character\Monster">
+      <UniqueIdentifier>{d8a59102-c15d-4530-9b3a-1b805113122c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Character\Monster\BehaviourTree">
+      <UniqueIdentifier>{0bd0f243-b8b2-4027-b9b8-3ebef4375173}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Character\Monster\BehaviourTree\Node">
+      <UniqueIdentifier>{62e468e1-c067-4119-9433-31c56f9bc1fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Light\Spot">
+      <UniqueIdentifier>{13ca8632-80ff-4136-b4b8-d91ac4a665f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\02.Ending">
+      <UniqueIdentifier>{a3fb452d-868d-42bc-a99b-d12613c146a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Environment">
+      <UniqueIdentifier>{19639fc5-bbcb-4d89-8030-1ca3fff62c92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Environment\Static">
+      <UniqueIdentifier>{e151be76-84ac-4349-93d8-75c7d1b50d66}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02.GameObjects\Environment\Static\Terrain">
       <UniqueIdentifier>{39cbdfb5-bb6c-40ec-a138-fdd9bc2c1663}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Environment\Static\Architecture">
+      <UniqueIdentifier>{b0339eab-093f-4b0c-a418-7e9b2f1f0816}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Environment\Interactable">
+      <UniqueIdentifier>{8fb0483e-5266-43dc-92e3-d568cc733951}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Environment\Interactable\Trigger">
+      <UniqueIdentifier>{355ae19c-b78b-4b4a-b4e9-5fa4e6cf8f34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Environment\Interactable\Moveable">
+      <UniqueIdentifier>{c826dd7b-e31c-4f41-80f9-bfda419f6dd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Character\Proto">
+      <UniqueIdentifier>{a3160074-ea0f-4016-9a36-1387aef7b02a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Character\Proto\Fiona">
+      <UniqueIdentifier>{4309bdd4-99bb-461d-a066-2983b8d46c06}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -229,7 +253,10 @@
       <Filter>96.ShaderFiles</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Player.h">
-      <Filter>02.GameObjects\Player</Filter>
+      <Filter>02.GameObjects\Character\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Architecture.h">
+      <Filter>02.GameObjects\Environment\Static\Architecture</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -306,7 +333,10 @@
       <Filter>02.GameObjects\Camera\Debug</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Player.cpp">
-      <Filter>02.GameObjects\Player</Filter>
+      <Filter>02.GameObjects\Character\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Architecture.cpp">
+      <Filter>02.GameObjects\Environment\Static\Architecture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

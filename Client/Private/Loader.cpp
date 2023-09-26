@@ -4,6 +4,7 @@
 #include "GameInstance.h"
 
 #include "Player.h"
+#include "Architecture.h"
 #include "Camera_Debug.h"
 #include "BackGround.h"
 #include "Terrain.h"
@@ -118,11 +119,16 @@ HRESULT CLoader::Loading_For_Level_Logo()
 		/* For.Prototype_Component_Model_Chai */
 		PivotMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f));
 		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Chai"),
-			CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Chai/", "ch0000.fbx", PivotMatrix))))
+			CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Characters/Chai/", "Chai.fbx", PivotMatrix))))
+			return E_FAIL;
+
+		/* For.Prototype_Component_Model_Architecture */
+		PivotMatrix = XMMatrixIdentity();
+		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Architecture"),
+			CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Environment/Architecture/", "Architecture.fbx", PivotMatrix))))
 			return E_FAIL;
 
 	}
-
 
 	/* For.Shader */
 	m_strLoading = TEXT("Loding... : Shader");
@@ -162,6 +168,11 @@ HRESULT CLoader::Loading_For_Level_Logo()
 		/* For.Prototype_GameObject_Player_Chai */
 		if (FAILED(pGameInstance->Add_Prototype(TEXT("Player_Chai"),
 			CPlayer::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Env_Architecture */
+		if (FAILED(pGameInstance->Add_Prototype(TEXT("Env_Architecture"),
+			CArchitecture::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 	}
 

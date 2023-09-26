@@ -181,6 +181,12 @@
     <Filter Include="01.Utiltiy\03.Components\Component\VIBuffer\Terrain">
       <UniqueIdentifier>{7195c0c9-6fd6-4fb9-a204-50599164d6d7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\Colliders">
+      <UniqueIdentifier>{de621597-40c3-4962-9d8b-e196acfd9294}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\LIght">
+      <UniqueIdentifier>{882d7394-68b4-4f4d-bf2e-f3d18fc82d10}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">

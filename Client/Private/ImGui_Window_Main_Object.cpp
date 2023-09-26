@@ -165,17 +165,6 @@ void CImGui_Window_Main_Object::Show_Object_Transform()
 				{
 					pTransform->Set_Scale(Vec3(fSacle[0], fSacle[1], fSacle[2]));
 				}
-
-				///* Move Speed */
-				//_float fSpeedPerSec = pTransform->Get_Speed();
-				//if (ImGui::InputFloat("Speed/s", &fSpeedPerSec, 0.01f, 1.0f, "%.1f"))
-				//	pTransform->Set_Speed(fSpeedPerSec);
-
-
-				///* Rot Speed */
-				//_float fRotSpeed = pTransform->Get_RotRad();
-				//if (ImGui::InputFloat("Rot/s", &fRotSpeed, 0.01f, 1.0f, "%.1f"))
-				//	pTransform->Set_RotRad(fRotSpeed);
 			}
 			Safe_Release(pTransform);
 		}
@@ -186,8 +175,6 @@ void CImGui_Window_Main_Object::Show_Object_Transform()
 		ImGui::InputFloat3("Pos", fZero, "%.1f");
 		ImGui::InputFloat3("Rot", fZero, "%.1f");
 		ImGui::InputFloat3("Scale", fZero, "%.1f");
-		ImGui::InputFloat("Speed/s", &fZero[0], 0.01f, 1.0f, "%.1f");
-		ImGui::InputFloat("Rot/s", &fZero[0], 0.01f, 1.0f, "%.1f");
 	}
 }
 
