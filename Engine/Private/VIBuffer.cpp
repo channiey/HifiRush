@@ -1,13 +1,8 @@
 #include "..\Public\VIBuffer.h"
 
-#ifdef _DEBUG
-#include "Profiler_Manager.h"
-#endif // _DEBUG
 
 CVIBuffer::CVIBuffer(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CComponent(pDevice, pContext)
-	, m_pVB(nullptr)
-	, m_pIB(nullptr)
 {
 
 }
@@ -16,16 +11,19 @@ CVIBuffer::CVIBuffer(const CVIBuffer & rhs)
 	: CComponent(rhs)
 	, m_pVB(rhs.m_pVB)
 	, m_pIB(rhs.m_pIB)
-	, m_iVertexStride(rhs.m_iVertexStride)
 	, m_iNumVertices(rhs.m_iNumVertices)
-	, m_iIndexStride(rhs.m_iIndexStride)
-	, m_iNumIndices(rhs.m_iNumIndices)
+	, m_iStride(rhs.m_iStride)
+	, m_iNumPrimitives(rhs.m_iNumPrimitives)
+	, m_iIndexSizeofPrimitive(rhs.m_iIndexSizeofPrimitive)
+	, m_iNumIndicesofPrimitive(rhs.m_iNumIndicesofPrimitive)
+	, m_iNumVertexBuffers(rhs.m_iNumVertexBuffers)
 	, m_eIndexFormat(rhs.m_eIndexFormat)
 	, m_eTopology(rhs.m_eTopology)
-	, m_iNumVBs(rhs.m_iNumVBs)
+	, m_pVerticesPos(rhs.m_pVerticesPos)
 {
 	Safe_AddRef(m_pVB);
-	Safe_AddRef(m_pIB);	
+	Safe_AddRef(m_pIB);
+	
 }
 
 HRESULT CVIBuffer::Initialize_Prototype()
@@ -40,53 +38,62 @@ HRESULT CVIBuffer::Initialize(void * pArg)
 
 HRESULT CVIBuffer::Render()
 {
-#ifdef _DEBUG
-	CProfiler_Manager::GetInstance()->Add_Batches();
+	if (nullptr == m_pContext)
+		return E_FAIL;
 
-	//CProfiler_Manager::GetInstance()->Add_Tris(m_iNumTirs);
-#endif // _DEBUG
-
-
-	ID3D11Buffer*	pVertexBuffers[] = {
+	ID3D11Buffer*		pVertexBuffers[] = {
 		m_pVB, 		
-	};
+	};	
 
 	_uint			iStrides[] = {
-		m_iVertexStride,
+		m_iStride			
 	};
 
-	_uint			iOffsets[] = {
-		0,
+	_uint			iOffsets[] = { 
+		0, 
 	};
 
-	/* 버텍스 버퍼들을 할당한다. */
-	m_pContext->IASetVertexBuffers(0, m_iNumVBs, pVertexBuffers, iStrides, iOffsets);
+	m_pContext->IASetVertexBuffers(0, m_iNumVertexBuffers, pVertexBuffers, iStrides, iOffsets);
 
-	/* 인덱스 버퍼를 할당한다. */
 	m_pContext->IASetIndexBuffer(m_pIB, m_eIndexFormat, 0);
 
-	/* 해당 정점들을 어떤 방식으로 그릴꺼야. */
 	m_pContext->IASetPrimitiveTopology(m_eTopology);
 
-	/* 인덱스가 가르키는 정점을 활용하여 그린다. */
-	m_pContext->DrawIndexed(m_iNumIndices, 0, 0);
+	m_pContext->DrawIndexed(m_iNumPrimitives * m_iNumIndicesofPrimitive, 0, 0);
 
 	return S_OK;
 }
 
-
-HRESULT CVIBuffer::Create_Buffer(_Inout_ ID3D11Buffer** ppOut)
+HRESULT CVIBuffer::Create_VertexBuffer()
 {
 	if (nullptr == m_pDevice)
 		return E_FAIL;
 
-	return m_pDevice->CreateBuffer(&m_BufferDesc, &m_InitialData, ppOut);	
+	if (FAILED(m_pDevice->CreateBuffer(&m_BufferDesc, &m_SubResourceData, &m_pVB)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CVIBuffer::Create_IndexBuffer()
+{
+	if (nullptr == m_pDevice)
+		return E_FAIL;
+
+	if (FAILED(m_pDevice->CreateBuffer(&m_BufferDesc, &m_SubResourceData, &m_pIB)))
+		return E_FAIL;
+
+	return S_OK;
 }
 
 void CVIBuffer::Free()
 {
 	__super::Free();
 
+	if (false == m_bClone)
+		Safe_Delete_Array(m_pVerticesPos);
+
 	Safe_Release(m_pVB);
 	Safe_Release(m_pIB);
+
 }

@@ -148,12 +148,6 @@
     <Filter Include="01.Utiltiy\03.Components\Component\VIBuffer">
       <UniqueIdentifier>{054960ac-dff2-4681-be68-e0df69143c6c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utiltiy\03.Components\Component\VIBuffer\Rect">
-      <UniqueIdentifier>{412829eb-f2b5-4760-823b-3dbd9992a3cc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utiltiy\03.Components\Component\VIBuffer\Terrain">
-      <UniqueIdentifier>{bff16c8f-d141-445c-92b9-6d775c2283a9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utiltiy\03.Components\Component\Camera">
       <UniqueIdentifier>{7a6f9cb4-3336-48ef-9244-69267287abfc}</UniqueIdentifier>
     </Filter>
@@ -177,6 +171,15 @@
     </Filter>
     <Filter Include="01.Utiltiy\03.Components\Component\Model\Mesh">
       <UniqueIdentifier>{33d5f9dd-8d2b-4218-88b7-4e547100f382}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\VIBuffer\Cube">
+      <UniqueIdentifier>{9b9e8ba2-12d0-4c8a-b350-584091f11c9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\VIBuffer\Rect">
+      <UniqueIdentifier>{5b1acb5e-7e13-4a2a-8408-5bcc8cf3b7a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\VIBuffer\Terrain">
+      <UniqueIdentifier>{7195c0c9-6fd6-4fb9-a204-50599164d6d7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -230,12 +233,6 @@
     </ClInclude>
     <ClInclude Include="..\public\Component_Manager.h">
       <Filter>01.Utiltiy\03.Components\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\VIBuffer.h">
-      <Filter>01.Utiltiy\03.Components\Component\VIBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\VIBuffer_Rect.h">
-      <Filter>01.Utiltiy\03.Components\Component\VIBuffer\Rect</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Shader.h">
       <Filter>01.Utiltiy\03.Components\Component\Shader</Filter>
@@ -291,9 +288,6 @@
     <ClInclude Include="..\Public\Transform.h">
       <Filter>01.Utiltiy\03.Components\Component\Transform</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\VIBuffer_Terrain.h">
-      <Filter>01.Utiltiy\03.Components\Component\VIBuffer\Terrain</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Profiler_Manager.h">
       <Filter>01.Utiltiy\90.Optimization\Profiler</Filter>
     </ClInclude>
@@ -323,6 +317,18 @@
     </ClInclude>
     <ClInclude Include="..\Public\Model.h">
       <Filter>01.Utiltiy\03.Components\Component\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer.h">
+      <Filter>01.Utiltiy\03.Components\Component\VIBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Cube.h">
+      <Filter>01.Utiltiy\03.Components\Component\VIBuffer\Cube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Rect.h">
+      <Filter>01.Utiltiy\03.Components\Component\VIBuffer\Rect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Terrain.h">
+      <Filter>01.Utiltiy\03.Components\Component\VIBuffer\Terrain</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -361,12 +367,6 @@
     </ClCompile>
     <ClCompile Include="..\private\Component_Manager.cpp">
       <Filter>01.Utiltiy\03.Components\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\VIBuffer.cpp">
-      <Filter>01.Utiltiy\03.Components\Component\VIBuffer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\VIBuffer_Rect.cpp">
-      <Filter>01.Utiltiy\03.Components\Component\VIBuffer\Rect</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Shader.cpp">
       <Filter>01.Utiltiy\03.Components\Component\Shader</Filter>
@@ -425,9 +425,6 @@
     <ClCompile Include="..\Private\Transform.cpp">
       <Filter>01.Utiltiy\03.Components\Component\Transform</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\VIBuffer_Terrain.cpp">
-      <Filter>01.Utiltiy\03.Components\Component\VIBuffer\Terrain</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Profiler_Manager.cpp">
       <Filter>01.Utiltiy\90.Optimization\Profiler</Filter>
     </ClCompile>
@@ -460,6 +457,18 @@
     </ClCompile>
     <ClCompile Include="..\Private\Model.cpp">
       <Filter>01.Utiltiy\03.Components\Component\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer.cpp">
+      <Filter>01.Utiltiy\03.Components\Component\VIBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Cube.cpp">
+      <Filter>01.Utiltiy\03.Components\Component\VIBuffer\Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Rect.cpp">
+      <Filter>01.Utiltiy\03.Components\Component\VIBuffer\Rect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Terrain.cpp">
+      <Filter>01.Utiltiy\03.Components\Component\VIBuffer\Terrain</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

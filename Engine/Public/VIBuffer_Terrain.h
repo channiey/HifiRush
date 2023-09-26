@@ -12,17 +12,22 @@ private:
 	virtual ~CVIBuffer_Terrain() = default;
 
 public:
-	virtual HRESULT Initialize_Prototype(const wstring& strHeightMapFilePath);
-	virtual HRESULT Initialize(void* pArg) override;
-
-private:
-	_ulong			m_iNumVerticesX = { 0 };
-	_ulong			m_iNumVerticesZ = { 0 };
+	virtual HRESULT Initialize_Prototype(const _tchar* pHeighitMapFilePath);
+	virtual HRESULT Initialize(void* pArg);
 
 public:
-	static CVIBuffer_Terrain* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const wstring& strHeightMapFilePath);
-	virtual CComponent* Clone(void* pArg) override;
-	virtual void Free() override;
+	//void Culling(const class CTransform* pTransform);
+
+private:
+	_uint			m_iNumVerticesX = 0;
+	_uint			m_iNumVerticesZ = 0;
+	FACEINDICES32*	m_pFaceIndices = nullptr;
+	//class CQuadTree*		m_pQuadTree = nullptr;
+
+public:
+	static CVIBuffer_Terrain* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pHeighitMapFilePath);
+	virtual CComponent* Clone(void* pArg);
+	virtual void Free();
 };
 
 END

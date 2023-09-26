@@ -45,12 +45,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *  @brief Defines the C++ getters for the material system
  */
 
-/* USER : error C2589: '(' : illegal token on right side of '::' 방지하고자 추가함 */
-#ifdef max
-#undef max
-#undef min
-#endif // max
-
 #pragma once
 #ifndef AI_MATERIAL_INL_INC
 #define AI_MATERIAL_INL_INC

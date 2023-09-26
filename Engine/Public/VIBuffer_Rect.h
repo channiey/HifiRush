@@ -12,13 +12,13 @@ private:
 	virtual ~CVIBuffer_Rect() = default;
 
 public:
-	virtual HRESULT Initialize_Prototype() override;
-	virtual HRESULT Initialize(void* pArg) override;
+	virtual HRESULT Initialize_Prototype();
+	virtual HRESULT Initialize(void* pArg);
 
 public:
 	static CVIBuffer_Rect* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CComponent* Clone(void* pArg) override;
-	virtual void Free() override;
+	virtual CComponent* Clone(void* pArg);
+	virtual void Free();
 };
 
 END

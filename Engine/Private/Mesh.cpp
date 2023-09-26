@@ -1,21 +1,22 @@
 #include "..\Public\Mesh.h"
+#include "Model.h"
 #include "HierarchyNode.h"
 
-CMesh::CMesh(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+CMesh::CMesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CVIBuffer(pDevice, pContext)
 {
 }
 
-CMesh::CMesh(const CMesh & rhs)
-	: CVIBuffer(rhs)	
+CMesh::CMesh(const CMesh& rhs)
+	: CVIBuffer(rhs)
 	, m_iMaterialIndex(rhs.m_iMaterialIndex)
 {
 	strcpy_s(m_szName, rhs.m_szName);
 }
 
-HRESULT CMesh::Initialize_Prototype(CModel::TYPE eModelType, const aiMesh * pAIMesh, CModel* pModel, _fmatrix PivotMatrix)
+HRESULT CMesh::Initialize_Prototype(CModel::TYPE eModelType, const aiMesh* pAIMesh, CModel* pModel, _fmatrix PivotMatrix)
 {
-	/* 이 메시와 이름이 같은 뼈대가 존재한다면. 
+	/* 이 메시와 이름이 같은 뼈대가 존재한다면.
 	이 뼈대의 행렬을 메시를 구성하는 정점에 곱해질 수 있도록 유도하낟. */
 	strcpy_s(m_szName, pAIMesh->mName.data);
 
@@ -29,23 +30,24 @@ HRESULT CMesh::Initialize_Prototype(CModel::TYPE eModelType, const aiMesh * pAIM
 
 	if (CModel::TYPE_NONANIM == eModelType)
 		hr = Ready_Vertices(pAIMesh, PivotMatrix);
-	else 
+	else
 		hr = Ready_AnimVertices(pAIMesh, pModel);
 
 	if (FAILED(hr))
 		return E_FAIL;
-	
+
 #pragma endregion
 
 #pragma region INDEXBUFFER
-	m_iIndexStride = pAIMesh->mNumFaces;
-	m_iNumIndices = sizeof(FACEINDICES32);
+	m_iNumPrimitives = pAIMesh->mNumFaces;
+	m_iIndexSizeofPrimitive = sizeof(FACEINDICES32);
 	m_iNumIndicesofPrimitive = 3;
+
 	m_eIndexFormat = DXGI_FORMAT_R32_UINT;
 	m_eTopology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
 	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));
-	m_BufferDesc.ByteWidth = m_iIndexStride * m_iNumIndices;
+	m_BufferDesc.ByteWidth = m_iNumPrimitives * m_iIndexSizeofPrimitive;
 	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	m_BufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	m_BufferDesc.CPUAccessFlags = 0;
@@ -53,10 +55,10 @@ HRESULT CMesh::Initialize_Prototype(CModel::TYPE eModelType, const aiMesh * pAIM
 	m_BufferDesc.StructureByteStride = 0;
 
 
-	FACEINDICES32*		pIndices = new FACEINDICES32[m_iIndexStride];
-	ZeroMemory(pIndices, sizeof(FACEINDICES32) * m_iIndexStride);
+	FACEINDICES32* pIndices = new FACEINDICES32[m_iNumPrimitives];
+	ZeroMemory(pIndices, sizeof(FACEINDICES32) * m_iNumPrimitives);
 
-	for (_uint i = 0; i < m_iIndexStride; ++i)
+	for (_uint i = 0; i < m_iNumPrimitives; ++i)
 	{
 		pIndices[i]._0 = pAIMesh->mFaces[i].mIndices[0];
 		pIndices[i]._1 = pAIMesh->mFaces[i].mIndices[1];
@@ -64,10 +66,10 @@ HRESULT CMesh::Initialize_Prototype(CModel::TYPE eModelType, const aiMesh * pAIM
 	}
 
 
-	ZeroMemory(&m_InitialData, sizeof(D3D11_SUBRESOURCE_DATA));
-	m_InitialData.pSysMem = pIndices;
+	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
+	m_SubResourceData.pSysMem = pIndices;
 
-	if (FAILED(__super::Create_Buffer(&m_pIB)))
+	if (FAILED(__super::Create_IndexBuffer()))
 		return E_FAIL;
 
 	Safe_Delete_Array(pIndices);
@@ -77,22 +79,21 @@ HRESULT CMesh::Initialize_Prototype(CModel::TYPE eModelType, const aiMesh * pAIM
 	return S_OK;
 }
 
-HRESULT CMesh::Initialize(void * pArg)
+HRESULT CMesh::Initialize(void* pArg)
 {
 	return S_OK;
 }
 
-HRESULT CMesh::SetUp_HierarchyNodes(CModel * pModel, aiMesh* pAIMesh)
+HRESULT CMesh::SetUp_HierarchyNodes(CModel* pModel, aiMesh* pAIMesh)
 {
-	/* 현재 메시에 영향을 주는 뼈들을 순회하며 행렬정보를 저장하고, 뼈들을 컨테이너에 모아둔다. */
-
 	m_iNumBones = pAIMesh->mNumBones;
 
+	/* 현재 메시에 영향을 주는 뼈들을 순회하며 행렬정보를 저장하고, 뼈들을 컨테이너에 모아둔다. */
 	for (_uint i = 0; i < m_iNumBones; ++i)
 	{
-		aiBone*		pAIBone = pAIMesh->mBones[i];
+		aiBone* pAIBone = pAIMesh->mBones[i];
 
-		CHierarchyNode*		pHierarchyNode = pModel->Get_HierarchyNode(pAIBone->mName.data);
+		CHierarchyNode* pHierarchyNode = pModel->Get_HierarchyNode(pAIBone->mName.data);
 
 		_float4x4			OffsetMatrix;
 
@@ -107,7 +108,8 @@ HRESULT CMesh::SetUp_HierarchyNodes(CModel * pModel, aiMesh* pAIMesh)
 
 	if (0 == m_iNumBones)
 	{
-		CHierarchyNode*		pNode = pModel->Get_HierarchyNode(m_szName);
+
+		CHierarchyNode* pNode = pModel->Get_HierarchyNode(m_szName);
 
 		if (nullptr == pNode)
 			return S_OK;
@@ -115,15 +117,15 @@ HRESULT CMesh::SetUp_HierarchyNodes(CModel * pModel, aiMesh* pAIMesh)
 		m_iNumBones = 1;
 
 		m_Bones.push_back(pNode);
+
 	}
 
 	return S_OK;
 }
 
-void CMesh::SetUp_BoneMatrices(_float4x4 * pBoneMatrices, _fmatrix PivotMatrix)
+/* 메시의 정점을 그리기위해 셰이더에 넘기기위한 뼈행렬의 배열을 구성한다. */
+void CMesh::SetUp_BoneMatrices(_float4x4* pBoneMatrices, _fmatrix PivotMatrix)
 {
-	/* 메시의 정점을 그리기위해 셰이더에 넘기기위한 뼈행렬의 배열을 구성한다. */
-
 	if (0 == m_iNumBones)
 	{
 		XMStoreFloat4x4(&pBoneMatrices[0], XMMatrixIdentity());
@@ -134,24 +136,24 @@ void CMesh::SetUp_BoneMatrices(_float4x4 * pBoneMatrices, _fmatrix PivotMatrix)
 	{
 		XMStoreFloat4x4(&pBoneMatrices[i], XMMatrixTranspose(m_Bones[i]->Get_OffSetMatrix() * m_Bones[i]->Get_CombinedTransformation() * PivotMatrix));
 	}
-	
+
 }
 
 HRESULT CMesh::Ready_Vertices(const aiMesh* pAIMesh, _fmatrix PivotMatrix)
 {
-	m_iNumVBs = 1;
+	m_iNumVertexBuffers = 1;
 	m_iNumVertices = pAIMesh->mNumVertices;
-	m_iVertexStride = sizeof(VTXMODEL);
+	m_iStride = sizeof(VTXMODEL);
 
 	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));
-	m_BufferDesc.ByteWidth = m_iNumVertices * m_iVertexStride;
+	m_BufferDesc.ByteWidth = m_iNumVertices * m_iStride;
 	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	m_BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	m_BufferDesc.CPUAccessFlags = 0;
 	m_BufferDesc.MiscFlags = 0;
-	m_BufferDesc.StructureByteStride = m_iVertexStride;
+	m_BufferDesc.StructureByteStride = m_iStride;
 
-	VTXMODEL*		pVertices = new VTXMODEL[m_iNumVertices];
+	VTXMODEL* pVertices = new VTXMODEL[m_iNumVertices];
 	ZeroMemory(pVertices, sizeof(VTXMODEL) * m_iNumVertices);
 
 	for (_uint i = 0; i < m_iNumVertices; ++i)
@@ -165,15 +167,15 @@ HRESULT CMesh::Ready_Vertices(const aiMesh* pAIMesh, _fmatrix PivotMatrix)
 		XMStoreFloat3(&pVertices[i].vNormal, XMVector3TransformNormal(XMLoadFloat3(&pVertices[i].vNormal), PivotMatrix));
 
 		memcpy(&pVertices[i].vTexture, &pAIMesh->mTextureCoords[0][i], sizeof(_float2));
-		
+
 		memcpy(&pVertices[i].vTangent, &pAIMesh->mTangents[i], sizeof(_float3));
 		XMStoreFloat3(&pVertices[i].vTangent, XMVector3TransformNormal(XMLoadFloat3(&pVertices[i].vTangent), PivotMatrix));
 	}
 
-	ZeroMemory(&m_InitialData, sizeof(D3D11_SUBRESOURCE_DATA));
-	m_InitialData.pSysMem = pVertices;
+	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
+	m_SubResourceData.pSysMem = pVertices;
 
-	if (FAILED(__super::Create_Buffer(&m_pVB)))
+	if (FAILED(__super::Create_VertexBuffer()))
 		return E_FAIL;
 
 	Safe_Delete_Array(pVertices);
@@ -183,45 +185,45 @@ HRESULT CMesh::Ready_Vertices(const aiMesh* pAIMesh, _fmatrix PivotMatrix)
 
 HRESULT CMesh::Ready_AnimVertices(const aiMesh* pAIMesh, CModel* pModel)
 {
-	m_iNumVBs = 1;
+	m_iNumVertexBuffers = 1;
 	m_iNumVertices = pAIMesh->mNumVertices;
-	m_iVertexStride = sizeof(VTXANIMMODEL);
+	m_iStride = sizeof(VTXANIMMODEL);
 
 	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));
-	m_BufferDesc.ByteWidth = m_iNumVertices * m_iVertexStride;
+	m_BufferDesc.ByteWidth = m_iNumVertices * m_iStride;
 	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	m_BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	m_BufferDesc.CPUAccessFlags = 0;
 	m_BufferDesc.MiscFlags = 0;
-	m_BufferDesc.StructureByteStride = m_iVertexStride;
+	m_BufferDesc.StructureByteStride = m_iStride;
 
-	VTXANIMMODEL*		pVertices = new VTXANIMMODEL[m_iNumVertices];
+	VTXANIMMODEL* pVertices = new VTXANIMMODEL[m_iNumVertices];
 	ZeroMemory(pVertices, sizeof(VTXANIMMODEL) * m_iNumVertices);
 
 	for (_uint i = 0; i < m_iNumVertices; ++i)
 	{
-		/* 사전변환( x) : 뼈의 행렬과 곱해져서 그려진다. 
+		/* 사전변환( x) : 뼈의 행렬과 곱해져서 그려진다.
 		사전변환에 대한 정보를 뼈에게 담아놓을 것이다. */
 		memcpy(&pVertices[i].vPosition, &pAIMesh->mVertices[i], sizeof(_float3));
 		memcpy(&pVertices[i].vNormal, &pAIMesh->mNormals[i], sizeof(_float3));
 		memcpy(&pVertices[i].vTexture, &pAIMesh->mTextureCoords[0][i], sizeof(_float2));
-		memcpy(&pVertices[i].vTangent, &pAIMesh->mTangents[i], sizeof(_float3));		
+		memcpy(&pVertices[i].vTangent, &pAIMesh->mTangents[i], sizeof(_float3));
 	}
 
 	/* 현재 메시에 영향ㅇ르 ㅈ2ㅜ는 뼈들을 순회한다ㅏ. */
-	/* 뼈(aiBone)안에 표현되어있는, 이뼈는 어떤 정점에게 영향을 주는지(mVertexId)를 받아와서. 
+	/* 뼈(aiBone)안에 표현되어있는, 이뼈는 어떤 정점에게 영향을 주는지(mVertexId)를 받아와서.
 	해당 정점에게 이뼈에 영향을 받는다(vBlendIndex), 얼마나(vBlendWeight)를 담아둔다. */
 
-	for (_uint i = 0; i <  pAIMesh->mNumBones; ++i)
+	for (_uint i = 0; i < pAIMesh->mNumBones; ++i)
 	{
-		aiBone*		pAIBone = pAIMesh->mBones[i];	
+		aiBone* pAIBone = pAIMesh->mBones[i];
 
 		/* i번째 뼈가 어떤 정점들에게 영향ㅇ르 주는지 순회한다. */
 		for (_uint j = 0; j < pAIBone->mNumWeights; ++j)
 		{
 			_uint		iVertexIndex = pAIBone->mWeights[j].mVertexId;
 
-			if(0.0f == pVertices[iVertexIndex].vBlendWeight.x)
+			if (0.0f == pVertices[iVertexIndex].vBlendWeight.x)
 			{
 				pVertices[iVertexIndex].vBlendIndex.x = i;
 				pVertices[iVertexIndex].vBlendWeight.x = pAIBone->mWeights[j].mWeight;
@@ -246,21 +248,21 @@ HRESULT CMesh::Ready_AnimVertices(const aiMesh* pAIMesh, CModel* pModel)
 			}
 		}
 	}
-	
-	ZeroMemory(&m_InitialData, sizeof(D3D11_SUBRESOURCE_DATA));
-	m_InitialData.pSysMem = pVertices;
 
-	if (FAILED(__super::Create_Buffer(&m_pVB)))
+	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
+	m_SubResourceData.pSysMem = pVertices;
+
+	if (FAILED(__super::Create_VertexBuffer()))
 		return E_FAIL;
 
-	Safe_Delete_Array(pVertices);	
+	Safe_Delete_Array(pVertices);
 
 	return S_OK;
 }
 
-CMesh * CMesh::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, CModel::TYPE eModelType, const aiMesh * pAIMesh, CModel* pModel, _fmatrix PivotMatrix)
+CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CModel::TYPE eModelType, const aiMesh* pAIMesh, CModel* pModel, _fmatrix PivotMatrix)
 {
-	CMesh*			pInstance = new CMesh(pDevice, pContext);
+	CMesh* pInstance = new CMesh(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype(eModelType, pAIMesh, pModel, PivotMatrix)))
 	{
@@ -271,9 +273,9 @@ CMesh * CMesh::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, CM
 	return pInstance;
 }
 
-CComponent * CMesh::Clone(void * pArg)
+CComponent* CMesh::Clone(void* pArg)
 {
-	CMesh*			pInstance = new CMesh(*this);
+	CMesh* pInstance = new CMesh(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
