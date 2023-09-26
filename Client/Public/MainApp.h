@@ -32,6 +32,10 @@ private:
 	CRenderer*				m_pRenderer = { nullptr };
 
 #ifdef _DEBUG
+	_float					m_fTimeAcc = 0.f;
+	_uint					m_iNumDraw = 0;
+	_tchar					m_szFPS[MAX_PATH] = TEXT("");
+
 	class CImGui_Manager*  m_pImGui_Manager = { nullptr };
 #endif // _DEBUG
 

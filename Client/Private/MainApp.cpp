@@ -62,6 +62,11 @@ void CMainApp::Tick(_float fTimeDelta)
 	m_pGameInstance->Tick(fTimeDelta);
 
 	m_pGameInstance->LateTick(fTimeDelta);
+
+#ifdef _DEBUG
+	m_fTimeAcc += fTimeDelta; 
+#endif // _DEBUG
+
 }
 
 HRESULT CMainApp::Render()
@@ -88,7 +93,19 @@ HRESULT CMainApp::FinishTick()
 	/* 이벤트 매니저와 같은 브로드 캐스팅 작업 */
 	m_pGameInstance->FinishTick();
 
+
+#ifdef _DEBUG
 	/* 프로파일링 데이터 초기화 */
+
+	++m_iNumDraw;
+	if (m_fTimeAcc >= 1.f)
+	{
+		g_iFPS = m_iNumDraw;
+		m_iNumDraw = 0;
+		m_fTimeAcc = 0.f;
+	}
+
+#endif // _DEBUG
 
 	return S_OK;
 }

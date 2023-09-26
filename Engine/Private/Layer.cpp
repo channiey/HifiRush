@@ -1,10 +1,13 @@
 #include "..\Public\Layer.h"
 #include "GameObject.h"
 
+#include "GameInstance.h"
 #include "StringUtils.h"
 
 CLayer::CLayer()
+	: m_pGameInstance(CGameInstance::GetInstance())
 {
+	m_pGameInstance->AddRef();
 }
 
 HRESULT CLayer::Initialize(const wstring& strLayerTag)
@@ -111,11 +114,27 @@ void CLayer::Tick(_float fTimeDelta)
 
 void CLayer::LateTick(_float fTimeDelta)
 {
+	//if (3 < m_GameObjects.size())
+	//	CThread_Manager::GetInstance()->Set_MultiThreading(3);
+	
 	for (auto& pGameObject : m_GameObjects)
-	{		
+	{
 		if (nullptr != pGameObject && pGameObject->Is_Active())
-			pGameObject->LateTick(fTimeDelta);
+		{
+			//if (3 < m_GameObjects.size())
+			//{
+			//	CThread_Manager::GetInstance()->Add_Command(
+			//		[&pGameObject, fTimeDelta]() { pGameObject->LateTick(fTimeDelta); }
+			//	);
+			//}
+			//else
+				pGameObject->LateTick(fTimeDelta);
+			/*CThread_Manager::GetInstance()->Add_Command(std::bind(&CGameObject::LateTick, &pGameObject, (_float)fTimeDelta));
+			pGameObject->LateTick(fTimeDelta);*/
+		}
 	}
+	//if (23 < m_GameObjects.size())
+	//	CThread_Manager::GetInstance()->Finish_MultiThreading();
 }
 
 CLayer * CLayer::Create(const wstring& strLayerTag)
@@ -139,4 +158,5 @@ void CLayer::Free()
 		Safe_Release(pGameObject);
 
 	m_GameObjects.clear();
+	m_pGameInstance->Release();
 }

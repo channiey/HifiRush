@@ -8,8 +8,8 @@
 using namespace std;
 namespace Client
 {
-#define FPS_LIMIT		1000.f
-#define IS_MULTI_THREAD 
+#define FPS_LIMIT		65.f
+#define IS_MULTI_THREAD true
 
 	/* Window */
 	const unsigned int		g_iWinSizeX = 1280;
@@ -77,7 +77,8 @@ namespace Client
 	}TRANSFORM_DESC;
 }
 
-extern HINSTANCE g_hInst;
-extern HWND g_hWnd;
+extern HINSTANCE	g_hInst;
+extern HWND			g_hWnd;
+extern _uint		g_iFPS;
 
 using namespace Client;

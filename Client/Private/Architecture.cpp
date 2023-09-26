@@ -22,13 +22,8 @@ HRESULT CArchitecture::Initialize(void * pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-
-	m_pTransformCom->Set_Scale(Vec3(0.1f, 0.1f, 0.1f));
-	//m_pTransformCom->Set_Position(Vec4(30.f, 5.f, 30.f, 1.f));
-
-	//m_pModelCom->Set_AnimIndex(rand() % 20);
-
-	//m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(rand() % 10, 0.f, rand() % 10, 1.f));
+	const _float fMag = 0.01f;
+	m_pTransformCom->Set_Scale(Vec3(fMag, fMag, fMag));
 
 	return S_OK;
 }
@@ -68,8 +63,8 @@ HRESULT CArchitecture::Render()
 		if (FAILED(m_pModelCom->SetUp_OnShader(m_pShaderCom, m_pModelCom->Get_MaterialIndex(i), aiTextureType_DIFFUSE, "g_DiffuseTexture")))
 			return E_FAIL;
 
-		//if (FAILED(m_pModelCom->SetUp_OnShader(m_pShaderCom, m_pModelCom->Get_MaterialIndex(i), aiTextureType_NORMALS, "g_NormalTexture")))
-		//	return E_FAIL;
+		if (FAILED(m_pModelCom->SetUp_OnShader(m_pShaderCom, m_pModelCom->Get_MaterialIndex(i), aiTextureType_NORMALS, "g_NormalTexture")))
+			return E_FAIL;
 
 		if (FAILED(m_pModelCom->Render(m_pShaderCom, i)))
 			return E_FAIL;

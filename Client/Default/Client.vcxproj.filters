@@ -88,9 +88,6 @@
     <Filter Include="02.GameObjects\Light\Point">
       <UniqueIdentifier>{de47ffd3-fa1f-4589-a855-282a1afa93d4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Levels\01.GamePlay\00.Proto">
-      <UniqueIdentifier>{b4248e0b-da12-45df-acaf-494f8e50ae75}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Levels\01.GamePlay\03.Level_Boss">
       <UniqueIdentifier>{e49f063f-84b0-47dc-81eb-542d4a103122}</UniqueIdentifier>
     </Filter>
@@ -157,11 +154,14 @@
     <Filter Include="02.GameObjects\Environment\Interactable\Moveable">
       <UniqueIdentifier>{c826dd7b-e31c-4f41-80f9-bfda419f6dd5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Levels\98.Proto">
+      <UniqueIdentifier>{b4248e0b-da12-45df-acaf-494f8e50ae75}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02.GameObjects\Character\Proto">
-      <UniqueIdentifier>{a3160074-ea0f-4016-9a36-1387aef7b02a}</UniqueIdentifier>
+      <UniqueIdentifier>{a574bb1d-749c-4fb5-bf19-b9a30b09a18d}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\Character\Proto\Fiona">
-      <UniqueIdentifier>{4309bdd4-99bb-461d-a066-2983b8d46c06}</UniqueIdentifier>
+      <UniqueIdentifier>{36882f13-5282-49c7-a347-899f85859c54}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -258,6 +258,9 @@
     <ClInclude Include="..\Public\Architecture.h">
       <Filter>02.GameObjects\Environment\Static\Architecture</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Fiona.h">
+      <Filter>02.GameObjects\Character\Proto\Fiona</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -337,6 +340,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Architecture.cpp">
       <Filter>02.GameObjects\Environment\Static\Architecture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Fiona.cpp">
+      <Filter>02.GameObjects\Character\Proto\Fiona</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,66 +1,42 @@
 #include "..\Default\stdafx.h"
-#include "..\Public\Player.h"
+#include "..\Public\Fiona.h"
 
 #include "GameInstance.h"
 
-CPlayer::CPlayer(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+CFiona::CFiona(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObject(pDevice, pContext)
 {
 
 }
 
-CPlayer::CPlayer(const CGameObject & rhs)
+CFiona::CFiona(const CGameObject & rhs)
 	: CGameObject(rhs)
 {
 
 }
 
-HRESULT CPlayer::Initialize_Prototype()
+HRESULT CFiona::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CPlayer::Initialize(void* pArg)
+HRESULT CFiona::Initialize(void* pArg)
 {
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	/* Temporary Initaial Setting */
-	{
-		m_pModelCom->Set_AnimIndex(rand() % 6);
+	m_pModelCom->Set_AnimIndex(rand() % 15);
 
-		const _float fMag = 0.01f;
-		m_pTransformCom->Set_Scale(Vec3(fMag, fMag, fMag));
-	}
 
 	return S_OK;
 }
 
-void CPlayer::Tick(_float fTimeDelta)
+void CFiona::Tick(_float fTimeDelta)
 {
 
-	/* Test Animation */
-	CGameInstance* pGameInst = GET_INSTANCE(CGameInstance);
-	{
-		if (pGameInst->Key_Down(VK_UP))
-		{
-			_int  iCurAnim = (m_pModelCom->Get_CurAnimationIndex() + 1) % m_pModelCom->Get_AnimationCount();
-
-			m_pModelCom->Set_AnimIndex(iCurAnim);
-		}
-		else if (pGameInst->Key_Down(VK_DOWN))
-		{
-			_int iCurAnim = m_pModelCom->Get_CurAnimationIndex() - 1;
-			if (iCurAnim < 0) 
-				iCurAnim = 0;
-
-			m_pModelCom->Set_AnimIndex(iCurAnim);
-		}
-	}
-	RELEASE_INSTANCE(CGameInstance);
 }
 
-void CPlayer::LateTick(_float fTimeDelta)
+void CFiona::LateTick(_float fTimeDelta)
 {
 	/* 해당 애니메이션이 사용하는 뼈의 정보를 갱신한다. */
 	m_pModelCom->Update_Anim(fTimeDelta);
@@ -68,7 +44,7 @@ void CPlayer::LateTick(_float fTimeDelta)
 	m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this);	
 }
 
-HRESULT CPlayer::Render()
+HRESULT CFiona::Render()
 {
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
@@ -76,7 +52,7 @@ HRESULT CPlayer::Render()
 	return S_OK;
 }
 
-HRESULT CPlayer::Ready_Components()
+HRESULT CFiona::Ready_Components()
 {
 	/* Com_Renderer */
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"),
@@ -89,7 +65,7 @@ HRESULT CPlayer::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Model */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Chai"),
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
 		TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 	
@@ -101,7 +77,7 @@ HRESULT CPlayer::Ready_Components()
 	return S_OK;
 }
 
-HRESULT CPlayer::Bind_ShaderResources()
+HRESULT CFiona::Bind_ShaderResources()
 {
 	/* WVP 상태 행렬을 셰이더에 던진다. */
 	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_WorldMatrix")))
@@ -129,7 +105,6 @@ HRESULT CPlayer::Bind_ShaderResources()
 		//if (FAILED(m_pModelCom->SetUp_OnShader(m_pShaderCom, m_pModelCom->Get_MaterialIndex(i), aiTextureType_NORMALS, "g_NormalTexture")))
 		//	return E_FAIL;
 
-		/* TODO 프레임 저하 유발 */
 		if (FAILED(m_pModelCom->Render(m_pShaderCom, i)))
 			return E_FAIL;
 	}
@@ -138,33 +113,33 @@ HRESULT CPlayer::Bind_ShaderResources()
 	return S_OK;
 }
 
-CPlayer * CPlayer::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+CFiona * CFiona::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
-	CPlayer*	pInstance = new CPlayer(pDevice, pContext);
+	CFiona*	pInstance = new CFiona(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created : CPlayer");
+		MSG_BOX("Failed to Created : CFiona");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-CGameObject * CPlayer::Clone(void* pArg)
+CGameObject * CFiona::Clone(void* pArg)
 {
-	CPlayer*	pInstance = new CPlayer(*this);
+	CFiona*	pInstance = new CFiona(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned : CPlayer");
+		MSG_BOX("Failed to Cloned : CFiona");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CPlayer::Free()
+void CFiona::Free()
 {
 	__super::Free();
 

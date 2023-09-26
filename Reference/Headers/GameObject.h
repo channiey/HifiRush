@@ -72,6 +72,8 @@ private:
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual void Free() override;
+
+	friend class CLayer;
 };
 
 END

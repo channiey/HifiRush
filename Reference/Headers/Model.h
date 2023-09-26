@@ -34,7 +34,7 @@ public:
 
 public:
 	/* 현재 애니메이션이 제어해야할 뼈의 상태를 갱신한다. */
-	HRESULT Play_Animation(_float fTimeDelta);
+	HRESULT Update_Anim(_float fTimeDelta);
 
 public: /* Render */
 	/* 셰이더에 현재 모델의 매테리얼 정보를 바인딩 한다. */

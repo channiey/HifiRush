@@ -12,11 +12,16 @@ HRESULT CThread_Manager::Set_MultiThreading(const _uint& iThreadNum)
 {
 	// 스레드를 생성 및 시작한다 (시작시에는 태스크 목록이 비어있기 때문에, 모든 쓰레드는 대기상태로 전환된다)
 
-	if (!m_bStopAll || !m_vecThread.empty()) return E_FAIL;
+	//if (!m_vecThread.empty())
+	//{
+	//	m_bStopAll = TRUE;
+	//	m_cvCommand.notify_all();
+	//	m_vecThread.clear();
+	//}
 
+	//if (!m_bStopAll || !m_vecThread.empty()) return E_FAIL;
 	m_bStopAll = FALSE;
 
-	if (!m_vecThread.empty()) m_vecThread.clear();
 	
 	m_iThreadNum = iThreadNum;
 
@@ -40,7 +45,7 @@ void CThread_Manager::Finish_MultiThreading()
 {
 	m_bStopAll = TRUE;
 
-	/* 모든 쓰레드를 종료시키기 위해 모두 대기상태가 아닌 활성 사태로 전환한다. */
+	/* 모든 쓰레드를 종료시키기 위해 모두 대기상태가 아닌 활성 상태로 전환한다. */
 	m_cvCommand.notify_all();
 
 	/* 모든 쓰레드가 종료될 때 까지 호출 쓰레드를 대기 상태로 둔다.*/

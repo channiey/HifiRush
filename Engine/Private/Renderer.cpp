@@ -30,15 +30,15 @@ HRESULT CRenderer::Add_RenderGroup(RENDERGROUP eRenderGroup, CGameObject * pGame
 HRESULT CRenderer::Draw_RenderObjects()
 {
 	if (FAILED(Render_Priority()))
-		return E_FAIL;
+		return S_OK;// E_FAIL;
 	if (FAILED(Render_NonLight()))
-		return E_FAIL;
+		return S_OK;// E_FAIL;
 	if (FAILED(Render_NonBlend()))
-		return E_FAIL;
+		return S_OK;// E_FAIL;
 	if (FAILED(Render_Blend()))
-		return E_FAIL;
+		return S_OK;// E_FAIL;
 	if (FAILED(Render_UI()))
-		return E_FAIL;
+		return S_OK;// E_FAIL;
 
 	return S_OK;
 }

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Base.h"
-
 BEGIN(Engine)
 
 class CThread_Manager final : public CBase
@@ -15,44 +14,19 @@ private:
 public: /* For.GameInstance */
 	HRESULT Set_MultiThreading(const _uint& iThreadNum);
 
-	template <class F, class... Args>
-	HRESULT Add_Command(F&& f, Args&&... args)
+	/* 반환값을 받지 않는 버전 */
+	void Add_Command(std::function<void()> job)
 	{
-		/* 클라이언트에서는 함수를 쓰레드 매니저에게 던지게 된다. 이때 반환값이 다양할 수 있다. */
-		/* 또한 내가 직접 수정하기 어려운 함수도 있을 수 있기에 반환값을 받는 버전으로 간다. */
-
-		if (m_bStopAll) return E_FAIL;
-
-		/* 편의상 재정의 */
-		/* C++14 'return_type' -> C++20 'invoke_result' */
-		using return_type = typename invoke_result<F(Args...)>::type;
-
-		/* forward는 레퍼런스 전달을 위해 사용한다. */
-		/* packaged_task는 비동기적으로 실행되는 함수의 리턴값을 받아내기 위해 사용한다. */
-		/* packaged_task의 생성자는 함수만을 받기 때문에 인자들을 bind한다. */
-		auto command = make_shared<packaged_task<return_type()>>(bind(forward<F>(f), forward<Args>(args)...));
-
-		future<return_type> future_Command_Result = command->get_future(); // command의 실행 결과를 보관한다.
-		{
-			/* 뮤텍스 락 - lock_guard는 지역변수이므로 소멸자 호출시 자동으로 뮤텍스 해제*/
-			lock_guard<mutex> lockGuard(m_mutexCommand);
-
-			/* 명령 큐에 명령을 추가한다.*/
-			m_queueCommand.push([command]() {(*command)(); });
-		}
-
-		/* 대기 중인 쓰레드 하나를 활성화 한다.*/
-		m_cvCommand.notify_one();
-
-		/* 이후 위 쓰레드가 명령을 수행한다. Execute_Command() */
-		/* 해당 명령령의 리턴값은 future_Command_Result에 저장되고, 이는 풀 사용자가 접근할 수 있다. */
+		if (m_bStopAll) 
+			throw std::runtime_error("ThreadPool 사용 중지됨");
 		
-		return S_OK;
+		std::lock_guard<std::mutex> lock(m_mutexCommand);
+		m_queueCommand.push(std::move(job));
+
+		m_cvCommand.notify_one();
 	}
 
 	void Finish_MultiThreading(); // 단지 Join 하는 역할
-
-
 
 private:
 	vector<thread>			m_vecThread;
@@ -78,6 +52,54 @@ public:
 };
 
 END
+
+
+
+
+//template <class F, class... Args>
+//void Add_Command(F&& f, Args&&... args)
+//{
+//	/* 클라이언트에서는 함수를 쓰레드 매니저에게 던지게 된다. 이때 반환값이 다양할 수 있다. */
+//	/* 또한 내가 직접 수정하기 어려운 함수도 있을 수 있기에 반환값을 받는 버전으로 간다. */
+
+//	if (m_bStopAll) return;
+
+//	/* 편의상 재정의 */
+//	/* C++14 'return_type' -> C++20 'invoke_result' */
+//	using return_type = typename invoke_result<F(Args...)>::type;
+
+//	/* forward는 레퍼런스 전달을 위해 사용한다. */
+//	/* packaged_task는 비동기적으로 실행되는 함수의 리턴값을 받아내기 위해 사용한다. */
+//	/* packaged_task의 생성자는 함수만을 받기 때문에 인자들을 bind한다. */
+//	auto command = make_shared<packaged_task<return_type()>>(bind(forward<F>(f), forward<Args>(args)...));
+
+//	future<return_type> future_Command_Result = command->get_future(); // command의 실행 결과를 보관한다.
+//	{
+//		/* 뮤텍스 락 - lock_guard는 지역변수이므로 소멸자 호출시 자동으로 뮤텍스 해제*/
+//		lock_guard<mutex> lockGuard(m_mutexCommand);
+
+//		/* 명령 큐에 명령을 추가한다.*/
+//		m_queueCommand.push([command]() {(*command)(); });
+//	}
+
+//	/* 대기 중인 쓰레드 하나를 활성화 한다.*/
+//	m_cvCommand.notify_one();
+
+//	/* 이후 위 쓰레드가 명령을 수행한다. Execute_Command() */
+//	/* 해당 명령령의 리턴값은 future_Command_Result에 저장되고, 이는 풀 사용자가 접근할 수 있다. */
+//	
+//	//return S_OK;
+//}
+
+
+
+
+
+
+
+
+
+
 
 
 

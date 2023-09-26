@@ -157,7 +157,7 @@ HRESULT CModel::SetUp_OnShader(CShader * pShader, _uint iMaterialIndex, aiTextur
 	return m_Materials[iMaterialIndex].pTexture[eTextureType]->Bind_ShaderResource(pShader, pConstantName, 0);
 }
 
-HRESULT CModel::Play_Animation(_float fTimeDelta)
+HRESULT CModel::Update_Anim(_float fTimeDelta)
 {
 	/* 1. 해당 애니메이션에서 사용하는 모든 뼈들의 Transformation 행렬을 갱신한다. */
 	/* 2. Transformation을 최상위 부모로부터 자식으로 계속 누적시켜간다.(CombinedTransformation) */
@@ -167,6 +167,7 @@ HRESULT CModel::Play_Animation(_float fTimeDelta)
 
 	/* Relative */
 	/* 현재 재생하고자하는 애니메이션이 제어해야할 뼈들의 지역행렬을 갱신해낸다. */
+	/* 키프레임 애니메이션 보간 */
 	m_Animations[m_iCurrentAnimIndex]->Play_Animation(fTimeDelta);
 
 	/* Global */
@@ -180,6 +181,8 @@ HRESULT CModel::Play_Animation(_float fTimeDelta)
 
 HRESULT CModel::Render(CShader* pShader, _uint iMeshIndex, _uint iPassIndex)
 {
+	/* TODO 프레임 저하 유발 */
+
 	_float4x4		BoneMatrices[MAX_BONES];
 
 	if (TYPE_ANIM == m_eModelType) 

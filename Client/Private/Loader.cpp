@@ -3,12 +3,19 @@
 
 #include "GameInstance.h"
 
+/* Character*/
 #include "Player.h"
 #include "Architecture.h"
-#include "Camera_Debug.h"
-#include "BackGround.h"
-#include "Terrain.h"
+#include "Fiona.h"
 
+/* Camera */
+#include "Camera_Debug.h"
+
+/* UI */
+#include "BackGround.h"
+
+/* Env */
+#include "Terrain.h"
 
 CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: m_pDevice(pDevice)
@@ -75,7 +82,6 @@ _int CLoader::Loading()
 
 HRESULT CLoader::Loading_For_Level_Logo()
 {
-
 	/* 얘네 다 쓰레드 매니저로 처리하면 반환값을 못받으니 쓰레드가 처리할 함수 내부에서 assert로 예외처리 하자 (#if _DEBUG 필수) */
 
 	/* 로고 레벨 로딩 단계에서 모든 오브젝트와 컴포넌트 원형을 생성해둔다. */
@@ -120,6 +126,12 @@ HRESULT CLoader::Loading_For_Level_Logo()
 		PivotMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f));
 		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Chai"),
 			CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Characters/Chai/", "Chai.fbx", PivotMatrix))))
+			return E_FAIL;
+
+		/* For.Prototype_Component_Model_Fiona */
+		PivotMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f));
+		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
+			CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Prototype/Fiona/", "Fiona.fbx", PivotMatrix))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Model_Architecture */
@@ -173,6 +185,11 @@ HRESULT CLoader::Loading_For_Level_Logo()
 		/* For.Prototype_GameObject_Env_Architecture */
 		if (FAILED(pGameInstance->Add_Prototype(TEXT("Env_Architecture"),
 			CArchitecture::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Proto_Fiona */
+		if (FAILED(pGameInstance->Add_Prototype(TEXT("Temp_Fiona"),
+			CFiona::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 	}
 
