@@ -16,14 +16,16 @@ namespace Engine
 
 	typedef struct tagMaterialDesc
 	{
+		/* 매태리얼은 색상을 표현할 정보를 나타낸다. 매태리얼 = 택스처 집합소 */
+		/* 하나의 매태리얼은 디퓨즈 텍스처, 노말 텍스처, 스페큘러 텍스처등 */
+		/* 여러 개의 텍스처를 갖고 있다. */
+
 		class CTexture* pTexture[AI_TEXTURE_TYPE_MAX];
 
 	}MATERIALDESC;
 
 	typedef struct tagProfilerDesc
 	{
-		/* https://shkim0811.tistory.com/42 */
-
 		_float fFPS = 0.f;
 		_uint iTris = 0;
 		_uint iBatches = 0;
@@ -111,8 +113,8 @@ namespace Engine
 		XMFLOAT3		vNormal;
 		XMFLOAT2		vTexture;
 		XMFLOAT3		vTangent;
-		XMUINT4			vBlendIndex; /* 이 정점에 영향을 주는 뼈의 인덱스 네개. */
-		XMFLOAT4		vBlendWeight; /* 영향르 주고 있는 각 뼈대의 영향 비율 */
+		XMUINT4			vBlendIndex; 
+		XMFLOAT4		vBlendWeight;
 	}VTXANIMMODEL;
 
 	typedef struct ENGINE_DLL tagVertexAnimModel_Declaration

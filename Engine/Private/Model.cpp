@@ -5,7 +5,6 @@
 #include "Animation.h"
 #include "Shader.h"
 
-
 CModel::CModel(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CComponent(pDevice, pContext)
 {
@@ -44,35 +43,36 @@ HRESULT CModel::Initialize_Prototype(TYPE eType, const char* pModelFilePath, con
 {
 	XMStoreFloat4x4(&m_PivotMatrix, PivotMatrix);
 
-	char		szFullPath[MAX_PATH] = "";
+	char	szFullPath[MAX_PATH] = "";
 
 	strcpy_s(szFullPath, pModelFilePath);
 	strcat_s(szFullPath, pModelFileName);
-
-	_uint		iFlag = 0;
 
 	m_eModelType = eType;
 
 	// aiProcess_PreTransformVertices : 모델을 구성하는 메시 중, 이 메시의 이름과 뼈의 이름이 같은 상황이라면 이 뼈의 행렬을 메시의 정점에 다 곱해서 로드한다. 
 	// 모든 애니메이션 정보는 폐기된다. 
+	_uint	iFlag = 0;
+
 	if (TYPE_NONANIM == eType)
 		iFlag |= aiProcess_PreTransformVertices | aiProcess_ConvertToLeftHanded | aiProcess_CalcTangentSpace;
 	else
 		iFlag |= aiProcess_ConvertToLeftHanded | aiProcess_CalcTangentSpace;
 
 	m_pAIScene = m_Importer.ReadFile(szFullPath, iFlag);
+	{
+		if (nullptr == m_pAIScene)
+			return E_FAIL;
 
-	if (nullptr == m_pAIScene)
-		return E_FAIL;
+		if (FAILED(Ready_Meshes(PivotMatrix)))
+			return E_FAIL;
 
-	if (FAILED(Ready_Meshes(PivotMatrix)))
-		return E_FAIL;
+		if (FAILED(Ready_Materials(pModelFilePath)))
+			return E_FAIL;
 
-	if (FAILED(Ready_Materials(pModelFilePath)))
-		return E_FAIL;
-
-	if (FAILED(Ready_Animations()))
-		return E_FAIL;
+		if (FAILED(Ready_Animations()))
+			return E_FAIL;
+	}
 
 	return S_OK;
 }
@@ -159,20 +159,13 @@ HRESULT CModel::SetUp_OnShader(CShader * pShader, _uint iMaterialIndex, aiTextur
 
 HRESULT CModel::Update_Anim(_float fTimeDelta)
 {
-	/* 1. 해당 애니메이션에서 사용하는 모든 뼈들의 Transformation 행렬을 갱신한다. */
-	/* 2. Transformation을 최상위 부모로부터 자식으로 계속 누적시켜간다.(CombinedTransformation) */
-	/* 3. 애니메이션에 의해 움직인 뼈들의 CombinedTransfromation을 세팅한다. */
-
 	if (m_iCurrentAnimIndex >= m_iNumAnimations) return E_FAIL;
 
-	/* Relative */
-	/* 현재 재생하고자하는 애니메이션이 제어해야할 뼈들의 지역행렬을 갱신해낸다. */
-	/* 키프레임 애니메이션 보간 */
+	/* 현재 애니메이션의 모든 채널 키프레임 보간 (아직 부모 기준) - Relative */
 	m_Animations[m_iCurrentAnimIndex]->Play_Animation(fTimeDelta);
 
-	/* Global */
-	/* 지역행렬을 순차적으로(부모에서 자식으로) 누적하여 m_CombinedTransformation를 만든다. */
-	/* m_HierarchyNodes은 부모에서 자식 순으로 순차적으로 정렬되어 있는 상태다. */
+	/* 모든 뼈를 순회하며 루트 기준 트랜스폼을 계산하여 세팅한다.(루트 기준) - Global */
+	/* cf. m_HierarchyNodes은 부모에서 자식 순으로 순차적으로 정렬되어 있는 상태다. */
 	for (auto& pHierarchyNode : m_HierarchyNodes)
 		pHierarchyNode->Set_CombinedTransformation();
 
@@ -187,9 +180,9 @@ HRESULT CModel::Render(CShader* pShader, _uint iMeshIndex, _uint iPassIndex)
 
 	if (TYPE_ANIM == m_eModelType) 
 	{
+		/* 본의 최종 트랜스폼 계산 : <오프셋 * 루트 기준 * 사전변환> */
 		m_Meshes[iMeshIndex]->SetUp_BoneMatrices(BoneMatrices, XMLoadFloat4x4(&m_PivotMatrix));
 
-		/* 모델 정점의 스키닝. */
    		if (FAILED(pShader->Bind_RawValue("g_BoneMatrices", BoneMatrices, sizeof(_float4x4) * MAX_BONES)))
 			return E_FAIL;
 	}
@@ -223,13 +216,15 @@ HRESULT CModel::Ready_Materials(const char* pModelFilePath)
 {
 	/* 매태리얼은 빛을 받았을 때 리턴해야할 색상 정보를 나타낸다. */
 	/* 매태리얼은 픽셀마다 정의된다 (모델마다X, 정점마다X) -> 텍스처로 표현된다. */
-
+	/* 즉 하나의 매태리얼은 디퓨즈 텍스처, 노말 텍스처, 스페큘러 텍스처등 텍스처의 집합소이다. */
+	
 	if (nullptr == m_pAIScene)
 		return E_FAIL;
 
 	/* 매태리얼 갯수를 얻어온다. */
 	m_iNumMaterials = m_pAIScene->mNumMaterials;
 
+	/* 모델이 가지고 있는 매태리얼을 순회하며, 해당 매태리얼이 사용하는 텍스처들을 메모리에 저장한다. */
 	for (_uint i = 0; i < m_iNumMaterials; ++i)
 	{
 		MATERIALDESC		MaterialDesc;
@@ -237,7 +232,6 @@ HRESULT CModel::Ready_Materials(const char* pModelFilePath)
 
 		aiMaterial*			pAIMaterial = m_pAIScene->mMaterials[i];
 
-		/* AI_TEXTURE_TYPE_MAX:디퓨즈or앰비언트or노말or이미시브 등등등 */
 		for (_uint j = 0; j < AI_TEXTURE_TYPE_MAX; ++j)
 		{			
 			aiString		strPath;			
@@ -258,6 +252,7 @@ HRESULT CModel::Ready_Materials(const char* pModelFilePath)
 
 			_tchar			szWideFullPath[MAX_PATH] = TEXT("");
 
+			/* 모델 경로와 텍스처 이름을 통해 텍스처를 가져올 파일 경로를 세팅한다. */
 			MultiByteToWideChar(CP_ACP, 0, szFullPath, _int(strlen(szFullPath)), szWideFullPath, MAX_PATH);
 
 			/* 최종적으로 텍스처를 생성한다. */
@@ -286,7 +281,6 @@ HRESULT CModel::Ready_HierarchyNodes(aiNode* pNode, CHierarchyNode* pParent, _ui
 	/* 각 노드마다 깊이값(몇차자식이냐?) 을 저장해두고 나중에 정렬한다. */
 
 	CHierarchyNode*		pHierarchyNode = CHierarchyNode::Create(pNode, pParent, iDepth++);
-
 	if (nullptr == pHierarchyNode)
 		return E_FAIL;
 

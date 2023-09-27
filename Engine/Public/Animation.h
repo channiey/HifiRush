@@ -27,7 +27,7 @@ private:
 	_float						m_fTickPerSecond = 0.f; /* 초당 재생 속도 */
 
 private: /* 복제된 애니메이션 마다 따로 가진다. */
-	vector<class CHierarchyNode*>	m_HierarchyNodes;
+	vector<class CHierarchyNode*>	m_HierarchyNodes; /* 이 애니메이션을 재생하는데 필요한 뼈 */
 	vector<_uint>					m_ChannelKeyFrames;
 
 public:

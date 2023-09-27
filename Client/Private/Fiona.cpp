@@ -25,7 +25,7 @@ HRESULT CFiona::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_pModelCom->Set_AnimIndex(rand() % 15);
+	m_pModelCom->Set_Animation(rand() % 15);
 
 
 	return S_OK;

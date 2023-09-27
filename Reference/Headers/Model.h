@@ -21,7 +21,11 @@ public:
 	virtual HRESULT Initialize(void* pArg);
 
 public:
-	class CHierarchyNode* Get_HierarchyNode(const char* pNodeName); /* 이름으로 특정 노드를 받아온다. */
+	/* 현재 애니메이션이 제어해야할 뼈의 상태를 갱신한다. */
+	HRESULT Update_Anim(_float fTimeDelta);
+
+public:
+	class CHierarchyNode* Get_HierarchyNode(const char* pNodeName); 
 	_uint Get_NumMeshes() const { return m_iNumMeshes; }
 	_uint Get_MaterialIndex(_uint iMeshIndex);
 	_matrix Get_PivotMatrix() { return XMLoadFloat4x4(&m_PivotMatrix); }
@@ -30,11 +34,7 @@ public:
 
 public:
 	/* 현재 재생할 애니메이션 인덱스를 설정한다.*/
-	void Set_AnimIndex(_uint iAnimIndex) { m_iCurrentAnimIndex = iAnimIndex; }
-
-public:
-	/* 현재 애니메이션이 제어해야할 뼈의 상태를 갱신한다. */
-	HRESULT Update_Anim(_float fTimeDelta);
+	void Set_Animation(_uint iAnimIndex) { m_iCurrentAnimIndex = iAnimIndex; }
 
 public: /* Render */
 	/* 셰이더에 현재 모델의 매테리얼 정보를 바인딩 한다. */
@@ -43,10 +43,10 @@ public: /* Render */
 	HRESULT Render(class CShader* pShader, _uint iMeshIndex, _uint iPassIndex = 0);
 
 private: /* 원형만 갖는다. */
-	const aiScene*				m_pAIScene = nullptr;
-	Assimp::Importer			m_Importer;
-	_float4x4					m_PivotMatrix;
-	TYPE						m_eModelType = TYPE_END;
+	const aiScene*							m_pAIScene = nullptr;
+	Assimp::Importer						m_Importer;
+	_float4x4								m_PivotMatrix;
+	TYPE									m_eModelType = TYPE_END;
 
 private: /* 클론이 갖는다. */
 	/* aiNode */
@@ -67,11 +67,11 @@ private: /* 클론이 갖는다. */
 	vector<class CAnimation*>				m_Animations;
 
 private:
-	/* Assimp를 통해 fbx를 로드하여 카테고리별로 나눠 파싱한다.*/
+	/* Assimp Phrasing  */
 	HRESULT Ready_Meshes(_fmatrix PivotMatrix);
 	HRESULT Ready_Materials(const char* pModelFilePath);
 	HRESULT Ready_Animations();
-	HRESULT Ready_HierarchyNodes(aiNode* pNode, class CHierarchyNode* pParent, _uint iDepth);
+	HRESULT Ready_HierarchyNodes(aiNode* pNode, class CHierarchyNode* pParent, _uint iDepth); /* aiNode를 재귀로 순회하며 본의 부모 자식을 정의하고 본의 부모기준 트랜스폼을 저장한다.  */
 
 public:
 	static CModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, TYPE eType, const char* pModelFilePath, const char* pModelFileName, _fmatrix PivotMatrix = XMMatrixIdentity());

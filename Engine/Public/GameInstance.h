@@ -57,10 +57,10 @@ public: /* For.Component_Manager */
 	class CComponent* Clone_Component(_uint iLevelIndex, const wstring& strPrototypeTag, void* pArg = nullptr);
 
 public:	/* For.Thread_Manager */
-	HRESULT	Set_MultiThreading(const _uint& iNumThread);
-	void Finish_MultiThreading();
-	template <class F, class... Args>
-	void	Add_Command(F&& f, Args&&... args) { return (m_pThread_Manager->Add_Command(f, args...)); }
+	//HRESULT	Set_MultiThreading(const _uint& iNumThread);
+	//void Finish_MultiThreading();
+	//template <class F, class... Args>
+	//void	Add_Command(F&& f, Args&&... args) { return (m_pThread_Manager->Add_Command(f, args...)); }
 
 public: /* For.Profiler_Manager */
 	const PROFILER_DESC Get_ProfillingData() const;

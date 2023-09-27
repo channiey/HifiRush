@@ -114,27 +114,27 @@ void CLayer::Tick(_float fTimeDelta)
 
 void CLayer::LateTick(_float fTimeDelta)
 {
-	//if (3 < m_GameObjects.size())
-	//	CThread_Manager::GetInstance()->Set_MultiThreading(3);
+	/*if (2 < m_GameObjects.size())
+		CThread_Manager::GetInstance()->Set_MultiThreading(3);*/
 	
 	for (auto& pGameObject : m_GameObjects)
 	{
 		if (nullptr != pGameObject && pGameObject->Is_Active())
 		{
-			//if (3 < m_GameObjects.size())
-			//{
-			//	CThread_Manager::GetInstance()->Add_Command(
-			//		[&pGameObject, fTimeDelta]() { pGameObject->LateTick(fTimeDelta); }
-			//	);
-			//}
-			//else
+			/*if (2 < m_GameObjects.size())
+			{
+				CThread_Manager::GetInstance()->Add_Command(
+					[&pGameObject, fTimeDelta]() { pGameObject->LateTick(fTimeDelta); }
+				);
+			}
+			else*/
 				pGameObject->LateTick(fTimeDelta);
 			/*CThread_Manager::GetInstance()->Add_Command(std::bind(&CGameObject::LateTick, &pGameObject, (_float)fTimeDelta));
 			pGameObject->LateTick(fTimeDelta);*/
 		}
 	}
-	//if (23 < m_GameObjects.size())
-	//	CThread_Manager::GetInstance()->Finish_MultiThreading();
+	/*if (2 < m_GameObjects.size())
+		CThread_Manager::GetInstance()->Finish_MultiThreading();*/
 }
 
 CLayer * CLayer::Create(const wstring& strLayerTag)

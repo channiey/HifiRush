@@ -22,8 +22,6 @@ HRESULT CArchitecture::Initialize(void * pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	const _float fMag = 0.01f;
-	m_pTransformCom->Set_Scale(Vec3(fMag, fMag, fMag));
 
 	return S_OK;
 }

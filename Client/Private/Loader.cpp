@@ -94,17 +94,17 @@ HRESULT CLoader::Loading_For_Level_Logo()
 	{
 		/* For.Prototype_Component_Texture_BackGround*/
 		if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_BackGround"),
-			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2))))
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Prototype/Default%d.jpg"), 2))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Texture_Terrain*/
 		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain"),
-			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Tile%d.dds"), 2))))
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Prototype/Terrain/Tile%d.dds"), 2))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Texture_Terrain_Mask */
 		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain_Mask"),
-			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Mask.bmp"), 1))))
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Prototype/Terrain/Mask.bmp"), 1))))
 			return E_FAIL;
 	}
 	
@@ -113,29 +113,29 @@ HRESULT CLoader::Loading_For_Level_Logo()
 	{
 		/* For.Prototype_Component_VIBuffer_Terrain*/
 		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
-			CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Height1.bmp")))))
+			CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Prototype/Terrain/Height1.bmp")))))
 			return E_FAIL;
 	}
 
 	/* For.Model */
 	m_strLoading = TEXT("Loding... : Model");
 	{
- 		_matrix		PivotMatrix = XMMatrixIdentity();
+		Matrix PivotMatrix = Matrix::Identity;
 
 		/* For.Prototype_Component_Model_Chai */
-		PivotMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f));
+		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f)) * Matrix::CreateScale(0.01f);
 		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Chai"),
 			CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Characters/Chai/", "Chai.fbx", PivotMatrix))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Model_Fiona */
-		PivotMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f));
+		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f));
 		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
 			CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Prototype/Fiona/", "Fiona.fbx", PivotMatrix))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Model_Architecture */
-		PivotMatrix = XMMatrixIdentity();
+		PivotMatrix = Matrix::Identity * Matrix::CreateScale(0.01f);
 		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Architecture"),
 			CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Environment/Architecture/", "Architecture.fbx", PivotMatrix))))
 			return E_FAIL;

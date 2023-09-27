@@ -32,6 +32,9 @@
 #pragma clang diagnostic ignored "-Wfloat-equal"
 #endif
 
+#define DEG2RAD(deg) XMConvertToRadians(deg)
+#define RAD2DEG(rad) XMConvertToDegrees(rad)
+
 namespace DirectX 
 {
     namespace SimpleMath

@@ -11,36 +11,18 @@ private:
 	CThread_Manager();
 	virtual ~CThread_Manager() = default;
 
-public: /* For.GameInstance */
+public: 
 	HRESULT Set_MultiThreading(const _uint& iThreadNum);
-
-	/* 반환값을 받지 않는 버전 */
-	void Add_Command(std::function<void()> job)
-	{
-		if (m_bStopAll) 
-			throw std::runtime_error("ThreadPool 사용 중지됨");
-		
-		std::lock_guard<std::mutex> lock(m_mutexCommand);
-		m_queueCommand.push(std::move(job));
-
-		m_cvCommand.notify_one();
-	}
-
+	void Add_Command(std::function<void()> job); /* 반환값을 받지 않는 버전 */
 	void Finish_MultiThreading(); // 단지 Join 하는 역할
 
 private:
 	vector<thread>			m_vecThread;
-	/* 전체 쓰레드 개수 */
-	size_t					m_iThreadNum = 0;	
-	/* 쓰레드들이 처리해야 할 명령 큐 */
-	/* 모든 쓰레드들이 접근하므로 조건변수와 뮤텍스로 보호한다.*/
-	queue<function<void()>> m_queueCommand;		
-	/* 명령 큐에 대한 조건 변수 */
-	condition_variable		m_cvCommand;		
-	/* 명령 큐에 대한 뮤텍스 */
-	mutex					m_mutexCommand;		
-	/* 모든 쓰레드를 종료하기 위한 변수*/
-	_bool					m_bStopAll = FALSE;
+	size_t					m_iThreadNum = 0;	/* 전체 쓰레드 개수 */
+	queue<function<void()>> m_queueCommand;		/* 쓰레드들이 처리해야 할 명령 큐 -> 모든 쓰레드들이 접근하므로 조건변수와 뮤텍스로 보호한다.*/
+	condition_variable		m_cvCommand;		/* 명령 큐에 대한 조건 변수 */
+	mutex					m_mutexCommand;		/* 명령 큐에 대한 뮤텍스 */
+	_bool					m_bStopAll = FALSE;	/* 모든 쓰레드를 종료하기 위한 변수*/
 
 private:
 	/* thread 클래스는 생성시 태스크 함수를 부여해야 한다. */

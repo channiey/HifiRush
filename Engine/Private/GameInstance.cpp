@@ -255,21 +255,21 @@ CComponent * CGameInstance::Clone_Component(_uint iLevelIndex, const wstring& st
 	return m_pComponent_Manager->Clone_Component(iLevelIndex, strPrototypeTag, pArg);	
 }
 
-HRESULT CGameInstance::Set_MultiThreading(const _uint& iNumThread)
-{
-	if (nullptr == m_pThread_Manager)
-		return E_FAIL;
-
-	return m_pThread_Manager->Set_MultiThreading(iNumThread);
-}
-
-void CGameInstance::Finish_MultiThreading()
-{
-	if (nullptr == m_pThread_Manager)
-		return;
-
-	m_pThread_Manager->Finish_MultiThreading();
-}
+//HRESULT CGameInstance::Set_MultiThreading(const _uint& iNumThread)
+//{
+//	if (nullptr == m_pThread_Manager)
+//		return E_FAIL;
+//
+//	return m_pThread_Manager->Set_MultiThreading(iNumThread);
+//}
+//
+//void CGameInstance::Finish_MultiThreading()
+//{
+//	if (nullptr == m_pThread_Manager)
+//		return;
+//
+//	m_pThread_Manager->Finish_MultiThreading();
+//}
 
 const PROFILER_DESC CGameInstance::Get_ProfillingData() const
 {

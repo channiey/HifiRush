@@ -89,6 +89,7 @@ HRESULT CMesh::SetUp_HierarchyNodes(CModel* pModel, aiMesh* pAIMesh)
 	m_iNumBones = pAIMesh->mNumBones;
 
 	/* 현재 메시에 영향을 주는 뼈들을 순회하며 행렬정보를 저장하고, 뼈들을 컨테이너에 모아둔다. */
+
 	for (_uint i = 0; i < m_iNumBones; ++i)
 	{
 		aiBone* pAIBone = pAIMesh->mBones[i];
@@ -107,7 +108,6 @@ HRESULT CMesh::SetUp_HierarchyNodes(CModel* pModel, aiMesh* pAIMesh)
 
 	if (0 == m_iNumBones)
 	{
-
 		CHierarchyNode* pNode = pModel->Get_HierarchyNode(m_szName);
 
 		if (nullptr == pNode)
@@ -122,7 +122,6 @@ HRESULT CMesh::SetUp_HierarchyNodes(CModel* pModel, aiMesh* pAIMesh)
 	return S_OK;
 }
 
-/* 메시의 정점을 그리기위해 셰이더에 넘기기위한 뼈행렬의 배열을 구성한다. */
 void CMesh::SetUp_BoneMatrices(_float4x4* pBoneMatrices, _fmatrix PivotMatrix)
 {
 	if (0 == m_iNumBones)
@@ -133,9 +132,10 @@ void CMesh::SetUp_BoneMatrices(_float4x4* pBoneMatrices, _fmatrix PivotMatrix)
 
 	for (_uint i = 0; i < m_iNumBones; ++i)
 	{
+		/* 셰이더에 행렬 던질 때는 전치 꼭 */
+		/* 최종 트랜스폼 계산*/
 		XMStoreFloat4x4(&pBoneMatrices[i], XMMatrixTranspose(m_Bones[i]->Get_OffSetMatrix() * m_Bones[i]->Get_CombinedTransformation() * PivotMatrix));
 	}
-
 }
 
 HRESULT CMesh::Ready_Vertices(const aiMesh* pAIMesh, _fmatrix PivotMatrix)
@@ -184,6 +184,7 @@ HRESULT CMesh::Ready_Vertices(const aiMesh* pAIMesh, _fmatrix PivotMatrix)
 
 HRESULT CMesh::Ready_AnimVertices(const aiMesh* pAIMesh, CModel* pModel)
 {
+	/* 기본 정점 버퍼 세팅 */
 	m_iNumVertexBuffers = 1;
 	m_iNumVertices = pAIMesh->mNumVertices;
 	m_iStride = sizeof(VTXANIMMODEL);
@@ -199,25 +200,21 @@ HRESULT CMesh::Ready_AnimVertices(const aiMesh* pAIMesh, CModel* pModel)
 	VTXANIMMODEL* pVertices = new VTXANIMMODEL[m_iNumVertices];
 	ZeroMemory(pVertices, sizeof(VTXANIMMODEL) * m_iNumVertices);
 
+	/* 정점 구조체 채우기 1 */
 	for (_uint i = 0; i < m_iNumVertices; ++i)
 	{
-		/* 사전변환( x) : 뼈의 행렬과 곱해져서 그려진다.
-		사전변환에 대한 정보를 뼈에게 담아놓을 것이다. */
+		/* NoneAnim 모델과 달리 사전변환을 진행하지 않는다. */
 		memcpy(&pVertices[i].vPosition, &pAIMesh->mVertices[i], sizeof(_float3));
 		memcpy(&pVertices[i].vNormal, &pAIMesh->mNormals[i], sizeof(_float3));
 		memcpy(&pVertices[i].vTexture, &pAIMesh->mTextureCoords[0][i], sizeof(_float2));
 		memcpy(&pVertices[i].vTangent, &pAIMesh->mTangents[i], sizeof(_float3));
 	}
 
-	/* 현재 메시에 영향ㅇ르 ㅈ2ㅜ는 뼈들을 순회한다ㅏ. */
-	/* 뼈(aiBone)안에 표현되어있는, 이뼈는 어떤 정점에게 영향을 주는지(mVertexId)를 받아와서.
-	해당 정점에게 이뼈에 영향을 받는다(vBlendIndex), 얼마나(vBlendWeight)를 담아둔다. */
-
+	/* 정점 구조체 채우기 2 (이 메시에 영향을 주는 뼈의 인덱스와 가중치) */
 	for (_uint i = 0; i < pAIMesh->mNumBones; ++i)
 	{
 		aiBone* pAIBone = pAIMesh->mBones[i];
 
-		/* i번째 뼈가 어떤 정점들에게 영향ㅇ르 주는지 순회한다. */
 		for (_uint j = 0; j < pAIBone->mNumWeights; ++j)
 		{
 			_uint		iVertexIndex = pAIBone->mWeights[j].mVertexId;

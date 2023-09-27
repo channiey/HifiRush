@@ -27,10 +27,8 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	/* Temporary Initaial Setting */
 	{
-		m_pModelCom->Set_AnimIndex(rand() % 6);
+		m_pModelCom->Set_Animation(rand() % 6);
 
-		const _float fMag = 0.01f;
-		m_pTransformCom->Set_Scale(Vec3(fMag, fMag, fMag));
 	}
 
 	return S_OK;
@@ -38,7 +36,6 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 void CPlayer::Tick(_float fTimeDelta)
 {
-
 	/* Test Animation */
 	CGameInstance* pGameInst = GET_INSTANCE(CGameInstance);
 	{
@@ -46,7 +43,7 @@ void CPlayer::Tick(_float fTimeDelta)
 		{
 			_int  iCurAnim = (m_pModelCom->Get_CurAnimationIndex() + 1) % m_pModelCom->Get_AnimationCount();
 
-			m_pModelCom->Set_AnimIndex(iCurAnim);
+			m_pModelCom->Set_Animation(iCurAnim);
 		}
 		else if (pGameInst->Key_Down(VK_DOWN))
 		{
@@ -54,7 +51,7 @@ void CPlayer::Tick(_float fTimeDelta)
 			if (iCurAnim < 0) 
 				iCurAnim = 0;
 
-			m_pModelCom->Set_AnimIndex(iCurAnim);
+			m_pModelCom->Set_Animation(iCurAnim);
 		}
 	}
 	RELEASE_INSTANCE(CGameInstance);
@@ -118,7 +115,7 @@ HRESULT CPlayer::Bind_ShaderResources()
 	}
 	RELEASE_INSTANCE(CGameInstance);
 
-	/* 현재 모델의 렌더링을 위한 버퍼 정보를 전달한다. */
+	/* 현재 모델의 렌더링을 위한 버퍼 정보(메시)를 전달한다. */
 	_uint		iNumMeshes = m_pModelCom->Get_NumMeshes();
 	for (_uint i = 0; i < iNumMeshes; ++i)
 	{
@@ -133,7 +130,6 @@ HRESULT CPlayer::Bind_ShaderResources()
 		if (FAILED(m_pModelCom->Render(m_pShaderCom, i)))
 			return E_FAIL;
 	}
-
 
 	return S_OK;
 }

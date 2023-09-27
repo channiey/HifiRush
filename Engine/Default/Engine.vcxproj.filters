@@ -148,14 +148,8 @@
     <Filter Include="01.Utiltiy\03.Components\Component\Model\Animation">
       <UniqueIdentifier>{e2b0e1e8-a0cc-4584-8835-344f985d959b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utiltiy\03.Components\Component\Model\HierarachyNode">
-      <UniqueIdentifier>{9aa9b747-c0aa-4efd-af76-f85e4df08191}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utiltiy\03.Components\Component\Model\Animation\Channel">
       <UniqueIdentifier>{f6132321-be0f-4fb8-9d49-7b53d56acc50}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utiltiy\03.Components\Component\Model\Mesh">
-      <UniqueIdentifier>{33d5f9dd-8d2b-4218-88b7-4e547100f382}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.Utiltiy\03.Components\Component\Colliders">
       <UniqueIdentifier>{de621597-40c3-4962-9d8b-e196acfd9294}</UniqueIdentifier>
@@ -195,6 +189,12 @@
     </Filter>
     <Filter Include="01.Utiltiy\03.Components\Component\Renderer">
       <UniqueIdentifier>{15fe4fbd-6c18-467c-9742-0006c1b4371d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\Model\Mesh">
+      <UniqueIdentifier>{33d5f9dd-8d2b-4218-88b7-4e547100f382}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\Model\HierarachyNode">
+      <UniqueIdentifier>{9aa9b747-c0aa-4efd-af76-f85e4df08191}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

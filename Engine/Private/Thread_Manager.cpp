@@ -7,22 +7,15 @@ CThread_Manager::CThread_Manager()
 {
 }
 
-
 HRESULT CThread_Manager::Set_MultiThreading(const _uint& iThreadNum)
 {
-	// 스레드를 생성 및 시작한다 (시작시에는 태스크 목록이 비어있기 때문에, 모든 쓰레드는 대기상태로 전환된다)
+	/* 스레드를 생성 및 시작한다 (시작시에는 태스크 목록이 비어있기 때문에, 모든 쓰레드는 대기상태로 전환된다) */
+	
+	if(!m_vecThread.empty())
+		m_vecThread.clear();
 
-	//if (!m_vecThread.empty())
-	//{
-	//	m_bStopAll = TRUE;
-	//	m_cvCommand.notify_all();
-	//	m_vecThread.clear();
-	//}
-
-	//if (!m_bStopAll || !m_vecThread.empty()) return E_FAIL;
 	m_bStopAll = FALSE;
 
-	
 	m_iThreadNum = iThreadNum;
 
 	m_vecThread.reserve(m_iThreadNum);
@@ -30,15 +23,24 @@ HRESULT CThread_Manager::Set_MultiThreading(const _uint& iThreadNum)
 	for (size_t i = 0; i < m_iThreadNum; ++i)
 		m_vecThread.emplace_back([this]() {this->Execute_Command(); });
 
-	/*
-		thread 클래스는 생성시 태스크를 부여해야 한다.
-
-		WorkerThread() 함수는 thread 생성시 넣어줄 함수이고, 실질적인 작업 함수는 큐에 들어있다.
-
-		WorkerThread() 함수는 큐에 있는 작업을 꺼내 수행하는 역할을 한다.
-
-	*/
+	/* thread 클래스는 생성시 태스크를 부여해야 한다. */
+	/* Execute_Command() 함수는 thread 생성시 넣어줄 함수이고, 실질적인 작업 함수는 큐에 들어있다. */
+	/* Execute_Command() 함수는 큐에 있는 작업을 꺼내 수행하는 역할을 한다. */
+	
 	return S_OK;
+}
+
+
+void CThread_Manager::Add_Command(std::function<void()> job)
+{
+	/* 커맨드 큐에 명령을 추가하고, 대기 중인 쓰레드 중 하나를 깨운다(== 일해라). */
+
+	if (m_bStopAll)
+		return;
+	std::lock_guard<std::mutex> lock(m_mutexCommand);
+	m_queueCommand.push(std::move(job));
+
+	m_cvCommand.notify_one(); /* notify_one() 대기하고 있는 하나의 쓰레드를 깨운다. */
 }
 
 void CThread_Manager::Finish_MultiThreading()
@@ -46,14 +48,14 @@ void CThread_Manager::Finish_MultiThreading()
 	m_bStopAll = TRUE;
 
 	/* 모든 쓰레드를 종료시키기 위해 모두 대기상태가 아닌 활성 상태로 전환한다. */
-	m_cvCommand.notify_all();
+	m_cvCommand.notify_all();  /* notify_all() : 대기하고 있는 모든 쓰레드를 깨운다. */
 
-	/* 모든 쓰레드가 종료될 때 까지 호출 쓰레드를 대기 상태로 둔다.*/
+	/* 모든 쓰레드가 종료될 때까지 호출 쓰레드를 대기 상태로 둔다.*/
 	for (auto& thread : m_vecThread)
-		thread.join();
+		thread.join(); /* join() : 호출 스레드는 이 스레드의 실행이 끝날 때까지 멈추게 된다. */
 
 	/* 벡터를 초기화 한다. */
-	m_vecThread.clear(); 
+	//m_vecThread.clear(); 
 
 	/* 여기서 실제로 쓰레드 풀이 소멸한다. - 모든 커맨드 처리 완료 */
 }
