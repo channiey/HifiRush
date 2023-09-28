@@ -10,7 +10,7 @@ public:
 
 public:
 	HRESULT Initialize();
-	void Update();
+	void	Update();
 
 private:
 

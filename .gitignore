@@ -435,7 +435,9 @@ FodyWeavers.xsd
 ### User Edit ###
 
 Resource/
-
+*.fbx
+*.png
+*.dds
 
 
 

@@ -5,24 +5,19 @@
 
 #pragma warning (disable : 4244)
 
-
 /* Assimp */
 #include <Assimp/scene.h>
 #include <Assimp/Importer.hpp>
 #include <Assimp/postprocess.h>
 
-/* DX */
+/* Math */
 #include <DirectXMath.h>
 using namespace DirectX;
-
-/* Util */
 #include "SimpleMath.h"
 
 /* STL */
 #include <iostream>
 #include <vector> 
-#include <list> 
-#include <map> 
 #include <string>
 using namespace std;
 
