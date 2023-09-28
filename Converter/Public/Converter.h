@@ -13,38 +13,35 @@ public:
 	virtual ~CConverter();
 
 public:
-	void Set_SrcPath(wstring strPath) { _assetPath = strPath; }
-	void Set_ExtractPath(wstring extractPath) { _extractPath = extractPath; }
-
-public:
-	HRESULT Binarize_Model_Static(wstring srcPath, wstring savePath);
-	HRESULT Binarize_Model_Anim(wstring srcPath, wstring savePath);
+	HRESULT Binarize_Model(string fileName, string savePath, const MODEL_TYPE& modelType);
 
 private:
-	HRESULT Read_AssetFile(wstring srcPath, const MODEL_TYPE modelType);
+	/* Read */
+	HRESULT Read_AssetFile(string srcPath, const MODEL_TYPE& modelType);
 
 private: 
-	HRESULT	Export_BoneData(wstring savePath);
-	HRESULT Export_MeshData(wstring savePath);
-	HRESULT Export_MaterialData(wstring savePath);
-	HRESULT	Export_AnimData(wstring savePath);
+	/* Export */
+	HRESULT	Export_BoneData(string savePath);
+	HRESULT Export_MeshData(string savePath, const MODEL_TYPE& modelType);
+	HRESULT Export_MaterialData(string savePath);
+	HRESULT	Export_AnimData(string savePath);
 
 private:
 	/* Bones */
 	HRESULT Read_BoneData(aiNode* node, int32 index, int32 parent, int32 depth);
-	HRESULT Write_BoneData(wstring savePath);
+	HRESULT Write_BoneData(string savePath);
 
 	/* Meshes */
 	HRESULT Read_MeshData(MODEL_TYPE modelType);
-	HRESULT Write_MeshData(wstring savePath);
+	HRESULT Write_MeshData(string savePath);
 
 	/* Materials */
 	HRESULT Read_MaterialData();
-	HRESULT Write_MaterialData(wstring savePath);
+	HRESULT Write_MaterialData(string savePath);
 
 	/* Anims */
 	HRESULT Read_AnimData();
-	HRESULT Write_AnimData(wstring savePath);
+	HRESULT Write_AnimData(string savePath);
 
 private:
 	/* Helper */
@@ -59,9 +56,5 @@ private:
 	vector<shared_ptr<asMesh>>		_meshes;
 	vector<shared_ptr<asMaterial>>	_materials;
 	vector<shared_ptr<asAnimation>>	_animations;
-
-private:
-	wstring _assetPath;
-	wstring _extractPath;
 };
 

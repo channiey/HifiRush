@@ -19,6 +19,7 @@ using namespace DirectX;
 #include <iostream>
 #include <vector> 
 #include <string>
+#include <filesystem>
 using namespace std;
 
 /* Memory Leak */
@@ -47,6 +48,10 @@ using		uint32 = unsigned __int32;
 using		uint64 = unsigned __int64;
 
 typedef		unsigned int				uint;
+
+
+extern string g_srcPath;
+extern string g_destPath;
 
 
 #endif //PCH_H

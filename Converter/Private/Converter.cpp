@@ -9,41 +9,50 @@ CConverter::~CConverter()
 {
 }
 
-HRESULT CConverter::Binarize_Model_Static(wstring srcPath, wstring savePath)
-{
-	if (FAILED(Read_AssetFile(srcPath, MODEL_TYPE::STATIC)))
+HRESULT CConverter::Binarize_Model(string fileName, string savePath, const MODEL_TYPE& modelType)
+{	
+	string filePath = (filesystem::path(g_srcPath + fileName) / fileName).string() + ".fbx";		
+	Utils_String::Replace(filePath, "\\", "/");
+	if (FAILED(Read_AssetFile(filePath, modelType)))
 		return E_FAIL;
 
+	filePath = (filesystem::path(g_destPath + savePath) / fileName).string() + ".bone";	
+	Utils_String::Replace(filePath, "\\", "/");
+	if (FAILED(Export_BoneData(filePath)))
+		return E_FAIL;
+
+	filePath = (filesystem::path(g_destPath + savePath) / fileName).string() + ".mesh";
+	Utils_String::Replace(filePath, "\\", "/");
+	if (FAILED(Export_MeshData(filePath, modelType)))
+		return E_FAIL;
+
+	filePath = (filesystem::path(g_destPath + savePath) / fileName).string() + ".mat";
+	Utils_String::Replace(filePath, "\\", "/");
+	if (FAILED(Export_MaterialData(filePath)))
+		return E_FAIL;
+
+	filePath = (filesystem::path(g_destPath + savePath) / fileName).string() + ".anim";
+	Utils_String::Replace(filePath, "\\", "/");
+	if (FAILED(Export_AnimData(filePath)))
+		return E_FAIL;
 
 	return S_OK;
 }
 
-HRESULT CConverter::Binarize_Model_Anim(wstring srcPath, wstring savePath)
-{
-	if (FAILED(Read_AssetFile(srcPath, MODEL_TYPE::ANIM)))
-		return E_FAIL;
-
-
-	return S_OK;
-}
-
-
-HRESULT CConverter::Read_AssetFile(wstring srcPath, const MODEL_TYPE modelType)
+HRESULT CConverter::Read_AssetFile(string srcPath, const MODEL_TYPE& modelType)
 {
 	if (MODEL_TYPE::TYPEEND == modelType)
 		return E_FAIL;
 
-	_modelType = modelType;
-
 	int	iFlag = 0;
 	{
-		if (MODEL_TYPE::STATIC == _modelType)
+		if (MODEL_TYPE::STATIC == modelType)
 			iFlag |= aiProcess_PreTransformVertices | aiProcess_ConvertToLeftHanded | aiProcess_CalcTangentSpace;
 		else
 			iFlag |= aiProcess_ConvertToLeftHanded | aiProcess_CalcTangentSpace;
 	}
 
-	_scene = _importer->ReadFile(Utils_String::ToString(srcPath), iFlag);
+	_scene = _importer->ReadFile(srcPath, iFlag);
 	{
 		if (nullptr == _scene)
 			return E_FAIL;
@@ -52,9 +61,18 @@ HRESULT CConverter::Read_AssetFile(wstring srcPath, const MODEL_TYPE modelType)
 	return S_OK;
 }
 
-HRESULT CConverter::Export_MeshData(wstring savePath)
+HRESULT CConverter::Export_BoneData(string savePath)
 {
-	if (FAILED(Read_MeshData()))
+	if(FAILED(Read_BoneData(_scene->mRootNode, -1, -1, 0)))
+		return S_OK;
+
+
+	return S_OK;
+}
+
+HRESULT CConverter::Export_MeshData(string savePath, const MODEL_TYPE& modelType)
+{
+	if (FAILED(Read_MeshData(modelType)))
 		return E_FAIL;
 
 	if (FAILED(Write_MeshData(savePath)))
@@ -63,7 +81,7 @@ HRESULT CConverter::Export_MeshData(wstring savePath)
 	return S_OK;
 }
 
-HRESULT CConverter::Export_MaterialData(wstring savePath)
+HRESULT CConverter::Export_MaterialData(string savePath)
 {
 	if (FAILED(Read_MaterialData()))
 		return E_FAIL;
@@ -74,7 +92,7 @@ HRESULT CConverter::Export_MaterialData(wstring savePath)
 	return S_OK;
 }
 
-HRESULT CConverter::Export_AnimData(wstring savePath)
+HRESULT CConverter::Export_AnimData(string savePath)
 {
 	if (FAILED(Read_AnimData()))
 		return E_FAIL;
@@ -85,11 +103,46 @@ HRESULT CConverter::Export_AnimData(wstring savePath)
 	return S_OK;
 }
 
-HRESULT CConverter::Export_BoneData(wstring savePath)
+HRESULT CConverter::Read_BoneData(aiNode* node, int32 index, int32 parent, int32 depth)
 {
-	if(FAILED(Read_BoneData(_scene->mRootNode, -1, -1, 0)))
-		return S_OK;
+	shared_ptr<asBone> bone = make_shared<asBone>();
+	{
+		bone->name = node->mName.C_Str(); /* 노드 이름 = 뼈 이름 */
 
+		bone->parent = parent;
+		bone->index = index;
+		bone->depth = ++depth;
+	
+		Matrix transform(node->mTransformation[0]);
+		bone->transform = transform.Transpose();
+	}
+
+	_bones.push_back(bone);
+
+	for (uint i = 0; i < node->mNumChildren; i++)
+		Read_BoneData(node->mChildren[i], (int32)_bones.size(), index, bone->depth);
+
+	return S_OK;
+}
+
+HRESULT CConverter::Write_BoneData(string savePath)
+{
+	auto path = filesystem::path(savePath);
+	filesystem::create_directory(path.parent_path());
+
+	shared_ptr<Utils_File> file = make_shared<Utils_File>();
+	file->Open(Utils_String::ToWString(savePath), FileMode::Write);
+
+	file->Write<size_t>(_bones.size());
+	for (shared_ptr<asBone>& bone : _bones)
+	{
+		file->Write<string>(bone->name);
+		file->Write<Matrix>(bone->transform);
+		file->Write<Matrix>(bone->offsetTransform);
+		file->Write<int32>(bone->index);
+		file->Write<int32>(bone->parent);
+		file->Write<uint>(bone->depth);
+	}
 
 	return S_OK;
 }
@@ -110,6 +163,8 @@ HRESULT CConverter::Read_MeshData(MODEL_TYPE modelType)
 		/* Vertices - Static */ 
 		if (modelType == MODEL_TYPE::STATIC) 
 		{
+			mesh->isAinm = (UINT)modelType;
+
 			mesh->verticesStatic.reserve(srcMesh->mNumVertices);
 
 			VTXSTATIC vertex{};
@@ -126,6 +181,8 @@ HRESULT CConverter::Read_MeshData(MODEL_TYPE modelType)
 		/* Vertices - Amim */
 		else if (modelType == MODEL_TYPE::ANIM)
 		{
+			mesh->isAinm = (UINT)modelType;
+
 			mesh->verticesAnim.reserve(srcMesh->mNumVertices);
 			for (size_t j = 0; j < mesh->verticesAnim.size(); j++)
 				mesh->verticesAnim.push_back(VTXANIM{});
@@ -206,10 +263,66 @@ HRESULT CConverter::Read_MeshData(MODEL_TYPE modelType)
 	return S_OK;
 }
 
-HRESULT CConverter::Write_MeshData(wstring savePath)
+HRESULT CConverter::Write_MeshData(string savePath)
 {
+	auto path = filesystem::path(savePath);
+	filesystem::create_directory(path.parent_path());
 
+	shared_ptr<Utils_File> file = make_shared<Utils_File>();
+	file->Open(Utils_String::ToWString(savePath), FileMode::Write);
 
+	file->Write<size_t>(_meshes.size());
+	for (shared_ptr<asMesh>& mesh : _meshes)
+	{
+		/* name */
+		file->Write<string>(mesh->name);
+
+		/* isAnim */
+		file->Write<bool>(mesh->isAinm);
+
+		/* Vertices */
+		if ((UINT)MODEL_TYPE::STATIC == mesh->isAinm)
+		{
+			file->Write<size_t>(mesh->verticesStatic.size());
+			for (VTXSTATIC& vertex : mesh->verticesStatic)
+			{
+				file->Write<Vec3>(vertex.vPosition);
+				file->Write<Vec3>(vertex.vNormal);
+				file->Write<Vec2>(vertex.vTexture);
+				file->Write<Vec3>(vertex.vTangent);
+			}
+		}
+		else
+		{
+			file->Write<size_t>(mesh->verticesAnim.size());
+			for (VTXANIM& vertex : mesh->verticesAnim)
+			{
+				file->Write<Vec3>(vertex.vPosition);
+				file->Write<Vec3>(vertex.vNormal);
+				file->Write<Vec2>(vertex.vTexture);
+				file->Write<Vec3>(vertex.vTangent);
+				file->Write<XMUINT4>(vertex.vBlendIndex);
+				file->Write<Vec4>(vertex.vBlendWeight);
+			}
+		}
+
+		/* Indices */
+		file->Write<size_t>(mesh->indices.size());
+		for (int& index : mesh->indices)
+		{
+			file->Write<int>(index);
+		}
+
+		/* Material Index */
+		file->Write<uint>(mesh->materialIndex);
+
+		/* Bone Indices */
+		file->Write<size_t>(mesh->bones.size());
+		for (int& index : mesh->bones)
+		{
+			file->Write<int>(index);
+		}
+	}
 	return S_OK;
 }
 
@@ -240,8 +353,14 @@ HRESULT CConverter::Read_MaterialData()
 	return S_OK;
 }
 
-HRESULT CConverter::Write_MaterialData(wstring savePath)
+HRESULT CConverter::Write_MaterialData(string savePath)
 {
+	auto path = filesystem::path(savePath);
+	filesystem::create_directory(path.parent_path());
+
+	shared_ptr<Utils_File> file = make_shared<Utils_File>();
+	file->Open(Utils_String::ToWString(savePath), FileMode::Write);
+
 	/* 매태리얼이 사용하는 텍스처 파일을 srcPath에서 destPath로 복사한다. */
 
 	for (shared_ptr<asMaterial> material : _materials)
@@ -263,6 +382,7 @@ HRESULT CConverter::Read_AnimData()
 		aiAnimation* srcAnimation = _scene->mAnimations[i];
 		shared_ptr<asAnimation> animation = make_shared<asAnimation>();
 
+		animation->name = srcAnimation->mName.C_Str();
 		animation->fDuration = srcAnimation->mDuration;
 		animation->fTickPerSecond = srcAnimation->mTicksPerSecond;
 
@@ -320,8 +440,36 @@ HRESULT CConverter::Read_AnimData()
 	return S_OK;
 }
 
-HRESULT CConverter::Write_AnimData(wstring savePath)
+HRESULT CConverter::Write_AnimData(string savePath)
 {
+	auto path = filesystem::path(savePath);
+	filesystem::create_directory(path.parent_path());
+
+	shared_ptr<Utils_File> file = make_shared<Utils_File>();
+	file->Open(Utils_String::ToWString(savePath), FileMode::Write);
+
+	file->Write<size_t>(_animations.size());
+	for (shared_ptr<asAnimation>& animation : _animations)
+	{
+		file->Write<string>(animation->name);
+		file->Write<float>(animation->fDuration);
+		file->Write<float>(animation->fTickPerSecond);
+
+		file->Write<size_t>(animation->channels.size());
+		for (shared_ptr<asChannel>& channel : animation->channels)
+		{
+			file->Write<string>(channel->name);
+
+			file->Write<size_t>(channel->keyframes.size());
+			for (shared_ptr<asKeyFrame>& keyframe : channel->keyframes)
+			{
+				file->Write<float>(keyframe->fTime);
+				file->Write<Vec3>(keyframe->vScale);
+				file->Write<Vec4>(keyframe->vRotation);
+				file->Write<Vec3>(keyframe->vPosition);
+			}
+		}
+	}
 	return S_OK;
 }
 
@@ -335,32 +483,4 @@ uint32 CConverter::Get_BoneIndex(const string& name)
 
 	assert(false);
 	return 0;
-}
-
-
-HRESULT CConverter::Read_BoneData(aiNode* node, int32 index, int32 parent, int32 depth)
-{
-	shared_ptr<asBone> bone = make_shared<asBone>();
-	{
-		bone->name = node->mName.C_Str(); /* 노드 이름 = 뼈 이름 */
-
-		bone->parent = parent;
-		bone->index = index;
-		bone->depth = ++depth;
-	
-		Matrix transform(node->mTransformation[0]);
-		bone->transform = transform.Transpose();
-	}
-
-	_bones.push_back(bone);
-
-	for (uint i = 0; i < node->mNumChildren; i++)
-		Read_BoneData(node->mChildren[i], (int32)_bones.size(), index, bone->depth);
-
-	return S_OK;
-}
-
-HRESULT CConverter::Write_BoneData(wstring savePath)
-{
-	return S_OK;
 }

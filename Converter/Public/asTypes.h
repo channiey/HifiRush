@@ -24,6 +24,8 @@ struct VTXANIM
 struct asMesh
 {
 	string				name;
+	
+	bool				isAinm;
 
 	vector<VTXSTATIC>	verticesStatic;
 	vector<VTXANIM>		verticesAnim;
@@ -70,8 +72,9 @@ struct asChannel
 
 struct asAnimation
 {
+	string name;
+
 	float	fDuration;		/* 전체 재생 시간 */
-	float	fPlayTime;		/* 현재 재생 시간 */
 	float	fTickPerSecond;	/* 초당 재생 속도 */
 
 	vector<shared_ptr<asChannel>>	channels;

@@ -52,12 +52,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     MSG msg;
 
-    CMainApp_Converter* pMainApp = new CMainApp_Converter();
-    if (nullptr == pMainApp)
-        return -1;
+    CMainApp_Converter mainApp;
+    mainApp.Start_Convert();
 
-    if (FAILED(pMainApp->Initialize()))
-        return -1;
 
     while (true)
     {
@@ -71,12 +68,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                 DispatchMessage(&msg);
             }
         }
-
-        pMainApp->Update();
     }
-
-    delete pMainApp;
-    pMainApp = nullptr;
 
     return (int) msg.wParam;
 }
