@@ -1,3 +1,4 @@
+#include "MainApp.h"
 #include "..\Default\stdafx.h"
 #include "..\Public\MainApp.h"
 #include "GameInstance.h"
