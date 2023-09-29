@@ -5,7 +5,19 @@ CHierarchyNode::CHierarchyNode()
 
 }
 
-HRESULT CHierarchyNode::Initialize(string strName, Matrix transformMatrix, Matrix offsetMatrix, _uint iBoneIndex, _uint iParentIndex, _uint iDepth)
+CHierarchyNode::CHierarchyNode(const CHierarchyNode& rhs)
+	: m_iIndex(rhs.m_iIndex)
+	, m_iParentIndex(rhs.m_iParentIndex)
+	, m_iDepth(rhs.m_iDepth)
+{
+	strcpy_s(m_szName, rhs.m_szName);
+
+	memcpy(&m_Transformation, &rhs.m_Transformation, sizeof(_float4x4));
+	memcpy(&m_OffsetMatrix, &rhs.m_OffsetMatrix, sizeof(_float4x4));
+	XMStoreFloat4x4(&m_CombinedTransformation, XMMatrixIdentity());
+}
+
+HRESULT CHierarchyNode::Initialize_Prototype(string strName, Matrix transformMatrix, Matrix offsetMatrix, _uint iBoneIndex, _uint iParentIndex, _uint iDepth)
 {
 	strcpy_s(m_szName, strName.c_str());
 
@@ -17,6 +29,11 @@ HRESULT CHierarchyNode::Initialize(string strName, Matrix transformMatrix, Matri
 	m_iParentIndex = iParentIndex;
 	m_iDepth = iDepth;
 
+	return S_OK;
+}
+
+HRESULT CHierarchyNode::Initialize(void* pArg)
+{
 	return S_OK;
 }
 
@@ -49,9 +66,22 @@ CHierarchyNode * CHierarchyNode::Create(string strName, Matrix transformMatrix, 
 {
 	CHierarchyNode*			pInstance = new CHierarchyNode();
 
-	if (FAILED(pInstance->Initialize(strName, transformMatrix, offsetMatrix, iBoneIndex, iParentIndex, iDepth)))
+	if (FAILED(pInstance->Initialize_Prototype(strName, transformMatrix, offsetMatrix, iBoneIndex, iParentIndex, iDepth)))
 	{
 		MSG_BOX("Failed To Created : CHierarchyNode");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
+CHierarchyNode* CHierarchyNode::Clone(void* pArg)
+{
+	CHierarchyNode* pInstance = new CHierarchyNode(*this);
+
+	if (FAILED(pInstance->Initialize(pArg)))
+	{
+		MSG_BOX("Failed To Cloned : CHierarchyNode");
 		Safe_Release(pInstance);
 	}
 

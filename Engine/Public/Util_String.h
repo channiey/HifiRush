@@ -21,6 +21,8 @@ public:
 	static string GetFileExtension(string str);
 	static wstring GetFileExtension(wstring str);
 
+	static string GetFinalFolderName(string str);
+
 	/* 두 문자열을 결합해서 리턴한다. */
 	static const wstring Combine(const wstring& str1, const wstring& str2);
 	/* n번째부터 마지막까지의 문자열을 자르고, 앞에 남은 문자열을 리턴한다. */

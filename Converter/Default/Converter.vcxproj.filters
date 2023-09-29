@@ -1,63 +1,72 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="99.Deafult">
-      <UniqueIdentifier>{e45ca247-00c3-4b3a-b3b2-76f6f6c2e337}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="99.Deafult\None">
-      <UniqueIdentifier>{8bd05202-e6a0-454d-8cab-b286a1b58c30}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00.MainApp">
       <UniqueIdentifier>{0b6b1c25-c69b-453e-868e-4756d12c8aae}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.Converter">
       <UniqueIdentifier>{14b09d00-961e-4f6e-9617-3a9458f1f120}</UniqueIdentifier>
     </Filter>
-    <Filter Include="98.Defines">
+    <Filter Include="97.Utility">
+      <UniqueIdentifier>{8f9aa7c9-ab49-4358-8634-ef2f9d5a5171}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Utility\File">
+      <UniqueIdentifier>{81dee660-2777-4f6a-8359-bca4d946c79c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Utility\String">
+      <UniqueIdentifier>{3de882b0-d6e3-44a3-a8a9-ac352db95c63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Utility\Math">
+      <UniqueIdentifier>{d19919da-f231-48e2-adc9-d7124e53e5c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Defines">
       <UniqueIdentifier>{b035e6d6-efb2-4acd-a0e6-b76238a83f8c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="97.Util">
-      <UniqueIdentifier>{8f9aa7c9-ab49-4358-8634-ef2f9d5a5171}</UniqueIdentifier>
+    <Filter Include="98.Deafult">
+      <UniqueIdentifier>{e45ca247-00c3-4b3a-b3b2-76f6f6c2e337}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.Deafult\NotUsed">
+      <UniqueIdentifier>{8bd05202-e6a0-454d-8cab-b286a1b58c30}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
-      <Filter>99.Deafult</Filter>
+      <Filter>98.Deafult</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\MainApp_Converter.h">
       <Filter>00.MainApp</Filter>
     </ClInclude>
     <ClInclude Include="Main.h">
-      <Filter>99.Deafult</Filter>
+      <Filter>98.Deafult</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Converter.h">
       <Filter>01.Converter</Filter>
     </ClInclude>
     <ClInclude Include="framework.h">
-      <Filter>99.Deafult\None</Filter>
+      <Filter>98.Deafult\NotUsed</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>99.Deafult\None</Filter>
+      <Filter>98.Deafult\NotUsed</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>99.Deafult\None</Filter>
+      <Filter>98.Deafult\NotUsed</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\asTypes.h">
-      <Filter>98.Defines</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Utils_String.h">
-      <Filter>97.Util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Utils_File.h">
-      <Filter>97.Util</Filter>
+      <Filter>99.Defines</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\SimpleMath.h">
-      <Filter>97.Util</Filter>
+      <Filter>97.Utility\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Utils_File.h">
+      <Filter>97.Utility\File</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Utils_String.h">
+      <Filter>97.Utility\String</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
-      <Filter>99.Deafult</Filter>
+      <Filter>98.Deafult</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\MainApp_Converter.cpp">
       <Filter>00.MainApp</Filter>
@@ -66,34 +75,34 @@
       <Filter>01.Converter</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
-      <Filter>99.Deafult\None</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Utils_String.cpp">
-      <Filter>97.Util</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Utils_File.cpp">
-      <Filter>97.Util</Filter>
+      <Filter>98.Deafult\NotUsed</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\SimpleMath.cpp">
-      <Filter>97.Util</Filter>
+      <Filter>97.Utility\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Utils_File.cpp">
+      <Filter>97.Utility\File</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Utils_String.cpp">
+      <Filter>97.Utility\String</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Converter.ico">
-      <Filter>99.Deafult\None</Filter>
+      <Filter>98.Deafult\NotUsed</Filter>
     </Image>
     <Image Include="small.ico">
-      <Filter>99.Deafult\None</Filter>
+      <Filter>98.Deafult\NotUsed</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Converter.rc">
-      <Filter>99.Deafult\None</Filter>
+      <Filter>98.Deafult\NotUsed</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Public\SimpleMath.inl">
-      <Filter>97.Util</Filter>
+      <Filter>97.Utility\Math</Filter>
     </None>
   </ItemGroup>
 </Project>

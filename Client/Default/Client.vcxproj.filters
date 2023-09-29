@@ -31,9 +31,6 @@
     <Filter Include="98.Default\ImGui">
       <UniqueIdentifier>{1937ed4e-d435-43b8-956f-09b97fe7c7ef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="98.Default\None">
-      <UniqueIdentifier>{11978b59-520d-430c-8090-add27548551a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="96.ShaderFiles">
       <UniqueIdentifier>{a631185a-1555-4b19-8534-272c809d77b7}</UniqueIdentifier>
     </Filter>
@@ -163,6 +160,9 @@
     <Filter Include="02.GameObjects\Character\Proto\Fiona">
       <UniqueIdentifier>{36882f13-5282-49c7-a347-899f85859c54}</UniqueIdentifier>
     </Filter>
+    <Filter Include="98.Default\NotUsed">
+      <UniqueIdentifier>{11978b59-520d-430c-8090-add27548551a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -187,13 +187,13 @@
       <Filter>01.Levels\99.Loading\Loader</Filter>
     </ClInclude>
     <ClInclude Include="Client.h">
-      <Filter>98.Default\None</Filter>
+      <Filter>98.Default\NotUsed</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>98.Default\None</Filter>
+      <Filter>98.Default\NotUsed</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>98.Default\None</Filter>
+      <Filter>98.Default\NotUsed</Filter>
     </ClInclude>
     <ClInclude Include="..\ImGui\imconfig.h">
       <Filter>98.Default\ImGui</Filter>
@@ -282,7 +282,7 @@
       <Filter>98.Default</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
-      <Filter>98.Default\None</Filter>
+      <Filter>98.Default\NotUsed</Filter>
     </ClCompile>
     <ClCompile Include="..\ImGui\imgui.cpp">
       <Filter>98.Default\ImGui</Filter>
@@ -347,10 +347,10 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
-      <Filter>98.Default\None</Filter>
+      <Filter>98.Default\NotUsed</Filter>
     </Image>
     <Image Include="small.ico">
-      <Filter>98.Default\None</Filter>
+      <Filter>98.Default\NotUsed</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
@@ -369,12 +369,12 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
-      <Filter>98.Default\None</Filter>
+      <Filter>98.Default\NotUsed</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt">
-      <Filter>98.Default\None</Filter>
+      <Filter>98.Default\NotUsed</Filter>
     </Text>
   </ItemGroup>
 </Project>

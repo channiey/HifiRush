@@ -134,7 +134,7 @@ CAnimation * CAnimation::Clone(CModel* pModel)
 
 	if (FAILED(pInstance->Initialize(pModel)))
 	{
-		MSG_BOX("Failed To Created : CAnimation");
+		MSG_BOX("Failed To Cloned : CAnimation");
 		Safe_Release(pInstance);
 	}
 

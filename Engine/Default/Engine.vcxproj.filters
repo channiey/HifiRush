@@ -154,9 +154,6 @@
     <Filter Include="01.Utiltiy\03.Components\Component\Colliders">
       <UniqueIdentifier>{de621597-40c3-4962-9d8b-e196acfd9294}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utiltiy\03.Components\Component\LIght">
-      <UniqueIdentifier>{882d7394-68b4-4f4d-bf2e-f3d18fc82d10}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utiltiy\03.Components\Component\Colliders\AABB">
       <UniqueIdentifier>{41c51c31-c9e1-469e-b9c1-a44596daa906}</UniqueIdentifier>
     </Filter>
@@ -195,6 +192,9 @@
     </Filter>
     <Filter Include="01.Utiltiy\03.Components\Component\Model\HierarachyNode">
       <UniqueIdentifier>{9aa9b747-c0aa-4efd-af76-f85e4df08191}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\Light">
+      <UniqueIdentifier>{882d7394-68b4-4f4d-bf2e-f3d18fc82d10}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

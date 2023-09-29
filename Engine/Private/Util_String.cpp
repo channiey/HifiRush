@@ -148,3 +148,10 @@ wstring Util_String::GetFileExtension(wstring str)
 
 	return ToWString(str2.substr(str2.find_last_of(".") + 1));
 }
+
+string Util_String::GetFinalFolderName(string str)
+{
+	Replace(str, "\\", "/");
+
+	return str.substr(str.find_last_of("/") + 1);
+}

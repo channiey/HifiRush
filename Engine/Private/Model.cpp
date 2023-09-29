@@ -71,7 +71,19 @@ HRESULT CModel::Initialize(void* pArg)
 	//Ready_HierarchyNodes(m_pAIScene->mRootNode, nullptr, 0);
 
 	/* 본 깊은 복사 */
+	vector<CHierarchyNode*>			HierarchyNodes;
+	HierarchyNodes.reserve(m_HierarchyNodes.size());
+	for (auto& pPrototype : m_HierarchyNodes)
+	{
+		CHierarchyNode* pHierarchyNode = (CHierarchyNode*)pPrototype->Clone();
+		if (nullptr == pHierarchyNode)
+			return E_FAIL;
 
+		HierarchyNodes.push_back(pHierarchyNode);
+		Safe_Release(pPrototype);
+	}
+	m_HierarchyNodes.clear();
+	m_HierarchyNodes = HierarchyNodes;
 
 	if (TYPE_ANIM == m_eModelType)
 	{
@@ -81,11 +93,11 @@ HRESULT CModel::Initialize(void* pArg)
 		/* 메시 깊은 복사 */
 		for (auto& pPrototype : m_Meshes)
 		{
-			CMesh* pMeshContainer = (CMesh*)pPrototype->Clone();
-			if (nullptr == pMeshContainer)
+			CMesh* pMesh = (CMesh*)pPrototype->Clone();
+			if (nullptr == pMesh)
 				return E_FAIL;
 
-			Meshes.push_back(pMeshContainer);
+			Meshes.push_back(pMesh);
 
 			Safe_Release(pPrototype);
 		}
@@ -116,14 +128,15 @@ HRESULT CModel::Initialize(void* pArg)
 	m_Animations.clear();
 	m_Animations = Animations;
 
-
-
 	return S_OK;
 }
 
 HRESULT CModel::Read_BoneData(const string& strPath)
 {
-	string filePath = strPath + filesystem::path(strPath).filename().string() + ".bone";
+	string folderName = Util_String::GetFinalFolderName(strPath);
+	string filePath = (filesystem::path(strPath) / string(folderName + ".bone")).string();
+	Util_String::Replace(filePath, "\\", "/");
+
 	if (!Util_File::IsExistFile(filePath))
 		return E_FAIL;
 
@@ -134,7 +147,14 @@ HRESULT CModel::Read_BoneData(const string& strPath)
 	size_t iSize = file->Read<size_t>();
 	for (size_t i = 0; i < iSize; i++)
 	{
-		CHierarchyNode* pHierarchyNode = CHierarchyNode::Create(file->Read<string>(), file->Read<Matrix>(), file->Read<Matrix>(), file->Read<int32>(), file->Read<int32>(), file->Read<_uint>());
+		string strName = file->Read<string>();
+		Matrix transformMat = file->Read<Matrix>();
+		Matrix offsetMat = file->Read<Matrix>();
+		int32 iBoneIndex = file->Read<int32>();
+		int32 iParentIndex = file->Read<int32>();
+		_uint iDepth = file->Read<_uint>();
+
+		CHierarchyNode* pHierarchyNode = CHierarchyNode::Create(strName, transformMat, offsetMat, iBoneIndex, iParentIndex, iDepth);
 		if (nullptr == pHierarchyNode)
 			return E_FAIL;
 
@@ -154,7 +174,10 @@ HRESULT CModel::Read_BoneData(const string& strPath)
 
 HRESULT CModel::Read_MeshData(const string& strPath, Matrix PivotMatrix)
 {
-	string filePath = strPath + filesystem::path(strPath).filename().string() + ".mesh";
+	string folderName = Util_String::GetFinalFolderName(strPath);
+	string filePath = (filesystem::path(strPath) / string(folderName + ".mesh")).string();
+	Util_String::Replace(filePath, "\\", "/");
+
 	if (!Util_File::IsExistFile(filePath))
 		return E_FAIL;
 
@@ -167,6 +190,10 @@ HRESULT CModel::Read_MeshData(const string& strPath, Matrix PivotMatrix)
 		/* Name, Type */
 		string					strName = file->Read<string>();
 		_bool					bAnim = file->Read<_bool>();
+		if (bAnim)
+			m_eModelType = TYPE_ANIM;
+		else
+			m_eModelType = TYPE_NONANIM;
 
 		vector<VTXMODEL>		StaticVertices;
 		vector<VTXANIMMODEL>	AnimVertices;
@@ -251,7 +278,10 @@ HRESULT CModel::Read_MeshData(const string& strPath, Matrix PivotMatrix)
 
 HRESULT CModel::Read_MaterialData(const string& strPath)
 {
-	string filePath = strPath + filesystem::path(strPath).filename().string() + ".mat";
+	string folderName = Util_String::GetFinalFolderName(strPath);
+	string filePath = (filesystem::path(strPath) / string(folderName + ".mat")).string();
+	Util_String::Replace(filePath, "\\", "/");
+
 	if (!Util_File::IsExistFile(filePath))
 		return E_FAIL;
 
@@ -283,7 +313,10 @@ HRESULT CModel::Read_MaterialData(const string& strPath)
 
 HRESULT CModel::Read_AnimaionData(const string& strPath)
 {
-	string filePath = strPath + filesystem::path(strPath).filename().string() + ".anim";
+	string folderName = Util_String::GetFinalFolderName(strPath);
+	string filePath = (filesystem::path(strPath) / string(folderName + ".anim")).string();
+	Util_String::Replace(filePath, "\\", "/");
+
 	if (!Util_File::IsExistFile(filePath))
 		return E_FAIL;
 

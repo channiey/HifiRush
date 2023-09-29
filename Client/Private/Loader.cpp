@@ -122,23 +122,23 @@ HRESULT CLoader::Loading_For_Level_Logo()
 	{
 		Matrix PivotMatrix = Matrix::Identity;
 
-		///* For.Prototype_Component_Model_Chai */
-		//PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f)) * Matrix::CreateScale(0.01f);
-		//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Chai"),
-		//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Characters/Chai/", "Chai.fbx", PivotMatrix))))
-		//	return E_FAIL;
+		/* For.Prototype_Component_Model_Chai */
+		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f)) * Matrix::CreateScale(0.01f);
+		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Chai"),
+			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Characters/Chai", PivotMatrix))))
+			return E_FAIL;
 
-		///* For.Prototype_Component_Model_Fiona */
-		//PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f));
-		//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
-		//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Models/Prototype/Fiona/", "Fiona.fbx", PivotMatrix))))
-		//	return E_FAIL;
+		/* For.Prototype_Component_Model_Fiona */
+		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f));
+		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
+			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Prototype/Fiona", PivotMatrix))))
+			return E_FAIL;
 
-		///* For.Prototype_Component_Model_Architecture */
-		//PivotMatrix = Matrix::Identity * Matrix::CreateScale(0.01f);
-		//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Architecture"),
-		//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Models/Environment/Architecture/", "Architecture.fbx", PivotMatrix))))
-		//	return E_FAIL;
+		/* For.Prototype_Component_Model_Architecture */
+		PivotMatrix = Matrix::Identity * Matrix::CreateScale(0.01f);
+		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Architecture"),
+			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Architecture", PivotMatrix))))
+			return E_FAIL;
 
 	}
 

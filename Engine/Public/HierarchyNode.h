@@ -10,11 +10,12 @@ class ENGINE_DLL CHierarchyNode final : public CBase
 {
 private:
 	CHierarchyNode();
+	CHierarchyNode(const CHierarchyNode& rhs);
 	virtual ~CHierarchyNode() = default;
 
 public:
-	HRESULT Initialize(string strName, Matrix transformMatrix, Matrix offsetMatrix, _uint iBoneIndex, _uint iParentIndex, _uint iDepth);
-
+	HRESULT Initialize_Prototype(string strName, Matrix transformMatrix, Matrix offsetMatrix, _uint iBoneIndex, _uint iParentIndex, _uint iDepth);
+	HRESULT Initialize(void* pArg);
 public:
 	const char*		Get_Name() const { return m_szName; }
 	_uint			Get_Depth() const { return m_iDepth; }
@@ -43,6 +44,7 @@ private:
 
 public:
 	static CHierarchyNode* Create(string strName, Matrix transformMatrix, Matrix offsetMatrix, _uint iBoneIndex, _uint iParentIndex, _uint iDepth);
+	CHierarchyNode* Clone(void* pArg = nullptr);
 	virtual void Free();
 };
 

@@ -208,7 +208,7 @@ HRESULT CConverter::Read_MeshData(MODEL_TYPE modelType)
 			mesh->verticesStatic.reserve(srcMesh->mNumVertices);
 
 			VTXSTATIC vertex{};
-			for (uint j = 0; j < mesh->verticesStatic.size(); j++)
+			for (uint j = 0; j < srcMesh->mNumVertices; j++)
 			{
 				memcpy(&vertex.vPosition, &srcMesh->mVertices[j], sizeof(Vec3));
 				memcpy(&vertex.vNormal, &srcMesh->mNormals[j], sizeof(Vec3));
@@ -224,7 +224,7 @@ HRESULT CConverter::Read_MeshData(MODEL_TYPE modelType)
 			mesh->isAinm = (UINT)modelType;
 
 			mesh->verticesAnim.reserve(srcMesh->mNumVertices);
-			for (size_t j = 0; j < mesh->verticesAnim.size(); j++)
+			for (size_t j = 0; j < srcMesh->mNumVertices; j++)
 				mesh->verticesAnim.push_back(VTXANIM{});
 
 			for (uint j = 0; j < mesh->verticesAnim.size(); j++)
@@ -233,39 +233,39 @@ HRESULT CConverter::Read_MeshData(MODEL_TYPE modelType)
 				memcpy(&mesh->verticesAnim[j].vNormal, &srcMesh->mNormals[j], sizeof(Vec3));
 				memcpy(&mesh->verticesAnim[j].vTexture, &srcMesh->mTextureCoords[0][j], sizeof(Vec2));
 				memcpy(&mesh->verticesAnim[j].vTangent, &srcMesh->mTangents[j], sizeof(Vec3));
+			}
 
-				/* Static과 달리 해당 메시에 영향을 주는 뼈의 정보를 저장한다. */
-				for (uint k = 0; k < srcMesh->mNumBones; ++k)
+			/* Static과 달리 해당 메시에 영향을 주는 뼈의 정보를 저장한다. */
+			for (uint j = 0; j < srcMesh->mNumBones; ++j)
+			{
+				aiBone* pAIBone = srcMesh->mBones[j];
+
+				for (uint k = 0; k < pAIBone->mNumWeights; ++k)
 				{
-					aiBone* pAIBone = srcMesh->mBones[k];
+					uint		iVertexIndex = pAIBone->mWeights[k].mVertexId;
 
-					for (uint m = 0; m < pAIBone->mNumWeights; ++m)
+					if (0.0f == mesh->verticesAnim[iVertexIndex].vBlendWeight.x)
 					{
-						uint		iVertexIndex = pAIBone->mWeights[m].mVertexId;
+						mesh->verticesAnim[iVertexIndex].vBlendIndex.x = j;
+						mesh->verticesAnim[iVertexIndex].vBlendWeight.x = pAIBone->mWeights[k].mWeight;
+					}
 
-						if (0.0f == mesh->verticesAnim[iVertexIndex].vBlendWeight.x)
-						{
-							mesh->verticesAnim[iVertexIndex].vBlendIndex.x = k;
-							mesh->verticesAnim[iVertexIndex].vBlendWeight.x = pAIBone->mWeights[m].mWeight;
-						}
+					else if (0.0f == mesh->verticesAnim[iVertexIndex].vBlendWeight.y)
+					{
+						mesh->verticesAnim[iVertexIndex].vBlendIndex.y = j;
+						mesh->verticesAnim[iVertexIndex].vBlendWeight.y = pAIBone->mWeights[k].mWeight;
+					}
 
-						else if (0.0f == mesh->verticesAnim[iVertexIndex].vBlendWeight.y)
-						{
-							mesh->verticesAnim[iVertexIndex].vBlendIndex.y = k;
-							mesh->verticesAnim[iVertexIndex].vBlendWeight.y = pAIBone->mWeights[m].mWeight;
-						}
+					else if (0.0f == mesh->verticesAnim[iVertexIndex].vBlendWeight.z)
+					{
+						mesh->verticesAnim[iVertexIndex].vBlendIndex.z = j;
+						mesh->verticesAnim[iVertexIndex].vBlendWeight.z = pAIBone->mWeights[k].mWeight;
+					}
 
-						else if (0.0f == mesh->verticesAnim[iVertexIndex].vBlendWeight.z)
-						{
-							mesh->verticesAnim[iVertexIndex].vBlendIndex.z = k;
-							mesh->verticesAnim[iVertexIndex].vBlendWeight.z = pAIBone->mWeights[m].mWeight;
-						}
-
-						else if (0.0f == mesh->verticesAnim[iVertexIndex].vBlendWeight.w)
-						{
-							mesh->verticesAnim[iVertexIndex].vBlendIndex.w = k;
-							mesh->verticesAnim[iVertexIndex].vBlendWeight.w = pAIBone->mWeights[m].mWeight;
-						}
+					else if (0.0f == mesh->verticesAnim[iVertexIndex].vBlendWeight.w)
+					{
+						mesh->verticesAnim[iVertexIndex].vBlendIndex.w = j;
+						mesh->verticesAnim[iVertexIndex].vBlendWeight.w = pAIBone->mWeights[k].mWeight;
 					}
 				}
 			}
