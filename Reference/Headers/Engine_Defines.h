@@ -6,10 +6,6 @@
 #pragma warning (disable : 4244) /* string utils */
 
 /* DX (순서 함부로 바꿨다가 충돌 일어난다.) */
-#include <Assimp/scene.h>
-#include <Assimp/Importer.hpp>
-#include <Assimp/postprocess.h>
-
 #include <DirectXTK/PrimitiveBatch.h>
 #include <DirectXTK/Effects.h>
 #include <DirectXTK/VertexTypes.h>

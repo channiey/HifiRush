@@ -2,7 +2,7 @@
 #include "GameObject.h"
 
 #include "GameInstance.h"
-#include "StringUtils.h"
+#include "Util_String.h"
 
 CLayer::CLayer()
 	: m_pGameInstance(CGameInstance::GetInstance())
@@ -27,11 +27,11 @@ const wstring CLayer::Get_CloneNameWithPin(const wstring& strName)
 		if (nullptr == iter) continue;
 
 		/* 클론 고유 번호를 자른 이름과 비교한다. */
-		if (strName == StringUtils::Remove_LastNumChar(iter->Get_Name(), CLONE_PIN_MAX_DIGIT))
+		if (strName == Util_String::Remove_LastNumChar(iter->Get_Name(), CLONE_PIN_MAX_DIGIT))
 		{
 			/* 이름이 같다면 고유번호만 갖고와서 대소비교를 통해 최댓값에 저장할지를 결정한다. */
 			/* 언더바를 제외하기 위해 - 1을 한다. */
-			_int iPinNum = stoi(StringUtils::Get_LastNumChar(iter->Get_Name(), CLONE_PIN_MAX_DIGIT - 1));
+			_int iPinNum = stoi(Util_String::Get_LastNumChar(iter->Get_Name(), CLONE_PIN_MAX_DIGIT - 1));
 
 			if (CloneMaxNum < iPinNum)
 				CloneMaxNum = iPinNum;

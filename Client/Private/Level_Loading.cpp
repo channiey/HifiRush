@@ -9,8 +9,8 @@
 #include "Level_Logo.h"
 #include "Level_GamePlay.h"
 
-#include "StringUtils.h"
-#include "FileUtils.h"
+#include "Util_String.h"
+#include "Util_File.h"
 
 #ifdef _DEBUG
 #include "ImGui_Manager.h"
@@ -89,7 +89,7 @@ HRESULT CLevel_Loading::Parse_LevelData(const _uint& iLevelID)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
-	shared_ptr<CFileUtils> file = make_shared<CFileUtils>();
+	shared_ptr<Util_File> file = make_shared<Util_File>();
 	if (nullptr == file) return E_FAIL;
 
 	file->Open(gStrLevelPath[iLevelID], FileMode::Read);
@@ -105,8 +105,8 @@ HRESULT CLevel_Loading::Parse_LevelData(const _uint& iLevelID)
 		for (size_t i = 0; i < countObject; i++)
 		{
 			/* 읽을 메인 데이터 */
-			wstring strName = StringUtils::ToWString(file->Read<string>());
-			wstring strLayer = StringUtils::ToWString(file->Read<string>());
+			wstring strName = Util_String::ToWString(file->Read<string>());
+			wstring strLayer = Util_String::ToWString(file->Read<string>());
 			_bool	bActive = file->Read<_bool>();
 			_bool	bRender = file->Read<_bool>();
 			Matrix	tMatrix = file->Read<Matrix>();

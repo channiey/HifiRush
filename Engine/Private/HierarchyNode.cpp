@@ -5,24 +5,17 @@ CHierarchyNode::CHierarchyNode()
 
 }
 
-HRESULT CHierarchyNode::Initialize(aiNode * pAINode, CHierarchyNode* pParent, _uint iDepth)
+HRESULT CHierarchyNode::Initialize(string strName, Matrix transformMatrix, Matrix offsetMatrix, _uint iBoneIndex, _uint iParentIndex, _uint iDepth)
 {
-	/* 뼈 이름 저장 */
-	strcpy_s(m_szName, pAINode->mName.data);
+	strcpy_s(m_szName, strName.c_str());
 
-	/* 부모 기준 트랜스폼 저장 */
-	memcpy(&m_Transformation, &pAINode->mTransformation, sizeof(_float4x4));
-	XMStoreFloat4x4(&m_Transformation, XMMatrixTranspose(XMLoadFloat4x4(&m_Transformation))); /* 씬으로부터 행렬을 가져올 때는 반드시 전치! */
-
-	/* 나머지 트랜스폼 초기화 */
-	XMStoreFloat4x4(&m_OffsetMatrix, XMMatrixIdentity());
+	memcpy(&m_Transformation, &transformMatrix, sizeof(_float4x4));
+	memcpy(&m_OffsetMatrix, &offsetMatrix, sizeof(_float4x4));
 	XMStoreFloat4x4(&m_CombinedTransformation, XMMatrixIdentity());
 
-	/* 노드 정보 저장 */
+	m_iIndex = iBoneIndex;
+	m_iParentIndex = iParentIndex;
 	m_iDepth = iDepth;
-	m_pParent = pParent;
-
-	Safe_AddRef(m_pParent);
 
 	return S_OK;
 }
@@ -40,11 +33,23 @@ void CHierarchyNode::Set_OffsetMatrix(_fmatrix OffsetMatrix)
 	XMStoreFloat4x4(&m_OffsetMatrix, OffsetMatrix);
 }
 
-CHierarchyNode * CHierarchyNode::Create(aiNode * pAINode, CHierarchyNode* pParent, _uint iDepth)
+HRESULT CHierarchyNode::Set_Parent(CHierarchyNode* pParent)
+{
+	if (nullptr == pParent)
+		return E_FAIL;
+
+	m_pParent = pParent;
+
+	Safe_AddRef(m_pParent);
+
+	return S_OK;
+}
+
+CHierarchyNode * CHierarchyNode::Create(string strName, Matrix transformMatrix, Matrix offsetMatrix, _uint iBoneIndex, _uint iParentIndex, _uint iDepth)
 {
 	CHierarchyNode*			pInstance = new CHierarchyNode();
 
-	if (FAILED(pInstance->Initialize(pAINode, pParent, iDepth)))
+	if (FAILED(pInstance->Initialize(strName, transformMatrix, offsetMatrix, iBoneIndex, iParentIndex, iDepth)))
 	{
 		MSG_BOX("Failed To Created : CHierarchyNode");
 		Safe_Release(pInstance);

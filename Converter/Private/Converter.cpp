@@ -73,7 +73,7 @@ HRESULT CConverter::Binarize_Model(string fileName, string savePath, const MODEL
 		if (FAILED(Export_AnimData(filePath)))
 			return E_FAIL;
 	}
-	
+
 
 	cout << "Complete (Flie Name : " << fileName + ".fbx)" << endl;
 
@@ -87,6 +87,9 @@ HRESULT CConverter::Read_AssetFile(string srcPath, const MODEL_TYPE& modelType)
 
 	int	iFlag = 0;
 	{
+		/* aiProcess_PreTransformVertices : 모델을 구성하는 메시 중, 이 메시의 이름과 뼈의 이름이 같은 상황이라면 이 뼈의 행렬을 메시의 정점에 다 곱해서 로드한다. */
+		/* 모든 애니메이션 정보는 폐기된다. */
+
 		if (MODEL_TYPE::STATIC == modelType)
 			iFlag |= aiProcess_PreTransformVertices | aiProcess_ConvertToLeftHanded | aiProcess_CalcTangentSpace;
 		else
@@ -392,13 +395,11 @@ HRESULT CConverter::Read_MaterialData()
 
 HRESULT CConverter::Write_MaterialData(string srcPath, string savePath)
 {
-	/* 매태리얼이 사용하는 텍스처 파일을 srcPath에서 destPath로 복사한다. */
-
 	string path;
-	string fileName;
 	string finalSrcPath;
 	string finalSavePath;
 
+	/* 텍스처 복사 */
 	for (shared_ptr<asMaterial> material : _materials)
 	{
 		/* Diffuse */
@@ -422,6 +423,23 @@ HRESULT CConverter::Write_MaterialData(string srcPath, string savePath)
 		if (!Utils_File::IsExistFile(finalSavePath + "\\" + material->specularFilePath))
 			filesystem::copy(filesystem::path(finalSrcPath), filesystem::path(finalSavePath));
 	}
+
+	/* 매태리얼 정보 저장 */
+	shared_ptr<Utils_File> file = make_shared<Utils_File>();
+
+	string fileName = filesystem::path(savePath).filename().string();
+	string filePath = (filesystem::path(savePath) / string(fileName + ".mat")).string();
+	Utils_String::Replace(filePath, "\\", "/");
+	file->Open(Utils_String::ToWString(filePath), FileMode::Write);
+
+	file->Write<size_t>(_materials.size());
+	for (shared_ptr<asMaterial> material : _materials)
+	{
+		file->Write<string>(material->diffuseFilePath);
+		file->Write<string>(material->specularFilePath);
+		file->Write<string>(material->normalFilePath);
+	}
+
 	return S_OK;
 }
 
@@ -499,7 +517,7 @@ HRESULT CConverter::Write_AnimData(string savePath)
 	file->Write<size_t>(_animations.size());
 	for (shared_ptr<asAnimation>& animation : _animations)
 	{
-		file->Write<string>(animation->name);
+		//file->Write<string>(animation->name);
 		file->Write<float>(animation->fDuration);
 		file->Write<float>(animation->fTickPerSecond);
 

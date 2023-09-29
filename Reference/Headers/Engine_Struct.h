@@ -2,6 +2,7 @@
 #define Engine_Struct_h__
 #include "Base.h"
 
+#include "SimpleMath.h"
 namespace Engine
 {
 	typedef struct tagKeyFrame
@@ -109,12 +110,12 @@ namespace Engine
 
 	typedef struct tagVertexAnimModel
 	{
-		XMFLOAT3		vPosition;
-		XMFLOAT3		vNormal;
-		XMFLOAT2		vTexture;
-		XMFLOAT3		vTangent;
-		XMUINT4			vBlendIndex; 
-		XMFLOAT4		vBlendWeight;
+		Vec3		vPosition;
+		Vec3		vNormal;
+		Vec2		vTexture;
+		Vec3		vTangent;
+		XMUINT4		vBlendIndex; 
+		Vec4		vBlendWeight;
 	}VTXANIMMODEL;
 
 	typedef struct ENGINE_DLL tagVertexAnimModel_Declaration

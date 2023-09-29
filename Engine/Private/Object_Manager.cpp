@@ -2,7 +2,7 @@
 #include "Layer.h"
 //#include "GameObject.h"
 
-#include "StringUtils.h"
+#include "Util_String.h"
 
 IMPLEMENT_SINGLETON(CObject_Manager)
 
@@ -43,8 +43,8 @@ class CGameObject* CObject_Manager::Add_GameObject(_uint iLevelIndex, const wstr
 
 	/* 복제할 원본 찾는다. */
 	/* 클론 고유 번호가 존재하는 경우, 원형을 찾기 위해 클론 고유 번호를 지운다. */
-	if (StringUtils::Has_ClonePin(strPrototypeTag))
-		pPrototype = Find_Prototype(StringUtils::Remove_LastNumChar(strPrototypeTag, CLONE_PIN_MAX_DIGIT));
+	if (Util_String::Has_ClonePin(strPrototypeTag))
+		pPrototype = Find_Prototype(Util_String::Remove_LastNumChar(strPrototypeTag, CLONE_PIN_MAX_DIGIT));
 	else
 		pPrototype = Find_Prototype(strPrototypeTag);
 
@@ -57,8 +57,8 @@ class CGameObject* CObject_Manager::Add_GameObject(_uint iLevelIndex, const wstr
 		return nullptr;
 
 	/* 클론 고유 번호를 지운 이름을 세팅한다. */
-	if (StringUtils::Has_ClonePin(strPrototypeTag))
-		pGameObject->Set_Name(StringUtils::Remove_LastNumChar(strPrototypeTag, CLONE_PIN_MAX_DIGIT));
+	if (Util_String::Has_ClonePin(strPrototypeTag))
+		pGameObject->Set_Name(Util_String::Remove_LastNumChar(strPrototypeTag, CLONE_PIN_MAX_DIGIT));
 	else
 		pGameObject->Set_Name(strPrototypeTag);
 
@@ -234,7 +234,7 @@ void CObject_Manager::FinishTick()
 			pLayer->Erase_GameObject(iter.pObj);
 
 		/* 클론 고유 번호를 지운다. (이름만 남겨둔다) */
-		iter.pObj->Set_Name(StringUtils::Remove_LastNumChar(iter.pObj->Get_Name(), CLONE_PIN_MAX_DIGIT));
+		iter.pObj->Set_Name(Util_String::Remove_LastNumChar(iter.pObj->Get_Name(), CLONE_PIN_MAX_DIGIT));
 
 		Safe_Release(iter.pObj);
 	}

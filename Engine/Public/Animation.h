@@ -12,7 +12,9 @@ private:
 	virtual ~CAnimation() = default;
 
 public:
-	HRESULT Initialize_Prototype(aiAnimation* pAIAnimation);
+	//HRESULT Initialize_Prototype(aiAnimation* pAIAnimation);
+	HRESULT Initialize_Prototype(const _float& fDuration, const _float& fTickPerSecond, vector<class CChannel*>& Channels);
+
 	HRESULT Initialize(class CModel* pModel);
 
 public:
@@ -31,7 +33,8 @@ private: /* 복제된 애니메이션 마다 따로 가진다. */
 	vector<_uint>					m_ChannelKeyFrames;
 
 public:
-	static CAnimation* Create(aiAnimation* pAIAnimation);
+	//static CAnimation* Create(aiAnimation* pAIAnimation);
+	static CAnimation* Create(const _float& fDuration, const _float& fTickPerSecond, vector<class CChannel*>& Channels);
 	CAnimation* Clone(class CModel* pModel);
 	virtual void Free() override;
 };

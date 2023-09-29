@@ -3,7 +3,7 @@
 
 #include "ImGui_Window_Sub_Prefabs.h"
 #include "GameObject.h"
-#include "StringUtils.h"
+#include "Util_String.h"
 
 CImGui_Window_Sub_Prefabs::CImGui_Window_Sub_Prefabs()
 {
@@ -65,7 +65,7 @@ void CImGui_Window_Sub_Prefabs::Show_Window()
 			{
 				const bool is_selected = (m_pImGui_Manager->m_iIndex_PrefabObject == i);
 
-				const char* strPrefabObj = StringUtils::WC2C(Pair.first.c_str());
+				const char* strPrefabObj = Util_String::WC2C(Pair.first.c_str());
 				/* 프로토 타입 오브젝트를 선택한 경우*/
 				if (ImGui::Selectable(strPrefabObj, is_selected))
 				{

@@ -5,8 +5,8 @@
 
 #include "ImGui_Window_Sub_Prefabs.h"
 
-#include "StringUtils.h"
-#include "FileUtils.h"
+#include "Util_String.h"
+#include "Util_File.h"
 
 #include "GameObject.h"
 #include "Level_Loading.h"
@@ -111,7 +111,7 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Levels()
 		if (i > LEVEL_LOGO)
 			ImGui::SameLine();
 
-		const char* strLevel = StringUtils::WC2C(gStrLevelID[i]);
+		const char* strLevel = Util_String::WC2C(gStrLevelID[i]);
 		if (ImGui::Button(strLevel))
 		{
 			/* 버튼을 눌렀다면 해당 버튼의 인덱스를 현재 레벨로 지정한다. */
@@ -183,7 +183,7 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Layers()
 		{
 			const bool is_selected = (m_pImGui_Manager->m_iIndex_CurLayerID == i);
 
-			const char* strLayer = StringUtils::WC2C(Pair.first.c_str());
+			const char* strLayer = Util_String::WC2C(Pair.first.c_str());
 			/* 리스트박스에서 레이어를 선택한 경우 */
 			if (ImGui::Selectable(strLayer, is_selected))
 			{
@@ -276,7 +276,7 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Objects()
 				if (nullptr == obj) continue;
 
 				const bool is_selected = (m_pImGui_Manager->m_iIndex_CurObject == i);
-				const char* strObject = StringUtils::WC2C(obj->Get_Name().c_str());
+				const char* strObject = Util_String::WC2C(obj->Get_Name().c_str());
 
 				/* 리스트박스에서 오브젝트를 선택한 경우*/
 				if (ImGui::Selectable(strObject, is_selected))
@@ -337,7 +337,7 @@ void CImGui_Window_Main_Hierarachy::Show_MiniLayers()
 			{
 				const bool is_selected = (m_iTempMiniLayer == i);
 
-				const char* strLayer = StringUtils::WC2C(gStrLayerID[i]);
+				const char* strLayer = Util_String::WC2C(gStrLayerID[i]);
 				/* 특정 레이어가 선택 되었다면 해당 레이어를 게임인스턴스에 추가한다. */
 				if (ImGui::Selectable(strLayer, is_selected))
 				{
@@ -357,7 +357,7 @@ void CImGui_Window_Main_Hierarachy::Show_MiniLayers()
 
 void CImGui_Window_Main_Hierarachy::Save_LevelData()
 {
-	shared_ptr<CFileUtils> file = make_shared<CFileUtils>();
+	shared_ptr<Util_File> file = make_shared<Util_File>();
 	file->Open(gStrLevelPath[m_pImGui_Manager->m_iIndex_CurLevelID], FileMode::Write);
 
 	/* 현재 레벨의 모든 레이어를 가져온다. */
@@ -377,11 +377,11 @@ void CImGui_Window_Main_Hierarachy::Save_LevelData()
 		for (auto& obj : *Pair.second->Get_Objects())
 		{
 			/* 이름 */
-			wstring strName = StringUtils::Remove_LastNumChar(obj->Get_Name(), CLONE_PIN_MAX_DIGIT);
-			file->Write<string>(StringUtils::ToString(strName));
+			wstring strName = Util_String::Remove_LastNumChar(obj->Get_Name(), CLONE_PIN_MAX_DIGIT);
+			file->Write<string>(Util_String::ToString(strName));
 
 			/* 레이어 */
-			file->Write<string>(StringUtils::ToString(obj->Get_LayerTag()));
+			file->Write<string>(Util_String::ToString(obj->Get_LayerTag()));
 
 			/* 액티브 여부 */
 			file->Write<_bool>(obj->Is_Active());

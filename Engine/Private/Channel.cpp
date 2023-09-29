@@ -5,50 +5,61 @@ CChannel::CChannel()
 {
 }
 
-HRESULT CChannel::Initialize(aiNodeAnim * pAIChannel)
-{ 
-	strcpy_s(m_szName, pAIChannel->mNodeName.data);
+//HRESULT CChannel::Initialize(aiNodeAnim * pAIChannel)
+//{ 
+//	strcpy_s(m_szName, pAIChannel->mNodeName.data);
+//
+//	/* SRT 키프레임 갯수 맞추기 (부족한 키프레임은 이전 키프레임 상태 사용)*/
+//	m_iNumKeyFrames = max(pAIChannel->mNumScalingKeys, pAIChannel->mNumRotationKeys);
+//	m_iNumKeyFrames = max(m_iNumKeyFrames, pAIChannel->mNumPositionKeys);
+//
+//	/* 키프레임이 부족하면 이전 프레임 상태 사용하기 위해 루프 밖에 선언 */
+//	_float3			vScale{};
+//	_float4			vRotation{};
+//	_float3			vPosition{};
+//
+//	/* 모든 키프레임 정보 복사 */
+//	for (_uint i = 0; i < m_iNumKeyFrames; ++i)
+//	{
+//		KEYFRAME			KeyFrame;
+//		ZeroMemory(&KeyFrame, sizeof(KEYFRAME));
+//
+//		if(i < pAIChannel->mNumScalingKeys)
+//		{
+//			memcpy(&vScale, &pAIChannel->mScalingKeys[i].mValue, sizeof(_float3));
+//			KeyFrame.fTime = pAIChannel->mScalingKeys[i].mTime;
+//		}
+//		if (i < pAIChannel->mNumRotationKeys)
+//		{
+//			vRotation.x = pAIChannel->mRotationKeys[i].mValue.x;
+//			vRotation.y = pAIChannel->mRotationKeys[i].mValue.y;
+//			vRotation.z = pAIChannel->mRotationKeys[i].mValue.z;
+//			vRotation.w = pAIChannel->mRotationKeys[i].mValue.w;
+//			KeyFrame.fTime = pAIChannel->mRotationKeys[i].mTime;
+//		}
+//		if (i < pAIChannel->mNumPositionKeys)
+//		{
+//			memcpy(&vPosition, &pAIChannel->mPositionKeys[i].mValue, sizeof(_float3));
+//			KeyFrame.fTime = pAIChannel->mPositionKeys[i].mTime;
+//		}
+//
+//		KeyFrame.vScale = vScale;
+//		KeyFrame.vRotation = vRotation;
+//		KeyFrame.vPosition = vPosition;
+//
+//		m_KeyFrames.push_back(KeyFrame);
+//	}	
+//
+//	return S_OK;
+//}
 
-	/* SRT 키프레임 갯수 맞추기 (부족한 키프레임은 이전 키프레임 상태 사용)*/
-	m_iNumKeyFrames = max(pAIChannel->mNumScalingKeys, pAIChannel->mNumRotationKeys);
-	m_iNumKeyFrames = max(m_iNumKeyFrames, pAIChannel->mNumPositionKeys);
+HRESULT CChannel::Initialize(const string& strName, vector<KEYFRAME>& Keyframes)
+{
+	strcpy_s(m_szName, strName.c_str());
 
-	/* 키프레임이 부족하면 이전 프레임 상태 사용하기 위해 루프 밖에 선언 */
-	_float3			vScale{};
-	_float4			vRotation{};
-	_float3			vPosition{};
+	memcpy(&m_KeyFrames, &Keyframes, sizeof(Keyframes));
 
-	/* 모든 키프레임 정보 복사 */
-	for (_uint i = 0; i < m_iNumKeyFrames; ++i)
-	{
-		KEYFRAME			KeyFrame;
-		ZeroMemory(&KeyFrame, sizeof(KEYFRAME));
-
-		if(i < pAIChannel->mNumScalingKeys)
-		{
-			memcpy(&vScale, &pAIChannel->mScalingKeys[i].mValue, sizeof(_float3));
-			KeyFrame.fTime = pAIChannel->mScalingKeys[i].mTime;
-		}
-		if (i < pAIChannel->mNumRotationKeys)
-		{
-			vRotation.x = pAIChannel->mRotationKeys[i].mValue.x;
-			vRotation.y = pAIChannel->mRotationKeys[i].mValue.y;
-			vRotation.z = pAIChannel->mRotationKeys[i].mValue.z;
-			vRotation.w = pAIChannel->mRotationKeys[i].mValue.w;
-			KeyFrame.fTime = pAIChannel->mRotationKeys[i].mTime;
-		}
-		if (i < pAIChannel->mNumPositionKeys)
-		{
-			memcpy(&vPosition, &pAIChannel->mPositionKeys[i].mValue, sizeof(_float3));
-			KeyFrame.fTime = pAIChannel->mPositionKeys[i].mTime;
-		}
-
-		KeyFrame.vScale = vScale;
-		KeyFrame.vRotation = vRotation;
-		KeyFrame.vPosition = vPosition;
-
-		m_KeyFrames.push_back(KeyFrame);
-	}	
+	m_iNumKeyFrames = (_int)m_KeyFrames.size();
 
 	return S_OK;
 }
@@ -100,11 +111,24 @@ _uint CChannel::Update_Transformation(_float fPlayTime, _uint iCurrentKeyFrame, 
 	return iCurrentKeyFrame;
 }
 
-CChannel * CChannel::Create(aiNodeAnim * pAIChannel)
-{
-	CChannel*			pInstance = new CChannel();
+//CChannel * CChannel::Create(aiNodeAnim * pAIChannel)
+//{
+//	CChannel*			pInstance = new CChannel();
+//
+//	if (FAILED(pInstance->Initialize(pAIChannel)))
+//	{
+//		MSG_BOX("Failed To Created : CChannel");
+//		Safe_Release(pInstance);
+//	}
+//
+//	return pInstance;
+//}
 
-	if (FAILED(pInstance->Initialize(pAIChannel)))
+CChannel* CChannel::Create(const string& strName, vector<KEYFRAME>& Keyframes)
+{
+	CChannel* pInstance = new CChannel();
+
+	if (FAILED(pInstance->Initialize(strName, Keyframes)))
 	{
 		MSG_BOX("Failed To Created : CChannel");
 		Safe_Release(pInstance);

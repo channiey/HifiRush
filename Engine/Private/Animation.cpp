@@ -18,22 +18,34 @@ CAnimation::CAnimation(const CAnimation & rhs)
 		Safe_AddRef(pChannel);
 }
 
-HRESULT CAnimation::Initialize_Prototype(aiAnimation * pAIAnimation)
+//HRESULT CAnimation::Initialize_Prototype(aiAnimation * pAIAnimation)
+//{
+//	m_fDuration = pAIAnimation->mDuration;
+//	m_fTickPerSecond = pAIAnimation->mTicksPerSecond;
+//
+//	/* 채널 정보를 생성한다. */
+//	m_iNumChannels = pAIAnimation->mNumChannels;
+//	for (_uint i = 0; i < m_iNumChannels; ++i)
+//	{
+//		CChannel*		pChannel = CChannel::Create(pAIAnimation->mChannels[i]);
+//		if (nullptr == pChannel)
+//			return E_FAIL; 
+//
+//		/* 특정 애니메이션 상태일 때, 모든 뼈대 상태를 갱신하는 것이 아니라(겁나 느리다), 해당 애니메이션을 구동하기 위해 필요한 뼈대만 갱신해주기 위해 채널을 모아둔다. */
+//		m_Channels.push_back(pChannel);
+//	}
+//
+//	return S_OK;
+//}
+
+HRESULT CAnimation::Initialize_Prototype(const _float& fDuration, const _float& fTickPerSecond, vector<class CChannel*>& Channels)
 {
-	m_fDuration = pAIAnimation->mDuration;
-	m_fTickPerSecond = pAIAnimation->mTicksPerSecond;
+	m_fDuration = fDuration;
+	m_fTickPerSecond = fTickPerSecond;
 
-	/* 채널 정보를 생성한다. */
-	m_iNumChannels = pAIAnimation->mNumChannels;
-	for (_uint i = 0; i < m_iNumChannels; ++i)
-	{
-		CChannel*		pChannel = CChannel::Create(pAIAnimation->mChannels[i]);
-		if (nullptr == pChannel)
-			return E_FAIL; 
+	memcpy(&m_Channels, &Channels, sizeof(Channels));
 
-		/* 특정 애니메이션 상태일 때, 모든 뼈대 상태를 갱신하는 것이 아니라(겁나 느리다), 해당 애니메이션을 구동하기 위해 필요한 뼈대만 갱신해주기 위해 채널을 모아둔다. */
-		m_Channels.push_back(pChannel);
-	}
+	m_iNumChannels = (_int)m_Channels.size();
 
 	return S_OK;
 }
@@ -88,11 +100,24 @@ HRESULT CAnimation::Play_Animation(_float fTimeDelta)
 	return S_OK;
 }
 
-CAnimation * CAnimation::Create(aiAnimation * pAIAnimation)
-{
-	CAnimation*			pInstance = new CAnimation();
+//CAnimation * CAnimation::Create(aiAnimation * pAIAnimation)
+//{
+//	CAnimation*			pInstance = new CAnimation();
+//
+//	if (FAILED(pInstance->Initialize_Prototype(pAIAnimation)))
+//	{
+//		MSG_BOX("Failed To Created : CAnimation");
+//		Safe_Release(pInstance);
+//	}
+//
+//	return pInstance;
+//}
 
-	if (FAILED(pInstance->Initialize_Prototype(pAIAnimation)))
+CAnimation* CAnimation::Create(const _float& fDuration, const _float& fTickPerSecond, vector<class CChannel*>& Channels)
+{
+	CAnimation* pInstance = new CAnimation();
+
+	if (FAILED(pInstance->Initialize_Prototype(fDuration, fTickPerSecond, Channels)))
 	{
 		MSG_BOX("Failed To Created : CAnimation");
 		Safe_Release(pInstance);
@@ -100,6 +125,8 @@ CAnimation * CAnimation::Create(aiAnimation * pAIAnimation)
 
 	return pInstance;
 }
+
+
 
 CAnimation * CAnimation::Clone(CModel* pModel)
 {
