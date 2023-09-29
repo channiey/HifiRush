@@ -14,7 +14,7 @@ private:
 	virtual ~CHierarchyNode() = default;
 
 public:
-	HRESULT Initialize_Prototype(string strName, Matrix transformMatrix, Matrix offsetMatrix, _uint iBoneIndex, _uint iParentIndex, _uint iDepth);
+	HRESULT Initialize_Prototype(string strName, Matrix transformMatrix, Matrix offsetMatrix, _int iBoneIndex, _int iParentIndex, _uint iDepth);
 	HRESULT Initialize(void* pArg);
 public:
 	const char*		Get_Name() const { return m_szName; }
@@ -43,7 +43,7 @@ private:
 	_uint				m_iDepth = 0; /* 트리에서의 깊이값, 즉 몇차 자식이냐 */
 
 public:
-	static CHierarchyNode* Create(string strName, Matrix transformMatrix, Matrix offsetMatrix, _uint iBoneIndex, _uint iParentIndex, _uint iDepth);
+	static CHierarchyNode* Create(string strName, Matrix transformMatrix, Matrix offsetMatrix, _int iBoneIndex, _int iParentIndex, _uint iDepth);
 	CHierarchyNode* Clone(void* pArg = nullptr);
 	virtual void Free();
 };

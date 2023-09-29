@@ -122,17 +122,17 @@ HRESULT CLoader::Loading_For_Level_Logo()
 	{
 		Matrix PivotMatrix = Matrix::Identity;
 
-		/* For.Prototype_Component_Model_Chai */
-		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f)) * Matrix::CreateScale(0.01f);
-		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Chai"),
-			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Characters/Chai", PivotMatrix))))
-			return E_FAIL;
+		///* For.Prototype_Component_Model_Chai */
+		//PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f)) * Matrix::CreateScale(0.01f);
+		//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Chai"),
+		//	CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Characters/Chai", PivotMatrix))))
+		//	return E_FAIL;
 
-		/* For.Prototype_Component_Model_Fiona */
-		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f));
-		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
-			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Prototype/Fiona", PivotMatrix))))
-			return E_FAIL;
+		///* For.Prototype_Component_Model_Fiona */
+		//PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f));
+		//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
+		//	CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Prototype/Fiona", PivotMatrix))))
+		//	return E_FAIL;
 
 		/* For.Prototype_Component_Model_Architecture */
 		PivotMatrix = Matrix::Identity * Matrix::CreateScale(0.01f);
@@ -188,7 +188,7 @@ HRESULT CLoader::Loading_For_Level_Logo()
 			return E_FAIL;
 
 		/* For.Prototype_GameObject_Proto_Fiona */
-		if (FAILED(pGameInstance->Add_Prototype(TEXT("Temp_Fiona"),
+		if (FAILED(pGameInstance->Add_Prototype(TEXT("Fiona"),
 			CFiona::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 	}

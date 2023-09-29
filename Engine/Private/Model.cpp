@@ -22,13 +22,17 @@ CModel::CModel(const CModel & rhs)
 	, m_Meshes(rhs.m_Meshes)
 	, m_Materials(rhs.m_Materials)
 	, m_eModelType(rhs.m_eModelType)
-	/*, m_HierarchyNodes(rhs.m_HierarchyNodes)*/
+	, m_HierarchyNodes(rhs.m_HierarchyNodes)
 	, m_Animations(rhs.m_Animations)
 	, m_iCurrentAnimIndex(rhs.m_iCurrentAnimIndex)
 	, m_PivotMatrix(rhs.m_PivotMatrix)
 	, m_iNumAnimations(rhs.m_iNumAnimations)
 	
 {
+	/* Bones */
+	for (auto& pHierarachyNode : m_HierarchyNodes)
+		Safe_AddRef(pHierarachyNode);
+
 	/* Meshes */
 	for (auto& pMesh : m_Meshes)
 		Safe_AddRef(pMesh);
@@ -59,8 +63,11 @@ HRESULT CModel::Initialize_Prototype(const string& strPath, _fmatrix PivotMatrix
 	if (FAILED(Read_MaterialData(strPath)))
 		return E_FAIL;
 
-	if (FAILED(Read_AnimaionData(strPath)))
-		return E_FAIL;
+	if (TYPE_ANIM == m_eModelType)
+	{
+		if (FAILED(Read_AnimaionData(strPath)))
+			return E_FAIL;
+	}
 
 	return S_OK;
 }
@@ -85,48 +92,46 @@ HRESULT CModel::Initialize(void* pArg)
 	m_HierarchyNodes.clear();
 	m_HierarchyNodes = HierarchyNodes;
 
+	/* 메시 깊은 복사 */
+	vector<CMesh*>	Meshes;
+	for (auto& pPrototype : m_Meshes)
+	{
+		CMesh* pMesh = (CMesh*)pPrototype->Clone();
+		if (nullptr == pMesh)
+			return E_FAIL;
+
+		Meshes.push_back(pMesh);
+
+		Safe_Release(pPrototype);
+	}
+	m_Meshes.clear();
+	m_Meshes = Meshes;
+
 	if (TYPE_ANIM == m_eModelType)
 	{
-		_uint			iNumMeshes = 0;
-		vector<CMesh*>	Meshes;
-
-		/* 메시 깊은 복사 */
-		for (auto& pPrototype : m_Meshes)
-		{
-			CMesh* pMesh = (CMesh*)pPrototype->Clone();
-			if (nullptr == pMesh)
-				return E_FAIL;
-
-			Meshes.push_back(pMesh);
-
-			Safe_Release(pPrototype);
-		}
-		m_Meshes.clear();
-		m_Meshes = Meshes;
-
-
 		///* 메시를 순회하며, 메시에 대한 뼈 정보를 노드에 세팅한다. */
 		//for (auto& pMeshContainer : m_Meshes)
 		//{
 		//	if (nullptr != pMeshContainer)
 		//		pMeshContainer->SetUp_HierarchyNodes(this, m_pAIScene->mMeshes[iNumMeshes++]);
 		//}
+
+		/* 애니메이션 깊은 복사 */
+		vector<CAnimation*>		Animations;
+		for (auto& pPrototype : m_Animations)
+		{
+			CAnimation* pAnimation = pPrototype->Clone(this);
+			if (nullptr == pAnimation)
+				return E_FAIL;
+
+			Animations.push_back(pAnimation);
+
+			Safe_Release(pPrototype);
+		}
+		m_Animations.clear();
+		m_Animations = Animations;
 	}
 
-	/* 애니메이션 깊은 복사 */
-	vector<CAnimation*>		Animations;
-	for (auto& pPrototype : m_Animations)
-	{
-		CAnimation* pAnimation = pPrototype->Clone(this);
-		if (nullptr == pAnimation)
-			return E_FAIL;
-
-		Animations.push_back(pAnimation);
-
-		Safe_Release(pPrototype);
-	}
-	m_Animations.clear();
-	m_Animations = Animations;
 
 	return S_OK;
 }
@@ -168,6 +173,8 @@ HRESULT CModel::Read_BoneData(const string& strPath)
 			return E_FAIL;
 
 		node->Set_Parent(Get_HierarchyNode(node->Get_ParentIndex()));
+
+		int k = 0;
 	}
 	return S_OK;
 }
@@ -185,6 +192,7 @@ HRESULT CModel::Read_MeshData(const string& strPath, Matrix PivotMatrix)
 	file->Open(Util_String::ToWString(filePath), FileMode::Read);
 
 	size_t iNumMeshes = file->Read<size_t>(); 
+	m_iNumMeshes = (_uint)iNumMeshes;
 	for (size_t i = 0; i < iNumMeshes; i++)
 	{
 		/* Name, Type */
@@ -263,9 +271,9 @@ HRESULT CModel::Read_MeshData(const string& strPath, Matrix PivotMatrix)
 
 	
 		if(bAnim)
-			pMesh = CMesh::Create(m_pDevice, m_pContext, strName, AnimVertices, Indiecs, iMaterialIndex, Bones);
+			pMesh = CMesh::Create(m_pDevice, m_pContext, strName, AnimVertices, Indiecs, iMaterialIndex, Bones, this);
 		else					 
-			pMesh = CMesh::Create(m_pDevice, m_pContext, strName, StaticVertices, Indiecs, iMaterialIndex, Bones, PivotMatrix);
+			pMesh = CMesh::Create(m_pDevice, m_pContext, strName, StaticVertices, Indiecs, iMaterialIndex, Bones, PivotMatrix, this);
 
 		if (nullptr == pMesh)
 			return E_FAIL;
@@ -289,22 +297,35 @@ HRESULT CModel::Read_MaterialData(const string& strPath)
 	file->Open(Util_String::ToWString(filePath), FileMode::Read);
 
 	size_t iNumMaterials = file->Read<size_t>();
+	m_iNumMaterials = (_uint)iNumMaterials;
 	for (size_t i = 0; i < iNumMaterials; i++)
 	{
 		MATERIALDESC		MaterialDesc;
 		ZeroMemory(&MaterialDesc, sizeof(MATERIALDESC));
 		{
 			string path;
-			
-			path = file->Read<string>();
-			MaterialDesc.pTexture[aiTextureType_DIFFUSE] = CTexture::Create(m_pDevice, m_pContext, Util_String::ToWString(path));
+			string fileName;
 
-			path = file->Read<string>();
-			MaterialDesc.pTexture[aiTextureType_SPECULAR] = CTexture::Create(m_pDevice, m_pContext, Util_String::ToWString(path));
+			fileName = file->Read<string>();
+			if (!fileName.empty())
+			{
+				path = strPath + "/" + fileName;
+				MaterialDesc.pTexture[aiTextureType_DIFFUSE] = CTexture::Create(m_pDevice, m_pContext, Util_String::ToWString(path));
+			}
 
-			path = file->Read<string>();
-			MaterialDesc.pTexture[aiTextureType_NORMALS] = CTexture::Create(m_pDevice, m_pContext, Util_String::ToWString(path));
+			fileName = file->Read<string>();
+			if (!fileName.empty())
+			{
+				path = strPath + "/" + fileName;
+				MaterialDesc.pTexture[aiTextureType_SPECULAR] = CTexture::Create(m_pDevice, m_pContext, Util_String::ToWString(path));
+			}
 
+			fileName = file->Read<string>();
+			if (!fileName.empty())
+			{
+				path = strPath + "/" + fileName;
+				MaterialDesc.pTexture[aiTextureType_NORMALS] = CTexture::Create(m_pDevice, m_pContext, Util_String::ToWString(path));
+			}
 		}
 		m_Materials.push_back(MaterialDesc);
 	}
@@ -325,6 +346,7 @@ HRESULT CModel::Read_AnimaionData(const string& strPath)
 
 	/* 모든 애니메이션 순회 */
 	size_t iNumAnims = file->Read<size_t>();
+	m_iNumAnimations = (_uint)iNumAnims;
 	for (size_t i = 0; i < iNumAnims; i++)
 	{
 		_float fDuration = file->Read<_float>();
@@ -383,7 +405,7 @@ CHierarchyNode * CModel::Get_HierarchyNode(const char * pNodeName)
 	return *iter;	
 }
 
-CHierarchyNode* CModel::Get_HierarchyNode(const _uint& iIndex)
+CHierarchyNode* CModel::Get_HierarchyNode(const _int& iIndex)
 {
 	if(m_HierarchyNodes.size() < iIndex)
 		return nullptr;

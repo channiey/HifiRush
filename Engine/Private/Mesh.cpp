@@ -10,11 +10,13 @@ CMesh::CMesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 CMesh::CMesh(const CMesh& rhs)
 	: CVIBuffer(rhs)
 	, m_iMaterialIndex(rhs.m_iMaterialIndex)
+	, m_iNumBones(rhs.m_iNumBones)
+	, m_Bones(rhs.m_Bones)
 {
 	strcpy_s(m_szName, rhs.m_szName);
 }
 
-HRESULT CMesh::Initialize_Prototype(string& strName, vector<VTXMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<class CHierarchyNode*>& Bones, Matrix& PivotMatrix)
+HRESULT CMesh::Initialize_Prototype(string& strName, vector<VTXMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<class CHierarchyNode*>& Bones, Matrix& PivotMatrix, CModel* pModel)
 {
 	/* 이 메시와 이름이 같은 뼈가 존재한다면. 이 뼈의 행렬을 메시를 구성하는 정점에 곱해질 수 있도록 유도한다. */
 	strcpy_s(m_szName, strName.c_str());
@@ -27,13 +29,27 @@ HRESULT CMesh::Initialize_Prototype(string& strName, vector<VTXMODEL>& Vertices,
 	if (FAILED(Ready_Indices(Indices)))
 		return E_FAIL;
 
+	m_iNumBones = (_uint)Bones.size();
 	for (size_t i = 0; i < Bones.size(); i++)
 		m_Bones.push_back(Bones[i]);
+
+	if (0 == m_iNumBones)
+	{
+		CHierarchyNode* pNode = pModel->Get_HierarchyNode(m_szName);
+
+		if (nullptr == pNode)
+			return S_OK;
+
+		m_iNumBones = 1;
+
+		m_Bones.push_back(pNode);
+		Safe_AddRef(pNode);
+	}
 
 	return S_OK;
 }
 
-HRESULT CMesh::Initialize_Prototype(string& strName, vector<VTXANIMMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<class CHierarchyNode*>& Bones)
+HRESULT CMesh::Initialize_Prototype(string& strName, vector<VTXANIMMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<class CHierarchyNode*>& Bones, CModel* pModel)
 {
 	strcpy_s(m_szName, strName.c_str());
 
@@ -45,8 +61,22 @@ HRESULT CMesh::Initialize_Prototype(string& strName, vector<VTXANIMMODEL>& Verti
 	if (FAILED(Ready_Indices(Indices)))
 		return E_FAIL;
 
+	m_iNumBones = (_uint)Bones.size();
 	for (size_t i = 0; i < Bones.size(); i++)
 		m_Bones.push_back(Bones[i]);
+
+	if (0 == m_iNumBones)
+	{
+		CHierarchyNode* pNode = pModel->Get_HierarchyNode(m_szName);
+
+		if (nullptr == pNode)
+			return S_OK;
+
+		m_iNumBones = 1;
+
+		m_Bones.push_back(pNode);
+		Safe_AddRef(pNode);
+	}
 
 	return S_OK;
 }
@@ -277,11 +307,11 @@ HRESULT CMesh::Ready_Indices(vector<_int>& Indices)
 	FACEINDICES32* pIndices = new FACEINDICES32[m_iNumPrimitives];
 	ZeroMemory(pIndices, sizeof(FACEINDICES32) * m_iNumPrimitives);
 
-	for (_uint i = 0; i < m_iNumPrimitives;)
+	for (_uint i = 0, j = 0; i < m_iNumPrimitives; ++i, ++j)
 	{
-		pIndices[i]._0 = Indices[i];
-		pIndices[i]._1 = Indices[++i];
-		pIndices[i]._2 = Indices[++i];
+		pIndices[i]._0 = Indices[j];
+		pIndices[i]._1 = Indices[++j];
+		pIndices[i]._2 = Indices[++j];
 	}
 
 	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
@@ -414,11 +444,11 @@ HRESULT CMesh::Ready_Indices(vector<_int>& Indices)
 //}
 
 CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, string& strName,
-	vector<VTXMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<class CHierarchyNode*>& Bones, Matrix& PivotMatrix)
+	vector<VTXMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<class CHierarchyNode*>& Bones, Matrix& PivotMatrix, CModel* pModel)
 {
 	CMesh* pInstance = new CMesh(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype(strName, Vertices, Indices, iMatIndex, Bones, PivotMatrix)))
+	if (FAILED(pInstance->Initialize_Prototype(strName, Vertices, Indices, iMatIndex, Bones, PivotMatrix, pModel)))
 	{
 		MSG_BOX("Failed To Created : CMesh");
 		Safe_Release(pInstance);
@@ -428,12 +458,12 @@ CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, strin
 }
 
 CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, string& strName,
-	vector<VTXANIMMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<class CHierarchyNode*>& Bones)
+	vector<VTXANIMMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<class CHierarchyNode*>& Bones, CModel* pModel)
 {
 	
 	CMesh* pInstance = new CMesh(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype(strName, Vertices, Indices, iMatIndex, Bones)))
+	if (FAILED(pInstance->Initialize_Prototype(strName, Vertices, Indices, iMatIndex, Bones, pModel)))
 	{
 		MSG_BOX("Failed To Created : CMesh");
 		Safe_Release(pInstance);

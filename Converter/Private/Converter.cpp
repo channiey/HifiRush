@@ -281,7 +281,9 @@ HRESULT CConverter::Read_MeshData(MODEL_TYPE modelType)
 				mesh->indices.push_back(face.mIndices[k]);
 			}
 		}
-		_meshes.push_back(mesh);
+
+		/* Material Index */
+		mesh->materialIndex = srcMesh->mMaterialIndex;
 
 		/* Bones (현재 메시에 영향을 주는 뼈들을 순회하며 행렬정보를 저장하고 뼈들을 컨테이너에 모아둔다. */
 		uint numBones = srcMesh->mNumBones;
@@ -298,6 +300,8 @@ HRESULT CConverter::Read_MeshData(MODEL_TYPE modelType)
 
 			mesh->bones.push_back(boneIndex);
 		}
+
+		_meshes.push_back(mesh);
 	}
 
 	return S_OK;

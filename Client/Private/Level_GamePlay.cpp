@@ -14,8 +14,8 @@ HRESULT CLevel_GamePlay::Initialize()
 	//if (FAILED(Ready_Layer_BackGround(gStrLayerID[LAYER_BACKGROUND])))
 	//	return E_FAIL;
 
-	if (FAILED(CLevel_Loading::Parse_LevelData(LEVEL_GAMEPLAY)))
-		return E_FAIL;
+	//if (FAILED(CLevel_Loading::Parse_LevelData(LEVEL_GAMEPLAY)))
+	//	return E_FAIL;
 
 	return S_OK;
 }

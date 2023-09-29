@@ -28,7 +28,7 @@ HRESULT CCamera_Debug::Initialize(void * pArg)
 	m_fMouseSensitive = 1.f;
 
 	m_tTransDesc.fSpeedPerSec = 50.f;
-	m_tTransDesc.fRotRadPerSec = XMConvertToRadians(90.f);
+	m_tTransDesc.fRotRadPerSec = XMConvertToRadians(60.f);
 
 	/* 카메라 베이스 클래스의 초기 구조체 데이터를 세팅한다. */
 	ZeroMemory(&m_tCamDesc, sizeof(CAMERA_DESC));

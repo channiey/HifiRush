@@ -14,9 +14,23 @@ HRESULT CLevel_Logo::Initialize()
 	/*if (FAILED(Ready_Layer_BackGround(gStrLayerID[LAYER_BACKGROUND])))
 		return E_FAIL;*/
 	
-	if (FAILED(CLevel_Loading::Parse_LevelData(LEVEL_LOGO)))
-		return E_FAIL;
+	/*if (FAILED(CLevel_Loading::Parse_LevelData(LEVEL_LOGO)))
+		return E_FAIL;*/
 
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+	{
+		//NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_LOGO, gStrLayerID[LAYER_BACKGROUND], TEXT("Ui_BackGround")), E_FAIL);
+
+		NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_LOGO, gStrLayerID[LAYER_ENVIORNMENT], TEXT("Env_Terrain")), E_FAIL);
+
+		NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_LOGO, gStrLayerID[LAYER_ENVIORNMENT], TEXT("Env_Architecture")), E_FAIL);
+
+		NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_LOGO, gStrLayerID[LAYER_CAMERA], TEXT("Camera_Debug")), E_FAIL);
+
+		//NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_LOGO, gStrLayerID[LAYER_NPC], TEXT("Fiona")), E_FAIL);
+
+	}
+	RELEASE_INSTANCE(CGameInstance);
 	return S_OK;
 }
 

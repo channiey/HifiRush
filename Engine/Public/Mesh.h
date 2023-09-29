@@ -17,8 +17,8 @@ private:
 	virtual ~CMesh() = default;
 
 public:
-	HRESULT Initialize_Prototype(string& strName, vector<VTXMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<class CHierarchyNode*>& Bones, Matrix& PivotMatrix);
-	HRESULT Initialize_Prototype(string& strName, vector<VTXANIMMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<class CHierarchyNode*>& Bones);
+	HRESULT Initialize_Prototype(string& strName, vector<VTXMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<class CHierarchyNode*>& Bones, Matrix& PivotMatrix, CModel* pModel);
+	HRESULT Initialize_Prototype(string& strName, vector<VTXANIMMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<class CHierarchyNode*>& Bones, CModel* pModel);
 
 	//HRESULT Initialize_Prototype(CModel::TYPE eModelType, const aiMesh* pAIMesh, class CModel* pModel, _fmatrix PivotMatrix);
 	virtual HRESULT Initialize(void* pArg);	
@@ -47,8 +47,8 @@ private:
 	//HRESULT Ready_AnimVertices(const aiMesh* pAIMesh, CModel* pModel);
 
 public:
-	static CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, string& strName, vector<VTXMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<class CHierarchyNode*>& Bones, Matrix& PivotMatrix);
-	static CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, string& strName, vector<VTXANIMMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<class CHierarchyNode*>& Bones);
+	static CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, string& strName, vector<VTXMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<class CHierarchyNode*>& Bones, Matrix& PivotMatrix, CModel* pModel);
+	static CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, string& strName, vector<VTXANIMMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<class CHierarchyNode*>& Bones, CModel* pModel);
 	
 	virtual CComponent* Clone(void* pArg = nullptr) override;
 	virtual void Free() override;

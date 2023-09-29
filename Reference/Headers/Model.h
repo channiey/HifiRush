@@ -37,7 +37,7 @@ public:
 
 public:
 	class CHierarchyNode* Get_HierarchyNode(const char* pNodeName); 
-	class CHierarchyNode* Get_HierarchyNode(const _uint& iIndex);
+	class CHierarchyNode* Get_HierarchyNode(const _int& iIndex);
 	_uint Get_NumMeshes() const { return m_iNumMeshes; }
 	_uint Get_MaterialIndex(_uint iMeshIndex);
 	_matrix Get_PivotMatrix() { return XMLoadFloat4x4(&m_PivotMatrix); }
@@ -55,7 +55,7 @@ public: /* Render */
 	HRESULT Render(class CShader* pShader, _uint iMeshIndex, _uint iPassIndex = 0);
 
 private: /* 원형만 갖는다. */
-	_float4x4								m_PivotMatrix;
+	_float4x4								m_PivotMatrix{};
 	TYPE									m_eModelType = TYPE_END;
 
 private: /* 클론이 갖는다. */

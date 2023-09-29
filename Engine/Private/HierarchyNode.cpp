@@ -17,7 +17,7 @@ CHierarchyNode::CHierarchyNode(const CHierarchyNode& rhs)
 	XMStoreFloat4x4(&m_CombinedTransformation, XMMatrixIdentity());
 }
 
-HRESULT CHierarchyNode::Initialize_Prototype(string strName, Matrix transformMatrix, Matrix offsetMatrix, _uint iBoneIndex, _uint iParentIndex, _uint iDepth)
+HRESULT CHierarchyNode::Initialize_Prototype(string strName, Matrix transformMatrix, Matrix offsetMatrix, _int iBoneIndex, _int iParentIndex, _uint iDepth)
 {
 	strcpy_s(m_szName, strName.c_str());
 
@@ -62,7 +62,7 @@ HRESULT CHierarchyNode::Set_Parent(CHierarchyNode* pParent)
 	return S_OK;
 }
 
-CHierarchyNode * CHierarchyNode::Create(string strName, Matrix transformMatrix, Matrix offsetMatrix, _uint iBoneIndex, _uint iParentIndex, _uint iDepth)
+CHierarchyNode * CHierarchyNode::Create(string strName, Matrix transformMatrix, Matrix offsetMatrix, _int iBoneIndex, _int iParentIndex, _uint iDepth)
 {
 	CHierarchyNode*			pInstance = new CHierarchyNode();
 
