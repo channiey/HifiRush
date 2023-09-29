@@ -1,4 +1,4 @@
-l#include "..\Default\stdafx.h"
+#include "..\Default\stdafx.h"
 #include "..\Public\Loader.h"
 
 #include "GameInstance.h"

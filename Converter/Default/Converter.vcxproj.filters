@@ -51,6 +51,9 @@
     <ClInclude Include="..\Public\Utils_File.h">
       <Filter>97.Util</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\SimpleMath.h">
+      <Filter>97.Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -71,6 +74,9 @@
     <ClCompile Include="..\Private\Utils_File.cpp">
       <Filter>97.Util</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\SimpleMath.cpp">
+      <Filter>97.Util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Converter.ico">
@@ -84,5 +90,10 @@
     <ResourceCompile Include="Converter.rc">
       <Filter>99.Deafult\None</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Public\SimpleMath.inl">
+      <Filter>97.Util</Filter>
+    </None>
   </ItemGroup>
 </Project>

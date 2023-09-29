@@ -56,5 +56,9 @@ private:
 	vector<shared_ptr<asMesh>>		_meshes;
 	vector<shared_ptr<asMaterial>>	_materials;
 	vector<shared_ptr<asAnimation>>	_animations;
+
+private:
+	string sourceUpperPath	= "../Assets/";
+	string destUpperPath	= "../../Client/Bin/Resources/Models/";
 };
 

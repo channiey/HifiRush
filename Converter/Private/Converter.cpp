@@ -15,7 +15,7 @@ HRESULT CConverter::Binarize_Model(string fileName, string savePath, const MODEL
 	
 	/* Read Asset Data */
 	{
-		filePath = (filesystem::path(g_srcPath + fileName) / fileName).string() + ".fbx";
+		filePath = (filesystem::path(sourceUpperPath + fileName) / fileName).string() + ".fbx";
 		Utils_String::Replace(filePath, "\\", "/");
 		
 		if (!Utils_File::IsExistFile(filePath))
@@ -27,7 +27,7 @@ HRESULT CConverter::Binarize_Model(string fileName, string savePath, const MODEL
 
 	/* Export Bone Data */
 	{
-		filePath = (filesystem::path(g_destPath + savePath) / fileName).string() + ".bone";
+		filePath = (filesystem::path(destUpperPath + savePath) / fileName).string() + ".bone";
 		Utils_String::Replace(filePath, "\\", "/");
 		Utils_File::CheckOrCreatePath(filePath);
 
@@ -38,7 +38,7 @@ HRESULT CConverter::Binarize_Model(string fileName, string savePath, const MODEL
 
 	/* Export Mesh Data */
 	{
-		filePath = (filesystem::path(g_destPath + savePath) / fileName).string() + ".mesh";
+		filePath = (filesystem::path(destUpperPath + savePath) / fileName).string() + ".mesh";
 		Utils_String::Replace(filePath, "\\", "/");
 		Utils_File::CheckOrCreatePath(filePath);
 
@@ -49,13 +49,13 @@ HRESULT CConverter::Binarize_Model(string fileName, string savePath, const MODEL
 	/* Export Materail Data */
 	{
 		/* Src Path */
-		string srcPath = filesystem::path(g_srcPath + fileName).string();
+		string srcPath = filesystem::path(sourceUpperPath + fileName).string();
 
 		if (!Utils_File::IsExistFile(srcPath))
 			return E_FAIL;
 
 		/* Save Path */
-		filePath = filesystem::path(g_destPath + savePath).string();
+		filePath = filesystem::path(destUpperPath + savePath).string();
 		Utils_File::CheckOrCreatePath(filePath);
 
 
@@ -66,7 +66,7 @@ HRESULT CConverter::Binarize_Model(string fileName, string savePath, const MODEL
 	/* Export Anim Data */
 	if(MODEL_TYPE::ANIM == modelType)
 	{
-		filePath = (filesystem::path(g_destPath + savePath) / fileName).string() + ".anim";
+		filePath = (filesystem::path(destUpperPath + savePath) / fileName).string() + ".anim";
 		Utils_String::Replace(filePath, "\\", "/");
 		Utils_File::CheckOrCreatePath(filePath);
 

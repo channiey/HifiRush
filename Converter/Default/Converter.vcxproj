@@ -116,14 +116,14 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>../../Reference/Headers;../Public/;../ImGui/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../References/Headers;../Public/;</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../Reference/Librarys/</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Engine.lib;d3d11.lib;DirectXTKd.lib;assimp-vc140-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../References/Librarys/</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d11.lib;assimp-vc140-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClInclude Include="..\Public\Converter.h" />
     <ClInclude Include="..\Public\asTypes.h" />
+    <ClInclude Include="..\Public\SimpleMath.h" />
     <ClInclude Include="..\Public\Utils_File.h" />
     <ClInclude Include="..\Public\MainApp_Converter.h" />
     <ClInclude Include="..\Public\Utils_String.h" />
@@ -158,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Converter.cpp" />
+    <ClCompile Include="..\Private\SimpleMath.cpp" />
     <ClCompile Include="..\Private\Utils_File.cpp" />
     <ClCompile Include="..\Private\MainApp_Converter.cpp" />
     <ClCompile Include="..\Private\Utils_String.cpp" />
@@ -175,6 +177,9 @@
   <ItemGroup>
     <Image Include="Converter.ico" />
     <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Public\SimpleMath.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

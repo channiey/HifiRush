@@ -1,8 +1,6 @@
 #include "MainApp_Converter.h"
 #include "Converter.h"
 
-static string g_srcPath = "../Assets/";
-static string g_destPath = "../../Client/Bin/Resources/Models/";
 CMainApp_Converter::CMainApp_Converter()
 {
 }
