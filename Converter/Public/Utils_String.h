@@ -15,5 +15,8 @@ public:
 	static wstring ToWString(string value);
 	static string ToString(wstring value);
 
+	static string RemoveFileExtension(string str);
+	static wstring RemoveFileExtension(wstring str);
+
 };
 

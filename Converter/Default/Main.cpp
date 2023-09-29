@@ -20,7 +20,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_ LPWSTR    lpCmdLine,
                      _In_ int       nCmdShow)
 {
-
 #ifdef _DEBUG
 
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -35,6 +34,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     #endif
 
 #endif
+
+    CMainApp_Converter mainApp;
+    mainApp.Start_Convert();
+
+    return 0;
 
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
@@ -52,8 +56,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     MSG msg;
 
-    CMainApp_Converter mainApp;
-    mainApp.Start_Convert();
 
 
     while (true)

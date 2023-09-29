@@ -1,8 +1,8 @@
 #include "Converter.h"
 
-
 CConverter::CConverter()
 {
+	_importer = make_shared<Assimp::Importer>();
 }
 
 CConverter::~CConverter()
@@ -11,30 +11,71 @@ CConverter::~CConverter()
 
 HRESULT CConverter::Binarize_Model(string fileName, string savePath, const MODEL_TYPE& modelType)
 {	
-	string filePath = (filesystem::path(g_srcPath + fileName) / fileName).string() + ".fbx";		
-	Utils_String::Replace(filePath, "\\", "/");
-	if (FAILED(Read_AssetFile(filePath, modelType)))
-		return E_FAIL;
+	string filePath{};
+	
+	/* Read Asset Data */
+	{
+		filePath = (filesystem::path(g_srcPath + fileName) / fileName).string() + ".fbx";
+		Utils_String::Replace(filePath, "\\", "/");
+		
+		if (!Utils_File::IsExistFile(filePath))
+			return E_FAIL;
+		
+		if (FAILED(Read_AssetFile(filePath, modelType)))
+			return E_FAIL;
+	}
 
-	filePath = (filesystem::path(g_destPath + savePath) / fileName).string() + ".bone";	
-	Utils_String::Replace(filePath, "\\", "/");
-	if (FAILED(Export_BoneData(filePath)))
-		return E_FAIL;
+	/* Export Bone Data */
+	{
+		filePath = (filesystem::path(g_destPath + savePath) / fileName).string() + ".bone";
+		Utils_String::Replace(filePath, "\\", "/");
+		Utils_File::CheckOrCreatePath(filePath);
 
-	filePath = (filesystem::path(g_destPath + savePath) / fileName).string() + ".mesh";
-	Utils_String::Replace(filePath, "\\", "/");
-	if (FAILED(Export_MeshData(filePath, modelType)))
-		return E_FAIL;
+		if (FAILED(Export_BoneData(filePath)))
+			return E_FAIL;
+	}
+	
 
-	filePath = (filesystem::path(g_destPath + savePath) / fileName).string() + ".mat";
-	Utils_String::Replace(filePath, "\\", "/");
-	if (FAILED(Export_MaterialData(filePath)))
-		return E_FAIL;
+	/* Export Mesh Data */
+	{
+		filePath = (filesystem::path(g_destPath + savePath) / fileName).string() + ".mesh";
+		Utils_String::Replace(filePath, "\\", "/");
+		Utils_File::CheckOrCreatePath(filePath);
 
-	filePath = (filesystem::path(g_destPath + savePath) / fileName).string() + ".anim";
-	Utils_String::Replace(filePath, "\\", "/");
-	if (FAILED(Export_AnimData(filePath)))
-		return E_FAIL;
+		if (FAILED(Export_MeshData(filePath, modelType)))
+			return E_FAIL;
+	}
+
+	/* Export Materail Data */
+	{
+		/* Src Path */
+		string srcPath = filesystem::path(g_srcPath + fileName).string();
+
+		if (!Utils_File::IsExistFile(srcPath))
+			return E_FAIL;
+
+		/* Save Path */
+		filePath = filesystem::path(g_destPath + savePath).string();
+		Utils_File::CheckOrCreatePath(filePath);
+
+
+		if (FAILED(Export_MaterialData(srcPath, filePath)))
+			return E_FAIL;
+	}
+
+	/* Export Anim Data */
+	if(MODEL_TYPE::ANIM == modelType)
+	{
+		filePath = (filesystem::path(g_destPath + savePath) / fileName).string() + ".anim";
+		Utils_String::Replace(filePath, "\\", "/");
+		Utils_File::CheckOrCreatePath(filePath);
+
+		if (FAILED(Export_AnimData(filePath)))
+			return E_FAIL;
+	}
+	
+
+	cout << "Complete (Flie Name : " << fileName + ".fbx)" << endl;
 
 	return S_OK;
 }
@@ -55,7 +96,7 @@ HRESULT CConverter::Read_AssetFile(string srcPath, const MODEL_TYPE& modelType)
 	_scene = _importer->ReadFile(srcPath, iFlag);
 	{
 		if (nullptr == _scene)
-			return E_FAIL;
+			ASSERT_LOG();
 	}
 
 	return S_OK;
@@ -63,9 +104,10 @@ HRESULT CConverter::Read_AssetFile(string srcPath, const MODEL_TYPE& modelType)
 
 HRESULT CConverter::Export_BoneData(string savePath)
 {
-	if(FAILED(Read_BoneData(_scene->mRootNode, -1, -1, 0)))
-		return S_OK;
+	Read_BoneData(_scene->mRootNode, -1, -1, 0);
 
+	if (FAILED(Write_BoneData(savePath)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -81,13 +123,13 @@ HRESULT CConverter::Export_MeshData(string savePath, const MODEL_TYPE& modelType
 	return S_OK;
 }
 
-HRESULT CConverter::Export_MaterialData(string savePath)
+HRESULT CConverter::Export_MaterialData(string srcPath, string savePath)
 {
 	if (FAILED(Read_MaterialData()))
-		return E_FAIL;
+		ASSERT_LOG();
 
-	if (FAILED(Write_MaterialData(savePath)))
-		return E_FAIL;
+	if (FAILED(Write_MaterialData(srcPath, savePath)))
+		ASSERT_LOG();
 
 	return S_OK;
 }
@@ -103,7 +145,7 @@ HRESULT CConverter::Export_AnimData(string savePath)
 	return S_OK;
 }
 
-HRESULT CConverter::Read_BoneData(aiNode* node, int32 index, int32 parent, int32 depth)
+void CConverter::Read_BoneData(aiNode* node, int32 index, int32 parent, int32 depth)
 {
 	shared_ptr<asBone> bone = make_shared<asBone>();
 	{
@@ -121,15 +163,10 @@ HRESULT CConverter::Read_BoneData(aiNode* node, int32 index, int32 parent, int32
 
 	for (uint i = 0; i < node->mNumChildren; i++)
 		Read_BoneData(node->mChildren[i], (int32)_bones.size(), index, bone->depth);
-
-	return S_OK;
 }
 
 HRESULT CConverter::Write_BoneData(string savePath)
 {
-	auto path = filesystem::path(savePath);
-	filesystem::create_directory(path.parent_path());
-
 	shared_ptr<Utils_File> file = make_shared<Utils_File>();
 	file->Open(Utils_String::ToWString(savePath), FileMode::Write);
 
@@ -265,9 +302,6 @@ HRESULT CConverter::Read_MeshData(MODEL_TYPE modelType)
 
 HRESULT CConverter::Write_MeshData(string savePath)
 {
-	auto path = filesystem::path(savePath);
-	filesystem::create_directory(path.parent_path());
-
 	shared_ptr<Utils_File> file = make_shared<Utils_File>();
 	file->Open(Utils_String::ToWString(savePath), FileMode::Write);
 
@@ -336,40 +370,57 @@ HRESULT CConverter::Read_MaterialData()
 		{
 			/* 매태리얼이 사용하는 텍스처의 경로를 저장한다. */
 			aiString file;
+			string name;
 			{
 				srcMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &file);
-				material->diffuseFilePath = file.C_Str();
+				name = file.C_Str();
+				material->diffuseFilePath = filesystem::path(name).filename().string();
 
 				srcMaterial->GetTexture(aiTextureType_SPECULAR, 0, &file);
-				material->specularFilePath = file.C_Str();
+				name = file.C_Str();
+				material->specularFilePath = filesystem::path(name).filename().string();
 
 				srcMaterial->GetTexture(aiTextureType_NORMALS, 0, &file);
-				material->normalFilePath = file.C_Str();
+				name = file.C_Str();
+				material->normalFilePath = filesystem::path(name).filename().string();
 			}
-
 		}
 		_materials.push_back(material);
 	}
 	return S_OK;
 }
 
-HRESULT CConverter::Write_MaterialData(string savePath)
+HRESULT CConverter::Write_MaterialData(string srcPath, string savePath)
 {
-	auto path = filesystem::path(savePath);
-	filesystem::create_directory(path.parent_path());
-
-	shared_ptr<Utils_File> file = make_shared<Utils_File>();
-	file->Open(Utils_String::ToWString(savePath), FileMode::Write);
-
 	/* 매태리얼이 사용하는 텍스처 파일을 srcPath에서 destPath로 복사한다. */
+
+	string path;
+	string fileName;
+	string finalSrcPath;
+	string finalSavePath;
 
 	for (shared_ptr<asMaterial> material : _materials)
 	{
-		string destPath;
+		/* Diffuse */
+		finalSrcPath = srcPath + "/" + material->diffuseFilePath;
+		finalSrcPath = filesystem::absolute(finalSrcPath).string();
+		finalSavePath = filesystem::absolute(savePath).string();
+		if (!Utils_File::IsExistFile(finalSavePath + "\\" + material->diffuseFilePath))
+			filesystem::copy(filesystem::path(finalSrcPath), filesystem::path(finalSavePath));
 
-		::CopyFileA(material->diffuseFilePath.c_str(), destPath.c_str(), false);
-		::CopyFileA(material->normalFilePath.c_str(), destPath.c_str(), false);
-		::CopyFileA(material->specularFilePath.c_str(), destPath.c_str(), false);
+		/* Normal */
+		finalSrcPath = srcPath + "/" + material->normalFilePath;
+		finalSrcPath = filesystem::absolute(finalSrcPath).string();
+		finalSavePath = filesystem::absolute(savePath).string();
+		if (!Utils_File::IsExistFile(finalSavePath + "\\" + material->normalFilePath))
+			filesystem::copy(filesystem::path(finalSrcPath), filesystem::path(finalSavePath));
+
+		/* Specular */
+		finalSrcPath = srcPath + "/" + material->specularFilePath;
+		finalSrcPath = filesystem::absolute(finalSrcPath).string();
+		finalSavePath = filesystem::absolute(savePath).string();
+		if (!Utils_File::IsExistFile(finalSavePath + "\\" + material->specularFilePath))
+			filesystem::copy(filesystem::path(finalSrcPath), filesystem::path(finalSavePath));
 	}
 	return S_OK;
 }
@@ -442,9 +493,6 @@ HRESULT CConverter::Read_AnimData()
 
 HRESULT CConverter::Write_AnimData(string savePath)
 {
-	auto path = filesystem::path(savePath);
-	filesystem::create_directory(path.parent_path());
-
 	shared_ptr<Utils_File> file = make_shared<Utils_File>();
 	file->Open(Utils_String::ToWString(savePath), FileMode::Write);
 

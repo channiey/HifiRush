@@ -23,12 +23,12 @@ private:
 	/* Export */
 	HRESULT	Export_BoneData(string savePath);
 	HRESULT Export_MeshData(string savePath, const MODEL_TYPE& modelType);
-	HRESULT Export_MaterialData(string savePath);
+	HRESULT Export_MaterialData(string srcPath, string savePath);
 	HRESULT	Export_AnimData(string savePath);
 
 private:
 	/* Bones */
-	HRESULT Read_BoneData(aiNode* node, int32 index, int32 parent, int32 depth);
+	void Read_BoneData(aiNode* node, int32 index, int32 parent, int32 depth);
 	HRESULT Write_BoneData(string savePath);
 
 	/* Meshes */
@@ -37,7 +37,7 @@ private:
 
 	/* Materials */
 	HRESULT Read_MaterialData();
-	HRESULT Write_MaterialData(string savePath);
+	HRESULT Write_MaterialData(string srcPath, string savePath);
 
 	/* Anims */
 	HRESULT Read_AnimData();

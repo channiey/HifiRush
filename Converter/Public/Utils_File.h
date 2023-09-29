@@ -50,6 +50,11 @@ public:
 	void Read(void** data, uint32 dataSize);
 	void Read(OUT string& data);
 
+	static const bool IsExistFile(const string& path);
+
+	static void CheckOrCreatePath(const string& path);
+
+
 private:
 	HANDLE _handle = INVALID_HANDLE_VALUE;
 };

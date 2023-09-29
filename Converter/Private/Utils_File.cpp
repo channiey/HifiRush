@@ -83,3 +83,22 @@ void Utils_File::Read(OUT string& data)
 	data = temp;
 	delete[] temp;
 }
+
+const bool Utils_File::IsExistFile(const string& path)
+{
+	auto p = filesystem::path(path);
+
+	if (filesystem::exists(p))
+		return true;
+
+	return false;
+}
+
+void Utils_File::CheckOrCreatePath(const string& path)
+{
+	/* 2단계 위까지 검사한다. */
+
+	auto p = filesystem::path(path);
+	filesystem::create_directory(p.parent_path().parent_path()); 
+	filesystem::create_directory(p.parent_path());
+}

@@ -55,3 +55,30 @@ std::string Utils_String::ToString(wstring value)
 {
 	return string(value.begin(), value.end());
 }
+
+string Utils_String::RemoveFileExtension(string str)
+{
+	size_t first_not_dot = str.find_first_not_of('.');
+	size_t last_dot = str.find_last_of(".");
+	if (last_dot == std::string::npos
+		|| last_dot <= first_not_dot)
+	{
+		return str;
+	}
+	return str.substr(0, last_dot);
+}
+
+wstring Utils_String::RemoveFileExtension(wstring str)
+{
+	string path = ToString(str);
+
+	size_t first_not_dot = path.find_first_not_of('.');
+	size_t last_dot = path.find_last_of(".");
+	if (last_dot == std::string::npos
+		|| last_dot <= first_not_dot)
+	{
+		return ToWString(path);
+	}
+	return ToWString(path.substr(0, last_dot));
+}
+

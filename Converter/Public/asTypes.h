@@ -1,6 +1,6 @@
 #pragma once
 
-enum class MODEL_TYPE { STATIC, ANIM, TYPEEND };
+enum class	MODEL_TYPE	{ STATIC, ANIM, TYPEEND };
 
 struct VTXSTATIC
 {
