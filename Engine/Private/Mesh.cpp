@@ -10,8 +10,7 @@ CMesh::CMesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 CMesh::CMesh(const CMesh& rhs)
 	: CVIBuffer(rhs)
 	, m_iMaterialIndex(rhs.m_iMaterialIndex)
-	, m_iNumBones(rhs.m_iNumBones)
-	, m_BoneIndex(rhs.m_BoneIndex)
+	, m_BoneIndices(rhs.m_BoneIndices)
 {
 	strcpy_s(m_szName, rhs.m_szName);
 }
@@ -31,14 +30,9 @@ HRESULT CMesh::Initialize_Prototype(string& strName, vector<VTXMODEL>& Vertices,
 		return E_FAIL;
 
 	/* 이 메시에서 사용하는 본의 인덱스를 저장한다. */
-	{
-		m_iNumBones = (_uint)Bones.size();
-
-		m_BoneIndex.reserve(m_iNumBones);
-
-		for (size_t i = 0; i < m_iNumBones; i++)
-			m_BoneIndex.push_back(Bones[i]);
-	}
+	m_BoneIndices.reserve((_uint)Bones.size());
+	for (_int index : Bones)
+		m_BoneIndices.push_back(index);
 
 	return S_OK;
 }
@@ -57,18 +51,12 @@ HRESULT CMesh::Initialize_Prototype(string& strName, vector<VTXANIMMODEL>& Verti
 		return E_FAIL;
 
 	/* 이 메시에서 사용하는 본의 인덱스를 저장한다. */
-	{
-		m_iNumBones = (_uint)Bones.size();
-
-		m_BoneIndex.reserve(m_iNumBones);
-
-		for (size_t i = 0; i < m_iNumBones; i++)
-			m_BoneIndex.push_back(Bones[i]);
-	}
+	m_BoneIndices.reserve((_uint)Bones.size());
+	for (_int index : Bones)
+		m_BoneIndices.push_back(index);
 	
 	return S_OK;
 }
-
 
 HRESULT CMesh::Initialize(void* pArg)
 {
@@ -77,36 +65,35 @@ HRESULT CMesh::Initialize(void* pArg)
 	{
 		CModel* pModel = static_cast<CModel*>(pArg);
 		
-		for (size_t i = 0; i < m_BoneIndex.size(); i++)
+		for (size_t i = 0; i < m_BoneIndices.size(); i++)
 		{
-			CBone* pNode = pModel->Get_Bone(m_BoneIndex[i]);
-			if (nullptr != pNode)
+			CBone* pBone = pModel->Get_Bone(m_BoneIndices[i]);
+			if (nullptr != pBone)
 			{
-				m_Bones.push_back(pNode);
-				Safe_AddRef(pNode);
+				m_Bones.push_back(pBone);
+				Safe_AddRef(pBone);
 			}
 		}
 
-		m_BoneIndex.clear();
-		m_BoneIndex.shrink_to_fit();
+		m_BoneIndices.clear();
+		m_BoneIndices.shrink_to_fit();
 	}
 	return S_OK;
 }
 
 void CMesh::SetUp_BoneMatrices(_float4x4* pBoneMatrices, _fmatrix PivotMatrix)
 {
-	if (0 == m_iNumBones)
+	if (0 == m_Bones.size())
 	{
 		XMStoreFloat4x4(&pBoneMatrices[0], XMMatrixIdentity());
 		return;
 	}
 
-	for (_uint i = 0; i < m_iNumBones; ++i)
+	for (_uint i = 0; i < m_Bones.size(); ++i)
 	{
 		/* 셰이더에 행렬 던질 때는 전치 꼭 */
 		/* 최종 트랜스폼 계산*/
 
-		/* 본의 트랜스폼 잘못됐고 , 콤바인, 오프셋 매트릭스 전부 항등 상태임 */
 		XMStoreFloat4x4(&pBoneMatrices[i], XMMatrixTranspose(m_Bones[i]->Get_OffSetMatrix() * m_Bones[i]->Get_CombinedTransformation() * PivotMatrix));
 	}
 }
@@ -277,8 +264,8 @@ void CMesh::Free()
 {
 	__super::Free();
 
-	for (auto& pHierarchyNode : m_Bones)
-		Safe_Release(pHierarchyNode);
+	for (auto& pBone : m_Bones)
+		Safe_Release(pBone);
 
 	m_Bones.clear();
 }

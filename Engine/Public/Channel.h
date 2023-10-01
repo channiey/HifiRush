@@ -14,18 +14,15 @@ public:
 
 public:
 	HRESULT Initialize(const string strName, vector<KEYFRAME>& Keyframes);
-	_uint Update_Transformation(_float fPlayTime, _uint iCurrentKeyFrame, class CBone* pNode); 
+	_uint	Update_Transformation(_float fPlayTime, _uint iCurrentKeyFrame, class CBone* pNode); 
 
 public:
 	string Get_Name() const { return m_szName; }
 	const vector<KEYFRAME>& Get_KeyFrames() const { return m_KeyFrames; }
 
-
-
 private:
-	string							m_szName = {};
-	vector<KEYFRAME>				m_KeyFrames;
-	_uint							m_iNumKeyFrames = 0;
+	string				m_szName = {};
+	vector<KEYFRAME>	m_KeyFrames;
 
 public:
 	static CChannel* Create(const string strName, vector<KEYFRAME>& Keyframes);

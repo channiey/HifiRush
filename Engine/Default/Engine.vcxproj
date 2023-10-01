@@ -117,6 +117,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>d3d11.lib;dinput8.lib;dxguid.lib;Effects11d.lib;DirectXTKd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../ThirdPartyLib/</AdditionalLibraryDirectories>
+      <StackReserveSize>40000</StackReserveSize>
+      <StackCommitSize>
+      </StackCommitSize>
+      <HeapCommitSize>40000</HeapCommitSize>
     </Link>
     <PostBuildEvent>
       <Command>

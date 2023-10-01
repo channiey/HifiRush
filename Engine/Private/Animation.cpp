@@ -10,7 +10,6 @@ CAnimation::CAnimation()
 CAnimation::CAnimation(const CAnimation & rhs)
 	: m_fDuration(rhs.m_fDuration)
 	, m_Channels(rhs.m_Channels)
-	, m_iNumChannels(rhs.m_iNumChannels)
 	, m_fTickPerSecond(rhs.m_fTickPerSecond)
 	, m_fPlayTime(rhs.m_fPlayTime)
 {
@@ -30,31 +29,27 @@ HRESULT CAnimation::Initialize_Prototype(const _float& fDuration, const _float& 
 	for (auto& iter : Channels)
 		m_Channels.push_back(iter);
 
-	m_iNumChannels = (_int)m_Channels.size();
-
 	return S_OK;
 }
 
 HRESULT CAnimation::Initialize(CModel* pModel)
 {
 	/* 애니메이션을 재생하기 위해 사용되는 뼈를 모두 저장한다.  */
-	for (_uint i = 0; i < m_iNumChannels; ++i)
+	for (_uint i = 0; i < m_Channels.size(); ++i)
 	{
 		m_ChannelKeyFrames.push_back(0);
 
-		CBone*		pNode = pModel->Get_Bone(m_Channels[i]->Get_Name().c_str());
+		CBone*	pBone = pModel->Get_Bone(m_Channels[i]->Get_Name().c_str());
 		{
-			if (nullptr == pNode)
+			if (nullptr == pBone)
 				return E_FAIL;		
 
-			m_Bones.push_back(pNode);
+			m_Bones.push_back(pBone);
 		}
-		Safe_AddRef(pNode);
+		Safe_AddRef(pBone);
 	}
-
 	return S_OK;
 }
-
 
 HRESULT CAnimation::Play_Animation(_float fTimeDelta)
 {
@@ -74,10 +69,11 @@ HRESULT CAnimation::Play_Animation(_float fTimeDelta)
 	}
 
 	/* 이 애니메이션의 모든 채널의 키프레임을 보간한다. (아직 부모 기준)*/
-	_uint		iChannelIndex = 0;
+	_uint iChannelIndex = 0;
 	for (auto& pChannel : m_Channels)
 	{
-		m_ChannelKeyFrames[iChannelIndex] = pChannel->Update_Transformation(m_fPlayTime, m_ChannelKeyFrames[iChannelIndex], m_Bones[iChannelIndex]);
+		m_ChannelKeyFrames[iChannelIndex] 
+			= pChannel->Update_Transformation(m_fPlayTime, m_ChannelKeyFrames[iChannelIndex], m_Bones[iChannelIndex]);
 
 		++iChannelIndex;
 	}
@@ -97,8 +93,6 @@ CAnimation* CAnimation::Create(const _float& fDuration, const _float& fTickPerSe
 
 	return pInstance;
 }
-
-
 
 CAnimation * CAnimation::Clone(CModel* pModel)
 {
@@ -121,7 +115,7 @@ void CAnimation::Free()
 	m_Channels.clear();
 
 	/* HierarachyNode */
-	for (auto& pHierarchyNode : m_Bones)
-		Safe_Release(pHierarchyNode);
+	for (auto& pBone : m_Bones)
+		Safe_Release(pBone);
 	m_Bones.clear();
 }

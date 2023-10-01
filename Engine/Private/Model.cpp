@@ -18,16 +18,13 @@ CModel::CModel(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 
 CModel::CModel(const CModel & rhs)
 	: CComponent(rhs)
-	, m_iNumMeshes(rhs.m_iNumMeshes)
-	, m_iNumMaterials(rhs.m_iNumMaterials)
+	, m_eModelType(rhs.m_eModelType)
+	, m_PivotMatrix(rhs.m_PivotMatrix)
+	, m_Bones(rhs.m_Bones)
 	, m_Meshes(rhs.m_Meshes)
 	, m_Materials(rhs.m_Materials)
-	, m_eModelType(rhs.m_eModelType)
-	, m_Bones(rhs.m_Bones)
 	, m_Animations(rhs.m_Animations)
 	, m_iCurrentAnimIndex(rhs.m_iCurrentAnimIndex)
-	, m_PivotMatrix(rhs.m_PivotMatrix)
-	, m_iNumAnimations(rhs.m_iNumAnimations)
 {
 	/* Bones */
 	for (auto& pBone : m_Bones)
@@ -39,7 +36,7 @@ CModel::CModel(const CModel & rhs)
 
 	/* Materials */
 	for (auto& Material : m_Materials)
-		for (_uint i = 0; i < AI_TEXTURE_TYPE_MAX; ++i)
+		for (_uint i = 0; i < AI_TEXTURE_TYPE_MAX; ++i) /* TODO 이거 어차피 3개만 쓰는데 ? */
 			Safe_AddRef(Material.pTexture[i]);
 
 	/* Animations */
@@ -74,9 +71,10 @@ HRESULT CModel::Initialize_Prototype(const string& strPath, _fmatrix PivotMatrix
 
 HRESULT CModel::Initialize(void* pArg)
 {
-	/* 본 깊은 복사 */
+	/* Deep Copy - Bones */
 	vector<CBone*>			Bones;
 	Bones.reserve(m_Bones.size());
+
 	for (auto& pPrototype : m_Bones)
 	{
 		CBone* pBone = (CBone*)pPrototype->Clone();
@@ -89,7 +87,7 @@ HRESULT CModel::Initialize(void* pArg)
 	m_Bones.clear();
 	m_Bones = Bones;
 
-	/* 2차 정보 파싱 (인덱스를 바탕으로 부모를 포인터로 다시 연결) */
+	/* 본의 부모 인덱스를 바탕으로 실제 부모를 연결한다. */
 	for (auto& pBone : m_Bones)
 	{
 		if (nullptr == pBone)
@@ -98,8 +96,10 @@ HRESULT CModel::Initialize(void* pArg)
 		pBone->Set_Parent(Get_Bone(pBone->Get_ParentIndex()));
 	}
 
-	/* 메시 깊은 복사 */
+	/* Deep Copy - Meshes */
 	vector<CMesh*>	Meshes;
+	Meshes.reserve(m_Meshes.size());
+
 	for (auto& pPrototype : m_Meshes)
 	{
 		CMesh* pMesh = (CMesh*)pPrototype->Clone(this);
@@ -107,16 +107,17 @@ HRESULT CModel::Initialize(void* pArg)
 			return E_FAIL;
 
 		Meshes.push_back(pMesh);
-
 		Safe_Release(pPrototype);
 	}
 	m_Meshes.clear();
 	m_Meshes = Meshes;
 
+	/* Deep Copy - Animations */
 	if (TYPE_ANIM == m_eModelType)
 	{
-		/* 애니메이션 깊은 복사 */
 		vector<CAnimation*>		Animations;
+		Animations.reserve(m_Animations.size());
+
 		for (auto& pPrototype : m_Animations)
 		{
 			CAnimation* pAnimation = pPrototype->Clone(this);
@@ -124,7 +125,6 @@ HRESULT CModel::Initialize(void* pArg)
 				return E_FAIL;
 
 			Animations.push_back(pAnimation);
-
 			Safe_Release(pPrototype);
 		}
 		m_Animations.clear();
@@ -136,32 +136,36 @@ HRESULT CModel::Initialize(void* pArg)
 
 HRESULT CModel::Read_BoneData(const string& strPath)
 {
-	string folderName = Util_String::GetFinalFolderName(strPath);
-	string filePath = (filesystem::path(strPath) / string(folderName + ".bone")).string();
-	Util_String::Replace(filePath, "\\", "/");
-
-	if (!Util_File::IsExistFile(filePath))
-		return E_FAIL;
-
+	/* 파일 셋업 */
+	string folderName, filePath;
 	shared_ptr<Util_File> file = make_shared<Util_File>();
-	file->Open(Util_String::ToWString(filePath), FileMode::Read);
+	{
+		folderName = Util_String::GetFinalFolderName(strPath);
+		filePath = (filesystem::path(strPath) / string(folderName + ".bone")).string();
+		Util_String::Replace(filePath, "\\", "/");
 
-	/* 1차 정보 파싱 (부모는 인덱스로만 알고 있다) */
+		if (!Util_File::IsExistFile(filePath))
+			return E_FAIL;
+
+		file->Open(Util_String::ToWString(filePath), FileMode::Read);
+	}
+
+	/* 모든 본 순회 (부모는 인덱스로만 연결, 실제 포인터는 클론에서 수행) */
 	size_t iSize = file->Read<size_t>();
 	for (size_t i = 0; i < iSize; i++)
 	{
-		string strName = file->Read<string>();
-		Matrix transformMat = file->Read<Matrix>();
-		Matrix offsetMat = file->Read<Matrix>();
-		int32 iBoneIndex = file->Read<int32>();
-		int32 iParentIndex = file->Read<int32>();
-		_uint iDepth = file->Read<_uint>();
+		string	strName			= file->Read<string>();
+		Matrix	transformMat	= file->Read<Matrix>();
+		Matrix	offsetMat		= file->Read<Matrix>();
+		int32	iBoneIndex		= file->Read<int32>();
+		int32	iParentIndex	= file->Read<int32>();
+		_uint	iDepth			= file->Read<_uint>();
 
-		CBone* pHierarchyNode = CBone::Create(strName, transformMat, offsetMat, iBoneIndex, iParentIndex, iDepth);
-		if (nullptr == pHierarchyNode)
+		CBone* pBone = CBone::Create(strName, transformMat, offsetMat, iBoneIndex, iParentIndex, iDepth);
+		if (nullptr == pBone)
 			return E_FAIL;
 
-		m_Bones.push_back(pHierarchyNode);
+		m_Bones.push_back(pBone);
 	}
 
 	return S_OK;
@@ -169,27 +173,28 @@ HRESULT CModel::Read_BoneData(const string& strPath)
 
 HRESULT CModel::Read_MeshData(const string& strPath, Matrix PivotMatrix)
 {
-	string folderName = Util_String::GetFinalFolderName(strPath);
-	string filePath = (filesystem::path(strPath) / string(folderName + ".mesh")).string();
-	Util_String::Replace(filePath, "\\", "/");
-
-	if (!Util_File::IsExistFile(filePath))
-		return E_FAIL;
-
+	/* 파일 셋업 */
+	string folderName, filePath;
 	shared_ptr<Util_File> file = make_shared<Util_File>();
-	file->Open(Util_String::ToWString(filePath), FileMode::Read);
+	{
+		folderName = Util_String::GetFinalFolderName(strPath);
+		filePath = (filesystem::path(strPath) / string(folderName + ".mesh")).string();
+		Util_String::Replace(filePath, "\\", "/");
 
+		if (!Util_File::IsExistFile(filePath))
+			return E_FAIL;
+
+		file->Open(Util_String::ToWString(filePath), FileMode::Read);
+	}
+
+	/* 모든 메시 순회 */
 	size_t iNumMeshes = file->Read<size_t>(); 
-	m_iNumMeshes = (_uint)iNumMeshes;
 	for (size_t i = 0; i < iNumMeshes; i++)
 	{
 		/* Name, Type */
 		string					strName = file->Read<string>();
 		_bool					bAnim = file->Read<_bool>();
-		if (bAnim)
-			m_eModelType = TYPE_ANIM;
-		else
-			m_eModelType = TYPE_NONANIM;
+		m_eModelType = bAnim ? TYPE_ANIM : TYPE_NONANIM;
 
 		vector<VTXMODEL>		StaticVertices;
 		vector<VTXANIMMODEL>	AnimVertices;
@@ -207,11 +212,11 @@ HRESULT CModel::Read_MeshData(const string& strPath, Matrix PivotMatrix)
 			{
 				VTXANIMMODEL vertex;
 
-				vertex.vPosition = file->Read<Vec3>();
-				vertex.vNormal = file->Read<Vec3>();
-				vertex.vTexture = file->Read<Vec2>();
-				vertex.vTangent = file->Read<Vec3>();
-				vertex.vBlendIndex = file->Read<XMUINT4>();
+				vertex.vPosition	= file->Read<Vec3>();
+				vertex.vNormal		= file->Read<Vec3>();
+				vertex.vTexture		= file->Read<Vec2>();
+				vertex.vTangent		= file->Read<Vec3>();
+				vertex.vBlendIndex	= file->Read<XMUINT4>();
 				vertex.vBlendWeight = file->Read<Vec4>();
 
 				AnimVertices.push_back(vertex);
@@ -226,10 +231,10 @@ HRESULT CModel::Read_MeshData(const string& strPath, Matrix PivotMatrix)
 			{
 				VTXMODEL vertex;
 
-				vertex.vPosition = file->Read<Vec3>();
-				vertex.vNormal = file->Read<Vec3>();
-				vertex.vTexture = file->Read<Vec2>();
-				vertex.vTangent = file->Read<Vec3>();
+				vertex.vPosition	= file->Read<Vec3>();
+				vertex.vNormal		= file->Read<Vec3>();
+				vertex.vTexture		= file->Read<Vec2>();
+				vertex.vTangent		= file->Read<Vec3>();
 
 				StaticVertices.push_back(vertex);
 			}
@@ -239,9 +244,7 @@ HRESULT CModel::Read_MeshData(const string& strPath, Matrix PivotMatrix)
 		size_t iNumIndices = file->Read<size_t>();
 		Indiecs.reserve(iNumIndices);
 		for (size_t j = 0; j < iNumIndices; j++)
-		{
 			Indiecs.push_back(file->Read<_int>());
-		}
 
 		/* Material Index */
 		iMaterialIndex = file->Read<_uint>();
@@ -250,48 +253,46 @@ HRESULT CModel::Read_MeshData(const string& strPath, Matrix PivotMatrix)
 		size_t iNumBoneIndices = file->Read<size_t>();
 		BoneIndexs.reserve(iNumBoneIndices);
 		for (size_t j = 0; j < iNumBoneIndices; j++)
-		{
 			BoneIndexs.push_back(file->Read<_int>());
-		}
 
 		/* Create Mesh */
 		CMesh* pMesh = nullptr;
 		{
-			if(bAnim)
-				pMesh = CMesh::Create(m_pDevice, m_pContext, strName, AnimVertices, Indiecs, iMaterialIndex, BoneIndexs, this);
-			else					 
-				pMesh = CMesh::Create(m_pDevice, m_pContext, strName, StaticVertices, Indiecs, iMaterialIndex, BoneIndexs, PivotMatrix, this);
+			pMesh = (bAnim) ? CMesh::Create(m_pDevice, m_pContext, strName, AnimVertices, Indiecs, iMaterialIndex, BoneIndexs, this) : 
+								CMesh::Create(m_pDevice, m_pContext, strName, StaticVertices, Indiecs, iMaterialIndex, BoneIndexs, PivotMatrix, this);
 
 			if (nullptr == pMesh)
 				return E_FAIL;
 		}
 		m_Meshes.push_back(pMesh);
 	}
-
 	return S_OK;
 }
 
 HRESULT CModel::Read_MaterialData(const string& strPath)
 {
-	string folderName = Util_String::GetFinalFolderName(strPath);
-	string filePath = (filesystem::path(strPath) / string(folderName + ".mat")).string();
-	Util_String::Replace(filePath, "\\", "/");
-
-	if (!Util_File::IsExistFile(filePath))
-		return E_FAIL;
-
+	/* 파일 셋업 */
+	string folderName, filePath;
 	shared_ptr<Util_File> file = make_shared<Util_File>();
-	file->Open(Util_String::ToWString(filePath), FileMode::Read);
+	{
+		folderName = Util_String::GetFinalFolderName(strPath);
+		filePath = (filesystem::path(strPath) / string(folderName + ".mat")).string();
+		Util_String::Replace(filePath, "\\", "/");
 
+		if (!Util_File::IsExistFile(filePath))
+			return E_FAIL;
+
+		file->Open(Util_String::ToWString(filePath), FileMode::Read);
+	}
+
+	/* 모든 매태리얼 순회 */
 	size_t iNumMaterials = file->Read<size_t>();
-	m_iNumMaterials = (_uint)iNumMaterials;
 	for (size_t i = 0; i < iNumMaterials; i++)
 	{
 		MATERIALDESC		MaterialDesc;
 		ZeroMemory(&MaterialDesc, sizeof(MATERIALDESC));
 		{
-			string path;
-			string fileName;
+			string path, fileName;
 
 			fileName = file->Read<string>();
 			if (!fileName.empty())
@@ -321,19 +322,23 @@ HRESULT CModel::Read_MaterialData(const string& strPath)
 
 HRESULT CModel::Read_AnimaionData(const string& strPath)
 {
-	string folderName = Util_String::GetFinalFolderName(strPath);
-	string filePath = (filesystem::path(strPath) / string(folderName + ".anim")).string();
-	Util_String::Replace(filePath, "\\", "/");
-
-	if (!Util_File::IsExistFile(filePath))
-		return E_FAIL;
-
+	/* 파일 셋업 */
+	string folderName, filePath;
 	shared_ptr<Util_File> file = make_shared<Util_File>();
-	file->Open(Util_String::ToWString(filePath), FileMode::Read);
+	{
+		folderName = Util_String::GetFinalFolderName(strPath);
+		filePath = (filesystem::path(strPath) / string(folderName + ".anim")).string();
+		Util_String::Replace(filePath, "\\", "/");
+
+		if (!Util_File::IsExistFile(filePath))
+			return E_FAIL;
+
+		file->Open(Util_String::ToWString(filePath), FileMode::Read);
+	}
+
 
 	/* 모든 애니메이션 순회 */
 	size_t iNumAnims = file->Read<size_t>();
-	m_iNumAnimations = (_uint)iNumAnims;
 	for (size_t i = 0; i < iNumAnims; i++)
 	{
 		_float fDuration = file->Read<_float>();
@@ -407,7 +412,7 @@ _uint CModel::Get_MaterialIndex(_uint iMeshIndex)
 
 HRESULT CModel::SetUp_OnShader(CShader * pShader, _uint iMaterialIndex, aiTextureType eTextureType, const char * pConstantName)
 {
-	if (iMaterialIndex >= m_iNumMaterials)
+	if (iMaterialIndex >= m_Materials.size())
 		return E_FAIL;
 	
 	if (m_Materials[iMaterialIndex].pTexture[eTextureType] == nullptr)
@@ -418,7 +423,7 @@ HRESULT CModel::SetUp_OnShader(CShader * pShader, _uint iMaterialIndex, aiTextur
 
 HRESULT CModel::Update_Anim(_float fTimeDelta)
 {
-	if (m_iCurrentAnimIndex >= m_iNumAnimations) return E_FAIL;
+	if (m_iCurrentAnimIndex >= m_Animations.size()) return E_FAIL;
 
 	/* 현재 애니메이션의 모든 채널 키프레임 보간 (아직 부모 기준) - Relative */
 	m_Animations[m_iCurrentAnimIndex]->Play_Animation(fTimeDelta);
@@ -433,16 +438,12 @@ HRESULT CModel::Update_Anim(_float fTimeDelta)
 
 HRESULT CModel::Render(CShader* pShader, _uint iMeshIndex, _uint iPassIndex)
 {
-	/* TODO 프레임 저하 유발 */
-
-	_float4x4		BoneMatrices[MAX_BONES];
-
 	if (TYPE_ANIM == m_eModelType) 
 	{
 		/* 본의 최종 트랜스폼 계산 : <오프셋 * 루트 기준 * 사전변환> */
-		m_Meshes[iMeshIndex]->SetUp_BoneMatrices(BoneMatrices, XMLoadFloat4x4(&m_PivotMatrix));
+		m_Meshes[iMeshIndex]->SetUp_BoneMatrices(m_BoneMatrices, XMLoadFloat4x4(&m_PivotMatrix));
 
-   		if (FAILED(pShader->Bind_RawValue("g_BoneMatrices", BoneMatrices, sizeof(_float4x4) * MAX_BONES)))
+   		if (FAILED(pShader->Bind_RawValue("g_BoneMatrices", m_BoneMatrices, sizeof(_float4x4) * MAX_BONES)))
 			return E_FAIL;
 	}
 

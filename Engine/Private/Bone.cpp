@@ -2,14 +2,13 @@
 
 CBone::CBone()
 {
-
 }
 
 CBone::CBone(const CBone& rhs)
 	: m_iIndex(rhs.m_iIndex)
 	, m_iParentIndex(rhs.m_iParentIndex)
 	, m_iDepth(rhs.m_iDepth)
-	, m_pParent(rhs.m_pParent)
+	//, m_pParent(rhs.m_pParent)
 {
 	strcpy_s(m_szName, rhs.m_szName);
 
@@ -17,7 +16,7 @@ CBone::CBone(const CBone& rhs)
 	memcpy(&m_OffsetMatrix, &rhs.m_OffsetMatrix, sizeof(_float4x4));
 	memcpy(&m_CombinedTransformation, &rhs.m_CombinedTransformation, sizeof(_float4x4));
 
-	Safe_AddRef(m_pParent);
+	//Safe_AddRef(m_pParent);
 }
 
 HRESULT CBone::Initialize_Prototype(string strName, Matrix transformMatrix, Matrix offsetMatrix, _int iBoneIndex, _int iParentIndex, _uint iDepth)
@@ -42,16 +41,11 @@ HRESULT CBone::Initialize(void* pArg)
 
 void CBone::Set_CombinedTransformation()
 {
-	if (nullptr != m_pParent) /* 글로벌로 가는 코드 같다. */
+	if (nullptr != m_pParent) /* To Global */
 		XMStoreFloat4x4(&m_CombinedTransformation, 
 			XMLoadFloat4x4(&m_Transformation) * XMLoadFloat4x4(&m_pParent->m_CombinedTransformation));
 	else
 		m_CombinedTransformation = m_Transformation;
-}
-
-void CBone::Set_OffsetMatrix(_fmatrix OffsetMatrix)
-{
-	XMStoreFloat4x4(&m_OffsetMatrix, OffsetMatrix);
 }
 
 HRESULT CBone::Set_Parent(CBone* pParent)
@@ -59,8 +53,10 @@ HRESULT CBone::Set_Parent(CBone* pParent)
 	if (nullptr == pParent)
 		return E_FAIL;
 
-	m_pParent = pParent;
+	if (nullptr != m_pParent)
+		Safe_Release(m_pParent);
 
+	m_pParent = pParent;
 	Safe_AddRef(m_pParent);
 
 	return S_OK;

@@ -16,8 +16,6 @@ HRESULT CChannel::Initialize(const string strName, vector<KEYFRAME>& Keyframes)
 	for (auto& iter : Keyframes)
 		m_KeyFrames.push_back(iter);
 
-	m_iNumKeyFrames = (_int)m_KeyFrames.size();
-
 	return S_OK;
 }
 
@@ -83,6 +81,6 @@ CChannel* CChannel::Create(const string strName, vector<KEYFRAME>& Keyframes)
 
 void CChannel::Free()
 {
-
+	__super::Free();
 }
 
