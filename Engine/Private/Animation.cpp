@@ -1,7 +1,7 @@
 #include "..\Public\Animation.h"
-#include "Channel.h"
 #include "Model.h"
 #include "HierarchyNode.h"
+#include "Channel.h"
 
 CAnimation::CAnimation()
 {
@@ -43,7 +43,12 @@ HRESULT CAnimation::Initialize_Prototype(const _float& fDuration, const _float& 
 	m_fDuration = fDuration;
 	m_fTickPerSecond = fTickPerSecond;
 
-	memcpy(&m_Channels, &Channels, sizeof(Channels));
+	/* 벡터에 사이즈도 안 채우고 멤카피 하면 큰일난다. */
+	//memcpy(&m_Channels, &Channels, sizeof(Channels)); 
+
+	m_Channels.reserve(Channels.size());
+	for (auto& iter : Channels)
+		m_Channels.push_back(iter);
 
 	m_iNumChannels = (_int)m_Channels.size();
 
@@ -57,7 +62,7 @@ HRESULT CAnimation::Initialize(CModel* pModel)
 	{
 		m_ChannelKeyFrames.push_back(0);
 
-		CHierarchyNode*		pNode = pModel->Get_HierarchyNode(m_Channels[i]->Get_Name());
+		CHierarchyNode*		pNode = pModel->Get_HierarchyNode(m_Channels[i]->Get_Name().c_str());
 		{
 			if (nullptr == pNode)
 				return E_FAIL;		

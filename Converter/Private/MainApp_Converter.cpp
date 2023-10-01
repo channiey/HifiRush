@@ -13,11 +13,11 @@ HRESULT CMainApp_Converter::Start_Convert()
 {
 	cout << "Start Binarization\n\n\n\n";
 	{
-		//if (FAILED(Convert_Player()))
-		//	return E_FAIL;
+		if (FAILED(Convert_Player()))
+			return E_FAIL;
 
-		//if (FAILED(Convert_Npc()))
-		//	return E_FAIL;
+		if (FAILED(Convert_Npc()))
+			return E_FAIL;
 
 		if (FAILED(Convert_Env()))
 			return E_FAIL;

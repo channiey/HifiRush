@@ -53,11 +53,16 @@ CChannel::CChannel()
 //	return S_OK;
 //}
 
-HRESULT CChannel::Initialize(const string& strName, vector<KEYFRAME>& Keyframes)
+HRESULT CChannel::Initialize(const string strName, vector<KEYFRAME>& Keyframes)
 {
-	strcpy_s(m_szName, strName.c_str());
+	m_szName = strName;
 
-	memcpy(&m_KeyFrames, &Keyframes, sizeof(Keyframes));
+	/* 벡터에 사이즈도 안 채우고 멤카피 하면 큰일난다. */
+	//memcpy(&m_KeyFrames, &Keyframes, sizeof(Keyframes)); 
+
+	m_KeyFrames.reserve(Keyframes.size());
+	for (auto& iter : Keyframes)
+		m_KeyFrames.push_back(iter);
 
 	m_iNumKeyFrames = (_int)m_KeyFrames.size();
 
@@ -124,7 +129,7 @@ _uint CChannel::Update_Transformation(_float fPlayTime, _uint iCurrentKeyFrame, 
 //	return pInstance;
 //}
 
-CChannel* CChannel::Create(const string& strName, vector<KEYFRAME>& Keyframes)
+CChannel* CChannel::Create(const string strName, vector<KEYFRAME>& Keyframes)
 {
 	CChannel* pInstance = new CChannel();
 

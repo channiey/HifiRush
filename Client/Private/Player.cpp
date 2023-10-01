@@ -39,7 +39,7 @@ void CPlayer::Tick(_float fTimeDelta)
 	/* Test Animation */
 	CGameInstance* pGameInst = GET_INSTANCE(CGameInstance);
 	{
-		if (pGameInst->Key_Down(VK_UP))
+		/*if (pGameInst->Key_Down(VK_UP))
 		{
 			_int  iCurAnim = (m_pModelCom->Get_CurAnimationIndex() + 1) % m_pModelCom->Get_AnimationCount();
 
@@ -52,7 +52,10 @@ void CPlayer::Tick(_float fTimeDelta)
 				iCurAnim = 0;
 
 			m_pModelCom->Set_Animation(iCurAnim);
-		}
+		}*/
+
+		//m_pModelCom->Set_Animation(1);
+
 	}
 	RELEASE_INSTANCE(CGameInstance);
 }

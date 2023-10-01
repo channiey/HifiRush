@@ -27,12 +27,8 @@ HRESULT CConverter::Binarize_Model(string fileName, string savePath, const MODEL
 
 	/* Export Bone Data */
 	{
-		filePath = (filesystem::path(destUpperPath + savePath) / fileName).string() + ".bone";
-		Utils_String::Replace(filePath, "\\", "/");
-		Utils_File::CheckOrCreatePath(filePath);
-
-		if (FAILED(Export_BoneData(filePath)))
-			return E_FAIL;
+		/* 읽기 먼저 */
+		Read_BoneData(_scene->mRootNode, 0, -1, 0);	
 	}
 	
 
@@ -44,6 +40,16 @@ HRESULT CConverter::Binarize_Model(string fileName, string savePath, const MODEL
 
 		if (FAILED(Export_MeshData(filePath, modelType)))
 			return E_FAIL;
+
+		/* 메시에 영향주는 본들의 작업을 마치고 본을 익스포트 해야한다. */
+		{
+			filePath = (filesystem::path(destUpperPath + savePath) / fileName).string() + ".bone";
+			Utils_String::Replace(filePath, "\\", "/");
+			Utils_File::CheckOrCreatePath(filePath);
+
+			if (FAILED(Write_BoneData(filePath)))
+				return E_FAIL;
+		}
 	}
 
 	/* Export Materail Data */
@@ -105,15 +111,15 @@ HRESULT CConverter::Read_AssetFile(string srcPath, const MODEL_TYPE& modelType)
 	return S_OK;
 }
 
-HRESULT CConverter::Export_BoneData(string savePath)
-{
-	Read_BoneData(_scene->mRootNode, -1, -1, 0);
-
-	if (FAILED(Write_BoneData(savePath)))
-		return E_FAIL;
-
-	return S_OK;
-}
+//HRESULT CConverter::Export_BoneData(string savePath)
+//{
+//	Read_BoneData(_scene->mRootNode, 0, 0, 0);
+//
+//	if (FAILED(Write_BoneData(savePath)))
+//		return E_FAIL;
+//
+//	return S_OK;
+//}
 
 HRESULT CConverter::Export_MeshData(string savePath, const MODEL_TYPE& modelType)
 {
@@ -156,7 +162,7 @@ void CConverter::Read_BoneData(aiNode* node, int32 index, int32 parent, int32 de
 
 		bone->parent = parent;
 		bone->index = index;
-		bone->depth = ++depth;
+		bone->depth = depth;
 	
 		Matrix transform(node->mTransformation[0]);
 		bone->transform = transform.Transpose();
@@ -165,7 +171,7 @@ void CConverter::Read_BoneData(aiNode* node, int32 index, int32 parent, int32 de
 	_bones.push_back(bone);
 
 	for (uint i = 0; i < node->mNumChildren; i++)
-		Read_BoneData(node->mChildren[i], (int32)_bones.size(), index, bone->depth);
+		Read_BoneData(node->mChildren[i], (int32)_bones.size(), index, bone->depth + 1);
 }
 
 HRESULT CConverter::Write_BoneData(string savePath)
@@ -463,7 +469,7 @@ HRESULT CConverter::Read_AnimData()
 		for (uint j = 0; j < srcAnimation->mNumChannels; j++)
 		{
 			shared_ptr<asChannel> channel = make_shared<asChannel>();
-			aiNodeAnim* srcNode = srcAnimation->mChannels[i];
+			aiNodeAnim* srcNode = srcAnimation->mChannels[j];
 
 			channel->name = srcNode->mNodeName.data;
 
@@ -479,12 +485,12 @@ HRESULT CConverter::Read_AnimData()
 			{
 				shared_ptr<asKeyFrame>	keyframe = make_shared<asKeyFrame>();
 
-				if (i < srcNode->mNumScalingKeys)
+				if (k < srcNode->mNumScalingKeys)
 				{
-					memcpy(&vScale, &srcNode->mScalingKeys[i].mValue, sizeof(Vec3));
-					keyframe->fTime = srcNode->mScalingKeys[i].mTime;
+					memcpy(&vScale, &srcNode->mScalingKeys[k].mValue, sizeof(Vec3));
+					keyframe->fTime = srcNode->mScalingKeys[k].mTime;
 				}
-				if (i < srcNode->mNumRotationKeys)
+				if (k < srcNode->mNumRotationKeys)
 				{
 					aiQuatKey key = srcNode->mRotationKeys[k];
 
@@ -494,10 +500,10 @@ HRESULT CConverter::Read_AnimData()
 					vRotation.w = key.mValue.w;
 					keyframe->fTime = (float)key.mTime;
 				}
-				if (i < srcNode->mNumPositionKeys)
+				if (k < srcNode->mNumPositionKeys)
 				{
-					memcpy(&vPosition, &srcNode->mPositionKeys[i].mValue, sizeof(Vec3));
-					keyframe->fTime = srcNode->mPositionKeys[i].mTime;
+					memcpy(&vPosition, &srcNode->mPositionKeys[k].mValue, sizeof(Vec3));
+					keyframe->fTime = srcNode->mPositionKeys[k].mTime;
 				}
 
 				keyframe->vScale = vScale;

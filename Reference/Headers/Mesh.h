@@ -17,8 +17,8 @@ private:
 	virtual ~CMesh() = default;
 
 public:
-	HRESULT Initialize_Prototype(string& strName, vector<VTXMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<class CHierarchyNode*>& Bones, Matrix& PivotMatrix, CModel* pModel);
-	HRESULT Initialize_Prototype(string& strName, vector<VTXANIMMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<class CHierarchyNode*>& Bones, CModel* pModel);
+	HRESULT Initialize_Prototype(string& strName, vector<VTXMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<_int>& Bones, Matrix& PivotMatrix, CModel* pModel);
+	HRESULT Initialize_Prototype(string& strName, vector<VTXANIMMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<_int>& Bones, CModel* pModel);
 
 	//HRESULT Initialize_Prototype(CModel::TYPE eModelType, const aiMesh* pAIMesh, class CModel* pModel, _fmatrix PivotMatrix);
 	virtual HRESULT Initialize(void* pArg);	
@@ -38,6 +38,8 @@ private:
 	_uint							m_iNumBones = 0; /* 이 메시에 영향을 주는 뼈의 갯수*/
 	vector<class CHierarchyNode*>	m_Bones; /* 이 메시에 영향을 주는 뼈 집합 (메시별로 렌더링시, 해당 메시에 영향을 주는 뼈 행렬을 모아서 토스 */
 
+	vector<_int> m_BoneIndex; /* Cache */
+
 private:
 	HRESULT Ready_Vertices(vector<VTXMODEL>& Vertices, _fmatrix PivotMatrix);
 	HRESULT Ready_AnimVertices(vector<VTXANIMMODEL>& Vertices);
@@ -47,8 +49,8 @@ private:
 	//HRESULT Ready_AnimVertices(const aiMesh* pAIMesh, CModel* pModel);
 
 public:
-	static CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, string& strName, vector<VTXMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<class CHierarchyNode*>& Bones, Matrix& PivotMatrix, CModel* pModel);
-	static CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, string& strName, vector<VTXANIMMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<class CHierarchyNode*>& Bones, CModel* pModel);
+	static CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, string& strName, vector<VTXMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<_int>& Bones, Matrix& PivotMatrix, CModel* pModel);
+	static CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, string& strName, vector<VTXANIMMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<_int>& Bones, CModel* pModel);
 	
 	virtual CComponent* Clone(void* pArg = nullptr) override;
 	virtual void Free() override;

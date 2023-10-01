@@ -21,7 +21,7 @@ private:
 
 private: 
 	/* Export */
-	HRESULT	Export_BoneData(string savePath);
+	//HRESULT	Export_BoneData(string savePath);
 	HRESULT Export_MeshData(string savePath, const MODEL_TYPE& modelType);
 	HRESULT Export_MaterialData(string srcPath, string savePath);
 	HRESULT	Export_AnimData(string savePath);

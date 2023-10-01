@@ -27,7 +27,6 @@ CModel::CModel(const CModel & rhs)
 	, m_iCurrentAnimIndex(rhs.m_iCurrentAnimIndex)
 	, m_PivotMatrix(rhs.m_PivotMatrix)
 	, m_iNumAnimations(rhs.m_iNumAnimations)
-	
 {
 	/* Bones */
 	for (auto& pHierarachyNode : m_HierarchyNodes)
@@ -92,11 +91,20 @@ HRESULT CModel::Initialize(void* pArg)
 	m_HierarchyNodes.clear();
 	m_HierarchyNodes = HierarchyNodes;
 
+	/* 2차 정보 파싱 (인덱스를 바탕으로 부모를 포인터로 다시 연결) */
+	for (auto& node : m_HierarchyNodes)
+	{
+		if (nullptr == node)
+			return E_FAIL;
+
+		node->Set_Parent(Get_HierarchyNode(node->Get_ParentIndex()));
+	}
+
 	/* 메시 깊은 복사 */
 	vector<CMesh*>	Meshes;
 	for (auto& pPrototype : m_Meshes)
 	{
-		CMesh* pMesh = (CMesh*)pPrototype->Clone();
+		CMesh* pMesh = (CMesh*)pPrototype->Clone(this);
 		if (nullptr == pMesh)
 			return E_FAIL;
 
@@ -132,7 +140,6 @@ HRESULT CModel::Initialize(void* pArg)
 		m_Animations = Animations;
 	}
 
-
 	return S_OK;
 }
 
@@ -166,16 +173,14 @@ HRESULT CModel::Read_BoneData(const string& strPath)
 		m_HierarchyNodes.push_back(pHierarchyNode);
 	}
 
-	/* 2차 정보 파싱 (인덱스를 바탕으로 부모를 포인터로 다시 연결) */
-	for (auto& node : m_HierarchyNodes)
-	{
-		if (nullptr == node)
-			return E_FAIL;
+	///* 2차 정보 파싱 (인덱스를 바탕으로 부모를 포인터로 다시 연결) */
+	//for (auto& node : m_HierarchyNodes)
+	//{
+	//	if (nullptr == node)
+	//		return E_FAIL;
 
-		node->Set_Parent(Get_HierarchyNode(node->Get_ParentIndex()));
-
-		int k = 0;
-	}
+	//	node->Set_Parent(Get_HierarchyNode(node->Get_ParentIndex()));
+	//}
 	return S_OK;
 }
 
@@ -207,7 +212,7 @@ HRESULT CModel::Read_MeshData(const string& strPath, Matrix PivotMatrix)
 		vector<VTXANIMMODEL>	AnimVertices;
 		vector<_int>			Indiecs;
 		_uint					iMaterialIndex;
-		vector<CHierarchyNode*>	Bones;
+		vector<_int>			BoneIndexs;
 
 		/* Vertices */
 		if (bAnim)
@@ -260,24 +265,23 @@ HRESULT CModel::Read_MeshData(const string& strPath, Matrix PivotMatrix)
 
 		/* Bone Indices*/
 		size_t iNumBoneIndices = file->Read<size_t>();
-		Bones.reserve(iNumBoneIndices);
+		BoneIndexs.reserve(iNumBoneIndices);
 		for (size_t j = 0; j < iNumBoneIndices; j++)
 		{
-			Bones.push_back(Get_HierarchyNode(file->Read<_int>()));
+			BoneIndexs.push_back(file->Read<_int>());
 		}
 
 		/* Create Mesh */
 		CMesh* pMesh = nullptr;
+		{
+			if(bAnim)
+				pMesh = CMesh::Create(m_pDevice, m_pContext, strName, AnimVertices, Indiecs, iMaterialIndex, BoneIndexs, this);
+			else					 
+				pMesh = CMesh::Create(m_pDevice, m_pContext, strName, StaticVertices, Indiecs, iMaterialIndex, BoneIndexs, PivotMatrix, this);
 
-	
-		if(bAnim)
-			pMesh = CMesh::Create(m_pDevice, m_pContext, strName, AnimVertices, Indiecs, iMaterialIndex, Bones, this);
-		else					 
-			pMesh = CMesh::Create(m_pDevice, m_pContext, strName, StaticVertices, Indiecs, iMaterialIndex, Bones, PivotMatrix, this);
-
-		if (nullptr == pMesh)
-			return E_FAIL;
-
+			if (nullptr == pMesh)
+				return E_FAIL;
+		}
 		m_Meshes.push_back(pMesh);
 	}
 
@@ -376,14 +380,14 @@ HRESULT CModel::Read_AnimaionData(const string& strPath)
 				Keyframes.push_back(keyframe);
 			}
 
-			CChannel* pChannel = CChannel::Create(strName, Keyframes);
+			CChannel* pChannel = CChannel::Create(strName, Keyframes); 
 			if (nullptr == pChannel)
 				return E_FAIL;
 
 			Channels.push_back(pChannel);
 		}
 
-		CAnimation* pAnimation = CAnimation::Create(fDuration, fTickPerSecond, Channels);
+		CAnimation* pAnimation = CAnimation::Create(fDuration, fTickPerSecond, Channels); 
 		if (nullptr == pAnimation)
 			return E_FAIL;
 
@@ -407,7 +411,7 @@ CHierarchyNode * CModel::Get_HierarchyNode(const char * pNodeName)
 
 CHierarchyNode* CModel::Get_HierarchyNode(const _int& iIndex)
 {
-	if(m_HierarchyNodes.size() < iIndex)
+	if(m_HierarchyNodes.size() < iIndex || iIndex < 0)
 		return nullptr;
 
 	return m_HierarchyNodes[iIndex];

@@ -12,11 +12,13 @@ CMesh::CMesh(const CMesh& rhs)
 	, m_iMaterialIndex(rhs.m_iMaterialIndex)
 	, m_iNumBones(rhs.m_iNumBones)
 	, m_Bones(rhs.m_Bones)
+	, m_BoneIndex(rhs.m_BoneIndex)
 {
 	strcpy_s(m_szName, rhs.m_szName);
 }
 
-HRESULT CMesh::Initialize_Prototype(string& strName, vector<VTXMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<class CHierarchyNode*>& Bones, Matrix& PivotMatrix, CModel* pModel)
+HRESULT CMesh::Initialize_Prototype(string& strName, vector<VTXMODEL>& Vertices, vector<_int>& Indices, 
+	_uint iMatIndex, vector<_int>& Bones, Matrix& PivotMatrix, CModel* pModel)
 {
 	/* 이 메시와 이름이 같은 뼈가 존재한다면. 이 뼈의 행렬을 메시를 구성하는 정점에 곱해질 수 있도록 유도한다. */
 	strcpy_s(m_szName, strName.c_str());
@@ -30,6 +32,11 @@ HRESULT CMesh::Initialize_Prototype(string& strName, vector<VTXMODEL>& Vertices,
 		return E_FAIL;
 
 	m_iNumBones = (_uint)Bones.size();
+	m_BoneIndex.reserve(m_iNumBones);
+	for (size_t i = 0; i < m_iNumBones; i++)
+		m_BoneIndex.push_back(Bones[i]);
+
+	/*m_iNumBones = (_uint)Bones.size();
 	for (size_t i = 0; i < Bones.size(); i++)
 		m_Bones.push_back(Bones[i]);
 
@@ -44,12 +51,13 @@ HRESULT CMesh::Initialize_Prototype(string& strName, vector<VTXMODEL>& Vertices,
 
 		m_Bones.push_back(pNode);
 		Safe_AddRef(pNode);
-	}
+	}*/
 
 	return S_OK;
 }
 
-HRESULT CMesh::Initialize_Prototype(string& strName, vector<VTXANIMMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<class CHierarchyNode*>& Bones, CModel* pModel)
+HRESULT CMesh::Initialize_Prototype(string& strName, vector<VTXANIMMODEL>& Vertices, vector<_int>& Indices, 
+	_uint iMatIndex, vector<_int>& Bones, CModel* pModel)
 {
 	strcpy_s(m_szName, strName.c_str());
 
@@ -62,6 +70,12 @@ HRESULT CMesh::Initialize_Prototype(string& strName, vector<VTXANIMMODEL>& Verti
 		return E_FAIL;
 
 	m_iNumBones = (_uint)Bones.size();
+	m_BoneIndex.reserve(m_iNumBones);
+	for (size_t i = 0; i < m_iNumBones; i++)
+		m_BoneIndex.push_back(Bones[i]);
+	
+
+	/*m_iNumBones = (_uint)Bones.size();
 	for (size_t i = 0; i < Bones.size(); i++)
 		m_Bones.push_back(Bones[i]);
 
@@ -76,7 +90,7 @@ HRESULT CMesh::Initialize_Prototype(string& strName, vector<VTXANIMMODEL>& Verti
 
 		m_Bones.push_back(pNode);
 		Safe_AddRef(pNode);
-	}
+	}*/
 
 	return S_OK;
 }
@@ -148,6 +162,24 @@ HRESULT CMesh::Initialize_Prototype(string& strName, vector<VTXANIMMODEL>& Verti
 
 HRESULT CMesh::Initialize(void* pArg)
 {
+	if (nullptr != pArg)
+	{
+		CModel* pModel = static_cast<CModel*>(pArg);
+		
+		for (size_t i = 0; i < m_BoneIndex.size(); i++)
+		{
+			CHierarchyNode* pNode = pModel->Get_HierarchyNode(m_BoneIndex[i]);
+			if (nullptr != pNode)
+			{
+				m_Bones.push_back(pNode);
+				Safe_AddRef(pNode);
+			}
+		}
+	}
+
+	m_BoneIndex.clear();
+	m_BoneIndex.shrink_to_fit();
+
 	return S_OK;
 }
 
@@ -201,6 +233,8 @@ void CMesh::SetUp_BoneMatrices(_float4x4* pBoneMatrices, _fmatrix PivotMatrix)
 	{
 		/* 셰이더에 행렬 던질 때는 전치 꼭 */
 		/* 최종 트랜스폼 계산*/
+
+		/* 본의 트랜스폼 잘못됐고 , 콤바인, 오프셋 매트릭스 전부 항등 상태임 */
 		XMStoreFloat4x4(&pBoneMatrices[i], XMMatrixTranspose(m_Bones[i]->Get_OffSetMatrix() * m_Bones[i]->Get_CombinedTransformation() * PivotMatrix));
 	}
 }
@@ -272,7 +306,7 @@ HRESULT CMesh::Ready_AnimVertices(vector<VTXANIMMODEL>& Vertices)
 		memcpy(&pVertices[i].vNormal, &Vertices[i].vNormal, sizeof(_float3));
 		memcpy(&pVertices[i].vTexture, &Vertices[i].vTexture, sizeof(_float2));
 		memcpy(&pVertices[i].vTangent, &Vertices[i].vTangent, sizeof(_float3));
-		memcpy(&pVertices[i].vTangent, &Vertices[i].vBlendIndex, sizeof(XMUINT4));
+		memcpy(&pVertices[i].vBlendIndex, &Vertices[i].vBlendIndex, sizeof(XMUINT4));
 		memcpy(&pVertices[i].vBlendWeight, &Vertices[i].vBlendWeight, sizeof(Vec4));
 	}
 
@@ -444,7 +478,7 @@ HRESULT CMesh::Ready_Indices(vector<_int>& Indices)
 //}
 
 CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, string& strName,
-	vector<VTXMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<class CHierarchyNode*>& Bones, Matrix& PivotMatrix, CModel* pModel)
+	vector<VTXMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<_int>& Bones, Matrix& PivotMatrix, CModel* pModel)
 {
 	CMesh* pInstance = new CMesh(pDevice, pContext);
 
@@ -458,7 +492,7 @@ CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, strin
 }
 
 CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, string& strName,
-	vector<VTXANIMMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<class CHierarchyNode*>& Bones, CModel* pModel)
+	vector<VTXANIMMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<_int>& Bones, CModel* pModel)
 {
 	
 	CMesh* pInstance = new CMesh(pDevice, pContext);
@@ -470,7 +504,6 @@ CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, strin
 	}
 
 	return pInstance;
-
 }
 
 //CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CModel::TYPE eModelType, const aiMesh* pAIMesh, CModel* pModel, _fmatrix PivotMatrix)

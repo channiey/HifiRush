@@ -21,8 +21,8 @@ public:
 	_uint			Get_Depth() const { return m_iDepth; }
 	_matrix			Get_OffSetMatrix() { return XMLoadFloat4x4(&m_OffsetMatrix); }
 	_matrix			Get_CombinedTransformation() { return XMLoadFloat4x4(&m_CombinedTransformation); }
-	const _uint&	Get_Index() const { return m_iIndex; }
-	const _uint&	Get_ParentIndex() const { return m_iParentIndex; }
+	const _int&		Get_Index() const { return m_iIndex; }
+	const _int&		Get_ParentIndex() const { return m_iParentIndex; }
 
 public:
 	void			Set_CombinedTransformation();
@@ -38,8 +38,8 @@ private:
 	_float4x4			m_OffsetMatrix; /* Global(루트 기준 = m_CombinedTransformation) 의 역행렬 */
 
 	CHierarchyNode*		m_pParent = nullptr;
-	_uint				m_iParentIndex = 0;
-	_uint				m_iIndex = 0;
+	_int				m_iParentIndex = 0;
+	_int				m_iIndex = 0;
 	_uint				m_iDepth = 0; /* 트리에서의 깊이값, 즉 몇차 자식이냐 */
 
 public:
