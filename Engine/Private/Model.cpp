@@ -200,7 +200,7 @@ HRESULT CModel::Read_MeshData(const string& strPath, Matrix PivotMatrix)
 		vector<VTXANIMMODEL>	AnimVertices;
 		vector<_int>			Indiecs;
 		_uint					iMaterialIndex;
-		vector<_int>			BoneIndexs;
+		vector<_int>			BoneIndices;
 
 		/* Vertices */
 		if (bAnim)
@@ -251,15 +251,15 @@ HRESULT CModel::Read_MeshData(const string& strPath, Matrix PivotMatrix)
 
 		/* Bone Indices*/
 		size_t iNumBoneIndices = file->Read<size_t>();
-		BoneIndexs.reserve(iNumBoneIndices);
+		BoneIndices.reserve(iNumBoneIndices);
 		for (size_t j = 0; j < iNumBoneIndices; j++)
-			BoneIndexs.push_back(file->Read<_int>());
+			BoneIndices.push_back(file->Read<_int>());
 
 		/* Create Mesh */
 		CMesh* pMesh = nullptr;
 		{
-			pMesh = (bAnim) ? CMesh::Create(m_pDevice, m_pContext, strName, AnimVertices, Indiecs, iMaterialIndex, BoneIndexs, this) : 
-								CMesh::Create(m_pDevice, m_pContext, strName, StaticVertices, Indiecs, iMaterialIndex, BoneIndexs, PivotMatrix, this);
+			pMesh = (bAnim) ? CMesh::Create(m_pDevice, m_pContext, strName, AnimVertices, Indiecs, iMaterialIndex, BoneIndices, this) :
+								CMesh::Create(m_pDevice, m_pContext, strName, StaticVertices, Indiecs, iMaterialIndex, BoneIndices, PivotMatrix, this);
 
 			if (nullptr == pMesh)
 				return E_FAIL;

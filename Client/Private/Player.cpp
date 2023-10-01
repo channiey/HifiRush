@@ -62,7 +62,7 @@ void CPlayer::Tick(_float fTimeDelta)
 
 void CPlayer::LateTick(_float fTimeDelta)
 {
-	/* 해당 애니메이션이 사용하는 뼈의 정보를 갱신한다. */
+	/* 키프레임 보간(현재 애니메이션의 모든 채널의 현재 키프레임 갱신) + 루트 기준 트랜스폼 계산(모델의 모든 본 갱신) */
 	m_pModelCom->Update_Anim(fTimeDelta);
 
 	m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this);	
@@ -103,13 +103,13 @@ HRESULT CPlayer::Ready_Components()
 
 HRESULT CPlayer::Bind_ShaderResources()
 {
-	/* WVP 상태 행렬을 셰이더에 던진다. */
-	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_WorldMatrix")))
-		return E_FAIL;
-
+	/* WVP 행렬을 셰이더에 던진다. */
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 	Safe_AddRef(pGameInstance);
 	{
+		if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_WorldMatrix")))
+			return E_FAIL;
+
 		if (FAILED(pGameInstance->Bind_TransformToShader(m_pShaderCom, "g_ViewMatrix", CPipeLine::D3DTS_VIEW)))
 			return E_FAIL;
 
@@ -118,9 +118,9 @@ HRESULT CPlayer::Bind_ShaderResources()
 	}
 	RELEASE_INSTANCE(CGameInstance);
 
-	/* 현재 모델의 렌더링을 위한 버퍼 정보(메시)를 전달한다. */
-	_uint		iNumMeshes = m_pModelCom->Get_NumMeshes();
-	for (_uint i = 0; i < iNumMeshes; ++i)
+	
+	/* 메시가 사용하는 매태리얼과 본의 정보를 셰이더에 던진다. */
+	for (_uint i = 0; i < m_pModelCom->Get_NumMeshes(); ++i)
 	{
 		/* 셰이더에 현재 메시의 매테리얼 정보를 바인딩 한다. */
 		if (FAILED(m_pModelCom->SetUp_OnShader(m_pShaderCom, m_pModelCom->Get_MaterialIndex(i), aiTextureType_DIFFUSE, "g_DiffuseTexture")))
@@ -129,7 +129,7 @@ HRESULT CPlayer::Bind_ShaderResources()
 		//if (FAILED(m_pModelCom->SetUp_OnShader(m_pShaderCom, m_pModelCom->Get_MaterialIndex(i), aiTextureType_NORMALS, "g_NormalTexture")))
 		//	return E_FAIL;
 
-		/* TODO 프레임 저하 유발 */
+		/* 현재 메시가 사용하는 모든 본의 최종 트랜스폼 계산 + 셰이더 바인딩 */
 		if (FAILED(m_pModelCom->Render(m_pShaderCom, i)))
 			return E_FAIL;
 	}

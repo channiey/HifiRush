@@ -135,10 +135,10 @@ HRESULT CLoader::Loading_For_Level_Logo()
 		//	return E_FAIL;
 
 		/* For.Prototype_Component_Model_Architecture */
-		//PivotMatrix = Matrix::Identity * Matrix::CreateScale(0.01f);
-		//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Architecture"),
-		//	CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Architecture", PivotMatrix))))
-		//	return E_FAIL;
+		PivotMatrix = Matrix::Identity * Matrix::CreateScale(0.01f);
+		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Architecture"),
+			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Architecture", PivotMatrix))))
+			return E_FAIL;
 
 	}
 
@@ -183,9 +183,9 @@ HRESULT CLoader::Loading_For_Level_Logo()
 			return E_FAIL;
 
 		/* For.Prototype_GameObject_Env_Architecture */
-		//if (FAILED(pGameInstance->Add_Prototype(TEXT("Env_Architecture"),
-		//	CArchitecture::Create(m_pDevice, m_pContext))))
-		//	return E_FAIL;
+		if (FAILED(pGameInstance->Add_Prototype(TEXT("Env_Architecture"),
+			CArchitecture::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 
 		/* For.Prototype_GameObject_Proto_Fiona */
 		//if (FAILED(pGameInstance->Add_Prototype(TEXT("Fiona"),

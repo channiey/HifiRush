@@ -2,8 +2,6 @@
 
 CBase::CBase()
 {
-	int			iData = 10;
-
 }
 
 unsigned long CBase::AddRef()
@@ -13,7 +11,6 @@ unsigned long CBase::AddRef()
 
 unsigned long CBase::Release()
 {
-	/* 삭제한다. */
 	if (0 == m_dwRefCnt)
 	{
 		Free();
@@ -24,7 +21,6 @@ unsigned long CBase::Release()
 	}
 	else
 	{
-		/* 감소한다. */
 		return m_dwRefCnt--;
 	}
 }

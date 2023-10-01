@@ -26,7 +26,7 @@ HRESULT CLevel_Logo::Initialize()
 
 		NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_LOGO, gStrLayerID[LAYER_ENVIORNMENT], TEXT("Env_Terrain")), E_FAIL);
 
-		//NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_LOGO, gStrLayerID[LAYER_ENVIORNMENT], TEXT("Env_Architecture")), E_FAIL);
+		NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_LOGO, gStrLayerID[LAYER_ENVIORNMENT], TEXT("Env_Architecture")), E_FAIL);
 
 		NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_LOGO, gStrLayerID[LAYER_CAMERA], TEXT("Camera_Debug")), E_FAIL);
 

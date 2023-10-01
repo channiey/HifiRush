@@ -18,14 +18,14 @@ public:
 	virtual HRESULT Initialize(void* pArg);	
 
 public:
-	_uint	Get_MaterialIndex() const { return m_iMaterialIndex; }
+	_uint					Get_MaterialIndex() const { return m_iMaterialIndex; }
 
 public:
-	void	SetUp_BoneMatrices(_float4x4* pBoneMatrices, _fmatrix PivotMatrix); /* 메시의 정점을 그리기위해 셰이더에 넘기기위한 뼈행렬의 배열을 구성한다. */
+	void					SetUp_BoneMatrices(_float4x4* pBoneMatrices, _fmatrix PivotMatrix); /* 메시의 정점을 그리기위해 셰이더에 넘기기위한 뼈행렬의 배열을 구성한다. */
 
 private:
-	char				m_szName[MAX_PATH] = "";
-	_uint				m_iMaterialIndex = 0;	/* 메시를 그릴 때 사용하는 매태리얼 인덱스 */
+	char					m_szName[MAX_PATH] = "";
+	_uint					m_iMaterialIndex = 0;	/* 메시를 그릴 때 사용하는 매태리얼 인덱스 */
 
 private:
 	vector<class CBone*>	m_Bones;			/* 이 메시에 영향을 주는 뼈 집합 (메시별로 렌더링시, 해당 메시에 영향을 주는 뼈 행렬을 모아서 토스 */
