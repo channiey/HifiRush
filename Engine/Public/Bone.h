@@ -6,12 +6,12 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL CHierarchyNode final : public CBase
+class ENGINE_DLL CBone final : public CBase
 {
 private:
-	CHierarchyNode();
-	CHierarchyNode(const CHierarchyNode& rhs);
-	virtual ~CHierarchyNode() = default;
+	CBone();
+	CBone(const CBone& rhs);
+	virtual ~CBone() = default;
 
 public:
 	HRESULT Initialize_Prototype(string strName, Matrix transformMatrix, Matrix offsetMatrix, _int iBoneIndex, _int iParentIndex, _uint iDepth);
@@ -28,7 +28,7 @@ public:
 	void			Set_CombinedTransformation();
 	void			Set_OffsetMatrix(_fmatrix OffsetMatrix);
 	void			Set_Transformation(_fmatrix Transformation) { XMStoreFloat4x4(&m_Transformation, Transformation); }
-	HRESULT			Set_Parent(CHierarchyNode* pParent);
+	HRESULT			Set_Parent(CBone* pParent);
 
 private:
 	char				m_szName[MAX_PATH] = "";
@@ -37,14 +37,14 @@ private:
 	_float4x4			m_CombinedTransformation; /* Global(루트 기준) */
 	_float4x4			m_OffsetMatrix; /* Global(루트 기준 = m_CombinedTransformation) 의 역행렬 */
 
-	CHierarchyNode*		m_pParent = nullptr;
+	CBone*				m_pParent = nullptr;
 	_int				m_iParentIndex = 0;
 	_int				m_iIndex = 0;
 	_uint				m_iDepth = 0; /* 트리에서의 깊이값, 즉 몇차 자식이냐 */
 
 public:
-	static CHierarchyNode* Create(string strName, Matrix transformMatrix, Matrix offsetMatrix, _int iBoneIndex, _int iParentIndex, _uint iDepth);
-	CHierarchyNode* Clone(void* pArg = nullptr);
+	static CBone* Create(string strName, Matrix transformMatrix, Matrix offsetMatrix, _int iBoneIndex, _int iParentIndex, _uint iDepth);
+	CBone* Clone(void* pArg = nullptr);
 	virtual void Free();
 };
 

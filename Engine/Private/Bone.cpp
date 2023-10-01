@@ -1,11 +1,11 @@
-#include "..\Public\HierarchyNode.h"
+#include "..\Public\Bone.h"
 
-CHierarchyNode::CHierarchyNode()
+CBone::CBone()
 {
 
 }
 
-CHierarchyNode::CHierarchyNode(const CHierarchyNode& rhs)
+CBone::CBone(const CBone& rhs)
 	: m_iIndex(rhs.m_iIndex)
 	, m_iParentIndex(rhs.m_iParentIndex)
 	, m_iDepth(rhs.m_iDepth)
@@ -20,7 +20,7 @@ CHierarchyNode::CHierarchyNode(const CHierarchyNode& rhs)
 	Safe_AddRef(m_pParent);
 }
 
-HRESULT CHierarchyNode::Initialize_Prototype(string strName, Matrix transformMatrix, Matrix offsetMatrix, _int iBoneIndex, _int iParentIndex, _uint iDepth)
+HRESULT CBone::Initialize_Prototype(string strName, Matrix transformMatrix, Matrix offsetMatrix, _int iBoneIndex, _int iParentIndex, _uint iDepth)
 {
 	strcpy_s(m_szName, strName.c_str());
 
@@ -35,12 +35,12 @@ HRESULT CHierarchyNode::Initialize_Prototype(string strName, Matrix transformMat
 	return S_OK;
 }
 
-HRESULT CHierarchyNode::Initialize(void* pArg)
+HRESULT CBone::Initialize(void* pArg)
 {
 	return S_OK;
 }
 
-void CHierarchyNode::Set_CombinedTransformation()
+void CBone::Set_CombinedTransformation()
 {
 	if (nullptr != m_pParent) /* 글로벌로 가는 코드 같다. */
 		XMStoreFloat4x4(&m_CombinedTransformation, 
@@ -49,12 +49,12 @@ void CHierarchyNode::Set_CombinedTransformation()
 		m_CombinedTransformation = m_Transformation;
 }
 
-void CHierarchyNode::Set_OffsetMatrix(_fmatrix OffsetMatrix)
+void CBone::Set_OffsetMatrix(_fmatrix OffsetMatrix)
 {
 	XMStoreFloat4x4(&m_OffsetMatrix, OffsetMatrix);
 }
 
-HRESULT CHierarchyNode::Set_Parent(CHierarchyNode* pParent)
+HRESULT CBone::Set_Parent(CBone* pParent)
 {
 	if (nullptr == pParent)
 		return E_FAIL;
@@ -66,33 +66,33 @@ HRESULT CHierarchyNode::Set_Parent(CHierarchyNode* pParent)
 	return S_OK;
 }
 
-CHierarchyNode * CHierarchyNode::Create(string strName, Matrix transformMatrix, Matrix offsetMatrix, _int iBoneIndex, _int iParentIndex, _uint iDepth)
+CBone * CBone::Create(string strName, Matrix transformMatrix, Matrix offsetMatrix, _int iBoneIndex, _int iParentIndex, _uint iDepth)
 {
-	CHierarchyNode*			pInstance = new CHierarchyNode();
+	CBone*			pInstance = new CBone();
 
 	if (FAILED(pInstance->Initialize_Prototype(strName, transformMatrix, offsetMatrix, iBoneIndex, iParentIndex, iDepth)))
 	{
-		MSG_BOX("Failed To Created : CHierarchyNode");
+		MSG_BOX("Failed To Created : CBone");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-CHierarchyNode* CHierarchyNode::Clone(void* pArg)
+CBone* CBone::Clone(void* pArg)
 {
-	CHierarchyNode* pInstance = new CHierarchyNode(*this);
+	CBone* pInstance = new CBone(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed To Cloned : CHierarchyNode");
+		MSG_BOX("Failed To Cloned : CBone");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CHierarchyNode::Free()
+void CBone::Free()
 {
 	Safe_Release(m_pParent);
 }

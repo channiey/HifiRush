@@ -29,15 +29,13 @@ private:
     HRESULT Read_MaterialData(const string& strPath);
     HRESULT Read_AnimaionData(const string& strPath);
 
-/*========================================================================================================================================*/
-
 public:
 	/* 현재 애니메이션이 제어해야할 뼈의 상태를 갱신한다. */
 	HRESULT Update_Anim(_float fTimeDelta);
 
 public:
-	class CHierarchyNode* Get_HierarchyNode(const char* pNodeName); 
-	class CHierarchyNode* Get_HierarchyNode(const _int& iIndex);
+	class CBone* Get_Bone(const char* pNodeName); 
+	class CBone* Get_Bone(const _int& iIndex);
 	_uint Get_NumMeshes() const { return m_iNumMeshes; }
 	_uint Get_MaterialIndex(_uint iMeshIndex);
 	_matrix Get_PivotMatrix() { return XMLoadFloat4x4(&m_PivotMatrix); }
@@ -54,13 +52,12 @@ public: /* Render */
 	/* 스키닝 후, 셰이더에 정점을 전달한다. */
 	HRESULT Render(class CShader* pShader, _uint iMeshIndex, _uint iPassIndex = 0);
 
-private: /* 원형만 갖는다. */
+private: 
 	_float4x4								m_PivotMatrix{};
 	TYPE									m_eModelType = TYPE_END;
 
-private: /* 클론이 갖는다. */
 	/* aiNode */
-	vector<class CHierarchyNode*>			m_HierarchyNodes;
+	vector<class CBone*>					m_Bones;
 
 	/* Mesh*/
 	_uint									m_iNumMeshes = 0;
@@ -75,13 +72,6 @@ private: /* 클론이 갖는다. */
 	_uint									m_iCurrentAnimIndex = 0;
 	_uint									m_iNumAnimations = 0;
 	vector<class CAnimation*>				m_Animations;
-
-private:
-	/* Assimp Phrasing  */
-	//HRESULT Ready_Meshes(_fmatrix PivotMatrix);
-	//HRESULT Ready_Materials(const char* pModelFilePath);
-	HRESULT Ready_Animations();
-	//HRESULT Ready_HierarchyNodes(aiNode* pNode, class CHierarchyNode* pParent, _uint iDepth); /* aiNode를 재귀로 순회하며 본의 부모 자식을 정의하고 본의 부모기준 트랜스폼을 저장한다.  */
 
 public:
 	static CModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const string& strPath, _fmatrix PivotMatrix = XMMatrixIdentity());

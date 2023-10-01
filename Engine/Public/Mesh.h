@@ -20,11 +20,9 @@ public:
 	HRESULT Initialize_Prototype(string& strName, vector<VTXMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<_int>& Bones, Matrix& PivotMatrix, CModel* pModel);
 	HRESULT Initialize_Prototype(string& strName, vector<VTXANIMMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<_int>& Bones, CModel* pModel);
 
-	//HRESULT Initialize_Prototype(CModel::TYPE eModelType, const aiMesh* pAIMesh, class CModel* pModel, _fmatrix PivotMatrix);
 	virtual HRESULT Initialize(void* pArg);	
 
 public:
-	//HRESULT SetUp_HierarchyNodes(class CModel* pModel, aiMesh* pAIMesh); 	/* 현재 메시에 영향을 주는 뼈들을 순회하며 행렬정보를 저장하고, 뼈들을 컨테이너에 모아둔다. */
 	void SetUp_BoneMatrices(_float4x4* pBoneMatrices, _fmatrix PivotMatrix); /* 메시의 정점을 그리기위해 셰이더에 넘기기위한 뼈행렬의 배열을 구성한다. */
 
 public:
@@ -36,17 +34,14 @@ private:
 
 private:
 	_uint							m_iNumBones = 0; /* 이 메시에 영향을 주는 뼈의 갯수*/
-	vector<class CHierarchyNode*>	m_Bones; /* 이 메시에 영향을 주는 뼈 집합 (메시별로 렌더링시, 해당 메시에 영향을 주는 뼈 행렬을 모아서 토스 */
+	vector<class CBone*>	m_Bones; /* 이 메시에 영향을 주는 뼈 집합 (메시별로 렌더링시, 해당 메시에 영향을 주는 뼈 행렬을 모아서 토스 */
 
 	vector<_int> m_BoneIndex; /* Cache */
 
 private:
-	HRESULT Ready_Vertices(vector<VTXMODEL>& Vertices, _fmatrix PivotMatrix);
+	HRESULT Ready_StaticVertices(vector<VTXMODEL>& Vertices, _fmatrix PivotMatrix);
 	HRESULT Ready_AnimVertices(vector<VTXANIMMODEL>& Vertices);
 	HRESULT Ready_Indices(vector<_int>& Indices);
-
-	//HRESULT Ready_Vertices(const aiMesh* pAIMesh, _fmatrix PivotMatrix);
-	//HRESULT Ready_AnimVertices(const aiMesh* pAIMesh, CModel* pModel);
 
 public:
 	static CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, string& strName, vector<VTXMODEL>& Vertices, vector<_int>& Indices, _uint iMatIndex, vector<_int>& Bones, Matrix& PivotMatrix, CModel* pModel);

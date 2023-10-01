@@ -12,7 +12,6 @@ private:
 	virtual ~CAnimation() = default;
 
 public:
-	//HRESULT Initialize_Prototype(aiAnimation* pAIAnimation);
 	HRESULT Initialize_Prototype(const _float& fDuration, const _float& fTickPerSecond, vector<class CChannel*>& Channels);
 
 	HRESULT Initialize(class CModel* pModel);
@@ -29,11 +28,10 @@ private:
 	_float						m_fTickPerSecond = 0.f; /* 초당 재생 속도 */
 
 private: /* 복제된 애니메이션 마다 따로 가진다. */
-	vector<class CHierarchyNode*>	m_HierarchyNodes; /* 이 애니메이션을 재생하는데 필요한 뼈 */
+	vector<class CBone*>	m_Bones; /* 이 애니메이션을 재생하는데 필요한 뼈 */
 	vector<_uint>					m_ChannelKeyFrames;
 
 public:
-	//static CAnimation* Create(aiAnimation* pAIAnimation);
 	static CAnimation* Create(const _float& fDuration, const _float& fTickPerSecond, vector<class CChannel*>& Channels);
 	CAnimation* Clone(class CModel* pModel);
 	virtual void Free() override;

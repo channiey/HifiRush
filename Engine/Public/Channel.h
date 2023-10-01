@@ -13,9 +13,8 @@ public:
 	virtual ~CChannel() = default;
 
 public:
-	//HRESULT Initialize(aiNodeAnim*	pAIChannel);
 	HRESULT Initialize(const string strName, vector<KEYFRAME>& Keyframes);
-	_uint Update_Transformation(_float fPlayTime, _uint iCurrentKeyFrame, class CHierarchyNode* pNode); 
+	_uint Update_Transformation(_float fPlayTime, _uint iCurrentKeyFrame, class CBone* pNode); 
 
 public:
 	string Get_Name() const { return m_szName; }
@@ -29,7 +28,6 @@ private:
 	_uint							m_iNumKeyFrames = 0;
 
 public:
-	//static CChannel* Create(aiNodeAnim*	pAIChannel);
 	static CChannel* Create(const string strName, vector<KEYFRAME>& Keyframes);
 	virtual void Free() override;
 };

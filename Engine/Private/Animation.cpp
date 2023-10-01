@@ -1,6 +1,6 @@
 #include "..\Public\Animation.h"
 #include "Model.h"
-#include "HierarchyNode.h"
+#include "Bone.h"
 #include "Channel.h"
 
 CAnimation::CAnimation()
@@ -17,26 +17,6 @@ CAnimation::CAnimation(const CAnimation & rhs)
 	for (auto& pChannel : m_Channels)
 		Safe_AddRef(pChannel);
 }
-
-//HRESULT CAnimation::Initialize_Prototype(aiAnimation * pAIAnimation)
-//{
-//	m_fDuration = pAIAnimation->mDuration;
-//	m_fTickPerSecond = pAIAnimation->mTicksPerSecond;
-//
-//	/* 채널 정보를 생성한다. */
-//	m_iNumChannels = pAIAnimation->mNumChannels;
-//	for (_uint i = 0; i < m_iNumChannels; ++i)
-//	{
-//		CChannel*		pChannel = CChannel::Create(pAIAnimation->mChannels[i]);
-//		if (nullptr == pChannel)
-//			return E_FAIL; 
-//
-//		/* 특정 애니메이션 상태일 때, 모든 뼈대 상태를 갱신하는 것이 아니라(겁나 느리다), 해당 애니메이션을 구동하기 위해 필요한 뼈대만 갱신해주기 위해 채널을 모아둔다. */
-//		m_Channels.push_back(pChannel);
-//	}
-//
-//	return S_OK;
-//}
 
 HRESULT CAnimation::Initialize_Prototype(const _float& fDuration, const _float& fTickPerSecond, vector<class CChannel*>& Channels)
 {
@@ -62,12 +42,12 @@ HRESULT CAnimation::Initialize(CModel* pModel)
 	{
 		m_ChannelKeyFrames.push_back(0);
 
-		CHierarchyNode*		pNode = pModel->Get_HierarchyNode(m_Channels[i]->Get_Name().c_str());
+		CBone*		pNode = pModel->Get_Bone(m_Channels[i]->Get_Name().c_str());
 		{
 			if (nullptr == pNode)
 				return E_FAIL;		
 
-			m_HierarchyNodes.push_back(pNode);
+			m_Bones.push_back(pNode);
 		}
 		Safe_AddRef(pNode);
 	}
@@ -97,26 +77,13 @@ HRESULT CAnimation::Play_Animation(_float fTimeDelta)
 	_uint		iChannelIndex = 0;
 	for (auto& pChannel : m_Channels)
 	{
-		m_ChannelKeyFrames[iChannelIndex] = pChannel->Update_Transformation(m_fPlayTime, m_ChannelKeyFrames[iChannelIndex], m_HierarchyNodes[iChannelIndex]);
+		m_ChannelKeyFrames[iChannelIndex] = pChannel->Update_Transformation(m_fPlayTime, m_ChannelKeyFrames[iChannelIndex], m_Bones[iChannelIndex]);
 
 		++iChannelIndex;
 	}
 
 	return S_OK;
 }
-
-//CAnimation * CAnimation::Create(aiAnimation * pAIAnimation)
-//{
-//	CAnimation*			pInstance = new CAnimation();
-//
-//	if (FAILED(pInstance->Initialize_Prototype(pAIAnimation)))
-//	{
-//		MSG_BOX("Failed To Created : CAnimation");
-//		Safe_Release(pInstance);
-//	}
-//
-//	return pInstance;
-//}
 
 CAnimation* CAnimation::Create(const _float& fDuration, const _float& fTickPerSecond, vector<class CChannel*>& Channels)
 {
@@ -154,7 +121,7 @@ void CAnimation::Free()
 	m_Channels.clear();
 
 	/* HierarachyNode */
-	for (auto& pHierarchyNode : m_HierarchyNodes)
+	for (auto& pHierarchyNode : m_Bones)
 		Safe_Release(pHierarchyNode);
-	m_HierarchyNodes.clear();
+	m_Bones.clear();
 }
