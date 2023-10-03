@@ -30,26 +30,26 @@ namespace Client
 	};
 	static const wchar_t* gStrLevelID[LV_END]
 	{
-		L"LV_STATIC",
-		L"LV_LOADING",
-		L"LV_LOGO",
-		L"LV_STAGE_01",
-		L"LV_STAGE_02",
-		L"LV_STAGE_03",
-		L"LV_ENDING",
-		L"LV_PROTO"
+		L"STATIC",
+		L"LOADING",
+		L"LOGO",
+		L"STAGE_01",
+		L"STAGE_02",
+		L"STAGE_03",
+		L"ENDING",
+		L"PROTO"
 
 	};
 	static const std::wstring gStrLevelPath[LV_END]
 	{
-		TEXT("../Bin/Resources/Data/Level/Lv_Static.level"),
-		TEXT("../Bin/Resources/Data/Level/Lv_Loading.level"),
-		TEXT("../Bin/Resources/Data/Level/Lv_Logo.level"),
-		TEXT("../Bin/Resources/Data/Level/Lv_Stage_01.level"),
-		TEXT("../Bin/Resources/Data/Level/Lv_Stage_02.level"),
-		TEXT("../Bin/Resources/Data/Level/Lv_Stage_03.level"),
-		TEXT("../Bin/Resources/Data/Level/Lv_Ending.level"),
-		TEXT("../Bin/Resources/Data/Level/Lv_Proto.level"),
+		TEXT("../Bin/Resources/Data/Level/Static.level"),
+		TEXT("../Bin/Resources/Data/Level/Loading.level"),
+		TEXT("../Bin/Resources/Data/Level/Logo.level"),
+		TEXT("../Bin/Resources/Data/Level/Stage_01.level"),
+		TEXT("../Bin/Resources/Data/Level/Stage_02.level"),
+		TEXT("../Bin/Resources/Data/Level/Stage_03.level"),
+		TEXT("../Bin/Resources/Data/Level/Ending.level"),
+		TEXT("../Bin/Resources/Data/Level/Proto.level"),
 	};
 
 	/* Layer */
@@ -94,5 +94,6 @@ namespace Client
 extern HINSTANCE	g_hInst;
 extern HWND			g_hWnd;
 extern _uint		g_iFPS;
+extern _bool		g_bLoadPrototype;
 
 using namespace Client;

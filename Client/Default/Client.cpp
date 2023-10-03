@@ -21,6 +21,7 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 HINSTANCE   g_hInst;                               
 HWND	    g_hWnd;
 _uint       g_iFPS;
+_bool		g_bLoadPrototype = FALSE;
 
 WCHAR szTitle[MAX_LOADSTRING];                 
 WCHAR szWindowClass[MAX_LOADSTRING];           

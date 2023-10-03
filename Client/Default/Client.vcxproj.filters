@@ -183,9 +183,6 @@
     <ClInclude Include="..\public\Level_Logo.h">
       <Filter>01.Levels\00.Logo</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Level_Stage_01.h">
-      <Filter>01.Levels\01.Stage</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Level_Loading.h">
       <Filter>01.Levels\99.Loading</Filter>
     </ClInclude>
@@ -267,6 +264,21 @@
     <ClInclude Include="..\public\BackGround.h">
       <Filter>02.GameObjects\10.UI\99.Proto</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Level_Stage_01.h">
+      <Filter>01.Levels\01.Stage\Stage_01</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Stage_02.h">
+      <Filter>01.Levels\01.Stage\Stage_02</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Stage_03.h">
+      <Filter>01.Levels\01.Stage\Stage_03</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Proto.h">
+      <Filter>01.Levels\98.Proto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Ending.h">
+      <Filter>01.Levels\02.Ending</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -274,9 +286,6 @@
     </ClCompile>
     <ClCompile Include="..\private\Level_Logo.cpp">
       <Filter>01.Levels\00.Logo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Level_Stage_01.cpp">
-      <Filter>01.Levels\01.Stage</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Loading.cpp">
       <Filter>01.Levels\99.Loading</Filter>
@@ -349,6 +358,21 @@
     </ClCompile>
     <ClCompile Include="..\private\BackGround.cpp">
       <Filter>02.GameObjects\10.UI\99.Proto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Stage_01.cpp">
+      <Filter>01.Levels\01.Stage\Stage_01</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Stage_02.cpp">
+      <Filter>01.Levels\01.Stage\Stage_02</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Stage_03.cpp">
+      <Filter>01.Levels\01.Stage\Stage_03</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Ending.cpp">
+      <Filter>01.Levels\02.Ending</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Proto.cpp">
+      <Filter>01.Levels\98.Proto</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

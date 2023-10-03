@@ -8,6 +8,10 @@
 
 #include "Level_Logo.h"
 #include "Level_Stage_01.h"
+#include "Level_Stage_02.h"
+#include "Level_Stage_03.h"
+#include "Level_Ending.h"
+#include "Level_Proto.h"
 
 #include "Util_String.h"
 #include "Util_File.h"
@@ -68,6 +72,18 @@ HRESULT CLevel_Loading::LateTick(_float fTimeDelta)
 			case LV_STAGE_01:
 				pNewLevel = CLevel_Stage_01::Create(m_pDevice, m_pContext);
 				break;
+			case LV_STAGE_02:
+				pNewLevel = CLevel_Stage_02::Create(m_pDevice, m_pContext);
+				break;
+			case LV_STAGE_03:
+				pNewLevel = CLevel_Stage_03::Create(m_pDevice, m_pContext);
+				break;
+			case LV_ENDING:
+				pNewLevel = CLevel_Ending::Create(m_pDevice, m_pContext);
+				break;
+			case LV_PROTO:
+				pNewLevel = CLevel_Proto::Create(m_pDevice, m_pContext);
+				break;
 			}
 
 			if (nullptr == pNewLevel)
@@ -91,6 +107,12 @@ HRESULT CLevel_Loading::Parse_LevelData(const _uint& iLevelID)
 
 	shared_ptr<Util_File> file = make_shared<Util_File>();
 	if (nullptr == file) return E_FAIL;
+
+	if (!Util_File::IsExistFile(Util_String::ToString(gStrLevelPath[iLevelID])))
+	{
+		MSG_BOX("Nothing Level File");
+		return E_FAIL;
+	}
 
 	file->Open(gStrLevelPath[iLevelID], FileMode::Read);
 

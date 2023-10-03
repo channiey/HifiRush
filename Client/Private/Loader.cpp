@@ -67,9 +67,26 @@ _int CLoader::Loading()
 	switch (m_eNextLevel)
 	{
 	case LV_LOGO:
-		hr = Load_Prototype();
-		break;
+	{
+		if (!g_bLoadPrototype)
+		{
+			hr = Load_Prototype();
+			g_bLoadPrototype = TRUE;
+		}
+		else
+		{
+			m_strLoading = TEXT("Loading Finish");
+			m_isFinished = TRUE;
+			hr = S_OK;
+		}
+	}
+	break;
 	default:
+	{
+		m_strLoading = TEXT("Loading Finish");
+		m_isFinished = TRUE;
+		hr = S_OK;
+	}
 		break;
 	}
 	if (FAILED(hr))
@@ -83,9 +100,6 @@ _int CLoader::Loading()
 HRESULT CLoader::Load_Prototype()
 {
 	/* 얘네 다 쓰레드 매니저로 처리하면 반환값을 못받으니 쓰레드가 처리할 함수 내부에서 assert로 예외처리 하자 (#if _DEBUG 필수) */
-
-	/* 로고 레벨 로딩 단계에서 모든 오브젝트와 컴포넌트 원형을 생성해둔다. */
-	/* 그리고 각 레벨에서는 레벨의 데이터를 읽어 필요한 원형을 클론해서 사용한다. */
 
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
@@ -210,12 +224,10 @@ HRESULT CLoader::Load_Prototype()
 
 	m_strLoading = TEXT("Loading Finish");
 	m_isFinished = true;
-
 	Safe_Release(pGameInstance);
 
 	return S_OK;
 }
-
 
 CLoader * CLoader::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, LEVEL_ID eNextLevel)
 {

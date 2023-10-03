@@ -50,7 +50,7 @@ void CImGui_Window_Sub_Prefabs::Show_Window()
 		/* 프로토 타입을 가져온다. */
 		map<const wstring, class CGameObject*>* pPrototypes = m_pGameInstance->Get_Prototypes();
 
-		if (ImGui::BeginListBox("##listbox 734", ImVec2(-FLT_MIN, 20 * ImGui::GetTextLineHeightWithSpacing())))
+		if (ImGui::BeginListBox("##listbox 734", ImVec2(-FLT_MIN, 15 * ImGui::GetTextLineHeightWithSpacing())))
 		{
 			/* 프로토 타입 맵 포인터가 비어있다면 리턴 */
 			if (nullptr == pPrototypes)

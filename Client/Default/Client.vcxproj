@@ -193,9 +193,13 @@
     <ClInclude Include="..\Public\ImGui_Window_Main_Hierarachy.h" />
     <ClInclude Include="..\Public\ImGui_Window_Main_Object.h" />
     <ClInclude Include="..\Public\ImGui_Window_Sub_Prefabs.h" />
+    <ClInclude Include="..\Public\Level_Ending.h" />
+    <ClInclude Include="..\Public\Level_Proto.h" />
     <ClInclude Include="..\Public\Level_Stage_01.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\public\Level_Logo.h" />
+    <ClInclude Include="..\Public\Level_Stage_02.h" />
+    <ClInclude Include="..\Public\Level_Stage_03.h" />
     <ClInclude Include="..\public\Loader.h" />
     <ClInclude Include="..\public\MainApp.h" />
     <ClInclude Include="..\Public\Player.h" />
@@ -248,9 +252,13 @@
     <ClCompile Include="..\Private\ImGui_Window_Main_Hierarachy.cpp" />
     <ClCompile Include="..\Private\ImGui_Window_Main_Object.cpp" />
     <ClCompile Include="..\Private\ImGui_Window_Sub_Prefabs.cpp" />
+    <ClCompile Include="..\Private\Level_Ending.cpp" />
+    <ClCompile Include="..\Private\Level_Proto.cpp" />
     <ClCompile Include="..\Private\Level_Stage_01.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\private\Level_Logo.cpp" />
+    <ClCompile Include="..\Private\Level_Stage_02.cpp" />
+    <ClCompile Include="..\Private\Level_Stage_03.cpp" />
     <ClCompile Include="..\private\Loader.cpp" />
     <ClCompile Include="..\private\MainApp.cpp" />
     <ClCompile Include="..\Private\Player.cpp" />

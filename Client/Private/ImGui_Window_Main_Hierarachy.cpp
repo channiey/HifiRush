@@ -108,7 +108,7 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Levels()
 {
 	for (int i = LV_LOGO; i < LV_END; ++i)
 	{
-		if (i > LV_LOGO)
+		if (LV_LOGO < i && LV_STAGE_03 != i)
 			ImGui::SameLine();
 
 		const char* strLevel = Util_String::WC2C(gStrLevelID[i]);
@@ -119,9 +119,9 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Levels()
 
 			m_pGameInstance->Open_Level(LV_LOADING, CLevel_Loading::Create(m_pImGui_Manager->m_pDevice, m_pImGui_Manager->m_pContext, (LEVEL_ID)i));
 			
-			m_pImGui_Manager->Set_Active_Main_Window(m_pImGui_Manager->WINDOW_MAIN_OBJECT_INFO, FALSE);
+			/*m_pImGui_Manager->Set_Active_Main_Window(m_pImGui_Manager->WINDOW_MAIN_OBJECT_INFO, FALSE);
 			m_pImGui_Manager->Set_Active_Main_Window(m_pImGui_Manager->WINDOW_MAIN_HIEARACHY, FALSE);
-			m_pImGui_Manager->Set_Active_Main_Window(m_pImGui_Manager->WINDOW_MAIN_DEMO, FALSE);
+			m_pImGui_Manager->Set_Active_Main_Window(m_pImGui_Manager->WINDOW_MAIN_DEMO, FALSE);*/
 		}
 		else
 		{
@@ -255,7 +255,7 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Objects()
 	/* 선택한 레벨, 레이어의 오브젝트들을 가져온다.*/
 	list<class CGameObject*>* pGameObjects = m_pGameInstance->Get_Layer(m_pImGui_Manager->m_iIndex_CurLevelID, m_pImGui_Manager->m_strIndex_CurLayer);
 
-	if (ImGui::BeginListBox("##listbox 1", ImVec2(-FLT_MIN, 8 * ImGui::GetTextLineHeightWithSpacing())))
+	if (ImGui::BeginListBox("##listbox 1", ImVec2(-FLT_MIN, 7 * ImGui::GetTextLineHeightWithSpacing())))
 	{
 		if (nullptr == pGameObjects || m_bLayerEvent || m_bObjectEvent)
 		{
@@ -331,7 +331,7 @@ void CImGui_Window_Main_Hierarachy::Show_MiniLayers()
 		//if (ImGui::Button("Finish")) m_bShowMiniLayer = FALSE;
 
 		/* 클라이언트에 정의되어 있는 레이어 목록을 순회하며 나열한다. */
-		if (ImGui::BeginListBox("##listbox 513", ImVec2(-FLT_MIN, 6 * ImGui::GetTextLineHeightWithSpacing())))
+		if (ImGui::BeginListBox("##listbox 513", ImVec2(-FLT_MIN, 10 * ImGui::GetTextLineHeightWithSpacing())))
 		{
 			for (size_t i = 0; i < LAYER_END; i++)
 			{
