@@ -36,6 +36,47 @@ const Vec3 CTransform::Get_Scale()
 
 const Vec3 CTransform::Get_Rotation()
 {
+	XMMATRIX   rotationMatrix = m_RotMatrix;
+	float pitch, yaw, roll;
+
+	// Extract sin and cos values to avoid Gimbal lock
+	if (rotationMatrix.r[2].m128_f32[1] < 1.0f)
+	{
+		if (rotationMatrix.r[2].m128_f32[1] > -1.0f)
+		{
+			yaw = atan2(rotationMatrix.r[0].m128_f32[2], rotationMatrix.r[2].m128_f32[2]);
+			pitch = asin(-rotationMatrix.r[1].m128_f32[2]);
+			roll = atan2(rotationMatrix.r[1].m128_f32[0], rotationMatrix.r[1].m128_f32[1]);
+		}
+		else
+		{
+			// Gimbal lock: pitch = -90 degrees
+			yaw = -atan2(-rotationMatrix.r[0].m128_f32[0], rotationMatrix.r[0].m128_f32[2]);
+			pitch = -DirectX::XM_PI / 2;
+			roll = 0.0f;
+		}
+	}
+	else
+	{
+		// Gimbal lock: pitch = 90 degrees
+		yaw = atan2(-rotationMatrix.r[0].m128_f32[0], rotationMatrix.r[0].m128_f32[2]);
+		pitch = DirectX::XM_PI / 2;
+		roll = 0.0f;
+	}
+
+	// Convert radians to degrees
+	pitch = DirectX::XMConvertToDegrees(pitch);
+	yaw = DirectX::XMConvertToDegrees(yaw);
+	roll = DirectX::XMConvertToDegrees(roll);
+
+	// Clamp the values to 0-360 range
+	pitch = fmodf(pitch, 360.0f);
+	yaw = fmodf(yaw, 360.0f);
+	roll = fmodf(roll, 360.0f);
+
+	return Vec3(pitch, yaw, roll);
+
+	////////////////////////////////////////////////
 	Vec3 vTemp;
 	Quaternion quatTemp;
 
@@ -113,6 +154,7 @@ void CTransform::Set_Rotation(const Vec3& vEulers, const _bool& bWorld)
 
 	// 쿼터니언을 회전 행렬로 변환합니다.
 	Matrix matRotation = Matrix::CreateFromQuaternion(finalQuat);
+	m_RotMatrix = matRotation;
 
 	// 스케일 및 위치 정보를 적용한 최종 변환 행렬을 생성합니다.
 	matRotation.m[3][0] = position.x;
@@ -137,6 +179,7 @@ void CTransform::Set_Rotation(const Vec3& vAxis, const _float fRad)
 	_vector		vLook = XMVectorSet(0.f, 0.f, 1.f, 0.f) * vScaled.z;
 
 	_matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, XMConvertToRadians(fRad));
+	m_RotMatrix = RotationMatrix;
 
 	vRight = XMVector4Transform(vRight, RotationMatrix);
 	vUp = XMVector4Transform(vUp, RotationMatrix);
@@ -172,6 +215,7 @@ void CTransform::Rotate(const Vec3& vEulers, const _bool& bWorld)
 	}
 
 	matRotation = Matrix::CreateFromQuaternion(quat);
+	m_RotMatrix = matRotation;
 
 	for (_uint i = 0; i < 3; ++i)
 	{
@@ -191,6 +235,7 @@ void CTransform::Rotate(const Vec4& vAxis, const _float& fRad)
 	_vector		vLook = Get_State(STATE_LOOK);
 
 	_matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, fRad);
+	m_RotMatrix = RotationMatrix;
 
 	vRight = XMVector4Transform(vRight, RotationMatrix);
 	vUp = XMVector4Transform(vUp, RotationMatrix);
@@ -219,33 +264,21 @@ const Vec3 CTransform::ToEulerAngles(Quaternion quat)
 	Vec3 angles;
 
 	// roll (x-axis rotation)
-	double sinr_cosp = 2 * (quat.w * quat.x + quat.y * quat.z);
-	double cosr_cosp = 1 - 2 * (quat.x * quat.x + quat.y * quat.y);
+	_float sinr_cosp = 2.f * (quat.w * quat.x + quat.y * quat.z);
+	_float cosr_cosp = 1.f - 2.f * (quat.x * quat.x + quat.y * quat.y);
 	angles.x = std::atan2(sinr_cosp, cosr_cosp);
-	if (-0.f == angles.x) angles.x = 0.f;
+
 	// pitch (y-axis rotation)
-
-	/**/
-	/*double sinp = std::sqrt(1 + 2 * (quat.w * quat.y - quat.x * quat.z));
-	double cosp = std::sqrt(1 - 2 * (quat.w * quat.y - quat.x * quat.z));
-	angles.y = 2 * std::atan2(sinp, cosp) - XM_PI / 2;*/
-
-	/* GPT 기반 수정 */
-	/*
-		atan2 함수의 결과 범위는 - π에서 π 또는 - 180에서 180도입니다.
-		그러나 위 코드에서는 sinp와 cosp 값을 사용하여 atan2 함수로부터 얻은 값을 2배하고 XM_PI / 2를 뺀 값을 angles.y에 저장하려고 합니다.
-		이렇게 하면 유효한 오일러 각도가 아닐 수 있으며 원하는 결과를 얻을 수 없을 수 있습니다.
-	*/
-	
-	angles.y = std::atan2(2 * (quat.w * quat.y + quat.x * quat.z), 1 - 2 * (quat.y * quat.y + quat.z * quat.z));
-	if (-0.f == angles.y) angles.y = 0.f;
+	_float sinp = std::sqrt(1.f + 2.f * (quat.w * quat.y - quat.x * quat.z));
+	_float cosp = std::sqrt(1.f - 2.f * (quat.w * quat.y - quat.x * quat.z));
+	angles.y = 2.f * std::atan2(sinp, cosp) - 3.14159265f / 2.f;
 
 	// yaw (z-axis rotation)
-	double siny_cosp = 2 * (quat.w * quat.z + quat.x * quat.y);
-	double cosy_cosp = 1 - 2 * (quat.y * quat.y + quat.z * quat.z);
+	_float siny_cosp = 2.f * (quat.w * quat.z + quat.x * quat.y);
+	_float cosy_cosp = 1.f - 2.f * (quat.y * quat.y + quat.z * quat.z);
 	angles.z = std::atan2(siny_cosp, cosy_cosp);
-	if (-0.f == angles.z) angles.z = 0.f;
 
+	//return Vec3(RAD2DEG(angles.x), RAD2DEG(angles.y), RAD2DEG(angles.z));
 	return angles;
 }
 

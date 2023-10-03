@@ -50,11 +50,8 @@ HRESULT CCamera_Debug::Initialize(void * pArg)
 void CCamera_Debug::Tick(_float fTimeDelta)
 {
 	/* Move */
-	_float fDelta = 1.f / (_float)g_iFPS;
-	if (fDelta < fTimeDelta + 0.1f)
-		Move(fDelta);
-	else
-		Move(fTimeDelta);
+	
+	Move(fTimeDelta);
 
 	__super::Tick(fTimeDelta);
 }

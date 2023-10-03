@@ -126,34 +126,31 @@ void CImGui_Window_Main_Object::Show_Object_Transform()
 					pTransform->Set_State(CTransform::STATE_POSITION, Vec4(fPos[0], fPos[1], fPos[2], 1));
 				}
 
-				
 				/* Rotation */
 				Vec3 vRot = pTransform->Get_Rotation(); /* Euler */
-				_float fRot[3] = { XMConvertToDegrees(vRot.x), XMConvertToDegrees(vRot.y), XMConvertToDegrees(vRot.z) };
+				_float fRot[3] = { vRot.x, vRot.y, vRot.z };
 				if (ImGui::InputFloat3("Rot", fRot, "%.1f"))
 				{
-					if (XMConvertToDegrees(vRot.x) != fRot[0] || XMConvertToDegrees(vRot.y) != fRot[1] || XMConvertToDegrees(vRot.z) != fRot[2])
+					if (vRot.x != fRot[0] || vRot.y != fRot[1] || vRot.z != fRot[2])
 					{
 						if (fRot[0] != fRotPrev[0])
 						{
 							for (size_t i = 0; i < 3; i++)
 								fRotPrev[i] = fRot[i];
 							
-							/*vRot = { fRot[0], fRot[1], fRot[2] };
-							pTransform->Set_Rotation(vRot, TRUE);*/
-							pTransform->Set_Rotation(Vec3{ 1, 0, 0 }, fRot[0]);
+							pTransform->Set_Rotation(Vec3::Right, fRot[0]);
 						}
 						else if (fRot[1] != fRotPrev[1])
 						{
 							for (size_t i = 0; i < 3; i++)
 								fRotPrev[i] = fRot[i];
-							pTransform->Set_Rotation(Vec3{ 0, 1, 0 }, fRot[1]);
+							pTransform->Set_Rotation(Vec3::Up, fRot[1]);
 						}
 						else if (fRot[2] != fRotPrev[2])
 						{
 							for (size_t i = 0; i < 3; i++)
 								fRotPrev[i] = fRot[i];
-							pTransform->Set_Rotation(Vec3{ 0, 0, 1 }, fRot[2]);
+							pTransform->Set_Rotation(Vec3::Forward, fRot[2]);
 						}
 					}
 				}
