@@ -2,6 +2,8 @@
 
 #include "Base.h"
 
+
+
 BEGIN(Engine)
 
 class CGraphic_Device final : public CBase
@@ -13,9 +15,13 @@ private:
 	virtual ~CGraphic_Device() = default;
 
 public:
+	ID3D11Device*		Get_Device() { return m_pDevice; }
+	GRAPHIC_DESC		Get_GraphicDesc() const { return m_GraphicDesc; }
+	const Viewport&		Get_ViewPort() { return m_tViewPort; }
+
+public:
 	/* 그래픽 디바이스의 초기화. */
-	HRESULT Ready_Graphic_Device(HWND hWnd, GRAPHIC_DESC::WINMODE eWinMode,
-		_uint iWinCX, _uint iWinCY, _Inout_ ID3D11Device** ppDevice,
+	HRESULT Ready_Graphic_Device(const GRAPHIC_DESC& GraphicDesc, _Inout_ ID3D11Device** ppDevice,
 		_Inout_ ID3D11DeviceContext** ppDeviceContextOut);
 
 	/* 백버퍼를 지운다. */
@@ -52,8 +58,8 @@ private:
 	ID3D11RenderTargetView*		m_pBackBufferRTV = nullptr;
 	ID3D11DepthStencilView*		m_pDepthStencilView = nullptr;
 
-	
-
+	GRAPHIC_DESC				m_GraphicDesc = {};
+	Viewport					m_tViewPort;
 
 private:
 	/* 스왑체인에게 필수적으로 필요한 데이터는 백버퍼가 필요하여. 하여 백버퍼를 생성하기위한 정보를 던져준다. */

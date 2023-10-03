@@ -49,6 +49,11 @@ CTransform* const CGameObject::Get_Transform()
 	return dynamic_cast<CTransform*>(Get_Component(TEXT("Com_Transform")));
 }
 
+CVIBuffer* CGameObject::Get_VIBuffer()
+{
+	return dynamic_cast<CVIBuffer*>(Get_Component(TEXT("Com_VIBuffer")));
+}
+
 CMonoBehaviour* const CGameObject::Get_MonoBehaviour(const _uint& iIndex)
 {
 	if(m_MonoBehaviours.size() > iIndex)

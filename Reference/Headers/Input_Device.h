@@ -10,8 +10,8 @@ class CInput_Device final : public CBase
 	DECLARE_SINGLETON(CInput_Device)
 
 public:
-	enum MOUSEKEYSTATE { MKS_LBUTTON, MKS_RBUTTON, MKS_WHEELBUTTON, MKS_XBUTTON, MKS_END };
-	enum MOUSEMOVESTATE { MMS_X, MMS_Y, MMS_WHEEL, MMS_END };
+	enum MOUSEKEYSTATE		{ MKS_LBUTTON, MKS_RBUTTON, MKS_WHEELBUTTON, MKS_XBUTTON, MKS_END };
+	enum MOUSEMOVESTATE		{ MMS_X, MMS_Y, MMS_WHEEL, MMS_END };
 
 private:
 	CInput_Device();
@@ -19,8 +19,13 @@ private:
 	
 public:
 	HRESULT	Initialize(HINSTANCE hInst, HWND hWnd);
-	/* 매 업데이트마다 인풋 상태를 갱신한다. */
 	void Tick();
+
+public:
+	const _bool Get_PickPos_Window(_Inout_ Vec2& vPickPos);
+
+	/* Temp */
+	const _bool Get_PickPos_Terrain(class CVIBuffer_Terrain* pBuffer, Matrix matWorld, _Inout_ Vec3& vPickPos);
 
 public:
 	/* User */
@@ -42,29 +47,6 @@ public:
 		return *(((_long*)&m_tMouseState) + eMouseState); 
 	} 
 
-	// 마우스 무브 인풋 사용법																											
-	/*
-							
-							if (dwMouse = CInput_Device::GetInstance()->Get_DIMouseMove(DIMS_Y))
-							{
-								// 스크린 좌표계를 기준으로 이전 프레임에서 현재프레임의 마우스 y포지션 차이를 반환한다.
-								// 마우스를 올리면 -값, 내리면 +값
-							}
-
-							if (dwMouse = CInput_Device::GetInstance()->Get_DIMouseMove(DIMS_X))
-							{
-								// 스크린 좌표계를 기준으로 이전 프레임에서 현재프레임의 마우스 x포지션 차이를 반환한다.
-								// 마우스를 오른쪽으로 하면 +값, 왼쪽으로 하면 -값
-							}
-
-							if (dwMouse = CInput_Device::GetInstance()->Get_DIMouseMove(DIMS_Z))
-							{
-								// 위로 스크롤 하면 120 반환
-								// 아래로 스크롤 하면 -120 반환
-							}
-
-	*/
-
 private:
 	LPDIRECTINPUT8			m_pInputSDK = nullptr;
 	LPDIRECTINPUTDEVICE8	m_pKeyboard = nullptr;
@@ -74,10 +56,36 @@ private:
 	_byte					m_byKeyState[256] = { 0 };
 	DIMOUSESTATE			m_tMouseState;	
 	_bool					m_bKeyState[VK_MAX];
-
 	HWND					m_bFocus{};
+
+
 
 public:
 	virtual void			Free();
 };
 END
+
+
+
+// 마우스 무브 인풋 사용법																											
+/*
+
+						if (dwMouse = CInput_Device::GetInstance()->Get_DIMouseMove(DIMS_Y))
+						{
+							// 스크린 좌표계를 기준으로 이전 프레임에서 현재프레임의 마우스 y포지션 차이를 반환한다.
+							// 마우스를 올리면 -값, 내리면 +값
+						}
+
+						if (dwMouse = CInput_Device::GetInstance()->Get_DIMouseMove(DIMS_X))
+						{
+							// 스크린 좌표계를 기준으로 이전 프레임에서 현재프레임의 마우스 x포지션 차이를 반환한다.
+							// 마우스를 오른쪽으로 하면 +값, 왼쪽으로 하면 -값
+						}
+
+						if (dwMouse = CInput_Device::GetInstance()->Get_DIMouseMove(DIMS_Z))
+						{
+							// 위로 스크롤 하면 120 반환
+							// 아래로 스크롤 하면 -120 반환
+						}
+
+*/

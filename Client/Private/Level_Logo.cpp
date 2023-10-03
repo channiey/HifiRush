@@ -2,6 +2,7 @@
 #include "..\Public\Level_Logo.h"
 
 #include "GameInstance.h"
+#include "GameObject.h"
 #include "Level_Loading.h"
 
 CLevel_Logo::CLevel_Logo(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
@@ -39,6 +40,8 @@ HRESULT CLevel_Logo::Initialize()
 
 HRESULT CLevel_Logo::Tick(_float fTimeDelta)
 {
+	//Picking();
+
 	return S_OK;
 }
 
@@ -73,6 +76,30 @@ HRESULT CLevel_Logo::Ready_Layer_BackGround(const wstring & strLayerTag)
 	Safe_Release(pGameInstance);
 
 	return S_OK;
+}
+
+void CLevel_Logo::Picking()
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+	{
+		if (pGameInstance->Key_Down(VK_LBUTTON))
+		{
+			Vec3 vPickPos;
+
+			CGameObject* pTerrain = pGameInstance->Get_GameObject(LEVEL_LOGO, gStrLayerID[LAYER_ENVIORNMENT], TEXT("Env_Terrain_000"));
+			if (nullptr != pTerrain)
+			{
+				CVIBuffer_Terrain*  pBuffer = dynamic_cast<CVIBuffer_Terrain*>(pTerrain->Get_VIBuffer());
+				if (pGameInstance->Get_PickPos_Terrain(pBuffer, pTerrain->Get_Transform()->Get_WorldMat(), vPickPos))
+				{
+					CGameObject* pObj = pGameInstance->Add_GameObject(LEVEL_LOGO, gStrLayerID[LAYER_PLAYER], TEXT("Player_Chai"));
+					if(nullptr != pObj)
+						pObj->Get_Transform()->Set_Position(vPickPos);
+				}
+			}
+		}
+	}
+	RELEASE_INSTANCE(CGameInstance);
 }
 
 CLevel_Logo * CLevel_Logo::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)

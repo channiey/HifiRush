@@ -11,7 +11,7 @@ class CPipeLine final : public CBase
 	DECLARE_SINGLETON(CPipeLine)
 
 public:
-	enum TRANSFORM_STATE { D3DTS_VIEW, D3DTS_PROJ, D3DTS_END };
+	enum TRANSFORM_STATE { STATE_VIEW, STATE_PROJ, STATE_END };
 
 private:
 	CPipeLine();
@@ -38,10 +38,10 @@ public:
 
 private:
 	/* 뷰, 투영 행렬을 보관한다. */
-	Matrix	m_TransformMatrices[D3DTS_END];
+	Matrix	m_TransformMatrices[STATE_END];
 
 	/* 뷰, 투영 역행렬을 보관한다. */
-	Matrix	m_TransformMatrices_Inverse[D3DTS_END];
+	Matrix	m_TransformMatrices_Inverse[STATE_END];
 
 	/* 카메라 월드 포지션 */
 	Vec4	m_vCamPosition = { 0.0f, 0.f, 0.f, 1.f };

@@ -29,6 +29,7 @@ public:
 	const _uint& Get_PickID() const { return m_iPickID; }
 
 	class CTransform* const Get_Transform();
+	class CVIBuffer* Get_VIBuffer();
 	
 	class CComponent* const Get_Component(const wstring& strComponentTag) { return Find_Component(strComponentTag); };
 	map<const wstring, class CComponent*>& Get_Components() { return m_Components; }

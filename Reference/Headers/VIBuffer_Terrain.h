@@ -16,12 +16,17 @@ public:
 	virtual HRESULT Initialize(void* pArg);
 
 public:
+	const _uint& Get_VerticesX() const { return m_iNumVerticesX; }
+	const _uint& Get_VerticesZ() const { return m_iNumVerticesZ; }
+
+public:
 	//void Culling(const class CTransform* pTransform);
 
 private:
 	_uint			m_iNumVerticesX = 0;
 	_uint			m_iNumVerticesZ = 0;
 	FACEINDICES32*	m_pFaceIndices = nullptr;
+
 	//class CQuadTree*		m_pQuadTree = nullptr;
 
 public:

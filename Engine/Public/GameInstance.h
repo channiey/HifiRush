@@ -30,6 +30,10 @@ public: /* For.Graphic_Device */
 	HRESULT Clear_BackBuffer_View(_float4 vClearColor);	
 	HRESULT Clear_DepthStencil_View();	
 	HRESULT Present();
+	ID3D11Device* Get_Device();
+	GRAPHIC_DESC Get_GraphicDesc();
+	const Viewport Get_ViewPort();
+
 
 public: /* For.Level_Manager */
 	HRESULT Open_Level(_uint iLevelIndex, class CLevel* pNewLevel);
@@ -39,7 +43,9 @@ public: /* For.Object_Manager */
 	map<const wstring, class CGameObject*>*	Get_Prototypes();
 	map<const wstring, class CLayer*>* Get_All_Layer(_uint iLevelIndex);
 	list<class CGameObject*>* Get_Layer(_uint iLevelIndex, const wstring& strLayerTag);
+	class CLayer* Get_LayerClass(_uint iLevelIndex, const wstring& strLayerTag);
 	class CGameObject* Get_Player();
+	class CGameObject* Get_GameObject(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag);
 
 	HRESULT	Add_Prototype(const wstring& strPrototypeTag, class CGameObject* pPrototype);
 	class CGameObject* Add_GameObject(const _uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag, void* pArg = nullptr);
@@ -72,6 +78,7 @@ public:  /* For.Input_Device */
 	const _bool Key_Up(const _int& _iKey);
 	const _bool Key_Down(const _int& _iKey);
 	const _bool Key_Pressing(const _int& _iKey);
+	const _bool Get_PickPos_Terrain(class CVIBuffer_Terrain* pBuffer, Matrix matWorld, _Inout_ Vec3& vPickPos);
 
 public: /* For.PipeLine */
 	HRESULT Bind_TransformToShader(class CShader* pShader, const char* pConstantName, CPipeLine::TRANSFORM_STATE eState);

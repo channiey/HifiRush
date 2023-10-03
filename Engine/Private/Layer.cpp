@@ -137,6 +137,16 @@ void CLayer::LateTick(_float fTimeDelta)
 		CThread_Manager::GetInstance()->Finish_MultiThreading();*/
 }
 
+CGameObject* CLayer::Get_GameObject(const wstring& strPrototypeTag)
+{
+	for (CGameObject* pObj : m_GameObjects)
+	{
+		if (pObj->Get_Name() == strPrototypeTag)
+			return pObj;
+	}
+	return nullptr;
+}
+
 CLayer * CLayer::Create(const wstring& strLayerTag)
 {
 	CLayer*	pInstance = new CLayer();

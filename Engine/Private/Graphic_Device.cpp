@@ -14,7 +14,7 @@ CGraphic_Device::CGraphic_Device()
 
 }
 
-HRESULT CGraphic_Device::Ready_Graphic_Device(HWND hWnd, GRAPHIC_DESC::WINMODE eWinMode, _uint iWinCX, _uint iWinCY, ID3D11Device** ppDeviceOut, ID3D11DeviceContext** ppDeviceContextOut)
+HRESULT CGraphic_Device::Ready_Graphic_Device(const GRAPHIC_DESC& GraphicDesc, ID3D11Device** ppDeviceOut, ID3D11DeviceContext** ppDeviceContextOut)
 {
 	_uint		iFlag = 0;
 
@@ -23,6 +23,8 @@ HRESULT CGraphic_Device::Ready_Graphic_Device(HWND hWnd, GRAPHIC_DESC::WINMODE e
 #endif
 	D3D_FEATURE_LEVEL			FeatureLV;
 
+	m_GraphicDesc = GraphicDesc;
+
 	/* 그래픽 장치를 초기화한다. */
 	if (FAILED(D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, 0, iFlag, nullptr, 0, D3D11_SDK_VERSION, &m_pDevice, &FeatureLV, &m_pDeviceContext)))
 		return E_FAIL;
@@ -30,14 +32,14 @@ HRESULT CGraphic_Device::Ready_Graphic_Device(HWND hWnd, GRAPHIC_DESC::WINMODE e
 	/* SwapChain 전면과 후면버퍼를 번갈아가며 화면에 보여준다.(Present) */
 
 	/* 백버퍼를 생성하기위한 texture2D만든거야. */
-	if (FAILED(Ready_SwapChain(hWnd, eWinMode, iWinCX, iWinCY)))
+	if (FAILED(Ready_SwapChain(m_GraphicDesc.hWnd, m_GraphicDesc.eWinMode, m_GraphicDesc.iWinSizeX, m_GraphicDesc.iWinSizeY)))
 		return E_FAIL;
 
 	/* 스왑체인이 들고 있는 텍스쳐 2ㅇ를 각져와서 이를 바탕으로 백버퍼 렌더타겟뷰 를 만든다.*/
 	if (FAILED(Ready_BackBufferRenderTargetView()))
 		return E_FAIL;
 
-	if (FAILED(Ready_DepthStencilRenderTargetView(iWinCX, iWinCY)))
+	if (FAILED(Ready_DepthStencilRenderTargetView(m_GraphicDesc.iWinSizeX, m_GraphicDesc.iWinSizeY)))
 		return E_FAIL;
 
 	/* 장치에 바인드해놓을 렌더타겟들과 뎁스스텐실뷰를 셋팅한다. */
@@ -47,18 +49,18 @@ HRESULT CGraphic_Device::Ready_Graphic_Device(HWND hWnd, GRAPHIC_DESC::WINMODE e
 	};
 
 	m_pDeviceContext->OMSetRenderTargets(1, pRTVs,
-		m_pDepthStencilView);		
-	
-	D3D11_VIEWPORT			ViewPortDesc;
-	ZeroMemory(&ViewPortDesc, sizeof(D3D11_VIEWPORT));
-	ViewPortDesc.TopLeftX = 0;
-	ViewPortDesc.TopLeftY = 0;
-	ViewPortDesc.Width = (_float)iWinCX;
-	ViewPortDesc.Height = (_float)iWinCY;
-	ViewPortDesc.MinDepth = 0.f;
-	ViewPortDesc.MaxDepth = 1.f;
+		m_pDepthStencilView);	
 
-	m_pDeviceContext->RSSetViewports(1, &ViewPortDesc);
+	
+	ZeroMemory(&m_tViewPort, sizeof(Viewport));
+	m_tViewPort.x = 0;
+	m_tViewPort.y = 0;
+	m_tViewPort.width = (_float)m_GraphicDesc.iWinSizeX;
+	m_tViewPort.height = (_float)m_GraphicDesc.iWinSizeY;
+	m_tViewPort.minDepth = 0.f;
+	m_tViewPort.maxDepth = 1.f;
+
+	m_pDeviceContext->RSSetViewports(1, m_tViewPort.Get11());
 
 	*ppDeviceOut = m_pDevice;
 	*ppDeviceContextOut = m_pDeviceContext;

@@ -1,6 +1,5 @@
 #include "..\Public\Object_Manager.h"
 #include "Layer.h"
-//#include "GameObject.h"
 
 #include "Util_String.h"
 
@@ -308,9 +307,29 @@ list<class CGameObject*>* CObject_Manager::Get_Layer(_uint iLevelIndex, const ws
 	return pLayer->Get_Objects();
 }
 
+CLayer* CObject_Manager::Get_LayerClass(_uint iLevelIndex, const wstring& strLayerTag)
+{
+	CLayer* pLayer = Find_Layer(iLevelIndex, strLayerTag);
+
+	if (nullptr == pLayer)
+		return nullptr;
+
+	return pLayer;
+}
+
 CGameObject* CObject_Manager::Get_Player()
 {
 	return nullptr;
+}
+
+CGameObject* CObject_Manager::Get_GameObject(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag)
+{
+	CLayer* pLayer = Find_Layer(iLevelIndex, strLayerTag);
+
+	if (nullptr == pLayer)
+		return nullptr;
+
+	return pLayer->Get_GameObject(strPrototypeTag);
 }
 
 HRESULT CObject_Manager::Add_Layer(_uint iLevelIndex, const wstring& strLayerTag)

@@ -20,6 +20,9 @@ public:
 
 public:
 	list<class CGameObject*>* Get_Objects() { return &m_GameObjects; }
+
+	/* 이름이 중복일 경우 앞에 위치한 오브젝트가 반환된다. */
+	class CGameObject* Get_GameObject(const wstring& strPrototypeTag);
 	const wstring& Get_Name() const { return m_strName; }
 
 	/* 클론의 고유 번호를 세팅한 이름을 리턴한다. */

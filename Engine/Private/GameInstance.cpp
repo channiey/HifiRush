@@ -4,6 +4,7 @@
 #include "Level_Manager.h"
 #include "Object_Manager.h"
 #include "Profiler_Manager.h"
+#include "GameObject.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -33,13 +34,13 @@ CGameInstance::CGameInstance()
 HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, HINSTANCE hInst, const GRAPHIC_DESC& GraphicDesc, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext)
 {
 	/* 그래픽디바이스 초기화 처리. */
-	if (FAILED(m_pGraphic_Device->Ready_Graphic_Device(GraphicDesc.hWnd, GraphicDesc.eWinMode, GraphicDesc.iWinSizeX, GraphicDesc.iWinSizeY, ppDevice, ppContext)))
+	if (FAILED(m_pGraphic_Device->Ready_Graphic_Device(GraphicDesc, ppDevice, ppContext)))
 		return E_FAIL;
 
 	/* 사운드디바이스 초기화 처리. */
 
 	/* 입력디바이스 초기화 처리. */
-	if (FAILED(m_pInput_Device->Initialize(hInst, GraphicDesc.hWnd)))
+	if (FAILED(m_pInput_Device->Initialize(hInst, m_pGraphic_Device->Get_GraphicDesc().hWnd)))
 		return E_FAIL;
 
 	/* 오브젝트 매니저의 예약 처리. */
@@ -128,6 +129,30 @@ HRESULT CGameInstance::Present()
 		return E_FAIL;
 
 	return m_pGraphic_Device->Present();
+}
+
+ID3D11Device* CGameInstance::Get_Device()
+{
+	if (nullptr == m_pGraphic_Device)
+		return nullptr;
+
+	return m_pGraphic_Device->Get_Device();
+}
+
+GRAPHIC_DESC CGameInstance::Get_GraphicDesc()
+{
+	if (nullptr == m_pGraphic_Device)
+		return GRAPHIC_DESC{};
+
+	return m_pGraphic_Device->Get_GraphicDesc();
+}
+
+const Viewport CGameInstance::Get_ViewPort()
+{
+	if (nullptr == m_pGraphic_Device)
+		return Viewport{};
+
+	return m_pGraphic_Device->Get_ViewPort();
 }
 
 HRESULT CGameInstance::Open_Level(_uint iLevelIndex, CLevel * pNewLevel)
@@ -226,9 +251,25 @@ list<class CGameObject*>* CGameInstance::Get_Layer(_uint iLevelIndex, const wstr
 	return m_pObject_Manager->Get_Layer(iLevelIndex, strLayerTag);
 }
 
+CLayer* CGameInstance::Get_LayerClass(_uint iLevelIndex, const wstring& strLayerTag)
+{
+	if (nullptr == m_pObject_Manager)
+		return nullptr;
+
+	return m_pObject_Manager->Get_LayerClass(iLevelIndex, strLayerTag);
+}
+
 CGameObject* CGameInstance::Get_Player()
 {
 	return nullptr;
+}
+
+CGameObject* CGameInstance::Get_GameObject(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag)
+{
+	if (nullptr == m_pObject_Manager)
+		return nullptr;
+
+	return m_pObject_Manager->Get_GameObject(iLevelIndex, strLayerTag, strPrototypeTag);
 }
 
 map<const wstring, class CGameObject*>* CGameInstance::Get_Prototypes()
@@ -329,6 +370,14 @@ const _bool CGameInstance::Key_Pressing(const _int& _iKey)
 		return FALSE;
 
 	return m_pInput_Device->Key_Pressing(_iKey);
+}
+
+const _bool CGameInstance::Get_PickPos_Terrain(class CVIBuffer_Terrain* pBuffer, Matrix matWorld, Vec3& vPickPos)
+{
+	if (nullptr == m_pInput_Device)
+		return FALSE;
+
+	return m_pInput_Device->Get_PickPos_Terrain(pBuffer, matWorld, vPickPos);
 }
 
 HRESULT CGameInstance::Bind_TransformToShader(CShader* pShader, const char* pConstantName, CPipeLine::TRANSFORM_STATE eState)
