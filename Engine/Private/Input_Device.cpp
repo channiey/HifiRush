@@ -1,10 +1,14 @@
 #include "..\Public\Input_Device.h"
 
 #include "GameInstance.h"
+
+/* TODO Picking Class */
 #include "Graphic_Device.h"
 #include "GameObject.h"
 #include "Transform.h"
 #include "VIBuffer_Terrain.h"
+#include "Layer.h"
+#include "Collider_Sphere.h"
 
 IMPLEMENT_SINGLETON(CInput_Device)
 
@@ -100,6 +104,86 @@ void CInput_Device::Tick()
 	}
 }
 
+CGameObject* CInput_Device::Get_Pick_Object()
+{
+	if (!m_bFocus) return nullptr;
+
+	CGameObject* pPickedObj = nullptr;
+	_float		 fMinDist;
+
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+	{
+		typedef map<const wstring, class CLayer*> LAYERS;
+
+		LAYERS* pLayers = pGameInstance->Get_All_Layer_CurLevel();
+	
+		if (nullptr == pLayers)
+		{
+			RELEASE_INSTANCE(CGameInstance);
+			return nullptr;
+		}
+
+		for (auto& Pair : *pLayers)
+		{
+			list<class CGameObject*>* pLayer = Pair.second->Get_Objects();
+			if (nullptr == pLayer)
+				continue;
+
+			for (auto& pObj : *pLayer)
+			{
+				if (nullptr == pObj)
+					continue;
+
+				CCollider_Sphere* pCollider = pObj->Get_Collider_Sphere();
+				
+				if (nullptr == pCollider)
+					continue;
+
+				/* Create Ray */
+				Ray ray;
+				{
+					Matrix		    matW, matV, matP;
+					Viewport		viewPort;
+
+					matW = Matrix::Identity;
+					matV = pGameInstance->Get_Transform(CPipeLine::STATE_VIEW);
+					matP = pGameInstance->Get_Transform(CPipeLine::STATE_PROJ);
+					viewPort = pGameInstance->Get_ViewPort();
+
+					Vec2 vPickWindow;
+					if (!Get_PickPos_Window(vPickWindow))
+					{
+						RELEASE_INSTANCE(CGameInstance);
+						return FALSE;
+					}
+
+					Vec3 n = viewPort.Unproject(Vec3(vPickWindow.x, vPickWindow.y, 0.f), matP, matV, matW);
+					Vec3 f = viewPort.Unproject(Vec3(vPickWindow.x, vPickWindow.y, 1.f), matP, matV, matW);
+
+					Vec3 vOrigin = n;
+					Vec3 vDirection = f - n;
+					vDirection.Normalize();
+
+					ray.position = vOrigin;
+					ray.direction = vDirection;
+				}
+
+				/* Is Intersect ? */
+				_float fDistance;
+				if (ray.Intersects(pCollider->Get_Collider(), OUT fDistance))
+				{
+					if (nullptr == pPickedObj)
+						pPickedObj = pObj;
+
+					pPickedObj = (pPickedObj->Get_CamDistance() < pObj->Get_CamDistance()) ? pPickedObj : pObj;
+				}
+			}
+		}
+	}
+	RELEASE_INSTANCE(CGameInstance);
+	return pPickedObj;
+}
+
 const _bool CInput_Device::Get_PickPos_Window(_Inout_ Vec2& vPickPos)
 {
 	if (!m_bFocus) return FALSE;
@@ -141,8 +225,8 @@ const _bool CInput_Device::Get_PickPos_Terrain(class CVIBuffer_Terrain* pBuffer,
 	RELEASE_INSTANCE(CGameInstance);
 
 	Vec2 vPickWindow;
-	if (Get_PickPos_Window(vPickWindow)) 
-		return E_FAIL;
+	if (!Get_PickPos_Window(vPickWindow)) 
+		return FALSE;
 
 	Vec3 n = viewPort.Unproject(Vec3(vPickWindow.x, vPickWindow.y, 0.f), matP, matV, matW);
 	Vec3 f = viewPort.Unproject(Vec3(vPickWindow.x, vPickWindow.y, 1.f), matP, matV, matW);

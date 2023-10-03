@@ -4,50 +4,50 @@
 
 BEGIN(Engine)
 
-enum COMPONTENT_TYPE
-{
-	COM_RENDERER,
-	COM_VIBUFFER,
-	COM_SHADER,
-	COM_TEXTURE,
-	COM_TRANSFORM,
-
-	COM_STATEMACHINE,
-	COM_BEHAVIOURTREE,
-
-	//COM_MODEL,
-	//COM_COLLIDER,
-	//COM_NAVIMESH,
-	//COM_CAMERA,
-
-	//COM_LOD,
-	//COM_BT,
-	//COM_WATER,
-	//COM_MONOBEHAVIOUR,
-
-	COM_END
-};
-static wstring gStrComponentType[COM_END]
-{
-	L"Com_Renderer",
-	L"Com_VIBuffer",
-	L"Com_Shader",
-	L"Com_Texture"
-	L"Com_Transform",
-
-	L"Com_StateMachine",
-	L"Com_BehaviourTree"
-
-	//L"Com_Model",
-	//L"Com_Collider",
-	//L"Com_Navimesh",
-	//L"Com_Camera"
-
-	//L"Com_Lod",
-	//L"Com_BT",
-	//L"Com_Water",
-	//L"Com_Monobehaviour",
-};
+//enum COMPONTENT_TYPE
+//{
+//	COM_RENDERER,
+//	COM_VIBUFFER,
+//	COM_SHADER,
+//	COM_TEXTURE,
+//	COM_TRANSFORM,
+//
+//	COM_STATEMACHINE,
+//	COM_BEHAVIOURTREE,
+//
+//	//COM_MODEL,
+//	//COM_COLLIDER,
+//	//COM_NAVIMESH,
+//	//COM_CAMERA,
+//
+//	//COM_LOD,
+//	//COM_BT,
+//	//COM_WATER,
+//	//COM_MONOBEHAVIOUR,
+//
+//	COM_END
+//};
+//static wstring gStrComponentType[COM_END]
+//{
+//	L"Com_Renderer",
+//	L"Com_VIBuffer",
+//	L"Com_Shader",
+//	L"Com_Texture"
+//	L"Com_Transform",
+//
+//	L"Com_StateMachine",
+//	L"Com_BehaviourTree"
+//
+//	//L"Com_Model",
+//	//L"Com_Collider",
+//	//L"Com_Navimesh",
+//	//L"Com_Camera"
+//
+//	//L"Com_Lod",
+//	//L"Com_BT",
+//	//L"Com_Water",
+//	//L"Com_Monobehaviour",
+//};
 
 class ENGINE_DLL CComponent abstract : public CBase
 {

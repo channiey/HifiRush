@@ -4,7 +4,7 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL COBB final : public CCollider
+class ENGINE_DLL CCollider_OBB final : public CCollider
 {
 public:
 	typedef struct tagOBBDesc
@@ -14,9 +14,9 @@ public:
 		_float3		vAlignAxis[3];
 	}OBBDESC;
 protected:
-	COBB(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	COBB(const COBB& rhs);
-	virtual ~COBB() = default;
+	CCollider_OBB(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CCollider_OBB(const CCollider_OBB& rhs);
+	virtual ~CCollider_OBB() = default;
 
 public:
 	BoundingOrientedBox Get_Collider() {
@@ -27,7 +27,7 @@ public:
 	virtual HRESULT Initialize_Prototype(CCollider::TYPE eColliderType);
 	virtual HRESULT Initialize(void* pArg);
 	virtual void Update(_fmatrix TransformMatrix);
-	virtual _bool Collision(CCollider* pTargetCollider);
+	virtual _bool Is_Collision(CCollider* pTargetCollider);
 
 public:
 	_bool Collision_OBB(CCollider* pTargetCollider);
@@ -46,7 +46,7 @@ private:
 	
 
 public:
-	static COBB* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CCollider::TYPE eColliderType);
+	static CCollider_OBB* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CCollider::TYPE eColliderType);
 	virtual CComponent* Clone(void* pArg);
 	virtual void Free() override;
 

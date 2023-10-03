@@ -6,13 +6,11 @@
 CPlayer::CPlayer(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObject(pDevice, pContext)
 {
-
 }
 
 CPlayer::CPlayer(const CGameObject & rhs)
 	: CGameObject(rhs)
 {
-
 }
 
 HRESULT CPlayer::Initialize_Prototype()
@@ -28,7 +26,6 @@ HRESULT CPlayer::Initialize(void* pArg)
 	/* Temporary Initaial Setting */
 	{
 		m_pModelCom->Set_Animation(rand() % 6);
-
 	}
 
 	return S_OK;
@@ -36,6 +33,8 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 void CPlayer::Tick(_float fTimeDelta)
 {
+	__super::Tick(fTimeDelta);
+
 	/* Test Animation */
 	CGameInstance* pGameInst = GET_INSTANCE(CGameInstance);
 	{
@@ -58,14 +57,30 @@ void CPlayer::Tick(_float fTimeDelta)
 
 	}
 	RELEASE_INSTANCE(CGameInstance);
+
+	/* Update Colliders */
+	for (auto& pCollider : m_pColliderComs)
+	{
+		if (nullptr != pCollider)
+			pCollider->Update(m_pTransformCom->Get_WorldMat());
+	}
 }
 
 void CPlayer::LateTick(_float fTimeDelta)
 {
+	__super::LateTick(fTimeDelta);
+
 	/* 키프레임 보간(현재 애니메이션의 모든 채널의 현재 키프레임 갱신) + 루트 기준 트랜스폼 계산(모델의 모든 본 갱신) */
 	m_pModelCom->Update_Anim(fTimeDelta);
 
 	m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this);	
+
+	
+	//for (auto& pCollider : m_pColliderComs)
+	//{
+	//	if (nullptr != pCollider)
+	//		m_pRendererCom->Add_DebugGroup(pCollider);
+	//}
 }
 
 HRESULT CPlayer::Render()
@@ -97,6 +112,22 @@ HRESULT CPlayer::Ready_Components()
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
 		TEXT("Com_Transform"), (CComponent**)&m_pTransformCom)))
 		return E_FAIL;
+
+	/* Com_Collider_Sphere */
+	CCollider::COLLIDERDESC		ColliderDesc;
+	{
+		ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
+
+		ColliderDesc.vSize		= _float3(1.f, 1.f, 1.f);
+		ColliderDesc.vCenter	= _float3(0.f, ColliderDesc.vSize.y * 0.5f, 0.f);
+		ColliderDesc.vRotation	= _float3(0.f, XMConvertToRadians(45.f), 0.f);
+	}
+	CCollider_Sphere* pCollider = nullptr;
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_Sphere"), 
+		TEXT("Com_Collider_Sphere"), (CComponent**)&pCollider, &ColliderDesc)))
+		return E_FAIL;
+
+	m_pColliderComs.push_back(pCollider);
 
 	return S_OK;
 }
@@ -166,6 +197,9 @@ CGameObject * CPlayer::Clone(void* pArg)
 void CPlayer::Free()
 {
 	__super::Free();
+
+	for (auto& pCollider : m_pColliderComs)
+		Safe_Release(pCollider);
 
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pTransformCom);	

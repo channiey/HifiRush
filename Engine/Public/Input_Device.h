@@ -21,10 +21,9 @@ public:
 	HRESULT	Initialize(HINSTANCE hInst, HWND hWnd);
 	void Tick();
 
-public:
+public: /* TODO 별도 Picking 클래스로 뺴야 한다. */
+	class CGameObject* Get_Pick_Object();
 	const _bool Get_PickPos_Window(_Inout_ Vec2& vPickPos);
-
-	/* Temp */
 	const _bool Get_PickPos_Terrain(class CVIBuffer_Terrain* pBuffer, Matrix matWorld, _Inout_ Vec3& vPickPos);
 
 public:

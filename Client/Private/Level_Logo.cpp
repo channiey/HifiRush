@@ -40,7 +40,9 @@ HRESULT CLevel_Logo::Initialize()
 
 HRESULT CLevel_Logo::Tick(_float fTimeDelta)
 {
-	//Picking();
+	//Picking_Terrain();
+
+	//Picking_Object();
 
 	return S_OK;
 }
@@ -78,7 +80,7 @@ HRESULT CLevel_Logo::Ready_Layer_BackGround(const wstring & strLayerTag)
 	return S_OK;
 }
 
-void CLevel_Logo::Picking()
+void CLevel_Logo::Picking_Terrain()
 {
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 	{
@@ -96,6 +98,22 @@ void CLevel_Logo::Picking()
 					if(nullptr != pObj)
 						pObj->Get_Transform()->Set_Position(vPickPos);
 				}
+			}
+		}
+	}
+	RELEASE_INSTANCE(CGameInstance);
+}
+
+void CLevel_Logo::Picking_Object()
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+	{
+		if (pGameInstance->Key_Down(VK_LBUTTON))
+		{
+			CGameObject* pGameObject = pGameInstance->Get_Pick_Object();
+			if (nullptr != pGameObject)
+			{
+				int k = 0;
 			}
 		}
 	}

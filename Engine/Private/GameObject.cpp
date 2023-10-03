@@ -37,6 +37,7 @@ void CGameObject::Tick(_float fTimeDelta)
 
 void CGameObject::LateTick(_float fTimeDelta)
 {
+	Compute_CamZ(Get_Transform()->Get_State(CTransform::STATE_POSITION));
 }
 
 HRESULT CGameObject::Render()
@@ -52,6 +53,11 @@ CTransform* const CGameObject::Get_Transform()
 CVIBuffer* CGameObject::Get_VIBuffer()
 {
 	return dynamic_cast<CVIBuffer*>(Get_Component(TEXT("Com_VIBuffer")));
+}
+
+CCollider_Sphere* CGameObject::Get_Collider_Sphere()
+{
+	return dynamic_cast<CCollider_Sphere*>(Get_Component(TEXT("Com_Collider_Sphere")));
 }
 
 CMonoBehaviour* const CGameObject::Get_MonoBehaviour(const _uint& iIndex)
@@ -97,6 +103,18 @@ CComponent * CGameObject::Find_Component(const wstring & strComponentTag)
 		return nullptr;
 
 	return iter->second;	
+}
+
+HRESULT CGameObject::Compute_CamZ(_fvector vWorldPos)
+{
+	CPipeLine* pPipeLine = GET_INSTANCE(CPipeLine);
+	{
+		_fvector		vCamPos = pPipeLine->Get_CamPosition();
+
+		m_fCamDistance = XMVectorGetX(XMVector3Length(vWorldPos - vCamPos));
+	}
+	RELEASE_INSTANCE(CPipeLine);
+	return S_OK;
 }
 
 void CGameObject::Free()

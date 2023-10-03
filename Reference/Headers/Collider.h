@@ -10,12 +10,12 @@ class ENGINE_DLL CCollider abstract : public CComponent
 public:
 	enum TYPE { TYPE_AABB, TYPE_OBB, TYPE_SPHERE, TYPE_END };
 
-public:
 	typedef struct tagColliderDesc
 	{
-		_float3			vCenter;
-		_float3			vSize;
-		_float3			vRotation;
+		Vec3			vCenter;
+		Vec3			vSize;
+		Vec3			vRotation;
+
 	}COLLIDERDESC;
 
 protected:
@@ -24,26 +24,22 @@ protected:
 	virtual ~CCollider() = default;
 
 public:
-	TYPE Get_ColliderType() const {
-		return m_eColliderType;
-	}
-
-public:
-	virtual HRESULT Initialize_Prototype(TYPE eColliderType);
-	virtual HRESULT Initialize(void* pArg);
-	virtual void Update(_fmatrix TransformMatrix) = 0;
-	virtual _bool Collision(CCollider* pTargetCollider) = 0;
-
-
+	virtual HRESULT		Initialize_Prototype(TYPE eColliderType);
+	virtual HRESULT		Initialize(void* pArg);
+	virtual void		Update(_fmatrix TransformMatrix) = 0;
+	virtual _bool		Is_Collision(CCollider* pTargetCollider) = 0;
 #ifdef _DEBUG
 public:
-	virtual HRESULT Render() override;
+	virtual HRESULT		Render() override;
 #endif // _DEBUG
 
+public:
+	TYPE				Get_ColliderType() const { return m_eColliderType; }
+
 protected:
-	TYPE					m_eColliderType = TYPE_END;
-	COLLIDERDESC			m_ColliderDesc;
-	_bool					m_isColl = false;
+	TYPE				m_eColliderType = TYPE_END;
+	COLLIDERDESC		m_ColliderDesc;
+	_bool				m_bCollision = false;
 	
 
 #ifdef _DEBUG

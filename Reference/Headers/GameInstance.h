@@ -42,6 +42,7 @@ public: /* For.Level_Manager */
 public: /* For.Object_Manager */
 	map<const wstring, class CGameObject*>*	Get_Prototypes();
 	map<const wstring, class CLayer*>* Get_All_Layer(_uint iLevelIndex);
+	map<const wstring, class CLayer*>* Get_All_Layer_CurLevel();
 	list<class CGameObject*>* Get_Layer(_uint iLevelIndex, const wstring& strLayerTag);
 	class CLayer* Get_LayerClass(_uint iLevelIndex, const wstring& strLayerTag);
 	class CGameObject* Get_Player();
@@ -79,6 +80,7 @@ public:  /* For.Input_Device */
 	const _bool Key_Down(const _int& _iKey);
 	const _bool Key_Pressing(const _int& _iKey);
 	const _bool Get_PickPos_Terrain(class CVIBuffer_Terrain* pBuffer, Matrix matWorld, _Inout_ Vec3& vPickPos);
+	class CGameObject* Get_Pick_Object();
 
 public: /* For.PipeLine */
 	HRESULT Bind_TransformToShader(class CShader* pShader, const char* pConstantName, CPipeLine::TRANSFORM_STATE eState);

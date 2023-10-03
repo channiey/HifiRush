@@ -4,12 +4,12 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL CAABB final : public CCollider
+class ENGINE_DLL CCollider_AABB final : public CCollider
 {
 protected:
-	CAABB(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CAABB(const CAABB& rhs);
-	virtual ~CAABB() = default;
+	CCollider_AABB(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CCollider_AABB(const CCollider_AABB& rhs);
+	virtual ~CCollider_AABB() = default;
 
 public:
 	BoundingBox Get_Collider() {
@@ -41,7 +41,7 @@ private:
 
 
 public:
-	static CAABB* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CCollider::TYPE eColliderType);
+	static CCollider_AABB* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CCollider::TYPE eColliderType);
 	virtual CComponent* Clone(void* pArg);
 	virtual void Free() override;
 

@@ -194,19 +194,19 @@ void CImGui_Window_Main_Object::Shwo_Object_Component()
 		++i;
 
 		/* 컴포넌트가 스테이트머신, 행동트리인 경우 버튼으로 표시한다. */
-		const char* strComponent = Util_String::WC2C(Pair.first.c_str());
-		if (strcmp(strComponent, Util_String::ToString(gStrComponentType[COM_STATEMACHINE]).c_str()) ||
-			strcmp(strComponent, Util_String::ToString(gStrComponentType[COM_BEHAVIOURTREE]).c_str()))
-		{
-			delete strComponent;
-			continue;
-		}
+		//const char* strComponent = Util_String::WC2C(Pair.first.c_str());
+		//if (strcmp(strComponent, Util_String::ToString(gStrComponentType[COM_STATEMACHINE]).c_str()) ||
+		//	strcmp(strComponent, Util_String::ToString(gStrComponentType[COM_BEHAVIOURTREE]).c_str()))
+		//{
+		//	delete strComponent;
+		//	continue;
+		//}
 
-		if (ImGui::Button(strComponent))
-		{
+		//if (ImGui::Button(strComponent))
+		//{
 
-		}
-		delete strComponent;
+		//}
+		//delete strComponent;
 	}
 }
 

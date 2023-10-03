@@ -90,6 +90,30 @@ HRESULT CLoader::Loading_For_Level_Logo()
 	CGameInstance*		pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
+	/* For.Component */
+	m_strLoading = TEXT("Loding... : CComponent");
+	{
+		/* For.Prototype_Component_VIBuffer_Terrain*/
+		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
+			CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Prototype/Terrain/Height1.bmp")))))
+			return E_FAIL;
+
+		/* For.Prototype_Component_Collider_AABB */
+		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_AABB"),
+			CCollider_AABB::Create(m_pDevice, m_pContext, CCollider::TYPE_AABB))))
+			return E_FAIL;
+
+		/* For.Prototype_Component_Collider_OBB */
+		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_OBB"),
+			CCollider_OBB::Create(m_pDevice, m_pContext, CCollider::TYPE_OBB))))
+			return E_FAIL;
+
+		/* For.Prototype_Component_Collider_Sphere */
+		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_Sphere"),
+			CCollider_Sphere::Create(m_pDevice, m_pContext, CCollider::TYPE_SPHERE))))
+			return E_FAIL;
+	}
+
 	m_strLoading = TEXT("Loding... : Texture");
 	{
 		/* For.Prototype_Component_Texture_BackGround*/
@@ -108,15 +132,6 @@ HRESULT CLoader::Loading_For_Level_Logo()
 			return E_FAIL;
 	}
 	
-	/* For.VIBuffer */
-	m_strLoading = TEXT("Loding... : VIBuffer");
-	{
-		/* For.Prototype_Component_VIBuffer_Terrain*/
-		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
-			CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Prototype/Terrain/Height1.bmp")))))
-			return E_FAIL;
-	}
-
 	/* For.Model */
 	m_strLoading = TEXT("Loding... : Model");
 	{

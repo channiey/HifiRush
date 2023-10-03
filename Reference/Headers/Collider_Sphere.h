@@ -4,12 +4,12 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL CSphere final : public CCollider
+class ENGINE_DLL CCollider_Sphere final : public CCollider
 {
 protected:
-	CSphere(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CSphere(const CSphere& rhs);
-	virtual ~CSphere() = default;
+	CCollider_Sphere(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CCollider_Sphere(const CCollider_Sphere& rhs);
+	virtual ~CCollider_Sphere() = default;
 
 public:
 	BoundingSphere Get_Collider() { return *m_pSphere; }
@@ -30,7 +30,7 @@ private:
 	BoundingSphere*		m_pOriginal_Sphere = nullptr;
 
 public:
-	static CSphere* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CCollider::TYPE eColliderType);
+	static CCollider_Sphere* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CCollider::TYPE eColliderType);
 	virtual CComponent* Clone(void* pArg);
 	virtual void Free() override;
 };

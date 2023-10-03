@@ -243,6 +243,14 @@ map<const wstring, class CLayer*>* CGameInstance::Get_All_Layer(_uint iLevelInde
 	return m_pObject_Manager->Get_All_Layer(iLevelIndex);
 }
 
+map<const wstring, class CLayer*>* CGameInstance::Get_All_Layer_CurLevel()
+{
+	if (nullptr == m_pObject_Manager)
+		return nullptr;
+
+	return m_pObject_Manager->Get_All_Layer(Get_CurLevelIndex());
+}
+
 list<class CGameObject*>* CGameInstance::Get_Layer(_uint iLevelIndex, const wstring& strLayerTag)
 {
 	if (nullptr == m_pObject_Manager)
@@ -372,12 +380,20 @@ const _bool CGameInstance::Key_Pressing(const _int& _iKey)
 	return m_pInput_Device->Key_Pressing(_iKey);
 }
 
-const _bool CGameInstance::Get_PickPos_Terrain(class CVIBuffer_Terrain* pBuffer, Matrix matWorld, Vec3& vPickPos)
+const _bool CGameInstance::Get_PickPos_Terrain(class CVIBuffer_Terrain* pBuffer, Matrix matWorld, _Inout_ Vec3& vPickPos)
 {
 	if (nullptr == m_pInput_Device)
 		return FALSE;
 
 	return m_pInput_Device->Get_PickPos_Terrain(pBuffer, matWorld, vPickPos);
+}
+
+CGameObject* CGameInstance::Get_Pick_Object()
+{
+	if (nullptr == m_pInput_Device)
+		return nullptr;
+
+	return m_pInput_Device->Get_Pick_Object();
 }
 
 HRESULT CGameInstance::Bind_TransformToShader(CShader* pShader, const char* pConstantName, CPipeLine::TRANSFORM_STATE eState)

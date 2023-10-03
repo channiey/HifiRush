@@ -9,7 +9,7 @@ CCollider::CCollider(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 
 CCollider::CCollider(const CCollider & rhs)
 	: CComponent(rhs)
-	, m_isColl(rhs.m_isColl)
+	, m_bCollision(rhs.m_bCollision)
 	, m_eColliderType(rhs.m_eColliderType)
 #ifdef _DEBUG
 	, m_pBatch(rhs.m_pBatch)
@@ -58,11 +58,7 @@ HRESULT CCollider::Initialize(void * pArg)
 
 HRESULT CCollider::Render()
 {
-
-	m_vColor = m_isColl == false ? _float4(0.f, 1.f, 0.f, 1.f) : _float4(1.f, 0.f, 0.f, 1.f);
-
-
-	
+	m_vColor = m_bCollision == false ? _float4(0.f, 1.f, 0.f, 1.f) : _float4(1.f, 0.f, 0.f, 1.f);
 
 	m_pEffect->SetWorld(XMMatrixIdentity());
 

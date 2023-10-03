@@ -169,7 +169,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\Public\AABB.h" />
+    <ClInclude Include="..\Public\Collider_AABB.h" />
     <ClInclude Include="..\Public\Animation.h" />
     <ClInclude Include="..\public\Base.h" />
     <ClInclude Include="..\Public\BehaviourTree.h" />
@@ -188,10 +188,10 @@
     <ClInclude Include="..\Public\Engine_Struct.h" />
     <ClInclude Include="..\Public\Engine_Typedef.h" />
     <ClInclude Include="..\Public\Frustum.h" />
-    <ClInclude Include="..\Public\OBB.h" />
+    <ClInclude Include="..\Public\Collider_OBB.h" />
     <ClInclude Include="..\Public\QuadTree.h" />
     <ClInclude Include="..\Public\RenderTarget.h" />
-    <ClInclude Include="..\Public\Sphere.h" />
+    <ClInclude Include="..\Public\Collider_Sphere.h" />
     <ClInclude Include="..\Public\Util_File.h" />
     <ClInclude Include="..\public\GameInstance.h" />
     <ClInclude Include="..\public\GameObject.h" />
@@ -233,7 +233,7 @@
     <ClInclude Include="..\Public\VIBuffer_Terrain.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Private\AABB.cpp" />
+    <ClCompile Include="..\Private\Collider_AABB.cpp" />
     <ClCompile Include="..\Private\Animation.cpp" />
     <ClCompile Include="..\private\Base.cpp" />
     <ClCompile Include="..\Private\BehaviourTree.cpp" />
@@ -248,10 +248,10 @@
     <ClCompile Include="..\private\Component_Manager.cpp" />
     <ClCompile Include="..\Private\DebugDraw.cpp" />
     <ClCompile Include="..\Private\Frustum.cpp" />
-    <ClCompile Include="..\Private\OBB.cpp" />
+    <ClCompile Include="..\Private\Collider_OBB.cpp" />
     <ClCompile Include="..\Private\QuadTree.cpp" />
     <ClCompile Include="..\Private\RenderTarget.cpp" />
-    <ClCompile Include="..\Private\Sphere.cpp" />
+    <ClCompile Include="..\Private\Collider_Sphere.cpp" />
     <ClCompile Include="..\Private\Util_File.cpp" />
     <ClCompile Include="..\private\GameInstance.cpp" />
     <ClCompile Include="..\private\GameObject.cpp" />

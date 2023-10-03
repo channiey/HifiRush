@@ -53,7 +53,7 @@ public:
 public: 
 	map<const wstring, class CGameObject*>* Get_Prototypes() { return &m_Prototypes; } 
 	LAYERS* Get_All_Layer(_uint iLevelIndex);													/* 특정 레벨의 모든 레이어를 가져온다. */
-	list<class CGameObject*>* Get_Layer(_uint iLevelIndex, const wstring& strLayerTag);	/* 특정 레벨의 특정 레이어를 가져온다. */
+	list<class CGameObject*>* Get_Layer(_uint iLevelIndex, const wstring& strLayerTag);			/* 특정 레벨의 특정 레이어를 가져온다. */
 	class CLayer* Get_LayerClass(_uint iLevelIndex, const wstring& strLayerTag);
 	class CGameObject* Get_Player();
 	class CGameObject* Get_GameObject(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag);

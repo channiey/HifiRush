@@ -40,15 +40,6 @@
     <Filter Include="97.ImGui\Manager">
       <UniqueIdentifier>{ae665d5d-3931-498f-b439-76f319cca696}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\UI">
-      <UniqueIdentifier>{5de9c8c8-1e5e-499f-b807-f2014459b89d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Camera">
-      <UniqueIdentifier>{7d317796-38ec-4bb9-8a8d-b31a6461dfff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Camera\Debug">
-      <UniqueIdentifier>{e918d286-66bb-42bb-ade7-1bbabe202863}</UniqueIdentifier>
-    </Filter>
     <Filter Include="97.ImGui\Windows">
       <UniqueIdentifier>{58e9641a-5e91-4bbe-8558-7dcc06dd06e5}</UniqueIdentifier>
     </Filter>
@@ -73,18 +64,6 @@
     <Filter Include="97.ImGui\Windows\04.Demo">
       <UniqueIdentifier>{d900bdc0-016c-4311-a8b5-aa79439f9305}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Camera\Target">
-      <UniqueIdentifier>{5a473209-8b19-4c2d-9fe7-42a15c3bf6bd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Light">
-      <UniqueIdentifier>{ec62a095-9b5c-473b-8346-ae77c4962129}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Light\Directional">
-      <UniqueIdentifier>{fd10c28d-7c9b-481f-9e12-de5b00b280bc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Light\Point">
-      <UniqueIdentifier>{de47ffd3-fa1f-4589-a855-282a1afa93d4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Levels\01.GamePlay\03.Level_Boss">
       <UniqueIdentifier>{e49f063f-84b0-47dc-81eb-542d4a103122}</UniqueIdentifier>
     </Filter>
@@ -94,74 +73,101 @@
     <Filter Include="01.Levels\01.GamePlay\02.Level_01">
       <UniqueIdentifier>{cd2cc360-906f-418b-aeb7-25824b6233ef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Character">
-      <UniqueIdentifier>{61401bf3-d2cc-46e0-9502-ab143843e14a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Character\NPC">
-      <UniqueIdentifier>{400c1cb4-75ac-4a99-bc55-470322a4b2a8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Character\NPC\BehaviourTree">
-      <UniqueIdentifier>{207d0508-a741-48ad-9799-79381a8db791}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Character\NPC\BehaviourTree\Node">
-      <UniqueIdentifier>{7eaab9ba-f843-43ce-b19a-2e07c2861e5e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Character\Player">
-      <UniqueIdentifier>{8c788c76-03cd-4d87-8f0c-9b9fe84197ec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Character\Player\StateMachine">
-      <UniqueIdentifier>{9112ed79-8c75-43d4-9f70-fa125b385b58}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Character\Player\StateMachine\State">
-      <UniqueIdentifier>{c2f33d3c-e99a-4675-8309-ccaeec085fc6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Light\Spot">
-      <UniqueIdentifier>{13ca8632-80ff-4136-b4b8-d91ac4a665f3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Levels\02.Ending">
       <UniqueIdentifier>{a3fb452d-868d-42bc-a99b-d12613c146a3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Environment">
-      <UniqueIdentifier>{19639fc5-bbcb-4d89-8030-1ca3fff62c92}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Environment\Static">
-      <UniqueIdentifier>{e151be76-84ac-4349-93d8-75c7d1b50d66}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Environment\Static\Terrain">
-      <UniqueIdentifier>{39cbdfb5-bb6c-40ec-a138-fdd9bc2c1663}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Environment\Static\Architecture">
-      <UniqueIdentifier>{b0339eab-093f-4b0c-a418-7e9b2f1f0816}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Environment\Interactable">
-      <UniqueIdentifier>{8fb0483e-5266-43dc-92e3-d568cc733951}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Environment\Interactable\Trigger">
-      <UniqueIdentifier>{355ae19c-b78b-4b4a-b4e9-5fa4e6cf8f34}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Environment\Interactable\Moveable">
-      <UniqueIdentifier>{c826dd7b-e31c-4f41-80f9-bfda419f6dd5}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.Levels\98.Proto">
       <UniqueIdentifier>{b4248e0b-da12-45df-acaf-494f8e50ae75}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Character\Proto">
-      <UniqueIdentifier>{a574bb1d-749c-4fb5-bf19-b9a30b09a18d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Character\Proto\Fiona">
-      <UniqueIdentifier>{36882f13-5282-49c7-a347-899f85859c54}</UniqueIdentifier>
-    </Filter>
     <Filter Include="98.Default\NotUsed">
       <UniqueIdentifier>{11978b59-520d-430c-8090-add27548551a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Character\Enemy">
+    <Filter Include="02.GameObjects\00.Camera">
+      <UniqueIdentifier>{7d317796-38ec-4bb9-8a8d-b31a6461dfff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Environment">
+      <UniqueIdentifier>{19639fc5-bbcb-4d89-8030-1ca3fff62c92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.Light">
+      <UniqueIdentifier>{ec62a095-9b5c-473b-8346-ae77c4962129}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character">
+      <UniqueIdentifier>{61401bf3-d2cc-46e0-9502-ab143843e14a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\02.NPC">
+      <UniqueIdentifier>{400c1cb4-75ac-4a99-bc55-470322a4b2a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\02.NPC\BehaviourTree">
+      <UniqueIdentifier>{207d0508-a741-48ad-9799-79381a8db791}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\02.NPC\BehaviourTree\Node">
+      <UniqueIdentifier>{7eaab9ba-f843-43ce-b19a-2e07c2861e5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\00.Player">
+      <UniqueIdentifier>{8c788c76-03cd-4d87-8f0c-9b9fe84197ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\00.Player\StateMachine">
+      <UniqueIdentifier>{9112ed79-8c75-43d4-9f70-fa125b385b58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\00.Player\StateMachine\State">
+      <UniqueIdentifier>{c2f33d3c-e99a-4675-8309-ccaeec085fc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\99.Proto">
+      <UniqueIdentifier>{a574bb1d-749c-4fb5-bf19-b9a30b09a18d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\99.Proto\Fiona">
+      <UniqueIdentifier>{36882f13-5282-49c7-a347-899f85859c54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\01.Enemy">
       <UniqueIdentifier>{d8a59102-c15d-4530-9b3a-1b805113122c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Character\Enemy\BehaviourTree">
+    <Filter Include="02.GameObjects\03.Character\01.Enemy\BehaviourTree">
       <UniqueIdentifier>{0bd0f243-b8b2-4027-b9b8-3ebef4375173}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Character\Enemy\BehaviourTree\Node">
+    <Filter Include="02.GameObjects\03.Character\01.Enemy\BehaviourTree\Node">
       <UniqueIdentifier>{62e468e1-c067-4119-9433-31c56f9bc1fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.Camera\00.Debug">
+      <UniqueIdentifier>{e918d286-66bb-42bb-ade7-1bbabe202863}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.Camera\01.Target">
+      <UniqueIdentifier>{5a473209-8b19-4c2d-9fe7-42a15c3bf6bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Environment\00.Static">
+      <UniqueIdentifier>{e151be76-84ac-4349-93d8-75c7d1b50d66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Environment\00.Static\Terrain">
+      <UniqueIdentifier>{39cbdfb5-bb6c-40ec-a138-fdd9bc2c1663}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Environment\00.Static\Architecture">
+      <UniqueIdentifier>{b0339eab-093f-4b0c-a418-7e9b2f1f0816}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Environment\01.Interactable">
+      <UniqueIdentifier>{8fb0483e-5266-43dc-92e3-d568cc733951}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Environment\01.Interactable\Trigger">
+      <UniqueIdentifier>{355ae19c-b78b-4b4a-b4e9-5fa4e6cf8f34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Environment\01.Interactable\Moveable">
+      <UniqueIdentifier>{c826dd7b-e31c-4f41-80f9-bfda419f6dd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.Light\00.Directional">
+      <UniqueIdentifier>{fd10c28d-7c9b-481f-9e12-de5b00b280bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.Light\01.Point">
+      <UniqueIdentifier>{de47ffd3-fa1f-4589-a855-282a1afa93d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.Light\02.Spot">
+      <UniqueIdentifier>{13ca8632-80ff-4136-b4b8-d91ac4a665f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\04.Item">
+      <UniqueIdentifier>{7207c15a-e9a5-42ba-a112-c00f7324aa12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\10.UI">
+      <UniqueIdentifier>{5de9c8c8-1e5e-499f-b807-f2014459b89d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\10.UI\99.Proto">
+      <UniqueIdentifier>{37a56d44-1727-4244-853d-8912517a5f1a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -220,7 +226,7 @@
       <Filter>98.Default\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Terrain.h">
-      <Filter>02.GameObjects\Environment\Static\Terrain</Filter>
+      <Filter>02.GameObjects\01.Environment\00.Static\Terrain</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ImGui_Manager.h">
       <Filter>97.ImGui\Manager</Filter>
@@ -243,23 +249,23 @@
     <ClInclude Include="..\Public\ImGui_Window_Sub_Prefabs.h">
       <Filter>97.ImGui\Windows\03.Sub\01.Hierarachy_Prefabs</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\BackGround.h">
-      <Filter>02.GameObjects\UI</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Camera_Debug.h">
-      <Filter>02.GameObjects\Camera\Debug</Filter>
+      <Filter>02.GameObjects\00.Camera\00.Debug</Filter>
     </ClInclude>
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp">
       <Filter>96.ShaderFiles</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Player.h">
-      <Filter>02.GameObjects\Character\Player</Filter>
+      <Filter>02.GameObjects\03.Character\00.Player</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Architecture.h">
-      <Filter>02.GameObjects\Environment\Static\Architecture</Filter>
+      <Filter>02.GameObjects\01.Environment\00.Static\Architecture</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Fiona.h">
-      <Filter>02.GameObjects\Character\Proto\Fiona</Filter>
+      <Filter>02.GameObjects\03.Character\99.Proto\Fiona</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BackGround.h">
+      <Filter>02.GameObjects\10.UI\99.Proto</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -306,7 +312,7 @@
       <Filter>98.Default\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Terrain.cpp">
-      <Filter>02.GameObjects\Environment\Static\Terrain</Filter>
+      <Filter>02.GameObjects\01.Environment\00.Static\Terrain</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ImGui_Manager.cpp">
       <Filter>97.ImGui\Manager</Filter>
@@ -329,20 +335,20 @@
     <ClCompile Include="..\Private\ImGui_Window_Sub_Prefabs.cpp">
       <Filter>97.ImGui\Windows\03.Sub\01.Hierarachy_Prefabs</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\BackGround.cpp">
-      <Filter>02.GameObjects\UI</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Camera_Debug.cpp">
-      <Filter>02.GameObjects\Camera\Debug</Filter>
+      <Filter>02.GameObjects\00.Camera\00.Debug</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Player.cpp">
-      <Filter>02.GameObjects\Character\Player</Filter>
+      <Filter>02.GameObjects\03.Character\00.Player</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Architecture.cpp">
-      <Filter>02.GameObjects\Environment\Static\Architecture</Filter>
+      <Filter>02.GameObjects\01.Environment\00.Static\Architecture</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Fiona.cpp">
-      <Filter>02.GameObjects\Character\Proto\Fiona</Filter>
+      <Filter>02.GameObjects\03.Character\99.Proto\Fiona</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BackGround.cpp">
+      <Filter>02.GameObjects\10.UI\99.Proto</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

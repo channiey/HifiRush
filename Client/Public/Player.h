@@ -6,6 +6,7 @@
 BEGIN(Engine)
 class CModel;
 class CShader;
+class CCollider;
 class CRenderer;
 class CTransform;
 END
@@ -32,6 +33,7 @@ private:
 	CRenderer*			m_pRendererCom = { nullptr };
 	CTransform*			m_pTransformCom = { nullptr };
 	CModel*				m_pModelCom = { nullptr };
+	vector<CCollider*>  m_pColliderComs;
 
 private:
 	HRESULT				Ready_Components();

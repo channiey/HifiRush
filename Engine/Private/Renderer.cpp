@@ -1,6 +1,8 @@
 #include "..\Public\Renderer.h"
 #include "GameObject.h"
 
+#include "GameInstance.h"
+
 CRenderer::CRenderer(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CComponent(pDevice, pContext)
 {
@@ -22,10 +24,21 @@ HRESULT CRenderer::Add_RenderGroup(RENDERGROUP eRenderGroup, CGameObject * pGame
 		return E_FAIL;
 
 	m_RenderObjects[eRenderGroup].push_back(pGameObject);
+
 	Safe_AddRef(pGameObject);
 
 	return S_OK;
 }
+
+HRESULT CRenderer::Add_DebugGroup(CComponent* pDebugCom)
+{
+	m_DebugObject.push_back(pDebugCom);
+
+	Safe_AddRef(pDebugCom);
+
+	return S_OK;
+}
+
 
 HRESULT CRenderer::Draw_RenderObjects()
 {
@@ -39,6 +52,11 @@ HRESULT CRenderer::Draw_RenderObjects()
 		return S_OK;// E_FAIL;
 	if (FAILED(Render_UI()))
 		return S_OK;// E_FAIL;
+
+#ifdef _DEBUG
+	/*if (FAILED(Render_Debug()))
+		return E_FAIL;*/
+#endif
 
 	return S_OK;
 }
@@ -114,6 +132,26 @@ HRESULT CRenderer::Render_UI()
 	return S_OK;
 }
 
+HRESULT CRenderer::Render_Debug()
+{
+	m_pShader->Bind_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
+	m_pShader->Bind_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
+
+	//m_pTarget_Manager->Render_Debug(TEXT("MRT_Deferred"), m_pVIBuffer, m_pShader);
+	//m_pTarget_Manager->Render_Debug(TEXT("MRT_LightAcc"), m_pVIBuffer, m_pShader);
+
+	for (auto& pDebugCom : m_DebugObject)
+	{
+		pDebugCom->Render();
+		Safe_Release(pDebugCom);
+	}
+
+	m_DebugObject.clear();
+
+	return S_OK;
+
+}
+
 CRenderer * CRenderer::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CRenderer*	pInstance = new CRenderer(pDevice, pContext);
@@ -137,4 +175,9 @@ CComponent * CRenderer::Clone(void * pArg)
 void CRenderer::Free()
 {
 	__super::Free();
+
+#ifdef _DEBUG
+	Safe_Release(m_pShader);
+	Safe_Release(m_pVIBuffer);
+#endif // _DEBUG
 }

@@ -1,20 +1,20 @@
-#include "..\Public\OBB.h"
-#include "AABB.h"
-#include "Sphere.h"
+#include "..\Public\Collider_OBB.h"
+#include "Collider_AABB.h"
+#include "Collider_Sphere.h"
 
-COBB::COBB(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+CCollider_OBB::CCollider_OBB(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CCollider(pDevice, pContext)
 {
 
 }
 
-COBB::COBB(const COBB & rhs)
+CCollider_OBB::CCollider_OBB(const CCollider_OBB & rhs)
 	: CCollider(rhs)
 {
 
 }
 
-HRESULT COBB::Initialize_Prototype(CCollider::TYPE eColliderType)
+HRESULT CCollider_OBB::Initialize_Prototype(CCollider::TYPE eColliderType)
 {
 	if (FAILED(__super::Initialize_Prototype(eColliderType)))
 		return E_FAIL;
@@ -24,7 +24,7 @@ HRESULT COBB::Initialize_Prototype(CCollider::TYPE eColliderType)
 	return S_OK;
 }
 
-HRESULT COBB::Initialize(void * pArg)
+HRESULT CCollider_OBB::Initialize(void * pArg)
 {
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -46,45 +46,45 @@ HRESULT COBB::Initialize(void * pArg)
 	return S_OK;
 }
 
-void COBB::Update(_fmatrix TransformMatrix)
+void CCollider_OBB::Update(_fmatrix TransformMatrix)
 {
 	m_pOriginal_OBB->Transform(*m_pOBB, TransformMatrix);
 }
 
-_bool COBB::Collision(CCollider * pTargetCollider)
+_bool CCollider_OBB::Is_Collision(CCollider * pTargetCollider)
 {
 	CCollider::TYPE		eType = pTargetCollider->Get_ColliderType();
 
-	m_isColl = false;
+	m_bCollision = false;
 
 	switch (eType)
 	{
 	case CCollider::TYPE_AABB:
-		m_isColl = m_pOBB->Intersects(((CAABB*)pTargetCollider)->Get_Collider());
+		m_bCollision = m_pOBB->Intersects(((CCollider_AABB*)pTargetCollider)->Get_Collider());
 		break;
 
 	case CCollider::TYPE_OBB:
-		m_isColl = m_pOBB->Intersects(((COBB*)pTargetCollider)->Get_Collider());
+		m_bCollision = m_pOBB->Intersects(((CCollider_OBB*)pTargetCollider)->Get_Collider());
 		break;
 
 	case CCollider::TYPE_SPHERE:
-		m_isColl = m_pOBB->Intersects(((CSphere*)pTargetCollider)->Get_Collider());
+		m_bCollision = m_pOBB->Intersects(((CCollider_Sphere*)pTargetCollider)->Get_Collider());
 		break;
 	}
 
-	return m_isColl;
+	return m_bCollision;
 }
 
-_bool COBB::Collision_OBB(CCollider * pTargetCollider)
+_bool CCollider_OBB::Collision_OBB(CCollider * pTargetCollider)
 {
 	if (CCollider::TYPE_SPHERE == pTargetCollider->Get_ColliderType())
-		return E_FAIL;
+		return FALSE;
 
-	m_isColl = false;
+	m_bCollision = false;
 
 	OBBDESC			OBBDesc[2] = {
 		Compute_OBBDesc(),
-		((COBB*)pTargetCollider)->Compute_OBBDesc(),
+		((CCollider_OBB*)pTargetCollider)->Compute_OBBDesc(),
 	};
 
 	for (_uint i = 0; i < 2; ++i)
@@ -105,17 +105,17 @@ _bool COBB::Collision_OBB(CCollider * pTargetCollider)
 				fabs(XMVectorGetX(XMVector3Dot(XMLoadFloat3(&OBBDesc[1].vCenterAxis[2]), XMLoadFloat3(&OBBDesc[i].vAlignAxis[j]))));
 
 			if (fDistance[0] > fDistance[1] + fDistance[2])
-				return m_isColl;
+				return m_bCollision;
 
 		}
 	}
 
-	m_isColl = true;
+	m_bCollision = true;
 
-	return m_isColl;
+	return m_bCollision;
 }
 
-HRESULT COBB::Render()
+HRESULT CCollider_OBB::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL;
@@ -129,7 +129,7 @@ HRESULT COBB::Render()
 	return S_OK;
 }
 
-COBB::OBBDESC COBB::Compute_OBBDesc()
+CCollider_OBB::OBBDESC CCollider_OBB::Compute_OBBDesc()
 {
 	OBBDESC			OBBDesc;
 
@@ -153,32 +153,32 @@ COBB::OBBDESC COBB::Compute_OBBDesc()
 	return OBBDesc;
 }
 
-COBB * COBB::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, CCollider::TYPE eColliderType)
+CCollider_OBB * CCollider_OBB::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, CCollider::TYPE eColliderType)
 {
-	COBB*			pInstance = new COBB(pDevice, pContext);
+	CCollider_OBB*			pInstance = new CCollider_OBB(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype(eColliderType)))
 	{
-		MSG_BOX("Failed To Created : COBB");
+		MSG_BOX("Failed To Created : CCollider_OBB");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
-CComponent * COBB::Clone(void * pArg)
+CComponent * CCollider_OBB::Clone(void * pArg)
 {
-	COBB*			pInstance = new COBB(*this);
+	CCollider_OBB*			pInstance = new CCollider_OBB(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed To Cloned : COBB");
+		MSG_BOX("Failed To Cloned : CCollider_OBB");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
 
-void COBB::Free()
+void CCollider_OBB::Free()
 {
 	__super::Free();
 

@@ -27,9 +27,23 @@ public:
 	HRESULT Add_RenderGroup(RENDERGROUP eRenderGroup, class CGameObject* pGameObject);
 	HRESULT Draw_RenderObjects();
 
+#ifdef _DEBUG
+public:
+	HRESULT Add_DebugGroup(class CComponent* pDebugCom);
+#endif // _DEBUG
 
 private:
 	list<class CGameObject*>			m_RenderObjects[RG_END];
+
+#ifdef _DEBUG
+private:
+	list<class CComponent*>				m_DebugObject;
+
+	class CShader*						m_pShader = nullptr;
+	class CVIBuffer_Rect*				m_pVIBuffer = nullptr;
+	_float4x4							m_ViewMatrix, m_ProjMatrix;
+
+#endif // _DEBUG
 
 private:
 	HRESULT Render_Priority();
@@ -37,6 +51,10 @@ private:
 	HRESULT Render_NonBlend();
 	HRESULT Render_Blend();
 	HRESULT Render_UI();
+
+#ifdef _DEBUG
+	HRESULT Render_Debug();
+#endif // _DEBUG
 
 public:
 	static CRenderer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

@@ -360,13 +360,13 @@
     <ClInclude Include="..\Public\Collider.h">
       <Filter>01.Utiltiy\03.Components\Component\Colliders</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\AABB.h">
+    <ClInclude Include="..\Public\Collider_AABB.h">
       <Filter>01.Utiltiy\03.Components\Component\Colliders\AABB</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\OBB.h">
+    <ClInclude Include="..\Public\Collider_OBB.h">
       <Filter>01.Utiltiy\03.Components\Component\Colliders\OBB</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Sphere.h">
+    <ClInclude Include="..\Public\Collider_Sphere.h">
       <Filter>01.Utiltiy\03.Components\Component\Colliders\Sphere</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\DebugDraw.h">
@@ -524,13 +524,13 @@
     <ClCompile Include="..\Private\Collider.cpp">
       <Filter>01.Utiltiy\03.Components\Component\Colliders</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\AABB.cpp">
+    <ClCompile Include="..\Private\Collider_AABB.cpp">
       <Filter>01.Utiltiy\03.Components\Component\Colliders\AABB</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\OBB.cpp">
+    <ClCompile Include="..\Private\Collider_OBB.cpp">
       <Filter>01.Utiltiy\03.Components\Component\Colliders\OBB</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Sphere.cpp">
+    <ClCompile Include="..\Private\Collider_Sphere.cpp">
       <Filter>01.Utiltiy\03.Components\Component\Colliders\Sphere</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\DebugDraw.cpp">
