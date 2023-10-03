@@ -31,7 +31,7 @@ HRESULT CMainApp::Initialize()
 	GraphicDesc.iWinSizeX = g_iWinSizeX;
 	GraphicDesc.iWinSizeY = g_iWinSizeY;
 
-	if (FAILED(m_pGameInstance->Initialize_Engine(LEVEL_END, g_hInst, GraphicDesc, &m_pDevice, &m_pContext)))
+	if (FAILED(m_pGameInstance->Initialize_Engine(LV_END, g_hInst, GraphicDesc, &m_pDevice, &m_pContext)))
 		return E_FAIL;
 
 	/* 1-2 모든 레벨에서 사용할 컴포넌트 원형을 생성한다. */
@@ -39,7 +39,7 @@ HRESULT CMainApp::Initialize()
 		return E_FAIL;
 
 	/* 1-3. 게임내에서 사용할 레벨(씬)을 생성한다. */
-	if (FAILED(Open_Level(LEVEL_LOGO)))
+	if (FAILED(Open_Level(LV_LOGO)))
 		return E_FAIL;
 
 #ifdef _DEBUG
@@ -81,7 +81,7 @@ HRESULT CMainApp::Render()
 
 		/* ImGui 업데이트 및 렌더링 */
 #ifdef _DEBUG
-		if(LEVEL_LOADING != m_pGameInstance->Get_CurLevelIndex())
+		if(LV_LOADING != m_pGameInstance->Get_CurLevelIndex())
 			FAILED_CHECK_RETURN(m_pImGui_Manager->Render(), E_FAIL);
 #endif // _DEBUG
 	}
@@ -118,7 +118,7 @@ HRESULT CMainApp::Open_Level(LEVEL_ID eLEVEL_ID)
 
 	/* 로고레베릉ㄹ 할당하고 싶었지만. 로고레벨을 위한 로딩레벨을 먼저 생성하여 로딩작업을 수행할꺼야. */
 	/* 로딩객체에게 eLEVEL_ID라는 내가 실제 할당ㅎ아고 싶었던 레벨열거체를 준거지?! 실제할당하고싶었던 레벨에 자원을 준비라하라고 */
-	if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, eLEVEL_ID))))
+	if (FAILED(m_pGameInstance->Open_Level(LV_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, eLEVEL_ID))))
 		return E_FAIL;
 
 	return S_OK;
@@ -127,22 +127,22 @@ HRESULT CMainApp::Open_Level(LEVEL_ID eLEVEL_ID)
 HRESULT CMainApp::Ready_Prototype_Components()
 {
 	/* For.Prototype_Component_Renderer */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), 
+	if (FAILED(m_pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Renderer"), 
 		m_pRenderer = CRenderer::Create(m_pDevice, m_pContext))))
 		return E_FAIL;	
 
 	/* For.Prototype_Component_Transform */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
+	if (FAILED(m_pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Transform"),
 		CTransform::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Shader_VtxPosTex */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
+	if (FAILED(m_pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosTex.hlsl"), VTXPOSTEX::Elements, VTXPOSTEX::iNumElements))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_VIBuffer_Rect */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
+	if (FAILED(m_pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
 		CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 

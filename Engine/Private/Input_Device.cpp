@@ -109,7 +109,6 @@ CGameObject* CInput_Device::Get_Pick_Object()
 	if (!m_bFocus) return nullptr;
 
 	CGameObject* pPickedObj = nullptr;
-	_float		 fMinDist;
 
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 	{

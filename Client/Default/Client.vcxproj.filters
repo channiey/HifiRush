@@ -16,9 +16,6 @@
     <Filter Include="01.Levels\00.Logo">
       <UniqueIdentifier>{f7bf0f5d-9c1a-409d-ba96-8f25a183dad7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Levels\01.GamePlay">
-      <UniqueIdentifier>{001c8170-e0a0-429b-96c3-38ac67fa7a9c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Levels\99.Loading">
       <UniqueIdentifier>{d3df9124-96f6-4c1d-a02e-1d2d51e29c9b}</UniqueIdentifier>
     </Filter>
@@ -63,15 +60,6 @@
     </Filter>
     <Filter Include="97.ImGui\Windows\04.Demo">
       <UniqueIdentifier>{d900bdc0-016c-4311-a8b5-aa79439f9305}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Levels\01.GamePlay\03.Level_Boss">
-      <UniqueIdentifier>{e49f063f-84b0-47dc-81eb-542d4a103122}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Levels\01.GamePlay\01.Level_00">
-      <UniqueIdentifier>{8501a2da-fead-442c-a8a6-46c59345adad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Levels\01.GamePlay\02.Level_01">
-      <UniqueIdentifier>{cd2cc360-906f-418b-aeb7-25824b6233ef}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.Levels\02.Ending">
       <UniqueIdentifier>{a3fb452d-868d-42bc-a99b-d12613c146a3}</UniqueIdentifier>
@@ -169,6 +157,18 @@
     <Filter Include="02.GameObjects\10.UI\99.Proto">
       <UniqueIdentifier>{37a56d44-1727-4244-853d-8912517a5f1a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Levels\01.Stage">
+      <UniqueIdentifier>{001c8170-e0a0-429b-96c3-38ac67fa7a9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\01.Stage\Stage_03">
+      <UniqueIdentifier>{e49f063f-84b0-47dc-81eb-542d4a103122}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\01.Stage\Stage_02">
+      <UniqueIdentifier>{cd2cc360-906f-418b-aeb7-25824b6233ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\01.Stage\Stage_01">
+      <UniqueIdentifier>{8501a2da-fead-442c-a8a6-46c59345adad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -183,8 +183,8 @@
     <ClInclude Include="..\public\Level_Logo.h">
       <Filter>01.Levels\00.Logo</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Level_GamePlay.h">
-      <Filter>01.Levels\01.GamePlay</Filter>
+    <ClInclude Include="..\Public\Level_Stage_01.h">
+      <Filter>01.Levels\01.Stage</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_Loading.h">
       <Filter>01.Levels\99.Loading</Filter>
@@ -275,8 +275,8 @@
     <ClCompile Include="..\private\Level_Logo.cpp">
       <Filter>01.Levels\00.Logo</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Level_GamePlay.cpp">
-      <Filter>01.Levels\01.GamePlay</Filter>
+    <ClCompile Include="..\Private\Level_Stage_01.cpp">
+      <Filter>01.Levels\01.Stage</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Loading.cpp">
       <Filter>01.Levels\99.Loading</Filter>

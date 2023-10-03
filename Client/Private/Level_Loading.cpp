@@ -7,7 +7,7 @@
 #include "GameObject.h"
 
 #include "Level_Logo.h"
-#include "Level_GamePlay.h"
+#include "Level_Stage_01.h"
 
 #include "Util_String.h"
 #include "Util_File.h"
@@ -62,11 +62,11 @@ HRESULT CLevel_Loading::LateTick(_float fTimeDelta)
 
 			switch (m_eNextLevel)
 			{
-			case LEVEL_LOGO:
+			case LV_LOGO:
 				pNewLevel = CLevel_Logo::Create(m_pDevice, m_pContext);
 				break;
-			case LEVEL_GAMEPLAY:
-				pNewLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext);
+			case LV_STAGE_01:
+				pNewLevel = CLevel_Stage_01::Create(m_pDevice, m_pContext);
 				break;
 			}
 

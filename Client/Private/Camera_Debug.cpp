@@ -49,7 +49,12 @@ HRESULT CCamera_Debug::Initialize(void * pArg)
 
 void CCamera_Debug::Tick(_float fTimeDelta)
 {
-	Move(fTimeDelta);
+	/* Move */
+	_float fDelta = 1.f / (_float)g_iFPS;
+	if (fDelta < fTimeDelta + 0.1f)
+		Move(fDelta);
+	else
+		Move(fTimeDelta);
 
 	__super::Tick(fTimeDelta);
 }
@@ -61,7 +66,7 @@ void CCamera_Debug::LateTick(_float fTimeDelta)
 HRESULT CCamera_Debug::Ready_Components()
 {
 	/* Com_Transform */
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
+	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Transform"),
 		TEXT("Com_Transform"), (CComponent**)&m_pTransformCom)))
 		return E_FAIL;
 

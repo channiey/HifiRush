@@ -18,40 +18,52 @@ namespace Client
 	/* Level */
 	enum LEVEL_ID
 	{
-		LEVEL_STATIC,
-		LEVEL_LOADING,
-		LEVEL_LOGO,
-		LEVEL_GAMEPLAY,
-		LEVEL_ENDING,
-		LEVEL_END
+		LV_STATIC,
+		LV_LOADING,
+		LV_LOGO,
+		LV_STAGE_01,
+		LV_STAGE_02,
+		LV_STAGE_03,
+		LV_ENDING,
+		LV_PROTO,
+		LV_END
 	};
-	static const wchar_t* gStrLevelID[LEVEL_END]
+	static const wchar_t* gStrLevelID[LV_END]
 	{
-		L"LEVEL_STATIC",
-		L"LEVEL_LOADING",
-		L"LEVEL_LOGO",
-		L"LEVEL_GAMEPLAY",
-		L"LEVEL_ENDING"
+		L"LV_STATIC",
+		L"LV_LOADING",
+		L"LV_LOGO",
+		L"LV_STAGE_01",
+		L"LV_STAGE_02",
+		L"LV_STAGE_03",
+		L"LV_ENDING",
+		L"LV_PROTO"
+
 	};
-	static const std::wstring gStrLevelPath[LEVEL_END]
+	static const std::wstring gStrLevelPath[LV_END]
 	{
-		TEXT("../Bin/Resources/Data/Level/Level_Static.level"),
-		TEXT("../Bin/Resources/Data/Level/Level_Loading.level"),
-		TEXT("../Bin/Resources/Data/Level/Level_Logo.level"),
-		TEXT("../Bin/Resources/Data/Level/Level_Gameplay.level"),
-		TEXT("../Bin/Resources/Data/Level/Level_Ending.level"),
+		TEXT("../Bin/Resources/Data/Level/Lv_Static.level"),
+		TEXT("../Bin/Resources/Data/Level/Lv_Loading.level"),
+		TEXT("../Bin/Resources/Data/Level/Lv_Logo.level"),
+		TEXT("../Bin/Resources/Data/Level/Lv_Stage_01.level"),
+		TEXT("../Bin/Resources/Data/Level/Lv_Stage_02.level"),
+		TEXT("../Bin/Resources/Data/Level/Lv_Stage_03.level"),
+		TEXT("../Bin/Resources/Data/Level/Lv_Ending.level"),
+		TEXT("../Bin/Resources/Data/Level/Lv_Proto.level"),
 	};
 
 	/* Layer */
 	enum LAYER_ID
 	{
 		LAYER_CAMERA,
-		LAYER_BACKGROUND,	
-		LAYER_ENVIORNMENT,	/* Static과 Interactable으로 세분화 필요 */
+		LAYER_ENV_STATIC,
+		LAYER_ENV_INTERACTALBE,
 		LAYER_PLAYER,
 		LAYER_MONSTER,
 		LAYER_NPC,
-		LAYER_PROJECTILE,	/* 조명 및 트리거 추가 필요 */
+		LAYER_PROJECTILE,	
+		LAYER_TRIGGER,
+		LAYER_LIGHT,
 		LAYER_EFFECT,
 		LAYER_UI,
 		LAYER_END
@@ -59,12 +71,14 @@ namespace Client
 	static const wchar_t* gStrLayerID[LAYER_END]
 	{
 		L"Layer_Camera",
-		L"Layer_BackGround",
-		L"Layer_Enviornment",
+		L"Layer_Env_Static",
+		L"Layer_Env_Interactable",
 		L"Layer_Player",
 		L"Layer_Monster",
 		L"Layer_Npc",
 		L"Layer_Projectile",
+		L"Layer_Trigger",
+		L"Layer_Light",
 		L"Layer_Effect",
 		L"Layer_Ui",
 	};

@@ -27,7 +27,7 @@ public:
 
 private:
 	/* 로딩 다음레벨. */
-	LEVEL_ID			m_eNextLevel = { LEVEL_END };
+	LEVEL_ID			m_eNextLevel = { LV_END };
 	class CLoader*	m_pLoader = { nullptr };
 
 public:

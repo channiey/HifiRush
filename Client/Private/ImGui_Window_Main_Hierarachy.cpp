@@ -106,9 +106,9 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_FunctionButton()
 
 void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Levels()
 {
-	for (int i = LEVEL_LOGO; i < LEVEL_ENDING; ++i)
+	for (int i = LV_LOGO; i < LV_END; ++i)
 	{
-		if (i > LEVEL_LOGO)
+		if (i > LV_LOGO)
 			ImGui::SameLine();
 
 		const char* strLevel = Util_String::WC2C(gStrLevelID[i]);
@@ -117,7 +117,7 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Levels()
 			/* 버튼을 눌렀다면 해당 버튼의 인덱스를 현재 레벨로 지정한다. */
 			//m_pImGui_Manager->m_iIndex_CurLevelID = i;
 
-			m_pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pImGui_Manager->m_pDevice, m_pImGui_Manager->m_pContext, (LEVEL_ID)i));
+			m_pGameInstance->Open_Level(LV_LOADING, CLevel_Loading::Create(m_pImGui_Manager->m_pDevice, m_pImGui_Manager->m_pContext, (LEVEL_ID)i));
 			
 			m_pImGui_Manager->Set_Active_Main_Window(m_pImGui_Manager->WINDOW_MAIN_OBJECT_INFO, FALSE);
 			m_pImGui_Manager->Set_Active_Main_Window(m_pImGui_Manager->WINDOW_MAIN_HIEARACHY, FALSE);

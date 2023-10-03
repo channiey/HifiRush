@@ -30,7 +30,7 @@ public:
 private:
 	ID3D11Device*			m_pDevice = { nullptr };
 	ID3D11DeviceContext*	m_pContext = { nullptr };
-	LEVEL_ID				m_eNextLevel = { LEVEL_END };
+	LEVEL_ID				m_eNextLevel = { LV_END };
 	wstring					m_strLoading = { TEXT("") };
 	_bool					m_isFinished = { false };
 
@@ -39,8 +39,9 @@ private:
 	CRITICAL_SECTION		m_Critical_Section = {};
 
 private:
-	HRESULT Loading_For_Level_Logo();
-	HRESULT Loading_For_Level_GamePlay();
+	HRESULT Load_Prototype();
+	//HRESULT Loading_For_LV_LOGO();
+	//HRESULT Loading_For_Level_GamePlay();
 	
 public:
 	static CLoader* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL_ID eNextLevel);

@@ -17,8 +17,6 @@ public:
 	virtual HRESULT LateTick(_float fTimeDelta) override;
 
 private:
-	HRESULT Ready_Layer_BackGround(const wstring& strLayerTag);
-
 	/* Temp */
 	void	Picking_Terrain();
 	void	Picking_Object();

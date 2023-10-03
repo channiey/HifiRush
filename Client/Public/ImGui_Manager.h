@@ -78,7 +78,7 @@ private:
 	vector<class CImGui_Window*>	m_pMainWindows;
 
 	/* 현재 Level 정보 */
-	_uint							m_iIndex_CurLevelID = { LEVEL_END };
+	_uint							m_iIndex_CurLevelID = { LV_END };
 	
 	/* 현재 Layer 정보 */
 	_uint							m_iIndex_CurLayerID = { LAYER_END };
