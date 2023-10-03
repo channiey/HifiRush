@@ -60,6 +60,11 @@ public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
 
+#ifdef _DEBUG
+public:
+	virtual HRESULT Render() { return S_OK; }
+#endif // _DEBUG
+
 public:
 	const _bool& Is_Active() const { return m_bActive; }
 

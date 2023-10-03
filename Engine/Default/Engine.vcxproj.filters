@@ -196,6 +196,18 @@
     <Filter Include="01.Utiltiy\03.Components\Component\Model\Bone">
       <UniqueIdentifier>{9aa9b747-c0aa-4efd-af76-f85e4df08191}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utiltiy\98.Utils\DebugDraw">
+      <UniqueIdentifier>{50c6c987-30ef-4318-aa4a-3934a0a8d646}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\90.Optimization\QuadTree">
+      <UniqueIdentifier>{39cef500-f727-44f8-9134-c665703c5885}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\05.Frustum">
+      <UniqueIdentifier>{c0256b19-f6c3-481b-8ecc-ed705de2ed3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\06.RenderTargets">
+      <UniqueIdentifier>{032b95df-ef81-4850-8c88-140304febbf9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -345,6 +357,30 @@
     <ClInclude Include="..\Public\VIBuffer_Terrain.h">
       <Filter>01.Utiltiy\03.Components\Component\VIBuffer\Terrain</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Collider.h">
+      <Filter>01.Utiltiy\03.Components\Component\Colliders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\AABB.h">
+      <Filter>01.Utiltiy\03.Components\Component\Colliders\AABB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\OBB.h">
+      <Filter>01.Utiltiy\03.Components\Component\Colliders\OBB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Sphere.h">
+      <Filter>01.Utiltiy\03.Components\Component\Colliders\Sphere</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DebugDraw.h">
+      <Filter>01.Utiltiy\98.Utils\DebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\QuadTree.h">
+      <Filter>01.Utiltiy\90.Optimization\QuadTree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Frustum.h">
+      <Filter>01.Utiltiy\05.Frustum</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderTarget.h">
+      <Filter>01.Utiltiy\06.RenderTargets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -484,6 +520,30 @@
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_Terrain.cpp">
       <Filter>01.Utiltiy\03.Components\Component\VIBuffer\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Collider.cpp">
+      <Filter>01.Utiltiy\03.Components\Component\Colliders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AABB.cpp">
+      <Filter>01.Utiltiy\03.Components\Component\Colliders\AABB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\OBB.cpp">
+      <Filter>01.Utiltiy\03.Components\Component\Colliders\OBB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Sphere.cpp">
+      <Filter>01.Utiltiy\03.Components\Component\Colliders\Sphere</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DebugDraw.cpp">
+      <Filter>01.Utiltiy\98.Utils\DebugDraw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\QuadTree.cpp">
+      <Filter>01.Utiltiy\90.Optimization\QuadTree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Frustum.cpp">
+      <Filter>01.Utiltiy\05.Frustum</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderTarget.cpp">
+      <Filter>01.Utiltiy\06.RenderTargets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

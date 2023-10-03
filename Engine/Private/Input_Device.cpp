@@ -126,6 +126,7 @@ const _bool CInput_Device::Get_PickPos_Terrain(class CVIBuffer_Terrain* pBuffer,
 	if (!m_bFocus || nullptr == pBuffer)
 		return FALSE;
 
+	/* UnProjection */
 	Matrix		    matW, matV, matP;
 	Viewport		viewPort;
 	_float			fDistance;
@@ -139,18 +140,21 @@ const _bool CInput_Device::Get_PickPos_Terrain(class CVIBuffer_Terrain* pBuffer,
 	}	
 	RELEASE_INSTANCE(CGameInstance);
 
-	Vec2			vPickWindow;
-	Get_PickPos_Window(vPickWindow);
+	Vec2 vPickWindow;
+	if (Get_PickPos_Window(vPickWindow)) 
+		return E_FAIL;
 
 	Vec3 n = viewPort.Unproject(Vec3(vPickWindow.x, vPickWindow.y, 0.f), matP, matV, matW);
 	Vec3 f = viewPort.Unproject(Vec3(vPickWindow.x, vPickWindow.y, 1.f), matP, matV, matW);
 
+	/* Ray */
 	Vec3 vOrigin = n;
 	Vec3 vDir = f - n;
 	vDir.Normalize();
 
 	Ray ray(vOrigin, vDir);
 
+	/* Search */
 	_uint		iNumVerticesZ = pBuffer->Get_VerticesZ();
 	_uint		iNumVerticesX = pBuffer->Get_VerticesX();
 	_float3*	pVerticesPos = pBuffer->Get_VerticesPos();

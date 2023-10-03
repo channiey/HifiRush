@@ -58,8 +58,6 @@ private:
 	_bool					m_bKeyState[VK_MAX];
 	HWND					m_bFocus{};
 
-
-
 public:
 	virtual void			Free();
 };
