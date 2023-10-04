@@ -68,7 +68,12 @@ HRESULT CMainApp_Converter::Convert_Env()
 	const MODEL_TYPE type = MODEL_TYPE::STATIC;
 	{
 		shared_ptr<CConverter> converter = make_shared<CConverter>();
-		if (FAILED(converter->Binarize_Model("Architecture", "Environment/Architecture", type)))
+		if (FAILED(converter->Binarize_Model("Architecture", "Environment/Static/Architecture", type)))
+			ASSERT_LOG();
+	}
+	{
+		shared_ptr<CConverter> converter = make_shared<CConverter>();
+		if (FAILED(converter->Binarize_Model("ForkLift", "Environment/Static/ForkLift", type)))
 			ASSERT_LOG();
 	}
 

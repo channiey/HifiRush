@@ -1,23 +1,24 @@
 #include "..\Default\stdafx.h"
-#include "..\Public\Architecture.h"
+#include "..\Public\StaticDummy.h"
 #include "GameInstance.h"
 
-CArchitecture::CArchitecture(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+#include "Util_String.h"
+CStaticDummy::CStaticDummy(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
 {
 }
 
-CArchitecture::CArchitecture(const CArchitecture & rhs)
+CStaticDummy::CStaticDummy(const CStaticDummy& rhs)
 	: CGameObject(rhs)
 {
 }
 
-HRESULT CArchitecture::Initialize_Prototype()
+HRESULT CStaticDummy::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CArchitecture::Initialize(void * pArg)
+HRESULT CStaticDummy::Initialize(void* pArg)
 {
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
@@ -26,12 +27,12 @@ HRESULT CArchitecture::Initialize(void * pArg)
 	return S_OK;
 }
 
-void CArchitecture::Tick(_float fTimeDelta)
+void CStaticDummy::Tick(_float fTimeDelta)
 {
 
 }
 
-void CArchitecture::LateTick(_float fTimeDelta)
+void CStaticDummy::LateTick(_float fTimeDelta)
 {
 	if (nullptr == m_pRendererCom)
 		return;
@@ -39,7 +40,7 @@ void CArchitecture::LateTick(_float fTimeDelta)
 	m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this);
 }
 
-HRESULT CArchitecture::Render()
+HRESULT CStaticDummy::Render()
 {
 	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
@@ -71,7 +72,7 @@ HRESULT CArchitecture::Render()
 	return S_OK;
 }
 
-HRESULT CArchitecture::Ready_Components()
+HRESULT CStaticDummy::Ready_Components()
 {
 	/* For.Com_Transform */
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Transform"), TEXT("Com_Transform"), (CComponent**)&m_pTransformCom)))
@@ -80,45 +81,48 @@ HRESULT CArchitecture::Ready_Components()
 	/* For.Com_Renderer */
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
 		return E_FAIL;
-		
+
 	/* For.Com_Shader */
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Shader_Model"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 
 	/* For.Com_Model */
-	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Model_Architecture"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+	const string		tag = "Prototype_Component_Model_Static_";
+	const string		name = Util_String::ToString(Get_Name());
+
+	if (FAILED(__super::Add_Component(LV_STATIC, Util_String::ToWString(tag + name), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 
 	return S_OK;
 }
 
-CArchitecture * CArchitecture::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+CStaticDummy* CStaticDummy::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CArchitecture*		pInstance = new CArchitecture(pDevice, pContext);
+	CStaticDummy* pInstance = new CStaticDummy(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed To Created : CArchitecture");
+		MSG_BOX("Failed To Created : CStaticDummy");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-CGameObject * CArchitecture::Clone(void * pArg)
+CGameObject* CStaticDummy::Clone(void* pArg)
 {
-	CArchitecture*		pInstance = new CArchitecture(*this);
+	CStaticDummy* pInstance = new CStaticDummy(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed To Cloned : CArchitecture");
+		MSG_BOX("Failed To Cloned : CStaticDummy");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CArchitecture::Free()
+void CStaticDummy::Free()
 {
 	__super::Free();
 

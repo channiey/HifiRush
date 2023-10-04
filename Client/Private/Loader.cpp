@@ -2,10 +2,11 @@
 #include "..\Public\Loader.h"
 
 #include "GameInstance.h"
+#include "Util_File.h"
+#include "Util_String.h"
 
 /* Character*/
 #include "Player.h"
-#include "Architecture.h"
 #include "Fiona.h"
 
 /* Camera */
@@ -16,6 +17,7 @@
 
 /* Env */
 #include "Terrain.h"
+#include "StaticDummy.h"
 
 CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: m_pDevice(pDevice)
@@ -111,10 +113,6 @@ HRESULT CLoader::Load_Prototype()
 		if (FAILED(pGameInstance->Add_Prototype(TEXT("Ui_BackGround"), CBackGround::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		/* For.Prototype_GameObject_Terrain*/
-		if (FAILED(pGameInstance->Add_Prototype(TEXT("Env_Terrain"), CTerrain::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-
 		/* For.Prototype_GameObject_Camera_Debug */
 		if (FAILED(pGameInstance->Add_Prototype(TEXT("Camera_Debug"),
 			CCamera_Debug::Create(m_pDevice, m_pContext))))
@@ -125,15 +123,28 @@ HRESULT CLoader::Load_Prototype()
 			CPlayer::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		/* For.Prototype_GameObject_Env_Architecture */
-		if (FAILED(pGameInstance->Add_Prototype(TEXT("Env_Architecture"),
-			CArchitecture::Create(m_pDevice, m_pContext))))
+		/* For.Prototype_GameObject_Proto_Fiona */
+		if (FAILED(pGameInstance->Add_Prototype(TEXT("Proto_Fiona"),
+			CFiona::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		/* For.Prototype_GameObject_Proto_Fiona */
-		//if (FAILED(pGameInstance->Add_Prototype(TEXT("Fiona"),
-		//	CFiona::Create(m_pDevice, m_pContext))))
-		//	return E_FAIL;
+		/* For.Prototype_GameObject_Terrain*/
+		if (FAILED(pGameInstance->Add_Prototype(TEXT("Env_Terrain"), CTerrain::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Proto_Static */
+		{
+			/* 해당 경로 내의 모든 폴더명을 읽어 폴더명으로 오브젝트를 생성한다. */
+			const string		tag = "Env_Static_";
+			const string		filePath = "../Bin/Resources/Models/Environment/Static";
+			vector<string>		fileNames = Util_File::GetAllFolderNames(filePath);
+
+			for (string& name : fileNames)
+			{
+				if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString(tag + name), CStaticDummy::Create(m_pDevice, m_pContext))))
+					return E_FAIL;
+			}
+		}
 	}
 
 	/* For.Component */
@@ -160,6 +171,7 @@ HRESULT CLoader::Load_Prototype()
 			return E_FAIL;
 	}
 
+	/* For.Texture */
 	m_strLoading = TEXT("Loding... : Texture");
 	{
 		/* For.Prototype_Component_Texture_BackGround*/
@@ -189,18 +201,28 @@ HRESULT CLoader::Load_Prototype()
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Characters/Chai", PivotMatrix))))
 			return E_FAIL;
 
-		///* For.Prototype_Component_Model_Fiona */
-		//PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f));
-		//if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Model_Fiona"),
-		//	CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Prototype/Fiona", PivotMatrix))))
-		//	return E_FAIL;
-
-		/* For.Prototype_Component_Model_Architecture */
-		PivotMatrix = Matrix::Identity * Matrix::CreateScale(0.01f);
-		if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Model_Architecture"),
-			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Architecture", PivotMatrix))))
+		/* For.Prototype_Component_Model_Fiona */
+		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f));
+		if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Model_Fiona"),
+			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Prototype/Fiona", PivotMatrix))))
 			return E_FAIL;
 
+		/* For.Prototype_Component_Model_Static */
+		{
+			PivotMatrix = Matrix::Identity * Matrix::CreateScale(0.01f);
+
+			/* 해당 경로 내의 모든 폴더명을 읽어 폴더명으로 오브젝트를 생성한다. */
+			const string		tag = "Prototype_Component_Model_Static_Env_Static_";
+			const string		filePath = "../Bin/Resources/Models/Environment/Static";
+			vector<string>		fileNames = Util_File::GetAllFolderNames(filePath);
+
+			for (string& name : fileNames)
+			{
+				if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, Util_String::ToWString(tag + name),
+					CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/" + name, PivotMatrix))))
+					return E_FAIL;
+			}
+		}
 	}
 
 	/* For.Shader */

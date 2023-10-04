@@ -124,12 +124,6 @@
     <Filter Include="02.GameObjects\01.Environment\00.Static">
       <UniqueIdentifier>{e151be76-84ac-4349-93d8-75c7d1b50d66}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\01.Environment\00.Static\Terrain">
-      <UniqueIdentifier>{39cbdfb5-bb6c-40ec-a138-fdd9bc2c1663}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\01.Environment\00.Static\Architecture">
-      <UniqueIdentifier>{b0339eab-093f-4b0c-a418-7e9b2f1f0816}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\01.Environment\01.Interactable">
       <UniqueIdentifier>{8fb0483e-5266-43dc-92e3-d568cc733951}</UniqueIdentifier>
     </Filter>
@@ -168,6 +162,12 @@
     </Filter>
     <Filter Include="01.Levels\01.Stage\Stage_01">
       <UniqueIdentifier>{8501a2da-fead-442c-a8a6-46c59345adad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Environment\00.Static\StaticDummy">
+      <UniqueIdentifier>{740c7b71-1c0a-4ebc-9619-28a0fc0626b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Environment\99.Terrain">
+      <UniqueIdentifier>{39cbdfb5-bb6c-40ec-a138-fdd9bc2c1663}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -223,7 +223,7 @@
       <Filter>98.Default\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Terrain.h">
-      <Filter>02.GameObjects\01.Environment\00.Static\Terrain</Filter>
+      <Filter>02.GameObjects\01.Environment\99.Terrain</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ImGui_Manager.h">
       <Filter>97.ImGui\Manager</Filter>
@@ -255,9 +255,6 @@
     <ClInclude Include="..\Public\Player.h">
       <Filter>02.GameObjects\03.Character\00.Player</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Architecture.h">
-      <Filter>02.GameObjects\01.Environment\00.Static\Architecture</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Fiona.h">
       <Filter>02.GameObjects\03.Character\99.Proto\Fiona</Filter>
     </ClInclude>
@@ -278,6 +275,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\Level_Ending.h">
       <Filter>01.Levels\02.Ending</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\StaticDummy.h">
+      <Filter>02.GameObjects\01.Environment\00.Static\StaticDummy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -321,7 +321,7 @@
       <Filter>98.Default\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Terrain.cpp">
-      <Filter>02.GameObjects\01.Environment\00.Static\Terrain</Filter>
+      <Filter>02.GameObjects\01.Environment\99.Terrain</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ImGui_Manager.cpp">
       <Filter>97.ImGui\Manager</Filter>
@@ -350,9 +350,6 @@
     <ClCompile Include="..\Private\Player.cpp">
       <Filter>02.GameObjects\03.Character\00.Player</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Architecture.cpp">
-      <Filter>02.GameObjects\01.Environment\00.Static\Architecture</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Fiona.cpp">
       <Filter>02.GameObjects\03.Character\99.Proto\Fiona</Filter>
     </ClCompile>
@@ -373,6 +370,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Level_Proto.cpp">
       <Filter>01.Levels\98.Proto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\StaticDummy.cpp">
+      <Filter>02.GameObjects\01.Environment\00.Static\StaticDummy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

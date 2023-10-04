@@ -63,6 +63,18 @@ const wstring Util_String::Remove_LastNumChar(const wstring& str, const _uint& i
 	return res;
 }
 
+const string Util_String::Remove_LastNumChar(const string& str, const _uint& iNumCutWord)
+{
+	size_t iLength = str.length();
+
+	if (iLength <= iNumCutWord)
+		return "";
+
+	string res = str.substr(0, iLength - iNumCutWord);
+
+	return res;
+}
+
 const wstring Util_String::Get_LastNumChar(const wstring& str, const _uint& iNumCutWord)
 {
 	size_t iLength = str.length();

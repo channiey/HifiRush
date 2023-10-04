@@ -74,23 +74,25 @@ HRESULT CGameObject::Add_Component(_uint iLevelIndex, const wstring & strPrototy
 	if (nullptr != Find_Component(strComponentTag))
 		return E_FAIL;
 
-	CGameInstance*		pGameInstance = CGameInstance::GetInstance();
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 	Safe_AddRef(pGameInstance);
+	{
+		CComponent*			pComponent = pGameInstance->Clone_Component(iLevelIndex, strPrototypeTag, pArg);
+		if (nullptr == pComponent)
+		{
+			RELEASE_INSTANCE(CGameInstance);
+			return E_FAIL;
+		}
 
-	/* 원형 컴포넌트를 복제하여 사본 컴포넌트를 얻어오자. */
-	CComponent*			pComponent = pGameInstance->Clone_Component(iLevelIndex, strPrototypeTag, pArg);
-	if (nullptr == pComponent)
-		return E_FAIL;
+		/* 검색이 가능한 맵에 저장. */
+		m_Components.emplace(strComponentTag, pComponent);
 
-	/* 검색이 가능한 맵에 저장. */
-	m_Components.emplace(strComponentTag, pComponent);
+		/* 자식의 멤버변수에도 저장. */
+		*ppOut = pComponent;
 
-	/* 자식의 멤버변수에도 저장. */
-	*ppOut = pComponent;
-
-	Safe_AddRef(pComponent);
-
-	Safe_Release(pGameInstance);	
+		Safe_AddRef(pComponent);
+	}
+	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;
 }

@@ -70,6 +70,10 @@ public:
 
 	static void CheckOrCreatePath(const string& path);
 
+	/* 주어진 경로 내의 모든 폴더명을 읽어 반환한다. */
+	static vector<string> GetAllFolderNames(const string& path);
+	static vector<wstring> GetAllFolderNames(const wstring& path);
+
 private:
 	HANDLE _handle = INVALID_HANDLE_VALUE;
 };

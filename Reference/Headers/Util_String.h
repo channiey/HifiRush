@@ -27,6 +27,7 @@ public:
 	static const wstring Combine(const wstring& str1, const wstring& str2);
 	/* n번째부터 마지막까지의 문자열을 자르고, 앞에 남은 문자열을 리턴한다. */
 	static const wstring Remove_LastNumChar(const wstring& str, const _uint& iNumCutWord);
+	static const string Remove_LastNumChar(const string& str, const _uint& iNumCutWord);
 	/* n번째부터 마지막까지의 문자열만 리턴한다. */
 	static const wstring Get_LastNumChar(const wstring& str, const _uint& iNumCutWord);
 
