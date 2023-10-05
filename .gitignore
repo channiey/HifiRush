@@ -438,9 +438,10 @@ Resource/
 *.fbx
 *.png
 *.dds
-
-
-
+*.mat
+*.props.txt
+*.pskx
+*.tga
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
 

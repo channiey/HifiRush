@@ -1,7 +1,5 @@
 #pragma once
 
-/* '바이너리 파일' 입출력을 편하게 사용하기 위함 */
-
 #include "Base.h"
 
 BEGIN(Engine)
@@ -66,8 +64,11 @@ public:
 	void Read(void** data, uint32 dataSize);
 	void Read(OUT string& data);
 
+
+	/* 파일 존재 여부 */
 	static const _bool IsExistFile(const string& path);
 
+	/* 경로가 존재하는지 확인하고 없다면 생성 */
 	static void CheckOrCreatePath(const string& path);
 
 	/* 주어진 경로 내의 모든 폴더명을 읽어 반환한다. */

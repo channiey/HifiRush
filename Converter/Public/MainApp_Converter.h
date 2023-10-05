@@ -12,10 +12,11 @@ public:
 	HRESULT Start_Convert();
 
 private:
-	HRESULT Convert_Player();
-	HRESULT	Convert_Monster();
-	HRESULT	Convert_Npc();
-	HRESULT Convert_Env();
+
+	HRESULT Convert_Character();
+	HRESULT	Convert_Env_Static();
+	HRESULT Convert_Env_Anim();
+	HRESULT Convert_SelectiveModel();
 
 private:
 

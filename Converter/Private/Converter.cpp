@@ -15,7 +15,7 @@ HRESULT CConverter::Binarize_Model(string fileName, string savePath, const MODEL
 	
 	/* Read Asset Data */
 	{
-		filePath = (filesystem::path(sourceUpperPath + fileName) / fileName).string() + ".fbx";
+		filePath = (filesystem::path(sourceUpperPath + savePath) / fileName).string() + ".fbx";
 		Utils_String::Replace(filePath, "\\", "/");
 		
 		if (!Utils_File::IsExistFile(filePath))
@@ -55,7 +55,7 @@ HRESULT CConverter::Binarize_Model(string fileName, string savePath, const MODEL
 	/* Export Materail Data */
 	{
 		/* Src Path */
-		string srcPath = filesystem::path(sourceUpperPath + fileName).string();
+		string srcPath = filesystem::path(sourceUpperPath + savePath).string();
 
 		if (!Utils_File::IsExistFile(srcPath))
 			return E_FAIL;

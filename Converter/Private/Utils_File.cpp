@@ -1,4 +1,5 @@
 #include "Utils_File.h"
+#include "Utils_String.h"
 
 Utils_File::Utils_File()
 {
@@ -101,4 +102,46 @@ void Utils_File::CheckOrCreatePath(const string& path)
 	auto p = filesystem::path(path);
 	filesystem::create_directory(p.parent_path().parent_path()); 
 	filesystem::create_directory(p.parent_path());
+}
+
+vector<string> Utils_File::Get_AllFolderNames(const string& path)
+{
+	vector<std::string> folderNames;
+	try
+	{
+		for (const auto& entry : filesystem::directory_iterator(path))
+		{
+			if (filesystem::is_directory(entry))
+			{
+				folderNames.push_back(entry.path().filename().string());
+			}
+		}
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << "Error: " << e.what() << std::endl;
+	}
+
+	return folderNames;
+}
+
+vector<wstring> Utils_File::Get_AllFolderNames(const wstring& path)
+{
+	vector<wstring> folderNames;
+	try
+	{
+		for (const auto& entry : filesystem::directory_iterator(path))
+		{
+			if (filesystem::is_directory(entry))
+			{
+				folderNames.push_back(Utils_String::ToWString(entry.path().filename().string()));
+			}
+		}
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << "Error: " << e.what() << std::endl;
+	}
+
+	return folderNames;
 }

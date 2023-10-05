@@ -198,13 +198,13 @@ HRESULT CLoader::Load_Prototype()
 		/* For.Prototype_Component_Model_Chai */
 		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f)) * Matrix::CreateScale(0.01f);
 		if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Model_Chai"),
-			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Characters/Chai", PivotMatrix))))
+			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Chai", PivotMatrix))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Model_Fiona */
 		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f));
 		if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Model_Fiona"),
-			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Prototype/Fiona", PivotMatrix))))
+			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Fiona", PivotMatrix))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Model_Static */

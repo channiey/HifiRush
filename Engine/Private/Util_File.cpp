@@ -142,7 +142,6 @@ vector<string> Util_File::GetAllFolderNames(const string& path)
 vector<wstring> Util_File::GetAllFolderNames(const wstring& path)
 {
 	vector<wstring> folderNames;
-
 	try
 	{
 		for (const auto& entry : filesystem::directory_iterator(path))
