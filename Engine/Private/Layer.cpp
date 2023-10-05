@@ -147,6 +147,21 @@ CGameObject* CLayer::Get_GameObject(const wstring& strPrototypeTag)
 	return nullptr;
 }
 
+const _int CLayer::Get_ObjectIndex(const wstring& strName)
+{
+	int iIndex = 0;
+
+	for (CGameObject* pObj : m_GameObjects)
+	{
+		++iIndex;
+
+		if (pObj->Get_Name() == strName)
+			return iIndex;
+	}
+
+	return -1;
+}
+
 CLayer * CLayer::Create(const wstring& strLayerTag)
 {
 	CLayer*	pInstance = new CLayer();

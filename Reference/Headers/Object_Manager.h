@@ -57,7 +57,7 @@ public:
 	class CLayer* Get_LayerClass(_uint iLevelIndex, const wstring& strLayerTag);
 	class CGameObject* Get_Player();
 	class CGameObject* Get_GameObject(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag);
-
+	const _int Get_ObjectIndex(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strName);
 public:
 	/* 원형 오브젝트 생성 */
 	HRESULT	Add_Prototype(const wstring& strPrototypeTag, class CGameObject* pPrototype);	/* 원형을 생성하여 원형 벡터에 추가한다. (클라 로딩에서 생성하여 받아온다) */

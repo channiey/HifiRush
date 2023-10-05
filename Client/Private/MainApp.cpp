@@ -94,7 +94,6 @@ HRESULT CMainApp::FinishTick()
 	/* 이벤트 매니저와 같은 브로드 캐스팅 작업 */
 	m_pGameInstance->FinishTick();
 
-
 #ifdef _DEBUG
 	/* 프로파일링 데이터 초기화 */
 

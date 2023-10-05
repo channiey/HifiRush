@@ -2,6 +2,11 @@
 #include "..\Public\Camera_Debug.h"
 
 #include "GameInstance.h"
+
+#ifdef _DEBUG
+#include "ImGui_Manager.h"
+#endif // _DEBUG
+
 CCamera_Debug::CCamera_Debug(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CCamera(pDevice, pContext)
 {
@@ -27,7 +32,7 @@ HRESULT CCamera_Debug::Initialize(void * pArg)
 	/* 파생 클래스의 단독 데이터를 세팅한다. */
 	m_fMouseSensitive = 1.f;
 
-	m_tTransDesc.fSpeedPerSec = 30.f;
+	m_tTransDesc.fSpeedPerSec = 70.f;
 	m_tTransDesc.fRotRadPerSec = XMConvertToRadians(45.f);
 
 	/* 카메라 베이스 클래스의 초기 구조체 데이터를 세팅한다. */
@@ -50,8 +55,12 @@ HRESULT CCamera_Debug::Initialize(void * pArg)
 void CCamera_Debug::Tick(_float fTimeDelta)
 {
 	/* Move */
-	
+#ifdef _DEBUG
+	if (!CImGui_Manager::GetInstance()->Is_ClickedWindow())
+		Move(fTimeDelta);
+#else
 	Move(fTimeDelta);
+#endif // _DEBUG
 
 	__super::Tick(fTimeDelta);
 }

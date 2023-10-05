@@ -61,9 +61,6 @@
     <Filter Include="01.Utiltiy\02.GameObject\Manager">
       <UniqueIdentifier>{e5b6768b-8e62-4930-8c6b-a6f1199ff91f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utiltiy\02.GameObject\Manager\Layer">
-      <UniqueIdentifier>{8c2666f7-7eb6-4c1f-98fa-b493cdf2443c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utiltiy\02.GameObject\Camera">
       <UniqueIdentifier>{637c5240-9306-49f7-973b-880c130035ee}</UniqueIdentifier>
     </Filter>
@@ -208,6 +205,9 @@
     <Filter Include="01.Utiltiy\98.Utils\03.DebugDraw">
       <UniqueIdentifier>{50c6c987-30ef-4318-aa4a-3934a0a8d646}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utiltiy\02.GameObject\Layer">
+      <UniqueIdentifier>{8c2666f7-7eb6-4c1f-98fa-b493cdf2443c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -253,7 +253,7 @@
       <Filter>01.Utiltiy\02.GameObject\Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Layer.h">
-      <Filter>01.Utiltiy\02.GameObject\Manager\Layer</Filter>
+      <Filter>01.Utiltiy\02.GameObject\Layer</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Renderer.h">
       <Filter>01.Utiltiy\03.Components\Component\03.Renderer</Filter>
@@ -411,7 +411,7 @@
       <Filter>01.Utiltiy\02.GameObject\Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Layer.cpp">
-      <Filter>01.Utiltiy\02.GameObject\Manager\Layer</Filter>
+      <Filter>01.Utiltiy\02.GameObject\Layer</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Renderer.cpp">
       <Filter>01.Utiltiy\03.Components\Component\03.Renderer</Filter>

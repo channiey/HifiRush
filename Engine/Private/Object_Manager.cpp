@@ -333,6 +333,16 @@ CGameObject* CObject_Manager::Get_GameObject(_uint iLevelIndex, const wstring& s
 	return pLayer->Get_GameObject(strPrototypeTag);
 }
 
+const _int CObject_Manager::Get_ObjectIndex(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strName)
+{
+	CLayer* pLayer = Find_Layer(iLevelIndex, strLayerTag);
+
+	if (nullptr == pLayer)
+		return -1;
+
+	return pLayer->Get_ObjectIndex(strName);
+}
+
 HRESULT CObject_Manager::Add_Layer(_uint iLevelIndex, const wstring& strLayerTag)
 {
 	if (iLevelIndex >= m_iNumLevels)

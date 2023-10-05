@@ -74,7 +74,6 @@ HRESULT CCollider_Sphere::Render()
 
 	m_pBatch->End();
 
-
 	return S_OK;
 }
 

@@ -280,6 +280,14 @@ CGameObject* CGameInstance::Get_GameObject(_uint iLevelIndex, const wstring& str
 	return m_pObject_Manager->Get_GameObject(iLevelIndex, strLayerTag, strPrototypeTag);
 }
 
+const _int CGameInstance::Get_ObjectIndex(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strName)
+{
+	if (nullptr == m_pObject_Manager)
+		return -1;
+
+	return m_pObject_Manager->Get_ObjectIndex(iLevelIndex, strLayerTag, strName);
+}
+
 map<const wstring, class CGameObject*>* CGameInstance::Get_Prototypes()
 {
 	if (nullptr == m_pObject_Manager)

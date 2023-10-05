@@ -54,8 +54,8 @@ HRESULT CRenderer::Draw_RenderObjects()
 		return S_OK;// E_FAIL;
 
 #ifdef _DEBUG
-	/*if (FAILED(Render_Debug()))
-		return E_FAIL;*/
+	//if (FAILED(Render_Debug()))
+	//	return E_FAIL;
 #endif
 
 	return S_OK;

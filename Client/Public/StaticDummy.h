@@ -4,10 +4,11 @@
 #include "GameObject.h"
 
 BEGIN(Engine)
+class CModel;
 class CShader;
+class CCollider;
 class CRenderer;
 class CTransform;
-class CModel;
 END
 
 BEGIN(Client)
@@ -20,18 +21,19 @@ private:
 	virtual ~CStaticDummy() = default;
 
 public:
-	virtual HRESULT Initialize_Prototype();
-	virtual HRESULT Initialize(void* pArg);
-	virtual void Tick(_float fTimeDelta);
-	virtual void LateTick(_float fTimeDelta);
-	virtual HRESULT Render();
+	virtual HRESULT		Initialize_Prototype();
+	virtual HRESULT		Initialize(void* pArg);
+	virtual void		Tick(_float fTimeDelta);
+	virtual void		LateTick(_float fTimeDelta);
+	virtual HRESULT		Render();
 
 private:
-	CShader*	m_pShaderCom = nullptr;
+	CShader*			m_pShaderCom = nullptr;
+	CRenderer*			m_pRendererCom = nullptr;
+	CTransform*			m_pTransformCom = nullptr;
+	CModel*				m_pModelCom = nullptr;
+	vector<CCollider*>  m_pColliderComs;
 
-	CRenderer*	m_pRendererCom = nullptr;
-	CTransform* m_pTransformCom = nullptr;
-	CModel*		m_pModelCom = nullptr;
 
 private:
 	HRESULT Ready_Components();

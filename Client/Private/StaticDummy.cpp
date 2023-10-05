@@ -29,7 +29,12 @@ HRESULT CStaticDummy::Initialize(void* pArg)
 
 void CStaticDummy::Tick(_float fTimeDelta)
 {
-
+	/* Update Colliders */
+	for (auto& pCollider : m_pColliderComs)
+	{
+		if (nullptr != pCollider)
+			pCollider->Update(m_pTransformCom->Get_WorldMat());
+	}
 }
 
 void CStaticDummy::LateTick(_float fTimeDelta)
@@ -47,9 +52,8 @@ HRESULT CStaticDummy::Render()
 	/* Temp */
 	{
 		LIGHT_DESC			LightDesc;
-
-		/* ¹æÇâ¼º ±¤¿øÀ» Ãß°¡ÇÏ³®. */
 		ZeroMemory(&LightDesc, sizeof LightDesc);
+
 		LightDesc.eLightType = LIGHT_DESC::LIGHT_DIRECTIONAL;
 		LightDesc.vLightDir = _float4(1.f, -1.f, 1.f, 0.f);
 
@@ -116,6 +120,22 @@ HRESULT CStaticDummy::Ready_Components()
 	if (FAILED(__super::Add_Component(LV_STATIC, Util_String::ToWString(tag + name), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 
+	/* Com_Collider_Sphere */
+	CCollider::COLLIDERDESC		ColliderDesc;
+	{
+		ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
+
+		ColliderDesc.vSize = _float3(1.f, 1.f, 1.f);
+		ColliderDesc.vCenter = _float3(0.f, ColliderDesc.vSize.y * 0.5f, 0.f);
+		ColliderDesc.vRotation = _float3(0.f, XMConvertToRadians(45.f), 0.f);
+	}
+	CCollider_Sphere* pCollider = nullptr;
+	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
+		TEXT("Com_Collider_Sphere"), (CComponent**)&pCollider, &ColliderDesc)))
+		return E_FAIL;
+
+	m_pColliderComs.push_back(pCollider);
+
 	return S_OK;
 }
 
@@ -149,6 +169,8 @@ void CStaticDummy::Free()
 {
 	__super::Free();
 
+	for (auto& pCollider : m_pColliderComs)
+		Safe_Release(pCollider);
 
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pShaderCom);

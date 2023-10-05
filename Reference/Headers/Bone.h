@@ -33,7 +33,7 @@ private:
 
 	_float4x4		m_Transformation;			/* Relative(부모 기준) - 여기다가 부모의 m_CombinedTransformation을 곱하면 루트 기준으로 변환 */
 	_float4x4		m_CombinedTransformation;	/* Global(루트 기준) */
-	_float4x4		m_OffsetMatrix;				/* Global(루트 기준 = m_CombinedTransformation)의 역행렬 */
+	_float4x4		m_OffsetMatrix;				/* 애님이 서로 다른 모델에도 적용될 수 있게 하기 위한 매트릭스? */
 
 	CBone*			m_pParent = nullptr;
 	_int			m_iParentIndex = 0;

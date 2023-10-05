@@ -60,10 +60,16 @@ public:
 
 	HRESULT		Clear_ReferenceData();
 
+	const _bool	Is_ClickedWindow() const { return m_bClickedWindow; }
+
 private:
 	HRESULT		ImGui_SetUp(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	void		ImGui_Tick();
 	HRESULT		ImGui_Render();
+
+private:
+	void		Pick_Object();
+	void		Hold_Object();
 
 private:
 	/* 현재 정보를 초기화 한다. */
@@ -93,6 +99,11 @@ private:
 	class CGameObject*				m_pPrefabObj = { nullptr };
 	wstring							m_strIndex_PrefabObject = {};
 	_uint							m_iIndex_PrefabObject = 0;
+	_bool							m_bHoldingObject = FALSE; /* 현재 커서로 오브젝트를 잡고있는지 */
+
+	/* 현재 ImGui 윈도우 클릭 여부 */
+
+	_bool							m_bClickedWindow = FALSE;
 
 private:
 	ID3D11Device* m_pDevice = { nullptr };
