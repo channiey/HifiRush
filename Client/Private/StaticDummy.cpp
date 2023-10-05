@@ -40,8 +40,28 @@ void CStaticDummy::LateTick(_float fTimeDelta)
 	m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this);
 }
 
+
+
 HRESULT CStaticDummy::Render()
 {
+	/* Temp */
+	{
+		LIGHT_DESC			LightDesc;
+
+		/* ¹æÇâ¼º ±¤¿øÀ» Ãß°¡ÇÏ³®. */
+		ZeroMemory(&LightDesc, sizeof LightDesc);
+		LightDesc.eLightType = LIGHT_DESC::LIGHT_DIRECTIONAL;
+		LightDesc.vLightDir = _float4(1.f, -1.f, 1.f, 0.f);
+
+		LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+		LightDesc.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
+		LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+
+		if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightDir", &LightDesc.vLightDir, sizeof(_float4))))
+			return E_FAIL;
+
+	}
+
 	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
 
@@ -62,8 +82,8 @@ HRESULT CStaticDummy::Render()
 		if (FAILED(m_pModelCom->SetUp_OnShader(m_pShaderCom, m_pModelCom->Get_MaterialIndex(i), aiTextureType_DIFFUSE, "g_DiffuseTexture")))
 			return E_FAIL;
 
-		if (FAILED(m_pModelCom->SetUp_OnShader(m_pShaderCom, m_pModelCom->Get_MaterialIndex(i), aiTextureType_NORMALS, "g_NormalTexture")))
-			return E_FAIL;
+		/*if (FAILED(m_pModelCom->SetUp_OnShader(m_pShaderCom, m_pModelCom->Get_MaterialIndex(i), aiTextureType_NORMALS, "g_NormalTexture")))
+			return E_FAIL;*/
 
 		if (FAILED(m_pModelCom->Render(m_pShaderCom, i)))
 			return E_FAIL;
@@ -83,7 +103,10 @@ HRESULT CStaticDummy::Ready_Components()
 		return E_FAIL;
 
 	/* For.Com_Shader */
-	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Shader_Model"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
+	/*if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Shader_Model"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
+		return E_FAIL;*/
+	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Shader_VtxMesh"),
+		TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 
 	/* For.Com_Model */

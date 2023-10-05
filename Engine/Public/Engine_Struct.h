@@ -5,6 +5,22 @@
 #include "SimpleMath.h"
 namespace Engine
 {
+	typedef struct tagLightDesc
+	{
+		enum TYPE { LIGHT_DIRECTIONAL, LIGHT_POINT, LIGHT_END };
+
+		TYPE		eLightType = { LIGHT_END };
+
+		XMFLOAT4	vLightPos;
+		float		fLightRange;
+
+		XMFLOAT4	vLightDir;
+
+		XMFLOAT4	vDiffuse;
+		XMFLOAT4	vAmbient;
+		XMFLOAT4	vSpecular;
+	}LIGHT_DESC;
+
 	typedef struct tagKeyFrame
 	{
 		float		fTime;
@@ -123,6 +139,18 @@ namespace Engine
 		static const unsigned int iNumElements = 6;
 		static const D3D11_INPUT_ELEMENT_DESC Elements[iNumElements];
 	}VTXANIMMODEL_DECLARATION;
+
+	typedef struct ENGINE_DLL tagVertex_Mesh
+	{
+		XMFLOAT3		vPosition;
+		XMFLOAT3		vNormal;
+		XMFLOAT2		vTexcoord;
+		XMFLOAT3		vTangent;
+
+		static const unsigned int				iNumElements = 4;
+		static const D3D11_INPUT_ELEMENT_DESC	Elements[iNumElements];
+
+	}VTXMESH;
 
 	typedef struct tagGraphicDesc
 	{

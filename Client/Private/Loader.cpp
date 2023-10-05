@@ -190,6 +190,30 @@ HRESULT CLoader::Load_Prototype()
 			return E_FAIL;
 	}
 
+	/* For.Shader */
+	m_strLoading = TEXT("Loding... : Shader");
+	{
+		/* For.Prototype_Component_Shader_VtxNorTex*/
+		if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Shader_VtxNorTex"),
+			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl"), VTXNORTEX::Elements, VTXNORTEX::iNumElements))))
+			return E_FAIL;
+
+		/* For.Prototype_Component_Shader_Model */
+		if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Shader_Model"),
+			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxModel.hlsl"), VTXMODEL_DECLARATION::Elements, VTXMODEL_DECLARATION::iNumElements))))
+			return E_FAIL;
+
+		/* For.Prototype_Component_Shader_AnimModel */
+		if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Shader_AnimModel"),
+			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxAnimModel.hlsl"), VTXANIMMODEL_DECLARATION::Elements, VTXANIMMODEL_DECLARATION::iNumElements))))
+			return E_FAIL;
+
+		/* For.Prototype_Component_Shader_VtxMesh */
+		if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Shader_VtxMesh"),
+			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxMesh.hlsl"), VTXMESH::Elements, VTXMESH::iNumElements))))
+			return E_FAIL;
+	}
+
 	/* For.Model */
 	m_strLoading = TEXT("Loding... : Model");
 	{
@@ -223,25 +247,6 @@ HRESULT CLoader::Load_Prototype()
 					return E_FAIL;
 			}
 		}
-	}
-
-	/* For.Shader */
-	m_strLoading = TEXT("Loding... : Shader");
-	{
-		/* For.Prototype_Component_Shader_VtxNorTex*/
-		if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Shader_VtxNorTex"),
-			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl"), VTXNORTEX::Elements, VTXNORTEX::iNumElements))))
-			return E_FAIL;
-
-		/* For.Prototype_Component_Shader_Model */
-		if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Shader_Model"),
-			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxModel.hlsl"), VTXMODEL_DECLARATION::Elements, VTXMODEL_DECLARATION::iNumElements))))
-			return E_FAIL;
-
-		/* For.Prototype_Component_Shader_AnimModel */
-		if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Shader_AnimModel"),
-			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxAnimModel.hlsl"), VTXANIMMODEL_DECLARATION::Elements, VTXANIMMODEL_DECLARATION::iNumElements))))
-			return E_FAIL;
 	}
 
 	m_strLoading = TEXT("Loading Finish");
