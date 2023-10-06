@@ -3,6 +3,11 @@
 #include "GameInstance.h"
 
 #include "Util_String.h"
+
+#ifdef _DEBUG
+#include "ImGui_Manager.h"
+#endif // _DEBUG
+
 CStaticDummy::CStaticDummy(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
 {
@@ -61,8 +66,24 @@ HRESULT CStaticDummy::Render()
 		LightDesc.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
 		LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
 
-		if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightDir", &LightDesc.vLightDir, sizeof(_float4))))
-			return E_FAIL;
+		/* Temp */
+		if (Is_Picked() && CImGui_Manager::GetInstance()->Is_ClickedShader())
+		{
+			if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightDir", &LightDesc.vLightDir, sizeof(_float4))))
+				return E_FAIL;
+
+			LightDesc.vDiffuse = _float4(1.f, 0.5f, 0.f, 0.f);
+
+			if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightDiffuse", &LightDesc.vDiffuse, sizeof(_float4))))
+				return E_FAIL;
+		}
+		else
+		{
+			if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightDir", &LightDesc.vLightDir, sizeof(_float4))))
+				return E_FAIL;
+			if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightDiffuse", &LightDesc.vDiffuse, sizeof(_float4))))
+				return E_FAIL;
+		}
 
 	}
 
@@ -125,7 +146,7 @@ HRESULT CStaticDummy::Ready_Components()
 	{
 		ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
 
-		ColliderDesc.vSize = _float3(1.f, 1.f, 1.f);
+		ColliderDesc.vSize = _float3(50.f, 50.f, 50.f);
 		ColliderDesc.vCenter = _float3(0.f, ColliderDesc.vSize.y * 0.5f, 0.f);
 		ColliderDesc.vRotation = _float3(0.f, XMConvertToRadians(45.f), 0.f);
 	}

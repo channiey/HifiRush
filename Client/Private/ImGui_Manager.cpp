@@ -77,6 +77,9 @@ HRESULT CImGui_Manager::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* p
 
 HRESULT CImGui_Manager::Render()
 {
+	if (!m_bActive)
+		return S_OK;
+
 	/* 메인 윈도우들을 렌더링 한다. */
 	ImGui_Tick();
 	{
@@ -91,6 +94,8 @@ HRESULT CImGui_Manager::Render()
 
 	m_bClickedWindow = ImGui::GetIO().WantCaptureMouse && ImGui::IsMouseDown(0) ? TRUE : FALSE;
 
+
+	/* Picking */
 	if (!m_bClickedWindow)
 	{
 		Pick_Object();
@@ -151,8 +156,12 @@ void CImGui_Manager::Pick_Object()
 		{
 			//if (m_pCurObject != nullptr)
 				//Safe_Release(m_pCurObject);
+			if (nullptr != m_pCurObject && m_pCurObject->Is_Picked())
+				m_pCurObject->Set_Picked(FALSE);
+
 
 			m_pCurObject			= pGameObect;
+			m_pCurObject->Set_Picked(TRUE);
 			m_strIndex_CurObject	= pGameObect->Get_Name();
 			m_iIndex_CurObject		= iIndex;
 

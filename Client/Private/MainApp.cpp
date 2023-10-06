@@ -64,7 +64,11 @@ void CMainApp::Tick(_float fTimeDelta)
 
 	m_pGameInstance->LateTick(fTimeDelta);
 
+
 #ifdef _DEBUG
+	if (m_pGameInstance->Key_Down(VK_F1))
+		m_pImGui_Manager->Toggle_Active();
+
 	m_fTimeAcc += fTimeDelta; 
 #endif // _DEBUG
 

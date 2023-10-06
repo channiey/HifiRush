@@ -45,45 +45,7 @@ HRESULT CLevel_Logo::LateTick(_float fTimeDelta)
 	return S_OK;
 }
 
-void CLevel_Logo::Picking_Terrain()
-{
-	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
-	{
-		if (pGameInstance->Key_Down(VK_LBUTTON))
-		{
-			Vec3 vPickPos;
 
-			CGameObject* pTerrain = pGameInstance->Get_GameObject(LV_LOGO, gStrLayerID[LAYER_ENV_STATIC], TEXT("Env_Terrain_000"));
-			if (nullptr != pTerrain)
-			{
-				CVIBuffer_Terrain*  pBuffer = dynamic_cast<CVIBuffer_Terrain*>(pTerrain->Get_VIBuffer());
-				if (pGameInstance->Get_PickPos_Terrain(pBuffer, pTerrain->Get_Transform()->Get_WorldMat(), vPickPos))
-				{
-					CGameObject* pObj = pGameInstance->Add_GameObject(LV_LOGO, gStrLayerID[LAYER_PLAYER], TEXT("Player_Chai"));
-					if(nullptr != pObj)
-						pObj->Get_Transform()->Set_Position(vPickPos);
-				}
-			}
-		}
-	}
-	RELEASE_INSTANCE(CGameInstance);
-}
-
-void CLevel_Logo::Picking_Object()
-{
-	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
-	{
-		if (pGameInstance->Key_Down(VK_LBUTTON))
-		{
-			CGameObject* pGameObject = pGameInstance->Get_Pick_Object();
-			if (nullptr != pGameObject)
-			{
-				int k = 0;
-			}
-		}
-	}
-	RELEASE_INSTANCE(CGameInstance);
-}
 
 CLevel_Logo * CLevel_Logo::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {

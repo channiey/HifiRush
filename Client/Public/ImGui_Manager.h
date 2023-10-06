@@ -56,11 +56,15 @@ public:
 	HRESULT		Render();
 
 public:
-	void		Set_Active_Main_Window(const WINDOW_MAIN_TYPE& eType, const _bool& bActive);
+	void			Set_Active(const _bool& bActive) { m_bActive = bActive; }
+	void			Toggle_Active() { m_bActive = !m_bActive; }
+	const _bool&	Is_Active() const { return m_bActive; }
+	void			Set_Active_Main_Window(const WINDOW_MAIN_TYPE& eType, const _bool& bActive);
 
 	HRESULT		Clear_ReferenceData();
 
 	const _bool	Is_ClickedWindow() const { return m_bClickedWindow; }
+	const _bool& Is_ClickedShader() const { return m_bClickedObjShader; }
 
 private:
 	HRESULT		ImGui_SetUp(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -80,6 +84,7 @@ private:
 
 private:
 	CGameInstance*					m_pGameInstance = { nullptr };
+	_bool							m_bActive = FALSE;
 
 	vector<class CImGui_Window*>	m_pMainWindows;
 
@@ -94,6 +99,7 @@ private:
 	class CGameObject*				m_pCurObject = { nullptr };
 	wstring							m_strIndex_CurObject = {};
 	_uint							m_iIndex_CurObject = 0;
+	_bool							m_bClickedObjShader = FALSE;
 	
 	/* 현재 Prefab Object 정보*/
 	class CGameObject*				m_pPrefabObj = { nullptr };
@@ -102,7 +108,6 @@ private:
 	_bool							m_bHoldingObject = FALSE; /* 현재 커서로 오브젝트를 잡고있는지 */
 
 	/* 현재 ImGui 윈도우 클릭 여부 */
-
 	_bool							m_bClickedWindow = FALSE;
 
 private:

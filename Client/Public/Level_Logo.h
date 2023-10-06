@@ -16,11 +16,6 @@ public:
 	virtual HRESULT Tick(_float fTimeDelta) override;
 	virtual HRESULT LateTick(_float fTimeDelta) override;
 
-private:
-	/* Temp */
-	void	Picking_Terrain();
-	void	Picking_Object();
-
 public:
 	static class CLevel_Logo* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual void Free() override;

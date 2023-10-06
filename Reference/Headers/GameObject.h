@@ -24,6 +24,7 @@ public:
 public:
 	const _bool&		Is_Active() const { return m_bActive; }
 	const _bool&		Is_Render() const { return m_bRender; }
+	const _bool&		Is_Picked() const { return m_bPicked; }
 
 public:
 	const wstring&		Get_Name() const { return m_strName; }
@@ -46,6 +47,7 @@ public:
 	virtual void	Set_Render(const _bool& bRender) { m_bRender = bRender; }
 	void			Set_Name(const wstring& strName) { m_strName = strName; }
 	void			Set_LayerTag(const wstring& strLayer) { m_strLayer = strLayer; }
+	void			Set_Picked(const _bool& bPicked) { m_bPicked = bPicked; }
 
 protected:
 	ID3D11Device*			m_pDevice = { nullptr };
@@ -65,6 +67,7 @@ protected:
 	/* 피킹 처리를 위한 고유 아이디 */
 	_uint					m_iPickID = { 0 };
 	_float					m_fCamDistance = 0.f;
+	_bool					m_bPicked = FALSE;
 
 protected:
 	HRESULT Add_Component(_uint iLevelIndex, const wstring& strPrototypeTag, const wstring& strComponentTag, _Inout_ CComponent** ppOut, void* pArg = nullptr);
