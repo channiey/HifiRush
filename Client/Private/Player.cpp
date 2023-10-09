@@ -76,11 +76,11 @@ void CPlayer::LateTick(_float fTimeDelta)
 	m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this);	
 
 	
-	//for (auto& pCollider : m_pColliderComs)
-	//{
-	//	if (nullptr != pCollider)
-	//		m_pRendererCom->Add_DebugGroup(pCollider);
-	//}
+	for (auto& pCollider : m_pColliderComs)
+	{
+		if (nullptr != pCollider)
+			m_pRendererCom->Add_DebugGroup(pCollider);
+	}
 }
 
 HRESULT CPlayer::Render()

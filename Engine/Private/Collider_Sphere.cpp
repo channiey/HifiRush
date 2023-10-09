@@ -1,6 +1,10 @@
 #include "..\Public\Collider_Sphere.h"
+
 #include "Collider_AABB.h"
 #include "Collider_OBB.h"
+
+#include "GameObject.h"
+#include "Transform.h"
 
 CCollider_Sphere::CCollider_Sphere(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CCollider(pDevice, pContext)
@@ -34,33 +38,43 @@ HRESULT CCollider_Sphere::Initialize(void * pArg)
 	return S_OK;
 }
 
-void CCollider_Sphere::Update(_fmatrix TransformMatrix)
+void CCollider_Sphere::Update(Matrix TransformMatrix)
 {
-	m_pOriginal_Sphere->Transform(*m_pSphere, TransformMatrix);
+	//m_pOriginal_Sphere->Transform(*m_pSphere, TransformMatrix);
+
+	CTransform* pTransformCom = Get_Parent()->Get_Transform();
+
+	m_pSphere->Center = m_ColliderDesc.vCenter + pTransformCom->Get_Position().ToVec3();
+
 }
 
-_bool CCollider_Sphere::Is_Collision(CCollider * pTargetCollider)
+_bool CCollider_Sphere::Check_Collision(CCollider * pTargetCollider)
 {
-	CCollider::TYPE		eType = pTargetCollider->Get_ColliderType();
+	CCollider::TYPE		eType = pTargetCollider->Get_Type();
 
-	m_bCollision = false;
+	_bool bCollision = FALSE;
 
 	switch (eType)
 	{
 	case CCollider::TYPE_AABB:
-		m_bCollision = m_pSphere->Intersects(((CCollider_AABB*)pTargetCollider)->Get_Collider());
+		bCollision = m_pSphere->Intersects(((CCollider_AABB*)pTargetCollider)->Get_Collider());
 		break;
 
 	case CCollider::TYPE_OBB:
-		m_bCollision = m_pSphere->Intersects(((CCollider_OBB*)pTargetCollider)->Get_Collider());
+		bCollision = m_pSphere->Intersects(((CCollider_OBB*)pTargetCollider)->Get_Collider());
 		break;
 
 	case CCollider::TYPE_SPHERE:
-		m_bCollision = m_pSphere->Intersects(((CCollider_Sphere*)pTargetCollider)->Get_Collider());
+		bCollision = m_pSphere->Intersects(((CCollider_Sphere*)pTargetCollider)->Get_Collider());
 		break;
 	}
 
-	return m_bCollision;
+	return bCollision;
+}
+
+_bool CCollider_Sphere::Check_Collision(Ray& ray, OUT RAYHIT_DESC& pHitDesc)
+{
+	return m_pSphere->Intersects(ray.position, ray.direction, pHitDesc.fDistance);
 }
 
 HRESULT CCollider_Sphere::Render()

@@ -22,6 +22,11 @@ public:
 	virtual HRESULT		Render();
 
 public:
+	virtual void		OnCollision_Enter(class CGameObject* pGameObject) {};
+	virtual void		OnCollision_Stay(class CGameObject* pGameObject) {};
+	virtual void		OnCollision_Exit(class CGameObject* pGameObject) {};
+
+public:
 	const _bool&		Is_Active() const { return m_bActive; }
 	const _bool&		Is_Render() const { return m_bRender; }
 	const _bool&		Is_Picked() const { return m_bPicked; }
@@ -35,6 +40,10 @@ public:
 	class CTransform* const		Get_Transform();
 	class CVIBuffer*			Get_VIBuffer();
 	class CCollider_Sphere*		Get_Collider_Sphere();
+	class CCollider_AABB*		Get_Collider_AABB();
+	class CCollider_OBB*		Get_Collider_OBB();
+	class CModel*				Get_Model();
+
 	
 	class CComponent* const			Get_Component(const wstring& strComponentTag) { return Find_Component(strComponentTag); };
 	COMPONENTS&						Get_Components() { return m_Components; }

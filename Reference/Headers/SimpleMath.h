@@ -448,7 +448,7 @@ namespace DirectX
             static const Vector4 UnitY;
             static const Vector4 UnitZ;
             static const Vector4 UnitW;
-            
+
             /* User */
             Vector3 ToVec3() const  noexcept { return Vector3(x, y, z); }
 
@@ -546,7 +546,7 @@ namespace DirectX
 
             Vector3 Translation() const  noexcept { return Vector3(_41, _42, _43); }
             void Translation(const Vector3& v) noexcept { _41 = v.x; _42 = v.y; _43 = v.z; }
-
+            
             // Matrix operations
             bool Decompose(Vector3& scale, Quaternion& rotation, Vector3& translation) noexcept;
 

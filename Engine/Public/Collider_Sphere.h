@@ -17,8 +17,12 @@ public:
 public:
 	virtual HRESULT		Initialize_Prototype(CCollider::TYPE eColliderType);
 	virtual HRESULT		Initialize(void* pArg);
-	virtual void		Update(_fmatrix TransformMatrix);
-	virtual _bool		Is_Collision(CCollider* pTargetCollider);
+	virtual void		Update(Matrix TransformMatrix);
+
+public:
+	virtual _bool		Check_Collision(CCollider* pTargetCollider);
+	virtual _bool		Check_Collision(Ray& ray, OUT RAYHIT_DESC& pHitDesc);
+
 
 #ifdef _DEBUG
 public:

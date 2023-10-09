@@ -53,13 +53,6 @@ void CImGui_Window_Main_Controller::Show_Window()
 			{
 
 			}
-			ImGui::SameLine();
-
-			/* 클릭 오브젝트 렌더 여부*/
-			if (ImGui::Button("Ckicked Render"))
-			{
-				m_pImGui_Manager->m_bClickedObjShader = !m_pImGui_Manager->m_bClickedObjShader;
-			}
 		}
 
 		/* 각 메인 윈도우 버튼을 보여준다. */

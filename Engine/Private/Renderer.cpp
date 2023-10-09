@@ -54,8 +54,8 @@ HRESULT CRenderer::Draw_RenderObjects()
 		return S_OK;// E_FAIL;
 
 #ifdef _DEBUG
-	//if (FAILED(Render_Debug()))
-	//	return E_FAIL;
+	if (FAILED(Render_Debug()))
+		return S_OK;// E_FAIL;
 #endif
 
 	return S_OK;
@@ -134,8 +134,8 @@ HRESULT CRenderer::Render_UI()
 
 HRESULT CRenderer::Render_Debug()
 {
-	m_pShader->Bind_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
-	m_pShader->Bind_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
+	/*m_pShader->Bind_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
+	m_pShader->Bind_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));*/
 
 	//m_pTarget_Manager->Render_Debug(TEXT("MRT_Deferred"), m_pVIBuffer, m_pShader);
 	//m_pTarget_Manager->Render_Debug(TEXT("MRT_LightAcc"), m_pVIBuffer, m_pShader);
@@ -177,7 +177,7 @@ void CRenderer::Free()
 	__super::Free();
 
 #ifdef _DEBUG
-	Safe_Release(m_pShader);
-	Safe_Release(m_pVIBuffer);
+	//Safe_Release(m_pShader);
+	//Safe_Release(m_pVIBuffer);
 #endif // _DEBUG
 }

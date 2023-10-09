@@ -28,31 +28,33 @@ public:
 	HRESULT Render(class CShader* pShader, _uint iMeshIndex, _uint iPassIndex = 0);
 
 public:
-	_uint Get_NumMeshes() const { return (_uint)m_Meshes.size(); }
-	_uint Get_MaterialIndex(_uint iMeshIndex);
-	_matrix Get_PivotMatrix() { return XMLoadFloat4x4(&m_PivotMatrix); }
-	class CBone* Get_Bone(const char* pNodeName); 
-	class CBone* Get_Bone(const _int& iIndex);
-	const _uint Get_AnimationCount() const { return (_uint)m_Animations.size(); }
-	const _uint Get_CurAnimationIndex() const { return m_iCurrentAnimIndex; }
+	class CBone*			Get_Bone(const char* pNodeName); 
+	class CBone*			Get_Bone(const _int& iIndex);
+	_uint					Get_NumMeshes() const { return (_uint)m_Meshes.size(); }
+	vector<class CMesh*>*	Get_Meshes() { return &m_Meshes; }
+	_uint					Get_MaterialIndex(_uint iMeshIndex);
+	const _uint				Get_AnimationCount() const { return (_uint)m_Animations.size(); }
+	const _uint				Get_CurAnimationIndex() const { return m_iCurrentAnimIndex; }
+	_matrix					Get_PivotMatrix() { return XMLoadFloat4x4(&m_PivotMatrix); }
+	const TYPE&				Get_Type() const { return m_eModelType; }
 
 public:
-	void Set_Animation(_uint iAnimIndex) { m_iCurrentAnimIndex = iAnimIndex; }
+	void					Set_Animation(_uint iAnimIndex) { m_iCurrentAnimIndex = iAnimIndex; }
 
 private:
-    HRESULT Read_BoneData(const string& strPath);
-    HRESULT Read_MeshData(const string& strPath, Matrix PivotMatrix);
-    HRESULT Read_MaterialData(const string& strPath);
-    HRESULT Read_AnimaionData(const string& strPath);
+    HRESULT					Read_BoneData(const string& strPath);
+    HRESULT					Read_MeshData(const string& strPath, Matrix PivotMatrix);
+    HRESULT					Read_MaterialData(const string& strPath);
+    HRESULT					Read_AnimaionData(const string& strPath);
 
 private: 
-	TYPE									m_eModelType = TYPE_END;
-	_float4x4								m_PivotMatrix = {};
+	TYPE						m_eModelType = TYPE_END;
+	_float4x4					m_PivotMatrix = {};
 
-	vector<class CBone*>					m_Bones;
-	vector<class CMesh*>					m_Meshes;
-	vector<MATERIALDESC>					m_Materials;
-	vector<class CAnimation*>				m_Animations;
+	vector<class CBone*>		m_Bones;
+	vector<class CMesh*>		m_Meshes;
+	vector<MATERIALDESC>		m_Materials;
+	vector<class CAnimation*>	m_Animations;
 
 	/* Cache */
 	_uint									m_iCurrentAnimIndex = 0;

@@ -52,35 +52,35 @@ private:
 	virtual ~CImGui_Manager() = default;
 
 public:
-	HRESULT		Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	HRESULT		Render();
+	HRESULT			Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	HRESULT			Render();
 
 public:
-	void			Set_Active(const _bool& bActive) { m_bActive = bActive; }
-	void			Toggle_Active() { m_bActive = !m_bActive; }
 	const _bool&	Is_Active() const { return m_bActive; }
+	const _bool		Is_ClickedWindow() const { return m_bClickedWindow; }
+	void			Set_Active(const _bool& bActive) { m_bActive = bActive; }
 	void			Set_Active_Main_Window(const WINDOW_MAIN_TYPE& eType, const _bool& bActive);
+	void			Toggle_Active() { m_bActive = !m_bActive; }
 
-	HRESULT		Clear_ReferenceData();
+	HRESULT			Clear_ReferenceData();
 
-	const _bool	Is_ClickedWindow() const { return m_bClickedWindow; }
-	const _bool& Is_ClickedShader() const { return m_bClickedObjShader; }
-
-private:
-	HRESULT		ImGui_SetUp(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	void		ImGui_Tick();
-	HRESULT		ImGui_Render();
 
 private:
-	void		Pick_Object();
-	void		Hold_Object();
+	HRESULT			ImGui_SetUp(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	void			ImGui_Tick();
+	HRESULT			ImGui_Render();
+
+private:
+	///* TODO 이걸 여기에 넣는 게 맞을까? */
+	//void			Picking_Event();
+	//void			Pick_Object();
 
 private:
 	/* 현재 정보를 초기화 한다. */
-	void		Reset_Index_CurLevel();
-	void		Reset_Index_CurLayer();
-	void		Reset_Index_CurObject();
-	void		Reset_Index_PrefabObject();
+	void			Reset_Index_CurLevel();
+	void			Reset_Index_CurLayer();
+	void			Reset_Index_CurObject();
+	void			Reset_Index_PrefabObject();
 
 private:
 	CGameInstance*					m_pGameInstance = { nullptr };
@@ -99,13 +99,11 @@ private:
 	class CGameObject*				m_pCurObject = { nullptr };
 	wstring							m_strIndex_CurObject = {};
 	_uint							m_iIndex_CurObject = 0;
-	_bool							m_bClickedObjShader = FALSE;
 	
 	/* 현재 Prefab Object 정보*/
 	class CGameObject*				m_pPrefabObj = { nullptr };
 	wstring							m_strIndex_PrefabObject = {};
 	_uint							m_iIndex_PrefabObject = 0;
-	_bool							m_bHoldingObject = FALSE; /* 현재 커서로 오브젝트를 잡고있는지 */
 
 	/* 현재 ImGui 윈도우 클릭 여부 */
 	_bool							m_bClickedWindow = FALSE;

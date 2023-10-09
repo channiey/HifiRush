@@ -48,6 +48,12 @@ void CStaticDummy::LateTick(_float fTimeDelta)
 		return;
 
 	m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this);
+
+	for (auto& pCollider : m_pColliderComs)
+	{
+		if (nullptr != pCollider)
+			m_pRendererCom->Add_DebugGroup(pCollider);
+	}
 }
 
 
@@ -66,25 +72,8 @@ HRESULT CStaticDummy::Render()
 		LightDesc.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
 		LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
 
-		/* Temp */
-		if (Is_Picked() && CImGui_Manager::GetInstance()->Is_ClickedShader())
-		{
-			if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightDir", &LightDesc.vLightDir, sizeof(_float4))))
-				return E_FAIL;
-
-			LightDesc.vDiffuse = _float4(1.f, 0.5f, 0.f, 0.f);
-
-			if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightDiffuse", &LightDesc.vDiffuse, sizeof(_float4))))
-				return E_FAIL;
-		}
-		else
-		{
-			if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightDir", &LightDesc.vLightDir, sizeof(_float4))))
-				return E_FAIL;
-			if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightDiffuse", &LightDesc.vDiffuse, sizeof(_float4))))
-				return E_FAIL;
-		}
-
+		if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightDir", &LightDesc.vLightDir, sizeof(_float4))))
+			return E_FAIL;
 	}
 
 	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_WorldMatrix")))
@@ -146,7 +135,7 @@ HRESULT CStaticDummy::Ready_Components()
 	{
 		ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
 
-		ColliderDesc.vSize = _float3(50.f, 50.f, 50.f);
+		ColliderDesc.vSize = _float3(5.f, 5.f, 5.f);
 		ColliderDesc.vCenter = _float3(0.f, ColliderDesc.vSize.y * 0.5f, 0.f);
 		ColliderDesc.vRotation = _float3(0.f, XMConvertToRadians(45.f), 0.f);
 	}
@@ -154,7 +143,6 @@ HRESULT CStaticDummy::Ready_Components()
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
 		TEXT("Com_Collider_Sphere"), (CComponent**)&pCollider, &ColliderDesc)))
 		return E_FAIL;
-
 	m_pColliderComs.push_back(pCollider);
 
 	return S_OK;

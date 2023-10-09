@@ -153,7 +153,8 @@ HRESULT CObject_Manager::Return_Pool(_uint iLevelIndex, CGameObject* pObj)
 	if (nullptr == pPool)
 		return E_FAIL;
 
-	pObj->Set_Active(FALSE);
+	pObj->Set_State(CGameObject::STATE_UNACTIVE);
+	//pObj->Set_Active(FALSE);
 
 	pPool->push(pObj);
 
@@ -254,7 +255,8 @@ void CObject_Manager::FinishTick()
 			pLayer->Push_GameObject(iter.pObj);
 		}
 
-		iter.pObj->Set_Active(TRUE);
+		//iter.pObj->Set_Active(TRUE);
+		iter.pObj->Set_State(CGameObject::STATE_ACTIVE);
 		
 		Safe_Release(iter.pObj);
 	}

@@ -1,6 +1,10 @@
 #include "..\Public\Collider.h"
 #include "PipeLine.h"
 
+#include "GameObject.h"
+
+_uint CCollider::g_iNextID = 0;
+
 CCollider::CCollider(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CComponent(pDevice, pContext)
 {
@@ -9,7 +13,7 @@ CCollider::CCollider(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 
 CCollider::CCollider(const CCollider & rhs)
 	: CComponent(rhs)
-	, m_bCollision(rhs.m_bCollision)
+	//, m_bCollision(rhs.m_bCollision)
 	, m_eColliderType(rhs.m_eColliderType)
 #ifdef _DEBUG
 	, m_pBatch(rhs.m_pBatch)
@@ -25,6 +29,8 @@ CCollider::CCollider(const CCollider & rhs)
 HRESULT CCollider::Initialize_Prototype(TYPE eColliderType)
 {
 	m_eColliderType = eColliderType;
+
+	m_iID = g_iNextID++;
 
 #ifdef _DEBUG
 
@@ -54,28 +60,23 @@ HRESULT CCollider::Initialize(void * pArg)
 
 	return S_OK;
 }
-#ifdef _DEBUG
 
-HRESULT CCollider::Render()
+void CCollider::OnCollision_Enter(CGameObject* pGameObject)
 {
-	m_vColor = m_bCollision == false ? _float4(0.f, 1.f, 0.f, 1.f) : _float4(1.f, 0.f, 0.f, 1.f);
-
-	m_pEffect->SetWorld(XMMatrixIdentity());
-
-	CPipeLine*		pPipeLine = GET_INSTANCE(CPipeLine);
-
-	m_pEffect->SetView(pPipeLine->Get_Transform(CPipeLine::STATE_VIEW));
-	m_pEffect->SetProjection(pPipeLine->Get_Transform(CPipeLine::STATE_PROJ));
-
-	RELEASE_INSTANCE(CPipeLine);
-
-	m_pEffect->Apply(m_pContext);
-
-	m_pContext->IASetInputLayout(m_pInputLayout);
-	
-	return S_OK;
+	++m_iCollison;
+	pGameObject->OnCollision_Enter(pGameObject);
 }
-#endif // _DEBUG
+
+void CCollider::OnCollision_Stay(CGameObject* pGameObject)
+{
+	pGameObject->OnCollision_Stay(pGameObject);
+}
+
+void CCollider::OnCollision_Exit(CGameObject* pGameObject)
+{
+	--m_iCollison;
+	pGameObject->OnCollision_Exit(pGameObject);
+}
 
 _matrix CCollider::Remove_Rotation(_fmatrix Matrix)
 {
@@ -104,3 +105,26 @@ void CCollider::Free()
 #endif // _DEBUG
 
 }
+
+#ifdef _DEBUG
+
+HRESULT CCollider::Render()
+{
+	m_vColor = Is_Collision() == false ? _float4(0.f, 1.f, 0.f, 1.f) : _float4(1.f, 0.f, 0.f, 1.f);
+
+	m_pEffect->SetWorld(XMMatrixIdentity());
+
+	CPipeLine* pPipeLine = GET_INSTANCE(CPipeLine);
+
+	m_pEffect->SetView(pPipeLine->Get_Transform(CPipeLine::STATE_VIEW));
+	m_pEffect->SetProjection(pPipeLine->Get_Transform(CPipeLine::STATE_PROJ));
+
+	RELEASE_INSTANCE(CPipeLine);
+
+	m_pEffect->Apply(m_pContext);
+
+	m_pContext->IASetInputLayout(m_pInputLayout);
+
+	return S_OK;
+}
+#endif // _DEBUG

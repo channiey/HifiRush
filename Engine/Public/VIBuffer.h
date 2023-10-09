@@ -19,7 +19,9 @@ public:
 	virtual HRESULT Render();
 
 public:
-	_float3* Get_VerticesPos() const { return m_pVerticesPos; }
+	_float3*		Get_VerticesPos() const { return m_pVerticesPos; }
+	const _uint&	Get_IndicesNum() const { return m_iNumPrimitives; }
+	const _uint&	Get_NumPrimitives() const { return m_iNumPrimitives; }
 
 protected:
 	ID3D11Buffer*					m_pVB = nullptr;

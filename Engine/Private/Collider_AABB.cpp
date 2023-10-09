@@ -42,38 +42,43 @@ HRESULT CCollider_AABB::Initialize(void * pArg)
 	return S_OK;
 }
 
-void CCollider_AABB::Update(_fmatrix TransformMatrix)
+void CCollider_AABB::Update(Matrix TransformMatrix)
 {
 	m_pOriginal_AABB->Transform(*m_pAABB, Remove_Rotation(TransformMatrix));
 }
 
-_bool CCollider_AABB::Is_Collision(CCollider * pTargetCollider)
+_bool CCollider_AABB::Check_Collision(CCollider * pTargetCollider)
 {
-	CCollider::TYPE		eType = pTargetCollider->Get_ColliderType();
+	CCollider::TYPE		eType = pTargetCollider->Get_Type();
 
-	m_bCollision = false;
+	_bool bCollision = FALSE;
 
 	switch (eType)
 	{
 	case CCollider::TYPE_AABB:
-		m_bCollision = m_pAABB->Intersects(((CCollider_AABB*)pTargetCollider)->Get_Collider());
+		bCollision = m_pAABB->Intersects(((CCollider_AABB*)pTargetCollider)->Get_Collider());
 		break;
 
 	case CCollider::TYPE_OBB:
-		m_bCollision = m_pAABB->Intersects(((CCollider_OBB*)pTargetCollider)->Get_Collider());
+		bCollision = m_pAABB->Intersects(((CCollider_OBB*)pTargetCollider)->Get_Collider());
 		break;
 
 	case CCollider::TYPE_SPHERE:
-		m_bCollision = m_pAABB->Intersects(((CCollider_Sphere*)pTargetCollider)->Get_Collider());
+		bCollision = m_pAABB->Intersects(((CCollider_Sphere*)pTargetCollider)->Get_Collider());
 		break;
 	}	
 
-	return m_bCollision;
+	return bCollision;
+}
+
+_bool CCollider_AABB::Check_Collision(Ray& ray, OUT RAYHIT_DESC& pHitDesc)
+{
+	return m_pAABB->Intersects(ray.position, ray.direction, pHitDesc.fDistance);
 }
 
 _bool CCollider_AABB::Collision_AABB(CCollider * pTargetCollider)
 {
-	if (CCollider::TYPE_AABB != pTargetCollider->Get_ColliderType())
+	if (CCollider::TYPE_AABB != pTargetCollider->Get_Type())
 		return FALSE;
 
 	CCollider_AABB*		pTargetAABB = (CCollider_AABB*)pTargetCollider;
@@ -87,23 +92,23 @@ _bool CCollider_AABB::Collision_AABB(CCollider * pTargetCollider)
 	vDestMin = pTargetAABB->Compute_Min();
 	vDestMax = pTargetAABB->Compute_Max();
 
-	m_bCollision = false;
+	_bool bCollision = FALSE;
 
 	/* ³Êºñ·Î °ãÃÆ´ÂÁö?! */
 	if (max(vSourMin.x, vDestMin.x) > min(vSourMax.x, vDestMax.x))
-		return m_bCollision;
+		return bCollision;
 
 	/* ³ôÀÌ·Î */
 	if (max(vSourMin.y, vDestMin.y) > min(vSourMax.y, vDestMax.y))
-		return m_bCollision;
+		return bCollision;
 
 	/* ±íÀÌ·Î */
 	if (max(vSourMin.z, vDestMin.z) > min(vSourMax.z, vDestMax.z))
-		return m_bCollision;
+		return bCollision;
 
-	m_bCollision = true;
+	bCollision = true;
 
-	return m_bCollision;
+	return bCollision;
 }
 
 #ifdef _DEBUG

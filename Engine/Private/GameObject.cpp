@@ -12,7 +12,8 @@ CGameObject::CGameObject(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 CGameObject::CGameObject(const CGameObject & rhs)
 	: m_pDevice(rhs.m_pDevice)
 	, m_pContext(rhs.m_pContext)
-	, m_bActive(rhs.m_bActive)
+	//, m_bActive(rhs.m_bActive)
+	, m_eState(rhs.m_eState)
 	, m_bRender(rhs.m_bRender)
 	, m_strLayer(rhs.m_strLayer)
 	, m_strName(rhs.m_strName)
@@ -45,7 +46,7 @@ HRESULT CGameObject::Render()
 	return S_OK;
 }
 
-CTransform* const CGameObject::Get_Transform()
+CTransform* CGameObject::Get_Transform()
 {
 	return dynamic_cast<CTransform*>(Get_Component(TEXT("Com_Transform")));
 }
@@ -58,6 +59,21 @@ CVIBuffer* CGameObject::Get_VIBuffer()
 CCollider_Sphere* CGameObject::Get_Collider_Sphere()
 {
 	return dynamic_cast<CCollider_Sphere*>(Get_Component(TEXT("Com_Collider_Sphere")));
+}
+
+CCollider_AABB* CGameObject::Get_Collider_AABB()
+{
+	return dynamic_cast<CCollider_AABB*>(Get_Component(TEXT("Com_Collider_AABB")));
+}
+
+CCollider_OBB* CGameObject::Get_Collider_OBB()
+{
+	return dynamic_cast<CCollider_OBB*>(Get_Component(TEXT("Com_Collider_OBB")));
+}
+
+CModel* CGameObject::Get_Model()
+{
+	return dynamic_cast<CModel*>(Get_Component(TEXT("Com_Model")));
 }
 
 CMonoBehaviour* const CGameObject::Get_MonoBehaviour(const _uint& iIndex)
@@ -83,6 +99,8 @@ HRESULT CGameObject::Add_Component(_uint iLevelIndex, const wstring & strPrototy
 			RELEASE_INSTANCE(CGameInstance);
 			return E_FAIL;
 		}
+
+		pComponent->Set_Parent(this);
 
 		/* 검색이 가능한 맵에 저장. */
 		m_Components.emplace(strComponentTag, pComponent);

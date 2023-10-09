@@ -19,17 +19,27 @@ public:
 
 public:
 	_uint					Get_MaterialIndex() const { return m_iMaterialIndex; }
+	VTXANIMMODEL*			Get_VerticesAnim() const { return m_pVerticesAnim; }
+	VTXMODEL*				Get_VerticesStatic() const { return m_pVerticeStatic; }
+	FACEINDICES32*			Get_Indices() const { return m_pIndices; }
 
 public:
 	void					SetUp_BoneMatrices(_float4x4* pBoneMatrices, _fmatrix PivotMatrix); /* 메시의 정점을 그리기위해 셰이더에 넘기기위한 뼈행렬의 배열을 구성한다. */
 
 private:
 	char					m_szName[MAX_PATH] = "";
-	_uint					m_iMaterialIndex = 0;	/* 메시를 그릴 때 사용하는 매태리얼 인덱스 */
+	_uint					m_iMaterialIndex = 0;	
 
 private:
 	vector<class CBone*>	m_Bones;			/* 이 메시에 영향을 주는 뼈 집합 (메시별로 렌더링시, 해당 메시에 영향을 주는 뼈 행렬을 모아서 토스 */
 	vector<_int>			m_BoneIndices;		/* Cache (Initialize에서 뼈를 찾아오기 위한 인덱스들) */
+
+	VTXANIMMODEL*			m_pVerticesAnim = { nullptr };
+	VTXMODEL*				m_pVerticeStatic = { nullptr };
+	FACEINDICES32*			m_pIndices = { nullptr };
+
+	class CModel*			m_pModel = { nullptr };
+
 
 private:
 	HRESULT Ready_StaticVertices(vector<VTXMODEL>& Vertices, _fmatrix PivotMatrix);

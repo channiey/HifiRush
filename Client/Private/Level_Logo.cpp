@@ -20,10 +20,6 @@ HRESULT CLevel_Logo::Initialize()
 
 HRESULT CLevel_Logo::Tick(_float fTimeDelta)
 {
-	//Picking_Terrain();
-
-	//Picking_Object();
-
 	return S_OK;
 }
 
@@ -63,6 +59,4 @@ CLevel_Logo * CLevel_Logo::Create(ID3D11Device * pDevice, ID3D11DeviceContext * 
 void CLevel_Logo::Free()
 {
  	__super::Free();
-
-
 }

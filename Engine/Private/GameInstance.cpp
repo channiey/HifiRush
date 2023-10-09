@@ -3,6 +3,7 @@
 #include "Graphic_Device.h"
 #include "Level_Manager.h"
 #include "Object_Manager.h"
+#include "Collision_Manager.h"
 #include "Profiler_Manager.h"
 #include "GameObject.h"
 
@@ -18,6 +19,7 @@ CGameInstance::CGameInstance()
 	, m_pThread_Manager(CThread_Manager::GetInstance())
 	, m_pProfiler_Manager(CProfiler_Manager::GetInstance())
 	, m_pPipeLine(CPipeLine::GetInstance())
+	, m_pCollision_Manager(CCollision_Manager::GetInstance())
 
 {
 	Safe_AddRef(m_pPipeLine);
@@ -29,6 +31,8 @@ CGameInstance::CGameInstance()
 	Safe_AddRef(m_pThread_Manager);
 	Safe_AddRef(m_pInput_Device);
 	Safe_AddRef(m_pProfiler_Manager);
+	Safe_AddRef(m_pCollision_Manager);
+
 }
 
 HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, HINSTANCE hInst, const GRAPHIC_DESC& GraphicDesc, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext)
@@ -53,6 +57,10 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, HINSTANCE hInst, cons
 
 	/* 파이프 라인의 초기화 처리 */
 	if (FAILED(m_pPipeLine->Initialize()))
+		return E_FAIL;
+
+	/* 콜리전 매니저의 초기화 처리 */
+	if (FAILED(m_pCollision_Manager->Initialize()))
 		return E_FAIL;
 
 	return S_OK;
@@ -388,21 +396,23 @@ const _bool CGameInstance::Key_Pressing(const _int& _iKey)
 	return m_pInput_Device->Key_Pressing(_iKey);
 }
 
-const _bool CGameInstance::Get_PickPos_Terrain(class CVIBuffer_Terrain* pBuffer, Matrix matWorld, _Inout_ Vec3& vPickPos)
+const _bool CGameInstance::Get_PickPos_Window(Vec2* vPickPos)
 {
 	if (nullptr == m_pInput_Device)
 		return FALSE;
 
-	return m_pInput_Device->Get_PickPos_Terrain(pBuffer, matWorld, vPickPos);
+	return m_pInput_Device->Get_PickPos_Window(vPickPos);
 }
 
-CGameObject* CGameInstance::Get_Pick_Object()
+const _bool CGameInstance::Is_Focus()
 {
 	if (nullptr == m_pInput_Device)
-		return nullptr;
+		return FALSE;
 
-	return m_pInput_Device->Get_Pick_Object();
+	return m_pInput_Device->Is_Focus();
 }
+
+
 
 HRESULT CGameInstance::Bind_TransformToShader(CShader* pShader, const char* pConstantName, CPipeLine::TRANSFORM_STATE eState)
 {
@@ -436,6 +446,38 @@ Vec4 CGameInstance::Get_CamPosition() const
 	return m_pPipeLine->Get_CamPosition();
 }
 
+const _bool CGameInstance::Check_Collision_Ray(Ray& ray, CCollider* pCollider, OUT RAYHIT_DESC& hitDesc)
+{
+	if (nullptr == m_pCollision_Manager)
+		return FALSE;
+
+	return m_pCollision_Manager->Check_Collision_Ray(ray, pCollider, hitDesc);
+}
+
+const _bool CGameInstance::Check_Collision_CameraRay(CCollider* pCollider, const Matrix& matWorld, OUT RAYHIT_DESC& hitDesc)
+{
+	if (nullptr == m_pCollision_Manager)
+		return FALSE;
+
+	return m_pCollision_Manager->Check_Collision_CameraRay(pCollider, matWorld, hitDesc);
+}
+
+const _bool CGameInstance::Check_Collision_CameraRay(CModel* pModel, const Matrix& matWorld, OUT RAYHIT_DESC& hitDesc, const _bool& bPreInterSphere)
+{
+	if (nullptr == m_pCollision_Manager)
+		return FALSE;
+
+	return m_pCollision_Manager->Check_Collision_CameraRay(pModel, matWorld, hitDesc, bPreInterSphere);
+}
+
+Ray CGameInstance::Create_CameraRay(const Matrix& matWorld)
+{
+	if (nullptr == m_pCollision_Manager)
+		return Ray();
+
+	return m_pCollision_Manager->Create_CameraRay(matWorld);
+}
+
 void CGameInstance::Release_Engine()
 {
 	CGameInstance::GetInstance()->DestroyInstance();
@@ -448,6 +490,7 @@ void CGameInstance::Release_Engine()
 	CThread_Manager::GetInstance()->DestroyInstance();
 	CPipeLine::GetInstance()->DestroyInstance();
 	CProfiler_Manager::GetInstance()->DestroyInstance();
+	CCollision_Manager::GetInstance()->DestroyInstance();
 }
 
 void CGameInstance::Free()
@@ -461,4 +504,5 @@ void CGameInstance::Free()
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pThread_Manager);
 	Safe_Release(m_pProfiler_Manager);
+	Safe_Release(m_pCollision_Manager);
 }

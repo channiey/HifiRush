@@ -23,20 +23,20 @@ public: /* For.GameInstance */
 	void Clear(_uint iLevelIndex);
 
 public: /* For.Timer_Manager */
-	_float Compute_TimeDelta(const wstring& strTimerTag);
+	_float	Compute_TimeDelta(const wstring& strTimerTag);
 	HRESULT	Add_Timer(const wstring& strTimerTag);
 
 public: /* For.Graphic_Device */
-	HRESULT Clear_BackBuffer_View(_float4 vClearColor);	
-	HRESULT Clear_DepthStencil_View();	
-	HRESULT Present();
-	ID3D11Device* Get_Device();
-	GRAPHIC_DESC Get_GraphicDesc();
-	const Viewport Get_ViewPort();
+	HRESULT			Clear_BackBuffer_View(_float4 vClearColor);	
+	HRESULT			Clear_DepthStencil_View();	
+	HRESULT			Present();
+	ID3D11Device*	Get_Device();
+	GRAPHIC_DESC	Get_GraphicDesc();
+	const Viewport	Get_ViewPort();
 
 
 public: /* For.Level_Manager */
-	HRESULT Open_Level(_uint iLevelIndex, class CLevel* pNewLevel);
+	HRESULT		Open_Level(_uint iLevelIndex, class CLevel* pNewLevel);
 	const _uint Get_CurLevelIndex();
 
 public: /* For.Object_Manager */
@@ -61,8 +61,8 @@ public: /* For.Object_Manager */
 	HRESULT Delete_Layer(_uint iLevelIndex, const wstring& strLayerTag);
 
 public: /* For.Component_Manager */
-	HRESULT Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, class CComponent* pPrototype);
-	class CComponent* Clone_Component(_uint iLevelIndex, const wstring& strPrototypeTag, void* pArg = nullptr);
+	HRESULT				Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, class CComponent* pPrototype);
+	class CComponent*	Clone_Component(_uint iLevelIndex, const wstring& strPrototypeTag, void* pArg = nullptr);
 
 public:	/* For.Thread_Manager */
 	//HRESULT	Set_MultiThreading(const _uint& iNumThread);
@@ -74,20 +74,26 @@ public: /* For.Profiler_Manager */
 	const PROFILER_DESC Get_ProfillingData() const;
 
 public:  /* For.Input_Device */
-	_char Get_DIKState(_uchar eKeyID);
-	_char Get_DIMKeyState(CInput_Device::MOUSEKEYSTATE eMouseKeyID);
-	_long Get_DIMMoveState(CInput_Device::MOUSEMOVESTATE eMouseMoveID);
+	_char		Get_DIKState(_uchar eKeyID);
+	_char		Get_DIMKeyState(CInput_Device::MOUSEKEYSTATE eMouseKeyID);
+	_long		Get_DIMMoveState(CInput_Device::MOUSEMOVESTATE eMouseMoveID);
 	const _bool Key_Up(const _int& _iKey);
 	const _bool Key_Down(const _int& _iKey);
 	const _bool Key_Pressing(const _int& _iKey);
-	const _bool Get_PickPos_Terrain(class CVIBuffer_Terrain* pBuffer, Matrix matWorld, _Inout_ Vec3& vPickPos);
-	class CGameObject* Get_Pick_Object();
+	const _bool Get_PickPos_Window(_Inout_ Vec2* vPickPos);
+	const _bool Is_Focus();
 
 public: /* For.PipeLine */
 	HRESULT Bind_TransformToShader(class CShader* pShader, const char* pConstantName, CPipeLine::TRANSFORM_STATE eState);
-	Matrix Get_Transform(const CPipeLine::TRANSFORM_STATE& eState) const;
-	Matrix Get_Transform_Inverse(const CPipeLine::TRANSFORM_STATE& eState) const;
-	Vec4 Get_CamPosition() const;
+	Matrix	Get_Transform(const CPipeLine::TRANSFORM_STATE& eState) const;
+	Matrix	Get_Transform_Inverse(const CPipeLine::TRANSFORM_STATE& eState) const;
+	Vec4	Get_CamPosition() const;
+
+public: /* For.Collision_Manager */
+	const _bool Check_Collision_Ray(Ray& ray, class CCollider* pCollider, OUT RAYHIT_DESC& hitDesc);
+	const _bool Check_Collision_CameraRay(class CCollider* pCollider, const Matrix& matWorld, OUT RAYHIT_DESC& hitDesc);
+	const _bool Check_Collision_CameraRay(class CModel* pModel, const Matrix& matWorld, OUT RAYHIT_DESC& hitDesc, const _bool& bPreInterSphere);
+	Ray			Create_CameraRay(const Matrix& matWorld);
 
 private:
 	class CTimer_Manager*			m_pTimer_Manager = { nullptr };
@@ -99,6 +105,7 @@ private:
 	class CProfiler_Manager*		m_pProfiler_Manager = { nullptr };
 	class CInput_Device*			m_pInput_Device = { nullptr };
 	class CPipeLine*				m_pPipeLine = { nullptr };
+	class CCollision_Manager*		m_pCollision_Manager = { nullptr };
 
 public:
 	static void Release_Engine();

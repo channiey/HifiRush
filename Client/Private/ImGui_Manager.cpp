@@ -92,17 +92,9 @@ HRESULT CImGui_Manager::Render()
 
 	FAILED_CHECK_RETURN(ImGui_Render(), E_FAIL);
 
-	m_bClickedWindow = ImGui::GetIO().WantCaptureMouse && ImGui::IsMouseDown(0) ? TRUE : FALSE;
-
-
+	
 	/* Picking */
-	if (!m_bClickedWindow)
-	{
-		Pick_Object();
-		Hold_Object();
-	}
-	else
-		m_bHoldingObject = FALSE;
+	//Picking_Event();
 
 	return S_OK;
 }
@@ -143,48 +135,49 @@ HRESULT CImGui_Manager::ImGui_Render()
 	return S_OK;
 }
 
-void CImGui_Manager::Pick_Object()
-{
-	if (!m_pGameInstance->Key_Down(VK_LBUTTON))
-		return;
-
- 	CGameObject* pGameObect = m_pGameInstance->Get_Pick_Object();
-	if (nullptr != pGameObect)
-	{
-		const _int iIndex = m_pGameInstance->Get_ObjectIndex(m_pGameInstance->Get_CurLevelIndex(), pGameObect->Get_LayerTag(), pGameObect->Get_Name());
-		//if (0 < iIndex) 
-		{
-			//if (m_pCurObject != nullptr)
-				//Safe_Release(m_pCurObject);
-			if (nullptr != m_pCurObject && m_pCurObject->Is_Picked())
-				m_pCurObject->Set_Picked(FALSE);
-
-
-			m_pCurObject			= pGameObect;
-			m_pCurObject->Set_Picked(TRUE);
-			m_strIndex_CurObject	= pGameObect->Get_Name();
-			m_iIndex_CurObject		= iIndex;
-
-			//Safe_AddRef(m_pCurObject);
-		}
-	}
-}
-
-void CImGui_Manager::Hold_Object()
-{
-	if (!m_pGameInstance->Key_Pressing(VK_LBUTTON))
-	{
-		m_bHoldingObject = FALSE;
-		return;
-	}
-
-	CGameObject* pGameObect = m_pGameInstance->Get_Pick_Object();
-
-	if (nullptr != pGameObect && nullptr != m_pCurObject && m_pCurObject == pGameObect)
-		m_bHoldingObject = TRUE;
-	else
-		m_bHoldingObject = FALSE;
-}
+//void CImGui_Manager::Picking_Event()
+//{	
+//	m_bClickedWindow = ImGui::GetIO().WantCaptureMouse && ImGui::IsMouseDown(0) ? TRUE : FALSE;
+//
+//	/* 현재 ImGui창을 클릭하지 않았다면 */
+//	if (!m_bClickedWindow)
+//	{
+//		Pick_Object();
+//		//Hold_Object();
+//	}
+//	else
+//	{
+//
+//	}
+//		//m_bHoldingObject = FALSE;
+//}
+//
+//void CImGui_Manager::Pick_Object()
+//{
+//	if (!m_pGameInstance->Key_Down(VK_LBUTTON))
+//		return;
+//
+// 	CGameObject* pGameObect = m_pGameInstance->Get_Pick_Object();
+//	if (nullptr != pGameObect)
+//	{
+//		const _int iIndex = m_pGameInstance->Get_ObjectIndex(m_pGameInstance->Get_CurLevelIndex(), pGameObect->Get_LayerTag(), pGameObect->Get_Name());
+//		//if (0 < iIndex) 
+//		{
+//			//if (m_pCurObject != nullptr)
+//				//Safe_Release(m_pCurObject);
+//			if (nullptr != m_pCurObject && m_pCurObject->Is_Picked())
+//				m_pCurObject->Set_Picked(FALSE);
+//
+//
+//			m_pCurObject			= pGameObect;
+//			m_pCurObject->Set_Picked(TRUE);
+//			m_strIndex_CurObject	= pGameObect->Get_Name();
+//			m_iIndex_CurObject		= iIndex;
+//
+//			//Safe_AddRef(m_pCurObject);
+//		}
+//	}
+//}
 
 void CImGui_Manager::Reset_Index_CurLevel()
 {

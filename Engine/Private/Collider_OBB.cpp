@@ -46,41 +46,46 @@ HRESULT CCollider_OBB::Initialize(void * pArg)
 	return S_OK;
 }
 
-void CCollider_OBB::Update(_fmatrix TransformMatrix)
+void CCollider_OBB::Update(Matrix TransformMatrix)
 {
 	m_pOriginal_OBB->Transform(*m_pOBB, TransformMatrix);
 }
 
-_bool CCollider_OBB::Is_Collision(CCollider * pTargetCollider)
+_bool CCollider_OBB::Check_Collision(CCollider * pTargetCollider)
 {
-	CCollider::TYPE		eType = pTargetCollider->Get_ColliderType();
+	CCollider::TYPE		eType = pTargetCollider->Get_Type();
 
-	m_bCollision = false;
+	_bool bCollision = FALSE;
 
 	switch (eType)
 	{
 	case CCollider::TYPE_AABB:
-		m_bCollision = m_pOBB->Intersects(((CCollider_AABB*)pTargetCollider)->Get_Collider());
+		bCollision = m_pOBB->Intersects(((CCollider_AABB*)pTargetCollider)->Get_Collider());
 		break;
 
 	case CCollider::TYPE_OBB:
-		m_bCollision = m_pOBB->Intersects(((CCollider_OBB*)pTargetCollider)->Get_Collider());
+		bCollision = m_pOBB->Intersects(((CCollider_OBB*)pTargetCollider)->Get_Collider());
 		break;
 
 	case CCollider::TYPE_SPHERE:
-		m_bCollision = m_pOBB->Intersects(((CCollider_Sphere*)pTargetCollider)->Get_Collider());
+		bCollision = m_pOBB->Intersects(((CCollider_Sphere*)pTargetCollider)->Get_Collider());
 		break;
 	}
 
-	return m_bCollision;
+	return bCollision;
+}
+
+_bool CCollider_OBB::Check_Collision(Ray& ray, OUT RAYHIT_DESC& pHitDesc)
+{
+	return m_pOBB->Intersects(ray.position, ray.direction, pHitDesc.fDistance);
 }
 
 _bool CCollider_OBB::Collision_OBB(CCollider * pTargetCollider)
 {
-	if (CCollider::TYPE_SPHERE == pTargetCollider->Get_ColliderType())
+	if (CCollider::TYPE_SPHERE == pTargetCollider->Get_Type())
 		return FALSE;
 
-	m_bCollision = false;
+	_bool bCollision = FALSE;
 
 	OBBDESC			OBBDesc[2] = {
 		Compute_OBBDesc(),
@@ -105,14 +110,14 @@ _bool CCollider_OBB::Collision_OBB(CCollider * pTargetCollider)
 				fabs(XMVectorGetX(XMVector3Dot(XMLoadFloat3(&OBBDesc[1].vCenterAxis[2]), XMLoadFloat3(&OBBDesc[i].vAlignAxis[j]))));
 
 			if (fDistance[0] > fDistance[1] + fDistance[2])
-				return m_bCollision;
+				return bCollision;
 
 		}
 	}
 
-	m_bCollision = true;
+	bCollision = true;
 
-	return m_bCollision;
+	return bCollision;
 }
 
 HRESULT CCollider_OBB::Render()

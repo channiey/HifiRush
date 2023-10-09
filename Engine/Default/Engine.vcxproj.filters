@@ -109,15 +109,6 @@
     <Filter Include="01.Utiltiy\03.Components\Component\06.Colliders">
       <UniqueIdentifier>{de621597-40c3-4962-9d8b-e196acfd9294}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utiltiy\03.Components\Component\06.Colliders\AABB">
-      <UniqueIdentifier>{41c51c31-c9e1-469e-b9c1-a44596daa906}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utiltiy\03.Components\Component\06.Colliders\OBB">
-      <UniqueIdentifier>{c2d9675d-8917-4e80-83c3-3aeb7168fd22}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utiltiy\03.Components\Component\06.Colliders\Sphere">
-      <UniqueIdentifier>{210e0de2-af10-4e0e-87fb-9d71f7029ce9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utiltiy\03.Components\Component\07.RigidBody">
       <UniqueIdentifier>{f323bfa5-b507-4b16-aed8-fb05902b379f}</UniqueIdentifier>
     </Filter>
@@ -207,6 +198,21 @@
     </Filter>
     <Filter Include="01.Utiltiy\02.GameObject\Layer">
       <UniqueIdentifier>{8c2666f7-7eb6-4c1f-98fa-b493cdf2443c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\06.Colliders\Manager">
+      <UniqueIdentifier>{b9541f0f-4266-497e-8640-c68a582ef347}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\06.Colliders\Collider">
+      <UniqueIdentifier>{5e50bff2-0d08-4ace-96d0-71d247e90087}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\06.Colliders\Collider\OBB">
+      <UniqueIdentifier>{c2d9675d-8917-4e80-83c3-3aeb7168fd22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\06.Colliders\Collider\Sphere">
+      <UniqueIdentifier>{210e0de2-af10-4e0e-87fb-9d71f7029ce9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\06.Colliders\Collider\AABB">
+      <UniqueIdentifier>{41c51c31-c9e1-469e-b9c1-a44596daa906}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -361,13 +367,13 @@
       <Filter>01.Utiltiy\03.Components\Component\06.Colliders</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Collider_AABB.h">
-      <Filter>01.Utiltiy\03.Components\Component\06.Colliders\AABB</Filter>
+      <Filter>01.Utiltiy\03.Components\Component\06.Colliders\Collider\AABB</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Collider_OBB.h">
-      <Filter>01.Utiltiy\03.Components\Component\06.Colliders\OBB</Filter>
+      <Filter>01.Utiltiy\03.Components\Component\06.Colliders\Collider\OBB</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Collider_Sphere.h">
-      <Filter>01.Utiltiy\03.Components\Component\06.Colliders\Sphere</Filter>
+      <Filter>01.Utiltiy\03.Components\Component\06.Colliders\Collider\Sphere</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\DebugDraw.h">
       <Filter>01.Utiltiy\98.Utils\03.DebugDraw</Filter>
@@ -380,6 +386,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\RenderTarget.h">
       <Filter>01.Utiltiy\06.RenderTargets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Collision_Manager.h">
+      <Filter>01.Utiltiy\03.Components\Component\06.Colliders\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -525,13 +534,13 @@
       <Filter>01.Utiltiy\03.Components\Component\06.Colliders</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Collider_AABB.cpp">
-      <Filter>01.Utiltiy\03.Components\Component\06.Colliders\AABB</Filter>
+      <Filter>01.Utiltiy\03.Components\Component\06.Colliders\Collider\AABB</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Collider_OBB.cpp">
-      <Filter>01.Utiltiy\03.Components\Component\06.Colliders\OBB</Filter>
+      <Filter>01.Utiltiy\03.Components\Component\06.Colliders\Collider\OBB</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Collider_Sphere.cpp">
-      <Filter>01.Utiltiy\03.Components\Component\06.Colliders\Sphere</Filter>
+      <Filter>01.Utiltiy\03.Components\Component\06.Colliders\Collider\Sphere</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\DebugDraw.cpp">
       <Filter>01.Utiltiy\98.Utils\03.DebugDraw</Filter>
@@ -544,6 +553,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\RenderTarget.cpp">
       <Filter>01.Utiltiy\06.RenderTargets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Collision_Manager.cpp">
+      <Filter>01.Utiltiy\03.Components\Component\06.Colliders\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
