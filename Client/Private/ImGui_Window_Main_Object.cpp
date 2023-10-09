@@ -87,7 +87,7 @@ void CImGui_Window_Main_Object::Show_Object_Info()
 	if (ImGui::Checkbox("Active", &bActive))
 	{
 		if (nullptr != pObject)
-			pObject->Set_Active(bActive);
+			pObject->Set_State(CGameObject::STATE_ACTIVE);
 	}
 	ImGui::SameLine();
 

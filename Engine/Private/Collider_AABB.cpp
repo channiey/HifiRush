@@ -21,7 +21,7 @@ HRESULT CCollider_AABB::Initialize_Prototype(CCollider::TYPE eColliderType)
 {
 	if (FAILED(__super::Initialize_Prototype(eColliderType)))
 		return E_FAIL;
-	m_eColliderType = CCollider::TYPE_AABB;
+	m_eColliderType = CCollider::AABB;
 	return S_OK;
 }
 
@@ -55,15 +55,15 @@ _bool CCollider_AABB::Check_Collision(CCollider * pTargetCollider)
 
 	switch (eType)
 	{
-	case CCollider::TYPE_AABB:
+	case CCollider::AABB:
 		bCollision = m_pAABB->Intersects(((CCollider_AABB*)pTargetCollider)->Get_Collider());
 		break;
 
-	case CCollider::TYPE_OBB:
+	case CCollider::OBB:
 		bCollision = m_pAABB->Intersects(((CCollider_OBB*)pTargetCollider)->Get_Collider());
 		break;
 
-	case CCollider::TYPE_SPHERE:
+	case CCollider::SPHERE:
 		bCollision = m_pAABB->Intersects(((CCollider_Sphere*)pTargetCollider)->Get_Collider());
 		break;
 	}	
@@ -78,7 +78,7 @@ _bool CCollider_AABB::Check_Collision(Ray& ray, OUT RAYHIT_DESC& pHitDesc)
 
 _bool CCollider_AABB::Collision_AABB(CCollider * pTargetCollider)
 {
-	if (CCollider::TYPE_AABB != pTargetCollider->Get_Type())
+	if (CCollider::AABB != pTargetCollider->Get_Type())
 		return FALSE;
 
 	CCollider_AABB*		pTargetAABB = (CCollider_AABB*)pTargetCollider;

@@ -157,17 +157,17 @@ HRESULT CLoader::Load_Prototype()
 
 		/* For.Prototype_Component_Collider_AABB */
 		if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Collider_AABB"),
-			CCollider_AABB::Create(m_pDevice, m_pContext, CCollider::TYPE_AABB))))
+			CCollider_AABB::Create(m_pDevice, m_pContext, CCollider::AABB))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Collider_OBB */
 		if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Collider_OBB"),
-			CCollider_OBB::Create(m_pDevice, m_pContext, CCollider::TYPE_OBB))))
+			CCollider_OBB::Create(m_pDevice, m_pContext, CCollider::OBB))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Collider_Sphere */
 		if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
-			CCollider_Sphere::Create(m_pDevice, m_pContext, CCollider::TYPE_SPHERE))))
+			CCollider_Sphere::Create(m_pDevice, m_pContext, CCollider::SPHERE))))
 			return E_FAIL;
 	}
 

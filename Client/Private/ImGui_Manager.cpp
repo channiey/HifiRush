@@ -92,7 +92,8 @@ HRESULT CImGui_Manager::Render()
 
 	FAILED_CHECK_RETURN(ImGui_Render(), E_FAIL);
 
-	
+	m_bClickedWindow = ImGui::GetIO().WantCaptureMouse && ImGui::IsMouseDown(0) ? TRUE : FALSE;
+
 	/* Picking */
 	//Picking_Event();
 

@@ -108,13 +108,13 @@ HRESULT CLevel_Loading::Parse_LevelData(const _uint& iLevelID)
 	shared_ptr<Util_File> file = make_shared<Util_File>();
 	if (nullptr == file) return E_FAIL;
 
-	if (!Util_File::IsExistFile(Util_String::ToString(gStrLevelPath[iLevelID])))
+	if (!Util_File::IsExistFile(Util_String::ToString(g_StrLevelPath[iLevelID])))
 	{
 		MSG_BOX("Nothing Level File");
 		return E_FAIL;
 	}
 
-	file->Open(gStrLevelPath[iLevelID], FileMode::Read);
+	file->Open(g_StrLevelPath[iLevelID], FileMode::Read);
 
 	/* 현재 레벨의 전체 레이어 갯수 */
 	const size_t countLayer = file->Read<size_t>();
@@ -129,7 +129,7 @@ HRESULT CLevel_Loading::Parse_LevelData(const _uint& iLevelID)
 			/* 읽을 메인 데이터 */
 			wstring strName = Util_String::ToWString(file->Read<string>());
 			wstring strLayer = Util_String::ToWString(file->Read<string>());
-			_bool	bActive = file->Read<_bool>();
+			_uint	eStae = file->Read<_uint>();
 			_bool	bRender = file->Read<_bool>();
 			Matrix	tMatrix = file->Read<Matrix>();
 
@@ -138,7 +138,7 @@ HRESULT CLevel_Loading::Parse_LevelData(const _uint& iLevelID)
 				CGameObject* pObj = pGameInstance->Add_GameObject(iLevelID, strLayer, strName);
 				if (nullptr == pObj) continue;
 
-				pObj->Set_Active(bActive);
+				pObj->Set_State((CGameObject::OBJ_STATE)eStae);
 				pObj->Set_Render(bRender);
 
 				CTransform* pTransform = pObj->Get_Transform();

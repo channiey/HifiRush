@@ -1,14 +1,14 @@
 #pragma once
 #include "Base.h"
 
-//#include "Collider.h"
+#include "Collider.h"
 
 union COLLIDER_ID
 {
 	struct
 	{
-		_uint iLeft_id;
-		_uint iRight_id;
+		_uint iLeft_ID;
+		_uint iRight_ID;
 	};
 	_ulonglong ID;
 };
@@ -27,20 +27,17 @@ public:
 	HRESULT Initialize();
 
 public: 
-	void	Check_Collision_Layer(const wstring& strLayerTag1, const wstring& strLayerTag2,
-									const CCollider::TYPE& eType1, const CCollider::TYPE& eType2);
-	
+	void				Check_Collision_Layer(const wstring& strLayerTag1, 
+												const wstring& strLayerTag2,
+												const CCollider::TYPE& eType1, 
+												const CCollider::TYPE& eType2);
 
-
-
-public:
-	/* Collision Ray */
-	static const _bool Check_Collision_Ray(Ray& ray, class CCollider* pCollider, OUT RAYHIT_DESC& hitDesc);
-	static const _bool Check_Collision_CameraRay(class CCollider* pCollider, const Matrix& matWorld, OUT RAYHIT_DESC& hitDesc);
-	static const _bool Check_Collision_CameraRay(class CModel* pModel, const Matrix& matWorld, OUT RAYHIT_DESC& hitDesc, const _bool& bPreInterSphere);
+public: 
+	static const _bool	Check_Collision_Ray(Ray& ray, class CCollider* pCollider, OUT RAYHIT_DESC& hitDesc);
+	static const _bool	Check_Collision_CameraRay(class CCollider* pCollider, const Matrix& matWorld, OUT RAYHIT_DESC& hitDesc);
+	static const _bool	Check_Collision_CameraRay(class CModel* pModel, const Matrix& matWorld, OUT RAYHIT_DESC& hitDesc, const _bool& bPreInterSphere);
 
 public:
-	/* Local */
 	static Ray			Create_CameraRay(const Matrix& matWorld);
 
 private:

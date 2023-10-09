@@ -28,7 +28,7 @@ namespace Client
 		LV_PROTO,
 		LV_END
 	};
-	static const wchar_t* gStrLevelID[LV_END]
+	static const wchar_t* g_StrLevelID[LV_END]
 	{
 		L"STATIC",
 		L"LOADING",
@@ -40,7 +40,7 @@ namespace Client
 		L"PROTO"
 
 	};
-	static const std::wstring gStrLevelPath[LV_END]
+	static const std::wstring g_StrLevelPath[LV_END]
 	{
 		TEXT("../Bin/Resources/Data/Level/Static.level"),
 		TEXT("../Bin/Resources/Data/Level/Loading.level"),
@@ -68,7 +68,7 @@ namespace Client
 		LAYER_UI,
 		LAYER_END
 	};
-	static const wchar_t* gStrLayerID[LAYER_END]
+	static const wchar_t* g_StrLayerID[LAYER_END]
 	{
 		L"Layer_Camera",
 		L"Layer_Env_Static",

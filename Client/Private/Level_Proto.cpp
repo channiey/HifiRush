@@ -24,13 +24,18 @@ HRESULT CLevel_Proto::Initialize()
 HRESULT CLevel_Proto::Tick(_float fTimeDelta)
 {
 
+	
+
+
+	return S_OK;
+
 	if (!CImGui_Manager::GetInstance()->Is_ClickedWindow())
 	{
 		CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 		{
 			if (pGameInstance->Key_Down(VK_LBUTTON))
 			{
-				list<CGameObject*>* pLayer = pGameInstance->Get_Layer(LV_PROTO, gStrLayerID[LAYER_ENV_STATIC]);
+				list<CGameObject*>* pLayer = pGameInstance->Get_Layer(LV_PROTO, g_StrLayerID[LAYER_ENV_STATIC]);
 
 				for (auto& pObj : *pLayer)
 				{
@@ -50,7 +55,14 @@ HRESULT CLevel_Proto::Tick(_float fTimeDelta)
 
 HRESULT CLevel_Proto::LateTick(_float fTimeDelta)
 {
-	SetWindowText(g_hWnd, gStrLevelID[LV_PROTO]);
+	SetWindowText(g_hWnd, g_StrLevelID[LV_PROTO]);
+
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	pGameInstance->Check_Collision_Layer(g_StrLayerID[LAYER_ENV_STATIC], g_StrLayerID[LAYER_ENV_STATIC], CCollider::SPHERE, CCollider::SPHERE);
+
+	RELEASE_INSTANCE(CGameInstance);
+
 	return S_OK;
 }
 

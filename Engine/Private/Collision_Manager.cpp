@@ -48,13 +48,13 @@ void CCollision_Manager::Check_Collision_Layer(const wstring& strLayerTag1, cons
 
 			switch (eType1)
 			{
-			case Engine::CCollider::TYPE_AABB:
+			case Engine::CCollider::AABB:
 				pCollider1 = pObj1->Get_Collider_AABB();
 				break;
-			case Engine::CCollider::TYPE_OBB:
+			case Engine::CCollider::OBB:
 				pCollider1 = pObj1->Get_Collider_OBB();
 				break;
-			case Engine::CCollider::TYPE_SPHERE:
+			case Engine::CCollider::SPHERE:
 				pCollider1 = pObj1->Get_Collider_Sphere();
 				break;
 			default:
@@ -62,20 +62,20 @@ void CCollision_Manager::Check_Collision_Layer(const wstring& strLayerTag1, cons
 			}
 			switch (eType2)
 			{
-			case Engine::CCollider::TYPE_AABB:
+			case Engine::CCollider::AABB:
 				pCollider2 = pObj2->Get_Collider_AABB();
 				break;
-			case Engine::CCollider::TYPE_OBB:
+			case Engine::CCollider::OBB:
 				pCollider2 = pObj2->Get_Collider_OBB();
 				break;
-			case Engine::CCollider::TYPE_SPHERE:
+			case Engine::CCollider::SPHERE:
 				pCollider2 = pObj2->Get_Collider_Sphere();
 				break;
 			default:
 				break;
 			}
 
-			if (nullptr == pCollider1 || nullptr == pCollider2) continue;
+			if (nullptr == pCollider1 || nullptr == pCollider2 || pCollider1 == pCollider2) continue;
 
 			/* 충돌 정보 세팅 */
 			Set_Info(iter, pCollider1, pCollider2);
@@ -83,13 +83,13 @@ void CCollision_Manager::Check_Collision_Layer(const wstring& strLayerTag1, cons
 			/* 충돌 여부 검사 */
 			if (pCollider1->Check_Collision(pCollider2))
 			{
-				if (iter->second) // 이전에도 충돌
+				if (iter->second) // 이전에도 충돌 
 				{
 					if (!pObj1->Is_Active() || !pObj2->Is_Active()) // 둘 중 하나 삭제 예정
 					{
 						pCollider1->OnCollision_Exit(pObj2);
 						pCollider2->OnCollision_Exit(pObj1);
-						iter->second = false;
+						iter->second = FALSE;
 					}
 					else // 삭제 예정 없음
 					{
@@ -120,8 +120,6 @@ void CCollision_Manager::Check_Collision_Layer(const wstring& strLayerTag1, cons
 	}
 }
 
-
-
 const _bool CCollision_Manager::Check_Collision_Ray(Ray& ray, CCollider* pCollider, OUT RAYHIT_DESC& hitDesc)
 {
 	if (nullptr == pCollider)
@@ -139,7 +137,7 @@ const _bool CCollision_Manager::Check_Collision_CameraRay(CCollider* pCollider, 
 
 	switch (pCollider->Get_Type())
 	{
-	case Engine::CCollider::TYPE_AABB:
+	case Engine::CCollider::AABB:
 	{
 		CCollider_AABB* pAABBCollider = dynamic_cast<CCollider_AABB*>(pCollider);
 
@@ -157,7 +155,7 @@ const _bool CCollision_Manager::Check_Collision_CameraRay(CCollider* pCollider, 
 		}
 	}
 		break;
-	case Engine::CCollider::TYPE_OBB:
+	case Engine::CCollider::OBB:
 	{
 		CCollider_OBB* pOBBCollider = dynamic_cast<CCollider_OBB*>(pCollider);
 
@@ -175,7 +173,7 @@ const _bool CCollision_Manager::Check_Collision_CameraRay(CCollider* pCollider, 
 		}
 	}
 		break;
-	case Engine::CCollider::TYPE_SPHERE:
+	case Engine::CCollider::SPHERE:
 	{
 		CCollider_Sphere* pSphereCollider = dynamic_cast<CCollider_Sphere*>(pCollider);
 
@@ -291,8 +289,8 @@ void CCollision_Manager::Set_Info(map<_ulonglong, _bool>::iterator& iter, CColli
 {
 	COLLIDER_ID ID;
 
-	ID.iLeft_id = pCollider1->Get_ID();
-	ID.iRight_id = pCollider2->Get_ID();
+	ID.iLeft_ID = pCollider1->Get_ID();
+	ID.iRight_ID = pCollider2->Get_ID();
 
 	// 이전에 충돌 검사 여부 조사
 	iter = m_mapColInfo.find(ID.ID);
@@ -300,7 +298,7 @@ void CCollision_Manager::Set_Info(map<_ulonglong, _bool>::iterator& iter, CColli
 	// 없다면 새로 추가
 	if (m_mapColInfo.end() == iter)
 	{
-		m_mapColInfo.insert({ ID.ID, false });
+		m_mapColInfo.insert({ ID.ID, FALSE });
 		iter = m_mapColInfo.find(ID.ID);
 	}
 }

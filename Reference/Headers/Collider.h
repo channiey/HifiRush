@@ -8,7 +8,7 @@ BEGIN(Engine)
 class ENGINE_DLL CCollider abstract : public CComponent
 {
 public:
-	enum TYPE { TYPE_AABB, TYPE_OBB, TYPE_SPHERE, TYPE_END };
+	enum TYPE { AABB, OBB, SPHERE, TYPE_END };
 
 	typedef struct tagColliderDesc
 	{

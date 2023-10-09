@@ -84,8 +84,8 @@ void CGameInstance::Tick(_float fTimeDelta)
 
 void CGameInstance::LateTick(_float fTimeDelta)
 {
-	m_pObject_Manager->LateTick(fTimeDelta);
 	m_pLevel_Manager->LateTick(fTimeDelta);
+	m_pObject_Manager->LateTick(fTimeDelta);
 }
 
 void CGameInstance::FinishTick()
@@ -444,6 +444,14 @@ Vec4 CGameInstance::Get_CamPosition() const
 		return Vec4();
 
 	return m_pPipeLine->Get_CamPosition();
+}
+
+void CGameInstance::Check_Collision_Layer(const wstring& strLayerTag1, const wstring& strLayerTag2, const CCollider::TYPE& eType1, const CCollider::TYPE& eType2)
+{
+	if (nullptr == m_pCollision_Manager)
+		return;
+
+	return m_pCollision_Manager->Check_Collision_Layer(strLayerTag1, strLayerTag2, eType1, eType2);
 }
 
 const _bool CGameInstance::Check_Collision_Ray(Ray& ray, CCollider* pCollider, OUT RAYHIT_DESC& hitDesc)

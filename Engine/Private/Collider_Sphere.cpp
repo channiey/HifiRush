@@ -21,7 +21,7 @@ HRESULT CCollider_Sphere::Initialize_Prototype(CCollider::TYPE eColliderType)
 	if (FAILED(__super::Initialize_Prototype(eColliderType)))
 		return E_FAIL;
 
-	m_eColliderType = CCollider::TYPE_SPHERE;
+	m_eColliderType = CCollider::SPHERE;
 
 	return S_OK;
 }
@@ -56,15 +56,15 @@ _bool CCollider_Sphere::Check_Collision(CCollider * pTargetCollider)
 
 	switch (eType)
 	{
-	case CCollider::TYPE_AABB:
+	case CCollider::AABB:
 		bCollision = m_pSphere->Intersects(((CCollider_AABB*)pTargetCollider)->Get_Collider());
 		break;
 
-	case CCollider::TYPE_OBB:
+	case CCollider::OBB:
 		bCollision = m_pSphere->Intersects(((CCollider_OBB*)pTargetCollider)->Get_Collider());
 		break;
 
-	case CCollider::TYPE_SPHERE:
+	case CCollider::SPHERE:
 		bCollision = m_pSphere->Intersects(((CCollider_Sphere*)pTargetCollider)->Get_Collider());
 		break;
 	}

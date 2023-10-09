@@ -30,8 +30,6 @@ HRESULT CCollider::Initialize_Prototype(TYPE eColliderType)
 {
 	m_eColliderType = eColliderType;
 
-	m_iID = g_iNextID++;
-
 #ifdef _DEBUG
 
 	m_pBatch = new PrimitiveBatch<VertexPositionColor>(m_pContext);
@@ -55,6 +53,8 @@ HRESULT CCollider::Initialize(void * pArg)
 {
 	if (nullptr == pArg)
 		return E_FAIL;
+
+	m_iID = g_iNextID++;
 
 	memcpy(&m_ColliderDesc, pArg, sizeof(COLLIDERDESC));
 

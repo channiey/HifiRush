@@ -24,7 +24,7 @@ HRESULT CLevel_Ending::Tick(_float fTimeDelta)
 
 HRESULT CLevel_Ending::LateTick(_float fTimeDelta)
 {
-	SetWindowText(g_hWnd, gStrLevelID[LV_ENDING]);
+	SetWindowText(g_hWnd, g_StrLevelID[LV_ENDING]);
 	return S_OK;
 }
 CLevel_Ending * CLevel_Ending::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)

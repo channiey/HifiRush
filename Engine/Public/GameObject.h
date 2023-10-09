@@ -70,15 +70,15 @@ protected:
 	MONOBEHAVIOURS			m_MonoBehaviours;
 
 	/* UnActive 상태라면 라이프 사이클 함수를 타지 않는다. */
-	OBJ_STATE				m_eState = { STATE_END };
+	OBJ_STATE				m_eState = { STATE_ACTIVE };
 	_bool					m_bRender = { TRUE };	
 	wstring					m_strLayer = { };
 	wstring					m_strName = { };
 
 	/* 피킹 처리를 위한 고유 아이디 */
 	_uint					m_iPickID = { 0 };
-	_float					m_fCamDistance = 0.f;
 	_bool					m_bPicked = FALSE;
+	_float					m_fCamDistance = 0.f;
 
 protected:
 	HRESULT Add_Component(_uint iLevelIndex, const wstring& strPrototypeTag, const wstring& strComponentTag, _Inout_ CComponent** ppOut, void* pArg = nullptr);
