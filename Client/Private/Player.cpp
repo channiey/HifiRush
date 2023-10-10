@@ -71,8 +71,8 @@ void CPlayer::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 
 	/* 키프레임 보간(현재 애니메이션의 모든 채널의 현재 키프레임 갱신) + 루트 기준 트랜스폼 계산(모델의 모든 본 갱신) */
-	m_pModelCom->Update_Anim(fTimeDelta);
-
+	//m_pModelCom->Update_Anim(fTimeDelta);
+	m_pModelCom->Update_VTFAnim(fTimeDelta);
 	m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this);	
 
 	
@@ -99,7 +99,10 @@ HRESULT CPlayer::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Shader */
-	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Shader_AnimModel"),
+	//if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Shader_AnimModel"),
+	//	TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
+	//	return E_FAIL;
+	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Shader_VTF"),
 		TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 

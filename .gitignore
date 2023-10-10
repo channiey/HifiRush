@@ -266,7 +266,7 @@ _pkginfo.txt
 !?*.[Cc]ache/
 
 # Others
-ClientBin/
+# ClientBin/
 ~$*
 *~
 *.dbmdl
@@ -434,7 +434,7 @@ FodyWeavers.xsd
 
 ### User Edit ###
 
-Resource/
+Resources/
 *.fbx
 *.png
 *.dds

@@ -160,6 +160,22 @@ namespace Engine
 
 	}VTXMESH;
 
+	typedef struct ENGINE_DLL tagVertex_Animation_Mesh
+	{
+		XMFLOAT3		vPosition;
+		XMFLOAT3		vNormal;
+		XMFLOAT2		vTexcoord;
+		XMFLOAT3		vTangent;
+
+		/* 이 정점이 상태를 받아와야할 뼈들의 인덱스 */
+		XMUINT4			vBlendIndices;
+		XMFLOAT4		vBlendWeights;
+
+		static const unsigned int				iNumElements = 6;
+		static const D3D11_INPUT_ELEMENT_DESC	Elements[iNumElements];
+
+	}VTXANIMMESH;
+
 	typedef struct tagGraphicDesc
 	{
 		enum WINMODE { WINMODE_FULL, WINMODE_WIN, WINMODE_END };

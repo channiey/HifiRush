@@ -135,7 +135,7 @@ HRESULT CModel::Initialize(void* pArg)
 
 
 	/* Create VTF */
-
+	Create_Texture();
 	return S_OK;
 }
 
@@ -532,6 +532,14 @@ _uint CModel::Get_MaterialIndex(_uint iMeshIndex)
 	return m_Meshes[iMeshIndex]->Get_MaterialIndex();
 }
 
+CAnimation* CModel::Get_AnimationByIndex(const _uint& iIndex)
+{
+	if(m_Animations.size() < iIndex)
+		return nullptr;
+
+	return m_Animations[iIndex];
+}
+
 HRESULT CModel::SetUp_OnShader(CShader * pShader, _uint iMaterialIndex, aiTextureType eTextureType, const char * pConstantName)
 {
 	if (iMaterialIndex >= m_Materials.size())
@@ -558,15 +566,45 @@ HRESULT CModel::Update_Anim(_float fTimeDelta)
 	return S_OK;
 }
 
+HRESULT CModel::Update_VTFAnim(_float fTimeDelta)
+{
+	KeyframeDesc& desc = m_keyframeDesc;
+
+	desc.sumTime += fTimeDelta;
+
+	CAnimation* pCurAnim = Get_AnimationByIndex(desc.animIndex);
+	if (nullptr != pCurAnim)
+	{
+		_float timePerFrame = 1 / pCurAnim->GetTickPerSecond();
+
+		if (desc.sumTime >= timePerFrame)
+		{
+			desc.sumTime = 0.f;
+			desc.currFrame = (desc.currFrame + 1) % pCurAnim->GetMaxFrameCount();
+			desc.nextFrame = (desc.currFrame + 1) % pCurAnim->GetMaxFrameCount();
+		}
+
+		desc.ratio = (desc.sumTime / timePerFrame);
+	}
+
+	return S_OK;
+}
+
 HRESULT CModel::Render(CShader* pShader, _uint iMeshIndex, _uint iPassIndex)
 {
 	if (TYPE_ANIM == m_eModelType) 
 	{
-		/* 본의 최종 트랜스폼 계산 : <오프셋 * 루트 기준 * 사전변환> */
-		m_Meshes[iMeshIndex]->SetUp_BoneMatrices(m_BoneMatrices, XMLoadFloat4x4(&m_PivotMatrix));
-
-   		if (FAILED(pShader->Bind_RawValue("g_BoneMatrices", m_BoneMatrices, sizeof(_float4x4) * MAX_BONES)))
+		if (FAILED(pShader->Bind_Texture("g_TransformMap", m_pSrv)))
 			return E_FAIL;
+
+		if (FAILED(pShader->Bind_RawValue("g_Keyframes", &m_keyframeDesc, sizeof(KeyframeDesc))))
+			return E_FAIL;
+
+		///* 본의 최종 트랜스폼 계산 : <오프셋 * 루트 기준 * 사전변환> */
+		//m_Meshes[iMeshIndex]->SetUp_BoneMatrices(m_BoneMatrices, XMLoadFloat4x4(&m_PivotMatrix));
+
+  // 		if (FAILED(pShader->Bind_RawValue("g_BoneMatrices", m_BoneMatrices, sizeof(_float4x4) * MAX_BONES)))
+		//	return E_FAIL;
 	}
 
 	pShader->Begin(0);

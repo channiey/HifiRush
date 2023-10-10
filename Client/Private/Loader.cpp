@@ -103,8 +103,8 @@ _int CLoader::Loading()
 
 HRESULT CLoader::Load_Prototype()
 {
-	CThreadPool				threads(10);
-	vector<future<HRESULT>> futures;
+	//CThreadPool				threads(10);
+	//vector<future<HRESULT>> futures;
 
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
@@ -214,6 +214,11 @@ HRESULT CLoader::Load_Prototype()
 		/* For.Prototype_Component_Shader_VtxMesh */
 		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Shader_VtxMesh"),
 			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxMesh.hlsl"), VTXMESH::Elements, VTXMESH::iNumElements))))
+			return E_FAIL;
+
+		/* For.Prototype_Component_Shader_VTF */
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Shader_VTF"),
+			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VTF.hlsl"), VTXANIMMESH::Elements, VTXANIMMESH::iNumElements))))
 			return E_FAIL;
 	}
 
