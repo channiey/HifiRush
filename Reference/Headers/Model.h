@@ -30,11 +30,15 @@ public:
 public:
 	class CBone*			Get_Bone(const char* pNodeName); 
 	class CBone*			Get_Bone(const _int& iIndex);
+
 	_uint					Get_NumMeshes() const { return (_uint)m_Meshes.size(); }
 	vector<class CMesh*>*	Get_Meshes() { return &m_Meshes; }
+
 	_uint					Get_MaterialIndex(_uint iMeshIndex);
+
 	const _uint				Get_AnimationCount() const { return (_uint)m_Animations.size(); }
 	const _uint				Get_CurAnimationIndex() const { return m_iCurrentAnimIndex; }
+
 	_matrix					Get_PivotMatrix() { return XMLoadFloat4x4(&m_PivotMatrix); }
 	const TYPE&				Get_Type() const { return m_eModelType; }
 
@@ -57,8 +61,8 @@ private:
 	vector<class CAnimation*>	m_Animations;
 
 	/* Cache */
-	_uint									m_iCurrentAnimIndex = 0;
-	_float4x4								m_BoneMatrices[MAX_BONES] = {};
+	_uint						m_iCurrentAnimIndex = 0;
+	_float4x4					m_BoneMatrices[MAX_BONES] = {};
 
 public:
 	static CModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const string& strPath, _fmatrix PivotMatrix = XMMatrixIdentity());
