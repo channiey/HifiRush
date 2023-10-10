@@ -266,7 +266,7 @@ _pkginfo.txt
 !?*.[Cc]ache/
 
 # Others
-###  ClientBin/### 
+# ClientBin/
 ~$*
 *~
 *.dbmdl
@@ -442,6 +442,7 @@ Resources/
 *.props.txt
 *.pskx
 *.tga
+
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
 
