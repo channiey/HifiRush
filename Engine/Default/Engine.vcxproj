@@ -193,6 +193,7 @@
     <ClInclude Include="..\Public\QuadTree.h" />
     <ClInclude Include="..\Public\RenderTarget.h" />
     <ClInclude Include="..\Public\Collider_Sphere.h" />
+    <ClInclude Include="..\Public\ThreadPool.h" />
     <ClInclude Include="..\Public\Util_File.h" />
     <ClInclude Include="..\public\GameInstance.h" />
     <ClInclude Include="..\public\GameObject.h" />
@@ -223,7 +224,6 @@
     <ClInclude Include="..\Public\State.h" />
     <ClInclude Include="..\Public\StateMachine.h" />
     <ClInclude Include="..\Public\Texture.h" />
-    <ClInclude Include="..\Public\Thread_Manager.h" />
     <ClInclude Include="..\Public\Timer.h" />
     <ClInclude Include="..\Public\Timer_Manager.h" />
     <ClInclude Include="..\Public\Util_String.h" />
@@ -254,6 +254,7 @@
     <ClCompile Include="..\Private\QuadTree.cpp" />
     <ClCompile Include="..\Private\RenderTarget.cpp" />
     <ClCompile Include="..\Private\Collider_Sphere.cpp" />
+    <ClCompile Include="..\Private\ThreadPool.cpp" />
     <ClCompile Include="..\Private\Util_File.cpp" />
     <ClCompile Include="..\private\GameInstance.cpp" />
     <ClCompile Include="..\private\GameObject.cpp" />
@@ -292,9 +293,6 @@
     <ClCompile Include="..\Private\State.cpp" />
     <ClCompile Include="..\Private\StateMachine.cpp" />
     <ClCompile Include="..\Private\Texture.cpp" />
-    <ClCompile Include="..\Private\Thread_Manager.cpp">
-      <IncludeInUnityFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</IncludeInUnityFile>
-    </ClCompile>
     <ClCompile Include="..\Private\Timer.cpp" />
     <ClCompile Include="..\Private\Timer_Manager.cpp" />
     <ClCompile Include="..\Private\Util_String.cpp" />

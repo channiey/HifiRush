@@ -44,7 +44,7 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeighitMapFilePat
 	m_iNumVertices = m_iNumVerticesX * m_iNumVerticesZ;
 	m_iStride = sizeof(VTXNORTEX);
 	
-	m_pVerticesPos = new _float3[m_iNumVertices];
+	m_pVerticesPos = new Vec3[m_iNumVertices];
 	VTXNORTEX*		pVertices = new VTXNORTEX[m_iNumVertices];
 	ZeroMemory(pVertices, sizeof(VTXNORTEX) * m_iNumVertices);
 
@@ -60,8 +60,6 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeighitMapFilePat
 		}
 	}
 	
-
-
 	Safe_Delete_Array(pPixel);
 
 #pragma endregion

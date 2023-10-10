@@ -34,11 +34,13 @@ public:
 
 public: 
 	static const _bool	Check_Collision_Ray(Ray& ray, class CCollider* pCollider, OUT RAYHIT_DESC& hitDesc);
-	static const _bool	Check_Collision_CameraRay(class CCollider* pCollider, const Matrix& matWorld, OUT RAYHIT_DESC& hitDesc);
-	static const _bool	Check_Collision_CameraRay(class CModel* pModel, const Matrix& matWorld, OUT RAYHIT_DESC& hitDesc, const _bool& bPreInterSphere);
+	static const _bool	Check_Collision_PickingRay(class CCollider* pCollider, const Matrix& matWorld, OUT RAYHIT_DESC& hitDesc);
+	static const _bool	Check_Collision_PickingRay(class CModel* pModel, const Matrix& matWorld, OUT RAYHIT_DESC& hitDesc, const _bool& bPreInterSphere);
+
 
 public:
-	static Ray			Create_CameraRay(const Matrix& matWorld);
+	static Ray			Create_PickingRay(const Matrix& matWorld);
+	static Ray			Create_PickingRay2(const Matrix& matWorld);
 
 private:
 	void				Set_Info(map<_ulonglong, _bool>::iterator& iter, class CCollider* pCollider1, class CCollider* pCollider2);

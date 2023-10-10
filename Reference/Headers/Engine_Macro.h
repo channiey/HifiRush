@@ -117,29 +117,4 @@
 	}();
 
 
-/* Thread (반드시 GameInstance.h 인클루드 필요)*/
-//#define START_MULTI_THREADING(num)\
-//			{ CGameInstance::GetInstance()->Set_MultiThreading(num); }
-//
-//#define PUSH_TASK_MULTI_THREADING0(task)\
-//			{ CGameInstance::GetInstance()->Add_Command(task); }
-//
-//#define PUSH_TASK_MULTI_THREADING1(task, arg1)\
-//			{ CGameInstance::GetInstance()->Add_Command(task, arg1); }
-//
-//#define PUSH_TASK_MULTI_THREADING2(task, arg1, arg2)\
-//			{ CGameInstance::GetInstance()->Add_Command(task, arg1, arg2); }
-//
-//#define PUSH_TASK_MULTI_THREADING3(task, arg1, arg2, arg3)\
-//			{ CGameInstance::GetInstance()->Add_Command(task, arg1, arg2, arg3); }
-//
-//#define PUSH_TASK_MULTI_THREADING4(task, arg1, arg2, arg3, arg4)\
-//			{ CGameInstance::GetInstance()->Add_Command(task, arg1, arg2, arg3, arg4); }
-//
-//#define PUSH_TASK_MULTI_THREADING5(task, arg1, arg2, arg3, arg4, arg5)\
-//			{ CGameInstance::GetInstance()->Add_Command(task, arg1, arg2, arg3, arg4, arg5); }
-//
-//#define FINISH_MULTI_THREADING()\
-//			{ CGameInstance::GetInstance()->Finish_MultiThreading(); }
-
 #endif // Engine_Macro_h__

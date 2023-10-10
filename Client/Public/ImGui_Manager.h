@@ -84,7 +84,7 @@ private:
 
 private:
 	CGameInstance*					m_pGameInstance = { nullptr };
-	_bool							m_bActive = FALSE;
+	_bool							m_bActive = TRUE;
 
 	vector<class CImGui_Window*>	m_pMainWindows;
 

@@ -130,22 +130,22 @@ HRESULT CMainApp::Open_Level(LEVEL_ID eLEVEL_ID)
 HRESULT CMainApp::Ready_Prototype_Components()
 {
 	/* For.Prototype_Component_Renderer */
-	if (FAILED(m_pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Renderer"), 
+	if (FAILED(m_pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Renderer"),
 		m_pRenderer = CRenderer::Create(m_pDevice, m_pContext))))
 		return E_FAIL;	
 
 	/* For.Prototype_Component_Transform */
-	if (FAILED(m_pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Transform"),
+	if (FAILED(m_pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Transform"),
 		CTransform::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Shader_VtxPosTex */
-	if (FAILED(m_pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
+	if (FAILED(m_pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosTex.hlsl"), VTXPOSTEX::Elements, VTXPOSTEX::iNumElements))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_VIBuffer_Rect */
-	if (FAILED(m_pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
+	if (FAILED(m_pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
 		CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 

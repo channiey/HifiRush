@@ -19,6 +19,8 @@
 #include "Terrain.h"
 #include "StaticDummy.h"
 
+#include "ThreadPool.h"
+
 CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: m_pDevice(pDevice)
 	, m_pContext(pContext)
@@ -101,7 +103,8 @@ _int CLoader::Loading()
 
 HRESULT CLoader::Load_Prototype()
 {
-	/* 얘네 다 쓰레드 매니저로 처리하면 반환값을 못받으니 쓰레드가 처리할 함수 내부에서 assert로 예외처리 하자 (#if _DEBUG 필수) */
+	CThreadPool				threads(10);
+	vector<future<HRESULT>> futures;
 
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
@@ -151,22 +154,22 @@ HRESULT CLoader::Load_Prototype()
 	m_strLoading = TEXT("Loding... : CComponent");
 	{
 		/* For.Prototype_Component_VIBuffer_Terrain*/
-		if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_VIBuffer_Terrain"),
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_VIBuffer_Terrain"),
 			CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Prototype/Terrain/Height1.bmp")))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Collider_AABB */
-		if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Collider_AABB"),
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Collider_AABB"),
 			CCollider_AABB::Create(m_pDevice, m_pContext, CCollider::AABB))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Collider_OBB */
-		if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Collider_OBB"),
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Collider_OBB"),
 			CCollider_OBB::Create(m_pDevice, m_pContext, CCollider::OBB))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Collider_Sphere */
-		if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
 			CCollider_Sphere::Create(m_pDevice, m_pContext, CCollider::SPHERE))))
 			return E_FAIL;
 	}
@@ -175,17 +178,17 @@ HRESULT CLoader::Load_Prototype()
 	m_strLoading = TEXT("Loding... : Texture");
 	{
 		/* For.Prototype_Component_Texture_BackGround*/
-		if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Texture_BackGround"),
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Texture_BackGround"),
 			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Prototype/Default%d.jpg"), 2))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Texture_Terrain*/
-		if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Texture_Terrain"),
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Texture_Terrain"),
 			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Prototype/Terrain/Tile%d.dds"), 2))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Texture_Terrain_Mask */
-		if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Texture_Terrain_Mask"),
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Texture_Terrain_Mask"),
 			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Prototype/Terrain/Mask.bmp"), 1))))
 			return E_FAIL;
 	}
@@ -194,22 +197,22 @@ HRESULT CLoader::Load_Prototype()
 	m_strLoading = TEXT("Loding... : Shader");
 	{
 		/* For.Prototype_Component_Shader_VtxNorTex*/
-		if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Shader_VtxNorTex"),
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Shader_VtxNorTex"),
 			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl"), VTXNORTEX::Elements, VTXNORTEX::iNumElements))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Shader_Model */
-		if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Shader_Model"),
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Shader_Model"),
 			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxModel.hlsl"), VTXMODEL_DECLARATION::Elements, VTXMODEL_DECLARATION::iNumElements))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Shader_AnimModel */
-		if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Shader_AnimModel"),
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Shader_AnimModel"),
 			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxAnimModel.hlsl"), VTXANIMMODEL_DECLARATION::Elements, VTXANIMMODEL_DECLARATION::iNumElements))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Shader_VtxMesh */
-		if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Shader_VtxMesh"),
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Shader_VtxMesh"),
 			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxMesh.hlsl"), VTXMESH::Elements, VTXMESH::iNumElements))))
 			return E_FAIL;
 	}
@@ -221,15 +224,24 @@ HRESULT CLoader::Load_Prototype()
 
 		/* For.Prototype_Component_Model_Chai */
 		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f)) * Matrix::CreateScale(0.01f);
-		if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Model_Chai"),
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Chai"),
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Chai", PivotMatrix))))
 			return E_FAIL;
+		//threads.Push_Command(std::bind(
+		//	&CGameInstance::Add_PrototypeCom, &pGameInstance,
+		//	LV_STATIC, std::wstring(L"Prototype_Component_Model_Chai"),
+		//	CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Chai", PivotMatrix))
+		//);
 
 		/* For.Prototype_Component_Model_Fiona */
 		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f));
-		if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, TEXT("Prototype_Component_Model_Fiona"),
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Fiona"),
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Fiona", PivotMatrix))))
 			return E_FAIL;
+		/*threads.Push_Command(std::bind(&CGameInstance::Add_PrototypeCom, &pGameInstance,
+			LV_STATIC, std::wstring(L"Prototype_Component_Model_Fiona"),
+			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Fiona", PivotMatrix))
+		);*/
 
 		/* For.Prototype_Component_Model_Static */
 		{
@@ -242,9 +254,13 @@ HRESULT CLoader::Load_Prototype()
 
 			for (string& name : fileNames)
 			{
-				if (FAILED(pGameInstance->Add_Prototype(LV_STATIC, Util_String::ToWString(tag + name),
+				if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString(tag + name),
 					CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/" + name, PivotMatrix))))
 					return E_FAIL;
+				/*threads.Push_Command(std::bind(&CGameInstance::Add_PrototypeCom, &pGameInstance,
+					LV_STATIC, Util_String::ToWString(tag + name),
+					CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/" + name, PivotMatrix))
+				);*/
 			}
 		}
 	}

@@ -14,7 +14,6 @@ IMPLEMENT_SINGLETON(CCollision_Manager)
 
 CCollision_Manager::CCollision_Manager()
 {
-
 	
 }
 
@@ -128,11 +127,11 @@ const _bool CCollision_Manager::Check_Collision_Ray(Ray& ray, CCollider* pCollid
 	return pCollider->Check_Collision(ray, hitDesc);
 }
 
-const _bool CCollision_Manager::Check_Collision_CameraRay(CCollider* pCollider, const Matrix& matWorld, OUT RAYHIT_DESC& hitDesc)
+const _bool CCollision_Manager::Check_Collision_PickingRay(CCollider* pCollider, const Matrix& matWorld, OUT RAYHIT_DESC& hitDesc)
 {
 	if (nullptr == pCollider) return FALSE;
 
-	Ray ray = Create_CameraRay(matWorld);
+	Ray ray = Create_PickingRay(matWorld);
 	if (ray == Ray()) return FALSE;
 
 	switch (pCollider->Get_Type())
@@ -199,90 +198,129 @@ const _bool CCollision_Manager::Check_Collision_CameraRay(CCollider* pCollider, 
 	return FALSE;
 }
 
-const _bool CCollision_Manager::Check_Collision_CameraRay(class CModel* pModel, const Matrix& matWorld, OUT RAYHIT_DESC& hitDesc, const _bool& bPreInterSphere)
+const _bool CCollision_Manager::Check_Collision_PickingRay(class CModel* pModel, const Matrix& matWorld, OUT RAYHIT_DESC& hitDesc, const _bool& bPreInterSphere)
 {
 	if (nullptr == pModel || !CGameInstance::GetInstance()->Is_Focus()) return FALSE;
 
-	Ray ray = Create_CameraRay(matWorld);
+	Ray ray = Create_PickingRay2(matWorld);
 	if (ray == Ray()) return FALSE;
 
 	/* 메시 콜라이더 충돌 검사전, 스피어 콜라이더 충돌 검사 우선 진행 (최적화)*/
 	if (bPreInterSphere)
 	{
-		if (!Check_Collision_CameraRay(pModel->Get_Parent()->Get_Collider_Sphere(), matWorld, hitDesc))
+		if (!Check_Collision_PickingRay(pModel->Get_Parent()->Get_Collider_Sphere(), matWorld, hitDesc))
 			return FALSE;
 		else
 			ZeroMemory(&hitDesc, sizeof(RAYHIT_DESC));
-		cout << "스피어 콜라이더 통과\n";
+		cout << "Sphere\n";
 	}
-
 
 	/* 메시 콜라이더 충돌 검사 */
 	vector<CMesh*>* pMeshes = pModel->Get_Meshes();
 	if (nullptr == pMeshes) return FALSE;
-
+	
 	for (auto& pMesh : *pMeshes)
 	{
-		if (CModel::TYPE_ANIM == pModel->Get_Type())
+		Vec3*	pVerticesPos = pMesh->Get_VerticesPos();
+		FACEINDICES32* pIndices = pMesh->Get_Indices();
+
+		if (nullptr == pVerticesPos || nullptr == pIndices) continue;
+
+		for (size_t i = 0; i < pMesh->Get_NumPrimitives(); ++i)
 		{
-			VTXANIMMODEL* pVerticesAnim		= pMesh->Get_VerticesAnim();
-			FACEINDICES32* pIndices			= pMesh->Get_Indices();
-			if (nullptr == pVerticesAnim || nullptr == pIndices) continue;
-
-			for (size_t i = 0; i < pMesh->Get_NumPrimitives() * 3; ++i)
+			if (ray.Intersects(pVerticesPos[pIndices[i]._0], pVerticesPos[pIndices[i]._1], pVerticesPos[pIndices[i]._2], hitDesc.fDistance))
 			{
-				if (ray.Intersects(pVerticesAnim[i].vPosition, pVerticesAnim[++i].vPosition, pVerticesAnim[++i].vPosition, hitDesc.fDistance))
-				{
-					int k = 0;
-					cout << "메시 콜라이더 통과\n";
-				}
-			}
-		}
-		else
-		{
-			VTXMODEL* pVerticeStatic		= pMesh->Get_VerticesStatic();
-			FACEINDICES32* pIndices			= pMesh->Get_Indices();
-			
-			if (nullptr == pVerticeStatic || nullptr == pIndices) continue;
-
-			for (size_t i = 0; i < pMesh->Get_NumPrimitives() * 3; ++i)
-			{
-				if (ray.Intersects(pVerticeStatic[i].vPosition, pVerticeStatic[++i].vPosition, pVerticeStatic[++i].vPosition, hitDesc.fDistance))
-				{
-					int k = 0;
-					cout << "메시 콜라이더 통과\n";
-
-				}
+				int k = 0;
+				cout << "!@# Mesh !@# \n";
 			}
 		}
 	}
 	
-	RELEASE_INSTANCE(CGameInstance);
-
 	return TRUE;
 }
 
-Ray CCollision_Manager::Create_CameraRay(const Matrix& matWorld)
+Ray CCollision_Manager::Create_PickingRay(const Matrix& matWorld)
 {
-	/* Unprojection */
-	const Matrix matW = matWorld;
-	const Matrix matV = CGameInstance::GetInstance()->Get_Transform(CPipeLine::STATE_VIEW);
-	const Matrix matP = CGameInstance::GetInstance()->Get_Transform(CPipeLine::STATE_PROJ);
-	const Viewport viewPort = CGameInstance::GetInstance()->Get_ViewPort();
+	POINT pt;
+	GetCursorPos(&pt);
+	ScreenToClient(CGameInstance::GetInstance()->Get_GraphicDesc().hWnd, &pt);
 
-	Vec2 vPickWindowPos;
-	if (!CGameInstance::GetInstance()->Get_PickPos_Window(&vPickWindowPos))
-		return Ray();
+	Matrix matP = CGameInstance::GetInstance()->Get_Transform(CPipeLine::STATE_PROJ);
 
-	Vec3 n = viewPort.Unproject(Vec3(vPickWindowPos.x, vPickWindowPos.y, 0.f), matP, matV, matW);
-	Vec3 f = viewPort.Unproject(Vec3(vPickWindowPos.x, vPickWindowPos.y, 1.f), matP, matV, matW);
+	// Compute picking ray in view space.
+	float vx = (+2.0f * pt.x / CGameInstance::GetInstance()->Get_GraphicDesc().iWinSizeX - 1.0f) / matP(0, 0); // P(0, 0);
+	float vy = (-2.0f * pt.y / CGameInstance::GetInstance()->Get_GraphicDesc().iWinSizeY + 1.0f) / matP(1, 1); // P(1, 1);
 
-	/* Create Ray */
-	Vec3 vOrigin = n;
-	Vec3 vDir = f - n;
-	vDir.Normalize();
+	// Ray definition in view space.
+	XMVECTOR rayOrigin = ::XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+	XMVECTOR rayDir = ::XMVectorSet(vx, vy, 1.0f, 0.0f);
 
-	return Ray(vOrigin, vDir);
+	// Tranform ray to local space of Mesh.
+	Matrix matVI = CGameInstance::GetInstance()->Get_Transform_Inverse(CPipeLine::STATE_VIEW);
+	Matrix matWI = matWorld.Invert();
+	Matrix matToLocal = XMMatrixMultiply(matVI, matWI);
+
+	rayOrigin = ::XMVector3TransformCoord(rayOrigin, matToLocal);
+	rayDir = ::XMVector3TransformNormal(rayDir, matToLocal);
+
+	// Make the ray direction unit length for the intersection tests.
+	rayDir = ::XMVector3Normalize(rayDir);
+
+	return Ray(rayOrigin, rayDir);
+
+	///* Unprojection */
+	//const Matrix matW = matWorld;
+	//const Matrix matV = CGameInstance::GetInstance()->Get_Transform(CPipeLine::STATE_VIEW);
+	//const Matrix matP = CGameInstance::GetInstance()->Get_Transform(CPipeLine::STATE_PROJ);
+	//const Viewport viewPort = CGameInstance::GetInstance()->Get_ViewPort();
+
+	//Vec2 vPickWindowPos;
+	//if (!CGameInstance::GetInstance()->Get_PickPos_Window(&vPickWindowPos))
+	//	return Ray();
+
+	//Vec3 n = viewPort.Unproject(Vec3(vPickWindowPos.x, vPickWindowPos.y, 0.f), matP, matV, matW);
+	//Vec3 f = viewPort.Unproject(Vec3(vPickWindowPos.x, vPickWindowPos.y, 1.f), matP, matV, matW);
+
+	///* Create Ray */
+	//Vec3 vOrigin = n;
+	//Vec3 vDir = f - n;
+	//vDir.Normalize();
+
+	//return Ray(vOrigin, vDir);
+}
+
+Ray CCollision_Manager::Create_PickingRay2(const Matrix& matWorld)
+{
+	POINT pt;
+	GetCursorPos(&pt);
+	ScreenToClient(CGameInstance::GetInstance()->Get_GraphicDesc().hWnd, &pt);
+
+	_vector vMousePos = XMVectorSet(
+		_float(pt.x / (CGameInstance::GetInstance()->Get_GraphicDesc().iWinSizeX * 0.5f) - 1.f),
+		_float(pt.y / (CGameInstance::GetInstance()->Get_GraphicDesc().iWinSizeY * -0.5f) + 1.f),
+		0.f, 0.f);
+
+	Matrix matPI = CGameInstance::GetInstance()->Get_Transform_Inverse(CPipeLine::STATE_PROJ);
+	Matrix matVI = CGameInstance::GetInstance()->Get_Transform_Inverse(CPipeLine::STATE_VIEW);
+	
+	vMousePos = XMVector3TransformCoord(vMousePos, matPI);
+
+	XMVECTOR vRayDir, vRayPosition;
+
+	vRayPosition = XMVectorSet(0.f, 0.f, 0.f, 1.f);
+	vRayDir = vMousePos - vRayPosition;
+
+	vRayPosition = XMVector3TransformCoord(vRayPosition, matVI);
+	vRayDir = XMVector3TransformNormal(vRayDir, matVI);
+	
+	vRayPosition = XMVector3TransformCoord(vMousePos, matWorld.Invert());
+	vRayDir = XMVector3TransformNormal(vRayDir, matWorld.Invert());
+
+	vRayDir = XMVector3Normalize(vRayDir);
+
+	Ray ray(vRayPosition, vRayDir);
+
+	return ray;
 }
 
 void CCollision_Manager::Set_Info(map<_ulonglong, _bool>::iterator& iter, CCollider* pCollider1, CCollider* pCollider2)

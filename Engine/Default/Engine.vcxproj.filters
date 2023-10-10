@@ -178,9 +178,6 @@
     <Filter Include="01.Utiltiy\90.Optimization\02.Profiler">
       <UniqueIdentifier>{4a9a07fc-c7dd-4f2b-85d6-1f700ce09cb3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utiltiy\90.Optimization\01.MultiThread">
-      <UniqueIdentifier>{ec2fa25f-940a-45c1-af9e-55a040f3e642}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utiltiy\90.Optimization\00.QuadTree">
       <UniqueIdentifier>{39cef500-f727-44f8-9134-c665703c5885}</UniqueIdentifier>
     </Filter>
@@ -214,6 +211,9 @@
     <Filter Include="01.Utiltiy\03.Components\Component\06.Colliders\Collider\AABB">
       <UniqueIdentifier>{41c51c31-c9e1-469e-b9c1-a44596daa906}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utiltiy\90.Optimization\01.ThreadPool">
+      <UniqueIdentifier>{ec2fa25f-940a-45c1-af9e-55a040f3e642}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -226,9 +226,6 @@
       <Filter>99.Defines</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Engine_Struct.h">
-      <Filter>99.Defines</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Engine_Typedef.h">
       <Filter>99.Defines</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Engine_Function.h">
@@ -278,9 +275,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\Util_String.h">
       <Filter>01.Utiltiy\98.Utils\01.String</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Thread_Manager.h">
-      <Filter>01.Utiltiy\90.Optimization\01.MultiThread</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\MonoBehaviour.h">
       <Filter>01.Utiltiy\03.Components\Component\13.MonoBehaviour</Filter>
@@ -390,6 +384,12 @@
     <ClInclude Include="..\Public\Collision_Manager.h">
       <Filter>01.Utiltiy\03.Components\Component\06.Colliders\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Engine_Typedef.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ThreadPool.h">
+      <Filter>01.Utiltiy\90.Optimization\01.ThreadPool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -442,9 +442,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\Util_String.cpp">
       <Filter>01.Utiltiy\98.Utils\01.String</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Thread_Manager.cpp">
-      <Filter>01.Utiltiy\90.Optimization\01.MultiThread</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\MonoBehaviour.cpp">
       <Filter>01.Utiltiy\03.Components\Component\13.MonoBehaviour</Filter>
@@ -556,6 +553,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Collision_Manager.cpp">
       <Filter>01.Utiltiy\03.Components\Component\06.Colliders\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ThreadPool.cpp">
+      <Filter>01.Utiltiy\90.Optimization\01.ThreadPool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

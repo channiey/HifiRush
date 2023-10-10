@@ -16,7 +16,6 @@ CGameInstance::CGameInstance()
 	, m_pLevel_Manager(CLevel_Manager::GetInstance())
 	, m_pObject_Manager(CObject_Manager::GetInstance())
 	, m_pComponent_Manager(CComponent_Manager::GetInstance())
-	, m_pThread_Manager(CThread_Manager::GetInstance())
 	, m_pProfiler_Manager(CProfiler_Manager::GetInstance())
 	, m_pPipeLine(CPipeLine::GetInstance())
 	, m_pCollision_Manager(CCollision_Manager::GetInstance())
@@ -28,7 +27,6 @@ CGameInstance::CGameInstance()
 	Safe_AddRef(m_pLevel_Manager);
 	Safe_AddRef(m_pGraphic_Device);
 	Safe_AddRef(m_pTimer_Manager);
-	Safe_AddRef(m_pThread_Manager);
 	Safe_AddRef(m_pInput_Device);
 	Safe_AddRef(m_pProfiler_Manager);
 	Safe_AddRef(m_pCollision_Manager);
@@ -304,12 +302,19 @@ map<const wstring, class CGameObject*>* CGameInstance::Get_Prototypes()
 	return m_pObject_Manager->Get_Prototypes();
 }
 
-HRESULT CGameInstance::Add_Prototype(_uint iLevelIndex, const wstring & strPrototypeTag, CComponent * pPrototype)
+HRESULT CGameInstance::Add_PrototypeCom(_uint iLevelIndex, const wstring & strPrototypeTag, CComponent * pPrototype)
 {
 	if (nullptr == m_pComponent_Manager)
 		return E_FAIL;
 
 	return m_pComponent_Manager->Add_Prototype(iLevelIndex, strPrototypeTag, pPrototype);
+}
+
+HRESULT CGameInstance::Bind_Add_PrototypeCom(function<bool(_uint iLevelIndex, const wstring& strPrototypeTag, class CComponent* pPrototype)>& other)
+{
+	other = std::bind(&CGameInstance::Add_PrototypeCom, this, placeholders::_1, placeholders::_2, placeholders::_3);
+
+	return E_NOTIMPL;
 }
 
 CComponent * CGameInstance::Clone_Component(_uint iLevelIndex, const wstring& strPrototypeTag, void* pArg)
@@ -319,6 +324,7 @@ CComponent * CGameInstance::Clone_Component(_uint iLevelIndex, const wstring& st
 
 	return m_pComponent_Manager->Clone_Component(iLevelIndex, strPrototypeTag, pArg);	
 }
+
 
 //HRESULT CGameInstance::Set_MultiThreading(const _uint& iNumThread)
 //{
@@ -462,28 +468,28 @@ const _bool CGameInstance::Check_Collision_Ray(Ray& ray, CCollider* pCollider, O
 	return m_pCollision_Manager->Check_Collision_Ray(ray, pCollider, hitDesc);
 }
 
-const _bool CGameInstance::Check_Collision_CameraRay(CCollider* pCollider, const Matrix& matWorld, OUT RAYHIT_DESC& hitDesc)
+const _bool CGameInstance::Check_Collision_PickingRay(CCollider* pCollider, const Matrix& matWorld, OUT RAYHIT_DESC& hitDesc)
 {
 	if (nullptr == m_pCollision_Manager)
 		return FALSE;
 
-	return m_pCollision_Manager->Check_Collision_CameraRay(pCollider, matWorld, hitDesc);
+	return m_pCollision_Manager->Check_Collision_PickingRay(pCollider, matWorld, hitDesc);
 }
 
-const _bool CGameInstance::Check_Collision_CameraRay(CModel* pModel, const Matrix& matWorld, OUT RAYHIT_DESC& hitDesc, const _bool& bPreInterSphere)
+const _bool CGameInstance::Check_Collision_PickingRay(CModel* pModel, const Matrix& matWorld, OUT RAYHIT_DESC& hitDesc, const _bool& bPreInterSphere)
 {
 	if (nullptr == m_pCollision_Manager)
 		return FALSE;
 
-	return m_pCollision_Manager->Check_Collision_CameraRay(pModel, matWorld, hitDesc, bPreInterSphere);
+	return m_pCollision_Manager->Check_Collision_PickingRay(pModel, matWorld, hitDesc, bPreInterSphere);
 }
 
-Ray CGameInstance::Create_CameraRay(const Matrix& matWorld)
+Ray CGameInstance::Create_PickingRay(const Matrix& matWorld)
 {
 	if (nullptr == m_pCollision_Manager)
 		return Ray();
 
-	return m_pCollision_Manager->Create_CameraRay(matWorld);
+	return m_pCollision_Manager->Create_PickingRay(matWorld);
 }
 
 void CGameInstance::Release_Engine()
@@ -495,7 +501,6 @@ void CGameInstance::Release_Engine()
 	CTimer_Manager::GetInstance()->DestroyInstance();		
 	CInput_Device::GetInstance()->DestroyInstance();
 	CGraphic_Device::GetInstance()->DestroyInstance();
-	CThread_Manager::GetInstance()->DestroyInstance();
 	CPipeLine::GetInstance()->DestroyInstance();
 	CProfiler_Manager::GetInstance()->DestroyInstance();
 	CCollision_Manager::GetInstance()->DestroyInstance();
@@ -510,7 +515,6 @@ void CGameInstance::Free()
 	Safe_Release(m_pInput_Device);
 	Safe_Release(m_pGraphic_Device);
 	Safe_Release(m_pTimer_Manager);
-	Safe_Release(m_pThread_Manager);
 	Safe_Release(m_pProfiler_Manager);
 	Safe_Release(m_pCollision_Manager);
 }

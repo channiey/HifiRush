@@ -4,7 +4,6 @@
 
 #include "Input_Device.h"
 #include "PipeLine.h"
-#include "Thread_Manager.h"
 
 BEGIN(Engine)
 
@@ -61,14 +60,9 @@ public: /* For.Object_Manager */
 	HRESULT Delete_Layer(_uint iLevelIndex, const wstring& strLayerTag);
 
 public: /* For.Component_Manager */
-	HRESULT				Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, class CComponent* pPrototype);
+	HRESULT				Add_PrototypeCom(_uint iLevelIndex, const wstring& strPrototypeTag, class CComponent* pPrototype);
+	HRESULT				Bind_Add_PrototypeCom(function<_bool(_uint iLevelIndex, const wstring& strPrototypeTag, class CComponent* pPrototype)>& other);
 	class CComponent*	Clone_Component(_uint iLevelIndex, const wstring& strPrototypeTag, void* pArg = nullptr);
-
-public:	/* For.Thread_Manager */
-	//HRESULT	Set_MultiThreading(const _uint& iNumThread);
-	//void Finish_MultiThreading();
-	//template <class F, class... Args>
-	//void	Add_Command(F&& f, Args&&... args) { return (m_pThread_Manager->Add_Command(f, args...)); }
 
 public: /* For.Profiler_Manager */
 	const PROFILER_DESC Get_ProfillingData() const;
@@ -92,9 +86,9 @@ public: /* For.PipeLine */
 public: /* For.Collision_Manager */
 	void		Check_Collision_Layer(const wstring& strLayerTag1, const wstring& strLayerTag2, const CCollider::TYPE& eType1, const CCollider::TYPE& eType2);
 	const _bool Check_Collision_Ray(Ray& ray, class CCollider* pCollider, OUT RAYHIT_DESC& hitDesc);
-	const _bool Check_Collision_CameraRay(class CCollider* pCollider, const Matrix& matWorld, OUT RAYHIT_DESC& hitDesc);
-	const _bool Check_Collision_CameraRay(class CModel* pModel, const Matrix& matWorld, OUT RAYHIT_DESC& hitDesc, const _bool& bPreInterSphere);
-	Ray			Create_CameraRay(const Matrix& matWorld);
+	const _bool Check_Collision_PickingRay(class CCollider* pCollider, const Matrix& matWorld, OUT RAYHIT_DESC& hitDesc);
+	const _bool Check_Collision_PickingRay(class CModel* pModel, const Matrix& matWorld, OUT RAYHIT_DESC& hitDesc, const _bool& bPreInterSphere);
+	Ray			Create_PickingRay(const Matrix& matWorld);
 
 private:
 	class CTimer_Manager*			m_pTimer_Manager = { nullptr };
@@ -102,7 +96,6 @@ private:
 	class CLevel_Manager*			m_pLevel_Manager = { nullptr };
 	class CObject_Manager*			m_pObject_Manager = { nullptr };
 	class CComponent_Manager*		m_pComponent_Manager = { nullptr };
-	class CThread_Manager*			m_pThread_Manager = { nullptr };
 	class CProfiler_Manager*		m_pProfiler_Manager = { nullptr };
 	class CInput_Device*			m_pInput_Device = { nullptr };
 	class CPipeLine*				m_pPipeLine = { nullptr };

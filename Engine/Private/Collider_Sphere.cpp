@@ -40,11 +40,11 @@ HRESULT CCollider_Sphere::Initialize(void * pArg)
 
 void CCollider_Sphere::Update(Matrix TransformMatrix)
 {
-	//m_pOriginal_Sphere->Transform(*m_pSphere, TransformMatrix);
+	m_pOriginal_Sphere->Transform(*m_pSphere, TransformMatrix);
 
-	CTransform* pTransformCom = Get_Parent()->Get_Transform();
+	//CTransform* pTransformCom = Get_Parent()->Get_Transform();
 
-	m_pSphere->Center = m_ColliderDesc.vCenter + pTransformCom->Get_Position().ToVec3();
+	//m_pSphere->Center = m_ColliderDesc.vCenter + pTransformCom->Get_Position().ToVec3();
 
 }
 

@@ -19,7 +19,8 @@ public:
 	virtual HRESULT Render();
 
 public:
-	_float3*		Get_VerticesPos() const { return m_pVerticesPos; }
+	Vec3*			Get_VerticesPos() const { return m_pVerticesPos; }
+
 	const _uint&	Get_IndicesNum() const { return m_iNumPrimitives; }
 	const _uint&	Get_NumPrimitives() const { return m_iNumPrimitives; }
 
@@ -32,7 +33,7 @@ protected:
 
 	D3D11_PRIMITIVE_TOPOLOGY		m_eTopology;
 
-	_float3*						m_pVerticesPos = nullptr;
+	Vec3*							m_pVerticesPos = nullptr;
 
 protected:
 	_uint						m_iNumVertexBuffers = 0;

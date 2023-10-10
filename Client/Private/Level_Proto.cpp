@@ -23,13 +23,7 @@ HRESULT CLevel_Proto::Initialize()
 
 HRESULT CLevel_Proto::Tick(_float fTimeDelta)
 {
-
-	
-
-
-	return S_OK;
-
-	if (!CImGui_Manager::GetInstance()->Is_ClickedWindow())
+	/*if (!CImGui_Manager::GetInstance()->Is_ClickedWindow())
 	{
 		CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 		{
@@ -40,7 +34,7 @@ HRESULT CLevel_Proto::Tick(_float fTimeDelta)
 				for (auto& pObj : *pLayer)
 				{
 					RAYHIT_DESC hit;
-					if (pGameInstance->Check_Collision_CameraRay(pObj->Get_Model(), pObj->Get_Transform()->Get_WorldMat(), hit, TRUE))
+					if (pGameInstance->Check_Collision_PickingRay(pObj->Get_Model(), pObj->Get_Transform()->Get_WorldMat(), hit, TRUE))
 					{
 						int k = 0;
 					}
@@ -48,7 +42,7 @@ HRESULT CLevel_Proto::Tick(_float fTimeDelta)
 			}
 		}
 		RELEASE_INSTANCE(CGameInstance);
-	}
+	}*/
 
 	return S_OK;
 }

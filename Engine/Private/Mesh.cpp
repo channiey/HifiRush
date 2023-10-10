@@ -11,6 +11,7 @@ CMesh::CMesh(const CMesh& rhs)
 	: CVIBuffer(rhs)
 	, m_iMaterialIndex(rhs.m_iMaterialIndex)
 	, m_BoneIndices(rhs.m_BoneIndices)
+	, m_pIndices(rhs.m_pIndices)
 {
 	strcpy_s(m_szName, rhs.m_szName);
 }
@@ -115,28 +116,35 @@ HRESULT CMesh::Ready_StaticVertices(vector<VTXMODEL>& Vertices, _fmatrix PivotMa
 	m_BufferDesc.MiscFlags = 0;
 	m_BufferDesc.StructureByteStride = m_iStride;
 
-	m_pVerticeStatic = new VTXMODEL[m_iNumVertices];
-	ZeroMemory(m_pVerticeStatic, sizeof(VTXMODEL) * m_iNumVertices);
+	VTXMODEL* pVerticeStatic = new VTXMODEL[m_iNumVertices];
+	ZeroMemory(pVerticeStatic, sizeof(VTXMODEL) * m_iNumVertices);
+
+	m_pVerticesPos = new Vec3[m_iNumVertices];
+	ZeroMemory(m_pVerticesPos, sizeof(Vec3) * m_iNumVertices);
 
 	for (_uint i = 0; i < m_iNumVertices; ++i)
 	{
-		memcpy(&m_pVerticeStatic[i].vPosition, &Vertices[i].vPosition, sizeof(_float3));
-		XMStoreFloat3(&m_pVerticeStatic[i].vPosition, XMVector3TransformCoord(XMLoadFloat3(&m_pVerticeStatic[i].vPosition), PivotMatrix));
+		memcpy(&pVerticeStatic[i].vPosition, &Vertices[i].vPosition, sizeof(_float3));
+		XMStoreFloat3(&pVerticeStatic[i].vPosition, XMVector3TransformCoord(XMLoadFloat3(&pVerticeStatic[i].vPosition), PivotMatrix));
 
-		memcpy(&m_pVerticeStatic[i].vNormal, &Vertices[i].vNormal, sizeof(_float3));
-		XMStoreFloat3(&m_pVerticeStatic[i].vNormal, XMVector3TransformNormal(XMLoadFloat3(&m_pVerticeStatic[i].vNormal), PivotMatrix));
+		memcpy(&m_pVerticesPos[i], &Vertices[i].vPosition, sizeof(_float3));
 
-		memcpy(&m_pVerticeStatic[i].vTexture, &Vertices[i].vTexture, sizeof(_float2));
+		memcpy(&pVerticeStatic[i].vNormal, &Vertices[i].vNormal, sizeof(_float3));
+		XMStoreFloat3(&pVerticeStatic[i].vNormal, XMVector3TransformNormal(XMLoadFloat3(&pVerticeStatic[i].vNormal), PivotMatrix));
 
-		memcpy(&m_pVerticeStatic[i].vTangent, &Vertices[i].vTangent, sizeof(_float3));
-		XMStoreFloat3(&m_pVerticeStatic[i].vTangent, XMVector3TransformNormal(XMLoadFloat3(&m_pVerticeStatic[i].vTangent), PivotMatrix));
+		memcpy(&pVerticeStatic[i].vTexture, &Vertices[i].vTexture, sizeof(_float2));
+
+		memcpy(&pVerticeStatic[i].vTangent, &Vertices[i].vTangent, sizeof(_float3));
+		XMStoreFloat3(&pVerticeStatic[i].vTangent, XMVector3TransformNormal(XMLoadFloat3(&pVerticeStatic[i].vTangent), PivotMatrix));
 	}
 
 	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
-	m_SubResourceData.pSysMem = m_pVerticeStatic;
+	m_SubResourceData.pSysMem = pVerticeStatic;
 
 	if (FAILED(__super::Create_VertexBuffer()))
 		return E_FAIL;
+
+	Safe_Delete_Array(pVerticeStatic);
 
 	return S_OK;
 }
@@ -156,25 +164,31 @@ HRESULT CMesh::Ready_AnimVertices(vector<VTXANIMMODEL>& Vertices)
 	m_BufferDesc.MiscFlags = 0;
 	m_BufferDesc.StructureByteStride = m_iStride;
 
-	m_pVerticesAnim = new VTXANIMMODEL[m_iNumVertices];
-	ZeroMemory(m_pVerticesAnim, sizeof(VTXANIMMODEL) * m_iNumVertices);
+	VTXANIMMODEL* pVerticesAnim = new VTXANIMMODEL[m_iNumVertices];
+	ZeroMemory(pVerticesAnim, sizeof(VTXANIMMODEL) * m_iNumVertices);
+
+	m_pVerticesPos = new Vec3[m_iNumVertices];
+	ZeroMemory(m_pVerticesPos, sizeof(Vec3) * m_iNumVertices);
 
 	for (_uint i = 0; i < m_iNumVertices; ++i)
 	{
 		/* NoneAnim 모델과 달리 사전변환을 진행하지 않는다. */
-		memcpy(&m_pVerticesAnim[i].vPosition,	&Vertices[i].vPosition, sizeof(_float3));
-		memcpy(&m_pVerticesAnim[i].vNormal, &Vertices[i].vNormal, sizeof(_float3));
-		memcpy(&m_pVerticesAnim[i].vTexture, &Vertices[i].vTexture, sizeof(_float2));
-		memcpy(&m_pVerticesAnim[i].vTangent, &Vertices[i].vTangent, sizeof(_float3));
-		memcpy(&m_pVerticesAnim[i].vBlendIndex, &Vertices[i].vBlendIndex, sizeof(XMUINT4));
-		memcpy(&m_pVerticesAnim[i].vBlendWeight, &Vertices[i].vBlendWeight, sizeof(Vec4));
+		memcpy(&pVerticesAnim[i].vPosition,	&Vertices[i].vPosition, sizeof(_float3));
+		memcpy(&m_pVerticesPos[i], &Vertices[i].vPosition, sizeof(_float3));
+		memcpy(&pVerticesAnim[i].vNormal, &Vertices[i].vNormal, sizeof(_float3));
+		memcpy(&pVerticesAnim[i].vTexture, &Vertices[i].vTexture, sizeof(_float2));
+		memcpy(&pVerticesAnim[i].vTangent, &Vertices[i].vTangent, sizeof(_float3));
+		memcpy(&pVerticesAnim[i].vBlendIndex, &Vertices[i].vBlendIndex, sizeof(XMUINT4));
+		memcpy(&pVerticesAnim[i].vBlendWeight, &Vertices[i].vBlendWeight, sizeof(Vec4));
 	}
 
 	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
-	m_SubResourceData.pSysMem = m_pVerticesAnim;
+	m_SubResourceData.pSysMem = pVerticesAnim;
 
 	if (FAILED(__super::Create_VertexBuffer()))
 		return E_FAIL;
+
+	Safe_Delete_Array(pVerticesAnim);
 
 	return S_OK;
 }
@@ -211,6 +225,8 @@ HRESULT CMesh::Ready_Indices(vector<_int>& Indices)
 
 	if (FAILED(__super::Create_IndexBuffer()))
 		return E_FAIL;
+
+	//Safe_Delete_Array(m_pIndices);
 
 	return S_OK;
 }
@@ -265,15 +281,8 @@ void CMesh::Free()
 		Safe_Release(pBone);
 
 	m_Bones.clear();
-
-	/* Vertices, Indices */
-	if(nullptr != m_pVerticesAnim)
-		Safe_Delete_Array(m_pVerticesAnim);
-
-	if(nullptr != m_pVerticeStatic)
-		Safe_Delete_Array(m_pVerticeStatic);
-
-	Safe_Delete_Array(m_pIndices);
+	if(!m_bClone)
+		Safe_Delete_Array(m_pIndices);
 
 	/* Model */
 	Safe_Release(m_pModel);
