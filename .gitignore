@@ -434,7 +434,7 @@ FodyWeavers.xsd
 
 ### User Edit ###
 
-Resources/
+Client/Bin/Resources/
 *.fbx
 *.png
 *.dds
@@ -442,6 +442,9 @@ Resources/
 *.props.txt
 *.pskx
 *.tga
+*.dll
+*.cso
+
 
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
