@@ -136,18 +136,18 @@ HRESULT CLoader::Load_Prototype()
 			return E_FAIL;
 
 		/* For.Prototype_GameObject_Proto_Static */
-		{
-			/* 해당 경로 내의 모든 폴더명을 읽어 폴더명으로 오브젝트를 생성한다. */
-			const string		tag = "Env_Static_";
-			const string		filePath = "../Bin/Resources/Models/Environment/Static";
-			vector<string>		fileNames = Util_File::GetAllFolderNames(filePath);
+		//{
+		//	/* 해당 경로 내의 모든 폴더명을 읽어 폴더명으로 오브젝트를 생성한다. */
+		//	const string		tag = "Env_Static_";
+		//	const string		filePath = "../Bin/Resources/Models/Environment/Static";
+		//	vector<string>		fileNames = Util_File::GetAllFolderNames(filePath);
 
-			for (string& name : fileNames)
-			{
-				if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString(tag + name), CStaticDummy::Create(m_pDevice, m_pContext))))
-					return E_FAIL;
-			}
-		}
+		//	for (string& name : fileNames)
+		//	{
+		//		if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString(tag + name), CStaticDummy::Create(m_pDevice, m_pContext))))
+		//			return E_FAIL;
+		//	}
+		//}
 	}
 
 	/* For.Component */
@@ -244,25 +244,25 @@ HRESULT CLoader::Load_Prototype()
 		);*/
 
 		/* For.Prototype_Component_Model_Static */
-		{
-			PivotMatrix = Matrix::Identity * Matrix::CreateScale(0.01f);
+		//{
+		//	PivotMatrix = Matrix::Identity * Matrix::CreateScale(0.01f);
 
-			/* 해당 경로 내의 모든 폴더명을 읽어 폴더명으로 오브젝트를 생성한다. */
-			const string		tag = "Prototype_Component_Model_Static_Env_Static_";
-			const string		filePath = "../Bin/Resources/Models/Environment/Static";
-			vector<string>		fileNames = Util_File::GetAllFolderNames(filePath);
+		//	/* 해당 경로 내의 모든 폴더명을 읽어 폴더명으로 오브젝트를 생성한다. */
+		//	const string		tag = "Prototype_Component_Model_Static_Env_Static_";
+		//	const string		filePath = "../Bin/Resources/Models/Environment/Static";
+		//	vector<string>		fileNames = Util_File::GetAllFolderNames(filePath);
 
-			for (string& name : fileNames)
-			{
-				if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString(tag + name),
-					CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/" + name, PivotMatrix))))
-					return E_FAIL;
-				/*threads.Push_Command(std::bind(&CGameInstance::Add_PrototypeCom, &pGameInstance,
-					LV_STATIC, Util_String::ToWString(tag + name),
-					CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/" + name, PivotMatrix))
-				);*/
-			}
-		}
+		//	for (string& name : fileNames)
+		//	{
+		//		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString(tag + name),
+		//			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/" + name, PivotMatrix))))
+		//			return E_FAIL;
+		//		/*threads.Push_Command(std::bind(&CGameInstance::Add_PrototypeCom, &pGameInstance,
+		//			LV_STATIC, Util_String::ToWString(tag + name),
+		//			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/" + name, PivotMatrix))
+		//		);*/
+		//	}
+		//}
 	}
 
 	m_strLoading = TEXT("Loading Finish");

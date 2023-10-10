@@ -8,15 +8,12 @@ CBone::CBone(const CBone& rhs)
 	: m_iIndex(rhs.m_iIndex)
 	, m_iParentIndex(rhs.m_iParentIndex)
 	, m_iDepth(rhs.m_iDepth)
-	//, m_pParent(rhs.m_pParent)
 {
 	strcpy_s(m_szName, rhs.m_szName);
 
 	memcpy(&m_Transformation, &rhs.m_Transformation, sizeof(_float4x4));
 	memcpy(&m_OffsetMatrix, &rhs.m_OffsetMatrix, sizeof(_float4x4));
 	memcpy(&m_CombinedTransformation, &rhs.m_CombinedTransformation, sizeof(_float4x4));
-
-	//Safe_AddRef(m_pParent);
 }
 
 HRESULT CBone::Initialize_Prototype(string strName, Matrix transformMatrix, Matrix offsetMatrix, _int iBoneIndex, _int iParentIndex, _uint iDepth)

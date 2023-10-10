@@ -15,6 +15,7 @@ public:
 public:
 	HRESULT Initialize(const string strName, vector<KEYFRAME>& Keyframes);
 	_uint	Update_Transformation(_float fPlayTime, _uint iCurrentKeyFrame, class CBone* pNode); 
+	void	Update_Transformation_NoneLerp(_uint iCurrentKeyFrame, class CBone* pNode);
 
 public:
 	string Get_Name() const { return m_szName; }

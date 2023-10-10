@@ -9,9 +9,10 @@ CAnimation::CAnimation()
 
 CAnimation::CAnimation(const CAnimation & rhs)
 	: m_fDuration(rhs.m_fDuration)
-	, m_Channels(rhs.m_Channels)
+	, m_Channels(rhs.m_Channels) /* 데이터 큼, 얕은 복사해도 상관 없으니 얕은복사로 진행 */
 	, m_fTickPerSecond(rhs.m_fTickPerSecond)
 	, m_fPlayTime(rhs.m_fPlayTime)
+	, m_iMaxFrameCount(rhs.m_iMaxFrameCount)
 {
 	for (auto& pChannel : m_Channels)
 		Safe_AddRef(pChannel);
@@ -25,9 +26,17 @@ HRESULT CAnimation::Initialize_Prototype(const _float& fDuration, const _float& 
 	/* 벡터에 사이즈도 안 채우고 멤카피 하면 큰일난다. */
 	//memcpy(&m_Channels, &Channels, sizeof(Channels)); 
 
+	/* 뭐가 더 효율적일까 */
+
+	/*m_Channels.resize(Channels.size());
+	memcpy(&m_Channels, &Channels, sizeof(Channels));*/
+
 	m_Channels.reserve(Channels.size());
 	for (auto& iter : Channels)
 		m_Channels.push_back(iter);
+
+	for (auto& pChannel : Channels)
+		m_iMaxFrameCount = max(m_iMaxFrameCount, (_uint)pChannel->Get_KeyFrames().size());
 
 	return S_OK;
 }
@@ -74,6 +83,26 @@ HRESULT CAnimation::Play_Animation(_float fTimeDelta)
 	{
 		m_ChannelKeyFrames[iChannelIndex] 
 			= pChannel->Update_Transformation(m_fPlayTime, m_ChannelKeyFrames[iChannelIndex], m_Bones[iChannelIndex]);
+
+		++iChannelIndex;
+	}
+
+	return S_OK;
+}
+
+HRESULT CAnimation::Calculate_Animation(_uint iFrame)
+{
+	for (auto& pChannel : m_Channels)
+	{
+		for (auto& iCurrentKeyFrame : m_ChannelKeyFrames)
+			iCurrentKeyFrame = iFrame;
+	}
+
+	/* 이 애니메이션의 모든 채널의 키프레임을 보간한다. (아직 부모 기준)*/
+	_uint iChannelIndex = 0;
+	for (auto& pChannel : m_Channels)
+	{	// iChannelIndex를 늘려가며 순회하면서 트랜스폼 업데이트 해 주고, 현재 키프레임도 다시 계산해서 저장 해 주는듯.
+		pChannel->Update_Transformation_NoneLerp(m_ChannelKeyFrames[iChannelIndex], m_Bones[iChannelIndex]);
 
 		++iChannelIndex;
 	}

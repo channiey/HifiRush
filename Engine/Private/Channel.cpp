@@ -9,8 +9,10 @@ HRESULT CChannel::Initialize(const string strName, vector<KEYFRAME>& Keyframes)
 {
 	m_szName = strName;
 
-	/* 벡터에 사이즈도 안 채우고 멤카피 하면 큰일난다. */
-	//memcpy(&m_KeyFrames, &Keyframes, sizeof(Keyframes)); 
+	/* 뭐가 더 효율적일까 */
+
+	//m_KeyFrames.resize(Keyframes.size());
+	//memcpy(&m_KeyFrames, &Keyframes, sizeof(Keyframes));
 
 	m_KeyFrames.reserve(Keyframes.size());
 	for (auto& iter : Keyframes)
@@ -64,6 +66,34 @@ _uint CChannel::Update_Transformation(_float fPlayTime, _uint iCurrentKeyFrame, 
 		pNode->Set_Transformation(TransformationMatrix);
 
 	return iCurrentKeyFrame;
+}
+
+void CChannel::Update_Transformation_NoneLerp(_uint iCurrentKeyFrame, CBone* pNode)
+{
+	_float3			vScale;
+	_float4			vRotation;
+	_float3			vPosition;
+
+	_matrix	TransformationMatrix = Matrix::Identity;
+
+	/* 마지막 키프레임이상으로 넘어갔을때 : 마지막 키프레임 자세로 고정할 수 있도록 한다. */
+	if (iCurrentKeyFrame < m_KeyFrames.size() && iCurrentKeyFrame == m_KeyFrames[iCurrentKeyFrame].fTime)
+	{
+		vScale = m_KeyFrames[iCurrentKeyFrame].vScale;
+		vRotation = m_KeyFrames[iCurrentKeyFrame].vRotation;
+		vPosition = m_KeyFrames[iCurrentKeyFrame].vPosition;
+	}
+	else
+	{
+		vScale = m_KeyFrames.back().vScale;
+		vRotation = m_KeyFrames.back().vRotation;
+		vPosition = m_KeyFrames.back().vPosition;
+	}
+
+	TransformationMatrix = XMMatrixAffineTransformation(XMLoadFloat3(&vScale), XMVectorSet(0.f, 0.f, 0.f, 1.f), XMLoadFloat4(&vRotation), XMVectorSetW(XMLoadFloat3(&vPosition), 1.f));
+
+	if (nullptr != pNode)
+		pNode->Set_Transformation(TransformationMatrix);
 }
 
 CChannel* CChannel::Create(const string strName, vector<KEYFRAME>& Keyframes)

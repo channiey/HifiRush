@@ -4,6 +4,20 @@
 BEGIN(Engine)
 
 #define MAX_BONES 600 /* 셰이더 파일에서도 똑같이 정의 해줘야한다. */
+// Bone
+#define MAX_MODEL_TRANSFORMS 600 /* 한 애니메이션이 가질 수 있는 최대 뼈 갯수 (표 행)*/
+#define MAX_MODEL_KEYFRAMES 500 /* 한 애니메이션이 가질 수 있는 최대 프레임 수 (표 열)*/
+
+struct AnimTransform /* 하나의 애니메이션의 모든 Bone Transform 정보를 2차원 형태로 보관 */
+{
+	// [ ][ ][ ][ ][ ][ ][ ] ... 600개 
+	using TransformArrayType = array<Matrix, MAX_MODEL_TRANSFORMS>;
+
+	// [ ][ ][ ][ ][ ][ ][ ] ... 500 개
+	array<TransformArrayType, MAX_MODEL_KEYFRAMES> transforms;
+
+	/* 2차 배열 형태로 사용한다. */
+};
 
 class ENGINE_DLL CModel final : public CComponent
 {
@@ -30,15 +44,11 @@ public:
 public:
 	class CBone*			Get_Bone(const char* pNodeName); 
 	class CBone*			Get_Bone(const _int& iIndex);
-
 	_uint					Get_NumMeshes() const { return (_uint)m_Meshes.size(); }
 	vector<class CMesh*>*	Get_Meshes() { return &m_Meshes; }
-
 	_uint					Get_MaterialIndex(_uint iMeshIndex);
-
 	const _uint				Get_AnimationCount() const { return (_uint)m_Animations.size(); }
 	const _uint				Get_CurAnimationIndex() const { return m_iCurrentAnimIndex; }
-
 	_matrix					Get_PivotMatrix() { return XMLoadFloat4x4(&m_PivotMatrix); }
 	const TYPE&				Get_Type() const { return m_eModelType; }
 
@@ -50,6 +60,9 @@ private:
     HRESULT					Read_MeshData(const string& strPath, Matrix PivotMatrix);
     HRESULT					Read_MaterialData(const string& strPath);
     HRESULT					Read_AnimaionData(const string& strPath);
+
+	HRESULT					Create_Texture();
+	void					Create_AnimationTransform(uint32 index);
 
 private: 
 	TYPE						m_eModelType = TYPE_END;
@@ -63,6 +76,14 @@ private:
 	/* Cache */
 	_uint						m_iCurrentAnimIndex = 0;
 	_float4x4					m_BoneMatrices[MAX_BONES] = {};
+
+	/* VTF */
+	/* 한 모델이 사용하는, 모든 애니메이션의, Bone Transform 정보 보관 -> 3차 배열 형태*/
+	/* 한 애니메이션의 Bone Transform이 AnimTransform이다. 이걸 애니메이션 갯수만큼 벡터로 가지고 있다.*/
+	vector<AnimTransform>		m_AnimTransforms;
+	ID3D11Texture2D*			m_pTexture;
+	ID3D11ShaderResourceView*	m_pSrv;
+
 
 public:
 	static CModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const string& strPath, _fmatrix PivotMatrix = XMMatrixIdentity());
