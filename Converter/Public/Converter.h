@@ -46,6 +46,7 @@ private:
 private:
 	/* Helper */
 	uint32 Get_BoneIndex(const string& name);
+	int32  Get_BoneIndex(const char* name);
 
 private:
 	shared_ptr<Assimp::Importer>	_importer;

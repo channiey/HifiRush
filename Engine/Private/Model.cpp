@@ -490,19 +490,14 @@ void CModel::Create_AnimationTransform(uint32 iAnimIndex, vector<AnimTransform>&
 		/* 모든 채널 갱신 */
 		pAnimation->Calculate_Animation(iFrameIndex);
 
-		/* 모든 본 글로벌 변환 */
-		for (auto& pBone : m_Bones)
+		/* 모든 본 글로벌 변환 -> 애니메이션 변환 -> 저장 */
+		
+		for (uint32 iBoneIndex = 0; iBoneIndex < m_Bones.size(); iBoneIndex++)
 		{
-			pBone->Set_CombinedTransformation();  
-		}
+			m_Bones[iBoneIndex]->Set_CombinedTransformation();
 
-		/* '메시에서 사용되는 본'만 애니메이션 변환 + 저장 (텍스처 세로) */
-		vector<CBone*> MeshBones = m_Meshes.front()->Get_Bones();
-
-		for (uint32 iBoneIndex = 0; iBoneIndex < MeshBones.size(); iBoneIndex++)
-		{
 			pAnimTransform[iAnimIndex].transforms[iFrameIndex][iBoneIndex]
-				= MeshBones[iBoneIndex]->Get_OffSetMatrix() * MeshBones[iBoneIndex]->Get_CombinedTransformation() * Get_PivotMatrix();
+				= m_Bones[iBoneIndex]->Get_OffSetMatrix() * m_Bones[iBoneIndex]->Get_CombinedTransformation() * Get_PivotMatrix();
 		}
 	}
 }

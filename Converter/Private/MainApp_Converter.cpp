@@ -13,8 +13,8 @@ HRESULT CMainApp_Converter::Start_Convert()
 {
 	cout << "Start Binarization\n\n\n\n";
 	{
-		/*if (FAILED(Convert_Character()))
-			return E_FAIL;*/
+		if (FAILED(Convert_Character()))
+			return E_FAIL;
 
 		//if (FAILED(Convert_Env_Static()))
 		//	return E_FAIL;
