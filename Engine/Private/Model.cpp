@@ -490,23 +490,15 @@ void CModel::Create_AnimationTransform(uint32 iAnimIndex, vector<AnimTransform>&
 		/* 모든 채널 갱신 */
 		pAnimation->Calculate_Animation(iFrameIndex);
 
-		/* 모든 본 글로벌 변환 (텍스처 세로)*/
-
-		vector<CBone*> MeshBones = m_Meshes.front()->Get_Bones();
-		
-		// << : 
-		/*vector<CBone*> NotUsedBones;
-		std::sort(MeshBones.begin(), MeshBones.end());
-		std::sort(m_Bones.begin(), m_Bones.end());		
-		set_difference(m_Bones.begin(), m_Bones.end(), MeshBones.begin(), MeshBones.end(), std::back_inserter(NotUsedBones));*/
-		// >> : 
-		
+		/* 모든 본 글로벌 변환 */
 		for (auto& pBone : m_Bones)
 		{
 			pBone->Set_CombinedTransformation();  
 		}
 
-		/* 모든 본 애니메이션 변환 + 저장 (텍스처 세로) */
+		/* '메시에서 사용되는 본'만 애니메이션 변환 + 저장 (텍스처 세로) */
+		vector<CBone*> MeshBones = m_Meshes.front()->Get_Bones();
+
 		for (uint32 iBoneIndex = 0; iBoneIndex < MeshBones.size(); iBoneIndex++)
 		{
 			pAnimTransform[iAnimIndex].transforms[iFrameIndex][iBoneIndex]
