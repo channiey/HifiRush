@@ -26,7 +26,7 @@ struct AnimTransform /* 하나의 애니메이션의 모든 Bone Transform 정보를 2차원 형�
 struct KeyframeDesc
 {
 	/* 공격 , 공격 , 아이들 , 공중 , 런 , 워크 */
-	_int	animIndex = 2;	/* 모든 애니메이션 중, 현재 애니메이션 인덱스*/
+	_int	animIndex = 4;	/* 모든 애니메이션 중, 현재 애니메이션 인덱스*/
 	_uint	currFrame = 0;
 	_uint	nextFrame = 0;
 	_float	ratio = 0.f;
@@ -77,7 +77,6 @@ private:
 
 private: /* VTF */
 	HRESULT					Create_Texture();
-	HRESULT					Create_Texture_Ver2();
 	void					Create_AnimationTransform(uint32 iAnimIndex, vector<AnimTransform>& pAnimTransform);
 
 private: 

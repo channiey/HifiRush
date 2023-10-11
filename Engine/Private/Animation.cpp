@@ -113,19 +113,6 @@ HRESULT CAnimation::Calculate_Animation(_uint iFrame)
 	return S_OK;
 }
 
-void CAnimation::Set_AnimationPlayTime(_float fPlayTime)
-{
-	m_fPlayTime = fPlayTime;
-
-	_uint		iChannelIndex = 0;
-	for (auto& pChannel : m_Channels)
-	{
-		m_ChannelKeyFrames[iChannelIndex] = pChannel->Update_Transformation(m_fPlayTime, m_ChannelKeyFrames[iChannelIndex], m_Bones[iChannelIndex]);
-		m_ChannelOldKeyFrames[iChannelIndex] = m_ChannelKeyFrames[iChannelIndex];
-		++iChannelIndex;
-	}
-}
-
 void CAnimation::Reset_Animation()
 {
 	m_fPlayTime = 0.f;

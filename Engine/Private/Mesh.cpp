@@ -68,7 +68,9 @@ HRESULT CMesh::Initialize(void* pArg)
 	if (nullptr != pArg)
 	{
 		CModel* pModel = static_cast<CModel*>(pArg);
-		
+		m_pModel = pModel;
+		Safe_AddRef(m_pModel);
+
 		for (size_t i = 0; i < m_BoneIndices.size(); i++)
 		{
 			CBone* pBone = pModel->Get_Bone(m_BoneIndices[i]);

@@ -21,6 +21,7 @@ public:
 	const _int&		Get_ParentIndex() const { return m_iParentIndex; }
 	_matrix			Get_OffSetMatrix() { return XMLoadFloat4x4(&m_OffsetMatrix); }
 	_matrix			Get_CombinedTransformation() { return XMLoadFloat4x4(&m_CombinedTransformation); }
+	const Matrix	Get_Transfromation() const { return m_Transformation; }
 
 public:
 	HRESULT			Set_Parent(CBone* pParent);

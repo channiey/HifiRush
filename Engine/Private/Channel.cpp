@@ -75,7 +75,7 @@ _uint CChannel::Update_Transformation_NoneLerp(_uint iCurrentKeyFrame, CBone* pN
 	_float3			vPosition;
 
 	/* 마지막 키프레임이상으로 넘어갔을때 : 마지막 키프레임 자세로 고정할 수 있도록 한다. */
-	if (iCurrentKeyFrame < m_KeyFrames.size() && iCurrentKeyFrame == m_KeyFrames[iCurrentKeyFrame].fTime)
+	if (iCurrentKeyFrame < m_KeyFrames.size())
 	{
 		vScale	= m_KeyFrames[iCurrentKeyFrame].vScale;
 		vRotation = m_KeyFrames[iCurrentKeyFrame].vRotation;

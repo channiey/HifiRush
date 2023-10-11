@@ -30,10 +30,11 @@ private:
 
 private:
 	vector<class CBone*>	m_Bones;			/* 이 메시에 영향을 주는 뼈 집합 (메시별로 렌더링시, 해당 메시에 영향을 주는 뼈 행렬을 모아서 토스 */
-	vector<_int>			m_BoneIndices;		/* Cache (Initialize에서 뼈를 찾아오기 위한 인덱스들) */
 
 	class CModel*			m_pModel = { nullptr };
 
+	/* Cache */
+	vector<_int>			m_BoneIndices;		/* Cache (Initialize에서 뼈를 찾아오기 위한 인덱스들) */
 
 private:
 	HRESULT Ready_StaticVertices(vector<VTXMODEL>& Vertices, _fmatrix PivotMatrix);

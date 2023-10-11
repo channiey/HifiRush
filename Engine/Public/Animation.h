@@ -18,7 +18,6 @@ public:
 public:
 	HRESULT Play_Animation(_float fTimeDelta);
 	HRESULT Calculate_Animation(_uint iFrame);
-	void Set_AnimationPlayTime(_float fPlayTime);
 	void Reset_Animation();
 
 public:

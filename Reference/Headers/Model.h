@@ -77,7 +77,6 @@ private:
 
 private: /* VTF */
 	HRESULT					Create_Texture();
-	HRESULT					Create_Texture_Ver2();
 	void					Create_AnimationTransform(uint32 iAnimIndex, vector<AnimTransform>& pAnimTransform);
 
 private: 

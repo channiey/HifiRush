@@ -357,9 +357,6 @@
     <ClInclude Include="..\Public\VIBuffer_Terrain.h">
       <Filter>01.Utiltiy\03.Components\Component\00.VIBuffer\Terrain</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Collider.h">
-      <Filter>01.Utiltiy\03.Components\Component\06.Colliders</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Collider_AABB.h">
       <Filter>01.Utiltiy\03.Components\Component\06.Colliders\Collider\AABB</Filter>
     </ClInclude>
@@ -389,6 +386,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\ThreadPool.h">
       <Filter>01.Utiltiy\90.Optimization\01.ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Collider.h">
+      <Filter>01.Utiltiy\03.Components\Component\06.Colliders\Collider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -527,9 +527,6 @@
     <ClCompile Include="..\Private\VIBuffer_Terrain.cpp">
       <Filter>01.Utiltiy\03.Components\Component\00.VIBuffer\Terrain</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Collider.cpp">
-      <Filter>01.Utiltiy\03.Components\Component\06.Colliders</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Collider_AABB.cpp">
       <Filter>01.Utiltiy\03.Components\Component\06.Colliders\Collider\AABB</Filter>
     </ClCompile>
@@ -556,6 +553,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\ThreadPool.cpp">
       <Filter>01.Utiltiy\90.Optimization\01.ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Collider.cpp">
+      <Filter>01.Utiltiy\03.Components\Component\06.Colliders\Collider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

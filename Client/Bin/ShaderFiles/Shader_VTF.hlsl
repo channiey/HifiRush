@@ -58,7 +58,6 @@ struct VS_IN
     float3  vTangent    : TANGENT;
     uint4   vBlendIndices : BLENDINDEX;
     float4  vBlendWeights : BLENDWEIGHT;
-
 };
 
 struct VS_OUT
