@@ -393,6 +393,8 @@ HRESULT CModel::Create_Texture()
 	if (TYPE::TYPE_NONANIM == m_eModelType)
 		return S_OK;
 
+	//m_PivotMatrix *= Matrix::CreateRotationZ(DEG2RAD(90.f)) * Matrix::CreateRotationX(DEG2RAD(-90.f));
+
 	/* 01. For m_AnimTransforms */
 	/* 해당 모델이 사용하는 모든 애니메이션과 Bone의 정보를 m_AnimTransforms에 세팅한다. */
 	_uint iAnimCnt = Get_AnimationCount();
@@ -489,16 +491,26 @@ void CModel::Create_AnimationTransform(uint32 iAnimIndex, vector<AnimTransform>&
 		pAnimation->Calculate_Animation(iFrameIndex);
 
 		/* 모든 본 글로벌 변환 (텍스처 세로)*/
+
+		vector<CBone*> MeshBones = m_Meshes.front()->Get_Bones();
+		
+		// << : 
+		/*vector<CBone*> NotUsedBones;
+		std::sort(MeshBones.begin(), MeshBones.end());
+		std::sort(m_Bones.begin(), m_Bones.end());		
+		set_difference(m_Bones.begin(), m_Bones.end(), MeshBones.begin(), MeshBones.end(), std::back_inserter(NotUsedBones));*/
+		// >> : 
+		
 		for (auto& pBone : m_Bones)
 		{
 			pBone->Set_CombinedTransformation();  
 		}
 
 		/* 모든 본 애니메이션 변환 + 저장 (텍스처 세로) */
-		for (uint32 iBoneIndex = 0; iBoneIndex < m_Bones.size(); iBoneIndex++)
+		for (uint32 iBoneIndex = 0; iBoneIndex < MeshBones.size(); iBoneIndex++)
 		{
 			pAnimTransform[iAnimIndex].transforms[iFrameIndex][iBoneIndex]
-				= m_Bones[iBoneIndex]->Get_OffSetMatrix() * m_Bones[iBoneIndex]->Get_CombinedTransformation() * Get_PivotMatrix();
+				= MeshBones[iBoneIndex]->Get_OffSetMatrix() * MeshBones[iBoneIndex]->Get_CombinedTransformation() * Get_PivotMatrix();
 		}
 	}
 }

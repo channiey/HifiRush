@@ -20,6 +20,7 @@ public:
 public:
 	_uint					Get_MaterialIndex() const { return m_iMaterialIndex; }
 	FACEINDICES32*			Get_Indices() const { return m_pIndices; }
+	vector<class CBone*>&	Get_Bones() { return m_Bones; }
 public:
 	void					SetUp_BoneMatrices(_float4x4* pBoneMatrices, _fmatrix PivotMatrix); /* 메시의 정점을 그리기위해 셰이더에 넘기기위한 뼈행렬의 배열을 구성한다. */
 

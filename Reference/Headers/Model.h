@@ -81,7 +81,7 @@ private: /* VTF */
 
 private: 
 	TYPE						m_eModelType = TYPE_END;
-	_float4x4					m_PivotMatrix = {};
+	Matrix						m_PivotMatrix = {};
 
 	vector<class CBone*>		m_Bones;
 	vector<class CMesh*>		m_Meshes;
