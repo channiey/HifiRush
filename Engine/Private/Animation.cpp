@@ -47,6 +47,7 @@ HRESULT CAnimation::Initialize(CModel* pModel)
 	for (_uint i = 0; i < m_Channels.size(); ++i)
 	{
 		m_ChannelKeyFrames.push_back(0);
+		m_ChannelOldKeyFrames.push_back(0);
 
 		CBone*	pBone = pModel->Get_Bone(m_Channels[i]->Get_Name().c_str());
 		{
@@ -77,7 +78,7 @@ HRESULT CAnimation::Play_Animation(_float fTimeDelta)
 		}
 	}
 
-	/* 이 애니메이션의 모든 채널의 키프레임을 보간한다. (아직 부모 기준)*/
+	/* 이 애니메이션의 모든 채널(뼈)의 키프레임을 보간한다. (아직 부모 기준)*/
 	_uint iChannelIndex = 0;
 	for (auto& pChannel : m_Channels)
 	{
@@ -92,22 +93,49 @@ HRESULT CAnimation::Play_Animation(_float fTimeDelta)
 
 HRESULT CAnimation::Calculate_Animation(_uint iFrame)
 {
+	/* 모든 채널의 키프레임을 iFrame으로 세팅한다. */
 	for (auto& pChannel : m_Channels)
 	{
 		for (auto& iCurrentKeyFrame : m_ChannelKeyFrames)
 			iCurrentKeyFrame = iFrame;
 	}
 
-	/* 이 애니메이션의 모든 채널의 키프레임을 보간한다. (아직 부모 기준)*/
+	/* 위에서 지전항 키프레임대로, 모든 채널의 키프레임을 보간한다. (아직 부모 기준) */
 	_uint iChannelIndex = 0;
 	for (auto& pChannel : m_Channels)
-	{	// iChannelIndex를 늘려가며 순회하면서 트랜스폼 업데이트 해 주고, 현재 키프레임도 다시 계산해서 저장 해 주는듯.
-		pChannel->Update_Transformation_NoneLerp(m_ChannelKeyFrames[iChannelIndex], m_Bones[iChannelIndex]);
-
+	{	
+		m_ChannelKeyFrames[iChannelIndex]
+			= pChannel->Update_Transformation_NoneLerp(m_ChannelKeyFrames[iChannelIndex], m_Bones[iChannelIndex]);
+		
 		++iChannelIndex;
 	}
 
 	return S_OK;
+}
+
+void CAnimation::Set_AnimationPlayTime(_float fPlayTime)
+{
+	m_fPlayTime = fPlayTime;
+
+	_uint		iChannelIndex = 0;
+	for (auto& pChannel : m_Channels)
+	{
+		m_ChannelKeyFrames[iChannelIndex] = pChannel->Update_Transformation(m_fPlayTime, m_ChannelKeyFrames[iChannelIndex], m_Bones[iChannelIndex]);
+		m_ChannelOldKeyFrames[iChannelIndex] = m_ChannelKeyFrames[iChannelIndex];
+		++iChannelIndex;
+	}
+}
+
+void CAnimation::Reset_Animation()
+{
+	m_fPlayTime = 0.f;
+	m_bPause = FALSE;
+
+	for (auto& pChannel : m_Channels)
+	{
+		for (auto& iCurrentKeyFrame : m_ChannelKeyFrames)
+			iCurrentKeyFrame = 0;
+	}
 }
 
 CAnimation* CAnimation::Create(const _float& fDuration, const _float& fTickPerSecond, vector<class CChannel*>& Channels)

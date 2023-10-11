@@ -75,7 +75,6 @@ void CPlayer::LateTick(_float fTimeDelta)
 	m_pModelCom->Update_VTFAnim(fTimeDelta);
 	m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this);	
 
-	
 	for (auto& pCollider : m_pColliderComs)
 	{
 		if (nullptr != pCollider)

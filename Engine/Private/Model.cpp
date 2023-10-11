@@ -46,7 +46,6 @@ CModel::CModel(const CModel & rhs)
 		Safe_AddRef(pAnimation);
 }
 
-
 HRESULT CModel::Initialize_Prototype(const string& strPath, _fmatrix PivotMatrix)
 {
 	// "../Bin/Resources/Models/Characters/Chai/"
@@ -133,9 +132,10 @@ HRESULT CModel::Initialize(void* pArg)
 		m_Animations = Animations;
 	}
 
-
 	/* Create VTF */
-	Create_Texture();
+	if (FAILED(Create_Texture()))
+		return E_FAIL;
+	
 	return S_OK;
 }
 
@@ -391,26 +391,31 @@ HRESULT CModel::Read_AnimaionData(const string& strPath)
 
 HRESULT CModel::Create_Texture()
 {
+	if (TYPE::TYPE_NONANIM == m_eModelType)
+		return S_OK;
+
 	/* 01. For m_AnimTransforms */
-	/* 해당 모델이 사용하는 모든 애니메이션과 Bone의 정보를  m_AnimTransforms에 세팅한다. */
+	/* 해당 모델이 사용하는 모든 애니메이션과 Bone의 정보를 m_AnimTransforms에 세팅한다. */
 	_uint iAnimCnt = Get_AnimationCount();
+	vector<AnimTransform>	AnimTransforms;
 	{
 		if (0 == iAnimCnt) return S_OK;
 
-		m_AnimTransforms.resize(iAnimCnt);
+		AnimTransforms.resize(iAnimCnt);
 
 		for (uint32 i = 0; i < iAnimCnt; i++)
-			Create_AnimationTransform(i);
+			Create_AnimationTransform(i, AnimTransforms);
 	}
 
 	/* 02. For. m_pTexture */
+	ID3D11Texture2D* pTexture = nullptr;
 	{
 		D3D11_TEXTURE2D_DESC desc;
 		{
 			ZeroMemory(&desc, sizeof(D3D11_TEXTURE2D_DESC));
 			desc.Width = MAX_MODEL_TRANSFORMS * 4;			/* 4개로 쪼개 쓰기 위해 4를 곱함*/
 			desc.Height = MAX_MODEL_KEYFRAMES;
-			desc.ArraySize = iAnimCnt;						/* 텍스처 배열로 사용하기 위함 */
+			desc.ArraySize = iAnimCnt;						
 			desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;	/* 16바이트 */
 			desc.Usage = D3D11_USAGE_IMMUTABLE;				/* 이후 수정할 일 없음 */
 			desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
@@ -421,28 +426,27 @@ HRESULT CModel::Create_Texture()
 		/* 따라서 한 채널을 4개로 쪼개서 사용한다. */
 
 		/* 데이터를 할당할 버퍼 생성 */
-		const uint32 dataSize = MAX_MODEL_TRANSFORMS * sizeof(Matrix); /* 행 */
-		const uint32 pageSize = dataSize * MAX_MODEL_KEYFRAMES; /* 열 */
-		void* mallocPtr = ::malloc(pageSize * iAnimCnt); /* z축? 정도로 표현*/
+		const uint32 dataSize = MAX_MODEL_TRANSFORMS * sizeof(Matrix);  /* 가로 */
+		const uint32 pageSize = dataSize * MAX_MODEL_KEYFRAMES;			/* 한 장 (가로 * 세로) */
+		void* mallocPtr = ::malloc(pageSize * iAnimCnt);				/* n 장 */
 
 		/* _animTransforms의 정보를 할당한 버퍼에 저장한다. */
-		for (uint32 c = 0; c < iAnimCnt; c++)
+		for (uint32 c = 0; c < iAnimCnt; c++) /* 애니메이션 갯수만큼 반복 (장 수) */
 		{
-			uint32 startOffset = c * pageSize;
+			uint32 startOffset = c * pageSize; /* 애님 카운트 * 한 장 /
 
 			/* 포인트 연산을 쉽게 하기 위해 1바이트 짜리로 캐스팅 */
 			BYTE* pageStartPtr = reinterpret_cast<BYTE*>(mallocPtr) + startOffset;
 
-			for (uint32 f = 0; f < MAX_MODEL_KEYFRAMES; f++)
+			for (uint32 f = 0; f < MAX_MODEL_KEYFRAMES; f++) /* 키프레임 갯수만큼 반복 (세로 크기만큼) */
 			{
 				void* ptr = pageStartPtr + dataSize * f;
-				::memcpy(ptr, m_AnimTransforms[c].transforms[f].data(), dataSize);
+				::memcpy(ptr, AnimTransforms[c].transforms[f].data(), dataSize); /* 텍스처에 가로 1줄만큼 데이터 할당 */
 			}
 		}
 
 		/* 텍스처를 만들기 위한 D3D11_SUBRESOURCE_DATA 생성 */
 		vector<D3D11_SUBRESOURCE_DATA> subResources(iAnimCnt);
-
 		for (uint32 c = 0; c < iAnimCnt; c++)
 		{
 			void* ptr = (BYTE*)mallocPtr + c * pageSize;
@@ -452,10 +456,9 @@ HRESULT CModel::Create_Texture()
 		}
 
 		/* 텍스처 생성 */
-		if(FAILED(CGraphic_Device::GetInstance()->Get_Device()->CreateTexture2D(&desc, subResources.data(), &m_pTexture)))
+		if(FAILED(CGraphic_Device::GetInstance()->Get_Device()->CreateTexture2D(&desc, subResources.data(), &pTexture)))
 			return E_FAIL;
 		
-
 		::free(mallocPtr);
 	}
 
@@ -468,45 +471,123 @@ HRESULT CModel::Create_Texture()
 		desc.Texture2DArray.MipLevels = 1;
 		desc.Texture2DArray.ArraySize = iAnimCnt;
 
-		if(FAILED(CGraphic_Device::GetInstance()->Get_Device()->CreateShaderResourceView(m_pTexture, &desc, &m_pSrv)))
+		if(FAILED(CGraphic_Device::GetInstance()->Get_Device()->CreateShaderResourceView(pTexture, &desc, &m_pSrv)))
 			return E_FAIL;	
 	}
 
 	return S_OK;
 }
 
-void CModel::Create_AnimationTransform(uint32 index)
+HRESULT CModel::Create_Texture_Ver2()
 {
-	/* 인덱스에 해당하는 애니메이션을 순회하며 모든 키프레임 데이터를 받아온다. */
+	if (TYPE::TYPE_NONANIM == m_eModelType)
+		return S_OK;
 
-	CAnimation* pAnimation = m_Animations[index];
+	ID3D11Texture2D* pTexture;
+	D3D11_TEXTURE2D_DESC TextureDesc;
+	ZeroMemory(&TextureDesc, sizeof(D3D11_TEXTURE2D_DESC));
+	TextureDesc.Width = (_uint)m_Bones.size() * 4;
+	TextureDesc.Height = MAX_MODEL_KEYFRAMES;
+	TextureDesc.ArraySize = (_uint)m_Animations.size();
+	TextureDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT; // 16바이트
+	TextureDesc.Usage = D3D11_USAGE_IMMUTABLE;
+	TextureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+	TextureDesc.MipLevels = 1;
+	TextureDesc.SampleDesc.Count = 1;
 
-	/* 현재 애니메이션 모든 프레임을 순회한다. */
+	const uint32 dataSize = (_uint)m_Bones.size() * sizeof(_float4x4);
+	const uint32 pageSize = dataSize * MAX_MODEL_KEYFRAMES;
+	void* mallocPtr = ::malloc(pageSize * m_Animations.size());
+
+	// 파편화된 데이터를 조립한다.
+
+	vector<_float4x4> Matrices;
+	_float4x4 vTemp;
+	Matrices.reserve(m_Bones.size());
+	for (uint32 c = 0; c < m_Animations.size(); c++)
+	{
+		uint32 startOffset = c * pageSize;
+
+		BYTE* pageStartPtr = reinterpret_cast<BYTE*>(mallocPtr) + startOffset;
+		for (uint32 f = 0; f < MAX_MODEL_KEYFRAMES; f++)
+		{
+			void* ptr = pageStartPtr + dataSize * f;
+			m_Animations[c]->Set_AnimationPlayTime(f);
+
+			for (auto& pNode : m_Bones)
+				pNode->Set_CombinedTransformation();
+
+			for (auto& pNode : m_Bones)
+			{
+				XMStoreFloat4x4(&vTemp, XMMatrixTranspose(pNode->Get_OffSetMatrix() * pNode->Get_CombinedTransformation() * XMLoadFloat4x4(&m_PivotMatrix)));
+				Matrices.push_back(vTemp);
+			}
+
+			::memcpy(ptr, Matrices.data(), dataSize);
+			Matrices.clear();
+		}
+		m_Animations[c]->Reset_Animation();
+	}
+
+	// 리소스 만들기
+	vector<D3D11_SUBRESOURCE_DATA> subResources(m_Animations.size());
+
+	for (uint32 c = 0; c < m_Animations.size(); c++)
+	{
+		void* ptr = (BYTE*)mallocPtr + c * pageSize;
+		subResources[c].pSysMem = ptr;
+		subResources[c].SysMemPitch = dataSize;
+		subResources[c].SysMemSlicePitch = pageSize;
+	}
+
+	if (FAILED(m_pDevice->CreateTexture2D(&TextureDesc, subResources.data(), &pTexture)))
+		return E_FAIL;
+
+	::free(mallocPtr);
+
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC SrvDesc;
+	ZeroMemory(&SrvDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+	SrvDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	SrvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DARRAY;
+	SrvDesc.Texture2DArray.MipLevels = 1;
+	SrvDesc.Texture2DArray.ArraySize = (_uint)m_Animations.size();
+
+	if (FAILED(m_pDevice->CreateShaderResourceView(pTexture, &SrvDesc, &m_pSrv)))
+		return E_FAIL;
+
+
+	return S_OK;
+}
+
+void CModel::Create_AnimationTransform(uint32 iAnimIndex, vector<AnimTransform>& pAnimTransform)
+{
+	/* 현재 애니메이션의 모든 채널과 키프레임에 따른 본의 행렬을 저장한다. */
+	CAnimation* pAnimation = m_Animations[iAnimIndex];
+
+	/* 모든 프레임 순회 (텍스처 가로) */
 	for (uint32 iFrameIndex = 0; iFrameIndex < pAnimation->GetMaxFrameCount(); iFrameIndex++)
 	{
-		/* 현재 프레임 인덱스로 보간한다.*/
+		/* 채널 갱신 */
 		pAnimation->Calculate_Animation(iFrameIndex);
 
-		/* 모든 본을 순회한다. */
+		/* 모든 본 글로벌 변환 (텍스처 세로)*/
+		for (auto& pBone : m_Bones)
+		{
+			pBone->Set_CombinedTransformation();
+		}
+
+		/* 모든 본 애니메이션 변환 + 저장 (텍스처 세로) */
 		for (uint32 iBoneIndex = 0; iBoneIndex < m_Bones.size(); iBoneIndex++)
 		{
-			/* 본의 행렬을 글로벌로 변환한다. */
-			m_Bones[iBoneIndex]->Set_CombinedTransformation();
+			Matrix matFinal = m_Bones[iBoneIndex]->Get_OffSetMatrix() * m_Bones[iBoneIndex]->Get_CombinedTransformation() * Get_PivotMatrix();
 
-			/* animTransforms에 현재 애니메이션의 현재 프레임의 현재 뼈를 저장한다. */
-			if (0 == m_Bones.size())
-				XMStoreFloat4x4(&m_AnimTransforms[index].transforms[iFrameIndex][iBoneIndex], XMMatrixIdentity());
-			else
-			{
-				XMStoreFloat4x4(
-					&m_AnimTransforms[index].transforms[iFrameIndex][iBoneIndex],
-					m_Bones[iBoneIndex]->Get_OffSetMatrix() * m_Bones[iBoneIndex]->Get_CombinedTransformation() * Get_PivotMatrix());
-			}
+			pAnimTransform[iAnimIndex].transforms[iFrameIndex][iBoneIndex] = matFinal;
 		}
 	}
 }
 
-CBone * CModel::Get_Bone(const char * pNodeName)
+CBone* CModel::Get_Bone(const char * pNodeName)
 {
 	auto	iter = find_if(m_Bones.begin(), m_Bones.end(), [&](CBone* pNode) 
 	{
@@ -570,7 +651,7 @@ HRESULT CModel::Update_VTFAnim(_float fTimeDelta)
 {
 	KeyframeDesc& desc = m_keyframeDesc;
 
-	desc.sumTime += fTimeDelta;
+	desc.sumTime += fTimeDelta * 0.1f; 
 
 	CAnimation* pCurAnim = Get_AnimationByIndex(desc.animIndex);
 	if (nullptr != pCurAnim)
@@ -601,9 +682,9 @@ HRESULT CModel::Render(CShader* pShader, _uint iMeshIndex, _uint iPassIndex)
 			return E_FAIL;
 
 		///* 본의 최종 트랜스폼 계산 : <오프셋 * 루트 기준 * 사전변환> */
-		//m_Meshes[iMeshIndex]->SetUp_BoneMatrices(m_BoneMatrices, XMLoadFloat4x4(&m_PivotMatrix));
+		//	m_Meshes[iMeshIndex]->SetUp_BoneMatrices(m_BoneMatrices, XMLoadFloat4x4(&m_PivotMatrix));
 
-  // 		if (FAILED(pShader->Bind_RawValue("g_BoneMatrices", m_BoneMatrices, sizeof(_float4x4) * MAX_BONES)))
+		// 	if (FAILED(pShader->Bind_RawValue("g_BoneMatrices", m_BoneMatrices, sizeof(_float4x4) * MAX_BONES)))
 		//	return E_FAIL;
 	}
 
