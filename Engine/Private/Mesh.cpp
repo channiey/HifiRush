@@ -87,23 +87,6 @@ HRESULT CMesh::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CMesh::SetUp_BoneMatrices(_float4x4* pBoneMatrices, _fmatrix PivotMatrix)
-{
-	if (0 == m_Bones.size())
-	{
-		XMStoreFloat4x4(&pBoneMatrices[0], XMMatrixIdentity());
-		return;
-	}
-
-	for (_uint i = 0; i < m_Bones.size(); ++i)
-	{
-		/* 셰이더에 행렬 던질 때는 전치 꼭 */
-		/* 최종 트랜스폼 계산*/
-
-		XMStoreFloat4x4(&pBoneMatrices[i], XMMatrixTranspose(m_Bones[i]->Get_OffSetMatrix() * m_Bones[i]->Get_CombinedTransformation() * PivotMatrix));
-	}
-}
-
 HRESULT CMesh::Ready_StaticVertices(vector<VTXMODEL>& Vertices, _fmatrix PivotMatrix)
 {
 	m_iNumVertexBuffers = 1;

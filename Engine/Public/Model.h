@@ -3,37 +3,63 @@
 
 BEGIN(Engine)
 
-#define MAX_BONES 600 /* 셰이더 파일에서도 똑같이 정의 해줘야한다. */
-// Bone
-#define MAX_MODEL_TRANSFORMS 700 /* 한 애니메이션이 가질 수 있는 최대 뼈 갯수 */
-#define MAX_MODEL_KEYFRAMES 300 /* 한 애니메이션이 가질 수 있는 최대 프레임 수 */
+#define MAX_MODEL_TRANSFORMS	700 
+#define MAX_MODEL_KEYFRAMES		300 
 
-struct AnimTransform /* 하나의 애니메이션의 모든 Bone Transform 정보를 2차원 형태로 보관 */
+typedef struct AnimTransform 
 {
-	// [ ][ ][ ][ ][ ][ ][ ] ... w
 	using TransformArrayType = array<Matrix, MAX_MODEL_TRANSFORMS>;
-
-	// [ ][ ][ ][ ][ ][ ][ ] ... 
 	array<TransformArrayType, MAX_MODEL_KEYFRAMES> transforms;
 
-	/* 키프레임 수만큼 transforms를 갖고 있고, */
-	/* transforms 안에는 뼈 갯수 만큼 Matrix가 있다. */
+}ANIMTRANSFORM;
 
-	/* 2차 배열 형태로 사용한다. */
-};
-
-/* 모델이 가지고 있는 모든 애니메이션 중 현재 실행되고 있는 애니메이션 상태를 나타냄 */
-struct KeyframeDesc
+typedef struct KeyframeDesc
 {
-	/* 공격 , 공격 , 아이들 , 공중 , 런 , 워크 */
-	_int	animIndex = 4;	/* 모든 애니메이션 중, 현재 애니메이션 인덱스*/
-	_uint	currFrame = 0;
-	_uint	nextFrame = 0;
-	_float	ratio = 0.f;
-	_float	sumTime = 0.f;	/* 프레임 갱신을 위한 acc */
-	_float	speed = 1.f;	/* 애니메이션 재생 스피드 */
-	Vec2	padding;
-};
+	_int	iAnimIndex	= 0;	
+	_uint	iCurFrame	= 0;
+	_uint	iNextFrame	= 0;
+	_float	fRatio		= 0.f;
+	_float	fAcc		= 0.f;	
+	_float	fSpeed		= 1.f;	
+	Vec2	vPadding;
+
+	void ClearAnim()
+	{
+		iCurFrame = 0;
+		iNextFrame = 0;
+		fRatio = 0.f;
+		fAcc = 0.f;
+	}
+
+}KEYFRAME_DESC;
+
+typedef struct TweenDesc
+{
+	KeyframeDesc cur	= {};
+	KeyframeDesc next	= {};
+
+	float fTweenDuration = 0.2f;
+	float fTweenRatio	 = 0.f;
+	float fTweenAcc		 = 0.f;
+	float fPadding		 = 0.f;
+
+	TweenDesc()
+	{
+		cur.iAnimIndex	= 0;
+		next.iAnimIndex = -1;
+	}
+
+	void ClearNextAnim()
+	{
+		next.iAnimIndex = -1;
+		next.iCurFrame	= 0;
+		next.iNextFrame = 0;
+		next.fAcc		= 0.f;
+		fTweenAcc		= 0.f;
+		fTweenRatio		= 0.f;
+	}
+
+}TWEEN_DESC;
 
 class ENGINE_DLL CModel final : public CComponent
 {
@@ -46,28 +72,29 @@ private:
 	virtual ~CModel() = default;
 
 public:
-	virtual HRESULT Initialize_Prototype(const string& strPath, _fmatrix PivotMatrix);
-	virtual HRESULT Initialize(void* pArg);
-	HRESULT			Update_Anim(_float fTimeDelta);	/* 현재 애니메이션이 제어해야할 뼈의 상태를 갱신한다. */
-	HRESULT			Update_VTFAnim(_float fTimeDelta);
-	HRESULT			Render(class CShader* pShader, _uint iMeshIndex, _uint iPassIndex = 0); /* 스키닝 후, 셰이더에 정점을 전달한다. */
+	virtual HRESULT			Initialize_Prototype(const string& strPath, _fmatrix PivotMatrix);
+	virtual HRESULT			Initialize(void* pArg);
+	HRESULT					Update_Anim(_float fTimeDelta);
+	HRESULT					Render(class CShader* pShader, _uint iMeshIndex, _uint iPassIndex = 0);
 	
-	HRESULT			SetUp_OnShader(class CShader* pShader, _uint iMaterialIndex, aiTextureType eTextureType, const char* pConstantName); /* 셰이더에 현재 모델의 매테리얼 정보를 바인딩한다. */
+public:
+	HRESULT					Bind_Material(class CShader* pShader, _uint iMaterialIndex, aiTextureType eTextureType, const char* pConstantName); 
 
 public:
 	class CBone*			Get_Bone(const char* pNodeName); 
 	class CBone*			Get_Bone(const _int& iIndex);
 	vector<class CMesh*>*	Get_Meshes() { return &m_Meshes; }
-	_uint					Get_NumMeshes() const { return (_uint)m_Meshes.size(); }
+	_uint					Get_MeshCount() const { return (_uint)m_Meshes.size(); }
 	_uint					Get_MaterialIndex(_uint iMeshIndex);
+	class CAnimation*		Get_Animation(const _uint& iIndex);
 	const _uint				Get_AnimationCount() const { return (_uint)m_Animations.size(); }
-	class CAnimation*		Get_AnimationByIndex(const _uint& iIndex);
-	const _uint				Get_CurAnimationIndex() const { return m_iCurrentAnimIndex; }
+	const _uint				Get_CurAnimationIndex() const { return m_TweenDesc.cur.iAnimIndex; }
 	_matrix					Get_PivotMatrix() { return XMLoadFloat4x4(&m_PivotMatrix); }
 	const TYPE&				Get_Type() const { return m_eModelType; }
 
 public:
-	void					Set_Animation(_uint iAnimIndex) { m_iCurrentAnimIndex = iAnimIndex; }
+	void					Set_Animation(const _uint& iAnimIndex, const _bool& bLoop);
+	void					Set_AnimationSpeed(const _float& fSpeed) { m_TweenDesc.cur.fSpeed = fSpeed; }
 
 private:
     HRESULT					Read_BoneData(const string& strPath);
@@ -75,7 +102,7 @@ private:
     HRESULT					Read_MaterialData(const string& strPath);
     HRESULT					Read_AnimaionData(const string& strPath);
 
-private: /* VTF */
+private:
 	HRESULT					Create_Texture();
 	void					Create_AnimationTransform(uint32 iAnimIndex, vector<AnimTransform>& pAnimTransform);
 
@@ -88,15 +115,12 @@ private:
 	vector<MATERIALDESC>		m_Materials;
 	vector<class CAnimation*>	m_Animations;
 
-	/* Cache */
-	_uint						m_iCurrentAnimIndex = 0;
-	_float4x4					m_BoneMatrices[MAX_BONES] = {};
+	TWEEN_DESC					m_TweenDesc = {};
 
-	/* VTF */
-	/* 한 모델이 사용하는, 모든 애니메이션의, Bone Transform 정보 보관 -> 3차 배열 형태*/
-	/* 한 애니메이션의 Bone Transform이 AnimTransform이다. 이걸 애니메이션 갯수만큼 벡터로 가지고 있다.*/
 	ID3D11ShaderResourceView*	m_pSrv = { nullptr };
-	KeyframeDesc				m_keyframeDesc = {};
+
+	/* Cache */
+	_float4x4					m_BoneMatrices[MAX_MODEL_TRANSFORMS] = {};
 
 public:
 	static CModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const string& strPath, _fmatrix PivotMatrix = XMMatrixIdentity());

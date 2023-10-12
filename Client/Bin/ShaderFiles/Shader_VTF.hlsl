@@ -2,10 +2,9 @@
 /* 상수테이블. */
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
-
 vector g_vLightDir = vector(1.f, -1.f, 1.f, 0.f);
 vector g_vLightPos = vector(0.f, 0.f, 0.f, 1.f);
-float g_fLightRange = 0.f;
+float  g_fLightRange = 0.f;
 vector g_vLightDiffuse = vector(1.f, 1.f, 1.f, 1.f);
 vector g_vLightAmbient = vector(1.f, 1.f, 1.f, 1.f);
 vector g_vLightSpecular = vector(1.f, 1.f, 1.f, 1.f);
@@ -31,24 +30,31 @@ sampler PointSampler = sampler_state
     AddressV = wrap;
 };
 
-//#define MAX_MODEL_TRANSFORMS 600
-//#define MAX_MODEL_KEYFRAMES 500 
-
 struct KeyframeDesc
 {
-    int animIndex;
-    uint currFrame;
-    uint nextFrame;
-    float ratio;
-    float sumTime;
-    float speed;
-    float2 padding;
+    int iAnimIndex;
+    uint iCurFrame;
+    uint iNextFrame;
+    float fRatio;
+    float fAcc;
+    float fSpeed;
+    float2 vPadding;
 };
 
-KeyframeDesc g_Keyframes;
+struct TweenFrameDesc /* 두 애니메이션을 블렌딩할 정보 */
+{
+    KeyframeDesc cur;
+    KeyframeDesc next;
+    
+    float fTweenDuration;
+    float fTweenRatio;
+    float fTweenAcc;
+    float fPadding;
+};
 
-Texture2DArray g_TransformMap;
-//Texture2D g_TransformMap;
+TweenFrameDesc  g_TweenFrames;
+KeyframeDesc    g_Keyframes;
+Texture2DArray  g_TransformMap;
 
 struct VS_IN
 {
@@ -67,56 +73,74 @@ struct VS_OUT
     float2 vTexcoord    : TEXCOORD0;
     float4 vWorldPos    : TEXCOORD1;
 };
+
 matrix GetAnimationMatrix(VS_IN input)
 {
     float indices[4] = { input.vBlendIndices.x, input.vBlendIndices.y, input.vBlendIndices.z, input.vBlendIndices.w };
     float weights[4] = { input.vBlendWeights.x, input.vBlendWeights.y, input.vBlendWeights.z, input.vBlendWeights.w };
 
-    int animIndex =  g_Keyframes.animIndex;
-    int currFrame =  g_Keyframes.currFrame;
-    int nextFrame =  g_Keyframes.nextFrame;
-    float ratio = g_Keyframes.ratio;
-    
+    int animIndex[2];
+    int currFrame[2];
+    int nextFrame[2];
+    float ratio[2];
+	
+	/* cur */
+    animIndex[0] = g_TweenFrames.cur.iAnimIndex;
+    currFrame[0] = g_TweenFrames.cur.iCurFrame;
+    nextFrame[0] = g_TweenFrames.cur.iNextFrame;
+    ratio[0] = g_TweenFrames.cur.fRatio;
+
+	/* next */
+    animIndex[1] = g_TweenFrames.next.iAnimIndex;
+    currFrame[1] = g_TweenFrames.next.iCurFrame;
+    nextFrame[1] = g_TweenFrames.next.iNextFrame;
+    ratio[1] = g_TweenFrames.next.fRatio;
+
     float4 c0, c1, c2, c3;
     float4 n0, n1, n2, n3;
-    
     matrix curr = 0;
     matrix next = 0;
     matrix transform = 0;
 
-    /* 영향 주는 뼈 갯수 4개만큼 반복한다. */
     for (int i = 0; i < 4; i++)
     {
-        /* int 4는 텍스처 배열에서 */
-        /* x 좌표(해당 뼈 트랜스폼 행), y좌표(현재 프레임), 배열 인덱스(애님인덱스), 밉맵레벨(아직 사용X)을 나타낸다. */
-        c0 = g_TransformMap.Load(int4(indices[i] * 4 + 0, currFrame, animIndex, 0));
-        c1 = g_TransformMap.Load(int4(indices[i] * 4 + 1, currFrame, animIndex, 0));
-        c2 = g_TransformMap.Load(int4(indices[i] * 4 + 2, currFrame, animIndex, 0));
-        c3 = g_TransformMap.Load(int4(indices[i] * 4 + 3, currFrame, animIndex, 0));
-        curr = matrix(c0, c1, c2, c3); /* indices[i]의 현재 프레임 뼈 행렬 */
+		/* cur */
+        c0 = g_TransformMap.Load(int4(indices[i] * 4 + 0, currFrame[0], animIndex[0], 0));
+        c1 = g_TransformMap.Load(int4(indices[i] * 4 + 1, currFrame[0], animIndex[0], 0));
+        c2 = g_TransformMap.Load(int4(indices[i] * 4 + 2, currFrame[0], animIndex[0], 0));
+        c3 = g_TransformMap.Load(int4(indices[i] * 4 + 3, currFrame[0], animIndex[0], 0));
+        curr = matrix(c0, c1, c2, c3);
 
-        n0 = g_TransformMap.Load(int4(indices[i] * 4 + 0, nextFrame, animIndex, 0));
-        n1 = g_TransformMap.Load(int4(indices[i] * 4 + 1, nextFrame, animIndex, 0));
-        n2 = g_TransformMap.Load(int4(indices[i] * 4 + 2, nextFrame, animIndex, 0));
-        n3 = g_TransformMap.Load(int4(indices[i] * 4 + 3, nextFrame, animIndex, 0));
+        n0 = g_TransformMap.Load(int4(indices[i] * 4 + 0, nextFrame[0], animIndex[0], 0));
+        n1 = g_TransformMap.Load(int4(indices[i] * 4 + 1, nextFrame[0], animIndex[0], 0));
+        n2 = g_TransformMap.Load(int4(indices[i] * 4 + 2, nextFrame[0], animIndex[0], 0));
+        n3 = g_TransformMap.Load(int4(indices[i] * 4 + 3, nextFrame[0], animIndex[0], 0));
         next = matrix(n0, n1, n2, n3);
-        
-        //c0 = g_TransformMap.Load(int3(indices[i] * 4 + 0, currFrame, 0));
-        //c1 = g_TransformMap.Load(int3(indices[i] * 4 + 1, currFrame, 0));
-        //c2 = g_TransformMap.Load(int3(indices[i] * 4 + 2, currFrame, 0));
-        //c3 = g_TransformMap.Load(int3(indices[i] * 4 + 3, currFrame, 0));
-        //curr = matrix(c0, c1, c2, c3);
-        
-        //n0 = g_TransformMap.Load(int3(indices[i] * 4 + 0, nextFrame, 0));
-        //n1 = g_TransformMap.Load(int3(indices[i] * 4 + 1, nextFrame, 0));
-        //n2 = g_TransformMap.Load(int3(indices[i] * 4 + 2, nextFrame, 0));
-        //n3 = g_TransformMap.Load(int3(indices[i] * 4 + 3, nextFrame, 0));
-        //next = matrix(n0, n1, n2, n3);
 
-        matrix result = lerp(curr, next, ratio);
+        matrix result = lerp(curr, next, ratio[0]);
 
+		/* if next */
+        if (animIndex[1] >= 0)
+        {
+            c0 = g_TransformMap.Load(int4(indices[i] * 4 + 0, currFrame[1], animIndex[1], 0));
+            c1 = g_TransformMap.Load(int4(indices[i] * 4 + 1, currFrame[1], animIndex[1], 0));
+            c2 = g_TransformMap.Load(int4(indices[i] * 4 + 2, currFrame[1], animIndex[1], 0));
+            c3 = g_TransformMap.Load(int4(indices[i] * 4 + 3, currFrame[1], animIndex[1], 0));
+            curr = matrix(c0, c1, c2, c3);
+
+            n0 = g_TransformMap.Load(int4(indices[i] * 4 + 0, nextFrame[1], animIndex[1], 0));
+            n1 = g_TransformMap.Load(int4(indices[i] * 4 + 1, nextFrame[1], animIndex[1], 0));
+            n2 = g_TransformMap.Load(int4(indices[i] * 4 + 2, nextFrame[1], animIndex[1], 0));
+            n3 = g_TransformMap.Load(int4(indices[i] * 4 + 3, nextFrame[1], animIndex[1], 0));
+            next = matrix(n0, n1, n2, n3);
+
+            matrix nextResult = lerp(curr, next, ratio[1]);
+
+			/* 두 애니메이션 보간 최종 결과 */
+            result = lerp(result, nextResult, g_TweenFrames.fTweenRatio);
+        }
+		
         transform += mul(weights[i], result);
-        //transform += result;
     }
 
     return transform;

@@ -25,7 +25,6 @@ CModel::CModel(const CModel & rhs)
 	, m_Meshes(rhs.m_Meshes)
 	, m_Materials(rhs.m_Materials)
 	, m_Animations(rhs.m_Animations)
-	, m_iCurrentAnimIndex(rhs.m_iCurrentAnimIndex)
 {
 	/* Bones */
 	for (auto& pBone : m_Bones)
@@ -136,6 +135,97 @@ HRESULT CModel::Initialize(void* pArg)
 		return E_FAIL;
 	
 	return S_OK;
+}
+
+HRESULT CModel::Update_Anim(_float fTimeDelta)
+{
+	if (TYPE::TYPE_ANIM != m_eModelType) return S_OK;
+
+	/* 현재 애니메이션  */
+	m_TweenDesc.cur.fAcc += fTimeDelta;
+
+	CAnimation* pCurAnim = Get_Animation(m_TweenDesc.cur.iAnimIndex);
+	if (nullptr != pCurAnim)
+	{
+		_float timePerFrame = 1 / pCurAnim->Get_TickPerSecond();
+		if (m_TweenDesc.cur.fAcc >= timePerFrame)
+		{
+			m_TweenDesc.cur.fAcc = 0;
+			m_TweenDesc.cur.iCurFrame = (m_TweenDesc.cur.iCurFrame + 1) % pCurAnim->Get_MaxFrameCount();
+			m_TweenDesc.cur.iNextFrame = (m_TweenDesc.cur.iCurFrame + 1) % pCurAnim->Get_MaxFrameCount();
+		}
+		m_TweenDesc.cur.fRatio = (m_TweenDesc.cur.fAcc / timePerFrame);
+	}
+
+	/* 다음 애니메이션이 예약되어 있다면 */
+	if(m_TweenDesc.next.iAnimIndex >= 0)
+	{
+		m_TweenDesc.fTweenAcc += fTimeDelta;
+		m_TweenDesc.fTweenRatio = m_TweenDesc.fTweenAcc / m_TweenDesc.fTweenDuration;
+
+		/* 트위닝이 끝났다면 */
+		if (m_TweenDesc.fTweenRatio >= 1.f)
+		{
+			m_TweenDesc.cur.ClearAnim();
+			m_TweenDesc.cur = m_TweenDesc.next;
+			m_TweenDesc.ClearNextAnim();
+		}
+		else
+		{
+			CAnimation* pNextAnim = Get_Animation(m_TweenDesc.next.iAnimIndex);
+
+			m_TweenDesc.next.fAcc += fTimeDelta;
+
+			_float timePerFrame = 1.f / pNextAnim->Get_TickPerSecond();
+
+			if (m_TweenDesc.next.fRatio >= 1.f)
+			{
+				m_TweenDesc.next.fAcc = 0;
+
+				m_TweenDesc.next.iCurFrame = (m_TweenDesc.next.iCurFrame + 1) % pNextAnim->Get_MaxFrameCount();
+				m_TweenDesc.next.iNextFrame = (m_TweenDesc.next.iCurFrame + 1) % pNextAnim->Get_MaxFrameCount();
+			}
+
+			m_TweenDesc.next.fRatio = m_TweenDesc.next.fAcc / timePerFrame;
+		}
+	}
+	return S_OK;
+}
+
+HRESULT CModel::Render(CShader* pShader, _uint iMeshIndex, _uint iPassIndex)
+{
+	if (TYPE_ANIM == m_eModelType) 
+	{
+		if (FAILED(pShader->Bind_Texture("g_TransformMap", m_pSrv)))
+			return E_FAIL;
+
+		if (FAILED(pShader->Bind_RawValue("g_TweenFrames", &m_TweenDesc, sizeof(TWEEN_DESC))))
+			return E_FAIL;
+	}
+
+	pShader->Begin(0);
+	
+	m_Meshes[iMeshIndex]->Render();
+
+	return S_OK;
+}
+
+HRESULT CModel::Bind_Material(CShader * pShader, _uint iMaterialIndex, aiTextureType eTextureType, const char * pConstantName)
+{
+	if (iMaterialIndex >= m_Materials.size())
+		return E_FAIL;
+	
+	if (m_Materials[iMaterialIndex].pTexture[eTextureType] == nullptr)
+		return S_OK;
+
+	return m_Materials[iMaterialIndex].pTexture[eTextureType]->Bind_ShaderResource(pShader, pConstantName, 0);
+}
+
+void CModel::Set_Animation(const _uint& iAnimIndex, const _bool& bLoop)
+{
+	m_TweenDesc.ClearNextAnim();
+
+	m_TweenDesc.next.iAnimIndex = iAnimIndex % Get_AnimationCount();
 }
 
 HRESULT CModel::Read_BoneData(const string& strPath)
@@ -398,7 +488,7 @@ HRESULT CModel::Create_Texture()
 	/* 01. For m_AnimTransforms */
 	/* 해당 모델이 사용하는 모든 애니메이션과 Bone의 정보를 m_AnimTransforms에 세팅한다. */
 	_uint iAnimCnt = Get_AnimationCount();
-	vector<AnimTransform>	AnimTransforms;
+	vector<ANIMTRANSFORM>	AnimTransforms;
 	{
 		if (0 == iAnimCnt) return S_OK;
 
@@ -485,7 +575,7 @@ void CModel::Create_AnimationTransform(uint32 iAnimIndex, vector<AnimTransform>&
 	CAnimation* pAnimation = m_Animations[iAnimIndex];
 
 	/* 모든 프레임 순회 (텍스처 가로) */
-	for (uint32 iFrameIndex = 0; iFrameIndex < pAnimation->GetMaxFrameCount(); iFrameIndex++)
+	for (uint32 iFrameIndex = 0; iFrameIndex < pAnimation->Get_MaxFrameCount(); iFrameIndex++)
 	{
 		/* 모든 채널 갱신 */
 		pAnimation->Calculate_Animation(iFrameIndex);
@@ -528,86 +618,12 @@ _uint CModel::Get_MaterialIndex(_uint iMeshIndex)
 	return m_Meshes[iMeshIndex]->Get_MaterialIndex();
 }
 
-CAnimation* CModel::Get_AnimationByIndex(const _uint& iIndex)
+CAnimation* CModel::Get_Animation(const _uint& iIndex)
 {
 	if(m_Animations.size() < iIndex)
 		return nullptr;
 
 	return m_Animations[iIndex];
-}
-
-HRESULT CModel::SetUp_OnShader(CShader * pShader, _uint iMaterialIndex, aiTextureType eTextureType, const char * pConstantName)
-{
-	if (iMaterialIndex >= m_Materials.size())
-		return E_FAIL;
-	
-	if (m_Materials[iMaterialIndex].pTexture[eTextureType] == nullptr)
-		return S_OK;
-
-	return m_Materials[iMaterialIndex].pTexture[eTextureType]->Bind_ShaderResource(pShader, pConstantName, 0);
-}
-
-HRESULT CModel::Update_Anim(_float fTimeDelta)
-{
-	if (m_iCurrentAnimIndex >= m_Animations.size()) return E_FAIL;
-
-	/* 현재 애니메이션의 모든 채널 키프레임 보간 (아직 부모 기준) - Relative */
-	m_Animations[m_iCurrentAnimIndex]->Play_Animation(fTimeDelta);
-
-	/* 모든 뼈를 순회하며 루트 기준 트랜스폼을 계산하여 세팅한다.(루트 기준) - Global */
-	/* cf. m_Bones은 부모에서 자식 순으로 순차적으로 정렬되어 있는 상태다. */
-	for (auto& pHierarchyNode : m_Bones)
-		pHierarchyNode->Set_CombinedTransformation();
-
-	return S_OK;
-}
-
-HRESULT CModel::Update_VTFAnim(_float fTimeDelta)
-{
-	KeyframeDesc& desc = m_keyframeDesc;
-
-	desc.sumTime += fTimeDelta;
-
-	CAnimation* pCurAnim = Get_AnimationByIndex(desc.animIndex);
-	if (nullptr != pCurAnim)
-	{
-		_float timePerFrame = 1 / pCurAnim->GetTickPerSecond();
-
-		if (desc.sumTime >= timePerFrame)
-		{
-			desc.sumTime = 0.f;
-			desc.currFrame = (desc.currFrame + 1) % pCurAnim->GetMaxFrameCount();
-			desc.nextFrame = (desc.currFrame + 1) % pCurAnim->GetMaxFrameCount();
-		}
-
-		desc.ratio = (desc.sumTime / timePerFrame);
-	}
-
-	return S_OK;
-}
-
-HRESULT CModel::Render(CShader* pShader, _uint iMeshIndex, _uint iPassIndex)
-{
-	if (TYPE_ANIM == m_eModelType) 
-	{
-		if (FAILED(pShader->Bind_Texture("g_TransformMap", m_pSrv)))
-			return E_FAIL;
-
-		if (FAILED(pShader->Bind_RawValue("g_Keyframes", &m_keyframeDesc, sizeof(KeyframeDesc))))
-			return E_FAIL;
-
-		///* 본의 최종 트랜스폼 계산 : <오프셋 * 루트 기준 * 사전변환> */
-		//	m_Meshes[iMeshIndex]->SetUp_BoneMatrices(m_BoneMatrices, XMLoadFloat4x4(&m_PivotMatrix));
-
-		// 	if (FAILED(pShader->Bind_RawValue("g_BoneMatrices", m_BoneMatrices, sizeof(_float4x4) * MAX_BONES)))
-		//	return E_FAIL;
-	}
-
-	pShader->Begin(0);
-	
-	m_Meshes[iMeshIndex]->Render();
-
-	return S_OK;
 }
 
 CModel * CModel::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, const string& strPath, _fmatrix PivotMatrix)
@@ -663,4 +679,6 @@ void CModel::Free()
 	for (auto& pAnimation : m_Animations)
 		Safe_Release(pAnimation);
 	m_Animations.clear();
+
+	Safe_Release(m_pSrv);
 }

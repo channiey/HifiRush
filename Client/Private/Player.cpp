@@ -23,11 +23,6 @@ HRESULT CPlayer::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	/* Temporary Initaial Setting */
-	{
-		//m_pModelCom->Set_Animation(rand() % 6);
-	}
-
 	return S_OK;
 }
 
@@ -36,27 +31,22 @@ void CPlayer::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	/* Test Animation */
-	CGameInstance* pGameInst = GET_INSTANCE(CGameInstance);
+	
+	if (GAME_INSTNACE->Key_Down(VK_UP))
 	{
-		/*if (pGameInst->Key_Down(VK_UP))
-		{
-			_int  iCurAnim = (m_pModelCom->Get_CurAnimationIndex() + 1) % m_pModelCom->Get_AnimationCount();
+		_int  iCurAnim = (m_pModelCom->Get_CurAnimationIndex() + 1) % m_pModelCom->Get_AnimationCount();
 
-			m_pModelCom->Set_Animation(iCurAnim);
-		}
-		else if (pGameInst->Key_Down(VK_DOWN))
-		{
-			_int iCurAnim = m_pModelCom->Get_CurAnimationIndex() - 1;
-			if (iCurAnim < 0) 
-				iCurAnim = 0;
-
-			m_pModelCom->Set_Animation(iCurAnim);
-		}*/
-
-		//m_pModelCom->Set_Animation(1);
-
+		m_pModelCom->Set_Animation(iCurAnim, TRUE);
 	}
-	RELEASE_INSTANCE(CGameInstance);
+	else if (GAME_INSTNACE->Key_Down(VK_DOWN))
+	{
+		_int iCurAnim = m_pModelCom->Get_CurAnimationIndex() - 1;
+		if (iCurAnim < 0)
+			iCurAnim = 0;
+
+		m_pModelCom->Set_Animation(iCurAnim, TRUE);
+	}
+
 
 	/* Update Colliders */
 	for (auto& pCollider : m_pColliderComs)
@@ -70,8 +60,7 @@ void CPlayer::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	//m_pModelCom->Update_Anim(fTimeDelta);
-	m_pModelCom->Update_VTFAnim(fTimeDelta);
+	m_pModelCom->Update_Anim(fTimeDelta);
 	m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this);	
 
 	for (auto& pCollider : m_pColliderComs)
@@ -152,10 +141,10 @@ HRESULT CPlayer::Bind_ShaderResources()
 
 	
 	/* 메시가 사용하는 매태리얼과 본의 정보를 셰이더에 던진다. */
-	for (_uint i = 0; i < m_pModelCom->Get_NumMeshes(); ++i)
+	for (_uint i = 0; i < m_pModelCom->Get_MeshCount(); ++i)
 	{
 		/* 셰이더에 현재 메시의 매테리얼 정보를 바인딩 한다. */
-		if (FAILED(m_pModelCom->SetUp_OnShader(m_pShaderCom, m_pModelCom->Get_MaterialIndex(i), aiTextureType_DIFFUSE, "g_DiffuseTexture")))
+		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, m_pModelCom->Get_MaterialIndex(i), aiTextureType_DIFFUSE, "g_DiffuseTexture")))
 			return E_FAIL;
 
 		//if (FAILED(m_pModelCom->SetUp_OnShader(m_pShaderCom, m_pModelCom->Get_MaterialIndex(i), aiTextureType_NORMALS, "g_NormalTexture")))

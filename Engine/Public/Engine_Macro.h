@@ -116,5 +116,6 @@
 	pInstance->Release();}														\
 	}();
 
+#define GAME_INSTNACE CGameInstance::GetInstance()
 
 #endif // Engine_Macro_h__

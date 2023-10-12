@@ -25,7 +25,7 @@ HRESULT CFiona::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_pModelCom->Set_Animation(rand() % 15);
+	m_pModelCom->Set_Animation(rand() % 15, TRUE);
 
 
 	return S_OK;
@@ -95,11 +95,11 @@ HRESULT CFiona::Bind_ShaderResources()
 	RELEASE_INSTANCE(CGameInstance);
 
 	/* 현재 모델의 렌더링을 위한 버퍼 정보를 전달한다. */
-	_uint		iNumMeshes = m_pModelCom->Get_NumMeshes();
+	_uint		iNumMeshes = m_pModelCom->Get_MeshCount();
 	for (_uint i = 0; i < iNumMeshes; ++i)
 	{
 		/* 셰이더에 현재 메시의 매테리얼 정보를 바인딩 한다. */
-		if (FAILED(m_pModelCom->SetUp_OnShader(m_pShaderCom, m_pModelCom->Get_MaterialIndex(i), aiTextureType_DIFFUSE, "g_DiffuseTexture")))
+		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, m_pModelCom->Get_MaterialIndex(i), aiTextureType_DIFFUSE, "g_DiffuseTexture")))
 			return E_FAIL;
 
 		//if (FAILED(m_pModelCom->SetUp_OnShader(m_pShaderCom, m_pModelCom->Get_MaterialIndex(i), aiTextureType_NORMALS, "g_NormalTexture")))

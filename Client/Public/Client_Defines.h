@@ -8,7 +8,7 @@
 using namespace std;
 namespace Client
 {
-#define FPS_LIMIT		65.f
+#define FPS_LIMIT		66.f
 #define IS_MULTI_THREAD true
 
 	/* Window */

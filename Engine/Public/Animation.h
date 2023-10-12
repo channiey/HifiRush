@@ -16,14 +16,11 @@ public:
 	HRESULT Initialize(class CModel* pModel);
 
 public:
-	HRESULT Play_Animation(_float fTimeDelta);
-	HRESULT Calculate_Animation(_uint iFrame);
-	void Reset_Animation();
+	_uint	Get_MaxFrameCount() const { return m_iMaxFrameCount; }
+	_float	Get_TickPerSecond() const { return m_fTickPerSecond; }
 
 public:
-	vector<class CChannel*>& GetChannels() { return m_Channels; }
-	_uint	GetMaxFrameCount() { return m_iMaxFrameCount; }
-	_float	GetTickPerSecond() { return m_fTickPerSecond; }
+	HRESULT Calculate_Animation(_uint iFrame);
 
 private:
 	vector<class CChannel*>		m_Channels;				/* 사용되는 채널 집합 */
@@ -34,10 +31,8 @@ private:
 
 	vector<class CBone*>		m_Bones;				/* 이 애니메이션을 재생하는데 필요한 뼈들 */
 	vector<_uint>				m_ChannelKeyFrames;		/* 각 채널들의 현재 키프레임 */
-	vector<_uint>				m_ChannelOldKeyFrames;
 	_uint						m_iMaxFrameCount = 0;
 
-	_bool						m_bPause = FALSE;
 
 public:
 	static CAnimation* Create(const _float& fDuration, const _float& fTickPerSecond, vector<class CChannel*>& Channels);
