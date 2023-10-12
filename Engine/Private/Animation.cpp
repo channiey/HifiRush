@@ -60,6 +60,29 @@ HRESULT CAnimation::Initialize(CModel* pModel)
 	return S_OK;
 }
 
+HRESULT CAnimation::Clear_Channels()
+{
+	/* Channel */
+	for (auto& pChannel : m_Channels)
+		Safe_Release(pChannel);
+	m_Channels.clear();
+
+
+	m_ChannelKeyFrames.clear();
+
+	return S_OK;
+}
+
+HRESULT CAnimation::Clear_Bones()
+{
+	/* HierarachyNode */
+	for (auto& pBone : m_Bones)
+		Safe_Release(pBone);
+	m_Bones.clear();
+
+	return S_OK;
+}
+
 HRESULT CAnimation::Calculate_Animation(_uint iFrame)
 {
 	/* 모든 채널의 키프레임을 iFrame으로 세팅한다. */
@@ -110,13 +133,13 @@ CAnimation * CAnimation::Clone(CModel* pModel)
 
 void CAnimation::Free()
 {
-	/* Channel */
-	for (auto& pChannel : m_Channels)
-		Safe_Release(pChannel);
-	m_Channels.clear();
+	///* Channel */
+	//for (auto& pChannel : m_Channels)
+	//	Safe_Release(pChannel);
+	//m_Channels.clear();
 
-	/* HierarachyNode */
-	for (auto& pBone : m_Bones)
-		Safe_Release(pBone);
-	m_Bones.clear();
+	///* HierarachyNode */
+	//for (auto& pBone : m_Bones)
+	//	Safe_Release(pBone);
+	//m_Bones.clear();
 }

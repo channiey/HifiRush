@@ -21,8 +21,7 @@ public:
 
 public:
 	/* 그래픽 디바이스의 초기화. */
-	HRESULT Ready_Graphic_Device(const GRAPHIC_DESC& GraphicDesc, _Inout_ ID3D11Device** ppDevice,
-		_Inout_ ID3D11DeviceContext** ppDeviceContextOut);
+	HRESULT Ready_Graphic_Device(const GRAPHIC_DESC& GraphicDesc, ID3D11Device** ppDeviceOut, ID3D11DeviceContext** ppDeviceContextOut);
 
 	/* 백버퍼를 지운다. */
 	HRESULT Clear_BackBuffer_View(_float4 vClearColor);

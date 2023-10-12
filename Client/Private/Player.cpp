@@ -20,9 +20,12 @@ HRESULT CPlayer::Initialize_Prototype()
 
 HRESULT CPlayer::Initialize(void* pArg)
 {
+	__super::Initialize(pArg);
+
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	m_pModelCom->Set_Animation(4, TRUE);
 	return S_OK;
 }
 
@@ -30,8 +33,7 @@ void CPlayer::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	/* Test Animation */
-	
+	/* Test Animation 1 */
 	if (GAME_INSTNACE->Key_Down(VK_UP))
 	{
 		_int  iCurAnim = (m_pModelCom->Get_CurAnimationIndex() + 1) % m_pModelCom->Get_AnimationCount();
@@ -46,6 +48,18 @@ void CPlayer::Tick(_float fTimeDelta)
 
 		m_pModelCom->Set_Animation(iCurAnim, TRUE);
 	}
+
+
+	/* Test Animation 2 */
+	if (GAME_INSTNACE->Key_Down('Q'))
+		m_pModelCom->Set_Animation(1, FALSE);
+
+
+
+	if (GAME_INSTNACE->Key_Down('E'))
+		m_pModelCom->Set_Animation(5, TRUE);
+
+
 
 
 	/* Update Colliders */
@@ -85,10 +99,12 @@ HRESULT CPlayer::Ready_Components()
 		TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
 		return E_FAIL;
 
+	/* Com_Transform */
+	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Transform"),
+		TEXT("Com_Transform"), (CComponent**)&m_pTransformCom)))
+		return E_FAIL;
+
 	/* Com_Shader */
-	//if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Shader_AnimModel"),
-	//	TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
-	//	return E_FAIL;
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Shader_VTF"),
 		TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
@@ -98,11 +114,6 @@ HRESULT CPlayer::Ready_Components()
 		TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 	
-	/* Com_Transform */
-	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Transform"),
-		TEXT("Com_Transform"), (CComponent**)&m_pTransformCom)))
-		return E_FAIL;
-
 	/* Com_Collider_Sphere */
 	CCollider::COLLIDERDESC		ColliderDesc;
 	{

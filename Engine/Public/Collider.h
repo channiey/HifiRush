@@ -47,7 +47,9 @@ public:
 
 public:
 	const _bool			Is_Collision() const {return  (0 < m_iCollison) ? TRUE : FALSE; }
+	const _bool			Is_Trigger() const { return m_bTrigger; }
 
+	void				Set_Trigger(const _bool& bTrigger) { m_bTrigger = bTrigger; }
 protected:
 	_matrix				Remove_Rotation(_fmatrix Matrix);
 
@@ -59,6 +61,8 @@ protected:
 	_uint				m_iCollison = 0; /* 현재 충돌중인 콜라이더 갯수 */
 	_uint				m_iID = 0;		 /* 콜라이더 고유 아이디 */
 	static _uint		g_iNextID;
+
+	_bool				m_bTrigger = FALSE;
 	
 public:	
 	virtual CComponent* Clone(void* pArg) = 0;

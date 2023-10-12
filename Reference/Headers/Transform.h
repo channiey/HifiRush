@@ -21,18 +21,19 @@ public:
 	virtual HRESULT Initialize(void* pArg) override;
 
 public: /* Get */
-	const Vec3	Get_Scale();
-	const Vec3	Get_Rotation(); /* Euler */
-	const Vec4	Get_Position()  const { return  static_cast<Vec4>(m_WorldMatrix.m[STATE_POSITION]); }
+	const Vec3		Get_Scale();
+	const Vec3		Get_Rotation(); /* Euler */
+	const Vec4		Get_Position()  const { return  static_cast<Vec4>(m_WorldMatrix.m[STATE_POSITION]); }
 
-	const Vec4	Get_Right()		const { return  static_cast<Vec4>(m_WorldMatrix.m[STATE_RIGHT]); }
-	const Vec4	Get_Left()		const { return -(static_cast<Vec4>(m_WorldMatrix.m[STATE_RIGHT])); }
-	const Vec4	Get_Up()		const { return  static_cast<Vec4>(m_WorldMatrix.m[STATE_UP]); }
-	const Vec4	Get_Down()		const { return -(static_cast<Vec4>(m_WorldMatrix.m[STATE_UP])); }
-	const Vec4	Get_Forward()	const { return  static_cast<Vec4>(m_WorldMatrix.m[STATE_LOOK]); }
-	const Vec4	Get_Backward()	const { return -(static_cast<Vec4>(m_WorldMatrix.m[STATE_LOOK])); }
+	const Vec4		Get_Right()		const { return  static_cast<Vec4>(m_WorldMatrix.m[STATE_RIGHT]); }
+	const Vec4		Get_Left()		const { return -(static_cast<Vec4>(m_WorldMatrix.m[STATE_RIGHT])); }
+	const Vec4		Get_Up()		const { return  static_cast<Vec4>(m_WorldMatrix.m[STATE_UP]); }
+	const Vec4		Get_Down()		const { return -(static_cast<Vec4>(m_WorldMatrix.m[STATE_UP])); }
+	const Vec4		Get_Forward()	const { return  static_cast<Vec4>(m_WorldMatrix.m[STATE_LOOK]); }
+	const Vec4		Get_Backward()	const { return -(static_cast<Vec4>(m_WorldMatrix.m[STATE_LOOK])); }
 
-	const Matrix&	Get_WorldMat() const { return m_WorldMatrix; }
+	const Matrix	Get_WorldMat();
+	const Matrix&	Get_LocalMat() const { return m_WorldMatrix; }
 	const Vec4		Get_State(STATE eState) { return XMLoadFloat4x4(&m_WorldMatrix).r[eState]; }
 
 public: /* Set */

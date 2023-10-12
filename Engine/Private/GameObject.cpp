@@ -76,12 +76,25 @@ CModel* CGameObject::Get_Model()
 	return dynamic_cast<CModel*>(Get_Component(TEXT("Com_Model")));
 }
 
+CShader* CGameObject::Get_Shader()
+{
+	return dynamic_cast<CShader*>(Get_Component(TEXT("Com_Shader")));
+}
+
 CMonoBehaviour* const CGameObject::Get_MonoBehaviour(const _uint& iIndex)
 {
 	if(m_MonoBehaviours.size() > iIndex)
 		return nullptr;
 	
 	return m_MonoBehaviours[iIndex];
+}
+
+HRESULT CGameObject::Remove_Child(const _uint& iIndex)
+{
+	if (m_Children.size() <= iIndex)
+		return E_FAIL;
+
+	return S_OK;
 }
 
 HRESULT CGameObject::Add_Component(_uint iLevelIndex, const wstring & strPrototypeTag, const wstring & strComponentTag, _Inout_ CComponent** ppOut, void * pArg)

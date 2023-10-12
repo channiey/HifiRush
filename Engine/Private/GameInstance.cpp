@@ -402,13 +402,13 @@ const _bool CGameInstance::Key_Pressing(const _int& _iKey)
 	return m_pInput_Device->Key_Pressing(_iKey);
 }
 
-const _bool CGameInstance::Get_PickPos_Window(Vec2* vPickPos)
-{
-	if (nullptr == m_pInput_Device)
-		return FALSE;
-
-	return m_pInput_Device->Get_PickPos_Window(vPickPos);
-}
+//const _bool CGameInstance::Get_PickPos_Window(Vec2* vPickPos)
+//{
+//	if (nullptr == m_pInput_Device)
+//		return FALSE;
+//
+//	return m_pInput_Device->Get_PickPos_Window(vPickPos);
+//}
 
 const _bool CGameInstance::Is_Focus()
 {

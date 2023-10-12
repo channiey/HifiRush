@@ -1,5 +1,6 @@
 #include "..\Public\Transform.h"
 #include "Shader.h"
+#include "GameObject.h"
 
 CTransform::CTransform(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CComponent(pDevice, pContext)
@@ -295,6 +296,15 @@ void CTransform::LookAt(Vec4 vPoint)
 	Set_State(STATE_UP, vUp);
 	Set_State(STATE_LOOK, vLook);
 }
+
+const Matrix CTransform::Get_WorldMat()
+{
+	if (m_pParent->Is_Parnet())
+		return m_pParent->Get_Transform()->Get_WorldMat() * m_WorldMatrix;
+	
+	return m_WorldMatrix;
+}
+
 
 CTransform * CTransform::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {

@@ -32,20 +32,26 @@ sampler PointSampler = sampler_state
 
 struct KeyframeDesc
 {
+    // 4바이트 6개, 총 24바이트
     int iAnimIndex;
     uint iCurFrame;
     uint iNextFrame;
     float fRatio;
-    float fAcc;
+    float fFrameAcc;
+    float fAnimAcc;
     float fSpeed;
-    float2 vPadding;
+    
+    // 1바이트 4개, 총 4바이트
+    int bLoop;
 };
 
-struct TweenFrameDesc /* 두 애니메이션을 블렌딩할 정보 */
+struct TweenFrameDesc
 {
+    // 28바이트 2개, 총 56바이트
     KeyframeDesc cur;
     KeyframeDesc next;
     
+    // 4바이트 4개 총 16바이트
     float fTweenDuration;
     float fTweenRatio;
     float fTweenAcc;
@@ -53,7 +59,6 @@ struct TweenFrameDesc /* 두 애니메이션을 블렌딩할 정보 */
 };
 
 TweenFrameDesc  g_TweenFrames;
-KeyframeDesc    g_Keyframes;
 Texture2DArray  g_TransformMap;
 
 struct VS_IN
@@ -136,7 +141,6 @@ matrix GetAnimationMatrix(VS_IN input)
 
             matrix nextResult = lerp(curr, next, ratio[1]);
 
-			/* 두 애니메이션 보간 최종 결과 */
             result = lerp(result, nextResult, g_TweenFrames.fTweenRatio);
         }
 		

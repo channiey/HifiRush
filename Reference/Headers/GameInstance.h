@@ -74,7 +74,7 @@ public:  /* For.Input_Device */
 	const _bool Key_Up(const _int& _iKey);
 	const _bool Key_Down(const _int& _iKey);
 	const _bool Key_Pressing(const _int& _iKey);
-	const _bool Get_PickPos_Window(_Inout_ Vec2* vPickPos);
+	//const _bool Get_PickPos_Window(_Inout_ Vec2* vPickPos);
 	const _bool Is_Focus();
 
 public: /* For.PipeLine */

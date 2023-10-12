@@ -142,23 +142,35 @@ HRESULT CModel::Update_Anim(_float fTimeDelta)
 	if (TYPE::TYPE_ANIM != m_eModelType) return S_OK;
 
 	/* 현재 애니메이션  */
-	m_TweenDesc.cur.fAcc += fTimeDelta;
-
+	m_TweenDesc.cur.fFrameAcc += fTimeDelta;
+	m_TweenDesc.cur.fAnimAcc += fTimeDelta;
 	CAnimation* pCurAnim = Get_Animation(m_TweenDesc.cur.iAnimIndex);
 	if (nullptr != pCurAnim)
 	{
 		_float timePerFrame = 1 / pCurAnim->Get_TickPerSecond();
-		if (m_TweenDesc.cur.fAcc >= timePerFrame)
+		/* 한 프레임 끝 */
+		if (m_TweenDesc.cur.fFrameAcc >= timePerFrame)
 		{
-			m_TweenDesc.cur.fAcc = 0;
+			m_TweenDesc.cur.fFrameAcc = 0;
 			m_TweenDesc.cur.iCurFrame = (m_TweenDesc.cur.iCurFrame + 1) % pCurAnim->Get_MaxFrameCount();
 			m_TweenDesc.cur.iNextFrame = (m_TweenDesc.cur.iCurFrame + 1) % pCurAnim->Get_MaxFrameCount();
 		}
-		m_TweenDesc.cur.fRatio = (m_TweenDesc.cur.fAcc / timePerFrame);
+		m_TweenDesc.cur.fRatio = (m_TweenDesc.cur.fFrameAcc / timePerFrame);
+
+		/* 루프가 아니고 현재 애니메이션이 곧 끝난다면*/
+		if (!m_TweenDesc.cur.bLoop && 0 < m_iPrevAnimIndex && pCurAnim->Get_MaxFrameCount() - m_TweenDesc.cur.iCurFrame == 3)
+		{
+			Set_Animation(m_iPrevAnimIndex, TRUE);
+			m_iPrevAnimIndex = -1;
+		}
 	}
 
+	/* 현재 애니메이션이 모두 재생되었다면 */
+	if (0 == m_TweenDesc.cur.iCurFrame)
+		m_TweenDesc.cur.fAnimAcc = 0.f;
+
 	/* 다음 애니메이션이 예약되어 있다면 */
-	if(m_TweenDesc.next.iAnimIndex >= 0)
+	if (m_TweenDesc.next.iAnimIndex >= 0)
 	{
 		m_TweenDesc.fTweenAcc += fTimeDelta;
 		m_TweenDesc.fTweenRatio = m_TweenDesc.fTweenAcc / m_TweenDesc.fTweenDuration;
@@ -174,19 +186,19 @@ HRESULT CModel::Update_Anim(_float fTimeDelta)
 		{
 			CAnimation* pNextAnim = Get_Animation(m_TweenDesc.next.iAnimIndex);
 
-			m_TweenDesc.next.fAcc += fTimeDelta;
+			m_TweenDesc.next.fFrameAcc += fTimeDelta;
 
 			_float timePerFrame = 1.f / pNextAnim->Get_TickPerSecond();
 
 			if (m_TweenDesc.next.fRatio >= 1.f)
 			{
-				m_TweenDesc.next.fAcc = 0;
+				m_TweenDesc.next.fFrameAcc = 0;
 
 				m_TweenDesc.next.iCurFrame = (m_TweenDesc.next.iCurFrame + 1) % pNextAnim->Get_MaxFrameCount();
 				m_TweenDesc.next.iNextFrame = (m_TweenDesc.next.iCurFrame + 1) % pNextAnim->Get_MaxFrameCount();
 			}
 
-			m_TweenDesc.next.fRatio = m_TweenDesc.next.fAcc / timePerFrame;
+			m_TweenDesc.next.fRatio = m_TweenDesc.next.fFrameAcc / timePerFrame;
 		}
 	}
 	return S_OK;
@@ -221,11 +233,16 @@ HRESULT CModel::Bind_Material(CShader * pShader, _uint iMaterialIndex, aiTexture
 	return m_Materials[iMaterialIndex].pTexture[eTextureType]->Bind_ShaderResource(pShader, pConstantName, 0);
 }
 
-void CModel::Set_Animation(const _uint& iAnimIndex, const _bool& bLoop)
+void CModel::Set_Animation(const _uint& iAnimIndex, const _bool& bLoop, const _float& fSpeed)
 {
 	m_TweenDesc.ClearNextAnim();
 
 	m_TweenDesc.next.iAnimIndex = iAnimIndex % Get_AnimationCount();
+	m_TweenDesc.next.bLoop = bLoop;
+	m_TweenDesc.next.fSpeed = fSpeed;
+
+	if(!m_TweenDesc.next.bLoop)
+		m_iPrevAnimIndex = m_TweenDesc.cur.iAnimIndex;
 }
 
 HRESULT CModel::Read_BoneData(const string& strPath)
@@ -590,6 +607,9 @@ void CModel::Create_AnimationTransform(uint32 iAnimIndex, vector<AnimTransform>&
 				= m_Bones[iBoneIndex]->Get_OffSetMatrix() * m_Bones[iBoneIndex]->Get_CombinedTransformation() * Get_PivotMatrix();
 		}
 	}
+
+	pAnimation->Clear_Channels();
+	pAnimation->Clear_Bones();
 }
 
 CBone* CModel::Get_Bone(const char * pNodeName)

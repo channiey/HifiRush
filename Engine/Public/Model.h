@@ -4,7 +4,7 @@
 BEGIN(Engine)
 
 #define MAX_MODEL_TRANSFORMS	700 
-#define MAX_MODEL_KEYFRAMES		300 
+#define MAX_MODEL_KEYFRAMES		150 
 
 typedef struct AnimTransform 
 {
@@ -19,24 +19,26 @@ typedef struct KeyframeDesc
 	_uint	iCurFrame	= 0;
 	_uint	iNextFrame	= 0;
 	_float	fRatio		= 0.f;
-	_float	fAcc		= 0.f;	
+	_float	fFrameAcc	= 0.f;	
+	_float	fAnimAcc	= 0.f;
 	_float	fSpeed		= 1.f;	
-	Vec2	vPadding;
+
+	_int	bLoop	= FALSE;
 
 	void ClearAnim()
 	{
 		iCurFrame = 0;
 		iNextFrame = 0;
 		fRatio = 0.f;
-		fAcc = 0.f;
+		fFrameAcc = 0.f;
 	}
 
 }KEYFRAME_DESC;
 
 typedef struct TweenDesc
 {
-	KeyframeDesc cur	= {};
-	KeyframeDesc next	= {};
+	KEYFRAME_DESC cur	= {};
+	KEYFRAME_DESC next	= {};
 
 	float fTweenDuration = 0.2f;
 	float fTweenRatio	 = 0.f;
@@ -54,7 +56,7 @@ typedef struct TweenDesc
 		next.iAnimIndex = -1;
 		next.iCurFrame	= 0;
 		next.iNextFrame = 0;
-		next.fAcc		= 0.f;
+		next.fFrameAcc = 0.f;
 		fTweenAcc		= 0.f;
 		fTweenRatio		= 0.f;
 	}
@@ -93,8 +95,7 @@ public:
 	const TYPE&				Get_Type() const { return m_eModelType; }
 
 public:
-	void					Set_Animation(const _uint& iAnimIndex, const _bool& bLoop);
-	void					Set_AnimationSpeed(const _float& fSpeed) { m_TweenDesc.cur.fSpeed = fSpeed; }
+	void					Set_Animation(const _uint& iAnimIndex, const _bool& bLoop = FALSE, const _float& fSpeed = 0.2f);
 
 private:
     HRESULT					Read_BoneData(const string& strPath);
@@ -115,12 +116,10 @@ private:
 	vector<MATERIALDESC>		m_Materials;
 	vector<class CAnimation*>	m_Animations;
 
-	TWEEN_DESC					m_TweenDesc = {};
-
 	ID3D11ShaderResourceView*	m_pSrv = { nullptr };
-
-	/* Cache */
-	_float4x4					m_BoneMatrices[MAX_MODEL_TRANSFORMS] = {};
+	
+	TWEEN_DESC					m_TweenDesc = {};
+	_int						m_iPrevAnimIndex = -1;
 
 public:
 	static CModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const string& strPath, _fmatrix PivotMatrix = XMMatrixIdentity());

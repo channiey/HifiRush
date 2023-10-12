@@ -279,6 +279,9 @@
     <ClInclude Include="..\Public\StaticDummy.h">
       <Filter>02.GameObjects\01.Environment\00.Static\StaticDummy</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Character.h">
+      <Filter>02.GameObjects\03.Character</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -373,6 +376,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\StaticDummy.cpp">
       <Filter>02.GameObjects\01.Environment\00.Static\StaticDummy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Character.cpp">
+      <Filter>02.GameObjects\03.Character</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

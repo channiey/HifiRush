@@ -34,26 +34,30 @@ public:
 	const _bool 		Is_Active() const { return m_eState == STATE_ACTIVE ? TRUE : FALSE; }
 	const _bool&		Is_Render() const { return m_bRender; }
 	const _bool&		Is_Picked() const { return m_bPicked; }
+	const _bool			Is_Parnet() const { return nullptr != m_pParent ? TRUE : FALSE; }
 
 public: 
 	const wstring&		Get_Name() const { return m_strName; }
 	const wstring&		Get_LayerTag() const { return m_strLayer; }
-	const _uint&		Get_PickID() const { return m_iPickID; }
-	const _float&		Get_CamDistance() const { return m_fCamDistance; }
 	const OBJ_STATE&	Get_State() const { return m_eState; }
+	const _float&		Get_CamDistance() const { return m_fCamDistance; }
+	const _uint&		Get_PickID() const { return m_iPickID; }
 
 	class CTransform*			Get_Transform();
 	class CVIBuffer*			Get_VIBuffer();
 	class CModel*				Get_Model();
+	class CShader*				Get_Shader();
 	class CCollider_Sphere*		Get_Collider_Sphere();
 	class CCollider_AABB*		Get_Collider_AABB();
 	class CCollider_OBB*		Get_Collider_OBB();
-
 	
 	class CComponent* const			Get_Component(const wstring& strComponentTag) { return Find_Component(strComponentTag); };
 	COMPONENTS&						Get_Components() { return m_Components; }
 	class CMonoBehaviour* const		Get_MonoBehaviour(const _uint& iIndex);
 	vector<class CMonoBehaviour*>&	Get_MonoBehaviours() { return m_MonoBehaviours; }
+
+	CGameObject*					Get_Child(const _uint& iIndex) { if (m_Children.size() <= iIndex) return nullptr; return m_Children[iIndex]; }
+	CGameObject*					Get_Parent() const { return m_pParent; }
 
 public: 
 	virtual void	Set_State(const OBJ_STATE& eState) { m_eState = eState; }
@@ -61,6 +65,11 @@ public:
 	void			Set_Name(const wstring& strName) { m_strName = strName; }
 	void			Set_LayerTag(const wstring& strLayer) { m_strLayer = strLayer; }
 	void			Set_Picked(const _bool& bPicked) { m_bPicked = bPicked; }
+	void			Set_Parent(CGameObject* pParent) { m_pParent = pParent; }
+
+public:
+	HRESULT			Add_Child(CGameObject* pChild) { if (nullptr == pChild) return E_FAIL;  m_Children.push_back(pChild); return S_OK; }
+	HRESULT			Remove_Child(const _uint& iIndex);
 
 protected:
 	ID3D11Device*			m_pDevice = { nullptr };
@@ -69,22 +78,24 @@ protected:
 	COMPONENTS				m_Components;
 	MONOBEHAVIOURS			m_MonoBehaviours;
 
-	/* UnActive 상태라면 라이프 사이클 함수를 타지 않는다. */
-	OBJ_STATE				m_eState = { STATE_ACTIVE };
-	_bool					m_bRender = { TRUE };	
 	wstring					m_strLayer = { };
 	wstring					m_strName = { };
 
-	/* 피킹 처리를 위한 고유 아이디 */
+	OBJ_STATE				m_eState = { STATE_ACTIVE };
+	_bool					m_bRender = { TRUE };	
+
+	_float					m_fCamDistance = 0.f;
+
+	CGameObject*			m_pParent = { nullptr };
+	vector<CGameObject*>	m_Children;
+
 	_uint					m_iPickID = { 0 };
 	_bool					m_bPicked = FALSE;
-	_float					m_fCamDistance = 0.f;
 
 protected:
 	HRESULT Add_Component(_uint iLevelIndex, const wstring& strPrototypeTag, const wstring& strComponentTag, _Inout_ CComponent** ppOut, void* pArg = nullptr);
 	class CComponent* Find_Component(const wstring& strComponentTag);
 	HRESULT Compute_CamZ(_fvector vWorldPos);
-
 
 private:
 	HRESULT					Create_PickID() { return S_OK; }

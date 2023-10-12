@@ -156,69 +156,69 @@ HRESULT CMainApp::Ready_Prototype_Components()
 
 HRESULT CMainApp::Test_CreateAndSave_Texture_inDynamic()
 {
-	/* 동적으로 텍스처를 생성 및 저장 한다. */
-	/* 첫번째는 미리 정의된 서식대로 텍스처를 생성 및 저장하고, 두번째는 텍스처의 픽셀을 동적으로 변경한다. */
-	/* 동적으로 텍스처 픽셀을 변경할 경우 Map(), Unmap()이 필요하고, 이때 두 함수 사이 간격은 최소한으로 한다. */
+	///* 동적으로 텍스처를 생성 및 저장 한다. */
+	///* 첫번째는 미리 정의된 서식대로 텍스처를 생성 및 저장하고, 두번째는 텍스처의 픽셀을 동적으로 변경한다. */
+	///* 동적으로 텍스처 픽셀을 변경할 경우 Map(), Unmap()이 필요하고, 이때 두 함수 사이 간격은 최소한으로 한다. */
 
-	ID3D11Texture2D* pTexture2D = { nullptr };
+	//ID3D11Texture2D* pTexture2D = { nullptr };
 
-	D3D11_TEXTURE2D_DESC	TextureDesc;
-	ZeroMemory(&TextureDesc, sizeof TextureDesc);
+	//D3D11_TEXTURE2D_DESC	TextureDesc;
+	//ZeroMemory(&TextureDesc, sizeof TextureDesc);
 
-	TextureDesc.Width = 256;
-	TextureDesc.Height = 256;
-	TextureDesc.MipLevels = 1;
-	TextureDesc.ArraySize = 1;
-	TextureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	//TextureDesc.Width = 256;
+	//TextureDesc.Height = 256;
+	//TextureDesc.MipLevels = 1;
+	//TextureDesc.ArraySize = 1;
+	//TextureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 
-	TextureDesc.SampleDesc.Quality = 0;
-	TextureDesc.SampleDesc.Count = 1;
+	//TextureDesc.SampleDesc.Quality = 0;
+	//TextureDesc.SampleDesc.Count = 1;
 
-	TextureDesc.Usage = D3D11_USAGE_DYNAMIC; /* 동적 버퍼 세팅 */
-	TextureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-	TextureDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;  /* 동적 버퍼 세팅 */ 
-	TextureDesc.MiscFlags = 0;  /* 동적 버퍼 세팅 */
+	//TextureDesc.Usage = D3D11_USAGE_DYNAMIC; /* 동적 버퍼 세팅 */
+	//TextureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+	//TextureDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;  /* 동적 버퍼 세팅 */ 
+	//TextureDesc.MiscFlags = 0;  /* 동적 버퍼 세팅 */
 
-	_ulong* pPixel = new _ulong[TextureDesc.Width * TextureDesc.Height];
+	//_ulong* pPixel = new _ulong[TextureDesc.Width * TextureDesc.Height];
 
-	for (_uint i = 0; i < 256; i++)
-	{
-		for (_uint j = 0; j < 256; j++)
-		{
-			_uint		iIndex = i * 256 + j;
+	//for (_uint i = 0; i < 256; i++)
+	//{
+	//	for (_uint j = 0; j < 256; j++)
+	//	{
+	//		_uint		iIndex = i * 256 + j;
 
-			pPixel[iIndex] = D3DCOLOR_ARGB(255, 255, 255, 255);
-		}
-	}
+	//		pPixel[iIndex] = D3DCOLOR_ARGB(255, 255, 255, 255);
+	//	}
+	//}
 
-	D3D11_SUBRESOURCE_DATA			InitialData;
-	ZeroMemory(&InitialData, sizeof InitialData);
-	InitialData.pSysMem = pPixel;
-	InitialData.SysMemPitch = TextureDesc.Width * 4;
+	//D3D11_SUBRESOURCE_DATA			InitialData;
+	//ZeroMemory(&InitialData, sizeof InitialData);
+	//InitialData.pSysMem = pPixel;
+	//InitialData.SysMemPitch = TextureDesc.Width * 4;
 
-	/* 위에서 정의한 서식 대로 텍스처를 생성한다. */
-	if (FAILED(m_pDevice->CreateTexture2D(&TextureDesc, &InitialData, &pTexture2D)))
-		return E_FAIL;
+	///* 위에서 정의한 서식 대로 텍스처를 생성한다. */
+	//if (FAILED(m_pDevice->CreateTexture2D(&TextureDesc, &InitialData, &pTexture2D)))
+	//	return E_FAIL;
 
-	/* 위에서 생성한 텍스처를 로컬에 저장한다. */
-	SaveDDSTextureToFile(m_pContext, pTexture2D, TEXT("../Bin/Resources/Textures/Terrain/MyMask.dds"));
+	///* 위에서 생성한 텍스처를 로컬에 저장한다. */
+	//SaveDDSTextureToFile(m_pContext, pTexture2D, TEXT("../Bin/Resources/Textures/Terrain/MyMask.dds"));
 
-	/* 텍스처의 픽셀 정보를 동적으로 수정한다. */
-	D3D11_MAPPED_SUBRESOURCE	MappedSubResource;
-	ZeroMemory(&MappedSubResource, sizeof MappedSubResource);
+	///* 텍스처의 픽셀 정보를 동적으로 수정한다. */
+	//D3D11_MAPPED_SUBRESOURCE	MappedSubResource;
+	//ZeroMemory(&MappedSubResource, sizeof MappedSubResource);
 
-	pPixel[0] = D3DCOLOR_ARGB(255, 0, 0, 255);
+	//pPixel[0] = D3DCOLOR_ARGB(255, 0, 0, 255);
 
-	m_pContext->Map(pTexture2D, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedSubResource);
+	//m_pContext->Map(pTexture2D, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedSubResource);
 
-	memcpy(MappedSubResource.pData, pPixel, sizeof(_ulong) * 256 * 256);
+	//memcpy(MappedSubResource.pData, pPixel, sizeof(_ulong) * 256 * 256);
 
-	m_pContext->Unmap(pTexture2D, 0);
+	//m_pContext->Unmap(pTexture2D, 0);
 
-	SaveDDSTextureToFile(m_pContext, pTexture2D, TEXT("../Bin/Resources/Textures/Terrain/MyMask.dds"));
+	//SaveDDSTextureToFile(m_pContext, pTexture2D, TEXT("../Bin/Resources/Textures/Terrain/MyMask.dds"));
 
-	Safe_Delete_Array(pPixel);
-	Safe_Release(pTexture2D);
+	//Safe_Delete_Array(pPixel);
+	//Safe_Release(pTexture2D);
 
 	return S_OK;
 }
