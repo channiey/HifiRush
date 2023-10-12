@@ -3,8 +3,8 @@
 
 #include "GameInstance.h"
 
-//#include "Player_Chai.h"
-//#include "Player_Peppermint.h"
+#include "Chai.h"
+#include "Peppermint.h"
 
 //IMPLEMENT_SINGLETON(CController_Player)
 

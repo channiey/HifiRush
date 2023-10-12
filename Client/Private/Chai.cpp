@@ -31,21 +31,30 @@ HRESULT CChai::Initialize(void* pArg)
 void CChai::Tick(_float fTimeDelta)
 {
 	// ...
+	if (FAILED(m_pStateMachineCom->Tick(fTimeDelta)))
+		return;
 
 	__super::Tick(fTimeDelta);
 }
 
 void CChai::LateTick(_float fTimeDelta)
 {
-	m_pModelCom->Update_Anim(fTimeDelta);
-	m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this);	
+	if (FAILED(m_pStateMachineCom->LateTick(fTimeDelta)))
+		return;
+
+	if (FAILED(m_pModelCom->Update_Anim(fTimeDelta)))
+		return;
+
+	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
+		return;
 
 	__super::LateTick(fTimeDelta);
 }
 
 HRESULT CChai::Render()
 {
-	__super::Render();
+	if (FAILED(__super::Render()))
+		return E_FAIL;
 
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
@@ -78,15 +87,8 @@ HRESULT CChai::Ready_Components()
 		return E_FAIL;
 	
 	/* Com_Collider_Sphere */
-	CCollider::COLLIDERDESC		ColliderDesc;
-	{
-		ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
-
-		ColliderDesc.vSize		= _float3(1.f, 1.f, 1.f);
-		ColliderDesc.vCenter	= _float3(0.f, ColliderDesc.vSize.y * 0.5f, 0.f);
-		ColliderDesc.vRotation	= _float3(0.f, XMConvertToRadians(45.f), 0.f);
-	}
-	CCollider_Sphere* pCollider = nullptr;
+	CCollider::COLLIDERDESC		ColliderDesc{1.f};
+	CCollider_Sphere*			pCollider = nullptr;
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
 		TEXT("Com_Collider_Sphere"), (CComponent**)&pCollider, &ColliderDesc)))
 		return E_FAIL;
@@ -96,7 +98,7 @@ HRESULT CChai::Ready_Components()
 
 	/* Com_StateMachine */
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_StateMachine"),
-		TEXT("Com_StateMachine"), (CComponent**)&m_pModelCom)))
+		TEXT("Com_StateMachine"), (CComponent**)&m_pStateMachineCom)))
 		return E_FAIL;
 
 	return S_OK;
