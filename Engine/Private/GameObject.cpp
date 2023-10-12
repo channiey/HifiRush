@@ -71,6 +71,11 @@ CCollider_OBB* CGameObject::Get_Collider_OBB()
 	return dynamic_cast<CCollider_OBB*>(Get_Component(TEXT("Com_Collider_OBB")));
 }
 
+CStateMachine* CGameObject::Get_StateMachine()
+{
+	return dynamic_cast<CStateMachine*>(Get_Component(TEXT("Com_StateMachine")));
+}
+
 CModel* CGameObject::Get_Model()
 {
 	return dynamic_cast<CModel*>(Get_Component(TEXT("Com_Model")));

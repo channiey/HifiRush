@@ -3,10 +3,11 @@
 /* 상태들을 관리한다. */
 /* 각 상태에서의 행동, 조건, 전이 등은 각 상태에 정의한다. */
 
-
 #include "Component.h"
 
 BEGIN(Engine)
+
+class CState;
 
 class ENGINE_DLL CStateMachine final : public CComponent
 {
@@ -19,30 +20,28 @@ public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg) override;
 	virtual HRESULT Tick(const _float& fTimeDelta);
-	virtual HRESULT LateTick();
+	virtual HRESULT LateTick(const _float& fTimeDelta);	
 
 public:
-	const class CState* const Get_CurState() const { return m_pCurState; }
-	const wstring& Get_CurStateName() const;
+	CState* Get_CurState() const { return m_pCurState; }
 
 public:
-	/* TODO 스테이트 머신 외부에서 스테이트를 세팅할 수 있게 하는 것이 맞는 걸까? */
 	HRESULT Set_State(const wstring& strStateTag);
-
-public:
-	HRESULT Add_State(const wstring& strStateTag, class CState* pState);
-
-private:
-	map<const wstring, class CState*> m_pStates;
-	class CState* m_pCurState = { nullptr };
+	HRESULT Add_State(const wstring& strStateTag, CState* pState);
 
 private:
 	const _bool Has_State(const wstring& strStateTag);
-	class CState* Find_State(const wstring& strStateTag);
-	HRESULT Change_State(const wstring& strStateTag);
+	CState*		Find_State(const wstring& strStateTag);
+	HRESULT		Change_State(const wstring& strStateTag);
+
+private:
+	map<const wstring, class CState*>	m_pStates;
+	CState*								m_pCurState = { nullptr };
 
 public:
-	virtual CComponent* Clone(void* pArg) override;
+	static CStateMachine* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+
+	virtual CComponent* Clone(void* pArg);
 	virtual void Free() override;
 };
 

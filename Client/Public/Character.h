@@ -11,11 +11,37 @@ class CRenderer;
 class CTransform;
 END
 
+BEGIN(Client)
+
 class CCharacter abstract  : public CGameObject
 {
 protected:
 	CCharacter(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CCharacter(const CCharacter& rhs);
 	virtual ~CCharacter() = default;
+
+public:
+	virtual HRESULT		Initialize_Prototype();
+	virtual HRESULT		Initialize(void* pArg);
+	virtual void		Tick(_float fTimeDelta);
+	virtual void		LateTick(_float fTimeDelta);
+	virtual HRESULT		Render();
+
+protected:
+	HRESULT				Ready_Components();
+	HRESULT				Bind_ShaderResources();
+
+protected:
+	CShader*			m_pShaderCom = { nullptr };
+	CRenderer*			m_pRendererCom = { nullptr };
+	CTransform*			m_pTransformCom = { nullptr };
+	CModel*				m_pModelCom = { nullptr };
+	vector<CCollider*>  m_pColliderComs;
+
+public:
+	virtual CCharacter* Clone(void* pArg)= 0;
+	virtual void Free() override;
+
 };
 
+END

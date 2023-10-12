@@ -185,6 +185,7 @@
     <ClInclude Include="..\Public\Camera_Debug.h" />
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
+    <ClInclude Include="..\Public\Controller_Player.h" />
     <ClInclude Include="..\Public\Fiona.h" />
     <ClInclude Include="..\Public\ImGui_Manager.h" />
     <ClInclude Include="..\Public\ImGui_Window.h" />
@@ -202,7 +203,8 @@
     <ClInclude Include="..\Public\Level_Stage_03.h" />
     <ClInclude Include="..\public\Loader.h" />
     <ClInclude Include="..\public\MainApp.h" />
-    <ClInclude Include="..\Public\Player.h" />
+    <ClInclude Include="..\Public\Chai.h" />
+    <ClInclude Include="..\Public\Peppermint.h" />
     <ClInclude Include="..\Public\StaticDummy.h" />
     <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="Client.h" />
@@ -242,6 +244,7 @@
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\Private\Camera_Debug.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
+    <ClCompile Include="..\Private\Controller_Player.cpp" />
     <ClCompile Include="..\Private\Fiona.cpp" />
     <ClCompile Include="..\Private\ImGui_Manager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -262,7 +265,8 @@
     <ClCompile Include="..\Private\Level_Stage_03.cpp" />
     <ClCompile Include="..\private\Loader.cpp" />
     <ClCompile Include="..\private\MainApp.cpp" />
-    <ClCompile Include="..\Private\Player.cpp" />
+    <ClCompile Include="..\Private\Chai.cpp" />
+    <ClCompile Include="..\Private\Peppermint.cpp" />
     <ClCompile Include="..\Private\StaticDummy.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="Client.cpp" />

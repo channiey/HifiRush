@@ -50,6 +50,7 @@ public:
 	class CCollider_Sphere*		Get_Collider_Sphere();
 	class CCollider_AABB*		Get_Collider_AABB();
 	class CCollider_OBB*		Get_Collider_OBB();
+	class CStateMachine*		Get_StateMachine();
 	
 	class CComponent* const			Get_Component(const wstring& strComponentTag) { return Find_Component(strComponentTag); };
 	COMPONENTS&						Get_Components() { return m_Components; }

@@ -82,38 +82,11 @@
     <Filter Include="02.GameObjects\03.Character">
       <UniqueIdentifier>{61401bf3-d2cc-46e0-9502-ab143843e14a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Character\02.NPC">
-      <UniqueIdentifier>{400c1cb4-75ac-4a99-bc55-470322a4b2a8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Character\02.NPC\BehaviourTree">
-      <UniqueIdentifier>{207d0508-a741-48ad-9799-79381a8db791}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Character\02.NPC\BehaviourTree\Node">
-      <UniqueIdentifier>{7eaab9ba-f843-43ce-b19a-2e07c2861e5e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Character\00.Player">
-      <UniqueIdentifier>{8c788c76-03cd-4d87-8f0c-9b9fe84197ec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Character\00.Player\StateMachine">
-      <UniqueIdentifier>{9112ed79-8c75-43d4-9f70-fa125b385b58}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Character\00.Player\StateMachine\State">
-      <UniqueIdentifier>{c2f33d3c-e99a-4675-8309-ccaeec085fc6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\03.Character\99.Proto">
       <UniqueIdentifier>{a574bb1d-749c-4fb5-bf19-b9a30b09a18d}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\03.Character\99.Proto\Fiona">
       <UniqueIdentifier>{36882f13-5282-49c7-a347-899f85859c54}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Character\01.Enemy">
-      <UniqueIdentifier>{d8a59102-c15d-4530-9b3a-1b805113122c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Character\01.Enemy\BehaviourTree">
-      <UniqueIdentifier>{0bd0f243-b8b2-4027-b9b8-3ebef4375173}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Character\01.Enemy\BehaviourTree\Node">
-      <UniqueIdentifier>{62e468e1-c067-4119-9433-31c56f9bc1fe}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\00.Camera\00.Debug">
       <UniqueIdentifier>{e918d286-66bb-42bb-ade7-1bbabe202863}</UniqueIdentifier>
@@ -168,6 +141,57 @@
     </Filter>
     <Filter Include="02.GameObjects\01.Environment\01.Anim\Moveable">
       <UniqueIdentifier>{c826dd7b-e31c-4f41-80f9-bfda419f6dd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\04.Item\00.Equipments">
+      <UniqueIdentifier>{98d11fb4-e468-47cc-98d6-ca279fbd391b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\04.Item\01.Consumptions">
+      <UniqueIdentifier>{a66785c3-ac6b-45b9-bf02-f90eb0eebe7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\02.NPC">
+      <UniqueIdentifier>{400c1cb4-75ac-4a99-bc55-470322a4b2a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\02.NPC\BehaviourTree">
+      <UniqueIdentifier>{207d0508-a741-48ad-9799-79381a8db791}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\02.NPC\BehaviourTree\Node">
+      <UniqueIdentifier>{7eaab9ba-f843-43ce-b19a-2e07c2861e5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\01.Enemy">
+      <UniqueIdentifier>{d8a59102-c15d-4530-9b3a-1b805113122c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\01.Enemy\BehaviourTree">
+      <UniqueIdentifier>{0bd0f243-b8b2-4027-b9b8-3ebef4375173}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\01.Enemy\BehaviourTree\Node">
+      <UniqueIdentifier>{62e468e1-c067-4119-9433-31c56f9bc1fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\00.Player">
+      <UniqueIdentifier>{8c788c76-03cd-4d87-8f0c-9b9fe84197ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\00.Player\01.Models">
+      <UniqueIdentifier>{8c74210a-4679-4b52-9461-e53112691283}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\00.Player\01.Models\00.Chai">
+      <UniqueIdentifier>{d6adba9b-fbce-4590-a598-8fbfb73650e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\00.Player\01.Models\00.Chai\StateMachine">
+      <UniqueIdentifier>{9112ed79-8c75-43d4-9f70-fa125b385b58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\00.Player\01.Models\00.Chai\StateMachine\State">
+      <UniqueIdentifier>{c2f33d3c-e99a-4675-8309-ccaeec085fc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\00.Player\01.Models\01.Peppermint">
+      <UniqueIdentifier>{1cb1b04c-1243-4641-8e0d-e48273e38882}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\00.Player\01.Models\01.Peppermint\StateMachine">
+      <UniqueIdentifier>{48c2e6c6-16b3-42cb-bd5c-a5f4f77251b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\00.Player\01.Models\01.Peppermint\StateMachine\State">
+      <UniqueIdentifier>{45e6482c-5509-4ab1-84f2-f7b851279776}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\00.Player\00.Controller">
+      <UniqueIdentifier>{eb54bd6e-c4e1-426a-8f71-2538d391ac45}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -252,9 +276,6 @@
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp">
       <Filter>96.ShaderFiles</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Player.h">
-      <Filter>02.GameObjects\03.Character\00.Player</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Fiona.h">
       <Filter>02.GameObjects\03.Character\99.Proto\Fiona</Filter>
     </ClInclude>
@@ -281,6 +302,15 @@
     </ClInclude>
     <ClInclude Include="..\Public\Character.h">
       <Filter>02.GameObjects\03.Character</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Chai.h">
+      <Filter>02.GameObjects\03.Character\00.Player\01.Models\00.Chai</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Peppermint.h">
+      <Filter>02.GameObjects\03.Character\00.Player\01.Models\01.Peppermint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Controller_Player.h">
+      <Filter>02.GameObjects\03.Character\00.Player\00.Controller</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -350,9 +380,6 @@
     <ClCompile Include="..\Private\Camera_Debug.cpp">
       <Filter>02.GameObjects\00.Camera\00.Debug</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Player.cpp">
-      <Filter>02.GameObjects\03.Character\00.Player</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Fiona.cpp">
       <Filter>02.GameObjects\03.Character\99.Proto\Fiona</Filter>
     </ClCompile>
@@ -379,6 +406,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\Character.cpp">
       <Filter>02.GameObjects\03.Character</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Chai.cpp">
+      <Filter>02.GameObjects\03.Character\00.Player\01.Models\00.Chai</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Peppermint.cpp">
+      <Filter>02.GameObjects\03.Character\00.Player\01.Models\01.Peppermint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Controller_Player.cpp">
+      <Filter>02.GameObjects\03.Character\00.Player\00.Controller</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

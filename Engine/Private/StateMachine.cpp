@@ -32,7 +32,8 @@ HRESULT CStateMachine::Initialize(void * pArg)
 
 HRESULT CStateMachine::Tick(const _float& fTimeDelta)
 {
-	NULL_CHECK_RETURN(m_pCurState, E_FAIL);
+	if (nullptr == m_pCurState)
+		return E_FAIL;
 
 	const wstring& strStateName = m_pCurState->Tick(fTimeDelta);
 	
@@ -42,10 +43,10 @@ HRESULT CStateMachine::Tick(const _float& fTimeDelta)
 	return S_OK;
 }
 
-HRESULT CStateMachine::LateTick()
+HRESULT CStateMachine::LateTick(const _float& fTimeDelta)
 {
-	NULL_CHECK_RETURN(m_pCurState, E_FAIL);
-
+	if (nullptr == m_pCurState)
+		return E_FAIL;
 	const wstring& strStateName = m_pCurState->LateTick();
 
 	if (strStateName != m_pCurState->Get_Name())
@@ -54,15 +55,8 @@ HRESULT CStateMachine::LateTick()
 	return S_OK;
 }
 
-const wstring& CStateMachine::Get_CurStateName() const
-{
-	return m_pCurState->Get_Name(); 
-}
-
 HRESULT CStateMachine::Set_State(const wstring& strStateTag)
 {
-	/* TODO 여기서 레퍼런스 카운트 어떻게 해야 할까? */
-
 	CState* pState = Find_State(strStateTag);
 
 	if (nullptr == pState)
@@ -125,6 +119,19 @@ HRESULT CStateMachine::Change_State(const wstring& strStateTag)
 	return S_OK;
 }
 
+CStateMachine* CStateMachine::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+{
+	CStateMachine* pInstance = new CStateMachine(pDevice, pContext);
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		MSG_BOX("Failed To Created : CStateMachine");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
 CComponent * CStateMachine::Clone(void * pArg)
 {
 	CStateMachine*	pInstance = new CStateMachine(*this);
@@ -137,6 +144,7 @@ CComponent * CStateMachine::Clone(void * pArg)
 
 	return pInstance;
 }
+
 void CStateMachine::Free()
 {
 	__super::Free();

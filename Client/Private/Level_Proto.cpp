@@ -7,7 +7,7 @@
 #include "ImGui_Manager.h"
 #include "GameObject.h"
 #include "Model.h"
-#include "Player.h"
+#include "Chai.h"
 CLevel_Proto::CLevel_Proto(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CLevel(pDevice, pContext)
 {

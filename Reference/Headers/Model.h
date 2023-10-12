@@ -23,14 +23,14 @@ typedef struct KeyframeDesc
 	_float	fAnimAcc	= 0.f;
 	_float	fSpeed		= 1.f;	
 
-	_int	bLoop	= FALSE;
+	_int	bLoop		= TRUE;
 
 	void ClearAnim()
 	{
-		iCurFrame = 0;
-		iNextFrame = 0;
-		fRatio = 0.f;
-		fFrameAcc = 0.f;
+		iCurFrame	= 0;
+		iNextFrame	= 0;
+		fRatio		= 0.f;
+		fFrameAcc	= 0.f;
 	}
 
 }KEYFRAME_DESC;
