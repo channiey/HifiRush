@@ -19,11 +19,12 @@ public:
 	_uint	Get_MaxFrameCount() const { return m_iMaxFrameCount; }
 	_float	Get_TickPerSecond() const { return m_fTickPerSecond; }
 	_float	Get_Duration() const { return m_fDuration; }
-	HRESULT	Clear_Channels();
-	HRESULT Clear_Bones();
 
 public:
 	HRESULT Calculate_Animation(_uint iFrame);
+
+	HRESULT	Clear_Channels();
+	HRESULT Clear_Bones();
 
 private:
 

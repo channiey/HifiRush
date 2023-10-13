@@ -11,6 +11,36 @@ END
 
 BEGIN(Client)
 
+typedef struct tagGizmoDesc
+{
+	BoundingBox*							m_pAABB = nullptr;
+	PrimitiveBatch<VertexPositionColor>*	m_pBatch = nullptr;
+	BasicEffect*							m_pEffect = nullptr;
+	ID3D11InputLayout*						m_pInputLayout = nullptr;
+	_float4									m_vColor = _float4(0.f, 1.f, 0.f, 1.f);
+
+	tagGizmoDesc() {};
+
+	HRESULT Init(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _float4 color, _float length)
+	{
+		m_pBatch = new PrimitiveBatch<VertexPositionColor>(pContext);
+		m_pEffect = new BasicEffect(pDevice);
+
+		m_pEffect->SetVertexColorEnabled(true);
+
+		const void* pShaderByteCodes = nullptr;
+		size_t			iLength = 0;
+
+		m_pEffect->GetVertexShaderBytecode(&pShaderByteCodes, &iLength);
+
+		if (FAILED(pDevice->CreateInputLayout(VertexPositionColor::InputElements, VertexPositionColor::InputElementCount, pShaderByteCodes, iLength, &m_pInputLayout)))
+			return E_FAIL;
+
+		m_vColor = color;
+	}
+
+}GIZMO_DESC;
+
 class CImGui_Manager final : public CBase
 {
 	DECLARE_SINGLETON(CImGui_Manager)
@@ -71,9 +101,8 @@ private:
 	HRESULT			ImGui_Render();
 
 private:
-	///* TODO 이걸 여기에 넣는 게 맞을까? */
-	//void			Picking_Event();
-	//void			Pick_Object();
+	HRESULT			Init_Gizmo();
+	HRESULT			Draw_Gizmo();
 
 private:
 	/* 현재 정보를 초기화 한다. */
@@ -107,6 +136,10 @@ private:
 
 	/* 현재 ImGui 윈도우 클릭 여부 */
 	_bool							m_bClickedWindow = FALSE;
+
+	/* Gizmo */
+	vector<GIZMO_DESC>				m_Gizmos;
+
 
 private:
 	ID3D11Device* m_pDevice = { nullptr };

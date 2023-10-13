@@ -85,11 +85,14 @@ public:
 public:
 	class CBone*			Get_Bone(const char* pNodeName); 
 	class CBone*			Get_Bone(const _int& iIndex);
+	const Matrix			Get_AnimBoneLocal(const _uint& iAnimIndex, const _uint& iFrameIndex, const _uint& iBoneIndex);
+	const Matrix			Get_AnimBoneLocal(const _uint& iAnimIndex, const _uint& iFrameIndex, const wstring& strBoneName);
 	vector<class CMesh*>*	Get_Meshes() { return &m_Meshes; }
 	_uint					Get_MeshCount() const { return (_uint)m_Meshes.size(); }
 	_uint					Get_MaterialIndex(_uint iMeshIndex);
 	class CAnimation*		Get_Animation(const _uint& iIndex);
 	const _uint				Get_AnimationCount() const { return (_uint)m_Animations.size(); }
+	const KEYFRAME_DESC		Get_CurAnimation() const { return m_TweenDesc.cur; }
 	const _uint				Get_CurAnimationIndex() const { return m_TweenDesc.cur.iAnimIndex; }
 	_matrix					Get_PivotMatrix() { return XMLoadFloat4x4(&m_PivotMatrix); }
 	const TYPE&				Get_Type() const { return m_eModelType; }
@@ -106,6 +109,7 @@ private:
 private:
 	HRESULT					Create_Texture();
 	void					Create_AnimationTransform(uint32 iAnimIndex, vector<AnimTransform>& pAnimTransform);
+	void					Create_AnimationTransformCopy(uint32 iAnimIndex, vector<AnimTransform>& pAnimTransform);
 
 private: 
 	TYPE						m_eModelType = TYPE_END;
@@ -117,7 +121,8 @@ private:
 	vector<class CAnimation*>	m_Animations;
 
 	ID3D11ShaderResourceView*	m_pSrv = { nullptr };
-	
+	vector<ANIMTRANSFORM>		m_AnimTransforms;		/* 원본 -> 루트 계산용*/
+	vector<ANIMTRANSFORM>		m_AnimTransformsCopy;	/* 사본 -> 셰이더 던질용 Cache  */
 	TWEEN_DESC					m_TweenDesc = {};
 	_int						m_iPrevAnimIndex = -1;
 

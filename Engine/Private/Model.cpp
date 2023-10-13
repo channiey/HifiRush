@@ -12,6 +12,9 @@
 #include "Util_File.h"
 #include "Util_String.h"
 
+#include "GameObject.h"
+#include "Transform.h"
+
 CModel::CModel(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CComponent(pDevice, pContext)
 {
@@ -201,6 +204,21 @@ HRESULT CModel::Update_Anim(_float fTimeDelta)
 			m_TweenDesc.next.fRatio = m_TweenDesc.next.fFrameAcc / timePerFrame;
 		}
 	}
+
+	// << : Test Code
+
+	Matrix matRoot  = Get_AnimBoneLocal(m_TweenDesc.cur.iAnimIndex, m_TweenDesc.cur.iCurFrame, 4);
+
+	Matrix matTemp = m_pParent->Get_Transform()->Get_WorldMat() * matRoot;
+
+	Vec4 vPos;
+	memcpy(&vPos, matTemp.m[3], sizeof(Vec4));
+
+	m_pParent->Get_Transform()->Set_State(CTransform::STATE_POSITION, vPos);
+
+
+	// >> :
+
 	return S_OK;
 }
 
@@ -500,20 +518,22 @@ HRESULT CModel::Create_Texture()
 	if (TYPE::TYPE_NONANIM == m_eModelType)
 		return S_OK;
 
-	//m_PivotMatrix *= Matrix::CreateRotationZ(DEG2RAD(90.f)) * Matrix::CreateRotationX(DEG2RAD(-90.f));
-
 	/* 01. For m_AnimTransforms */
 	/* 해당 모델이 사용하는 모든 애니메이션과 Bone의 정보를 m_AnimTransforms에 세팅한다. */
 	_uint iAnimCnt = Get_AnimationCount();
-	vector<ANIMTRANSFORM>	AnimTransforms;
 	{
 		if (0 == iAnimCnt) return S_OK;
 
-		AnimTransforms.resize(iAnimCnt);
+		m_AnimTransforms.resize(iAnimCnt);
+		m_AnimTransformsCopy.resize(iAnimCnt);
 
 		for (uint32 i = 0; i < iAnimCnt; i++)
-			Create_AnimationTransform(i, AnimTransforms);
+			Create_AnimationTransform(i, m_AnimTransforms);
+
+		for (uint32 i = 0; i < iAnimCnt; i++)
+			Create_AnimationTransformCopy(i, m_AnimTransformsCopy);
 	}
+
 
 	/* 02. For. m_pTexture */
 	ID3D11Texture2D* pTexture = nullptr;
@@ -549,7 +569,7 @@ HRESULT CModel::Create_Texture()
 			for (uint32 f = 0; f < MAX_MODEL_KEYFRAMES; f++) /* 키프레임 갯수만큼 반복 (세로 크기만큼) */
 			{
 				void* ptr = pageStartPtr + dataSize * f;
-				::memcpy(ptr, AnimTransforms[c].transforms[f].data(), dataSize); /* 텍스처에 가로 1줄만큼 데이터 저장 */
+				::memcpy(ptr, m_AnimTransformsCopy[c].transforms[f].data(), dataSize); /* 텍스처에 가로 1줄만큼 데이터 저장 */
 			}
 		}
 
@@ -583,6 +603,10 @@ HRESULT CModel::Create_Texture()
 			return E_FAIL;	
 	}
 
+	
+	m_AnimTransformsCopy.clear();
+	m_AnimTransformsCopy.shrink_to_fit();
+
 	return S_OK;
 }
 
@@ -601,13 +625,41 @@ void CModel::Create_AnimationTransform(uint32 iAnimIndex, vector<AnimTransform>&
 		
 		for (uint32 iBoneIndex = 0; iBoneIndex < m_Bones.size(); iBoneIndex++)
 		{
+			/*if (iBoneIndex == 4)
+				m_Bones[iBoneIndex]->Set_Translate(Vec4(0, 0, 0, 1));*/
+
 			m_Bones[iBoneIndex]->Set_CombinedTransformation();
 
 			pAnimTransform[iAnimIndex].transforms[iFrameIndex][iBoneIndex]
 				= m_Bones[iBoneIndex]->Get_OffSetMatrix() * m_Bones[iBoneIndex]->Get_CombinedTransformation() * Get_PivotMatrix();
 		}
 	}
+}
 
+void CModel::Create_AnimationTransformCopy(uint32 iAnimIndex, vector<AnimTransform>& pAnimTransform)
+{
+	/* 현재 애니메이션에 대한 텍스처 한 장(프레임 행, 본 열)정보를 세팅한다. */
+	CAnimation* pAnimation = m_Animations[iAnimIndex];
+
+	/* 모든 프레임 순회 (텍스처 가로) */
+	for (uint32 iFrameIndex = 0; iFrameIndex < pAnimation->Get_MaxFrameCount(); iFrameIndex++)
+	{
+		/* 모든 채널의 현재 프레임 갱신 */
+		pAnimation->Calculate_Animation(iFrameIndex);
+
+		/* 모든 본 글로벌 변환 -> 애니메이션 변환 -> 저장 */
+
+		for (uint32 iBoneIndex = 0; iBoneIndex < m_Bones.size(); iBoneIndex++)
+		{
+			if (iBoneIndex == 4)
+				m_Bones[iBoneIndex]->Set_Translate(Vec4(0, 0, 0, 1));
+			
+			m_Bones[iBoneIndex]->Set_CombinedTransformation();
+
+			m_AnimTransformsCopy[iAnimIndex].transforms[iFrameIndex][iBoneIndex]
+				= m_Bones[iBoneIndex]->Get_OffSetMatrix() * m_Bones[iBoneIndex]->Get_CombinedTransformation() * Get_PivotMatrix();
+		}
+	}
 	pAnimation->Clear_Channels();
 	pAnimation->Clear_Bones();
 }
@@ -631,6 +683,21 @@ CBone* CModel::Get_Bone(const _int& iIndex)
 		return nullptr;
 
 	return m_Bones[iIndex];
+}
+
+const Matrix CModel::Get_AnimBoneLocal(const _uint& iAnimIndex, const _uint& iFrameIndex, const _uint& iBoneIndex)
+{
+	if (m_AnimTransforms.size() <= iAnimIndex || MAX_MODEL_KEYFRAMES < iFrameIndex || MAX_MODEL_TRANSFORMS < iBoneIndex)
+		return Matrix::Identity;
+
+	Matrix matAnim = m_AnimTransforms[iAnimIndex].transforms[iFrameIndex][iBoneIndex];
+
+	return matAnim;
+}
+
+const Matrix CModel::Get_AnimBoneLocal(const _uint& iAnimIndex, const _uint& iFrameIndex, const wstring& strBoneName)
+{
+	return Matrix();
 }
 
 _uint CModel::Get_MaterialIndex(_uint iMeshIndex)
@@ -700,5 +767,6 @@ void CModel::Free()
 		Safe_Release(pAnimation);
 	m_Animations.clear();
 
+	/* Srv */
 	Safe_Release(m_pSrv);
 }

@@ -26,6 +26,7 @@ public:
 public:
 	HRESULT			Set_Parent(CBone* pParent);
 	void			Set_Transformation(_fmatrix Transformation) { XMStoreFloat4x4(&m_Transformation, Transformation); }
+	void			Set_Translate(Vec4 Translate) { memcpy(m_Transformation.m[3], &Translate, sizeof(Vec4)); }
 	void			Set_CombinedTransformation();
 	void			Set_OffsetMatrix(_fmatrix OffsetMatrix) { XMStoreFloat4x4(&m_OffsetMatrix, OffsetMatrix); }
 
@@ -34,6 +35,7 @@ private:
 
 	_float4x4		m_Transformation;			/* Relative(부모 기준) - 여기다가 부모의 m_CombinedTransformation을 곱하면 루트 기준으로 변환 */
 	_float4x4		m_CombinedTransformation;	/* Global(루트 기준) */
+
 	_float4x4		m_OffsetMatrix;				/* 애님이 서로 다른 모델에도 적용될 수 있게 하기 위한 매트릭스? */
 
 	CBone*			m_pParent = nullptr;

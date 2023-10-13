@@ -25,7 +25,7 @@ HRESULT CChai::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_pModelCom->Set_Animation(4, TRUE);
+	m_pModelCom->Set_Animation(0, TRUE);
 
 	return S_OK;
 }
