@@ -142,22 +142,17 @@ HRESULT CModel::Initialize(void* pArg)
 
 HRESULT CModel::Update(_float fTimeDelta)
 {
+	if (TYPE::TYPE_ANIM != m_eModelType) 
+		return S_OK;
+
 	if (FAILED(Update_Anim(fTimeDelta)))
 		return E_FAIL;
-
-	/* 셰이더에는 깡통 애니메이션, 즉 모든 애니메이션, 모든 프레임 루트 포지션이 0, 0, 0인 애니메이션 상태다. */
-	/* 소스에서 루트 위치를 가져와 캐릭터 포지션에 적용시켜 준다. (캐릭터 포지션이 소스에 종속, 애니메이션은 플레이어 포지션에 종속) */
-
-	if (m_bRootAnimation)
-		Update_RootMotion();
 
 	return S_OK;
 }
 
 HRESULT CModel::Update_Anim(_float fTimeDelta)
 {
-	if (TYPE::TYPE_ANIM != m_eModelType) return S_OK;
-
 	/* 현재 애니메이션  */
 	m_TweenDesc.cur.fFrameAcc += fTimeDelta;
 	m_TweenDesc.cur.fAnimAcc += fTimeDelta;
@@ -219,30 +214,6 @@ HRESULT CModel::Update_Anim(_float fTimeDelta)
 		}
 	}
 		
-	return S_OK;
-}
-
-HRESULT CModel::Update_RootMotion()
-{
-	Matrix matRootCurLerp = Matrix::Lerp(Get_AnimBoneLocal(m_TweenDesc.cur.iAnimIndex, m_TweenDesc.cur.iCurFrame, m_iRM_RootIndex)
-									, Get_AnimBoneLocal(m_TweenDesc.cur.iAnimIndex, m_TweenDesc.cur.iNextFrame, m_iRM_RootIndex)
-									, m_TweenDesc.cur.fRatio);
-
-	/* 다음 프레임이 예약되어 있다면 */
-	if (m_TweenDesc.next.iAnimIndex >= 0)
-	{
-		Matrix matRootNextLerp = Matrix::Lerp(Get_AnimBoneLocal(m_TweenDesc.next.iAnimIndex, m_TweenDesc.next.iCurFrame, m_iRM_RootIndex)
-			, Get_AnimBoneLocal(m_TweenDesc.next.iAnimIndex, m_TweenDesc.next.iNextFrame, m_iRM_RootIndex)
-			, m_TweenDesc.next.fRatio);
-
-		matRootCurLerp = Matrix::Lerp(matRootCurLerp, matRootNextLerp, m_TweenDesc.fTweenRatio);
-	}
-
-
-	Matrix matRootMotion = m_pParent->Get_Transform()->Get_WorldMat() * matRootCurLerp;
-
-	m_pParent->Get_Transform()->Set_State(CTransform::STATE_POSITION, (Vec4)matRootMotion.m[3]);
-
 	return S_OK;
 }
 
@@ -725,9 +696,35 @@ const Matrix CModel::Get_AnimBoneLocal(const _uint& iAnimIndex, const _uint& iFr
 	return matAnim;
 }
 
-const Matrix CModel::Get_AnimBoneLocal(const _uint& iAnimIndex, const _uint& iFrameIndex, const wstring& strBoneName)
+const Matrix CModel::Get_CurAnimBonefinal(const _uint& iBoneIndex)
 {
-	return Matrix();
+	/* 현재 프레임 */
+	Matrix matRootCurLerp = Matrix::Lerp(Get_AnimBoneLocal(m_TweenDesc.cur.iAnimIndex, m_TweenDesc.cur.iCurFrame, m_iRM_RootIndex)
+										, Get_AnimBoneLocal(m_TweenDesc.cur.iAnimIndex, m_TweenDesc.cur.iNextFrame, m_iRM_RootIndex)
+										, m_TweenDesc.cur.fRatio);
+
+	/* 다음 프레임이 예약되어 있다면 */
+	if (0 <= m_TweenDesc.next.iAnimIndex)
+	{
+		Matrix matRootNextLerp = Matrix::Lerp(Get_AnimBoneLocal(m_TweenDesc.next.iAnimIndex, m_TweenDesc.next.iCurFrame, m_iRM_RootIndex)
+											, Get_AnimBoneLocal(m_TweenDesc.next.iAnimIndex, m_TweenDesc.next.iNextFrame, m_iRM_RootIndex)
+											, m_TweenDesc.next.fRatio);
+
+		return Matrix::Lerp(matRootCurLerp, matRootNextLerp, m_TweenDesc.fTweenRatio);
+	}
+
+	return matRootCurLerp;
+}
+
+const Matrix CModel::Get_RootMotionBoneMat()
+{
+	/* 셰이더에는 깡통 애니메이션, 즉 모든 애니메이션, 모든 프레임 루트 포지션이 0, 0, 0인 애니메이션 상태다. */
+	/* 소스에서 루트 위치를 가져와 캐릭터 포지션에 적용시켜 준다. (캐릭터 포지션이 소스에 종속, 애니메이션은 플레이어 포지션에 종속) */
+
+	if (!m_bRootAnimation)
+		return Matrix();
+
+	return Get_CurAnimBonefinal(m_iRM_RootIndex);
 }
 
 _uint CModel::Get_MaterialIndex(_uint iMeshIndex)

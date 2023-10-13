@@ -139,12 +139,6 @@
     <Filter Include="02.GameObjects\01.Environment\01.Anim\Moveable">
       <UniqueIdentifier>{c826dd7b-e31c-4f41-80f9-bfda419f6dd5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\04.Item\00.Equipments">
-      <UniqueIdentifier>{98d11fb4-e468-47cc-98d6-ca279fbd391b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\04.Item\01.Consumptions">
-      <UniqueIdentifier>{a66785c3-ac6b-45b9-bf02-f90eb0eebe7c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\03.Character\02.NPC">
       <UniqueIdentifier>{400c1cb4-75ac-4a99-bc55-470322a4b2a8}</UniqueIdentifier>
     </Filter>
@@ -189,6 +183,9 @@
     </Filter>
     <Filter Include="02.GameObjects\03.Character\00.Player\00.Controller">
       <UniqueIdentifier>{eb54bd6e-c4e1-426a-8f71-2538d391ac45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.Parts">
+      <UniqueIdentifier>{8d00615d-1136-40b0-89e2-2793a921cc6c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

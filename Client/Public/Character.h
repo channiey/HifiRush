@@ -29,13 +29,19 @@ public:
 
 protected:
 	HRESULT				Ready_Components();
-	HRESULT				Bind_ShaderResources();
+	HRESULT				Ready_ChildObjects();
 
 protected:
-	CShader*			m_pShaderCom = { nullptr };
-	CRenderer*			m_pRendererCom = { nullptr };
+	HRESULT				Bind_ShaderResources();
+
+private:
+	HRESULT				Update_RootMotion();
+
+protected:
+	CShader*			m_pShaderCom	= { nullptr };
+	CRenderer*			m_pRendererCom	= { nullptr };
 	CTransform*			m_pTransformCom = { nullptr };
-	CModel*				m_pModelCom = { nullptr };
+	CModel*				m_pModelCom		= { nullptr };
 	vector<CCollider*>  m_pColliderComs;
 
 public:

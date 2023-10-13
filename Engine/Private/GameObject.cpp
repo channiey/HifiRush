@@ -94,6 +94,22 @@ CMonoBehaviour* const CGameObject::Get_MonoBehaviour(const _uint& iIndex)
 	return m_MonoBehaviours[iIndex];
 }
 
+void CGameObject::Set_State(const OBJ_STATE& eState)
+{
+	for (auto& pChild : m_Children)
+		pChild->Set_State(eState);
+
+	m_eState = eState;
+}
+
+void CGameObject::Set_Render(const _bool& bRender)
+{
+	for (auto& pChild : m_Children)
+		pChild->Set_Render(bRender);
+
+	m_bRender = bRender;
+}
+
 HRESULT CGameObject::Remove_Child(const _uint& iIndex)
 {
 	if (m_Children.size() <= iIndex)

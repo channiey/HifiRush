@@ -35,6 +35,7 @@ public:
 	const _bool&		Is_Render() const { return m_bRender; }
 	const _bool&		Is_Picked() const { return m_bPicked; }
 	const _bool			Is_Parnet() const { return nullptr != m_pParent ? TRUE : FALSE; }
+	const _bool			Is_Child()	const { return !m_Children.empty() ? TRUE : FALSE; }
 
 public: 
 	const wstring&		Get_Name() const { return m_strName; }
@@ -58,11 +59,12 @@ public:
 	vector<class CMonoBehaviour*>&	Get_MonoBehaviours() { return m_MonoBehaviours; }
 
 	CGameObject*					Get_Child(const _uint& iIndex) { if (m_Children.size() <= iIndex) return nullptr; return m_Children[iIndex]; }
+	const vector<CGameObject*>&		Get_Children() const { return m_Children; }
 	CGameObject*					Get_Parent() const { return m_pParent; }
 
 public: 
-	virtual void	Set_State(const OBJ_STATE& eState) { m_eState = eState; }
-	virtual void	Set_Render(const _bool& bRender) { m_bRender = bRender; }
+	virtual void	Set_State(const OBJ_STATE& eState);
+	virtual void	Set_Render(const _bool& bRender);
 	void			Set_Name(const wstring& strName) { m_strName = strName; }
 	void			Set_LayerTag(const wstring& strLayer) { m_strLayer = strLayer; }
 	void			Set_Picked(const _bool& bPicked) { m_bPicked = bPicked; }
@@ -79,8 +81,8 @@ protected:
 	COMPONENTS				m_Components;
 	MONOBEHAVIOURS			m_MonoBehaviours;
 
-	wstring					m_strLayer = { };
 	wstring					m_strName = { };
+	wstring					m_strLayer = { };
 
 	OBJ_STATE				m_eState = { STATE_ACTIVE };
 	_bool					m_bRender = { TRUE };	
@@ -100,7 +102,7 @@ protected:
 	HRESULT Compute_CamZ(_fvector vWorldPos);
 
 private:
-	HRESULT					Create_PickID() { return S_OK; }
+	HRESULT	Create_PickID() { return S_OK; }
 
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;

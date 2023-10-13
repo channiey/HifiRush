@@ -105,36 +105,50 @@ HRESULT CLayer::Push_GameObject(CGameObject* pGameObject)
 
 void CLayer::Tick(_float fTimeDelta)
 {
+	/* 1차 자식에 대한 업데이트는 부모의 업데이트 이후 진행된다. (2차, 3차까지는 아직 미구현) */
+
 	for (auto& pGameObject : m_GameObjects)
 	{
-		if (nullptr != pGameObject && pGameObject->Is_Active())
-			pGameObject->Tick(fTimeDelta);
+		if (nullptr == pGameObject || !pGameObject->Is_Active() || pGameObject->Is_Parnet()) continue;
+
+		/* 부모 갱신*/
+		pGameObject->Tick(fTimeDelta);
+
+		/* 1차 자식 갱신 */
+		if (pGameObject->Is_Child())
+		{
+			const vector<CGameObject*> Children = pGameObject->Get_Children();
+
+			for (auto& pChild : Children)
+			{
+				if (nullptr == pGameObject || !pGameObject->Is_Active()) continue;
+
+				pChild->Tick(fTimeDelta);
+			}
+		}
 	}
 }
 
 void CLayer::LateTick(_float fTimeDelta)
 {
-	/*if (2 < m_GameObjects.size())
-		CThread_Manager::GetInstance()->Set_MultiThreading(3);*/
-	
 	for (auto& pGameObject : m_GameObjects)
 	{
-		if (nullptr != pGameObject && pGameObject->Is_Active())
+		if (nullptr == pGameObject || !pGameObject->Is_Active() || pGameObject->Is_Parnet()) continue;
+
+		pGameObject->LateTick(fTimeDelta);
+
+		if (pGameObject->Is_Child())
 		{
-			/*if (2 < m_GameObjects.size())
+			const vector<CGameObject*> Children = pGameObject->Get_Children();
+
+			for (auto& pChild : Children)
 			{
-				CThread_Manager::GetInstance()->Add_Command(
-					[&pGameObject, fTimeDelta]() { pGameObject->LateTick(fTimeDelta); }
-				);
+				if (nullptr == pGameObject || !pGameObject->Is_Active()) continue;
+
+				pChild->LateTick(fTimeDelta);
 			}
-			else*/
-				pGameObject->LateTick(fTimeDelta);
-			/*CThread_Manager::GetInstance()->Add_Command(std::bind(&CGameObject::LateTick, &pGameObject, (_float)fTimeDelta));
-			pGameObject->LateTick(fTimeDelta);*/
 		}
 	}
-	/*if (2 < m_GameObjects.size())
-		CThread_Manager::GetInstance()->Finish_MultiThreading();*/
 }
 
 CGameObject* CLayer::Get_GameObject(const wstring& strPrototypeTag)

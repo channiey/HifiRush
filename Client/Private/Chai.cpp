@@ -25,33 +25,37 @@ HRESULT CChai::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	if (FAILED(Ready_ChildObjects()))
+		return E_FAIL;
+
 	return S_OK;
 }
 
 void CChai::Tick(_float fTimeDelta)
 {
 	// << : Test 
-	if (GAME_INSTNACE->Key_Down(VK_UP))
 	{
-		_int  iCurAnim = (m_pModelCom->Get_CurAnimationIndex() + 1) % m_pModelCom->Get_AnimationCount();
+		if (GAME_INSTNACE->Key_Down(VK_UP))
+		{
+			_int  iCurAnim = (m_pModelCom->Get_CurAnimationIndex() + 1) % m_pModelCom->Get_AnimationCount();
 
-		m_pModelCom->Set_Animation(iCurAnim, TRUE);
+			m_pModelCom->Set_Animation(iCurAnim, TRUE);
+		}
+		else if (GAME_INSTNACE->Key_Down(VK_DOWN))
+		{
+			_int iCurAnim = m_pModelCom->Get_CurAnimationIndex() - 1;
+			if (iCurAnim < 0)
+				iCurAnim = 0;
+
+			m_pModelCom->Set_Animation(iCurAnim, TRUE);
+		}
+
+		if (GAME_INSTNACE->Key_Down('Q'))
+			m_pModelCom->Set_Animation(1, FALSE);
+
+		if (GAME_INSTNACE->Key_Down('E'))
+			m_pModelCom->Set_Animation(5, TRUE);
 	}
-	else if (GAME_INSTNACE->Key_Down(VK_DOWN))
-	{
-		_int iCurAnim = m_pModelCom->Get_CurAnimationIndex() - 1;
-		if (iCurAnim < 0)
-			iCurAnim = 0;
-
-		m_pModelCom->Set_Animation(iCurAnim, TRUE);
-	}
-
-	if (GAME_INSTNACE->Key_Down('Q'))
-		m_pModelCom->Set_Animation(1, FALSE);
-
-	if (GAME_INSTNACE->Key_Down('E'))
-		m_pModelCom->Set_Animation(5, TRUE);
-
 	// >> : 
 
 	/*if (FAILED(m_pStateMachineCom->Tick(fTimeDelta)))
@@ -64,12 +68,6 @@ void CChai::LateTick(_float fTimeDelta)
 {
 	/*if (FAILED(m_pStateMachineCom->LateTick(fTimeDelta)))
 		return;*/
-
-	if (FAILED(m_pModelCom->Update(fTimeDelta))) /* 여기서 플레이어 포지션 결정 (루트 애니메이션) */
-		return;
-
-	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
-		return;
 
 	__super::LateTick(fTimeDelta);
 }
@@ -118,11 +116,18 @@ HRESULT CChai::Ready_Components()
 
 	m_pColliderComs.push_back(pCollider);
 
-
 	/* Com_StateMachine */
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_StateMachine"),
 		TEXT("Com_StateMachine"), (CComponent**)&m_pStateMachineCom)))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CChai::Ready_ChildObjects()
+{
+
+	m_Children[CH_WEAPON] = nullptr; /* Create ~ */
 
 	return S_OK;
 }

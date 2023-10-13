@@ -45,25 +45,38 @@ void CCharacter::Tick(_float fTimeDelta)
 
 void CCharacter::LateTick(_float fTimeDelta)
 {
+	/* None */
 	__super::LateTick(fTimeDelta);
 
+	/* Model Update */
+	if (FAILED(m_pModelCom->Update(fTimeDelta)))
+		return;
+
+	/* 모델 루트 애니메이션 반영 */
+	Update_RootMotion();
+
+	/* Add Render : This*/
+	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
+		return;
+
+	/* Add Render : Colliders */
 #ifdef _DEBUG
-	
 	for (auto& pCollider : m_pColliderComs)
 	{
 		if (nullptr != pCollider)
 			m_pRendererCom->Add_DebugGroup(pCollider);
 	}
-
 #endif // _DEBUG
 
 }
 
 HRESULT CCharacter::Render()
 {
+	/* None */
 	if (FAILED(__super::Render()))
 		return E_FAIL;
 
+	/* WVP */
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
@@ -85,6 +98,11 @@ HRESULT CCharacter::Ready_Components()
 	return S_OK;
 }
 
+HRESULT CCharacter::Ready_ChildObjects()
+{
+	return S_OK;
+}
+
 HRESULT CCharacter::Bind_ShaderResources()
 {
 	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_WorldMatrix")))
@@ -95,6 +113,18 @@ HRESULT CCharacter::Bind_ShaderResources()
 
 	if (FAILED(GAME_INSTNACE->Bind_TransformToShader(m_pShaderCom, "g_ProjMatrix", CPipeLine::STATE_PROJ)))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CCharacter::Update_RootMotion()
+{
+	if (!m_pModelCom->Is_RootMotion())
+		return S_OK;
+
+	const Matrix matRoot = m_pModelCom->Get_RootMotionBoneMat();
+
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, (Vec4)matRoot.m[3]);
 
 	return S_OK;
 }
