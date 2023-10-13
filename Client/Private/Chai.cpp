@@ -25,14 +25,12 @@ HRESULT CChai::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_pModelCom->Set_Animation(0, TRUE);
-
 	return S_OK;
 }
 
 void CChai::Tick(_float fTimeDelta)
 {
-	/* Test Animation 1 */
+	// << : Test 
 	if (GAME_INSTNACE->Key_Down(VK_UP))
 	{
 		_int  iCurAnim = (m_pModelCom->Get_CurAnimationIndex() + 1) % m_pModelCom->Get_AnimationCount();
@@ -48,18 +46,14 @@ void CChai::Tick(_float fTimeDelta)
 		m_pModelCom->Set_Animation(iCurAnim, TRUE);
 	}
 
-
-	/* Test Animation 2 */
 	if (GAME_INSTNACE->Key_Down('Q'))
 		m_pModelCom->Set_Animation(1, FALSE);
-
-
 
 	if (GAME_INSTNACE->Key_Down('E'))
 		m_pModelCom->Set_Animation(5, TRUE);
 
+	// >> : 
 
-	// ...
 	/*if (FAILED(m_pStateMachineCom->Tick(fTimeDelta)))
 		return;*/
 
@@ -71,7 +65,7 @@ void CChai::LateTick(_float fTimeDelta)
 	/*if (FAILED(m_pStateMachineCom->LateTick(fTimeDelta)))
 		return;*/
 
-	if (FAILED(m_pModelCom->Update_Anim(fTimeDelta)))
+	if (FAILED(m_pModelCom->Update(fTimeDelta))) /* 여기서 플레이어 포지션 결정 (루트 애니메이션) */
 		return;
 
 	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
@@ -126,9 +120,9 @@ HRESULT CChai::Ready_Components()
 
 
 	/* Com_StateMachine */
-	/*if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_StateMachine"),
+	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_StateMachine"),
 		TEXT("Com_StateMachine"), (CComponent**)&m_pStateMachineCom)))
-		return E_FAIL;*/
+		return E_FAIL;
 
 	return S_OK;
 }

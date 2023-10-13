@@ -85,9 +85,6 @@
     <Filter Include="02.GameObjects\03.Character\99.Proto">
       <UniqueIdentifier>{a574bb1d-749c-4fb5-bf19-b9a30b09a18d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Character\99.Proto\Fiona">
-      <UniqueIdentifier>{36882f13-5282-49c7-a347-899f85859c54}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\00.Camera\00.Debug">
       <UniqueIdentifier>{e918d286-66bb-42bb-ade7-1bbabe202863}</UniqueIdentifier>
     </Filter>
@@ -276,9 +273,6 @@
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp">
       <Filter>96.ShaderFiles</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Fiona.h">
-      <Filter>02.GameObjects\03.Character\99.Proto\Fiona</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\BackGround.h">
       <Filter>02.GameObjects\10.UI\99.Proto</Filter>
     </ClInclude>
@@ -379,9 +373,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\Camera_Debug.cpp">
       <Filter>02.GameObjects\00.Camera\00.Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Fiona.cpp">
-      <Filter>02.GameObjects\03.Character\99.Proto\Fiona</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BackGround.cpp">
       <Filter>02.GameObjects\10.UI\99.Proto</Filter>

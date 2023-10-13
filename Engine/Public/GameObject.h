@@ -84,6 +84,7 @@ protected:
 
 	OBJ_STATE				m_eState = { STATE_ACTIVE };
 	_bool					m_bRender = { TRUE };	
+	_bool					m_bRenderCol = { TRUE };
 
 	_float					m_fCamDistance = 0.f;
 

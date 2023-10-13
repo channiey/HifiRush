@@ -48,11 +48,13 @@ void CCharacter::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 
 #ifdef _DEBUG
+	
 	for (auto& pCollider : m_pColliderComs)
 	{
 		if (nullptr != pCollider)
 			m_pRendererCom->Add_DebugGroup(pCollider);
 	}
+
 #endif // _DEBUG
 
 }

@@ -8,7 +8,6 @@
 /* Character*/
 #include "Chai.h"
 #include "Peppermint.h"
-#include "Fiona.h"
 
 /* Camera */
 #include "Camera_Debug.h"
@@ -127,11 +126,6 @@ HRESULT CLoader::Load_Prototype()
 			CChai::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		///* For.Prototype_GameObject_Proto_Fiona */
-		//if (FAILED(pGameInstance->Add_Prototype(TEXT("Proto_Fiona"),
-		//	CFiona::Create(m_pDevice, m_pContext))))
-		//	return E_FAIL;
-
 		///* For.Prototype_GameObject_Terrain*/
 		//if (FAILED(pGameInstance->Add_Prototype(TEXT("Env_Terrain"), CTerrain::Create(m_pDevice, m_pContext))))
 		//	return E_FAIL;
@@ -243,16 +237,6 @@ HRESULT CLoader::Load_Prototype()
 		//	LV_STATIC, std::wstring(L"Prototype_Component_Model_Chai"),
 		//	CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Chai", PivotMatrix))
 		//);
-
-		///* For.Prototype_Component_Model_Fiona */
-		//PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f));
-		//if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Fiona"),
-		//	CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Fiona", PivotMatrix))))
-		//	return E_FAIL;
-		/*threads.Push_Command(std::bind(&CGameInstance::Add_PrototypeCom, &pGameInstance,
-			LV_STATIC, std::wstring(L"Prototype_Component_Model_Fiona"),
-			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Fiona", PivotMatrix))
-		);*/
 
 		/* For.Prototype_Component_Model_Static */
 		//{

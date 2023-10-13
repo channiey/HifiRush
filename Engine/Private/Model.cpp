@@ -140,6 +140,20 @@ HRESULT CModel::Initialize(void* pArg)
 	return S_OK;
 }
 
+HRESULT CModel::Update(_float fTimeDelta)
+{
+	if (FAILED(Update_Anim(fTimeDelta)))
+		return E_FAIL;
+
+	/* 셰이더에는 깡통 애니메이션, 즉 모든 애니메이션, 모든 프레임 루트 포지션이 0, 0, 0인 애니메이션 상태다. */
+	/* 소스에서 루트 위치를 가져와 캐릭터 포지션에 적용시켜 준다. (캐릭터 포지션이 소스에 종속, 애니메이션은 플레이어 포지션에 종속) */
+
+	if (m_bRootAnimation)
+		Update_RootMotion();
+
+	return S_OK;
+}
+
 HRESULT CModel::Update_Anim(_float fTimeDelta)
 {
 	if (TYPE::TYPE_ANIM != m_eModelType) return S_OK;
@@ -204,20 +218,30 @@ HRESULT CModel::Update_Anim(_float fTimeDelta)
 			m_TweenDesc.next.fRatio = m_TweenDesc.next.fFrameAcc / timePerFrame;
 		}
 	}
+		
+	return S_OK;
+}
 
-	// << : Test Code
+HRESULT CModel::Update_RootMotion()
+{
+	Matrix matRootCurLerp = Matrix::Lerp(Get_AnimBoneLocal(m_TweenDesc.cur.iAnimIndex, m_TweenDesc.cur.iCurFrame, m_iRM_RootIndex)
+									, Get_AnimBoneLocal(m_TweenDesc.cur.iAnimIndex, m_TweenDesc.cur.iNextFrame, m_iRM_RootIndex)
+									, m_TweenDesc.cur.fRatio);
 
-	Matrix matRoot  = Get_AnimBoneLocal(m_TweenDesc.cur.iAnimIndex, m_TweenDesc.cur.iCurFrame, 4);
+	/* 다음 프레임이 예약되어 있다면 */
+	if (m_TweenDesc.next.iAnimIndex >= 0)
+	{
+		Matrix matRootNextLerp = Matrix::Lerp(Get_AnimBoneLocal(m_TweenDesc.next.iAnimIndex, m_TweenDesc.next.iCurFrame, m_iRM_RootIndex)
+			, Get_AnimBoneLocal(m_TweenDesc.next.iAnimIndex, m_TweenDesc.next.iNextFrame, m_iRM_RootIndex)
+			, m_TweenDesc.next.fRatio);
 
-	Matrix matTemp = m_pParent->Get_Transform()->Get_WorldMat() * matRoot;
-
-	Vec4 vPos;
-	memcpy(&vPos, matTemp.m[3], sizeof(Vec4));
-
-	m_pParent->Get_Transform()->Set_State(CTransform::STATE_POSITION, vPos);
+		matRootCurLerp = Matrix::Lerp(matRootCurLerp, matRootNextLerp, m_TweenDesc.fTweenRatio);
+	}
 
 
-	// >> :
+	Matrix matRootMotion = m_pParent->Get_Transform()->Get_WorldMat() * matRootCurLerp;
+
+	m_pParent->Get_Transform()->Set_State(CTransform::STATE_POSITION, (Vec4)matRootMotion.m[3]);
 
 	return S_OK;
 }
@@ -520,20 +544,23 @@ HRESULT CModel::Create_Texture()
 
 	/* 01. For m_AnimTransforms */
 	/* 해당 모델이 사용하는 모든 애니메이션과 Bone의 정보를 m_AnimTransforms에 세팅한다. */
+	vector<ANIMTRANSFORM>		m_AnimTransformsCache;
 	_uint iAnimCnt = Get_AnimationCount();
 	{
 		if (0 == iAnimCnt) return S_OK;
 
 		m_AnimTransforms.resize(iAnimCnt);
-		m_AnimTransformsCopy.resize(iAnimCnt);
+		m_AnimTransformsCache.resize(iAnimCnt);
 
 		for (uint32 i = 0; i < iAnimCnt; i++)
 			Create_AnimationTransform(i, m_AnimTransforms);
 
-		for (uint32 i = 0; i < iAnimCnt; i++)
-			Create_AnimationTransformCopy(i, m_AnimTransformsCopy);
+		if (m_bRootAnimation)
+		{
+			for (uint32 i = 0; i < iAnimCnt; i++)
+				Create_AnimationTransformCache(i, m_AnimTransformsCache);
+		}
 	}
-
 
 	/* 02. For. m_pTexture */
 	ID3D11Texture2D* pTexture = nullptr;
@@ -569,7 +596,11 @@ HRESULT CModel::Create_Texture()
 			for (uint32 f = 0; f < MAX_MODEL_KEYFRAMES; f++) /* 키프레임 갯수만큼 반복 (세로 크기만큼) */
 			{
 				void* ptr = pageStartPtr + dataSize * f;
-				::memcpy(ptr, m_AnimTransformsCopy[c].transforms[f].data(), dataSize); /* 텍스처에 가로 1줄만큼 데이터 저장 */
+
+				if (m_bRootAnimation)
+					::memcpy(ptr, m_AnimTransformsCache[c].transforms[f].data(), dataSize); /* 텍스처에 가로 1줄만큼 데이터 저장 */
+				else
+					::memcpy(ptr, m_AnimTransforms[c].transforms[f].data(), dataSize);
 			}
 		}
 
@@ -603,9 +634,13 @@ HRESULT CModel::Create_Texture()
 			return E_FAIL;	
 	}
 
-	
-	m_AnimTransformsCopy.clear();
-	m_AnimTransformsCopy.shrink_to_fit();
+
+	/* Clear Memory */
+	for (uint32 i = 0; i < iAnimCnt; i++)
+	{
+		m_Animations[i]->Clear_Channels();
+		m_Animations[i]->Clear_Bones();
+	}
 
 	return S_OK;
 }
@@ -625,9 +660,6 @@ void CModel::Create_AnimationTransform(uint32 iAnimIndex, vector<AnimTransform>&
 		
 		for (uint32 iBoneIndex = 0; iBoneIndex < m_Bones.size(); iBoneIndex++)
 		{
-			/*if (iBoneIndex == 4)
-				m_Bones[iBoneIndex]->Set_Translate(Vec4(0, 0, 0, 1));*/
-
 			m_Bones[iBoneIndex]->Set_CombinedTransformation();
 
 			pAnimTransform[iAnimIndex].transforms[iFrameIndex][iBoneIndex]
@@ -636,7 +668,7 @@ void CModel::Create_AnimationTransform(uint32 iAnimIndex, vector<AnimTransform>&
 	}
 }
 
-void CModel::Create_AnimationTransformCopy(uint32 iAnimIndex, vector<AnimTransform>& pAnimTransform)
+void CModel::Create_AnimationTransformCache(uint32 iAnimIndex, vector<AnimTransform>& pAnimTransformCache)
 {
 	/* 현재 애니메이션에 대한 텍스처 한 장(프레임 행, 본 열)정보를 세팅한다. */
 	CAnimation* pAnimation = m_Animations[iAnimIndex];
@@ -651,17 +683,15 @@ void CModel::Create_AnimationTransformCopy(uint32 iAnimIndex, vector<AnimTransfo
 
 		for (uint32 iBoneIndex = 0; iBoneIndex < m_Bones.size(); iBoneIndex++)
 		{
-			if (iBoneIndex == 4)
+			if (iBoneIndex == m_iRM_RootIndex)
 				m_Bones[iBoneIndex]->Set_Translate(Vec4(0, 0, 0, 1));
 			
 			m_Bones[iBoneIndex]->Set_CombinedTransformation();
 
-			m_AnimTransformsCopy[iAnimIndex].transforms[iFrameIndex][iBoneIndex]
+			pAnimTransformCache[iAnimIndex].transforms[iFrameIndex][iBoneIndex]
 				= m_Bones[iBoneIndex]->Get_OffSetMatrix() * m_Bones[iBoneIndex]->Get_CombinedTransformation() * Get_PivotMatrix();
 		}
 	}
-	pAnimation->Clear_Channels();
-	pAnimation->Clear_Bones();
 }
 
 CBone* CModel::Get_Bone(const char * pNodeName)
