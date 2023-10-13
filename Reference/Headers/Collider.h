@@ -12,14 +12,16 @@ public:
 
 	typedef struct tagColliderDesc
 	{
-		Vec3			vCenter = Vec3::Zero;
-		Vec3			vSize = Vec3::One;
+		Vec3			vCenter		= Vec3::Zero;
+		Vec3			vSize		= Vec3::One;
 		Vec3			vRotation = Vec3(0.f, DEG2RAD(45.f), 0.f);
 
 		tagColliderDesc() {};
 		tagColliderDesc(const _float fMag)
-			: vCenter(Vec3::Zero), vSize(Vec3::One* fMag), vRotation(Vec3(0.f, DEG2RAD(45.f), 0.f)) {};
-
+			: vCenter(Vec3::Zero), vSize(Vec3::One * fMag), vRotation(Vec3(0.f, DEG2RAD(45.f), 0.f)) 
+		{
+			vCenter.y = vSize.y * 0.5f;
+		}
 	}COLLIDERDESC;
 
 protected:

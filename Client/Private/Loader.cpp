@@ -127,14 +127,14 @@ HRESULT CLoader::Load_Prototype()
 			CChai::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		/* For.Prototype_GameObject_Proto_Fiona */
-		if (FAILED(pGameInstance->Add_Prototype(TEXT("Proto_Fiona"),
-			CFiona::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
+		///* For.Prototype_GameObject_Proto_Fiona */
+		//if (FAILED(pGameInstance->Add_Prototype(TEXT("Proto_Fiona"),
+		//	CFiona::Create(m_pDevice, m_pContext))))
+		//	return E_FAIL;
 
-		/* For.Prototype_GameObject_Terrain*/
-		if (FAILED(pGameInstance->Add_Prototype(TEXT("Env_Terrain"), CTerrain::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
+		///* For.Prototype_GameObject_Terrain*/
+		//if (FAILED(pGameInstance->Add_Prototype(TEXT("Env_Terrain"), CTerrain::Create(m_pDevice, m_pContext))))
+		//	return E_FAIL;
 
 		/* For.Prototype_GameObject_Proto_Static */
 		//{
@@ -154,10 +154,10 @@ HRESULT CLoader::Load_Prototype()
 	/* For.Component */
 	m_strLoading = TEXT("Loding... : CComponent");
 	{
-		/* For.Prototype_Component_VIBuffer_Terrain*/
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_VIBuffer_Terrain"),
-			CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Prototype/Terrain/Height1.bmp")))))
-			return E_FAIL;
+		///* For.Prototype_Component_VIBuffer_Terrain*/
+		//if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_VIBuffer_Terrain"),
+		//	CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Prototype/Terrain/Height1.bmp")))))
+		//	return E_FAIL;
 
 		/* For.Prototype_Component_Collider_AABB */
 		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Collider_AABB"),
@@ -244,11 +244,11 @@ HRESULT CLoader::Load_Prototype()
 		//	CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Chai", PivotMatrix))
 		//);
 
-		/* For.Prototype_Component_Model_Fiona */
-		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f));
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Fiona"),
-			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Fiona", PivotMatrix))))
-			return E_FAIL;
+		///* For.Prototype_Component_Model_Fiona */
+		//PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f));
+		//if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Fiona"),
+		//	CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Fiona", PivotMatrix))))
+		//	return E_FAIL;
 		/*threads.Push_Command(std::bind(&CGameInstance::Add_PrototypeCom, &pGameInstance,
 			LV_STATIC, std::wstring(L"Prototype_Component_Model_Fiona"),
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Fiona", PivotMatrix))

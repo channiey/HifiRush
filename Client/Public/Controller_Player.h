@@ -10,7 +10,7 @@ END
 
 BEGIN(Client)
 
-typedef struct tagInputDesc
+typedef struct tagInputDesc /* 별도 클래스로 분리 예정 */
 {
 	Vec2	vMovement;
 
@@ -38,6 +38,7 @@ typedef struct tagTransDesc
     _bool   bIsGround;
     _bool   bIsJump;
     _bool   bIsDoubleJump;
+    _bool   bIsFall;
 
     _float  fGroundedRayDistance;
 

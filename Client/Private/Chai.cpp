@@ -25,22 +25,51 @@ HRESULT CChai::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	m_pModelCom->Set_Animation(4, TRUE);
+
 	return S_OK;
 }
 
 void CChai::Tick(_float fTimeDelta)
 {
+	/* Test Animation 1 */
+	if (GAME_INSTNACE->Key_Down(VK_UP))
+	{
+		_int  iCurAnim = (m_pModelCom->Get_CurAnimationIndex() + 1) % m_pModelCom->Get_AnimationCount();
+
+		m_pModelCom->Set_Animation(iCurAnim, TRUE);
+	}
+	else if (GAME_INSTNACE->Key_Down(VK_DOWN))
+	{
+		_int iCurAnim = m_pModelCom->Get_CurAnimationIndex() - 1;
+		if (iCurAnim < 0)
+			iCurAnim = 0;
+
+		m_pModelCom->Set_Animation(iCurAnim, TRUE);
+	}
+
+
+	/* Test Animation 2 */
+	if (GAME_INSTNACE->Key_Down('Q'))
+		m_pModelCom->Set_Animation(1, FALSE);
+
+
+
+	if (GAME_INSTNACE->Key_Down('E'))
+		m_pModelCom->Set_Animation(5, TRUE);
+
+
 	// ...
-	if (FAILED(m_pStateMachineCom->Tick(fTimeDelta)))
-		return;
+	/*if (FAILED(m_pStateMachineCom->Tick(fTimeDelta)))
+		return;*/
 
 	__super::Tick(fTimeDelta);
 }
 
 void CChai::LateTick(_float fTimeDelta)
 {
-	if (FAILED(m_pStateMachineCom->LateTick(fTimeDelta)))
-		return;
+	/*if (FAILED(m_pStateMachineCom->LateTick(fTimeDelta)))
+		return;*/
 
 	if (FAILED(m_pModelCom->Update_Anim(fTimeDelta)))
 		return;
@@ -97,9 +126,9 @@ HRESULT CChai::Ready_Components()
 
 
 	/* Com_StateMachine */
-	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_StateMachine"),
+	/*if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_StateMachine"),
 		TEXT("Com_StateMachine"), (CComponent**)&m_pStateMachineCom)))
-		return E_FAIL;
+		return E_FAIL;*/
 
 	return S_OK;
 }

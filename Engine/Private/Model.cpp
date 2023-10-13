@@ -594,7 +594,7 @@ void CModel::Create_AnimationTransform(uint32 iAnimIndex, vector<AnimTransform>&
 	/* 모든 프레임 순회 (텍스처 가로) */
 	for (uint32 iFrameIndex = 0; iFrameIndex < pAnimation->Get_MaxFrameCount(); iFrameIndex++)
 	{
-		/* 모든 채널 갱신 */
+		/* 모든 채널의 현재 프레임 갱신 */
 		pAnimation->Calculate_Animation(iFrameIndex);
 
 		/* 모든 본 글로벌 변환 -> 애니메이션 변환 -> 저장 */
