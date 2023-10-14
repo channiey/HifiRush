@@ -76,6 +76,11 @@ CStateMachine* CGameObject::Get_StateMachine()
 	return dynamic_cast<CStateMachine*>(Get_Component(TEXT("Com_StateMachine")));
 }
 
+CCamera* CGameObject::Get_Camera()
+{
+	return dynamic_cast<CCamera*>(Get_Component(TEXT("Com_Camera")));
+}
+
 CModel* CGameObject::Get_Model()
 {
 	return dynamic_cast<CModel*>(Get_Component(TEXT("Com_Model")));
@@ -124,27 +129,20 @@ HRESULT CGameObject::Add_Component(_uint iLevelIndex, const wstring & strPrototy
 	if (nullptr != Find_Component(strComponentTag))
 		return E_FAIL;
 
-	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
-	Safe_AddRef(pGameInstance);
-	{
-		CComponent*			pComponent = pGameInstance->Clone_Component(iLevelIndex, strPrototypeTag, pArg);
-		if (nullptr == pComponent)
-		{
-			RELEASE_INSTANCE(CGameInstance);
-			return E_FAIL;
-		}
+	CComponent* pComponent = GAME_INSTNACE->Clone_Component(iLevelIndex, strPrototypeTag, pArg);
 
-		pComponent->Set_Owner(this);
+	if (nullptr == pComponent)
+		return E_FAIL;
 
-		/* 검색이 가능한 맵에 저장. */
-		m_Components.emplace(strComponentTag, pComponent);
+	pComponent->Set_Owner(this);
 
-		/* 자식의 멤버변수에도 저장. */
-		*ppOut = pComponent;
+	/* 검색이 가능한 맵에 저장. */
+	m_Components.emplace(strComponentTag, pComponent);
 
-		Safe_AddRef(pComponent);
-	}
-	RELEASE_INSTANCE(CGameInstance);
+	/* 자식의 멤버변수에도 저장. */
+	*ppOut = pComponent;
+
+	Safe_AddRef(pComponent);
 
 	return S_OK;
 }

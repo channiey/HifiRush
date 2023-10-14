@@ -88,9 +88,6 @@
     <Filter Include="02.GameObjects\00.Camera\00.Debug">
       <UniqueIdentifier>{e918d286-66bb-42bb-ade7-1bbabe202863}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.Camera\01.Target">
-      <UniqueIdentifier>{5a473209-8b19-4c2d-9fe7-42a15c3bf6bd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\01.Environment\00.Static">
       <UniqueIdentifier>{e151be76-84ac-4349-93d8-75c7d1b50d66}</UniqueIdentifier>
     </Filter>
@@ -186,6 +183,9 @@
     </Filter>
     <Filter Include="02.GameObjects\05.Item">
       <UniqueIdentifier>{8d00615d-1136-40b0-89e2-2793a921cc6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.Camera\01.Follow">
+      <UniqueIdentifier>{5a473209-8b19-4c2d-9fe7-42a15c3bf6bd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

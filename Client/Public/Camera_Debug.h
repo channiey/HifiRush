@@ -1,11 +1,15 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "Camera.h"
+#include "GameObject.h"
+
+BEGIN(Engine)
+class CTransform;
+END
 
 BEGIN(Client)
 
-class CCamera_Debug final : public CCamera
+class CCamera_Debug final : public CGameObject
 {
 
 private:
@@ -20,8 +24,11 @@ public:
 	virtual void LateTick(_float fTimeDelta) override;
 
 private:
-	_float	m_fMouseSensitive = { 0.0f };
-	TRANSFORM_DESC m_tTransDesc = {};
+	CTransform*		m_pTransformCom = { nullptr };
+	CCamera*		m_pCameraCom = { nullptr };
+
+	_float			m_fMouseSensitive = { 0.0f };
+	TRANSFORM_DESC	m_tTransDesc = {};
 
 private:
 	HRESULT Ready_Components();

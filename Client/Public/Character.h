@@ -44,6 +44,9 @@ protected:
 	CModel*				m_pModelCom		= { nullptr };
 	vector<CCollider*>  m_pColliderComs;
 
+	TRANSFORM_DESC		m_tTransDesc = {};
+
+
 public:
 	virtual CCharacter* Clone(void* pArg)= 0;
 	virtual void Free() override;

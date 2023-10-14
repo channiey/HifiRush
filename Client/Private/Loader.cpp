@@ -2,6 +2,7 @@
 #include "..\Public\Loader.h"
 
 #include "GameInstance.h"
+
 #include "Util_File.h"
 #include "Util_String.h"
 
@@ -179,6 +180,11 @@ HRESULT CLoader::Load_Prototype()
 		/* For.Prototype_Component_StateMachine */
 		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_StateMachine"),
 			CStateMachine::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_Component_StateMachine */
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Camera"),
+			CCamera::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 	}
 

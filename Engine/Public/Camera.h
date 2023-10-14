@@ -1,10 +1,6 @@
 #pragma once
 
-#include "GameObject.h"
-#include "Transform.h"
-
-/* 클라이언트에서 만든 카메라 들의 부모가 된다. */
-/* 모든 카메라에게 필요한 기능을 공통적으로 구현하여 자식에게 상속내려주기위해서. */
+#include "Component.h"
 
 /* 모든 카메라에게 필요한 기능 :  */
 /* 카메라의 상태 행렬을 이용하여 뷰스페이스 변환행렬.*/
@@ -12,16 +8,15 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL CCamera abstract : public CGameObject
+class ENGINE_DLL CCamera final : public CComponent
 {
-
 public:
 	typedef struct tagCameraDesc 
 	{
 		Vec4	vEye, vAt;
-		_float	fFovy, fAspect, fNear, fFar;
+		_float	fFovy = 0.f, fAspect = 0.f, fNear = 0.f, fFar = 0.f;
 
-	} CAMERA_DESC;
+	}CAMERA_DESC;
 
 protected:
 	CCamera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -31,18 +26,16 @@ protected:
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
-	virtual void Tick(_float fTimeDelta) override;
-	virtual void LateTick(_float fTimeDelta) override;
-
-protected:
-	CAMERA_DESC m_tCamDesc = {};
-
-protected:
-	class CTransform*		m_pTransformCom = { nullptr };
-	class CPipeLine*		m_pPipeLine = { nullptr };
 
 public:
-	virtual CGameObject* Clone(void* pArg) = 0;
+	const CAMERA_DESC& Get_CameraDesc() const { return m_tCameraDesc; }
+
+private:
+	CAMERA_DESC m_tCameraDesc = {};
+
+public:
+	static CCamera* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual CComponent* Clone(void* pArg) override;
 	virtual void Free() override;
 };
 

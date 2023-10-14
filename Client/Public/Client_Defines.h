@@ -87,10 +87,12 @@ namespace Client
 
 	typedef struct tagTransformDesc
 	{
-		_float		fSpeedPerSec = { 0.f }; /* 초당 이동속도 */
-		_float		fRotRadPerSec = { 0.f }; /* 초당 회전량 */
+		_float		fSpeedPerSec = { 0.f };		/* 초당 이동속도 */
+		_float		fRotRadPerSec = { 0.f };	/* 초당 회전량 */
 
 	}TRANSFORM_DESC;
+
+	enum CAMERA_ID { CAM_DEBUG, CAM_FOLLOW, CAM_HILIGHT, CAM_END };
 }
 
 extern HINSTANCE	g_hInst;

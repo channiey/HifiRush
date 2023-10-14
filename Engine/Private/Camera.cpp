@@ -2,17 +2,13 @@
 #include "PipeLine.h"
 
 CCamera::CCamera(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
-	: CGameObject(pDevice, pContext)
-	, m_pPipeLine(CPipeLine::GetInstance())
+	: CComponent(pDevice, pContext)
 {
-	Safe_AddRef(m_pPipeLine);
 }
 
 CCamera::CCamera(const CCamera & rhs)
-	: CGameObject(rhs)
-	, m_pPipeLine(rhs.m_pPipeLine)
+	: CComponent(rhs)
 {
-	Safe_AddRef(m_pPipeLine);
 }
 
 HRESULT CCamera::Initialize_Prototype()
@@ -22,31 +18,42 @@ HRESULT CCamera::Initialize_Prototype()
 
 HRESULT CCamera::Initialize(void * pArg)
 {
+	if (nullptr == pArg)
+		return E_FAIL;
+
+	memmove(&m_tCameraDesc, pArg, sizeof CAMERA_DESC);
+
 	return S_OK;
 }
 
-void CCamera::Tick(_float fTimeDelta)
+CCamera* CCamera::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	if (nullptr == m_pPipeLine)
-		return;
+	CCamera* pInstance = new CCamera(pDevice, pContext);
 
-	/* 자식 카메라 클래스에서 필요한 상태변환(ex 월드 변환행렬)을 진행 한 후에 해당 Tick()으로 들어온다. */
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		MSG_BOX("Failed to Created : CCamera");
+		Safe_Release(pInstance);
+	}
 
-	/* 파이프 라인에, 뷰 스페이스 변환 행렬(카메라 월드 변환 역행렬) 저장 */
-	m_pPipeLine->Set_Transform(CPipeLine::STATE_VIEW, m_pTransformCom->Get_WorldMat().Invert());
-	
-	/* 파이프 라인에, 투영 변환 행렬 저장 */
-	m_pPipeLine->Set_Transform(CPipeLine::STATE_PROJ, XMMatrixPerspectiveFovLH(m_tCamDesc.fFovy, m_tCamDesc.fAspect, m_tCamDesc.fNear, m_tCamDesc.fFar));
+	return pInstance;
 }
 
-void CCamera::LateTick(_float fTimeDelta)
+CComponent* CCamera::Clone(void* pArg)
 {
+	CCamera* pInstance = new CCamera(*this);
+
+	if (FAILED(pInstance->Initialize(pArg)))
+	{
+		MSG_BOX("Failed to Cloned : CCamera");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
 }
 
 void CCamera::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pTransformCom);
-	Safe_Release(m_pPipeLine);
 }

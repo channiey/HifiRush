@@ -20,6 +20,8 @@
 
 #include "MonoBehaviour.h"
 
+#include "Camera.h"
+
 /* 컴포넌트들의 원형을 보관한다. */
 /* 사본은 실제 컴포넌트를 사용하고자 하는 객체들이 각각 보관한다. */
 

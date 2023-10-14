@@ -5,6 +5,7 @@
 #include "Object_Manager.h"
 #include "Collision_Manager.h"
 #include "Profiler_Manager.h"
+#include "Camera_Manager.h"
 #include "GameObject.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
@@ -19,6 +20,7 @@ CGameInstance::CGameInstance()
 	, m_pProfiler_Manager(CProfiler_Manager::GetInstance())
 	, m_pPipeLine(CPipeLine::GetInstance())
 	, m_pCollision_Manager(CCollision_Manager::GetInstance())
+	, m_pCamera_Manager(CCamera_Manager::GetInstance())
 
 {
 	Safe_AddRef(m_pPipeLine);
@@ -30,7 +32,7 @@ CGameInstance::CGameInstance()
 	Safe_AddRef(m_pInput_Device);
 	Safe_AddRef(m_pProfiler_Manager);
 	Safe_AddRef(m_pCollision_Manager);
-
+	Safe_AddRef(m_pCamera_Manager);
 }
 
 HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, HINSTANCE hInst, const GRAPHIC_DESC& GraphicDesc, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext)
@@ -61,6 +63,10 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, HINSTANCE hInst, cons
 	if (FAILED(m_pCollision_Manager->Initialize()))
 		return E_FAIL;
 
+	/* 카메라 매니저의 초기화 처리 */
+	if (FAILED(m_pCamera_Manager->Initialize()))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -76,7 +82,8 @@ void CGameInstance::Tick(_float fTimeDelta)
 	m_pObject_Manager->Tick(fTimeDelta);
 	m_pLevel_Manager->Tick(fTimeDelta);
 
-	/* 카메라는 게임오브젝트이다. 따라서 카메라의 월드행렬이 갱신된 후에, 뷰행렬과 투영행렬을 구하도록 한다. */
+	/* 카메라 오브젝트 월드행렬 갱신 -> 뷰행령 투영행렬 저장 -> 계산*/
+	m_pCamera_Manager->Tick();
 	m_pPipeLine->Tick();
 }
 
@@ -495,9 +502,42 @@ Ray CGameInstance::Create_PickingRay(const Matrix& matWorld)
 	return m_pCollision_Manager->Create_PickingRay(matWorld);
 }
 
+CGameObject* CGameInstance::Get_Camera(const _uint& iKey)
+{
+	if(nullptr == m_pCamera_Manager)
+		return nullptr;
+
+	return m_pCamera_Manager->Get_Camera(iKey);
+}
+
+CGameObject* CGameInstance::Get_CurCamera()
+{
+	if (nullptr == m_pCamera_Manager)
+		return nullptr;
+
+	return m_pCamera_Manager->Get_CurCamera();
+}
+
+HRESULT CGameInstance::Set_CurCamera(const _uint& iKey)
+{
+	if (nullptr == m_pCamera_Manager)
+		return E_FAIL;
+
+	return m_pCamera_Manager->Set_CurCamera(iKey);
+}
+
+HRESULT CGameInstance::Add_Camera(const _uint& iKey, CGameObject* pCamera)
+{
+	if (nullptr == m_pCamera_Manager)
+		return E_FAIL;
+
+	return m_pCamera_Manager->Add_Camera(iKey, pCamera);
+}
+
 void CGameInstance::Release_Engine()
 {
 	CGameInstance::GetInstance()->DestroyInstance();
+	CCamera_Manager::GetInstance()->DestroyInstance();
 	CLevel_Manager::GetInstance()->DestroyInstance();
 	CObject_Manager::GetInstance()->DestroyInstance();
 	CComponent_Manager::GetInstance()->DestroyInstance();
@@ -507,10 +547,12 @@ void CGameInstance::Release_Engine()
 	CPipeLine::GetInstance()->DestroyInstance();
 	CProfiler_Manager::GetInstance()->DestroyInstance();
 	CCollision_Manager::GetInstance()->DestroyInstance();
+
 }
 
 void CGameInstance::Free()
 {
+	Safe_Release(m_pCamera_Manager);
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pComponent_Manager);
 	Safe_Release(m_pObject_Manager);

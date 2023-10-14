@@ -91,17 +91,23 @@ public: /* For.Collision_Manager */
 	const _bool Check_Collision_PickingRay(class CModel* pModel, const Matrix& matWorld, OUT RAYHIT_DESC& hitDesc, const _bool& bPreInterSphere);
 	Ray			Create_PickingRay(const Matrix& matWorld);
 
-private:
-	class CTimer_Manager*			m_pTimer_Manager = { nullptr };
-	class CGraphic_Device*			m_pGraphic_Device = { nullptr };
-	class CLevel_Manager*			m_pLevel_Manager = { nullptr };
-	class CObject_Manager*			m_pObject_Manager = { nullptr };
-	class CComponent_Manager*		m_pComponent_Manager = { nullptr };
-	class CProfiler_Manager*		m_pProfiler_Manager = { nullptr };
-	class CInput_Device*			m_pInput_Device = { nullptr };
-	class CPipeLine*				m_pPipeLine = { nullptr };
-	class CCollision_Manager*		m_pCollision_Manager = { nullptr };
+public: /* For.Camera_Manager */
+	CGameObject*	Get_Camera(const _uint& iKey);
+	CGameObject*	Get_CurCamera();
+	HRESULT			Set_CurCamera(const _uint& iKey);
+	HRESULT			Add_Camera(const _uint& iKey, CGameObject* pCamera);
 
+private:
+	class CTimer_Manager*			m_pTimer_Manager		= { nullptr };
+	class CGraphic_Device*			m_pGraphic_Device		= { nullptr };
+	class CLevel_Manager*			m_pLevel_Manager		= { nullptr };
+	class CObject_Manager*			m_pObject_Manager		= { nullptr };
+	class CComponent_Manager*		m_pComponent_Manager	= { nullptr };
+	class CProfiler_Manager*		m_pProfiler_Manager		= { nullptr };
+	class CInput_Device*			m_pInput_Device			= { nullptr };
+	class CPipeLine*				m_pPipeLine				= { nullptr };
+	class CCollision_Manager*		m_pCollision_Manager	= { nullptr };
+	class CCamera_Manager*			m_pCamera_Manager		= { nullptr };
 public:
 	static void Release_Engine();
 	virtual void Free() override;

@@ -61,9 +61,6 @@
     <Filter Include="01.Utiltiy\02.GameObject\Manager">
       <UniqueIdentifier>{e5b6768b-8e62-4930-8c6b-a6f1199ff91f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utiltiy\02.GameObject\Camera">
-      <UniqueIdentifier>{637c5240-9306-49f7-973b-880c130035ee}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utiltiy\04.PipeLine">
       <UniqueIdentifier>{9c06b40a-20b8-45ac-b398-171c249da6e1}</UniqueIdentifier>
     </Filter>
@@ -214,6 +211,9 @@
     <Filter Include="01.Utiltiy\90.Optimization\01.ThreadPool">
       <UniqueIdentifier>{ec2fa25f-940a-45c1-af9e-55a040f3e642}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\10.Light\Manager">
+      <UniqueIdentifier>{d774004d-3444-4a8f-9a0b-9227419132a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -327,9 +327,6 @@
     <ClInclude Include="..\public\Component.h">
       <Filter>01.Utiltiy\03.Components\Component</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Camera.h">
-      <Filter>01.Utiltiy\02.GameObject\Camera</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Channel.h">
       <Filter>01.Utiltiy\03.Components\Component\08.Model\02.Animation\Channel</Filter>
     </ClInclude>
@@ -389,6 +386,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\Collider.h">
       <Filter>01.Utiltiy\03.Components\Component\06.Colliders\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera_Manager.h">
+      <Filter>01.Utiltiy\03.Components\Component\09.Camera\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera.h">
+      <Filter>01.Utiltiy\03.Components\Component\09.Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -494,12 +497,6 @@
     <ClCompile Include="..\private\Component.cpp">
       <Filter>01.Utiltiy\03.Components\Component</Filter>
     </ClCompile>
-    <ClCompile Include="FileName.cpp">
-      <Filter>01.Utiltiy\03.Components\Component\09.Camera\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Camera.cpp">
-      <Filter>01.Utiltiy\02.GameObject\Camera</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Channel.cpp">
       <Filter>01.Utiltiy\03.Components\Component\08.Model\02.Animation\Channel</Filter>
     </ClCompile>
@@ -556,6 +553,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Collider.cpp">
       <Filter>01.Utiltiy\03.Components\Component\06.Colliders\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Manager.cpp">
+      <Filter>01.Utiltiy\03.Components\Component\09.Camera\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera.cpp">
+      <Filter>01.Utiltiy\03.Components\Component\09.Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

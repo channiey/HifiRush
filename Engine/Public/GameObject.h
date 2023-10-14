@@ -52,6 +52,7 @@ public:
 	class CCollider_AABB*		Get_Collider_AABB();
 	class CCollider_OBB*		Get_Collider_OBB();
 	class CStateMachine*		Get_StateMachine();
+	class CCamera*				Get_Camera();
 	
 	class CComponent* const			Get_Component(const wstring& strComponentTag) { return Find_Component(strComponentTag); };
 	COMPONENTS&						Get_Components() { return m_Components; }
