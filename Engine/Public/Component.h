@@ -69,8 +69,8 @@ public:
 	const _bool& Is_Active() const { return m_bActive; }
 
 public:
-	class CGameObject* Get_Parent() const { return m_pParent; }
-	HRESULT Set_Parent(class CGameObject* pParent) { if (nullptr == pParent) return E_FAIL; else m_pParent = pParent; return S_OK; }
+	class CGameObject* Get_Owner() const { return m_pOwenr; }
+	HRESULT Set_Owner(class CGameObject* pParent) { if (nullptr == pParent) return E_FAIL; else m_pOwenr = pParent; return S_OK; }
 
 public:
 	/* Active 이벤트 처리를 위한 가상함수화, 오버라이드시 __super::Active()먼저 호출 필요 */
@@ -84,7 +84,7 @@ protected:
 
 	_bool					m_bClone = { FALSE };
 	/* 아직 미사용 */
-	class CGameObject*		m_pParent = { nullptr };
+	class CGameObject*		m_pOwenr = { nullptr };
 
 public:
 	virtual CComponent* Clone(void* pArg) = 0;

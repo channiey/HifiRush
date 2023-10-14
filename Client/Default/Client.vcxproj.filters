@@ -103,9 +103,6 @@
     <Filter Include="02.GameObjects\02.Light\02.Spot">
       <UniqueIdentifier>{13ca8632-80ff-4136-b4b8-d91ac4a665f3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\04.Item">
-      <UniqueIdentifier>{7207c15a-e9a5-42ba-a112-c00f7324aa12}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\10.UI">
       <UniqueIdentifier>{5de9c8c8-1e5e-499f-b807-f2014459b89d}</UniqueIdentifier>
     </Filter>
@@ -184,7 +181,10 @@
     <Filter Include="02.GameObjects\03.Character\00.Player\00.Controller">
       <UniqueIdentifier>{eb54bd6e-c4e1-426a-8f71-2538d391ac45}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\05.Parts">
+    <Filter Include="02.GameObjects\04.Weapon">
+      <UniqueIdentifier>{7207c15a-e9a5-42ba-a112-c00f7324aa12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.Item">
       <UniqueIdentifier>{8d00615d-1136-40b0-89e2-2793a921cc6c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -303,6 +303,9 @@
     <ClInclude Include="..\Public\Controller_Player.h">
       <Filter>02.GameObjects\03.Character\00.Player\00.Controller</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Weapon.h">
+      <Filter>02.GameObjects\04.Weapon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -403,6 +406,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Controller_Player.cpp">
       <Filter>02.GameObjects\03.Character\00.Player\00.Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Weapon.cpp">
+      <Filter>02.GameObjects\04.Weapon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

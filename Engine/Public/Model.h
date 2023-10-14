@@ -3,9 +3,8 @@
 
 BEGIN(Engine)
 
-#define MAX_MODEL_TRANSFORMS	700 
-#define MAX_MODEL_KEYFRAMES		150 
-
+#define MAX_MODEL_TRANSFORMS	600 
+#define MAX_MODEL_KEYFRAMES		100 
 
 class ENGINE_DLL CModel final : public CComponent
 {
@@ -34,7 +33,6 @@ public:
 	}
 
 }KEYFRAME_DESC;
-
 	typedef struct	TweenDesc
 {
 	KEYFRAME_DESC cur	= {};
@@ -70,7 +68,6 @@ private:
 		array<TransformArrayType, MAX_MODEL_KEYFRAMES> transforms;
 
 	}ANIM_TRANSFORM_CACHE;
-
 	typedef struct	AnimTransform
 	{
 		using TransformArrayType = array<Matrix, BONE_END>;
@@ -149,10 +146,8 @@ private:
 	TWEEN_DESC					m_TweenDesc = {};
 	_int						m_iPrevAnimIndex = -1;
 
-
 	_bool						m_bRootAnimation = TRUE;
 	_int						m_AnimBoneIndecies[BONE_END];
-
 
 public:
 	static CModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const string& strPath, _fmatrix PivotMatrix = XMMatrixIdentity());

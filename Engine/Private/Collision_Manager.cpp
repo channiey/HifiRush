@@ -145,7 +145,7 @@ const _bool CCollision_Manager::Check_Collision_PickingRay(CCollider* pCollider,
 
 		if (pAABBCollider->Check_Collision(ray, hitDesc))
 		{
-			hitDesc.pGameObject = (void*)pAABBCollider->Get_Parent();
+			hitDesc.pGameObject = (void*)pAABBCollider->Get_Owner();
 			return TRUE;
 		}
 		else
@@ -163,7 +163,7 @@ const _bool CCollision_Manager::Check_Collision_PickingRay(CCollider* pCollider,
 
 		if (pOBBCollider->Check_Collision(ray, hitDesc))
 		{
-			hitDesc.pGameObject = (void*)pOBBCollider->Get_Parent();
+			hitDesc.pGameObject = (void*)pOBBCollider->Get_Owner();
 			return TRUE;
 		}
 		else
@@ -181,7 +181,7 @@ const _bool CCollision_Manager::Check_Collision_PickingRay(CCollider* pCollider,
 
 		if (pSphereCollider->Check_Collision(ray, hitDesc))
 		{
-			hitDesc.pGameObject = (void*)pSphereCollider->Get_Parent();
+			hitDesc.pGameObject = (void*)pSphereCollider->Get_Owner();
 			return TRUE;
 		}
 		else
@@ -208,7 +208,7 @@ const _bool CCollision_Manager::Check_Collision_PickingRay(class CModel* pModel,
 	/* 메시 콜라이더 충돌 검사전, 스피어 콜라이더 충돌 검사 우선 진행 (최적화)*/
 	if (bPreInterSphere)
 	{
-		if (!Check_Collision_PickingRay(pModel->Get_Parent()->Get_Collider_Sphere(), matWorld, hitDesc))
+		if (!Check_Collision_PickingRay(pModel->Get_Owner()->Get_Collider_Sphere(), matWorld, hitDesc))
 			return FALSE;
 		else
 			ZeroMemory(&hitDesc, sizeof(RAYHIT_DESC));

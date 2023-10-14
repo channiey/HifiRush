@@ -13,8 +13,8 @@ HRESULT CMainApp_Converter::Start_Convert()
 {
 	cout << "Start Binarization\n\n\n\n";
 	{
-		if (FAILED(Convert_Character()))
-			return E_FAIL;
+	/*	if (FAILED(Convert_Character()))
+			return E_FAIL;*/
 
 		//if (FAILED(Convert_Env_Static()))
 		//	return E_FAIL;
@@ -24,6 +24,9 @@ HRESULT CMainApp_Converter::Start_Convert()
 
 		//if (FAILED(Convert_SelectiveModel()))
 		//	return E_FAIL;
+
+		if (FAILED(Convert_Weapon()))
+			return E_FAIL;
 
 	}
 	cout << "\n\n\nComplete Entire Binarization";
@@ -82,6 +85,26 @@ HRESULT CMainApp_Converter::Convert_Env_Anim()
 	return S_OK;
 }
 
+HRESULT CMainApp_Converter::Convert_Weapon()
+{
+	const MODEL_TYPE	type = MODEL_TYPE::STATIC;
+
+	const string		filePath = "../Assets/Weapon/";
+	vector<string>		fileNames = Utils_File::Get_AllFolderNames(filePath);
+	const string		savePath = "Weapon/";
+
+	for (string& name : fileNames)
+	{
+		shared_ptr<CConverter> converter = make_shared<CConverter>();
+		if (FAILED(converter->Binarize_Model(name, savePath + name, type)))
+			ASSERT_LOG();
+	}
+	return S_OK;
+
+	return E_NOTIMPL;
+}
+
+
 HRESULT CMainApp_Converter::Convert_SelectiveModel()
 {
 	{
@@ -94,4 +117,3 @@ HRESULT CMainApp_Converter::Convert_SelectiveModel()
 	}
 	return S_OK;
 }
-

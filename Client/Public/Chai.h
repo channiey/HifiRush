@@ -10,7 +10,8 @@ BEGIN(Client)
 
 class CChai final : public CCharacter
 {
-	enum ChildType { CH_CAMERA, CH_WEAPON, CH_PET, CH_UI, CH_END};
+	//enum ChildType { CH_CAMERA, CH_WEAPON_LEFT, CH_WEAPON_RIGHT, CH_PET, CH_UI, CH_END };
+	enum ChildType { CH_WEAPON_RIGHT, CH_END };
 
 protected:
 	CChai(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

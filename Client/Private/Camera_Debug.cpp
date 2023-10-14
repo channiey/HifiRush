@@ -84,19 +84,19 @@ void CCamera_Debug::Move(const _float& fTimeDelta)
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
 	/* Translation */
-	if (pGameInstance->Key_Pressing('W'))
+	if (pGameInstance->Key_Pressing(VK_UP))
 	{
 		m_pTransformCom->Translate(m_pTransformCom->Get_Forward() * m_tTransDesc.fSpeedPerSec * fTimeDelta);
 	}
-	if (pGameInstance->Key_Pressing('S'))
+	if (pGameInstance->Key_Pressing(VK_DOWN))
 	{
 		m_pTransformCom->Translate(m_pTransformCom->Get_Backward() * m_tTransDesc.fSpeedPerSec * fTimeDelta);
 	}
-	if (pGameInstance->Key_Pressing('A'))
+	if (pGameInstance->Key_Pressing(VK_LEFT))
 	{
 		m_pTransformCom->Translate(m_pTransformCom->Get_Left() * m_tTransDesc.fSpeedPerSec * fTimeDelta);
 	}
-	if (pGameInstance->Key_Pressing('D'))
+	if (pGameInstance->Key_Pressing(VK_RIGHT))
 	{
 		m_pTransformCom->Translate(m_pTransformCom->Get_Right() * m_tTransDesc.fSpeedPerSec * fTimeDelta);
 	}

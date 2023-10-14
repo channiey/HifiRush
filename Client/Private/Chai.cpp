@@ -2,6 +2,7 @@
 #include "..\Public\Chai.h"
 
 #include "GameInstance.h"
+#include "Weapon.h"
 
 CChai::CChai(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CCharacter(pDevice, pContext)
@@ -28,6 +29,9 @@ HRESULT CChai::Initialize(void* pArg)
 	if (FAILED(Ready_ChildObjects()))
 		return E_FAIL;
 
+
+	m_pModelCom->Set_Animation(5, TRUE);
+
 	return S_OK;
 }
 
@@ -35,19 +39,24 @@ void CChai::Tick(_float fTimeDelta)
 {
 	// << : Test 
 	{
-		if (GAME_INSTNACE->Key_Down(VK_UP))
+		if (GAME_INSTNACE->Key_Pressing('W'))
 		{
-			_int  iCurAnim = (m_pModelCom->Get_CurAnimationIndex() + 1) % m_pModelCom->Get_AnimationCount();
+			m_pTransformCom->Translate(m_pTransformCom->Get_Forward() * 10 * fTimeDelta);
 
-			m_pModelCom->Set_Animation(iCurAnim, TRUE);
+			//_int  iCurAnim = (m_pModelCom->Get_CurAnimationIndex() + 1) % m_pModelCom->Get_AnimationCount();
+
+			//m_pModelCom->Set_Animation(iCurAnim, TRUE);
 		}
-		else if (GAME_INSTNACE->Key_Down(VK_DOWN))
+		else if (GAME_INSTNACE->Key_Pressing('S'))
 		{
-			_int iCurAnim = m_pModelCom->Get_CurAnimationIndex() - 1;
+			m_pTransformCom->Translate(m_pTransformCom->Get_Backward() * 10 * fTimeDelta);
+
+
+			/*_int iCurAnim = m_pModelCom->Get_CurAnimationIndex() - 1;
 			if (iCurAnim < 0)
 				iCurAnim = 0;
 
-			m_pModelCom->Set_Animation(iCurAnim, TRUE);
+			m_pModelCom->Set_Animation(iCurAnim, TRUE);*/
 		}
 
 		if (GAME_INSTNACE->Key_Down('Q'))
@@ -55,6 +64,10 @@ void CChai::Tick(_float fTimeDelta)
 
 		if (GAME_INSTNACE->Key_Down('E'))
 			m_pModelCom->Set_Animation(5, TRUE);
+
+
+
+	
 	}
 	// >> : 
 
@@ -126,8 +139,17 @@ HRESULT CChai::Ready_Components()
 
 HRESULT CChai::Ready_ChildObjects()
 {
+	CWeapon* pChild = nullptr;
+	
+	pChild = dynamic_cast<CWeapon*>(GAME_INSTNACE->Add_GameObject(LV_STATIC, g_StrLayerID[LAYER_WEAPON], L"Weapon_Chai_Guitar_Explore"));
+	{
+		if (nullptr == pChild)
+			return E_FAIL;
 
-	//m_Children[CH_WEAPON] = nullptr; /* Create ~ */
+		Add_Child(pChild);
+		pChild->Set_Socket(CModel::BONE_SOCKET_RIGHT);
+
+	}
 
 	return S_OK;
 }

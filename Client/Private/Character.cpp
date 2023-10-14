@@ -38,7 +38,7 @@ void CCharacter::Tick(_float fTimeDelta)
 	for (auto& pCollider : m_pColliderComs)
 	{
 		if (nullptr != pCollider)
-			pCollider->Update(m_pTransformCom->Get_WorldMat());
+			pCollider->Update(m_pTransformCom->Get_FinalMat());
 	}
 	
 }
@@ -122,9 +122,14 @@ HRESULT CCharacter::Update_RootMotion()
 	if (!m_pModelCom->Is_RootMotion())
 		return S_OK;
 
-	const Matrix matRoot = m_pModelCom->Get_AnimBoneMat(CModel::BONE_ROOT);
+	Vec4 vPos = Vec4(m_pModelCom->Get_AnimBoneMat(CModel::BONE_ROOT).m[3]);
+	m_pTransformCom->Set_RootPos(vPos);
 
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, (Vec4)matRoot.m[3]);
+	cout << vPos.x  << "\t" << vPos.y << "\t" << vPos.z << endl;
+
+	/*const Matrix matRoot = m_pModelCom->Get_AnimBoneMat(CModel::BONE_ROOT);
+
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, (Vec4)matRoot.m[3]);*/
 
 	return S_OK;
 }

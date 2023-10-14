@@ -34,7 +34,7 @@ public:
 	const _bool 		Is_Active() const { return m_eState == STATE_ACTIVE ? TRUE : FALSE; }
 	const _bool&		Is_Render() const { return m_bRender; }
 	const _bool&		Is_Picked() const { return m_bPicked; }
-	const _bool			Is_Parnet() const { return nullptr != m_pParent ? TRUE : FALSE; }
+	const _bool			Is_Parent() const { return nullptr != m_pParent ? TRUE : FALSE; }
 	const _bool			Is_Child()	const { return !m_Children.empty() ? TRUE : FALSE; }
 
 public: 
@@ -71,7 +71,7 @@ public:
 	void			Set_Parent(CGameObject* pParent) { m_pParent = pParent; }
 
 public:
-	HRESULT			Add_Child(CGameObject* pChild) { if (nullptr == pChild) return E_FAIL;  m_Children.push_back(pChild); return S_OK; }
+	HRESULT			Add_Child(CGameObject* pChild) { if (nullptr == pChild) return E_FAIL;  m_Children.push_back(pChild); pChild->Set_Parent(this);  return S_OK; }
 	HRESULT			Remove_Child(const _uint& iIndex);
 
 protected:

@@ -134,7 +134,7 @@ HRESULT CGameObject::Add_Component(_uint iLevelIndex, const wstring & strPrototy
 			return E_FAIL;
 		}
 
-		pComponent->Set_Parent(this);
+		pComponent->Set_Owner(this);
 
 		/* 검색이 가능한 맵에 저장. */
 		m_Components.emplace(strComponentTag, pComponent);

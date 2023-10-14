@@ -257,7 +257,22 @@ HRESULT CTransform::Bind_ShaderResources(CShader* pShader, const char* pConstant
 {
 	/* 셰이더에 월드 행렬을 바인딩한다. */
 
-	return pShader->Bind_Matrix(pConstantName, &m_WorldMatrix);
+	Matrix matFinal = Get_FinalMat();
+
+	return pShader->Bind_Matrix(pConstantName, &matFinal);
+}
+
+const Matrix CTransform::Get_FinalMat()
+{
+	Vec4 vfinalPos = m_vRootPos + Vec4(m_WorldMatrix.m[3]);
+
+	vfinalPos.w = 1.f;
+
+	Matrix matFinal = m_WorldMatrix;
+	
+	memcpy(&matFinal.m[3], &vfinalPos, sizeof(Vec4));
+
+	return matFinal;
 }
 
 const Vec3 CTransform::ToEulerAngles(Quaternion quat)
@@ -299,8 +314,8 @@ void CTransform::LookAt(Vec4 vPoint)
 
 const Matrix CTransform::Get_WorldMat()
 {
-	if (m_pParent->Is_Parnet())
-		return m_pParent->Get_Transform()->Get_WorldMat() * m_WorldMatrix;
+	if (m_pOwenr->Is_Parent())
+		return m_pOwenr->Get_Parent()->Get_Transform()->Get_WorldMat() * m_WorldMatrix;
 	
 	return m_WorldMatrix;
 }
@@ -309,7 +324,7 @@ const Matrix CTransform::Get_WorldMat()
 CTransform * CTransform::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CTransform*	pInstance = new CTransform(pDevice, pContext);
-
+	      
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
 		MSG_BOX("Failed to Created : CTransform");

@@ -9,6 +9,9 @@
 #include "Chai.h"
 #include "Peppermint.h"
 
+/* Weapon */
+#include "Weapon.h"
+
 /* Camera */
 #include "Camera_Debug.h"
 
@@ -16,10 +19,9 @@
 #include "BackGround.h"
 
 /* Env */
-#include "Terrain.h"
 #include "StaticDummy.h"
 
-#include "ThreadPool.h"
+
 
 CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: m_pDevice(pDevice)
@@ -126,9 +128,19 @@ HRESULT CLoader::Load_Prototype()
 			CChai::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		///* For.Prototype_GameObject_Terrain*/
-		//if (FAILED(pGameInstance->Add_Prototype(TEXT("Env_Terrain"), CTerrain::Create(m_pDevice, m_pContext))))
-		//	return E_FAIL;
+		/* For.Prototype_GameObject_Proto_Weapon */
+		{
+			const string		tag = "Weapon_";
+			const string		filePath = "../Bin/Resources/Models/Weapon";
+			vector<string>		fileNames = Util_File::GetAllFolderNames(filePath);
+
+			for (string& name : fileNames)
+			{
+				if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString(tag + name), CWeapon::Create(m_pDevice, m_pContext))))
+					return E_FAIL;
+			}
+		}
+		
 
 		/* For.Prototype_GameObject_Proto_Static */
 		//{
@@ -148,10 +160,6 @@ HRESULT CLoader::Load_Prototype()
 	/* For.Component */
 	m_strLoading = TEXT("Loding... : CComponent");
 	{
-		///* For.Prototype_Component_VIBuffer_Terrain*/
-		//if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_VIBuffer_Terrain"),
-		//	CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Prototype/Terrain/Height1.bmp")))))
-		//	return E_FAIL;
 
 		/* For.Prototype_Component_Collider_AABB */
 		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Collider_AABB"),
@@ -232,11 +240,23 @@ HRESULT CLoader::Load_Prototype()
 		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Chai"),
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Chai", PivotMatrix))))
 			return E_FAIL;
-		//threads.Push_Command(std::bind(
-		//	&CGameInstance::Add_PrototypeCom, &pGameInstance,
-		//	LV_STATIC, std::wstring(L"Prototype_Component_Model_Chai"),
-		//	CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Chai", PivotMatrix))
-		//);
+
+		/* For.Prototype_Component_Model_Weapon */
+		{
+			PivotMatrix = Matrix::Identity * Matrix::CreateScale(1.f);
+
+			const string		tag = "Prototype_Component_Model_Weapon_";
+			const string		filePath = "../Bin/Resources/Models/Weapon";
+			vector<string>		fileNames = Util_File::GetAllFolderNames(filePath);
+
+			for (string& name : fileNames)
+			{
+				if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString(tag + name),
+					CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Weapon/" + name, PivotMatrix))))
+					return E_FAIL;
+			}
+		}
+
 
 		/* For.Prototype_Component_Model_Static */
 		//{

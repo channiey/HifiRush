@@ -45,11 +45,17 @@ CModel::CModel(const CModel & rhs)
 	/* Animations */
 	for (auto& pAnimation : m_Animations)
 		Safe_AddRef(pAnimation);
+
+	for (size_t i = 0; i < BONE_END; i++)
+		m_AnimBoneIndecies[i] = rhs.m_AnimBoneIndecies[i];
 }
 
 HRESULT CModel::Initialize_Prototype(const string& strPath, _fmatrix PivotMatrix)
 {
 	// "../Bin/Resources/Models/Characters/Chai/"
+
+	for (size_t i = 0; i < BONE_END; i++)
+		m_AnimBoneIndecies[i] = -1;
 
 	XMStoreFloat4x4(&m_PivotMatrix, PivotMatrix);
 
@@ -296,16 +302,23 @@ HRESULT CModel::Read_BoneData(const string& strPath)
 	size_t iSize = file->Read<size_t>();
 	for (size_t i = 0; i < iSize; i++)
 	{
-		string	strName			= file->Read<string>();
-		Matrix	transformMat	= file->Read<Matrix>();
-		Matrix	offsetMat		= file->Read<Matrix>();
-		int32	iBoneIndex		= file->Read<int32>();
-		int32	iParentIndex	= file->Read<int32>();
-		_uint	iDepth			= file->Read<_uint>();
+		string	strName = file->Read<string>();
+		Matrix	transformMat = file->Read<Matrix>();
+		Matrix	offsetMat = file->Read<Matrix>();
+		int32	iBoneIndex = file->Read<int32>();
+		int32	iParentIndex = file->Read<int32>();
+		_uint	iDepth = file->Read<_uint>();
 
 		CBone* pBone = CBone::Create(strName, transformMat, offsetMat, iBoneIndex, iParentIndex, iDepth);
 		if (nullptr == pBone)
 			return E_FAIL;
+
+		if(strName == "origin_$AssimpFbx$_Translation")
+			m_AnimBoneIndecies[BONE_ROOT] = (_uint)i;
+		else if (strName == "r_attach_hand_00" || strName == "r_hand_attah_00")
+			m_AnimBoneIndecies[BONE_SOCKET_RIGHT] = (_uint)i;
+		else if (strName == "l_attach_hand_00" || strName == "l_hand_attah_00")
+			m_AnimBoneIndecies[BONE_SOCKET_LEFT] = (_uint)i;
 
 		m_Bones.push_back(pBone);
 	}
@@ -528,17 +541,22 @@ HRESULT CModel::Read_AnimaionData(const string& strPath)
 
 HRESULT CModel::Create_Texture()
 {
-	m_AnimBoneIndecies[BONE_ROOT] = 4;
-	m_AnimBoneIndecies[BONE_SOCKET_LEFT] = 0;
-	m_AnimBoneIndecies[BONE_SOCKET_LEFT] = 0;
-
 	if (TYPE::TYPE_NONANIM == m_eModelType)
 		return S_OK;
 
 	/* 01. For m_AnimTransforms */
 	/* 해당 모델이 사용하는 모든 애니메이션과 Bone의 정보를 m_AnimTransforms에 세팅한다. */
 	vector<ANIM_TRANSFORM_CACHE>		m_AnimTransformsCache;
+
+	_uint iBoneCount = (_uint)m_Bones.size();
 	_uint iAnimCnt = Get_AnimationCount();
+	_uint iAnimMaxFrameCount = 0;
+	for (uint32 i = 0; i < iAnimCnt; i++)
+	{
+		_uint iCurAnimFrameCnt = m_Animations[i]->Get_MaxFrameCount();
+
+		iAnimMaxFrameCount = iAnimMaxFrameCount < iCurAnimFrameCnt ? iCurAnimFrameCnt : iAnimMaxFrameCount;
+	}
 	{
 		if (0 == iAnimCnt) return S_OK;
 
@@ -561,8 +579,8 @@ HRESULT CModel::Create_Texture()
 		D3D11_TEXTURE2D_DESC desc;
 		{
 			ZeroMemory(&desc, sizeof(D3D11_TEXTURE2D_DESC));
-			desc.Width = MAX_MODEL_TRANSFORMS * 4;			/* 4개로 쪼개 쓰기 위해 4를 곱함*/
-			desc.Height = MAX_MODEL_KEYFRAMES;
+			desc.Width = iBoneCount * 4;			/* 4개로 쪼개 쓰기 위해 4를 곱함*/
+			desc.Height = iAnimMaxFrameCount;
 			desc.ArraySize = iAnimCnt;						
 			desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;	/* 16바이트 */
 			desc.Usage = D3D11_USAGE_IMMUTABLE;				/* 이후 수정할 일 없음 */
@@ -574,8 +592,8 @@ HRESULT CModel::Create_Texture()
 		/* 따라서 한 채널을 4개로 쪼개서 사용한다. */
 
 		/* 데이터를 할당할 버퍼 생성 */
-		const uint32 dataSize = MAX_MODEL_TRANSFORMS * sizeof(Matrix);  /* 가로 */
-		const uint32 pageSize = dataSize * MAX_MODEL_KEYFRAMES;			/* 한 장 (가로 * 세로) */
+		const uint32 dataSize = iBoneCount * sizeof(Matrix);  /* 가로 */
+		const uint32 pageSize = dataSize * iAnimMaxFrameCount;			/* 한 장 (가로 * 세로) */
 		void* mallocPtr = ::malloc(pageSize * iAnimCnt);				/* 텍스처 총 데이터 = n 장 */
 
 		/* _animTransforms의 정보를 버퍼에 모두 할당한다. */
@@ -586,7 +604,7 @@ HRESULT CModel::Create_Texture()
 			/* 포인트 연산을 쉽게 하기 위해 1바이트 짜리로 캐스팅 */
 			BYTE* pageStartPtr = reinterpret_cast<BYTE*>(mallocPtr) + startOffset;
 
-			for (uint32 f = 0; f < MAX_MODEL_KEYFRAMES; f++) /* 키프레임 갯수만큼 반복 (세로 크기만큼) */
+			for (uint32 f = 0; f < iAnimMaxFrameCount; f++) /* 키프레임 갯수만큼 반복 (세로 크기만큼) */
 			{
 				void* ptr = pageStartPtr + dataSize * f;
 

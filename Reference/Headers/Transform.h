@@ -33,7 +33,7 @@ public: /* Get */
 	const Vec4		Get_Backward()	const { return -(static_cast<Vec4>(m_WorldMatrix.m[STATE_LOOK])); }
 
 	const Matrix	Get_WorldMat();
-	const Matrix&	Get_LocalMat() const { return m_WorldMatrix; }
+	const Matrix& Get_LocalMat() const { return m_WorldMatrix; }
 	const Vec4		Get_State(STATE eState) { return XMLoadFloat4x4(&m_WorldMatrix).r[eState]; }
 
 public: /* Set */
@@ -51,12 +51,17 @@ public: /* Set */
 
 	void	Set_Position(Vec4& vPos) { memcpy(m_WorldMatrix.m[STATE_POSITION], &vPos, sizeof(Vec4)); }
 	void	Set_Position(Vec3& vPos) { memcpy(m_WorldMatrix.m[STATE_POSITION], &vPos, sizeof(Vec3)); }
-	
+
 	void	Set_WorldMat(const Matrix& matrix) { memcpy(&m_WorldMatrix, &matrix, sizeof(Matrix)); }
 	void	Set_State(STATE eState, Vec4 vState);
 
-public: 
-	const Vec3	ToEulerAngles(Quaternion quat); 
+
+	/* Test */
+	void	Set_RootPos(const Vec4& vPos) { m_vRootPos = vPos; }
+	const Matrix	Get_FinalMat();
+
+public:
+	const Vec3	ToEulerAngles(Quaternion quat);
 	void		LookAt(Vec4 vPoint);
 
 public:
@@ -64,7 +69,10 @@ public:
 
 private:
 	Matrix		m_WorldMatrix = {};
+
 	Matrix		m_RotMatrix = {};
+
+	Vec4		m_vRootPos = {};
 
 public:
 	static CTransform* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
