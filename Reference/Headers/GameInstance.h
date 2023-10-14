@@ -78,6 +78,7 @@ public:  /* For.Input_Device */
 	const _bool Is_Focus();
 
 public: /* For.PipeLine */
+	HRESULT Bind_TransformToShader(class CShader* pShader, const char* pConstantName, const Matrix& matTransform);
 	HRESULT Bind_TransformToShader(class CShader* pShader, const char* pConstantName, CPipeLine::TRANSFORM_STATE eState);
 	Matrix	Get_Transform(const CPipeLine::TRANSFORM_STATE& eState) const;
 	Matrix	Get_Transform_Inverse(const CPipeLine::TRANSFORM_STATE& eState) const;

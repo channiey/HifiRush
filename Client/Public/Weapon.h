@@ -36,9 +36,6 @@ private:
 	HRESULT				Ready_Components();
 
 private:
-	HRESULT				Update_BoneTransform();
-
-private:
 	HRESULT				Bind_ShaderResources();
 
 private:

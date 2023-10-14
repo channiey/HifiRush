@@ -243,7 +243,7 @@ HRESULT CLoader::Load_Prototype()
 
 		/* For.Prototype_Component_Model_Weapon */
 		{
-			PivotMatrix = Matrix::Identity * Matrix::CreateScale(1.f);
+			PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f)) * Matrix::CreateRotationZ(DEG2RAD(180.f)) * Matrix::CreateRotationX(DEG2RAD(90.f)); 
 
 			const string		tag = "Prototype_Component_Model_Weapon_";
 			const string		filePath = "../Bin/Resources/Models/Weapon";

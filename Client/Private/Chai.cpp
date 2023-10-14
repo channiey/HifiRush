@@ -42,28 +42,17 @@ void CChai::Tick(_float fTimeDelta)
 		if (GAME_INSTNACE->Key_Pressing('W'))
 		{
 			m_pTransformCom->Translate(m_pTransformCom->Get_Forward() * 10 * fTimeDelta);
-
-			//_int  iCurAnim = (m_pModelCom->Get_CurAnimationIndex() + 1) % m_pModelCom->Get_AnimationCount();
-
-			//m_pModelCom->Set_Animation(iCurAnim, TRUE);
 		}
 		else if (GAME_INSTNACE->Key_Pressing('S'))
 		{
 			m_pTransformCom->Translate(m_pTransformCom->Get_Backward() * 10 * fTimeDelta);
-
-
-			/*_int iCurAnim = m_pModelCom->Get_CurAnimationIndex() - 1;
-			if (iCurAnim < 0)
-				iCurAnim = 0;
-
-			m_pModelCom->Set_Animation(iCurAnim, TRUE);*/
 		}
 
 		if (GAME_INSTNACE->Key_Down('Q'))
-			m_pModelCom->Set_Animation(1, FALSE);
+			m_pModelCom->Set_Animation(0, FALSE);
 
 		if (GAME_INSTNACE->Key_Down('E'))
-			m_pModelCom->Set_Animation(5, TRUE);
+			m_pModelCom->Set_Animation(1, FALSE);
 
 
 

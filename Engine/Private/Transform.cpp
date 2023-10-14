@@ -255,24 +255,9 @@ void CTransform::Translate(const Vec3& vTranslation)
 
 HRESULT CTransform::Bind_ShaderResources(CShader* pShader, const char* pConstantName)
 {
-	/* 셰이더에 월드 행렬을 바인딩한다. */
-
 	Matrix matFinal = Get_FinalMat();
 
 	return pShader->Bind_Matrix(pConstantName, &matFinal);
-}
-
-const Matrix CTransform::Get_FinalMat()
-{
-	Vec4 vfinalPos = m_vRootPos + Vec4(m_WorldMatrix.m[3]);
-
-	vfinalPos.w = 1.f;
-
-	Matrix matFinal = m_WorldMatrix;
-	
-	memcpy(&matFinal.m[3], &vfinalPos, sizeof(Vec4));
-
-	return matFinal;
 }
 
 const Vec3 CTransform::ToEulerAngles(Quaternion quat)
@@ -320,6 +305,19 @@ const Matrix CTransform::Get_WorldMat()
 	return m_WorldMatrix;
 }
 
+const Matrix CTransform::Get_FinalMat()
+{
+	Vec3	vfinalPos = m_vRootPos.ToVec3() + Vec4(m_WorldMatrix.m[3]).ToVec3();
+
+	Matrix	matFinal = m_WorldMatrix;
+
+	memcpy(&matFinal.m[3], &vfinalPos, sizeof(Vec3));
+
+	if (m_pOwenr->Is_Parent())
+		return m_pOwenr->Get_Parent()->Get_Transform()->Get_FinalMat() * matFinal;
+
+	return matFinal;
+}
 
 CTransform * CTransform::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {

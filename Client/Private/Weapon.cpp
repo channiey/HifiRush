@@ -22,10 +22,6 @@ HRESULT CWeapon::Initialize_Prototype()
 
 HRESULT CWeapon::Initialize(void* pArg)
 {
-	// r_attach_hand_00 주인공 일행
-
-	// r_hand_attach_00 몬스터
-
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
@@ -46,29 +42,27 @@ void CWeapon::Tick(_float fTimeDelta)
 	for (auto& pCollider : m_pColliderComs)
 	{
 		if (nullptr != pCollider)
-			pCollider->Update(m_pTransformCom->Get_WorldMat());
+			pCollider->Update(m_pParent->Get_Model()->Get_AnimBoneMat(m_eSocketType) * m_pTransformCom->Get_WorldMat());
 	}
 }
 
 void CWeapon::LateTick(_float fTimeDelta)
 {
-//	if (nullptr == m_pParent)
-//		return;
-//
-//	__super::LateTick(fTimeDelta);
-//
-//	Update_BoneTransform();
-//
-//	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
-//		return;
-//
-//#ifdef _DEBUG
-//	for (auto& pCollider : m_pColliderComs)
-//	{
-//		if (nullptr != pCollider)
-//			m_pRendererCom->Add_DebugGroup(pCollider);
-//	}
-//#endif // _DEBUG
+	if (nullptr == m_pParent)
+		return;
+
+	__super::LateTick(fTimeDelta);
+
+	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
+		return;
+
+#ifdef _DEBUG
+	for (auto& pCollider : m_pColliderComs)
+	{
+		if (nullptr != pCollider)
+			m_pRendererCom->Add_DebugGroup(pCollider);
+	}
+#endif // _DEBUG
 
 }
 
@@ -77,7 +71,7 @@ HRESULT CWeapon::Render()
 	if (nullptr == m_pParent)
 		return E_FAIL;
 
-	if (FAILED(__super::Render()))
+	if (FAILED(__super::Render())) 
 		return E_FAIL;
 
 	if (FAILED(Bind_ShaderResources()))
@@ -130,47 +124,21 @@ HRESULT CWeapon::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Collider_Sphere */
-	CCollider::COLLIDERDESC		ColliderDesc{ 0.5f };
+	/*CCollider::COLLIDERDESC		ColliderDesc{ 1.f };
 	CCollider_Sphere* pCollider = nullptr;
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
 		TEXT("Com_Collider_Sphere"), (CComponent**)&pCollider, &ColliderDesc)))
 		return E_FAIL;
 
-	m_pColliderComs.push_back(pCollider);
+	m_pColliderComs.push_back(pCollider);*/
 
 	return S_OK;
 }
-
-HRESULT CWeapon::Update_BoneTransform()
-{
-	//if (CModel::BONE_END == m_eSocketType) 
-	//	return E_FAIL;
-
-	//// 루트 적용된 로컬 손 위치
-	//Matrix matSocket = m_pParent->Get_Model()->Get_AnimBoneMat(m_eSocketType);
-	//
-	//// 루트 포지션 적용 안된 플레이어 월드 행렬
-	//Matrix temp = 
-
-	//
-	//Vec4 pos = m_pParent->Get_Transform()->Get_Position() - Vec4(m_pParent->Get_Model()->Get_AnimBoneMat(CModel::BONE_ROOT).m[3]);
-	//m_pParent->Get_Transform()->Set_Position(pos);
-	//Matrix matWorld = m_pParent->Get_Transform()->Get_WorldMat();
-	//
-	//// 무기 월드 행렬 
-	//Matrix matWeaponWorld = m_pTransformCom->Get_LocalMat();
-
-	//
-
-	//m_pTransformCom->Set_WorldMat(matSocket * matWorld * matWeaponWorld);
-
-	return S_OK;
-}
-
 
 HRESULT CWeapon::Bind_ShaderResources()
 {
-	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_WorldMatrix")))
+
+	if (FAILED(GAME_INSTNACE->Bind_TransformToShader(m_pShaderCom, "g_WorldMatrix", m_pParent->Get_Model()->Get_AnimBoneMat(m_eSocketType) * m_pTransformCom->Get_WorldMat())))
 		return E_FAIL;
 
 	if (FAILED(GAME_INSTNACE->Bind_TransformToShader(m_pShaderCom, "g_ViewMatrix", CPipeLine::STATE_VIEW)))

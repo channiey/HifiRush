@@ -20,7 +20,7 @@ public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
 
-public: /* Get */
+public: 
 	const Vec3		Get_Scale();
 	const Vec3		Get_Rotation(); /* Euler */
 	const Vec4		Get_Position()  const { return  static_cast<Vec4>(m_WorldMatrix.m[STATE_POSITION]); }
@@ -32,11 +32,12 @@ public: /* Get */
 	const Vec4		Get_Forward()	const { return  static_cast<Vec4>(m_WorldMatrix.m[STATE_LOOK]); }
 	const Vec4		Get_Backward()	const { return -(static_cast<Vec4>(m_WorldMatrix.m[STATE_LOOK])); }
 
-	const Matrix	Get_WorldMat();
-	const Matrix& Get_LocalMat() const { return m_WorldMatrix; }
+	const Matrix&	Get_LocalMat() const { return m_WorldMatrix; }
+	const Matrix	Get_WorldMat(); /* 루트 애니메이션 포지션 적용되지 않은 매트릭스 */
+	const Matrix	Get_FinalMat(); /* 루트 애니메이션 포지션 적용된 매트릭스 */
 	const Vec4		Get_State(STATE eState) { return XMLoadFloat4x4(&m_WorldMatrix).r[eState]; }
 
-public: /* Set */
+public: 
 	void	Set_Scale(const Vec3& vScale);
 
 	void	Set_Rotation(const Vec3& vEulers, const _bool& bWorld = FALSE); /* 항등 행렬을 기준으로 회전값을 세팅한다. (누적X) */
@@ -55,10 +56,7 @@ public: /* Set */
 	void	Set_WorldMat(const Matrix& matrix) { memcpy(&m_WorldMatrix, &matrix, sizeof(Matrix)); }
 	void	Set_State(STATE eState, Vec4 vState);
 
-
-	/* Test */
 	void	Set_RootPos(const Vec4& vPos) { m_vRootPos = vPos; }
-	const Matrix	Get_FinalMat();
 
 public:
 	const Vec3	ToEulerAngles(Quaternion quat);
@@ -68,11 +66,9 @@ public:
 	HRESULT		Bind_ShaderResources(class CShader* pShader, const char* pConstantName);
 
 private:
-	Matrix		m_WorldMatrix = {};
-
-	Matrix		m_RotMatrix = {};
-
-	Vec4		m_vRootPos = {};
+	Matrix		m_WorldMatrix	= {};
+	Matrix		m_RotMatrix		= {};
+	Vec4		m_vRootPos		= {};
 
 public:
 	static CTransform* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

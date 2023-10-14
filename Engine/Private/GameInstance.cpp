@@ -418,7 +418,10 @@ const _bool CGameInstance::Is_Focus()
 	return m_pInput_Device->Is_Focus();
 }
 
-
+HRESULT CGameInstance::Bind_TransformToShader(CShader* pShader, const char* pConstantName, const Matrix& matTransform)
+{
+	return pShader->Bind_Matrix(pConstantName, &matTransform);
+}
 
 HRESULT CGameInstance::Bind_TransformToShader(CShader* pShader, const char* pConstantName, CPipeLine::TRANSFORM_STATE eState)
 {
