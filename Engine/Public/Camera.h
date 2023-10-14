@@ -8,6 +8,8 @@
 
 BEGIN(Engine)
 
+class CGameObject;
+
 class ENGINE_DLL CCamera final : public CComponent
 {
 public:
@@ -30,8 +32,21 @@ public:
 public:
 	const CAMERA_DESC& Get_CameraDesc() const { return m_tCameraDesc; }
 
+public:
+	void Set_TargetObj(CGameObject* pObj)	{ m_pTargetObj = pObj; }
+	void Set_LookAtObj(CGameObject* pObj)	{ m_pLookAtObj = pObj; }
+	void Set_OffSet(const Vec4& vOffset)	{ m_vOffset = vOffset; }
+
+public:
+	void Change_Target(CGameObject* pObj);
+
 private:
-	CAMERA_DESC m_tCameraDesc = {};
+	CAMERA_DESC		m_tCameraDesc = {};
+
+	CGameObject*	m_pTargetObj = { nullptr };
+	CGameObject*	m_pLookAtObj = { nullptr };
+
+	Vec4			m_vOffset = {};
 
 public:
 	static CCamera* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

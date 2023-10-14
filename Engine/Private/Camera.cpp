@@ -26,6 +26,10 @@ HRESULT CCamera::Initialize(void * pArg)
 	return S_OK;
 }
 
+void CCamera::Change_Target(CGameObject* pObj)
+{
+}
+
 CCamera* CCamera::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CCamera* pInstance = new CCamera(pDevice, pContext);

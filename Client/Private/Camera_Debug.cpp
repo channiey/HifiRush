@@ -45,6 +45,8 @@ HRESULT CCamera_Debug::Initialize(void * pArg)
 
 void CCamera_Debug::Tick(_float fTimeDelta)
 {
+	__super::Tick(fTimeDelta);
+
 	/* Move */
 #ifdef _DEBUG
 	if (!CImGui_Manager::GetInstance()->Is_ClickedWindow())
@@ -53,7 +55,6 @@ void CCamera_Debug::Tick(_float fTimeDelta)
 	Move(fTimeDelta);
 #endif // _DEBUG
 
-	__super::Tick(fTimeDelta);
 }
 
 void CCamera_Debug::LateTick(_float fTimeDelta)
@@ -123,7 +124,6 @@ void CCamera_Debug::Move(const _float& fTimeDelta)
 			m_pTransformCom->Rotate(m_pTransformCom->Get_Right(), MouseMove * m_fMouseSensitive * m_tTransDesc.fRotRadPerSec * fTimeDelta);
 		}
 	}
-
 
 	RELEASE_INSTANCE(CGameInstance);
 }

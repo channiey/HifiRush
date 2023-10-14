@@ -5,17 +5,17 @@
 
 BEGIN(Engine)
 class CTransform;
+class CCollider;
 END
 
 BEGIN(Client)
 
-class CCamera_Debug final : public CGameObject
+class CCamera_Follow final : public CGameObject
 {
-
 private:
-	CCamera_Debug(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CCamera_Debug(const CCamera_Debug& rhs);
-	virtual ~CCamera_Debug() = default;
+	CCamera_Follow(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CCamera_Follow(const CCamera_Follow& rhs);
+	virtual ~CCamera_Follow() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -32,13 +32,10 @@ private:
 private:
 	CTransform*		m_pTransformCom = { nullptr };
 	CCamera*		m_pCameraCom = { nullptr };
-
-	_float			m_fMouseSensitive = { 0.0f };
-	TRANSFORM_DESC	m_tTransDesc = {};
-
+	CCollider*		m_pColliderCom = { nullptr };
 
 public:
-	static CCamera_Debug* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CCamera_Follow* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };

@@ -85,9 +85,6 @@
     <Filter Include="02.GameObjects\03.Character\99.Proto">
       <UniqueIdentifier>{a574bb1d-749c-4fb5-bf19-b9a30b09a18d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.Camera\00.Debug">
-      <UniqueIdentifier>{e918d286-66bb-42bb-ade7-1bbabe202863}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\01.Environment\00.Static">
       <UniqueIdentifier>{e151be76-84ac-4349-93d8-75c7d1b50d66}</UniqueIdentifier>
     </Filter>
@@ -186,6 +183,9 @@
     </Filter>
     <Filter Include="02.GameObjects\00.Camera\01.Follow">
       <UniqueIdentifier>{5a473209-8b19-4c2d-9fe7-42a15c3bf6bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.Camera\00.Debug">
+      <UniqueIdentifier>{e918d286-66bb-42bb-ade7-1bbabe202863}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -306,6 +306,9 @@
     <ClInclude Include="..\Public\Weapon.h">
       <Filter>02.GameObjects\04.Weapon</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Camera_Follow.h">
+      <Filter>02.GameObjects\00.Camera\01.Follow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -409,6 +412,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Weapon.cpp">
       <Filter>02.GameObjects\04.Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Follow.cpp">
+      <Filter>02.GameObjects\00.Camera\01.Follow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
