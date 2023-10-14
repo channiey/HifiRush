@@ -127,7 +127,7 @@ HRESULT CChai::Ready_Components()
 HRESULT CChai::Ready_ChildObjects()
 {
 
-	m_Children[CH_WEAPON] = nullptr; /* Create ~ */
+	//m_Children[CH_WEAPON] = nullptr; /* Create ~ */
 
 	return S_OK;
 }

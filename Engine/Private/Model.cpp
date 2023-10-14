@@ -515,7 +515,7 @@ HRESULT CModel::Create_Texture()
 
 	/* 01. For m_AnimTransforms */
 	/* 해당 모델이 사용하는 모든 애니메이션과 Bone의 정보를 m_AnimTransforms에 세팅한다. */
-	vector<ANIMTRANSFORM>		m_AnimTransformsCache;
+	vector<ANIM_TRANSFORM_CACHE>		m_AnimTransformsCache;
 	_uint iAnimCnt = Get_AnimationCount();
 	{
 		if (0 == iAnimCnt) return S_OK;
@@ -605,18 +605,14 @@ HRESULT CModel::Create_Texture()
 			return E_FAIL;	
 	}
 
-
-	/* Clear Memory */
-	for (uint32 i = 0; i < iAnimCnt; i++)
-	{
-		m_Animations[i]->Clear_Channels();
-		m_Animations[i]->Clear_Bones();
-	}
+	/* Clear Cache*/
+	if (FAILED(Clear_Cache()))
+		return E_FAIL;
 
 	return S_OK;
 }
 
-void CModel::Create_AnimationTransform(uint32 iAnimIndex, vector<AnimTransform>& pAnimTransform)
+void CModel::Create_AnimationTransform(uint32 iAnimIndex, vector<ANIM_TRANSFORM>& pAnimTransform)
 {
 	/* 현재 애니메이션에 대한 텍스처 한 장(프레임 행, 본 열)정보를 세팅한다. */
 	CAnimation* pAnimation = m_Animations[iAnimIndex];
@@ -627,19 +623,28 @@ void CModel::Create_AnimationTransform(uint32 iAnimIndex, vector<AnimTransform>&
 		/* 모든 채널의 현재 프레임 갱신 */
 		pAnimation->Calculate_Animation(iFrameIndex);
 
-		/* 모든 본 글로벌 변환 -> 애니메이션 변환 -> 저장 */
+		/* 모든 본 글로벌 변환 -> 애니메이션 변환 */
 		
 		for (uint32 iBoneIndex = 0; iBoneIndex < m_Bones.size(); iBoneIndex++)
 		{
 			m_Bones[iBoneIndex]->Set_CombinedTransformation();
 
-			pAnimTransform[iAnimIndex].transforms[iFrameIndex][iBoneIndex]
-				= m_Bones[iBoneIndex]->Get_OffSetMatrix() * m_Bones[iBoneIndex]->Get_CombinedTransformation() * Get_PivotMatrix();
+			/* 멤버 컨테이너에는 루트랑 소켓만 저장 */
+			if (m_iRootBoneIndex == iBoneIndex)
+			{
+				pAnimTransform[iAnimIndex].transforms[iFrameIndex][BONE_ROOT]
+					= m_Bones[iBoneIndex]->Get_OffSetMatrix() * m_Bones[iBoneIndex]->Get_CombinedTransformation() * Get_PivotMatrix();
+			}
+			else if (m_iSocketBoneIndex == iBoneIndex)
+			{
+				pAnimTransform[iAnimIndex].transforms[iFrameIndex][BONE_SOCKET]
+					= m_Bones[iBoneIndex]->Get_OffSetMatrix() * m_Bones[iBoneIndex]->Get_CombinedTransformation() * Get_PivotMatrix();
+			}
 		}
 	}
 }
 
-void CModel::Create_AnimationTransformCache(uint32 iAnimIndex, vector<AnimTransform>& pAnimTransformCache)
+void CModel::Create_AnimationTransformCache(uint32 iAnimIndex, vector<ANIM_TRANSFORM_CACHE>& pAnimTransformCache)
 {
 	/* 현재 애니메이션에 대한 텍스처 한 장(프레임 행, 본 열)정보를 세팅한다. */
 	CAnimation* pAnimation = m_Animations[iAnimIndex];
@@ -654,7 +659,7 @@ void CModel::Create_AnimationTransformCache(uint32 iAnimIndex, vector<AnimTransf
 
 		for (uint32 iBoneIndex = 0; iBoneIndex < m_Bones.size(); iBoneIndex++)
 		{
-			if (iBoneIndex == m_iRM_RootIndex)
+			if (iBoneIndex == m_iRootBoneIndex)
 				m_Bones[iBoneIndex]->Set_Translate(Vec4(0, 0, 0, 1));
 			
 			m_Bones[iBoneIndex]->Set_CombinedTransformation();
@@ -686,28 +691,28 @@ CBone* CModel::Get_Bone(const _int& iIndex)
 	return m_Bones[iIndex];
 }
 
-const Matrix CModel::Get_AnimBoneLocal(const _uint& iAnimIndex, const _uint& iFrameIndex, const _uint& iBoneIndex)
+const Matrix CModel::Get_AnimBoneLocal(const _uint& iAnimIndex, const _uint& iFrameIndex, const BONE_TYPE& eBoneType)
 {
-	if (m_AnimTransforms.size() <= iAnimIndex || MAX_MODEL_KEYFRAMES < iFrameIndex || MAX_MODEL_TRANSFORMS < iBoneIndex)
+	if (m_AnimTransforms.size() <= iAnimIndex || MAX_MODEL_KEYFRAMES < iFrameIndex || BONE_END <= eBoneType)
 		return Matrix::Identity;
 
-	Matrix matAnim = m_AnimTransforms[iAnimIndex].transforms[iFrameIndex][iBoneIndex];
+	Matrix matAnim = m_AnimTransforms[iAnimIndex].transforms[iFrameIndex][eBoneType];
 
 	return matAnim;
 }
 
-const Matrix CModel::Get_CurAnimBonefinal(const _uint& iBoneIndex)
+const Matrix CModel::Get_CurAnimBonefinal(const BONE_TYPE& eBoneType)
 {
 	/* 현재 프레임 */
-	Matrix matRootCurLerp = Matrix::Lerp(Get_AnimBoneLocal(m_TweenDesc.cur.iAnimIndex, m_TweenDesc.cur.iCurFrame, m_iRM_RootIndex)
-										, Get_AnimBoneLocal(m_TweenDesc.cur.iAnimIndex, m_TweenDesc.cur.iNextFrame, m_iRM_RootIndex)
+	Matrix matRootCurLerp = Matrix::Lerp(Get_AnimBoneLocal(m_TweenDesc.cur.iAnimIndex, m_TweenDesc.cur.iCurFrame, eBoneType)
+										, Get_AnimBoneLocal(m_TweenDesc.cur.iAnimIndex, m_TweenDesc.cur.iNextFrame, eBoneType)
 										, m_TweenDesc.cur.fRatio);
 
 	/* 다음 프레임이 예약되어 있다면 */
 	if (0 <= m_TweenDesc.next.iAnimIndex)
 	{
-		Matrix matRootNextLerp = Matrix::Lerp(Get_AnimBoneLocal(m_TweenDesc.next.iAnimIndex, m_TweenDesc.next.iCurFrame, m_iRM_RootIndex)
-											, Get_AnimBoneLocal(m_TweenDesc.next.iAnimIndex, m_TweenDesc.next.iNextFrame, m_iRM_RootIndex)
+		Matrix matRootNextLerp = Matrix::Lerp(Get_AnimBoneLocal(m_TweenDesc.next.iAnimIndex, m_TweenDesc.next.iCurFrame, eBoneType)
+											, Get_AnimBoneLocal(m_TweenDesc.next.iAnimIndex, m_TweenDesc.next.iNextFrame, eBoneType)
 											, m_TweenDesc.next.fRatio);
 
 		return Matrix::Lerp(matRootCurLerp, matRootNextLerp, m_TweenDesc.fTweenRatio);
@@ -716,15 +721,40 @@ const Matrix CModel::Get_CurAnimBonefinal(const _uint& iBoneIndex)
 	return matRootCurLerp;
 }
 
-const Matrix CModel::Get_RootMotionBoneMat()
+HRESULT CModel::Clear_Cache()
+{
+	/* Bone */
+	for (auto& pBone : m_Bones)
+		Safe_Release(pBone);
+	m_Bones.clear();
+
+	/* Clear Animation Member */
+	for (uint32 i = 0; i < m_Animations.size(); i++)
+	{
+		m_Animations[i]->Clear_Channels();
+		m_Animations[i]->Clear_Bones();
+	}
+
+	return S_OK;
+}
+
+const Matrix CModel::Get_RootBoneMat()
 {
 	/* 셰이더에는 깡통 애니메이션, 즉 모든 애니메이션, 모든 프레임 루트 포지션이 0, 0, 0인 애니메이션 상태다. */
 	/* 소스에서 루트 위치를 가져와 캐릭터 포지션에 적용시켜 준다. (캐릭터 포지션이 소스에 종속, 애니메이션은 플레이어 포지션에 종속) */
 
+		/* 셰이더에는 루트가 0인, 즉 제자리에 가만히 있는 애니메이션의 행렬들이 들어가 있음*/
+	/* m_AnimTransforms에서 현재 애니메이션 현재 프레임의 루트 포지션을 구할 수 있음*/
+
 	if (!m_bRootAnimation)
 		return Matrix();
 
-	return Get_CurAnimBonefinal(m_iRM_RootIndex);
+	return Get_CurAnimBonefinal(BONE_ROOT);
+}
+
+const Matrix CModel::Get_SocketBoneMat()
+{
+	return Get_CurAnimBonefinal(BONE_SOCKET);
 }
 
 _uint CModel::Get_MaterialIndex(_uint iMeshIndex)
@@ -771,10 +801,10 @@ void CModel::Free()
 {
 	__super::Free();
 
-	/* HierarachyNode */
-	for (auto& pHierarchyNode : m_Bones)
-		Safe_Release(pHierarchyNode);
-	m_Bones.clear();
+	///* Bone */
+	//for (auto& pBone : m_Bones)
+	//	Safe_Release(pBone);
+	//m_Bones.clear();
 
 	/* Material */
 	for (auto& Material : m_Materials)
