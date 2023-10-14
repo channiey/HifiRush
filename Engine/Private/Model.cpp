@@ -136,7 +136,7 @@ HRESULT CModel::Initialize(void* pArg)
 	/* Create VTF */
 	if (FAILED(Create_Texture()))
 		return E_FAIL;
-	
+
 	return S_OK;
 }
 
@@ -256,6 +256,24 @@ void CModel::Set_Animation(const _uint& iAnimIndex, const _bool& bLoop, const _f
 
 	if(!m_TweenDesc.next.bLoop)
 		m_iPrevAnimIndex = m_TweenDesc.cur.iAnimIndex;
+}
+
+void CModel::Set_BoneIndex(const BONE_TYPE& eType, const _int iIndex)
+{
+	switch (eType)
+	{
+	case BONE_ROOT:
+		m_AnimBoneIndecies[BONE_ROOT] = iIndex;
+		break;
+	case BONE_SOCKET_LEFT:
+		m_AnimBoneIndecies[BONE_SOCKET_LEFT] = iIndex;
+		break;
+	case BONE_SOCKET_RIGHT:
+		m_AnimBoneIndecies[BONE_SOCKET_RIGHT] = iIndex;
+		break;
+	default:
+		break;
+	}
 }
 
 HRESULT CModel::Read_BoneData(const string& strPath)
@@ -510,6 +528,10 @@ HRESULT CModel::Read_AnimaionData(const string& strPath)
 
 HRESULT CModel::Create_Texture()
 {
+	m_AnimBoneIndecies[BONE_ROOT] = 4;
+	m_AnimBoneIndecies[BONE_SOCKET_LEFT] = 0;
+	m_AnimBoneIndecies[BONE_SOCKET_LEFT] = 0;
+
 	if (TYPE::TYPE_NONANIM == m_eModelType)
 		return S_OK;
 
@@ -630,14 +652,19 @@ void CModel::Create_AnimationTransform(uint32 iAnimIndex, vector<ANIM_TRANSFORM>
 			m_Bones[iBoneIndex]->Set_CombinedTransformation();
 
 			/* 멤버 컨테이너에는 루트랑 소켓만 저장 */
-			if (m_iRootBoneIndex == iBoneIndex)
+			if (m_AnimBoneIndecies[BONE_ROOT] == iBoneIndex)
 			{
 				pAnimTransform[iAnimIndex].transforms[iFrameIndex][BONE_ROOT]
 					= m_Bones[iBoneIndex]->Get_OffSetMatrix() * m_Bones[iBoneIndex]->Get_CombinedTransformation() * Get_PivotMatrix();
 			}
-			else if (m_iSocketBoneIndex == iBoneIndex)
+			else if (m_AnimBoneIndecies[BONE_SOCKET_LEFT] == iBoneIndex)
 			{
-				pAnimTransform[iAnimIndex].transforms[iFrameIndex][BONE_SOCKET]
+				pAnimTransform[iAnimIndex].transforms[iFrameIndex][BONE_SOCKET_LEFT]
+					= m_Bones[iBoneIndex]->Get_OffSetMatrix() * m_Bones[iBoneIndex]->Get_CombinedTransformation() * Get_PivotMatrix();
+			}
+			else if (m_AnimBoneIndecies[BONE_SOCKET_RIGHT] == iBoneIndex)
+			{
+				pAnimTransform[iAnimIndex].transforms[iFrameIndex][BONE_SOCKET_RIGHT]
 					= m_Bones[iBoneIndex]->Get_OffSetMatrix() * m_Bones[iBoneIndex]->Get_CombinedTransformation() * Get_PivotMatrix();
 			}
 		}
@@ -659,7 +686,7 @@ void CModel::Create_AnimationTransformCache(uint32 iAnimIndex, vector<ANIM_TRANS
 
 		for (uint32 iBoneIndex = 0; iBoneIndex < m_Bones.size(); iBoneIndex++)
 		{
-			if (iBoneIndex == m_iRootBoneIndex)
+			if (iBoneIndex == m_AnimBoneIndecies[BONE_ROOT])
 				m_Bones[iBoneIndex]->Set_Translate(Vec4(0, 0, 0, 1));
 			
 			m_Bones[iBoneIndex]->Set_CombinedTransformation();
@@ -689,6 +716,20 @@ CBone* CModel::Get_Bone(const _int& iIndex)
 		return nullptr;
 
 	return m_Bones[iIndex];
+}
+
+const Matrix CModel::Get_AnimBoneMat(const BONE_TYPE& eType)
+{
+	/* 셰이더에는 깡통 애니메이션, 즉 모든 애니메이션, 모든 프레임 루트 포지션이 0, 0, 0인 애니메이션 상태다. */
+	/* 소스에서 루트 위치를 가져와 캐릭터 포지션에 적용시켜 준다. (캐릭터 포지션이 소스에 종속, 애니메이션은 플레이어 포지션에 종속) */
+
+	/* 셰이더에는 루트가 0인, 즉 제자리에 가만히 있는 애니메이션의 행렬들이 들어가 있음*/
+	/* m_AnimTransforms에서 현재 애니메이션 현재 프레임의 루트 포지션을 구할 수 있음*/
+
+	if(BONE_END <= eType)
+		return Matrix();
+
+	return Get_CurAnimBonefinal(eType);
 }
 
 const Matrix CModel::Get_AnimBoneLocal(const _uint& iAnimIndex, const _uint& iFrameIndex, const BONE_TYPE& eBoneType)
@@ -736,25 +777,6 @@ HRESULT CModel::Clear_Cache()
 	}
 
 	return S_OK;
-}
-
-const Matrix CModel::Get_RootBoneMat()
-{
-	/* 셰이더에는 깡통 애니메이션, 즉 모든 애니메이션, 모든 프레임 루트 포지션이 0, 0, 0인 애니메이션 상태다. */
-	/* 소스에서 루트 위치를 가져와 캐릭터 포지션에 적용시켜 준다. (캐릭터 포지션이 소스에 종속, 애니메이션은 플레이어 포지션에 종속) */
-
-		/* 셰이더에는 루트가 0인, 즉 제자리에 가만히 있는 애니메이션의 행렬들이 들어가 있음*/
-	/* m_AnimTransforms에서 현재 애니메이션 현재 프레임의 루트 포지션을 구할 수 있음*/
-
-	if (!m_bRootAnimation)
-		return Matrix();
-
-	return Get_CurAnimBonefinal(BONE_ROOT);
-}
-
-const Matrix CModel::Get_SocketBoneMat()
-{
-	return Get_CurAnimBonefinal(BONE_SOCKET);
 }
 
 _uint CModel::Get_MaterialIndex(_uint iMeshIndex)

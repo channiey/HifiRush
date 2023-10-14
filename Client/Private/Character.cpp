@@ -122,7 +122,7 @@ HRESULT CCharacter::Update_RootMotion()
 	if (!m_pModelCom->Is_RootMotion())
 		return S_OK;
 
-	const Matrix matRoot = m_pModelCom->Get_RootBoneMat();
+	const Matrix matRoot = m_pModelCom->Get_AnimBoneMat(CModel::BONE_ROOT);
 
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, (Vec4)matRoot.m[3]);
 

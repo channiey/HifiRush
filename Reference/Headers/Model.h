@@ -6,28 +6,14 @@ BEGIN(Engine)
 #define MAX_MODEL_TRANSFORMS	700 
 #define MAX_MODEL_KEYFRAMES		150 
 
-enum BONE_TYPE { BONE_ROOT, BONE_SOCKET, BONE_END };
-
-typedef struct AnimTransformCache 
-{
-	using TransformArrayType = array<Matrix, MAX_MODEL_TRANSFORMS>;
-	array<TransformArrayType, MAX_MODEL_KEYFRAMES> transforms;
-
-}ANIM_TRANSFORM_CACHE;
-
-typedef struct AnimTransform
-{
-	using TransformArrayType = array<Matrix, BONE_END>;
-	array<TransformArrayType, MAX_MODEL_KEYFRAMES> transforms;
-
-}ANIM_TRANSFORM;
 
 class ENGINE_DLL CModel final : public CComponent
 {
 public:
-	enum TYPE { TYPE_NONANIM, TYPE_ANIM, TYPE_END };
+	enum			TYPE		{ TYPE_NONANIM, TYPE_ANIM, TYPE_END };
+	enum			BONE_TYPE	{ BONE_ROOT, BONE_SOCKET_LEFT, BONE_SOCKET_RIGHT, BONE_END };
 
-	typedef struct KeyframeDesc
+	typedef struct	KeyframeDesc
 {
 	_int	iAnimIndex	= 0;	
 	_uint	iCurFrame	= 0;
@@ -49,7 +35,7 @@ public:
 
 }KEYFRAME_DESC;
 
-	typedef struct TweenDesc
+	typedef struct	TweenDesc
 {
 	KEYFRAME_DESC cur	= {};
 	KEYFRAME_DESC next	= {};
@@ -78,6 +64,21 @@ public:
 }TWEEN_DESC;
 
 private:
+	typedef struct	AnimTransformCache
+	{
+		using TransformArrayType = array<Matrix, MAX_MODEL_TRANSFORMS>;
+		array<TransformArrayType, MAX_MODEL_KEYFRAMES> transforms;
+
+	}ANIM_TRANSFORM_CACHE;
+
+	typedef struct	AnimTransform
+	{
+		using TransformArrayType = array<Matrix, BONE_END>;
+		array<TransformArrayType, MAX_MODEL_KEYFRAMES> transforms;
+
+	}ANIM_TRANSFORM;
+
+private:
 	CModel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CModel(const CModel& rhs);
 	virtual ~CModel() = default;
@@ -94,8 +95,8 @@ public:
 public:
 	class CBone*			Get_Bone(const char* pNodeName); 
 	class CBone*			Get_Bone(const _int& iIndex);
-	const Matrix			Get_RootBoneMat();
-	const Matrix			Get_SocketBoneMat();
+	const Matrix			Get_AnimBoneMat(const BONE_TYPE& eType);
+
 
 	vector<class CMesh*>*	Get_Meshes() { return &m_Meshes; }
 	_uint					Get_MeshCount() const { return (_uint)m_Meshes.size(); }
@@ -112,8 +113,7 @@ public:
 
 public:
 	void					Set_Animation(const _uint& iAnimIndex, const _bool& bLoop = FALSE, const _float& fSpeed = 0.2f);
-	void					Set_RootBoneIndex(const _uint& iIndex) { m_iRootBoneIndex = iIndex;  }
-	void					Set_SocketBoneIndex(const _uint& iIndex) { m_iSocketBoneIndex = iIndex; }
+	void					Set_BoneIndex(const BONE_TYPE& eType, const _int iIndex);
 
 public:
 	const _bool&			Is_RootMotion() const { return m_bRootAnimation; }
@@ -151,8 +151,7 @@ private:
 
 
 	_bool						m_bRootAnimation = TRUE;
-	_uint						m_iRootBoneIndex = 4; 
-	_uint						m_iSocketBoneIndex = 10;
+	_int						m_AnimBoneIndecies[BONE_END];
 
 
 public:
