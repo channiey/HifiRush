@@ -5,32 +5,32 @@
 
 BEGIN(Client)
 
-class CInput final : public CBase
+class Input final : public CBase
 {
-private:
-	CInput();
-	virtual ~CInput() = default;
+public:
+	Input();
+	virtual ~Input() = default;
 
 public:
-	void Update();
+	/* Key */
+	static const _bool Space();
+	static const _bool Shift();
+	static const _bool Ctrl();
+	static const _bool LBtn();
+	static const _bool RBtn();
+	static const _bool Up();
+	static const _bool Down();
+	static const _bool Left();
+	static const _bool Right();
+	static const _bool Parry();
+	static const _bool Interact();
+	static const _bool Magnet();
+
+	/* Action */
+	static const _bool Move();
+	static const _bool Attack();
 
 public:
-	_bool	Space	= FALSE;
-	_bool	Shift	= FALSE;
-	_bool   Ctrl	= FALSE;
-
-	_bool	LBtn	= FALSE;
-	_bool	RBtn	= FALSE;
-
-	_bool   Up		= FALSE;
-	_bool   Down	= FALSE;
-	_bool   Left	= FALSE;
-	_bool   Right	= FALSE;
-
-	_bool	Block	= FALSE;
-
-public:
-	static CInput* Create();
 	virtual void Free() override;
 };
 

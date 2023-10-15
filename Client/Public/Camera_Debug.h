@@ -33,7 +33,7 @@ private:
 	CTransform*		m_pTransformCom = { nullptr };
 	CCamera*		m_pCameraCom = { nullptr };
 
-	TRANSFORM_DESC	m_tTransDesc = {};
+	_float			m_fSpeedPerSec = 0.f;
 
 
 public:

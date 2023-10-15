@@ -3,56 +3,87 @@
 
 #include "GameInstance.h"
 
-CInput::CInput()
+Input::Input()
 {
 }
 
-void CInput::Update()
+const _bool Input::Space()
 {
-	if (GAME_INSTNACE->Key_Down(VK_SPACE)) Space = TRUE;
-	else Space = FALSE;
-
-	if (GAME_INSTNACE->Key_Down(VK_CONTROL)) Ctrl = TRUE;
-	else Ctrl = FALSE;
-
-	if (GAME_INSTNACE->Key_Down(VK_SHIFT)) Shift = TRUE;
-	else Shift = FALSE;
-
-
-	if (GAME_INSTNACE->Key_Down(VK_LBUTTON)) LBtn = TRUE;
-	else LBtn = FALSE;
-
-	if (GAME_INSTNACE->Key_Down(VK_RBUTTON)) RBtn = TRUE;
-	else RBtn = FALSE;
-
-
-	if (GAME_INSTNACE->Key_Down('W')) Up = TRUE;
-	else Up = FALSE;
-
-	if (GAME_INSTNACE->Key_Down('S')) Down = TRUE;
-	else Down = FALSE;
-
-	if (GAME_INSTNACE->Key_Down('A')) Left = TRUE;
-	else Left = FALSE;
-
-	if (GAME_INSTNACE->Key_Down('D')) Right = TRUE;
-	else Right = FALSE;
+	return GAME_INSTNACE->Key_Down(VK_SPACE);
 }
 
-CInput* CInput::Create()
+const _bool Input::Shift()
 {
-	CInput* pInstance = new CInput();
-
-	if (nullptr == pInstance)
-	{
-		MSG_BOX("Failed to Created : CInput");
-		Safe_Release(pInstance);
-	}
-
-	return pInstance;
+	return GAME_INSTNACE->Key_Down(VK_SHIFT);
 }
 
-void CInput::Free()
+const _bool Input::Ctrl()
+{
+	return GAME_INSTNACE->Key_Down(VK_CONTROL);
+}
+
+const _bool Input::LBtn()
+{
+	return GAME_INSTNACE->Key_Down(VK_LBUTTON);
+}
+
+const _bool Input::RBtn()
+{
+	return GAME_INSTNACE->Key_Down(VK_RBUTTON);
+}
+
+const _bool Input::Up()
+{
+	return GAME_INSTNACE->Key_Down('W');
+}
+
+const _bool Input::Down()
+{
+	return GAME_INSTNACE->Key_Down('S');
+}
+
+const _bool Input::Left()
+{
+	return GAME_INSTNACE->Key_Down('A');
+}
+
+const _bool Input::Right()
+{
+	return GAME_INSTNACE->Key_Down('D');
+}
+
+const _bool Input::Parry()
+{
+	return GAME_INSTNACE->Key_Down('F');
+}
+
+const _bool Input::Interact()
+{
+	return GAME_INSTNACE->Key_Down('D');
+}
+
+const _bool Input::Magnet()
+{
+	return GAME_INSTNACE->Key_Down('Q');
+}
+
+const _bool Input::Move()
+{
+	if (Up() || Down() || Left() || Right())
+		return TRUE;
+
+	return FALSE;
+}
+
+const _bool Input::Attack()
+{
+	if (LBtn() || RBtn())
+		return TRUE;
+
+	return FALSE;
+}
+
+void Input::Free()
 {
 	__super::Free();
 }

@@ -13,6 +13,7 @@ class CGameObjet;
 END
 
 BEGIN(Client)
+
 class CState_Chai_Base abstract : public CState
 {
 protected:
@@ -27,4 +28,6 @@ public:
 	virtual CState* Clone(void* pArg) = 0;
 	virtual void Free();
 };
+
+
 END

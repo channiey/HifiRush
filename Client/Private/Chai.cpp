@@ -3,7 +3,6 @@
 
 #include "GameInstance.h"
 
-#include "Input.h"
 #include "Weapon.h"
 
 CChai::CChai(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
@@ -28,11 +27,7 @@ HRESULT CChai::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	if (FAILED(Ready_ChildObjects()))
-		return E_FAIL;
-
-	m_pInput = CInput::Create();
-	if (nullptr == m_pInput)
+	if (FAILED(Ready_Chilren()))
 		return E_FAIL;
 
 	return S_OK;
@@ -40,8 +35,6 @@ HRESULT CChai::Initialize(void* pArg)
 
 void CChai::Tick(_float fTimeDelta)
 {
-	m_pInput->Update();
-
 	if (FAILED(m_pStateMachineCom->Tick(fTimeDelta)))
 		return;
 
@@ -91,34 +84,36 @@ HRESULT CChai::Ready_Components()
 		TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 	
-	/* Com_Collider_Sphere */
-	CCollider::COLLIDERDESC		ColliderDesc{1.f};
-	CCollider_Sphere*			pCollider = nullptr;
-	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
-		TEXT("Com_Collider_Sphere"), (CComponent**)&pCollider, &ColliderDesc)))
-		return E_FAIL;
-
-	m_pColliderComs.push_back(pCollider);
-
 	/* Com_StateMachine */
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_StateMachine"),
 		TEXT("Com_StateMachine"), (CComponent**)&m_pStateMachineCom)))
 		return E_FAIL;
 
+	/* Com_Collider_Sphere */
+	CCollider_Sphere* pCollider = nullptr;
+	{
+		CCollider::COLLIDERDESC	ColliderDesc{1.f};
+
+		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
+			TEXT("Com_Collider_Sphere"), (CComponent**)&pCollider, &ColliderDesc)))
+			return E_FAIL;
+		
+		m_pColliderComs.push_back(pCollider);
+	}
+
 	return S_OK;
 }
 
-HRESULT CChai::Ready_ChildObjects()
+HRESULT CChai::Ready_Chilren()
 {
 	CWeapon* pChild = nullptr;
 	
 	pChild = dynamic_cast<CWeapon*>(GAME_INSTNACE->Add_GameObject(LV_STATIC, g_StrLayerID[LAYER_WEAPON], L"Weapon_Chai_Guitar_Explore"));
 	{
-		if (nullptr == pChild)
+		if (FAILED(Add_Child(pChild)))
 			return E_FAIL;
 
-		Add_Child(pChild);
-		pChild->Set_Socket(CModel::BONE_SOCKET_RIGHT);
+		pChild->Set_Socket(CModel::BONE_SOCKET_RIGHT); 
 	}
 	return S_OK;
 }
@@ -126,6 +121,18 @@ HRESULT CChai::Ready_ChildObjects()
 HRESULT CChai::Bind_ShaderResources()
 {
 	return S_OK;
+}
+
+void CChai::OnCollision_Enter(CGameObject* pGameObject)
+{
+}
+
+void CChai::OnCollision_Stay(CGameObject* pGameObject)
+{
+}
+
+void CChai::OnCollision_Exit(CGameObject* pGameObject)
+{
 }
 
 CChai * CChai::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
@@ -159,6 +166,4 @@ void CChai::Free()
 	__super::Free();
 
 	Safe_Release(m_pStateMachineCom);
-
-	Safe_Release(m_pInput);
 }

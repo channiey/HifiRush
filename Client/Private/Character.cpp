@@ -34,7 +34,6 @@ void CCharacter::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	/* Update Colliders */
 	for (auto& pCollider : m_pColliderComs)
 	{
 		if (nullptr != pCollider)
@@ -44,21 +43,16 @@ void CCharacter::Tick(_float fTimeDelta)
 
 void CCharacter::LateTick(_float fTimeDelta)
 {
-	/* None */
 	__super::LateTick(fTimeDelta);
 
-	/* Model Update */
 	if (FAILED(m_pModelCom->Update(fTimeDelta)))
 		return;
 
-	/* 모델 루트 애니메이션 반영 */
 	Update_RootMotion();
 
-	/* Add Render : This*/
 	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
 		return;
 
-	/* Add Render : Colliders */
 #ifdef _DEBUG
 	for (auto& pCollider : m_pColliderComs)
 	{
@@ -71,11 +65,9 @@ void CCharacter::LateTick(_float fTimeDelta)
 
 HRESULT CCharacter::Render()
 {
-	/* None */
 	if (FAILED(__super::Render()))
 		return E_FAIL;
 
-	/* WVP */
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
@@ -84,12 +76,10 @@ HRESULT CCharacter::Render()
 
 HRESULT CCharacter::Ready_Components()
 {
-	/* Com_Renderer */
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Renderer"),
 		TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
 		return E_FAIL;
 
-	/* Com_Transform */
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Transform"),
 		TEXT("Com_Transform"), (CComponent**)&m_pTransformCom)))
 		return E_FAIL;

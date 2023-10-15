@@ -32,11 +32,10 @@ HRESULT CCamera_Debug::Initialize(void * pArg)
 	m_pCameraCom->Set_MouseSensitiveX(1.f);
 	m_pCameraCom->Set_MouseSensitiveY(1.f);
 
-	m_tTransDesc.fSpeedPerSec = 30.f;
-	m_tTransDesc.fRotRadPerSec = XMConvertToRadians(45.f);
-
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float4(0.f, 10.f, -8.f, 1.f));
 	m_pTransformCom->LookAt(_float4(0.f, 0.f, 0.f, 1.f));
+
+	m_fSpeedPerSec = 30.f;
 
 	if (FAILED(GAME_INSTNACE->Add_Camera(CAM_DEBUG, this)))
 		return E_FAIL;
@@ -92,19 +91,19 @@ void CCamera_Debug::Move(const _float& fTimeDelta)
 	/* Translation */
 	if (pGameInstance->Key_Pressing(VK_UP))
 	{
-		m_pTransformCom->Translate(m_pTransformCom->Get_Forward() * m_tTransDesc.fSpeedPerSec * fTimeDelta);
+		m_pTransformCom->Translate(m_pTransformCom->Get_Forward() * m_fSpeedPerSec * fTimeDelta);
 	}
 	if (pGameInstance->Key_Pressing(VK_DOWN))
 	{
-		m_pTransformCom->Translate(m_pTransformCom->Get_Backward() * m_tTransDesc.fSpeedPerSec * fTimeDelta);
+		m_pTransformCom->Translate(m_pTransformCom->Get_Backward() * m_fSpeedPerSec * fTimeDelta);
 	}
 	if (pGameInstance->Key_Pressing(VK_LEFT))
 	{
-		m_pTransformCom->Translate(m_pTransformCom->Get_Left() * m_tTransDesc.fSpeedPerSec * fTimeDelta);
+		m_pTransformCom->Translate(m_pTransformCom->Get_Left() * m_fSpeedPerSec * fTimeDelta);
 	}
 	if (pGameInstance->Key_Pressing(VK_RIGHT))
 	{
-		m_pTransformCom->Translate(m_pTransformCom->Get_Right() * m_tTransDesc.fSpeedPerSec * fTimeDelta);
+		m_pTransformCom->Translate(m_pTransformCom->Get_Right() * m_fSpeedPerSec * fTimeDelta);
 	}
 
 	/* Rotation */
@@ -115,12 +114,12 @@ void CCamera_Debug::Move(const _float& fTimeDelta)
 	{
 		if (MouseMove = pGameInstance->Get_DIMMoveState(CInput_Device::MMS_X))
 		{
-			m_pTransformCom->Rotate(Vec4{ 0, 1, 0, 0}, MouseMove * m_pCameraCom->Get_MouseSensitiveX() * m_tTransDesc.fRotRadPerSec * fTimeDelta);
+			m_pTransformCom->Rotate(Vec4{ 0, 1, 0, 0}, MouseMove * m_pCameraCom->Get_MouseSensitiveX() * fTimeDelta);
 		}
 
 		if (MouseMove = pGameInstance->Get_DIMMoveState(CInput_Device::MMS_Y))
 		{
-			m_pTransformCom->Rotate(m_pTransformCom->Get_Right(), MouseMove * m_pCameraCom->Get_MouseSensitiveY() * m_tTransDesc.fRotRadPerSec * fTimeDelta);
+			m_pTransformCom->Rotate(m_pTransformCom->Get_Right(), MouseMove * m_pCameraCom->Get_MouseSensitiveY() * fTimeDelta);
 		}
 	}
 
