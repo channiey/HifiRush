@@ -138,7 +138,6 @@ HRESULT CWeapon::Ready_Components()
 
 HRESULT CWeapon::Bind_ShaderResources()
 {
-
 	if (FAILED(GAME_INSTNACE->Bind_TransformToShader(m_pShaderCom, "g_WorldMatrix", m_pParent->Get_Model()->Get_AnimBoneMat(m_eSocketType) * m_pTransformCom->Get_WorldMat())))
 		return E_FAIL;
 

@@ -77,7 +77,7 @@ private:
 
 	_float			m_fDistance = { 0.f };
 	_float			m_fMouseSensitiveX = { 1.f };
-	_float			m_fMouseSensitiveY = { 0.5f };
+	_float			m_fMouseSensitiveY = { 1.f };
 
 
 public:

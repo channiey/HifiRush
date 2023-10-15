@@ -96,6 +96,7 @@ public: /* For.Camera_Manager */
 	CGameObject*	Get_CurCamera();
 	HRESULT			Set_CurCamera(const _uint& iKey);
 	HRESULT			Add_Camera(const _uint& iKey, CGameObject* pCamera);
+	const Vec4		Get_CurCamera_State(const _uint iState);
 
 private:
 	class CTimer_Manager*			m_pTimer_Manager		= { nullptr };

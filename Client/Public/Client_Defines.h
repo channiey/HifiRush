@@ -53,9 +53,8 @@ namespace Client
 	};
 
 	/* Layer */
-	enum LAYER_ID
+	enum LAYER_ID 
 	{
-		LAYER_CAMERA,
 		LAYER_ENV_STATIC,
 		LAYER_ENV_INTERACTALBE,
 		LAYER_PLAYER,
@@ -66,23 +65,24 @@ namespace Client
 		LAYER_TRIGGER,
 		LAYER_LIGHT,
 		LAYER_EFFECT,
+		LAYER_CAMERA,
 		LAYER_UI,
 		LAYER_END
 	};
-	static const wchar_t* g_StrLayerID[LAYER_END]
+	static const wchar_t* g_StrLayerID[LAYER_END] /* 업데이트 순서에 따른 정렬 */
 	{
-		L"Layer_Camera",
-		L"Layer_Env_Static",
-		L"Layer_Env_Interactable",
-		L"Layer_Player",
-		L"Layer_Monster",
-		L"Layer_Npc",
-		L"Layer_Weapon",
-		L"Layer_Projectile",
-		L"Layer_Trigger",
-		L"Layer_Light",
-		L"Layer_Effect",
-		L"Layer_Ui",
+		L"Layer_00_Env_Static",
+		L"Layer_01_Env_Interactable",
+		L"Layer_02_Player",
+		L"Layer_03_Monster",
+		L"Layer_04_Npc",
+		L"Layer_05_Weapon",
+		L"Layer_06_Projectile",
+		L"Layer_07_Trigger",
+		L"Layer_08_Light",
+		L"Layer_09_Effect",
+		L"Layer_10_Camera",
+		L"Layer_11_Ui",
 	};
 
 	typedef struct tagTransformDesc

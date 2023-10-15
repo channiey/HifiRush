@@ -194,6 +194,7 @@
     <ClInclude Include="..\Public\ImGui_Window_Main_Hierarachy.h" />
     <ClInclude Include="..\Public\ImGui_Window_Main_Object.h" />
     <ClInclude Include="..\Public\ImGui_Window_Sub_Prefabs.h" />
+    <ClInclude Include="..\Public\Input.h" />
     <ClInclude Include="..\Public\Level_Ending.h" />
     <ClInclude Include="..\Public\Level_Proto.h" />
     <ClInclude Include="..\Public\Level_Stage_01.h" />
@@ -205,6 +206,8 @@
     <ClInclude Include="..\public\MainApp.h" />
     <ClInclude Include="..\Public\Chai.h" />
     <ClInclude Include="..\Public\Peppermint.h" />
+    <ClInclude Include="..\Public\State_Chai_Base.h" />
+    <ClInclude Include="..\Public\State_Chai_Idle.h" />
     <ClInclude Include="..\Public\StaticDummy.h" />
     <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="..\Public\Weapon.h" />
@@ -257,6 +260,7 @@
     <ClCompile Include="..\Private\ImGui_Window_Main_Hierarachy.cpp" />
     <ClCompile Include="..\Private\ImGui_Window_Main_Object.cpp" />
     <ClCompile Include="..\Private\ImGui_Window_Sub_Prefabs.cpp" />
+    <ClCompile Include="..\Private\Input.cpp" />
     <ClCompile Include="..\Private\Level_Ending.cpp" />
     <ClCompile Include="..\Private\Level_Proto.cpp" />
     <ClCompile Include="..\Private\Level_Stage_01.cpp" />
@@ -268,6 +272,8 @@
     <ClCompile Include="..\private\MainApp.cpp" />
     <ClCompile Include="..\Private\Chai.cpp" />
     <ClCompile Include="..\Private\Peppermint.cpp" />
+    <ClCompile Include="..\Private\State_Chai_Base.cpp" />
+    <ClCompile Include="..\Private\State_Chai_Idle.cpp" />
     <ClCompile Include="..\Private\StaticDummy.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\Private\Weapon.cpp" />

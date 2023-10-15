@@ -19,8 +19,9 @@ public:
 	void Tick();
 
 public:
-	CGameObject* Get_Camera(const _uint& iKey);
-	CGameObject* Get_CurCamera() const { return m_pCurCamera; }
+	CGameObject*	Get_Camera(const _uint& iKey);
+	CGameObject*	Get_CurCamera() const { return m_pCurCamera; }
+	const Vec4		Get_CurCamera_State(const _uint iState);
 
 public:
 	HRESULT		Set_CurCamera(const _uint& iKey);

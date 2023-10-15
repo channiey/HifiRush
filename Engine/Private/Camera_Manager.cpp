@@ -38,6 +38,29 @@ CGameObject* CCamera_Manager::Get_Camera(const _uint& iKey)
 	return Find_Camera(iKey);
 }
 
+const Vec4 CCamera_Manager::Get_CurCamera_State(const _uint iState)
+{
+	if (nullptr == m_pCurCamera)
+		return Vec4();
+
+	switch (iState)
+	{
+	case Engine::CTransform::STATE_RIGHT:
+		return m_pCurCamera->Get_Transform()->Get_Right();
+		break;
+	case Engine::CTransform::STATE_UP:
+		return m_pCurCamera->Get_Transform()->Get_Up();
+		break;
+	case Engine::CTransform::STATE_LOOK:
+		return m_pCurCamera->Get_Transform()->Get_Forward();
+		break;
+	default:
+		return Vec4();
+		break;
+	}
+	return Vec4();
+}
+
 HRESULT CCamera_Manager::Set_CurCamera(const _uint& iKey)
 {
 	if (m_Cameras.empty() || m_Cameras.size() <= iKey)

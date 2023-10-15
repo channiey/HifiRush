@@ -441,6 +441,8 @@ namespace DirectX
             static Vector4 Transform(const Vector4& v, const Matrix& m) noexcept;
             static void Transform(_In_reads_(count) const Vector4* varray, size_t count, const Matrix& m, _Out_writes_(count) Vector4* resultArray) noexcept;
 
+
+            
             // Constants
             static const Vector4 Zero;
             static const Vector4 One;
@@ -451,6 +453,8 @@ namespace DirectX
 
             /* User */
             Vector3 ToVec3() const  noexcept { return Vector3(x, y, z); }
+
+            Vector4 Normalized() noexcept;
 
         };
 
@@ -2837,6 +2841,14 @@ namespace DirectX
             using namespace DirectX;
             XMMATRIX M = XMLoadFloat4x4(&m);
             XMVector4TransformStream(resultArray, sizeof(XMFLOAT4), varray, sizeof(XMFLOAT4), count, M);
+        }
+
+        inline Vector4 Vector4::Normalized() noexcept
+        {
+            using namespace DirectX;
+            XMVECTOR v1 = XMLoadFloat4(this);
+            XMVECTOR X = XMVector4Normalize(v1);
+            return   X;
         }
 
 

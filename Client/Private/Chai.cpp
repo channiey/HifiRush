@@ -2,6 +2,8 @@
 #include "..\Public\Chai.h"
 
 #include "GameInstance.h"
+
+#include "Input.h"
 #include "Weapon.h"
 
 CChai::CChai(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
@@ -29,55 +31,27 @@ HRESULT CChai::Initialize(void* pArg)
 	if (FAILED(Ready_ChildObjects()))
 		return E_FAIL;
 
-
-	m_pModelCom->Set_Animation(5, TRUE);
+	m_pInput = CInput::Create();
+	if (nullptr == m_pInput)
+		return E_FAIL;
 
 	return S_OK;
 }
 
 void CChai::Tick(_float fTimeDelta)
 {
-	// << : Test 
-	{
-		if (GAME_INSTNACE->Key_Pressing('W'))
-		{
-			m_pTransformCom->Translate(m_pTransformCom->Get_Forward() * 10 * fTimeDelta);
-		}
-		else if (GAME_INSTNACE->Key_Pressing('S'))
-		{
-			m_pTransformCom->Translate(m_pTransformCom->Get_Backward() * 10 * fTimeDelta);
-		}
-		else if (GAME_INSTNACE->Key_Pressing('A'))
-		{
-			m_pTransformCom->Translate(m_pTransformCom->Get_Left() * 10 * fTimeDelta);
-		}
-		else if (GAME_INSTNACE->Key_Pressing('D'))
-		{
-			m_pTransformCom->Translate(m_pTransformCom->Get_Right() * 10 * fTimeDelta);
-		}
+	m_pInput->Update();
 
-		if (GAME_INSTNACE->Key_Down('Q'))
-			m_pModelCom->Set_Animation(0, FALSE);
-
-		if (GAME_INSTNACE->Key_Down('E'))
-			m_pModelCom->Set_Animation(1, FALSE);
-
-
-
-	
-	}
-	// >> : 
-
-	/*if (FAILED(m_pStateMachineCom->Tick(fTimeDelta)))
-		return;*/
+	if (FAILED(m_pStateMachineCom->Tick(fTimeDelta)))
+		return;
 
 	__super::Tick(fTimeDelta);
 }
 
 void CChai::LateTick(_float fTimeDelta)
 {
-	/*if (FAILED(m_pStateMachineCom->LateTick(fTimeDelta)))
-		return;*/
+	if (FAILED(m_pStateMachineCom->LateTick(fTimeDelta)))
+		return;
 
 	__super::LateTick(fTimeDelta);
 }
@@ -145,9 +119,7 @@ HRESULT CChai::Ready_ChildObjects()
 
 		Add_Child(pChild);
 		pChild->Set_Socket(CModel::BONE_SOCKET_RIGHT);
-
 	}
-
 	return S_OK;
 }
 
@@ -187,4 +159,6 @@ void CChai::Free()
 	__super::Free();
 
 	Safe_Release(m_pStateMachineCom);
+
+	Safe_Release(m_pInput);
 }

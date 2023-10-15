@@ -187,6 +187,21 @@
     <Filter Include="02.GameObjects\00.Camera\00.Debug">
       <UniqueIdentifier>{e918d286-66bb-42bb-ade7-1bbabe202863}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\03.Character\00.Player\02.Input">
+      <UniqueIdentifier>{3192c611-76d0-4580-9cf2-8d3494f804a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\00.Player\01.Models\00.Chai\StateMachine\State\Base">
+      <UniqueIdentifier>{44ed72b9-fa29-4bc7-a21f-49f4011978f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\00.Player\01.Models\00.Chai\StateMachine\State\Attack">
+      <UniqueIdentifier>{681f2993-99a3-4598-9c0e-83172478c05f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\00.Player\01.Models\00.Chai\StateMachine\State\Movement">
+      <UniqueIdentifier>{c90ab2fc-34ad-4427-86e8-2909209c830a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\00.Player\01.Models\00.Chai\StateMachine\State\General">
+      <UniqueIdentifier>{7cfbb5b6-3ade-44f9-9a0f-bec6c5702b7e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -309,6 +324,15 @@
     <ClInclude Include="..\Public\Camera_Follow.h">
       <Filter>02.GameObjects\00.Camera\01.Follow</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Input.h">
+      <Filter>02.GameObjects\03.Character\00.Player\02.Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Chai_Base.h">
+      <Filter>02.GameObjects\03.Character\00.Player\01.Models\00.Chai\StateMachine\State\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Chai_Idle.h">
+      <Filter>02.GameObjects\03.Character\00.Player\01.Models\00.Chai\StateMachine\State\General</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -415,6 +439,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\Camera_Follow.cpp">
       <Filter>02.GameObjects\00.Camera\01.Follow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Input.cpp">
+      <Filter>02.GameObjects\03.Character\00.Player\02.Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Chai_Base.cpp">
+      <Filter>02.GameObjects\03.Character\00.Player\01.Models\00.Chai\StateMachine\State\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Chai_Idle.cpp">
+      <Filter>02.GameObjects\03.Character\00.Player\01.Models\00.Chai\StateMachine\State\General</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

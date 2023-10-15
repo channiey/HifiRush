@@ -59,9 +59,6 @@ typedef struct tagFightDesc
 
 class CController_Player final : public CBase
 {
-    //DECLARE_SINGLETON(CController_Player);
-
-    enum PLAYER_TYPE { CHAI, PEPPERMINT, TYPEEND };
 
 private:
     CController_Player();
@@ -73,7 +70,7 @@ public:
     virtual void		LateTick(_float fTimeDelta);
 
 private:
-    CGameObject* m_Players[TYPEEND];
+    //CGameObject* m_Players[TYPEEND];
     CGameObject* m_pCurPlayer = { nullptr };
 
 private:

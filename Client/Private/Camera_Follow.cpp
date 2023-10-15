@@ -51,7 +51,6 @@ void CCamera_Follow::Tick(_float fTimeDelta)
 		}
 	}
 
-
 	if (!m_pCameraCom->Is_TargetObj() || !m_pCameraCom->Is_LookAtObj())
 		return;
 
