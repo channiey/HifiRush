@@ -109,11 +109,12 @@ public:
 	const TYPE&				Get_Type() const { return m_eModelType; }
 
 public:
-	void					Set_Animation(const _uint& iAnimIndex, const _bool& bLoop = FALSE, const _float& fSpeed = 0.2f);
+	void					Set_Animation(const _uint& iAnimIndex, const _bool& bLoop = TRUE, const _float& fSpeed = 0.2f);
 	void					Set_BoneIndex(const BONE_TYPE& eType, const _int iIndex);
 
 public:
 	const _bool&			Is_RootMotion() const { return m_bRootAnimation; }
+	const _bool&			Is_FinishAnimation() const { return m_bFinishAnim; }
 
 private: 
     HRESULT					Read_BoneData(const string& strPath);
@@ -145,6 +146,7 @@ private:
 	vector<ANIM_TRANSFORM>		m_AnimTransforms;		/* 루트랑 소켓 매트릭스만 저장 */
 	TWEEN_DESC					m_TweenDesc = {};
 	_int						m_iPrevAnimIndex = -1;
+	_bool						m_bFinishAnim = FALSE;
 
 	_bool						m_bRootAnimation = TRUE;
 	_int						m_AnimBoneIndecies[BONE_END];

@@ -31,11 +31,11 @@ private:
 
 private:
 	CTransform*		m_pTransformCom = { nullptr };
-	CCamera*		m_pCameraCom = { nullptr };
-	CCollider*		m_pColliderCom = { nullptr };
+	CCamera*		m_pCameraCom	= { nullptr };
+	CCollider*		m_pColliderCom	= { nullptr };
 
-	_float			m_fAzimuth = 0.f;
-	_float			m_fElevation = 0.f;
+	_float			m_fAzimuth		= 0.f;
+	_float			m_fElevation	= 1.f;
 
 public:
 	static CCamera_Follow* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

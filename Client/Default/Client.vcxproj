@@ -205,8 +205,10 @@
     <ClInclude Include="..\public\MainApp.h" />
     <ClInclude Include="..\Public\Chai.h" />
     <ClInclude Include="..\Public\Peppermint.h" />
+    <ClInclude Include="..\Public\State_Chai_Attack_1.h" />
     <ClInclude Include="..\Public\State_Chai_Base.h" />
     <ClInclude Include="..\Public\State_Chai_Idle.h" />
+    <ClInclude Include="..\Public\State_Chai_Run.h" />
     <ClInclude Include="..\Public\StaticDummy.h" />
     <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="..\Public\Weapon.h" />
@@ -270,8 +272,10 @@
     <ClCompile Include="..\private\MainApp.cpp" />
     <ClCompile Include="..\Private\Chai.cpp" />
     <ClCompile Include="..\Private\Peppermint.cpp" />
+    <ClCompile Include="..\Private\State_Chai_Attack_1.cpp" />
     <ClCompile Include="..\Private\State_Chai_Base.cpp" />
     <ClCompile Include="..\Private\State_Chai_Idle.cpp" />
+    <ClCompile Include="..\Private\State_Chai_Run.cpp" />
     <ClCompile Include="..\Private\StaticDummy.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\Private\Weapon.cpp" />

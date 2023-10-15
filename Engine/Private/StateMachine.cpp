@@ -65,17 +65,18 @@ HRESULT CStateMachine::Set_State(const wstring& strStateTag)
 	return (Change_State(pState->Get_Name()));
 }
 
-HRESULT CStateMachine::Add_State(const wstring& strStateTag, CState* pState)
+HRESULT CStateMachine::Add_State(CState* pState)
 {
-	if (nullptr == pState || Has_State(strStateTag))
+	if (nullptr == pState || Has_State(pState->Get_Name()))
 		return E_FAIL;
 	
-	pState->Set_Name(strStateTag);
-
-	m_pStates.emplace(strStateTag, pState);
+	m_pStates.emplace(pState->Get_Name(), pState);
 	
 	if (nullptr == m_pCurState)
-		m_pCurState = pState;
+	{
+		if(FAILED(Change_State(pState->Get_Name())))
+			return E_FAIL;
+	}
 
 	Safe_AddRef(m_pCurState);
 
@@ -108,8 +109,11 @@ HRESULT CStateMachine::Change_State(const wstring& strStateTag)
 
 	NULL_CHECK_RETURN(pNextState, E_FAIL);
 
-	m_pCurState->Exit();
-	Safe_Release(m_pCurState);
+	if (nullptr != m_pCurState)
+	{
+		m_pCurState->Exit();
+		Safe_Release(m_pCurState);
+	}
 
 	m_pCurState = pNextState;
 	Safe_AddRef(m_pCurState);

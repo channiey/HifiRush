@@ -321,11 +321,17 @@
     <ClInclude Include="..\Public\Input.h">
       <Filter>02.GameObjects\03.Character\00.Player\01.Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\State_Chai_Base.h">
-      <Filter>02.GameObjects\03.Character\00.Player\00.Models\00.Chai\StateMachine\State\Base</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\State_Chai_Idle.h">
       <Filter>02.GameObjects\03.Character\00.Player\00.Models\00.Chai\StateMachine\State\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Chai_Run.h">
+      <Filter>02.GameObjects\03.Character\00.Player\00.Models\00.Chai\StateMachine\State\Movement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Chai_Attack_1.h">
+      <Filter>02.GameObjects\03.Character\00.Player\00.Models\00.Chai\StateMachine\State\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Chai_Base.h">
+      <Filter>02.GameObjects\03.Character\00.Player\00.Models\00.Chai\StateMachine\State\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -434,11 +440,17 @@
     <ClCompile Include="..\Private\Input.cpp">
       <Filter>02.GameObjects\03.Character\00.Player\01.Input</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\State_Chai_Idle.cpp">
+      <Filter>02.GameObjects\03.Character\00.Player\00.Models\00.Chai\StateMachine\State\General</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\State_Chai_Base.cpp">
       <Filter>02.GameObjects\03.Character\00.Player\00.Models\00.Chai\StateMachine\State\Base</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\State_Chai_Idle.cpp">
-      <Filter>02.GameObjects\03.Character\00.Player\00.Models\00.Chai\StateMachine\State\General</Filter>
+    <ClCompile Include="..\Private\State_Chai_Run.cpp">
+      <Filter>02.GameObjects\03.Character\00.Player\00.Models\00.Chai\StateMachine\State\Movement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Chai_Attack_1.cpp">
+      <Filter>02.GameObjects\03.Character\00.Player\00.Models\00.Chai\StateMachine\State\Attack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

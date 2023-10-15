@@ -79,7 +79,6 @@ private:
 	_float			m_fMouseSensitiveX = { 1.f };
 	_float			m_fMouseSensitiveY = { 1.f };
 
-
 public:
 	static CCamera* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CComponent* Clone(void* pArg) override;

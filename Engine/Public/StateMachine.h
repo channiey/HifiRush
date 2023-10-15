@@ -24,10 +24,8 @@ public:
 
 public:
 	CState* Get_CurState() const { return m_pCurState; }
-
-public:
 	HRESULT Set_State(const wstring& strStateTag);
-	HRESULT Add_State(const wstring& strStateTag, CState* pState);
+	HRESULT Add_State(CState* pState);
 
 private:
 	const _bool Has_State(const wstring& strStateTag);

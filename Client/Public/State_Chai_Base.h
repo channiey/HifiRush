@@ -22,6 +22,9 @@ protected:
 	virtual ~CState_Chai_Base() = default;
 
 protected:
+	virtual HRESULT Initialize(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);
+
+protected:
 	CChai* m_pChai = { nullptr };
 
 public:

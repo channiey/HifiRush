@@ -51,6 +51,8 @@ public:
 private:
 	friend class CState_Chai_Base;
 	friend class CState_Chai_Idle;
+	friend class CState_Chai_Run;
+	friend class CState_Chai_Attack_1;
 };
 
 END

@@ -5,6 +5,10 @@
 
 #include "Weapon.h"
 
+#include "State_Chai_Idle.h"
+#include "State_Chai_Run.h"
+#include "State_Chai_Attack_1.h"
+
 CChai::CChai(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CCharacter(pDevice, pContext)
 {
@@ -88,11 +92,24 @@ HRESULT CChai::Ready_Components()
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_StateMachine"),
 		TEXT("Com_StateMachine"), (CComponent**)&m_pStateMachineCom)))
 		return E_FAIL;
+	{
+		CState* pState = CState_Chai_Idle::Create(m_pStateMachineCom, StateNames_CH[STATE_CH::IDLE], this);
+		if (FAILED(m_pStateMachineCom->Add_State(pState)))
+			return E_FAIL;
+
+		pState = CState_Chai_Run::Create(m_pStateMachineCom, StateNames_CH[STATE_CH::RUN], this);
+		if (FAILED(m_pStateMachineCom->Add_State(pState)))
+			return E_FAIL;
+
+		pState = CState_Chai_Attack_1::Create(m_pStateMachineCom, StateNames_CH[STATE_CH::ATTACK_1], this);
+		if (FAILED(m_pStateMachineCom->Add_State(pState)))
+			return E_FAIL;
+	}
 
 	/* Com_Collider_Sphere */
 	CCollider_Sphere* pCollider = nullptr;
 	{
-		CCollider::COLLIDERDESC	ColliderDesc{1.f};
+		CCollider::COLLIDERDESC	ColliderDesc{ 1.f };
 
 		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
 			TEXT("Com_Collider_Sphere"), (CComponent**)&pCollider, &ColliderDesc)))

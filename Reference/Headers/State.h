@@ -4,6 +4,8 @@
 
 BEGIN(Engine)
 
+class CStateMachine;
+
 class ENGINE_DLL CState abstract : public CBase
 {
 protected:
@@ -12,24 +14,24 @@ protected:
 	virtual ~CState() = default;
 
 public:
-	virtual HRESULT Initialize() PURE;
+	HRESULT Initialize(CStateMachine* pStateMachine, const wstring& strStateName);
 
 public:
 	virtual HRESULT			Enter() PURE;
-	virtual const wstring&	Tick(const _float& fimeDelta) PURE;
+	virtual const wstring&	Tick(const _float& fTimeDelta) PURE;
 	virtual const wstring&	LateTick() PURE;
 	virtual void			Exit() PURE;
 
 public:
-	const wstring&			Get_Name() const { return m_pName; }
-	void					Set_Name(const wstring& strName) { m_pName = strName; }
+	const wstring&			Get_Name() const { return m_strName; }
+	void					Set_Name(const wstring& strName) { m_strName = strName; }
 
 protected:
 	virtual const wstring&	Check_Transition() PURE; 
 
 protected:
-	class CStateMachine*	m_pStateMachine = { nullptr };
-	wstring					m_pName = {};
+	CStateMachine*			m_pStateMachine = { nullptr };
+	wstring					m_strName = {};
 
 public:
 	virtual CState* Clone(void* pArg) = 0;

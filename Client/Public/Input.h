@@ -22,6 +22,8 @@ public:
 	static const _bool Down();
 	static const _bool Left();
 	static const _bool Right();
+
+	/* User */
 	static const _bool Parry();
 	static const _bool Interact();
 	static const _bool Magnet();
