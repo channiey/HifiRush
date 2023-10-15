@@ -27,44 +27,41 @@ HRESULT CState_Chai_Run::Enter()
 const wstring& CState_Chai_Run::Tick(const _float& fTimeDelta)
 {
 	/* 회전 보간 작업 필요 */
+	CTransform* pTranform = m_pChai->Get_Transform();
 
-
-	/* Translate */
 	if (Input::Up())
 	{
-		Vec4 vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_LOOK);
-		vDir.y = 0.f;
+		Vec4 vMoveDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_LOOK);
+		vMoveDir.y = 0.f;
 
-		//m_pChai->Get_Transform()->Set_State(CTransform::STATE_LOOK, vDir.Normalized());
+		pTranform->Translate(vMoveDir.Normalized() * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
 
-		m_pChai->Get_Transform()->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
+		_float fYaw = acosf(vMoveDir.Normalized().Dot(pTranform->Get_Forward()));
+		
+		pTranform->Rotate(pTranform->Get_Up(), fYaw);
+		//pTranform->Set_State(CTransform::STATE_LOOK, vRotDir);
 	}
 	else if (Input::Down())
 	{
-		Vec4 vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_LOOK) * -1.f;
-		vDir.y = 0.f;
+		Vec4 vMoveDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_LOOK) * -1.f;
+		vMoveDir.y = 0.f;
 
-		//m_pChai->Get_Transform()->Set_State(CTransform::STATE_LOOK, vDir.Normalized());
-		m_pChai->Get_Transform()->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
-
+		pTranform->Translate(vMoveDir.Normalized() * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
 	}
 	else if (Input::Left())
 	{
-		Vec4 vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT) * -1.f;;
-		vDir.y = 0.f;
+		Vec4 vMoveDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT) * -1.f;;
+		vMoveDir.y = 0.f;
 
-		//m_pChai->Get_Transform()->Set_State(CTransform::STATE_RIGHT, vDir.Normalized());
-		m_pChai->Get_Transform()->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
+		pTranform->Translate(vMoveDir.Normalized() * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
 
 	}
 	else if (Input::Right())
 	{
-		Vec4 vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT);
-		vDir.y = 0.f;
-
-		//m_pChai->Get_Transform()->Set_State(CTransform::STATE_RIGHT, vDir.Normalized());
-		m_pChai->Get_Transform()->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
-
+		Vec4 vMoveDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT);
+		vMoveDir.y = 0.f;
+		
+		pTranform->Translate(vMoveDir.Normalized() * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
 	}
 
 	return Check_Transition();

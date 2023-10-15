@@ -184,9 +184,9 @@ HRESULT CModel::Update_Anim(_float fTimeDelta)
 	}
 
 	/* 현재 애니메이션이 모두 재생되었다면 */
-	if (0 == m_TweenDesc.cur.iCurFrame)
+	if (pCurAnim->Get_MaxFrameCount() == m_TweenDesc.cur.iCurFrame)
 	{
-		m_TweenDesc.cur.fAnimAcc = 0.f;
+		//m_TweenDesc.cur.fAnimAcc = 0.f;
 		m_bFinishAnim = TRUE;
 	}
 	else
