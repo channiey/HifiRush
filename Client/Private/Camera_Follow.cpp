@@ -26,18 +26,17 @@ HRESULT CCamera_Follow::Initialize(void * pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, m_pCameraCom->Get_CameraDesc().vEye);
-	m_pTransformCom->LookAt(m_pCameraCom->Get_CameraDesc().vAt);
-
-	if (FAILED(GAME_INSTNACE->Add_Camera(CAM_DEBUG, this)))
+	if (FAILED(GAME_INSTNACE->Add_Camera(CAM_FOLLOW, this)))
 		return E_FAIL;
 
 	return S_OK;
 }
 
 void CCamera_Follow::Tick(_float fTimeDelta)
-{
+{	
+	if (!m_pCameraCom->Is_TargetObj() || !m_pCameraCom->Is_LookAtObj())
+		return;
+
 	__super::Tick(fTimeDelta);
 
 	Move(fTimeDelta);
@@ -45,6 +44,10 @@ void CCamera_Follow::Tick(_float fTimeDelta)
 
 void CCamera_Follow::LateTick(_float fTimeDelta)
 {
+	if (!m_pCameraCom->Is_TargetObj() || !m_pCameraCom->Is_LookAtObj())
+		return;
+
+	__super::LateTick(fTimeDelta);
 }
 
 HRESULT CCamera_Follow::Ready_Components()
@@ -57,8 +60,6 @@ HRESULT CCamera_Follow::Ready_Components()
 	/* Com_Camera */
 	CCamera::CAMERA_DESC desc;
 	{
-		desc.vEye = _float4(0.f, 10.f, -8.f, 1.f);
-		desc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
 		desc.fFovy = XMConvertToRadians(60.0f);
 		desc.fAspect = g_iWinSizeX / (_float)g_iWinSizeY;
 		desc.fNear = 0.2f;
@@ -74,7 +75,19 @@ HRESULT CCamera_Follow::Ready_Components()
 
 void CCamera_Follow::Move(const _float& fTimeDelta)
 {
-	
+	/*m_pTransformCom->Set_State(CTransform::STATE_POSITION, m_pCameraCom->Get_CameraDesc().vEye);
+	m_pTransformCom->LookAt(m_pCameraCom->Get_CameraDesc().vAt);*/
+
+	Vec4 vPosition;
+
+
+	//memcpy(&(m_pCameraCom->Get_CameraDesc().vAt), m_pCameraCom->Get_LookAtObj()->Get_Transform()->Get_FinalMat().m[3], sizeof(Vec4);
+
+	// Cam Position
+
+	// Cam LookAt
+
+
 }
 
 CCamera_Follow * CCamera_Follow::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)

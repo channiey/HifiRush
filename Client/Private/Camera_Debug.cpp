@@ -34,8 +34,8 @@ HRESULT CCamera_Debug::Initialize(void * pArg)
 	m_tTransDesc.fSpeedPerSec = 30.f;
 	m_tTransDesc.fRotRadPerSec = XMConvertToRadians(45.f);
 
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, m_pCameraCom->Get_CameraDesc().vEye);
-	m_pTransformCom->LookAt(m_pCameraCom->Get_CameraDesc().vAt);
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float4(0.f, 10.f, -8.f, 1.f));
+	m_pTransformCom->LookAt(_float4(0.f, 0.f, 0.f, 1.f));
 
 	if (FAILED(GAME_INSTNACE->Add_Camera(CAM_DEBUG, this)))
 		return E_FAIL;
@@ -71,8 +71,6 @@ HRESULT CCamera_Debug::Ready_Components()
 	/* Com_Camera */
 	CCamera::CAMERA_DESC desc;
 	{
-		desc.vEye = _float4(0.f, 10.f, -8.f, 1.f);
-		desc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
 		desc.fFovy = XMConvertToRadians(60.0f);
 		desc.fAspect = g_iWinSizeX / (_float)g_iWinSizeY;
 		desc.fNear = 0.2f;

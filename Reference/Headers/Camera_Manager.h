@@ -23,9 +23,10 @@ public:
 	CGameObject* Get_CurCamera() const { return m_pCurCamera; }
 
 public:
-	HRESULT	Set_CurCamera(const _uint& iKey);
+	HRESULT		Set_CurCamera(const _uint& iKey);
 
-	HRESULT	Add_Camera(const _uint& iKey, CGameObject* pCamera);
+	HRESULT		Add_Camera(const _uint& iKey, CGameObject* pCamera);
+	HRESULT		Change_Camera(const _uint& iKey) {};
 
 
 private:

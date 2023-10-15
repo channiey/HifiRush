@@ -40,7 +40,6 @@ void CCharacter::Tick(_float fTimeDelta)
 		if (nullptr != pCollider)
 			pCollider->Update(m_pTransformCom->Get_FinalMat());
 	}
-	
 }
 
 void CCharacter::LateTick(_float fTimeDelta)

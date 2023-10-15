@@ -25,7 +25,7 @@ void CCamera_Manager::Tick()
 	m_pPipeLine->Set_Transform(CPipeLine::STATE_VIEW, m_pCurCamera->Get_Transform()->Get_WorldMat().Invert());
 
 	/* 파이프 라인에, 투영 변환 행렬 저장 */
-	CCamera::CAMERA_DESC desc = m_pCurCamera->Get_Camera()->Get_CameraDesc();
+	const CCamera::CAMERA_DESC& desc = m_pCurCamera->Get_Camera()->Get_CameraDesc();
 
 	m_pPipeLine->Set_Transform(CPipeLine::STATE_PROJ, XMMatrixPerspectiveFovLH(desc.fFovy, desc.fAspect, desc.fNear, desc.fFar));
 }
