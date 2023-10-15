@@ -33,7 +33,6 @@ private:
 	CTransform*		m_pTransformCom = { nullptr };
 	CCamera*		m_pCameraCom = { nullptr };
 
-	_float			m_fMouseSensitive = { 0.0f };
 	TRANSFORM_DESC	m_tTransDesc = {};
 
 

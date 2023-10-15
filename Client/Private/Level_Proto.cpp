@@ -18,10 +18,16 @@ HRESULT CLevel_Proto::Initialize()
 	//if (FAILED(CLevel_Loading::Parse_LevelData(LV_PROTO)))
 	//	return E_FAIL;
 
-	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, g_StrLayerID[LAYER_CAMERA], L"Camera_Debug"))
+	/*if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, g_StrLayerID[LAYER_CAMERA], L"Camera_Debug"))
+		return E_FAIL;*/
+
+	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, g_StrLayerID[LAYER_CAMERA], L"Camera_Follow"))
 		return E_FAIL;
 
 	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, g_StrLayerID[LAYER_PLAYER], L"Player_Chai"))
+		return E_FAIL;
+
+	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, g_StrLayerID[LAYER_ENV_STATIC], L"Env_Static_Terrain"))
 		return E_FAIL;
 
  	return S_OK;

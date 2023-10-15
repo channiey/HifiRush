@@ -15,12 +15,14 @@
 
 /* Camera */
 #include "Camera_Debug.h"
+#include "Camera_Follow.h"
 
 /* UI */
 #include "BackGround.h"
 
 /* Env */
 #include "StaticDummy.h"
+#include "Terrain.h"
 
 
 
@@ -112,55 +114,13 @@ HRESULT CLoader::Load_Prototype()
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
-	/* For.Prototype GameObject */
-	m_strLoading = TEXT("Loding... : Prototype Object");
-	{
-		/* For.Prototype_GameObject_BackGround */
-		if (FAILED(pGameInstance->Add_Prototype(TEXT("Ui_BackGround"), CBackGround::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-
-		/* For.Prototype_GameObject_Camera_Debug */
-		if (FAILED(pGameInstance->Add_Prototype(TEXT("Camera_Debug"),
-			CCamera_Debug::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-
-		/* For.Prototype_GameObject_Player_Chai */
-		if (FAILED(pGameInstance->Add_Prototype(TEXT("Player_Chai"),
-			CChai::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-
-		/* For.Prototype_GameObject_Proto_Weapon */
-		{
-			const string		tag = "Weapon_";
-			const string		filePath = "../Bin/Resources/Models/Weapon";
-			vector<string>		fileNames = Util_File::GetAllFolderNames(filePath);
-
-			for (string& name : fileNames)
-			{
-				if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString(tag + name), CWeapon::Create(m_pDevice, m_pContext))))
-					return E_FAIL;
-			}
-		}
-		
-
-		/* For.Prototype_GameObject_Proto_Static */
-		//{
-		//	/* 해당 경로 내의 모든 폴더명을 읽어 폴더명으로 오브젝트를 생성한다. */
-		//	const string		tag = "Env_Static_";
-		//	const string		filePath = "../Bin/Resources/Models/Environment/Static";
-		//	vector<string>		fileNames = Util_File::GetAllFolderNames(filePath);
-
-		//	for (string& name : fileNames)
-		//	{
-		//		if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString(tag + name), CStaticDummy::Create(m_pDevice, m_pContext))))
-		//			return E_FAIL;
-		//	}
-		//}
-	}
-
 	/* For.Component */
 	m_strLoading = TEXT("Loding... : CComponent");
 	{
+		/* For.Prototype_Component_VIBuffer_Terrain*/
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_VIBuffer_Terrain"),
+			CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Prototype/Terrain/Height1.bmp")))))
+			return E_FAIL;
 
 		/* For.Prototype_Component_Collider_AABB */
 		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Collider_AABB"),
@@ -282,6 +242,61 @@ HRESULT CLoader::Load_Prototype()
 		//			LV_STATIC, Util_String::ToWString(tag + name),
 		//			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/" + name, PivotMatrix))
 		//		);*/
+		//	}
+		//}
+	}
+
+	/* For.Prototype GameObject */
+	m_strLoading = TEXT("Loding... : Prototype Object");
+	{
+		/* For.Prototype_GameObject_BackGround */
+		if (FAILED(pGameInstance->Add_Prototype(TEXT("Ui_BackGround"), CBackGround::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Camera_Debug */
+		if (FAILED(pGameInstance->Add_Prototype(TEXT("Camera_Debug"),
+			CCamera_Debug::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Camera_Debug */
+		if (FAILED(pGameInstance->Add_Prototype(TEXT("Camera_Follow"),
+			CCamera_Follow::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Player_Chai */
+		if (FAILED(pGameInstance->Add_Prototype(TEXT("Player_Chai"),
+			CChai::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Proto_Weapon */
+		{
+			const string		tag = "Weapon_";
+			const string		filePath = "../Bin/Resources/Models/Weapon";
+			vector<string>		fileNames = Util_File::GetAllFolderNames(filePath);
+
+			for (string& name : fileNames)
+			{
+				if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString(tag + name), CWeapon::Create(m_pDevice, m_pContext))))
+					return E_FAIL;
+			}
+		}
+
+
+		if (FAILED(pGameInstance->Add_Prototype(TEXT("Env_Static_Terrain"),
+			CTerrain::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Proto_Static */
+		//{
+		//	/* 해당 경로 내의 모든 폴더명을 읽어 폴더명으로 오브젝트를 생성한다. */
+		//	const string		tag = "Env_Static_";
+		//	const string		filePath = "../Bin/Resources/Models/Environment/Static";
+		//	vector<string>		fileNames = Util_File::GetAllFolderNames(filePath);
+
+		//	for (string& name : fileNames)
+		//	{
+		//		if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString(tag + name), CStaticDummy::Create(m_pDevice, m_pContext))))
+		//			return E_FAIL;
 		//	}
 		//}
 	}

@@ -29,7 +29,7 @@ HRESULT CCamera_Debug::Initialize(void * pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_fMouseSensitive = 1.f;
+	m_pCameraCom->Set_MouseSensitive(1.f);
 
 	m_tTransDesc.fSpeedPerSec = 30.f;
 	m_tTransDesc.fRotRadPerSec = XMConvertToRadians(45.f);
@@ -69,7 +69,7 @@ HRESULT CCamera_Debug::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Camera */
-	CCamera::CAMERA_DESC desc;
+	CCamera::PROJ_DESC desc;
 	{
 		desc.fFovy = XMConvertToRadians(60.0f);
 		desc.fAspect = g_iWinSizeX / (_float)g_iWinSizeY;
@@ -114,12 +114,12 @@ void CCamera_Debug::Move(const _float& fTimeDelta)
 	{
 		if (MouseMove = pGameInstance->Get_DIMMoveState(CInput_Device::MMS_X))
 		{
-			m_pTransformCom->Rotate(Vec4{ 0, 1, 0, 0}, MouseMove * m_fMouseSensitive * m_tTransDesc.fRotRadPerSec * fTimeDelta);
+			m_pTransformCom->Rotate(Vec4{ 0, 1, 0, 0}, MouseMove * m_pCameraCom->Get_MouseSensitive() * m_tTransDesc.fRotRadPerSec * fTimeDelta);
 		}
 
 		if (MouseMove = pGameInstance->Get_DIMMoveState(CInput_Device::MMS_Y))
 		{
-			m_pTransformCom->Rotate(m_pTransformCom->Get_Right(), MouseMove * m_fMouseSensitive * m_tTransDesc.fRotRadPerSec * fTimeDelta);
+			m_pTransformCom->Rotate(m_pTransformCom->Get_Right(), MouseMove * m_pCameraCom->Get_MouseSensitive() * m_tTransDesc.fRotRadPerSec * fTimeDelta);
 		}
 	}
 

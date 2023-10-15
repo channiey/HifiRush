@@ -124,7 +124,7 @@ HRESULT CWeapon::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Collider_Sphere */
-	CCollider::COLLIDERDESC		ColliderDesc{ 20.f };
+	CCollider::COLLIDERDESC		ColliderDesc{ 30.f };
 	ColliderDesc.vCenter = { 0, 0, -75 };
 	CCollider_Sphere* pCollider = nullptr;
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),

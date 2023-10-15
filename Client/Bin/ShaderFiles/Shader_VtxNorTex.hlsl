@@ -27,6 +27,11 @@ sampler PointSampler = sampler_state {
     AddressV = wrap;
 };
 
+RasterizerState FillModeWireFrame
+{
+    FillMode = WireFrame;
+};
+
 
 struct VS_IN
 {
@@ -119,6 +124,15 @@ PS_OUT PS_MAIN(PS_IN In)
 	return Out;
 }
 
+
+PS_OUT PS_GRID(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    Out.vColor = (1, 1, 1, 1);
+
+    return Out;
+}
 technique11 DefaultTechnique
 {
 	pass Terrain
@@ -128,7 +142,17 @@ technique11 DefaultTechnique
 		HullShader = NULL;
 		DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN();
-	}
+    }
+    pass Grid
+    {
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_GRID();
+
+        SetRasterizerState(FillModeWireFrame);
+    }
 }
 
 

@@ -47,6 +47,14 @@ void CChai::Tick(_float fTimeDelta)
 		{
 			m_pTransformCom->Translate(m_pTransformCom->Get_Backward() * 10 * fTimeDelta);
 		}
+		else if (GAME_INSTNACE->Key_Pressing('A'))
+		{
+			m_pTransformCom->Translate(m_pTransformCom->Get_Left() * 10 * fTimeDelta);
+		}
+		else if (GAME_INSTNACE->Key_Pressing('D'))
+		{
+			m_pTransformCom->Translate(m_pTransformCom->Get_Right() * 10 * fTimeDelta);
+		}
 
 		if (GAME_INSTNACE->Key_Down('Q'))
 			m_pModelCom->Set_Animation(0, FALSE);

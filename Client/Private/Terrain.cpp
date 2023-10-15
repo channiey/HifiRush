@@ -25,6 +25,9 @@ HRESULT CTerrain::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	Vec4 vPos(-500.f, 0.f, -500.f, 1.f);
+	m_pTransformCom->Set_Position(vPos);
+
 	return S_OK;
 }
 
@@ -44,7 +47,7 @@ HRESULT CTerrain::Render()
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
-	m_pShaderCom->Begin(0);
+	m_pShaderCom->Begin(1);
 
 	m_pVIBufferCom->Render();
 

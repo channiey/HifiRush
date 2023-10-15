@@ -29,11 +29,30 @@ HRESULT CCamera_Follow::Initialize(void * pArg)
 	if (FAILED(GAME_INSTNACE->Add_Camera(CAM_FOLLOW, this)))
 		return E_FAIL;
 
+	m_tTransDesc.fSpeedPerSec = 30.f;
+	m_tTransDesc.fRotRadPerSec = XMConvertToRadians(45.f);
+
+	/* Set Camera */
+	{
+
+	}
 	return S_OK;
 }
 
 void CCamera_Follow::Tick(_float fTimeDelta)
 {	
+	if (nullptr == m_pCameraCom->Get_TargetObj())
+	{
+		CGameObject* pObj = GAME_INSTNACE->Get_GameObject(LV_PROTO, g_StrLayerID[LAYER_PLAYER], L"Player_Chai_000");
+
+		if (nullptr != pObj)
+		{
+			m_pCameraCom->Set_TargetObj(pObj);
+			m_pCameraCom->Set_LookAtObj(pObj);
+		}
+	}
+
+
 	if (!m_pCameraCom->Is_TargetObj() || !m_pCameraCom->Is_LookAtObj())
 		return;
 
@@ -58,7 +77,7 @@ HRESULT CCamera_Follow::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Camera */
-	CCamera::CAMERA_DESC desc;
+	CCamera::PROJ_DESC desc;
 	{
 		desc.fFovy = XMConvertToRadians(60.0f);
 		desc.fAspect = g_iWinSizeX / (_float)g_iWinSizeY;
@@ -75,19 +94,39 @@ HRESULT CCamera_Follow::Ready_Components()
 
 void CCamera_Follow::Move(const _float& fTimeDelta)
 {
-	/*m_pTransformCom->Set_State(CTransform::STATE_POSITION, m_pCameraCom->Get_CameraDesc().vEye);
-	m_pTransformCom->LookAt(m_pCameraCom->Get_CameraDesc().vAt);*/
+	/* Position */
+	_long	MouseMove = 0l;
 
-	Vec4 vPosition;
+	if (MouseMove = GAME_INSTNACE->Get_DIMMoveState(CInput_Device::MMS_X))
+	{
+		m_fAzimuth += MouseMove * -m_fSpeed * fTimeDelta;
+		/*m_pTransformCom->Rotate(Vec4::UnitY, 
+			MouseMove * m_pCameraCom->Get_MouseSensitive() * m_tTransDesc.fRotRadPerSec * fTimeDelta)*/;
+	}
+
+	if (MouseMove = GAME_INSTNACE->Get_DIMMoveState(CInput_Device::MMS_Y))
+	{
+		m_fEvelvation += MouseMove * m_fSpeed * fTimeDelta;
+
+		/*m_pTransformCom->Rotate(m_pTransformCom->Get_Right(), 
+			MouseMove * m_pCameraCom->Get_MouseSensitive() * m_tTransDesc.fRotRadPerSec * fTimeDelta);*/
+	}
 
 
-	//memcpy(&(m_pCameraCom->Get_CameraDesc().vAt), m_pCameraCom->Get_LookAtObj()->Get_Transform()->Get_FinalMat().m[3], sizeof(Vec4);
+	_float t = m_fRadius * sinf(m_fEvelvation);
+	_float x = t * cosf(m_fAzimuth);
+	_float y = m_fRadius * cosf(m_fEvelvation);
+	_float z = t * sinf(m_fAzimuth);
 
-	// Cam Position
+	Vec4 vPos = Vec4(x, y, z, 1.f) + (Vec4)m_pCameraCom->Get_TargetObj()->Get_Transform()->Get_FinalMat().m[3];
+	vPos.w = 1.f;
 
-	// Cam LookAt
+	m_pTransformCom->Set_Position(vPos);
 
-
+	/* Rotation */
+	vPos = (Vec4)m_pCameraCom->Get_TargetObj()->Get_Transform()->Get_FinalMat().m[3] + m_pCameraCom->Get_LookAtOffSet();
+	vPos.w = 1.f;
+	m_pTransformCom->LookAt(vPos);
 }
 
 CCamera_Follow * CCamera_Follow::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)

@@ -21,12 +21,16 @@ HRESULT CCamera::Initialize(void * pArg)
 	if (nullptr == pArg)
 		return E_FAIL;
 
-	memmove(&m_tCameraDesc, pArg, sizeof CAMERA_DESC);
+	memmove(&m_tProjDesc, pArg, sizeof PROJ_DESC);
 
 	return S_OK;
 }
 
-void CCamera::Change_Target(CGameObject* pObj)
+void CCamera::Change_TargetObj(CGameObject* pObj)
+{
+}
+
+void CCamera::Change_LookAtObj(CGameObject* pObj)
 {
 }
 
