@@ -29,12 +29,11 @@ HRESULT CCamera_Follow::Initialize(void * pArg)
 	if (FAILED(GAME_INSTNACE->Add_Camera(CAM_FOLLOW, this)))
 		return E_FAIL;
 
-	m_tTransDesc.fSpeedPerSec = 30.f;
-	m_tTransDesc.fRotRadPerSec = XMConvertToRadians(45.f);
-
 	/* Set Camera */
 	{
-
+		m_pCameraCom->Set_Distance(10.f);
+		m_pCameraCom->Set_MouseSensitiveX(0.3f);
+		m_pCameraCom->Set_MouseSensitiveY(0.3f);
 	}
 	return S_OK;
 }
@@ -95,38 +94,43 @@ HRESULT CCamera_Follow::Ready_Components()
 void CCamera_Follow::Move(const _float& fTimeDelta)
 {
 	/* Position */
-	_long	MouseMove = 0l;
-
-	if (MouseMove = GAME_INSTNACE->Get_DIMMoveState(CInput_Device::MMS_X))
+	Vec4 vCamWorldPos;
 	{
-		m_fAzimuth += MouseMove * -m_fSpeed * fTimeDelta;
-		/*m_pTransformCom->Rotate(Vec4::UnitY, 
-			MouseMove * m_pCameraCom->Get_MouseSensitive() * m_tTransDesc.fRotRadPerSec * fTimeDelta)*/;
+		_long	MouseMove = 0l;
+
+		if (MouseMove = GAME_INSTNACE->Get_DIMMoveState(CInput_Device::MMS_X))
+			m_fAzimuth += MouseMove * m_pCameraCom->Get_MouseSensitiveX() * fTimeDelta * -1.f;
+
+		if (MouseMove = GAME_INSTNACE->Get_DIMMoveState(CInput_Device::MMS_Y))
+		{
+			m_fElevation += MouseMove * m_pCameraCom->Get_MouseSensitiveY() * fTimeDelta;
+
+			/* 회전 방지 */
+			if (m_fElevation <= 0.01f)
+				m_fElevation = 0.01f;
+			else if (3.13f < m_fElevation)
+				m_fElevation = 3.13f;
+		}
+
+		/* 구면 좌표계(극좌표계) -> 왼손 직교 좌표계 */
+		Vec4 vCamLocal;
+		vCamLocal.x = m_pCameraCom->Get_Distance() * sinf(m_fElevation) * cosf(m_fAzimuth);	// x = r * sin(위도 앙각) * cos(경도 방위각)
+		vCamLocal.y = m_pCameraCom->Get_Distance() * cosf(m_fElevation);					// y = r * cos(위도 앙각)
+		vCamLocal.z = m_pCameraCom->Get_Distance() * sinf(m_fElevation) * sinf(m_fAzimuth);	// z = r * sin(위도 앙각) * sin(경도 방위각)
+
+		vCamWorldPos = m_pCameraCom->Get_TargetObj()->Get_Transform()->Get_FinalPosition() + vCamLocal;
 	}
-
-	if (MouseMove = GAME_INSTNACE->Get_DIMMoveState(CInput_Device::MMS_Y))
-	{
-		m_fEvelvation += MouseMove * m_fSpeed * fTimeDelta;
-
-		/*m_pTransformCom->Rotate(m_pTransformCom->Get_Right(), 
-			MouseMove * m_pCameraCom->Get_MouseSensitive() * m_tTransDesc.fRotRadPerSec * fTimeDelta);*/
-	}
-
-
-	_float t = m_fRadius * sinf(m_fEvelvation);
-	_float x = t * cosf(m_fAzimuth);
-	_float y = m_fRadius * cosf(m_fEvelvation);
-	_float z = t * sinf(m_fAzimuth);
-
-	Vec4 vPos = Vec4(x, y, z, 1.f) + (Vec4)m_pCameraCom->Get_TargetObj()->Get_Transform()->Get_FinalMat().m[3];
-	vPos.w = 1.f;
-
-	m_pTransformCom->Set_Position(vPos);
 
 	/* Rotation */
-	vPos = (Vec4)m_pCameraCom->Get_TargetObj()->Get_Transform()->Get_FinalMat().m[3] + m_pCameraCom->Get_LookAtOffSet();
-	vPos.w = 1.f;
-	m_pTransformCom->LookAt(vPos);
+	Vec4 vLookAt;
+	{
+		vLookAt = m_pCameraCom->Get_TargetObj()->Get_Transform()->Get_FinalPosition() + m_pCameraCom->Get_LookAtOffSet();
+		vLookAt.w = 1.f;
+	}
+
+	/* Set */
+	m_pTransformCom->Set_Position(vCamWorldPos);
+	m_pTransformCom->LookAt(vLookAt);
 }
 
 CCamera_Follow * CCamera_Follow::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)

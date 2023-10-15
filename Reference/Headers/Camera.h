@@ -34,8 +34,9 @@ public:
 	const Vec4&			Get_LookAtOffSet() const { return m_vLookAtOffset; }
 	
 	const _float&		Get_Distance() const { return m_fDistance; }
-	const _float&		Get_MouseSensitive() const { return m_fMouseSensitive; }
-	
+	const _float&		Get_MouseSensitiveX() const { return m_fMouseSensitiveX; }
+	const _float&		Get_MouseSensitiveY() const { return m_fMouseSensitiveY; }
+
 	const PROJ_DESC&	Get_ProjDesc() const { return m_tProjDesc; }
 
 public:
@@ -45,7 +46,8 @@ public:
 	void Set_LookAtOffSet(const Vec4& vOffset) { m_vLookAtOffset = vOffset; }
 	
 	void Set_Distance(const _float& fDist) { m_fDistance = fDist; }
-	void Set_MouseSensitive(const _float& fValue) { m_fMouseSensitive = fValue; }
+	void Set_MouseSensitiveX(const _float& fValue) { m_fMouseSensitiveX = fValue; }
+	void Set_MouseSensitiveY(const _float& fValue) { m_fMouseSensitiveY = fValue; }
 
 	void Set_LockX(const _bool& bLock) { m_bLockX = bLock; }
 	void Set_LockY(const _bool& bLock) { m_bLockY = bLock; }
@@ -74,7 +76,9 @@ private:
 	_bool			m_bLockY = FALSE;
 
 	_float			m_fDistance = { 0.f };
-	_float			m_fMouseSensitive = { 1.f };
+	_float			m_fMouseSensitiveX = { 1.f };
+	_float			m_fMouseSensitiveY = { 0.5f };
+
 
 public:
 	static CCamera* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

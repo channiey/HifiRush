@@ -86,6 +86,13 @@ const Vec3 CTransform::Get_Rotation()
 	return ToEulerAngles(quatTemp);
 }
 
+const Vec4 CTransform::Get_FinalPosition()
+{
+	const Matrix matFinal = Get_FinalMat();
+
+	return Vec4(matFinal.m[3]);
+}
+
 void CTransform::Set_State(STATE eState, Vec4 vState)
 {
 	_matrix		StateMatrix;

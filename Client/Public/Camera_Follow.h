@@ -34,14 +34,8 @@ private:
 	CCamera*		m_pCameraCom = { nullptr };
 	CCollider*		m_pColliderCom = { nullptr };
 
-	TRANSFORM_DESC	m_tTransDesc = {};
-
-
-
 	_float			m_fAzimuth = 0.f;
-	_float			m_fEvelvation = 0.f;
-	_float			m_fRadius = 10.f;
-	_float			m_fSpeed = 0.5f;
+	_float			m_fElevation = 0.f;
 
 public:
 	static CCamera_Follow* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
