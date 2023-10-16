@@ -12,10 +12,11 @@ private:
 	virtual ~CAnimation() = default;
 
 public:
-	HRESULT Initialize_Prototype(const _float& fDuration, const _float& fTickPerSecond, vector<class CChannel*>& Channels);
+	HRESULT Initialize_Prototype(const _float& fDuration, const _float& fTickPerSecond, vector<class CChannel*>& Channels, const string& strName);
 	HRESULT Initialize(class CModel* pModel);
 
 public:
+	const string& Get_Name() const { return m_strName; }
 	_uint	Get_MaxFrameCount() const { return m_iMaxFrameCount; }
 	_float	Get_TickPerSecond() const { return m_fTickPerSecond; }
 	_float	Get_Duration() const { return m_fDuration; }
@@ -27,6 +28,8 @@ public:
 	HRESULT Clear_Bones();
 
 private:
+
+	string						m_strName;
 
 	_float						m_fDuration = 0.f;		/* 전체 재생 시간 */
 	_float						m_fPlayTime = 0.f;		/* 현재 재생 시간 */
@@ -40,7 +43,7 @@ private:
 	vector<class CBone*>		m_Bones;				/* 이 애니메이션을 재생하는데 필요한 뼈들 */
 
 public:
-	static CAnimation* Create(const _float& fDuration, const _float& fTickPerSecond, vector<class CChannel*>& Channels);
+	static CAnimation* Create(const _float& fDuration, const _float& fTickPerSecond, vector<class CChannel*>& Channels, const string& strName);
 	CAnimation* Clone(class CModel* pModel);
 	virtual void Free() override;
 };

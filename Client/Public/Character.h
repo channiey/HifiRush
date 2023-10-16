@@ -21,13 +21,14 @@ public:
 
 	typedef struct tagFightDesc
 	{
-		//_bool   bCanAttack = TRUE;
-		_bool   bInAttack = FALSE;
-		_bool   bInCombo = FALSE;
+		_bool   bAttack = FALSE;
+		_bool   bCombo = FALSE;
 		_bool	bDamaged = FALSE;
 
 		_bool   bInvulneralbe = FALSE;
 
+		_bool	bParry = FALSE;
+		_int	iCombo = -1;
 	}FIGHT_DESC;
 
 	typedef struct tagMovementDesc
@@ -36,7 +37,7 @@ public:
 		_float  fMinForwardSpeed = 10.f;
 
 		_float  fMinTurnSpeed = 10.f;
-		_float  fMaxTurnSpeed = 10.f;
+		_float  fMaxTurnSpeed = 20.f;
 
 		_float  fGravity = 0.f;
 
@@ -44,6 +45,7 @@ public:
 		_bool   bJump = FALSE;
 		_bool   bDoubleJump = FALSE;
 		_bool   bFall = FALSE;
+		_bool   bDash = FALSE;
 
 		_float  fGroundedRayDistance = 5.f;
 

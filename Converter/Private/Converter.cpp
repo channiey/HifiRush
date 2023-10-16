@@ -527,7 +527,7 @@ HRESULT CConverter::Write_AnimData(string savePath)
 	file->Write<size_t>(_animations.size());
 	for (shared_ptr<asAnimation>& animation : _animations)
 	{
-		//file->Write<string>(animation->name);
+		file->Write<string>(animation->name);
 		file->Write<float>(animation->fDuration);
 		file->Write<float>(animation->fTickPerSecond);
 

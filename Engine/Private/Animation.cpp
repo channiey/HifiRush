@@ -8,7 +8,8 @@ CAnimation::CAnimation()
 }
 
 CAnimation::CAnimation(const CAnimation & rhs)
-	: m_fDuration(rhs.m_fDuration)
+	: m_strName(rhs.m_strName)
+	, m_fDuration(rhs.m_fDuration)
 	, m_Channels(rhs.m_Channels) /* 데이터 큼, 얕은 복사해도 상관 없으니 얕은복사로 진행 */
 	, m_fTickPerSecond(rhs.m_fTickPerSecond)
 	, m_fPlayTime(rhs.m_fPlayTime)
@@ -18,8 +19,9 @@ CAnimation::CAnimation(const CAnimation & rhs)
 		Safe_AddRef(pChannel);
 }
 
-HRESULT CAnimation::Initialize_Prototype(const _float& fDuration, const _float& fTickPerSecond, vector<class CChannel*>& Channels)
+HRESULT CAnimation::Initialize_Prototype(const _float& fDuration, const _float& fTickPerSecond, vector<class CChannel*>& Channels, const string& strName)
 {
+	m_strName = strName;
 	m_fDuration = fDuration;
 	m_fTickPerSecond = fTickPerSecond;
 
@@ -105,11 +107,11 @@ HRESULT CAnimation::Calculate_Animation(_uint iFrame)
 	return S_OK;
 }
 
-CAnimation* CAnimation::Create(const _float& fDuration, const _float& fTickPerSecond, vector<class CChannel*>& Channels)
+CAnimation* CAnimation::Create(const _float& fDuration, const _float& fTickPerSecond, vector<class CChannel*>& Channels, const string& strName)
 {
 	CAnimation* pInstance = new CAnimation();
 
-	if (FAILED(pInstance->Initialize_Prototype(fDuration, fTickPerSecond, Channels)))
+	if (FAILED(pInstance->Initialize_Prototype(fDuration, fTickPerSecond, Channels, strName)))
 	{
 		MSG_BOX("Failed To Created : CAnimation");
 		Safe_Release(pInstance);

@@ -19,6 +19,9 @@ HRESULT CState_Chai_Attack_1::Initialize(CStateMachine* pStateMachine, const wst
 
 HRESULT CState_Chai_Attack_1::Enter()
 {
+	m_pChai->m_tFightDesc.bAttack = TRUE;
+	m_pChai->m_tFightDesc.iCombo = 1;
+
 	//m_pChai->Get_Model()->Set_Animation(0, FALSE); /* TODO:: 애니메이션 다 적용하고 CChai에 있는 enum으로 사용 */
 
 	return S_OK;
@@ -40,6 +43,8 @@ void CState_Chai_Attack_1::Exit()
 
 const wstring& CState_Chai_Attack_1::Check_Transition()
 {
+	__super::Check_Transition();
+
 	//if(m_pChai->Get_Model()->Is_FinishAnimation())
 	//	return StateNames_CH[STATE_CH::IDLE];
 

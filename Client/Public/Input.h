@@ -23,14 +23,15 @@ public:
 	static const _bool Left();
 	static const _bool Right();
 
-	/* User */
+	/* Action */
+	static const _bool Move();
+	static const _bool Jump();
+
+	static const _bool Attack();
 	static const _bool Parry();
 	static const _bool Interact();
 	static const _bool Magnet();
 
-	/* Action */
-	static const _bool Move();
-	static const _bool Attack();
 
 public:
 	virtual void Free() override;

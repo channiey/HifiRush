@@ -501,6 +501,7 @@ HRESULT CModel::Read_AnimaionData(const string& strPath)
 	size_t iNumAnims = file->Read<size_t>();
 	for (size_t i = 0; i < iNumAnims; i++)
 	{
+		string strName = file->Read<string>();
 		_float fDuration = file->Read<_float>();
 		_float fTickPerSecond = file->Read<_float>();
 
@@ -535,7 +536,7 @@ HRESULT CModel::Read_AnimaionData(const string& strPath)
 			Channels.push_back(pChannel);
 		}
 
-		CAnimation* pAnimation = CAnimation::Create(fDuration, fTickPerSecond, Channels); 
+		CAnimation* pAnimation = CAnimation::Create(fDuration, fTickPerSecond, Channels, strName); 
 		if (nullptr == pAnimation)
 			return E_FAIL;
 

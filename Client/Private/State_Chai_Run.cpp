@@ -30,66 +30,76 @@ const wstring& CState_Chai_Run::Tick(const _float& fTimeDelta)
 
 	if (Input::Up() && !Input::Left() && !Input::Right()) // Up
 	{
+		/* Test */
 		Vec4 vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY().Normalized();
-		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
+		Vec4 vRotDir = Vec4::Lerp(pTranform->Get_State(CTransform::STATE_LOOK), vDir, fTimeDelta * 20.f);
 		pTranform->Set_Look(vDir);
+		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
 	}
 	else if (Input::Down() && !Input::Left() && !Input::Right()) // Down
 	{
 		Vec4 vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY().Normalized().Inverse();
-		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
+		Vec4 vRotDir = Vec4::Lerp(pTranform->Get_State(CTransform::STATE_LOOK), vDir, fTimeDelta * 20.f);
 		pTranform->Set_Look(vDir);
+		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
 	}
 	else if (Input::Left() && !Input::Up() && !Input::Down()) // Left 
 	{
 		Vec4 vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY().Normalized().Inverse();
-		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
+		Vec4 vRotDir = Vec4::Lerp(pTranform->Get_State(CTransform::STATE_LOOK), vDir, fTimeDelta * 20.f);
+
 		pTranform->Set_Look(vDir);
+		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
 	}
 	else if (Input::Right() && !Input::Up() && !Input::Down()) // Right 
 	{
 		Vec4 vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY().Normalized();
-		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
+		Vec4 vRotDir = Vec4::Lerp(pTranform->Get_State(CTransform::STATE_LOOK), vDir, fTimeDelta * 20.f);
 		pTranform->Set_Look(vDir);
+		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
 	}
-	else if (Input::Up() && Input::Left() && !Input::Right()) // Up Left
+	else if (Input::Up() && Input::Left() && !Input::Right()) // Up + Left
 	{
 		Vec4 vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY()
 					+ GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY().Inverse();
 
 		vDir.Normalize();
-		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
+		Vec4 vRotDir = Vec4::Lerp(pTranform->Get_State(CTransform::STATE_LOOK), vDir, fTimeDelta * 20.f);
 		pTranform->Set_Look(vDir);
+		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
 	}
-	else if (Input::Up() && !Input::Left() && Input::Right()) // Up Right
+	else if (Input::Up() && !Input::Left() && Input::Right()) // Up + Right
 	{
 		Vec4 vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY()
 			+ GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY();
 
 		vDir.Normalize();
 
-		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
+		Vec4 vRotDir = Vec4::Lerp(pTranform->Get_State(CTransform::STATE_LOOK), vDir, fTimeDelta * 20.f);
 		pTranform->Set_Look(vDir);
+		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
 	}
-	else if (Input::Down() && Input::Left() && !Input::Right()) // Down Left
+	else if (Input::Down() && Input::Left() && !Input::Right()) // Down + Left
 	{
 		Vec4 vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY().Inverse()
 			+ GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY().Inverse();
 
 		vDir.Normalize();
 
-		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
+		Vec4 vRotDir = Vec4::Lerp(pTranform->Get_State(CTransform::STATE_LOOK), vDir, fTimeDelta * 20.f);
 		pTranform->Set_Look(vDir);
+		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
 	}
-	else if (Input::Down() && !Input::Left() && Input::Right()) // Down Right
+	else if (Input::Down() && !Input::Left() && Input::Right()) // Down + Right
 	{
 		Vec4 vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY().Inverse()
 			+ GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY();
 
 		vDir.Normalize();
 
-		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
+		Vec4 vRotDir = Vec4::Lerp(pTranform->Get_State(CTransform::STATE_LOOK), vDir, fTimeDelta * 20.f);
 		pTranform->Set_Look(vDir);
+		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
 	}
 
 	return Check_Transition();
@@ -108,39 +118,7 @@ void CState_Chai_Run::Exit()
 
 const wstring& CState_Chai_Run::Check_Transition()
 {
-	if(Input::Move())
-		return StateNames_CH[STATE_CH::RUN];
-
-	///* First Condition */
-	//if (m_pChai->m_tFightDesc.bDamaged)
-	//{
-	//	m_pChai->m_tFightDesc.bDamaged = FALSE;
-
-	//	return StateNames_CH[STATE_CH::DAMAGED];
-	//}
-
-	///* Second Conditon */
-	//if (Input::Move())
-	//{
-	//	return StateNames_CH[STATE_CH::RUN]; 
-	//}
-	//else if (Input::Attack())
-	//{
-	//	m_pChai->m_tFightDesc.bInAttack = TRUE;
-
-	//	return StateNames_CH[STATE_CH::ATTACK_1];
-	//}
-	//else if (Input::Shift())
-	//{
-	//	return StateNames_CH[STATE_CH::DASH];
-	//}
-	//else if (Input::Space() && m_pChai->m_tMoveDesc.bGround)
-	//{
-	//	m_pChai->m_tMoveDesc.bGround = FALSE;
-	//	m_pChai->m_tMoveDesc.bJump = TRUE;
-	//}
-
-	return StateNames_CH[STATE_CH::IDLE];
+	return __super::Check_Transition();
 }
 
 CState_Chai_Run* CState_Chai_Run::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

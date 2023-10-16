@@ -83,6 +83,14 @@ const _bool Input::Attack()
 	return FALSE;
 }
 
+const _bool Input::Jump()
+{
+	if (Space())
+		return TRUE;
+
+	return FALSE;
+}
+
 void Input::Free()
 {
 	__super::Free();

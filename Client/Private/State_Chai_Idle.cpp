@@ -44,36 +44,7 @@ void CState_Chai_Idle::Exit()
 
 const wstring& CState_Chai_Idle::Check_Transition()
 {
-	/* First Condition */
-	if (m_pChai->m_tFightDesc.bDamaged)
-	{
-		m_pChai->m_tFightDesc.bDamaged = FALSE;
-
-		return StateNames_CH[STATE_CH::DAMAGED];
-	}
-
-	/* Second Conditon */
-	if (Input::Move())
-	{
-		return StateNames_CH[STATE_CH::RUN]; 
-	}
-	else if (Input::Attack())
-	{
-		m_pChai->m_tFightDesc.bInAttack = TRUE;
-
-		return StateNames_CH[STATE_CH::ATTACK_1];
-	}
-	else if (Input::Shift())
-	{
-		return StateNames_CH[STATE_CH::DASH];
-	}
-	else if (Input::Space() && m_pChai->m_tMoveDesc.bGround)
-	{
-		m_pChai->m_tMoveDesc.bGround = FALSE;
-		m_pChai->m_tMoveDesc.bJump = TRUE;
-	}
-
-	return StateNames_CH[STATE_CH::IDLE];
+	return __super::Check_Transition();
 }
 
 CState_Chai_Idle* CState_Chai_Idle::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)
