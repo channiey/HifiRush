@@ -3,6 +3,8 @@
 
 #include "ImGui_Window_Main_Object.h"
 
+#include "ImGui_Window_Sub_Com_Nav.h"
+
 #include "GameObject.h"
 #include "Util_String.h"
 
@@ -13,7 +15,14 @@ CImGui_Window_Main_Object::CImGui_Window_Main_Object()
 
 HRESULT CImGui_Window_Main_Object::Initialize()
 {
-	/* 컴포넌트 창 생성 */
+	/* Create Sub_Window_Prefabs */
+	CImGui_Window* pWindow = CImGui_Window_Sub_Com_Nav::Create();
+	NULL_CHECK_RETURN(pWindow, E_FAIL);
+	pWindow->Set_Active(FALSE);
+
+	m_pChildWindows.emplace(m_pImGui_Manager->str_SubWindowType[m_pImGui_Manager->WINDOW_SUB_COM_NAV], pWindow);
+
+	return S_OK;
 
 
 	return S_OK;
@@ -27,8 +36,8 @@ void CImGui_Window_Main_Object::Show_Window()
 
 	if (ImGui::Begin(m_pImGui_Manager->str_MainWindowType[m_pImGui_Manager->WINDOW_MAIN_OBJECT_INFO], NULL, window_flags))
 	{
-		pObject = m_pImGui_Manager->m_pCurObject;
-		if (nullptr != pObject) Safe_AddRef(pObject);
+		m_pObject = m_pImGui_Manager->m_pCurObject;
+		if (nullptr != m_pObject) Safe_AddRef(m_pObject);
 		{
 			/* Info */
 			ImGui::SeparatorText("Object_Info");
@@ -48,7 +57,7 @@ void CImGui_Window_Main_Object::Show_Window()
 				Shwo_Object_Component();
 			}
 		}
-		Safe_Release(pObject);
+		Safe_Release(m_pObject);
 	}
 	ImGui::End();
 
@@ -58,7 +67,8 @@ void CImGui_Window_Main_Object::Show_Window()
 
 void CImGui_Window_Main_Object::Clear_Reference_Data()
 {
-	pObject = nullptr;
+	m_pObject = nullptr;
+	m_iCurComIndex = 0;
 }
 
 void CImGui_Window_Main_Object::Show_Object_Info()
@@ -67,9 +77,9 @@ void CImGui_Window_Main_Object::Show_Object_Info()
 	ImGui::Text("Name : ");
 	ImGui::SameLine();
 
-	if (nullptr != pObject)
+	if (nullptr != m_pObject)
 	{
-		const char* strName = Util_String::WC2C(pObject->Get_Name().c_str());
+		const char* strName = Util_String::WC2C(m_pObject->Get_Name().c_str());
 		ImGui::Text(strName);
 		delete strName;
 	}
@@ -81,25 +91,25 @@ void CImGui_Window_Main_Object::Show_Object_Info()
 
 	/* Active */
 	_bool bActive = TRUE;
-	if (nullptr != pObject)
-		bActive = pObject->Is_Active();
+	if (nullptr != m_pObject)
+		bActive = m_pObject->Is_Active();
 
 	if (ImGui::Checkbox("Active", &bActive))
 	{
-		if (nullptr != pObject)
-			pObject->Set_State(CGameObject::STATE_ACTIVE);
+		if (nullptr != m_pObject)
+			m_pObject->Set_State(CGameObject::STATE_ACTIVE);
 	}
 	ImGui::SameLine();
 
 	/* Render */
 	_bool bRender = TRUE;
-	if (nullptr != pObject)
-		bRender = pObject->Is_Render();
+	if (nullptr != m_pObject)
+		bRender = m_pObject->Is_Render();
 
 	if (ImGui::Checkbox("Render", &bRender))
 	{
-		if (nullptr != pObject)
-			pObject->Set_Render(bRender);
+		if (nullptr != m_pObject)
+			m_pObject->Set_Render(bRender);
 	}
 
 }
@@ -108,9 +118,9 @@ _float fRotPrev[3] = { 0.f, 0.f, 0.f };
 
 void CImGui_Window_Main_Object::Show_Object_Transform()
 {
-	if (nullptr != pObject)
+	if (nullptr != m_pObject)
 	{
-		CTransform* pTransform = pObject->Get_Transform();
+		CTransform* pTransform = m_pObject->Get_Transform();
 
 		if (nullptr != pTransform)
 		{
@@ -172,34 +182,41 @@ void CImGui_Window_Main_Object::Show_Object_Transform()
 
 void CImGui_Window_Main_Object::Shwo_Object_Component()
 {
-	NULL_CHECK(pObject);
+	NULL_CHECK(m_pObject);
 
-	map<const wstring, class CComponent*>& Components = pObject->Get_Components();
+	map<const wstring, class CComponent*>& Components = m_pObject->Get_Components();
 
-	_uint i = 0;
-	for (auto& Pair : Components)
+	const char** items = new const char* [Components.size()];
+	int index = 0;
+
+	for (const auto& pair : Components) 
 	{
-		if (nullptr == Pair.second) continue;
+		std::wstring wideStr = pair.first;
+		std::string narrowStr(wideStr.begin(), wideStr.end());
 
-		if (i > 0) ImGui::SameLine();
-
-		++i;
-
-		/* 컴포넌트가 스테이트머신, 행동트리인 경우 버튼으로 표시한다. */
-		//const char* strComponent = Util_String::WC2C(Pair.first.c_str());
-		//if (strcmp(strComponent, Util_String::ToString(gStrComponentType[COM_STATEMACHINE]).c_str()) ||
-		//	strcmp(strComponent, Util_String::ToString(gStrComponentType[COM_BEHAVIOURTREE]).c_str()))
-		//{
-		//	delete strComponent;
-		//	continue;
-		//}
-
-		//if (ImGui::Button(strComponent))
-		//{
-
-		//}
-		//delete strComponent;
+		items[index] = _strdup(narrowStr.c_str());
+		++index;
 	}
+
+	if (ImGui::Combo("Component", &m_iCurComIndex, items, (_int)Components.size()))
+	{
+		
+	}
+
+
+
+	// << : Test code 
+	if (ImGui::Button("Test_Nav"))
+	{
+		CImGui_Window* pWindow = Find_ChildWindow(m_pImGui_Manager->str_SubWindowType[m_pImGui_Manager->WINDOW_SUB_COM_NAV]);
+
+		if (nullptr != pWindow)
+			pWindow->Set_Active(!pWindow->Is_Active());
+	}
+	// >> : 
+
+	delete[] items;
+
 }
 
 CImGui_Window_Main_Object* CImGui_Window_Main_Object::Create()

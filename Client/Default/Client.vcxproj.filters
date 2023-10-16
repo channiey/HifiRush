@@ -333,6 +333,9 @@
     <ClInclude Include="..\Public\State_Chai_Base.h">
       <Filter>02.GameObjects\03.Character\00.Player\00.Models\00.Chai\StateMachine\State\Base</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\ImGui_Window_Sub_Com_Nav.h">
+      <Filter>97.ImGui\Windows\03.Sub\00.Object_Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -451,6 +454,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\State_Chai_Attack_1.cpp">
       <Filter>02.GameObjects\03.Character\00.Player\00.Models\00.Chai\StateMachine\State\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_Window_Sub_Com_Nav.cpp">
+      <Filter>97.ImGui\Windows\03.Sub\00.Object_Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

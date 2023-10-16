@@ -456,6 +456,14 @@ namespace DirectX
 
             Vector4 Normalized() noexcept;
 
+            Vector4 ZeroX() noexcept;
+            Vector4 ZeroY() noexcept;
+            Vector4 ZeroZ() noexcept;
+            Vector4 ZeroW() noexcept;
+            Vector4 OneW() noexcept;
+            Vector4 Inverse() noexcept;
+
+
         };
 
         // Binary operators
@@ -2849,6 +2857,54 @@ namespace DirectX
             XMVECTOR v1 = XMLoadFloat4(this);
             XMVECTOR X = XMVector4Normalize(v1);
             return   X;
+        }
+
+        inline Vector4 Vector4::ZeroX() noexcept
+        {
+            using namespace DirectX;
+            Vector4 v1 = XMLoadFloat4(this);
+            v1.x = 0.f;
+            return v1;
+        }
+
+        inline Vector4 Vector4::ZeroY() noexcept
+        {
+            using namespace DirectX;
+            Vector4 v1 = XMLoadFloat4(this);
+            v1.y = 0.f;
+            return v1;
+        }
+
+        inline Vector4 Vector4::ZeroZ() noexcept
+        {
+            using namespace DirectX;
+            Vector4 v1 = XMLoadFloat4(this);
+            v1.z = 0.f;
+            return v1;
+        }
+
+        inline Vector4 Vector4::ZeroW() noexcept
+        {
+            using namespace DirectX;
+            Vector4 v1 = XMLoadFloat4(this);
+            v1.w = 0.f;
+            return v1;
+        }
+
+        inline Vector4 Vector4::OneW() noexcept
+        {
+            using namespace DirectX;
+            Vector4 v1 = XMLoadFloat4(this);
+            v1.w = 1.f;
+            return v1;
+        }
+
+        inline Vector4 Vector4::Inverse() noexcept
+        {
+            using namespace DirectX;
+            Vector4 v1 = XMLoadFloat4(this);
+            v1 *= -1.f;
+            return v1;
         }
 
 

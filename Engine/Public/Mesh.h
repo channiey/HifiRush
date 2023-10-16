@@ -5,7 +5,7 @@
 
 BEGIN(Engine)
 
-class CMesh final : public CVIBuffer
+class ENGINE_DLL CMesh final : public CVIBuffer
 {
 private:
 	CMesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

@@ -170,6 +170,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Camera_Manager.h" />
+    <ClInclude Include="..\Public\Cell.h" />
     <ClInclude Include="..\Public\Collider_AABB.h" />
     <ClInclude Include="..\Public\Animation.h" />
     <ClInclude Include="..\public\Base.h" />
@@ -191,6 +192,7 @@
     <ClInclude Include="..\Public\Engine_Typedef.h" />
     <ClInclude Include="..\Public\Frustum.h" />
     <ClInclude Include="..\Public\Collider_OBB.h" />
+    <ClInclude Include="..\Public\Navigation.h" />
     <ClInclude Include="..\Public\QuadTree.h" />
     <ClInclude Include="..\Public\RenderTarget.h" />
     <ClInclude Include="..\Public\Collider_Sphere.h" />
@@ -236,6 +238,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Camera_Manager.cpp" />
+    <ClCompile Include="..\Private\Cell.cpp" />
     <ClCompile Include="..\Private\Collider_AABB.cpp" />
     <ClCompile Include="..\Private\Animation.cpp" />
     <ClCompile Include="..\private\Base.cpp" />
@@ -253,6 +256,7 @@
     <ClCompile Include="..\Private\DebugDraw.cpp" />
     <ClCompile Include="..\Private\Frustum.cpp" />
     <ClCompile Include="..\Private\Collider_OBB.cpp" />
+    <ClCompile Include="..\Private\Navigation.cpp" />
     <ClCompile Include="..\Private\QuadTree.cpp" />
     <ClCompile Include="..\Private\RenderTarget.cpp" />
     <ClCompile Include="..\Private\Collider_Sphere.cpp" />

@@ -2,6 +2,7 @@
 #include "..\Public\Camera_Debug.h"
 
 #include "GameInstance.h"
+#include "Input.h"
 
 #ifdef _DEBUG
 #include "ImGui_Manager.h"
@@ -29,8 +30,8 @@ HRESULT CCamera_Debug::Initialize(void * pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_pCameraCom->Set_MouseSensitiveX(1.f);
-	m_pCameraCom->Set_MouseSensitiveY(1.f);
+	m_pCameraCom->Set_MouseSensitiveX(0.5f);
+	m_pCameraCom->Set_MouseSensitiveY(0.5f);
 
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float4(0.f, 10.f, -8.f, 1.f));
 	m_pTransformCom->LookAt(_float4(0.f, 0.f, 0.f, 1.f));
@@ -89,19 +90,19 @@ void CCamera_Debug::Move(const _float& fTimeDelta)
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
 	/* Translation */
-	if (pGameInstance->Key_Pressing(VK_UP))
+	if (Input::Up())
 	{
 		m_pTransformCom->Translate(m_pTransformCom->Get_Forward() * m_fSpeedPerSec * fTimeDelta);
 	}
-	if (pGameInstance->Key_Pressing(VK_DOWN))
+	if (Input::Down())
 	{
 		m_pTransformCom->Translate(m_pTransformCom->Get_Backward() * m_fSpeedPerSec * fTimeDelta);
 	}
-	if (pGameInstance->Key_Pressing(VK_LEFT))
+	if (Input::Left())
 	{
 		m_pTransformCom->Translate(m_pTransformCom->Get_Left() * m_fSpeedPerSec * fTimeDelta);
 	}
-	if (pGameInstance->Key_Pressing(VK_RIGHT))
+	if (Input::Right())
 	{
 		m_pTransformCom->Translate(m_pTransformCom->Get_Right() * m_fSpeedPerSec * fTimeDelta);
 	}

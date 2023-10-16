@@ -15,7 +15,11 @@ vector			g_vMtrlSpecular = vector(1.f, 1.f, 1.f, 1.f);
 vector			g_vCamPosition;
 
 texture2D		g_DiffuseTexture;
+RasterizerState FillModeSolid
+{
+    FillMode = Solid;
 
+};
 sampler LinearSampler = sampler_state {
 	Filter = MIN_MAG_MIP_LINEAR;
 	AddressU = wrap;
@@ -124,7 +128,9 @@ technique11 DefaultTechnique
 		HullShader = NULL;
 		DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN();
-	}	
+
+        SetRasterizerState(FillModeSolid);
+    }	
 }
 
 

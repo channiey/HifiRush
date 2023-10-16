@@ -14,14 +14,16 @@
 #include "VIBuffer_Rect.h"
 #include "VIBuffer_Cube.h"
 #include "VIBuffer_Terrain.h"
+#include "Mesh.h"
 
 #include "StateMachine.h"
 #include "BehaviourTree.h"
 
-#include "MonoBehaviour.h"
-
 #include "Camera.h"
 
+#include "Navigation.h"
+
+#include "MonoBehaviour.h"
 /* 컴포넌트들의 원형을 보관한다. */
 /* 사본은 실제 컴포넌트를 사용하고자 하는 객체들이 각각 보관한다. */
 

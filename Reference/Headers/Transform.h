@@ -55,6 +55,7 @@ public:
 	void	Set_Position(Vec3& vPos) { memcpy(m_WorldMatrix.m[STATE_POSITION], &vPos, sizeof(Vec3)); }
 
 	void	Set_WorldMat(const Matrix& matrix) { memcpy(&m_WorldMatrix, &matrix, sizeof(Matrix)); }
+	void	Set_Look(const Vec4& vLookDir);
 	void	Set_State(STATE eState, Vec4 vState);
 
 	void	Set_RootPos(const Vec4& vPos) { m_vRootPos = vPos; }

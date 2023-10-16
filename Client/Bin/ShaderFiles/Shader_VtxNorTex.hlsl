@@ -30,9 +30,13 @@ sampler PointSampler = sampler_state {
 RasterizerState FillModeWireFrame
 {
     FillMode = WireFrame;
+
 };
+RasterizerState FillModeSolid
+{
+    FillMode = Solid;
 
-
+};
 struct VS_IN
 {
 	float3		vPosition : POSITION;

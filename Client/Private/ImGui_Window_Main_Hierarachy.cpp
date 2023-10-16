@@ -18,7 +18,7 @@ CImGui_Window_Main_Hierarachy::CImGui_Window_Main_Hierarachy()
 
 HRESULT CImGui_Window_Main_Hierarachy::Initialize()
 {
-	/* Create Main_Window Profiler */
+	/* Create Sub_Window_Prefabs */
 	CImGui_Window* pWindow = CImGui_Window_Sub_Prefabs::Create();
 	NULL_CHECK_RETURN(pWindow, E_FAIL);
 	pWindow->Set_Active(FALSE);
@@ -117,7 +117,8 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Levels()
 			/* 버튼을 눌렀다면 해당 버튼의 인덱스를 현재 레벨로 지정한다. */
 			//m_pImGui_Manager->m_iIndex_CurLevelID = i;
 
-			m_pGameInstance->Open_Level(LV_LOADING, CLevel_Loading::Create(m_pImGui_Manager->m_pDevice, m_pImGui_Manager->m_pContext, (LEVEL_ID)i));
+			if(i != m_pImGui_Manager->m_iIndex_CurLevelID)
+				m_pGameInstance->Open_Level(LV_LOADING, CLevel_Loading::Create(m_pImGui_Manager->m_pDevice, m_pImGui_Manager->m_pContext, (LEVEL_ID)i));
 			
 			/*m_pImGui_Manager->Set_Active_Main_Window(m_pImGui_Manager->WINDOW_MAIN_OBJECT_INFO, FALSE);
 			m_pImGui_Manager->Set_Active_Main_Window(m_pImGui_Manager->WINDOW_MAIN_HIEARACHY, FALSE);

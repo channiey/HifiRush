@@ -10,6 +10,7 @@ class CShader;
 class CCollider;
 class CRenderer;
 class CTransform;
+class CNavigation;
 END
 
 BEGIN(Client)
@@ -92,10 +93,11 @@ private:
 	HRESULT				Update_RootMotion();
 
 protected:
-	CShader*			m_pShaderCom	= { nullptr };
-	CRenderer*			m_pRendererCom	= { nullptr };
-	CTransform*			m_pTransformCom = { nullptr };
-	CModel*				m_pModelCom		= { nullptr };
+	CShader*			m_pShaderCom		= { nullptr };
+	CRenderer*			m_pRendererCom		= { nullptr };
+	CTransform*			m_pTransformCom		= { nullptr };
+	CModel*				m_pModelCom			= { nullptr };
+	CNavigation*		m_pNavigationCom	= { nullptr };
 	vector<CCollider*>  m_pColliderComs;
 
 protected:

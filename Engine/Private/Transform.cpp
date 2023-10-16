@@ -93,6 +93,21 @@ const Vec4 CTransform::Get_FinalPosition()
 	return Vec4(matFinal.m[3]);
 }
 
+void CTransform::Set_Look(const Vec4& vLookDir)
+{
+	Vec4		vDir = vLookDir;
+
+	Vec3		vScale = Get_Scale();
+
+	Vec4		vLook = vDir.Normalized() * vScale.z;
+	Vec4		vRight = XMVector3Normalize(XMVector3Cross(Vec4::UnitY, vLook)) * vScale.x;
+	Vec4		vUp = XMVector3Normalize(XMVector3Cross(vLook, vRight)) * vScale.y;
+
+	Set_State(CTransform::STATE_RIGHT, vRight);
+	Set_State(CTransform::STATE_UP, vUp);
+	Set_State(CTransform::STATE_LOOK, vLook);
+}
+
 void CTransform::Set_State(STATE eState, Vec4 vState)
 {
 	_matrix		StateMatrix;

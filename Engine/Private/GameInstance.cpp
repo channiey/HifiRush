@@ -534,7 +534,7 @@ HRESULT CGameInstance::Add_Camera(const _uint& iKey, CGameObject* pCamera)
 	return m_pCamera_Manager->Add_Camera(iKey, pCamera);
 }
 
-const Vec4 CGameInstance::Get_CurCamera_State(const _uint iState)
+Vec4 CGameInstance::Get_CurCamera_State(const _uint iState)
 {
 	if (nullptr == m_pCamera_Manager)
 		return Vec4();

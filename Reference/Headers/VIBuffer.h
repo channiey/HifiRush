@@ -20,7 +20,7 @@ public:
 
 public:
 	Vec3*			Get_VerticesPos() const { return m_pVerticesPos; }
-
+	Vec3*			Get_VerticesNor() const { return m_pVerticesNor; }
 	const _uint&	Get_IndicesNum() const { return m_iNumPrimitives; }
 	const _uint&	Get_NumPrimitives() const { return m_iNumPrimitives; }
 
@@ -34,6 +34,7 @@ protected:
 	D3D11_PRIMITIVE_TOPOLOGY		m_eTopology;
 
 	Vec3*							m_pVerticesPos = nullptr;
+	Vec3*							m_pVerticesNor = nullptr;
 
 protected:
 	_uint						m_iNumVertexBuffers = 0;

@@ -11,36 +11,6 @@ END
 
 BEGIN(Client)
 
-typedef struct tagGizmoDesc
-{
-	BoundingBox*							m_pAABB = nullptr;
-	PrimitiveBatch<VertexPositionColor>*	m_pBatch = nullptr;
-	BasicEffect*							m_pEffect = nullptr;
-	ID3D11InputLayout*						m_pInputLayout = nullptr;
-	_float4									m_vColor = _float4(0.f, 1.f, 0.f, 1.f);
-
-	tagGizmoDesc() {};
-
-	HRESULT Init(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _float4 color, _float length)
-	{
-		m_pBatch = new PrimitiveBatch<VertexPositionColor>(pContext);
-		m_pEffect = new BasicEffect(pDevice);
-
-		m_pEffect->SetVertexColorEnabled(true);
-
-		const void* pShaderByteCodes = nullptr;
-		size_t			iLength = 0;
-
-		m_pEffect->GetVertexShaderBytecode(&pShaderByteCodes, &iLength);
-
-		if (FAILED(pDevice->CreateInputLayout(VertexPositionColor::InputElements, VertexPositionColor::InputElementCount, pShaderByteCodes, iLength, &m_pInputLayout)))
-			return E_FAIL;
-
-		m_vColor = color;
-	}
-
-}GIZMO_DESC;
-
 class CImGui_Manager final : public CBase
 {
 	DECLARE_SINGLETON(CImGui_Manager)
@@ -67,13 +37,17 @@ public:
 	enum WINDOW_SUB_TYPE
 	{
 		WINDOW_SUB_PREFABS,
-		WINDOW_SUB_MINI_LAYERS,
+		WINDOW_SUB_MINI_LAYERS,/* 이거 왜 따로 클래스 안뺐지? */
+
+		WINDOW_SUB_COM_NAV,
 		WINDOW_SUB_END
 	};
 	const char* str_SubWindowType[WINDOW_SUB_END] =
 	{
 		"Prefabs",
-		"Layers Choice"
+		"Layers Choice",
+
+		"Com_Nav"
 	};
 
 
@@ -137,10 +111,6 @@ private:
 	/* 현재 ImGui 윈도우 클릭 여부 */
 	_bool							m_bClickedWindow = FALSE;
 
-	/* Gizmo */
-	vector<GIZMO_DESC>				m_Gizmos;
-
-
 private:
 	ID3D11Device* m_pDevice = { nullptr };
 	ID3D11DeviceContext* m_pContext = { nullptr };
@@ -152,6 +122,8 @@ private: /* Friend Class */
 	friend class CImGui_Window_Main_Demo;
 
 	friend class CImGui_Window_Sub_Prefabs;
+
+	friend class CImGui_Window_Sub_Com_Nav;
 
 public:
 	virtual void	Free() override;

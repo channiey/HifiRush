@@ -95,6 +95,7 @@ void CVIBuffer::Free()
 	__super::Free();
 
 	Safe_Delete_Array(m_pVerticesPos);
+	Safe_Delete_Array(m_pVerticesNor);
 
 	Safe_Release(m_pVB);
 	Safe_Release(m_pIB);

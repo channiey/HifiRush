@@ -26,42 +26,70 @@ HRESULT CState_Chai_Run::Enter()
 
 const wstring& CState_Chai_Run::Tick(const _float& fTimeDelta)
 {
-	/* 회전 보간 작업 필요 */
 	CTransform* pTranform = m_pChai->Get_Transform();
 
-	if (Input::Up())
+	if (Input::Up() && !Input::Left() && !Input::Right()) // Up
 	{
-		Vec4 vMoveDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_LOOK);
-		vMoveDir.y = 0.f;
-
-		pTranform->Translate(vMoveDir.Normalized() * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
-
-		_float fYaw = acosf(vMoveDir.Normalized().Dot(pTranform->Get_Forward()));
-		
-		pTranform->Rotate(pTranform->Get_Up(), fYaw);
-		//pTranform->Set_State(CTransform::STATE_LOOK, vRotDir);
+		Vec4 vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY().Normalized();
+		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
+		pTranform->Set_Look(vDir);
 	}
-	else if (Input::Down())
+	else if (Input::Down() && !Input::Left() && !Input::Right()) // Down
 	{
-		Vec4 vMoveDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_LOOK) * -1.f;
-		vMoveDir.y = 0.f;
-
-		pTranform->Translate(vMoveDir.Normalized() * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
+		Vec4 vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY().Normalized().Inverse();
+		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
+		pTranform->Set_Look(vDir);
 	}
-	else if (Input::Left())
+	else if (Input::Left() && !Input::Up() && !Input::Down()) // Left 
 	{
-		Vec4 vMoveDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT) * -1.f;;
-		vMoveDir.y = 0.f;
-
-		pTranform->Translate(vMoveDir.Normalized() * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
-
+		Vec4 vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY().Normalized().Inverse();
+		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
+		pTranform->Set_Look(vDir);
 	}
-	else if (Input::Right())
+	else if (Input::Right() && !Input::Up() && !Input::Down()) // Right 
 	{
-		Vec4 vMoveDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT);
-		vMoveDir.y = 0.f;
-		
-		pTranform->Translate(vMoveDir.Normalized() * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
+		Vec4 vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY().Normalized();
+		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
+		pTranform->Set_Look(vDir);
+	}
+	else if (Input::Up() && Input::Left() && !Input::Right()) // Up Left
+	{
+		Vec4 vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY()
+					+ GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY().Inverse();
+
+		vDir.Normalize();
+		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
+		pTranform->Set_Look(vDir);
+	}
+	else if (Input::Up() && !Input::Left() && Input::Right()) // Up Right
+	{
+		Vec4 vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY()
+			+ GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY();
+
+		vDir.Normalize();
+
+		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
+		pTranform->Set_Look(vDir);
+	}
+	else if (Input::Down() && Input::Left() && !Input::Right()) // Down Left
+	{
+		Vec4 vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY().Inverse()
+			+ GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY().Inverse();
+
+		vDir.Normalize();
+
+		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
+		pTranform->Set_Look(vDir);
+	}
+	else if (Input::Down() && !Input::Left() && Input::Right()) // Down Right
+	{
+		Vec4 vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY().Inverse()
+			+ GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY();
+
+		vDir.Normalize();
+
+		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
+		pTranform->Set_Look(vDir);
 	}
 
 	return Check_Transition();

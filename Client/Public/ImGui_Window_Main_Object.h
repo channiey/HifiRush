@@ -27,7 +27,9 @@ private:
 	void Shwo_Object_Component();
 
 private:
-	class CGameObject* pObject = { nullptr };
+	class CGameObject* m_pObject = { nullptr };
+
+	_int m_iCurComIndex = 0;
 
 public:
 	static CImGui_Window_Main_Object* Create();

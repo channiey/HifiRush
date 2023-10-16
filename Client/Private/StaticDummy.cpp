@@ -131,19 +131,19 @@ HRESULT CStaticDummy::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Collider_Sphere */
-	CCollider::COLLIDERDESC		ColliderDesc;
-	{
-		ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
+	//CCollider::COLLIDERDESC		ColliderDesc;
+	//{
+	//	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
 
-		ColliderDesc.vSize = _float3(5.f, 5.f, 5.f);
-		ColliderDesc.vCenter = _float3(0.f, ColliderDesc.vSize.y * 0.5f, 0.f);
-		ColliderDesc.vRotation = _float3(0.f, XMConvertToRadians(45.f), 0.f);
-	}
-	CCollider_Sphere* pCollider = nullptr;
-	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
-		TEXT("Com_Collider_Sphere"), (CComponent**)&pCollider, &ColliderDesc)))
-		return E_FAIL;
-	m_pColliderComs.push_back(pCollider);
+	//	ColliderDesc.vSize = _float3(5.f, 5.f, 5.f);
+	//	ColliderDesc.vCenter = _float3(0.f, ColliderDesc.vSize.y * 0.5f, 0.f);
+	//	ColliderDesc.vRotation = _float3(0.f, XMConvertToRadians(45.f), 0.f);
+	//}
+	//CCollider_Sphere* pCollider = nullptr;
+	//if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
+	//	TEXT("Com_Collider_Sphere"), (CComponent**)&pCollider, &ColliderDesc)))
+	//	return E_FAIL;
+	//m_pColliderComs.push_back(pCollider);
 
 	return S_OK;
 }

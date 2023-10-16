@@ -116,6 +116,8 @@ HRESULT CMesh::Ready_StaticVertices(vector<VTXMODEL>& Vertices, _fmatrix PivotMa
 
 		memcpy(&pVerticeStatic[i].vNormal, &Vertices[i].vNormal, sizeof(_float3));
 		XMStoreFloat3(&pVerticeStatic[i].vNormal, XMVector3TransformNormal(XMLoadFloat3(&pVerticeStatic[i].vNormal), PivotMatrix));
+		
+		//memcpy(&m_pVerticesNor[i], &Vertices[i].vPosition, sizeof(_float3));
 
 		memcpy(&pVerticeStatic[i].vTexture, &Vertices[i].vTexture, sizeof(_float2));
 
