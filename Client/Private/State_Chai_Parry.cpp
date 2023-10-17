@@ -21,6 +21,8 @@ HRESULT CState_Chai_Parry::Enter()
 {
 	m_pChai->m_tFightDesc.bParry = TRUE;
 
+	m_pChai->Get_Model()->Set_Animation(STATE_CH::PARRY_00, FALSE);
+
 	return S_OK;
 }
 
@@ -43,7 +45,7 @@ const wstring& CState_Chai_Parry::Check_Transition()
 {
 	__super::Check_Transition();
 
-	return StateNames_CH[STATE_CH::IDLE];
+	return m_pChai->m_StateNames[STATE_CH::IDLE_00];
 }
 
 CState_Chai_Parry* CState_Chai_Parry::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

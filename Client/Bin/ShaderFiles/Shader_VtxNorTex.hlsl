@@ -133,7 +133,7 @@ PS_OUT PS_GRID(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
 
-    Out.vColor = (1.f, 0.f, 0.f, 1.f);
+    Out.vColor = vector(1.f, 1.f, 1.f, 0.5f);
 
     return Out;
 }

@@ -142,10 +142,10 @@ void CImGui_Window_Main_Object::Show_Object_Transform()
 
 				/* Position */
 				{}
-				vVec = pTransform->Get_State(CTransform::STATE_POSITION);
+				vVec = pTransform->Get_FinalPosition();
 				_float fPos[3] = { vVec.x, vVec.y, vVec.z };
 				ImGui::DragFloat3("Pos", (_float*)&fPos, 0.5f);
-				pTransform->Set_State(CTransform::STATE_POSITION, Vec4(fPos[0], fPos[1], fPos[2], 1));
+				//pTransform->Set_State(CTransform::STATE_POSITION, Vec4(fPos[0], fPos[1], fPos[2], 1));
 
 				/* Rotation */
 				Vec3 vRot = pTransform->Get_Rotation(); /* Euler */
@@ -222,12 +222,12 @@ void CImGui_Window_Main_Object::Shwo_Object_Component()
 
 				if (nullptr != pWindow && m_pPrevComWindow != pWindow)
 				{
-					pWindow->Set_Active(!pWindow->Is_Active());
+					pWindow->Set_Active(TRUE);
 
-					if (nullptr != m_pPrevComWindow)
+					/*if (nullptr != m_pPrevComWindow)
 						m_pPrevComWindow->Set_Active(FALSE);
 
-					m_pPrevComWindow = pWindow;
+					m_pPrevComWindow = pWindow;*/
 				}
 			}
 		}

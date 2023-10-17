@@ -47,6 +47,7 @@ HRESULT CStateMachine::LateTick(const _float& fTimeDelta)
 {
 	if (nullptr == m_pCurState)
 		return E_FAIL;
+
 	const wstring& strStateName = m_pCurState->LateTick();
 
 	if (strStateName != m_pCurState->Get_Name())

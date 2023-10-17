@@ -5,6 +5,9 @@
 #include "Input_Device.h"
 #include "PipeLine.h"
 
+#include "Util_File.h"
+#include "Util_String.h"
+
 BEGIN(Engine)
 
 class ENGINE_DLL CGameInstance final : public CBase

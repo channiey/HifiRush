@@ -119,6 +119,14 @@ void CTransform::Set_State(STATE eState, Vec4 vState)
 	XMStoreFloat4x4(&m_WorldMatrix, StateMatrix);
 }
 
+void CTransform::Set_RootPos(const Vec4& vPos)
+{
+	Vec4 vDir = Get_State(STATE_LOOK);
+	Vec4 vRotoPos = vPos;
+
+	m_vRootPos = vDir.Normalized() * vRotoPos.ZeroW().Length();
+}
+
 void CTransform::Set_Scale(const Vec3& vScale)
 {
 	for (_int i = 0; i < 3; ++i)

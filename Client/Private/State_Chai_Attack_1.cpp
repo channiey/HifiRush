@@ -22,7 +22,7 @@ HRESULT CState_Chai_Attack_1::Enter()
 	m_pChai->m_tFightDesc.bAttack = TRUE;
 	m_pChai->m_tFightDesc.iCombo = 1;
 
-	//m_pChai->Get_Model()->Set_Animation(0, FALSE); /* TODO:: 애니메이션 다 적용하고 CChai에 있는 enum으로 사용 */
+	m_pChai->Get_Model()->Set_Animation(STATE_CH::ATK_LIGHT_00, FALSE);
 
 	return S_OK;
 }
@@ -46,9 +46,9 @@ const wstring& CState_Chai_Attack_1::Check_Transition()
 	__super::Check_Transition();
 
 	//if(m_pChai->Get_Model()->Is_FinishAnimation())
-	//	return StateNames_CH[STATE_CH::IDLE];
+	//	return m_pChai->m_StateNames[STATE_CH::IDLE];
 
-	return StateNames_CH[STATE_CH::IDLE];
+	return m_pChai->m_StateNames[STATE_CH::IDLE_00];
 }
 
 CState_Chai_Attack_1* CState_Chai_Attack_1::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

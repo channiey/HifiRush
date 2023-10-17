@@ -110,7 +110,7 @@ public:
 	const TYPE&				Get_Type() const { return m_eModelType; }
 
 public:
-	void					Set_Animation(const _uint& iAnimIndex, const _bool& bLoop = TRUE, const _float& fSpeed = 0.2f);
+	void					Set_Animation(const _uint& iAnimIndex, const _bool& bLoop = FALSE, const _float& fSpeed = 0.2f);
 	void					Set_BoneIndex(const BONE_TYPE& eType, const _int iIndex);
 
 public:
@@ -148,6 +148,7 @@ private:
 	TWEEN_DESC					m_TweenDesc = {};
 	_int						m_iPrevAnimIndex = -1;
 	_bool						m_bFinishAnim = FALSE;
+	_bool						m_bTweenFrame = TRUE; // 다음 애니메이션 트위닝시 다음 애님 프레임을 증가시킬지
 
 	_bool						m_bRootAnimation = TRUE;
 	_int						m_AnimBoneIndecies[BONE_END];

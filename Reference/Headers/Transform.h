@@ -58,7 +58,7 @@ public:
 	void	Set_Look(const Vec4& vLookDir);
 	void	Set_State(STATE eState, Vec4 vState);
 
-	void	Set_RootPos(const Vec4& vPos) { m_vRootPos = vPos; }
+	void	Set_RootPos(const Vec4& vPos);
 
 public:
 	const Vec3	ToEulerAngles(Quaternion quat);

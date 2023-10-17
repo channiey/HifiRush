@@ -2,6 +2,8 @@
 #include "..\Public\Chai.h"
 
 #include "GameInstance.h"
+#include "Animation.h"
+
 
 #include "Weapon.h"
 
@@ -18,6 +20,7 @@
 #include "State_Chai_Attack_1.h"
 #include "State_Chai_Damaged.h"
 #include "State_Chai_Parry.h"
+
 
 CChai::CChai(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CCharacter(pDevice, pContext)
@@ -43,7 +46,7 @@ HRESULT CChai::Initialize(void* pArg)
 
 	if (FAILED(Ready_Chilren()))
 		return E_FAIL;
-
+	
 	return S_OK;
 }
 
@@ -103,43 +106,52 @@ HRESULT CChai::Ready_Components()
 		TEXT("Com_StateMachine"), (CComponent**)&m_pStateMachineCom)))
 		return E_FAIL;
 	{
+		/* Set StateNames */
+		const vector<class CAnimation*>& Animations = m_pModelCom->Get_Animations();
+		{
+			m_StateNames.reserve(Animations.size());
+
+			for (auto& pAnim : Animations)
+				m_StateNames.push_back(Util_String::ToWString(pAnim->Get_Name()));
+		}
+			
 		CState* pState = nullptr;
 
 		/* General */
 		{
-			pState = CState_Chai_Idle::Create(m_pStateMachineCom, StateNames_CH[STATE_CH::IDLE], this);
+			pState = CState_Chai_Idle::Create(m_pStateMachineCom, m_StateNames[STATE_CH::IDLE_00], this);
 			if (FAILED(m_pStateMachineCom->Add_State(pState)))
 				return E_FAIL;
 		}
 		/* Movement */
 		{
-			pState = CState_Chai_Run::Create(m_pStateMachineCom, StateNames_CH[STATE_CH::RUN], this);
+			pState = CState_Chai_Run::Create(m_pStateMachineCom, m_StateNames[STATE_CH::RUN_00], this);
 			if (FAILED(m_pStateMachineCom->Add_State(pState)))
 				return E_FAIL;
 
-			pState = CState_Chai_Dash::Create(m_pStateMachineCom, StateNames_CH[STATE_CH::DASH], this);
+			pState = CState_Chai_Dash::Create(m_pStateMachineCom, m_StateNames[STATE_CH::DASH_FRONT_00], this);
 			if (FAILED(m_pStateMachineCom->Add_State(pState)))
 				return E_FAIL;
 
-			pState = CState_Chai_Jump::Create(m_pStateMachineCom, StateNames_CH[STATE_CH::JUMP], this);
+			pState = CState_Chai_Jump::Create(m_pStateMachineCom, m_StateNames[STATE_CH::JUMP_00], this);
 			if (FAILED(m_pStateMachineCom->Add_State(pState)))
 				return E_FAIL;
 
-			pState = CState_Chai_DoubleJump::Create(m_pStateMachineCom, StateNames_CH[STATE_CH::DOUBLEJUMP], this);
+			pState = CState_Chai_DoubleJump::Create(m_pStateMachineCom, m_StateNames[STATE_CH::DOUBLE_JUMP_00], this);
 			if (FAILED(m_pStateMachineCom->Add_State(pState)))
 				return E_FAIL;
 		}
 		/* Action */
 		{
-			pState = CState_Chai_Attack_1::Create(m_pStateMachineCom, StateNames_CH[STATE_CH::ATTACK_1], this);
+			pState = CState_Chai_Attack_1::Create(m_pStateMachineCom, m_StateNames[STATE_CH::ATK_LIGHT_00], this);
 			if (FAILED(m_pStateMachineCom->Add_State(pState)))
 				return E_FAIL;
 
-			pState = CState_Chai_Damaged::Create(m_pStateMachineCom, StateNames_CH[STATE_CH::DAMAGED], this);
+			pState = CState_Chai_Damaged::Create(m_pStateMachineCom, m_StateNames[STATE_CH::DMG_LIGHT], this);
 			if (FAILED(m_pStateMachineCom->Add_State(pState)))
 				return E_FAIL;
 
-			pState = CState_Chai_Damaged::Create(m_pStateMachineCom, StateNames_CH[STATE_CH::PARRY], this);
+			pState = CState_Chai_Damaged::Create(m_pStateMachineCom, m_StateNames[STATE_CH::PARRY_00], this);
 			if (FAILED(m_pStateMachineCom->Add_State(pState)))
 				return E_FAIL;
 		}

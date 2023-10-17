@@ -21,18 +21,20 @@ HRESULT CState_Chai_Dash::Enter()
 {
 	m_pChai->m_tMoveDesc.bDash = TRUE;
 
-	//m_pChai->Get_Model()->Set_Animation(0, FALSE); /* TODO:: 애니메이션 다 적용하고 CChai에 있는 enum으로 사용 */
-
+	m_pChai->Get_Model()->Set_Animation(STATE_CH::DASH_FRONT_00, FALSE);
+	
 	return S_OK;
 }
 
 const wstring& CState_Chai_Dash::Tick(const _float& fTimeDelta)
 {
+
 	return Check_Transition();
 }
 
 const wstring& CState_Chai_Dash::LateTick()
 {
+	
 	return Check_Transition();
 }
 
@@ -43,9 +45,12 @@ void CState_Chai_Dash::Exit()
 
 const wstring& CState_Chai_Dash::Check_Transition()
 {
-	__super::Check_Transition();
+	if (m_pChai->Get_Model()->Is_FinishAnimation())
+	{
+		return m_pChai->m_StateNames[STATE_CH::IDLE_00];
+	}
 
-	return StateNames_CH[STATE_CH::IDLE];
+	return m_pChai->m_StateNames[STATE_CH::DASH_FRONT_00];
 }
 
 CState_Chai_Dash* CState_Chai_Dash::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

@@ -110,7 +110,7 @@ public:
 	const TYPE&				Get_Type() const { return m_eModelType; }
 
 public:
-	void					Set_Animation(const _uint& iAnimIndex, const _bool& bLoop = TRUE, const _float& fSpeed = 0.2f);
+	void					Set_Animation(const _uint& iAnimIndex, const _bool& bLoop = FALSE, const _float& fSpeed = 0.2f);
 	void					Set_BoneIndex(const BONE_TYPE& eType, const _int iIndex);
 
 public:

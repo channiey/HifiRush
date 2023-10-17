@@ -200,10 +200,13 @@ HRESULT CLoader::Load_Prototype()
 		Matrix PivotMatrix = Matrix::Identity;
 
 		/* For.Prototype_Component_Model_Chai */
-		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f)) * Matrix::CreateScale(0.01f);
+		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.01f);
 		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Chai"),
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Chai", PivotMatrix))))
 			return E_FAIL;
+
+
+		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f)) * Matrix::CreateScale(0.01f);
 
 		/* For.Prototype_Component_Model_Weapon */
 		{

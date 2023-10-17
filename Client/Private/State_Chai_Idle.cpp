@@ -19,7 +19,7 @@ HRESULT CState_Chai_Idle::Initialize(CStateMachine* pStateMachine, const wstring
 
 HRESULT CState_Chai_Idle::Enter()
 {
-	m_pChai->Get_Model()->Set_Animation(2, TRUE); /* TODO:: 애니메이션 다 적용하고 CChai에 있는 enum으로 사용 */
+	m_pChai->Get_Model()->Set_Animation(STATE_CH::IDLE_00, TRUE); /* TODO:: 애니메이션 다 적용하고 CChai에 있는 enum으로 사용 */
 
 	return S_OK;
 }
@@ -44,7 +44,28 @@ void CState_Chai_Idle::Exit()
 
 const wstring& CState_Chai_Idle::Check_Transition()
 {
-	return __super::Check_Transition();
+	if (m_pChai->m_tFightDesc.bDamaged)
+	{
+		return m_pChai->m_StateNames[STATE_CH::DMG_LIGHT];
+	}
+
+	/* Movement */
+	if (Input::Move())
+	{
+		if (m_pChai->m_tMoveDesc.bGround) /* Run */
+		{
+			return m_pChai->m_StateNames[STATE_CH::RUN_00];
+		}
+	}
+	else if (Input::Shift())
+	{
+		if (!m_pChai->m_tMoveDesc.bDash) /* Dash */
+		{
+			return m_pChai->m_StateNames[STATE_CH::DASH_FRONT_00];
+		}
+	}
+
+	return m_pChai->m_StateNames[STATE_CH::IDLE_00];
 }
 
 CState_Chai_Idle* CState_Chai_Idle::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

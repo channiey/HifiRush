@@ -176,21 +176,22 @@ HRESULT CModel::Update_Anim(_float fTimeDelta)
 		m_TweenDesc.cur.fRatio = (m_TweenDesc.cur.fFrameAcc / timePerFrame);
 
 		/* 루프가 아니고 현재 애니메이션이 곧 끝난다면*/
-		if (!m_TweenDesc.cur.bLoop && 0 < m_iPrevAnimIndex && pCurAnim->Get_MaxFrameCount() - m_TweenDesc.cur.iCurFrame == 3)
+		/*if (!m_TweenDesc.cur.bLoop && 0 < m_iPrevAnimIndex && pCurAnim->Get_MaxFrameCount() - m_TweenDesc.cur.iCurFrame == 3)
 		{
 			Set_Animation(m_iPrevAnimIndex, TRUE);
 			m_iPrevAnimIndex = -1;
+		}*/
+
+		/* 현재 애니메이션이 모두 재생되었다면 */
+		if (pCurAnim->Get_MaxFrameCount() == m_TweenDesc.cur.iCurFrame + 1)
+		{
+			//m_TweenDesc.cur.fAnimAcc = 0.f;
+			m_bFinishAnim = TRUE;
 		}
+		else
+			m_bFinishAnim = FALSE;
 	}
 
-	/* 현재 애니메이션이 모두 재생되었다면 */
-	if (pCurAnim->Get_MaxFrameCount() == m_TweenDesc.cur.iCurFrame)
-	{
-		//m_TweenDesc.cur.fAnimAcc = 0.f;
-		m_bFinishAnim = TRUE;
-	}
-	else
-		m_bFinishAnim = FALSE;
 
 	/* 다음 애니메이션이 예약되어 있다면 */
 	if (m_TweenDesc.next.iAnimIndex >= 0)

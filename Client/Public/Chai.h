@@ -9,45 +9,70 @@ END
 BEGIN(Client)
 enum STATE_CH 
 { 
-	IDLE, 
-	RUN, 
-	DASH, 
-	JUMP, 
-	DOUBLEJUMP, 
-	FALL, 
-	LAND, 
-	ATTACK_1, 
-	ATTACK_2, 
-	ATTACK_3, 
-	ATTACK_4, 
-	PARRY, 
-	DAMAGED, 
-	DEAD, 
-	INTERACTION,
-	MAGNET, 
-	NONE, 
+	ANNOY_00,
+	ANNOY_01,
+
+	ATK_FINAL_B_00,
+	ATK_FINAL_A_00,
+	ATK_FINAL_A_01,
+
+	ATK_LIGHT_00,
+	ATK_LIGHT_01,
+	ATK_LIGHT_02,
+	ATK_LIGHT_03,
+
+	ATK_RUN_A_00,
+	ATK_RUN_A_01,
+
+	ATK_SINGLE_00,
+	ATK_SINGLE_01,
+	ATK_SINGLE_02,
+	ATK_SINGLE_03,
+	ATK_SINGLE_04,
+
+	ATK_SPC_0,
+	ATK_SPC_1,
+	ATK_SPC_2,
+
+	CEREMONY_00,
+
+	CLEAR_00,
+	CLEAR_01,
+
+	DMG_STRONG,
+	DMG_LIGHT,
+	DMG_ELEC_00,
+	DMG_HEAP_00,
+	DMG_HEAP_01,
+	DMG_HEAP_02,
+
+	DASH_BACK_00,
+	DASH_FRONT_00,
+	DASH_LEFT_00,
+	DASH_RIGHT_00,
+
+	DOUBLE_JUMP_00,
+	DOUBLE_JUMP_FALL_00,
+
+	FALL_00,
+
+	IDLE_00,
+
+	JUMP_00,
+	JUMP_DASH_00,
+	JUMP_DASH_01,
+
+	LAND_00,
+	
+	PARRY_00,
+	PARRY_01,
+	PARRY_02,
+
+	RUN_00,
+	TALK_00,
+
 	STATE_END 
 };
-
-static const wstring StateNames_CH[STATE_CH::STATE_END] = 
-{ 
-	L"IDLE", 
-	L"RUN", 
-	L"DASH", 
-	L"JUMP", 
-	L"DOUBLEJUMP", 
-	L"FALL", 
-	L"LAND", 
-	L"ATTACK_1", 
-	L"ATTACK_2", 
-	L"ATTACK_3", 
-	L"ATTACK_4", 
-	L"PARRY", 
-	L"DAMAGED", 
-	L"DEAD", 
-	L"INTERACTION", 
-	L"MAGNET", 
-	L"NONE"};
 
 class CChai final : public CCharacter
 {
@@ -78,7 +103,8 @@ private:
 	virtual void		OnCollision_Exit(CGameObject* pGameObject) override;
 
 private: 
-	CStateMachine*		m_pStateMachineCom = { nullptr };
+	CStateMachine*			m_pStateMachineCom = { nullptr };
+	vector<wstring>			m_StateNames;
 
 public:
 	static CChai* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
