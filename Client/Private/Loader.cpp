@@ -222,14 +222,14 @@ HRESULT CLoader::Load_Prototype()
 		}
 
 		/* For.Prototype_Component_Model_Static */
-		PivotMatrix = Matrix::Identity * Matrix::CreateScale(0.01f);
+		/*PivotMatrix = Matrix::Identity * Matrix::CreateScale(0.01f);
 		
 		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Bldg_Inside_Battle_A"),
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/Bldg_Inside_Battle_A", PivotMatrix))))
 			return E_FAIL;
 		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Bldg_Outside_BK"),
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/Bldg_Outside_BK", PivotMatrix))))
-			return E_FAIL;
+			return E_FAIL;*/
 
 		//{
 		//	PivotMatrix = Matrix::Identity * Matrix::CreateScale(0.01f);
@@ -292,11 +292,12 @@ HRESULT CLoader::Load_Prototype()
 			CTerrain::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		/* For.Prototype_GameObject_Proto_Static */
-		if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_Static_Bldg_Inside_Battle_A"), CStaticDummy::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-		if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_Static_Bldg_Outside_BK"), CStaticDummy::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
+		///* For.Prototype_GameObject_Proto_Static */
+		//if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_Static_Bldg_Inside_Battle_A"), CStaticDummy::Create(m_pDevice, m_pContext))))
+		//	return E_FAIL;
+		//if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_Static_Bldg_Outside_BK"), CStaticDummy::Create(m_pDevice, m_pContext))))
+		//	return E_FAIL;
+		
 		//{
 		//	/* 해당 경로 내의 모든 폴더명을 읽어 폴더명으로 오브젝트를 생성한다. */
 		//	const string		tag = "Env_Static_";

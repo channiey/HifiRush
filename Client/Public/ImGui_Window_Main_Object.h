@@ -29,7 +29,8 @@ private:
 private:
 	class CGameObject* m_pObject = { nullptr };
 
-	_int m_iCurComIndex = 0;
+	_int m_iCurComIndex = -1;
+	CImGui_Window* m_pPrevComWindow = nullptr;
 
 public:
 	static CImGui_Window_Main_Object* Create();

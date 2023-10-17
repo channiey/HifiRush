@@ -7,10 +7,47 @@ class CStateMachine;
 END
 
 BEGIN(Client)
+enum STATE_CH 
+{ 
+	IDLE, 
+	RUN, 
+	DASH, 
+	JUMP, 
+	DOUBLEJUMP, 
+	FALL, 
+	LAND, 
+	ATTACK_1, 
+	ATTACK_2, 
+	ATTACK_3, 
+	ATTACK_4, 
+	PARRY, 
+	DAMAGED, 
+	DEAD, 
+	INTERACTION,
+	MAGNET, 
+	NONE, 
+	STATE_END 
+};
 
-enum STATE_CH { IDLE, RUN, DASH, JUMP, DOUBLEJUMP, FALL, LAND, ATTACK_1, ATTACK_2, ATTACK_3, ATTACK_4, PARRY, DAMAGED, DEAD, INTERACTION, MAGNET, NONE, STATE_END };
-
-static const wstring StateNames_CH[STATE_CH::STATE_END] = { L"IDLE", L"RUN", L"DASH", L"JUMP", L"DOUBLEJUMP", L"FALL", L"LAND", L"ATTACK_1", L"ATTACK_2", L"ATTACK_3", L"ATTACK_4", L"PARRY", L"DAMAGED", L"DEAD", L"INTERACTION", L"MAGNET", L"NONE"};
+static const wstring StateNames_CH[STATE_CH::STATE_END] = 
+{ 
+	L"IDLE", 
+	L"RUN", 
+	L"DASH", 
+	L"JUMP", 
+	L"DOUBLEJUMP", 
+	L"FALL", 
+	L"LAND", 
+	L"ATTACK_1", 
+	L"ATTACK_2", 
+	L"ATTACK_3", 
+	L"ATTACK_4", 
+	L"PARRY", 
+	L"DAMAGED", 
+	L"DEAD", 
+	L"INTERACTION", 
+	L"MAGNET", 
+	L"NONE"};
 
 class CChai final : public CCharacter
 {

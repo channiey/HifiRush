@@ -36,12 +36,17 @@ void CImGui_Window::Set_Active(const _bool& bActive)
 
 CImGui_Window* CImGui_Window::Find_ChildWindow(const char* WindowTag)
 {
-	auto pWindow = m_pChildWindows.find(WindowTag);
+	const string strWindowTag = WindowTag;
 
-	if (pWindow == m_pChildWindows.end())
-		return nullptr;
+	for (auto& Pair : m_pChildWindows)
+	{
+		if (strWindowTag == string(Pair.first))
+		{
+			return Pair.second;
+		}
+	}
 
-	return pWindow->second;
+	return nullptr;
 }
 
 void CImGui_Window::Free()

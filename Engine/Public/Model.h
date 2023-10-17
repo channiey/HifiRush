@@ -101,6 +101,7 @@ public:
 	_uint					Get_MaterialIndex(_uint iMeshIndex);
 
 	class CAnimation*		Get_Animation(const _uint& iIndex);
+	const vector<class CAnimation*>& Get_Animations() const { return m_Animations; }
 	const _uint				Get_AnimationCount() const { return (_uint)m_Animations.size(); }
 	const KEYFRAME_DESC		Get_CurAnimation() const { return m_TweenDesc.cur; }
 	const _uint				Get_CurAnimationIndex() const { return m_TweenDesc.cur.iAnimIndex; }
@@ -147,6 +148,7 @@ private:
 	TWEEN_DESC					m_TweenDesc = {};
 	_int						m_iPrevAnimIndex = -1;
 	_bool						m_bFinishAnim = FALSE;
+	_bool						m_bTweenFrame = TRUE; // 다음 애니메이션 트위닝시 다음 애님 프레임을 증가시킬지
 
 	_bool						m_bRootAnimation = TRUE;
 	_int						m_AnimBoneIndecies[BONE_END];

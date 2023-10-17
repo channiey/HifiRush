@@ -101,6 +101,7 @@ public:
 	_uint					Get_MaterialIndex(_uint iMeshIndex);
 
 	class CAnimation*		Get_Animation(const _uint& iIndex);
+	const vector<class CAnimation*>& Get_Animations() const { return m_Animations; }
 	const _uint				Get_AnimationCount() const { return (_uint)m_Animations.size(); }
 	const KEYFRAME_DESC		Get_CurAnimation() const { return m_TweenDesc.cur; }
 	const _uint				Get_CurAnimationIndex() const { return m_TweenDesc.cur.iAnimIndex; }

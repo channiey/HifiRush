@@ -185,6 +185,7 @@
     <ClInclude Include="..\Public\Camera_Debug.h" />
     <ClInclude Include="..\Public\Camera_Follow.h" />
     <ClInclude Include="..\Public\Character.h" />
+    <ClInclude Include="..\Public\ImGui_Window_Sub_Com_Model.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\ImGui_Manager.h" />
     <ClInclude Include="..\Public\ImGui_Window.h" />
@@ -256,6 +257,7 @@
     <ClCompile Include="..\Private\Camera_Debug.cpp" />
     <ClCompile Include="..\Private\Camera_Follow.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
+    <ClCompile Include="..\Private\ImGui_Window_Sub_Com_Model.cpp" />
     <ClCompile Include="..\Private\ImGui_Manager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <IncludeInUnityFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</IncludeInUnityFile>

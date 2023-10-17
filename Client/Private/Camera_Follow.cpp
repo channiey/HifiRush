@@ -2,7 +2,9 @@
 #include "..\Public\Camera_Follow.h"
 
 #include "GameInstance.h"
-
+#ifdef _DEBUG
+#include "ImGui_Manager.h"
+#endif // _DEBUG
 
 CCamera_Follow::CCamera_Follow(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObject(pDevice, pContext)
@@ -56,7 +58,12 @@ void CCamera_Follow::Tick(_float fTimeDelta)
 
 	__super::Tick(fTimeDelta);
 
+#ifdef _DEBUG
+	if (!CImGui_Manager::GetInstance()->Is_ClickedWindow())
+		Move(fTimeDelta);
+#else
 	Move(fTimeDelta);
+#endif // _DEBUG
 }
 
 void CCamera_Follow::LateTick(_float fTimeDelta)
@@ -109,6 +116,9 @@ void CCamera_Follow::Move(const _float& fTimeDelta)
 				m_fElevation = 0.01f;
 			else if (3.13f < m_fElevation)
 				m_fElevation = 3.13f;
+
+			/* ÀÓ½Ã °­Á¦ °íÁ¤ */
+			m_fElevation = 1.f;
 		}
 
 		/* ±¸¸é ÁÂÇ¥°è(±ØÁÂÇ¥°è) -> ¿Þ¼Õ Á÷±³ ÁÂÇ¥°è */

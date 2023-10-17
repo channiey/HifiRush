@@ -81,6 +81,22 @@ CCamera* CGameObject::Get_Camera()
 	return dynamic_cast<CCamera*>(Get_Component(TEXT("Com_Camera")));
 }
 
+CComponent* const CGameObject::Get_Component(const _uint& iIndex)
+{
+	if(m_Components.size() <= iIndex)
+		return nullptr;
+
+	_uint iComIndex = 0;
+
+	for (auto& Pair : m_Components)
+	{
+		if (iComIndex == iIndex)
+			return Pair.second;
+		
+		iComIndex++;
+	}
+}
+
 CModel* CGameObject::Get_Model()
 {
 	return dynamic_cast<CModel*>(Get_Component(TEXT("Com_Model")));
@@ -135,7 +151,8 @@ HRESULT CGameObject::Add_Component(_uint iLevelIndex, const wstring & strPrototy
 		return E_FAIL;
 
 	pComponent->Set_Owner(this);
-
+	pComponent->Set_Name(strComponentTag);
+	
 	/* 검색이 가능한 맵에 저장. */
 	m_Components.emplace(strComponentTag, pComponent);
 

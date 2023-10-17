@@ -223,6 +223,12 @@
     <Filter Include="02.GameObjects\03.Character\00.Player\00.Models\00.Chai\StateMachine\State\02.Movement\01.Dash">
       <UniqueIdentifier>{a7d0508d-a5d2-4e21-a6ff-5b102c8dbd5e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="97.ImGui\Windows\03.Sub\00.Object_Components\Nav">
+      <UniqueIdentifier>{a5d2abe7-ebbc-49f4-b69a-00a5c591c8c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\Windows\03.Sub\00.Object_Components\Anim">
+      <UniqueIdentifier>{b3fbccd0-47dd-4c34-8b8c-d87cc6c8d6b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -348,9 +354,6 @@
     <ClInclude Include="..\Public\State_Chai_Base.h">
       <Filter>02.GameObjects\03.Character\00.Player\00.Models\00.Chai\StateMachine\State\00.Base</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\ImGui_Window_Sub_Com_Nav.h">
-      <Filter>97.ImGui\Windows\03.Sub\00.Object_Components</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\State_Chai_Idle.h">
       <Filter>02.GameObjects\03.Character\00.Player\00.Models\00.Chai\StateMachine\State\01.General\00.Idle</Filter>
     </ClInclude>
@@ -374,6 +377,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\State_Chai_Parry.h">
       <Filter>02.GameObjects\03.Character\00.Player\00.Models\00.Chai\StateMachine\State\03.Action\02.Parry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui_Window_Sub_Com_Nav.h">
+      <Filter>97.ImGui\Windows\03.Sub\00.Object_Components\Nav</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui_Window_Sub_Com_Model.h">
+      <Filter>97.ImGui\Windows\03.Sub\00.Object_Components\Anim</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -485,9 +494,6 @@
     <ClCompile Include="..\Private\State_Chai_Base.cpp">
       <Filter>02.GameObjects\03.Character\00.Player\00.Models\00.Chai\StateMachine\State\00.Base</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\ImGui_Window_Sub_Com_Nav.cpp">
-      <Filter>97.ImGui\Windows\03.Sub\00.Object_Components</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\State_Chai_Idle.cpp">
       <Filter>02.GameObjects\03.Character\00.Player\00.Models\00.Chai\StateMachine\State\01.General\00.Idle</Filter>
     </ClCompile>
@@ -511,6 +517,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\State_Chai_Parry.cpp">
       <Filter>02.GameObjects\03.Character\00.Player\00.Models\00.Chai\StateMachine\State\03.Action\02.Parry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_Window_Sub_Com_Nav.cpp">
+      <Filter>97.ImGui\Windows\03.Sub\00.Object_Components\Nav</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_Window_Sub_Com_Model.cpp">
+      <Filter>97.ImGui\Windows\03.Sub\00.Object_Components\Anim</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

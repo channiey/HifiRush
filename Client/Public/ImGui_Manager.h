@@ -40,6 +40,7 @@ public:
 		WINDOW_SUB_MINI_LAYERS,/* 이거 왜 따로 클래스 안뺐지? */
 
 		WINDOW_SUB_COM_NAV,
+		WINDOW_SUB_COM_MODEL,
 		WINDOW_SUB_END
 	};
 	const char* str_SubWindowType[WINDOW_SUB_END] =
@@ -47,7 +48,8 @@ public:
 		"Prefabs",
 		"Layers Choice",
 
-		"Com_Nav"
+		"Com_Nav",
+		"Com_Model"
 	};
 
 
@@ -62,8 +64,11 @@ public:
 public:
 	const _bool&	Is_Active() const { return m_bActive; }
 	const _bool		Is_ClickedWindow() const { return m_bClickedWindow; }
+	const _bool&	Is_EdittingAnim() const { return m_bEdittingAnim; }
+
 	void			Set_Active(const _bool& bActive) { m_bActive = bActive; }
 	void			Set_Active_Main_Window(const WINDOW_MAIN_TYPE& eType, const _bool& bActive);
+
 	void			Toggle_Active() { m_bActive = !m_bActive; }
 
 	HRESULT			Clear_ReferenceData();
@@ -111,6 +116,9 @@ private:
 	/* 현재 ImGui 윈도우 클릭 여부 */
 	_bool							m_bClickedWindow = FALSE;
 
+	/* 현재 애니메이션 재생 여부 */
+	_bool							m_bEdittingAnim = FALSE;
+
 private:
 	ID3D11Device* m_pDevice = { nullptr };
 	ID3D11DeviceContext* m_pContext = { nullptr };
@@ -124,6 +132,7 @@ private: /* Friend Class */
 	friend class CImGui_Window_Sub_Prefabs;
 
 	friend class CImGui_Window_Sub_Com_Nav;
+	friend class CImGui_Window_Sub_Com_Model;
 
 public:
 	virtual void	Free() override;

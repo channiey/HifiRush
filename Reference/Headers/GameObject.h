@@ -54,6 +54,7 @@ public:
 	class CStateMachine*		Get_StateMachine();
 	class CCamera*				Get_Camera();
 	
+	class CComponent* const			Get_Component(const _uint& iIndex);
 	class CComponent* const			Get_Component(const wstring& strComponentTag) { return Find_Component(strComponentTag); };
 	COMPONENTS&						Get_Components() { return m_Components; }
 	class CMonoBehaviour* const		Get_MonoBehaviour(const _uint& iIndex);

@@ -4,6 +4,7 @@
 #include "ImGui_Window_Main_Object.h"
 
 #include "ImGui_Window_Sub_Com_Nav.h"
+#include "ImGui_Window_Sub_Com_Model.h"
 
 #include "GameObject.h"
 #include "Util_String.h"
@@ -15,15 +16,25 @@ CImGui_Window_Main_Object::CImGui_Window_Main_Object()
 
 HRESULT CImGui_Window_Main_Object::Initialize()
 {
-	/* Create Sub_Window_Prefabs */
+	/* Create Sub_Window_Nav */
 	CImGui_Window* pWindow = CImGui_Window_Sub_Com_Nav::Create();
-	NULL_CHECK_RETURN(pWindow, E_FAIL);
-	pWindow->Set_Active(FALSE);
+	{
+		if (nullptr == pWindow)
+			return E_FAIL;
 
-	m_pChildWindows.emplace(m_pImGui_Manager->str_SubWindowType[m_pImGui_Manager->WINDOW_SUB_COM_NAV], pWindow);
+		pWindow->Set_Active(FALSE);
+		m_pChildWindows.emplace(m_pImGui_Manager->str_SubWindowType[m_pImGui_Manager->WINDOW_SUB_COM_NAV], pWindow);
+	}
+	
+	/* Component - Anim */
+	pWindow = CImGui_Window_Sub_Com_Model::Create();
+	{
+		if (nullptr == pWindow)
+			return E_FAIL;
 
-	return S_OK;
-
+		pWindow->Set_Active(FALSE);
+		m_pChildWindows.emplace(m_pImGui_Manager->str_SubWindowType[m_pImGui_Manager->WINDOW_SUB_COM_MODEL], pWindow);
+	}
 
 	return S_OK;
 }
@@ -69,6 +80,7 @@ void CImGui_Window_Main_Object::Clear_Reference_Data()
 {
 	m_pObject = nullptr;
 	m_iCurComIndex = 0;
+	m_pPrevComWindow = nullptr;
 }
 
 void CImGui_Window_Main_Object::Show_Object_Info()
@@ -200,23 +212,28 @@ void CImGui_Window_Main_Object::Shwo_Object_Component()
 
 	if (ImGui::Combo("Component", &m_iCurComIndex, items, (_int)Components.size()))
 	{
-		
+		if (0 <= m_iCurComIndex)
+		{
+			CComponent* pComponent = m_pImGui_Manager->m_pCurObject->Get_Component(m_iCurComIndex);
+
+			if (nullptr != pComponent)
+			{
+				CImGui_Window* pWindow = Find_ChildWindow(Util_String::ToString(pComponent->Get_Name()).c_str());
+
+				if (nullptr != pWindow && m_pPrevComWindow != pWindow)
+				{
+					pWindow->Set_Active(!pWindow->Is_Active());
+
+					if (nullptr != m_pPrevComWindow)
+						m_pPrevComWindow->Set_Active(FALSE);
+
+					m_pPrevComWindow = pWindow;
+				}
+			}
+		}
 	}
-
-
-
-	// << : Test code 
-	if (ImGui::Button("Test_Nav"))
-	{
-		CImGui_Window* pWindow = Find_ChildWindow(m_pImGui_Manager->str_SubWindowType[m_pImGui_Manager->WINDOW_SUB_COM_NAV]);
-
-		if (nullptr != pWindow)
-			pWindow->Set_Active(!pWindow->Is_Active());
-	}
-	// >> : 
 
 	delete[] items;
-
 }
 
 CImGui_Window_Main_Object* CImGui_Window_Main_Object::Create()
