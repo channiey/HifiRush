@@ -45,11 +45,6 @@ void CCharacter::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	if (FAILED(m_pModelCom->Update(fTimeDelta)))
-		return;
-
-	Update_RootMotion();
-
 	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
 		return;
 

@@ -91,7 +91,7 @@ protected:
 protected:
 	HRESULT				Bind_ShaderResources();
 
-private:
+protected:
 	HRESULT				Update_RootMotion();
 
 protected:

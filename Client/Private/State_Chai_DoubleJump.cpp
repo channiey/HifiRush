@@ -28,7 +28,7 @@ HRESULT CState_Chai_DoubleJump::Enter()
 
 const wstring& CState_Chai_DoubleJump::Tick(const _float& fTimeDelta)
 {
-	return Check_Transition();
+	return m_strName;
 }
 
 const wstring& CState_Chai_DoubleJump::LateTick()
@@ -43,9 +43,12 @@ void CState_Chai_DoubleJump::Exit()
 
 const wstring& CState_Chai_DoubleJump::Check_Transition()
 {
-	__super::Check_Transition();
+	if (m_pChai->Get_Model()->Is_FinishAnimation())
+	{
+		return m_pChai->m_StateNames[STATE_CH::IDLE_00];
+	}
 
-	return m_pChai->m_StateNames[STATE_CH::IDLE_00];
+	return m_strName;
 }
 
 CState_Chai_DoubleJump* CState_Chai_DoubleJump::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

@@ -21,6 +21,10 @@ public:
 public:
 	const wstring& Check_Transition() override;
 
+
+private:
+	void Move(const _float& fTimeDelta);
+
 public:
 	static CState_Chai_Run* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);
 	virtual CState* Clone(void* pArg) override;

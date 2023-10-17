@@ -49,6 +49,15 @@ public:
 		next.iAnimIndex = -1;
 	}
 
+	void ClearCurAnim()
+	{
+		cur.iAnimIndex = 0;
+		cur.iCurFrame = 0;
+		cur.iNextFrame = 0;
+		cur.fFrameAcc = 0.f;
+		fTweenAcc = 0.f;
+		fTweenRatio = 0.f;
+	}
 	void ClearNextAnim()
 	{
 		next.iAnimIndex = -1;

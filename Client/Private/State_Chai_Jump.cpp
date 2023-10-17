@@ -29,7 +29,7 @@ HRESULT CState_Chai_Jump::Enter()
 
 const wstring& CState_Chai_Jump::Tick(const _float& fTimeDelta)
 {
-	return Check_Transition();
+	return m_strName;
 }
 
 const wstring& CState_Chai_Jump::LateTick()
@@ -39,13 +39,17 @@ const wstring& CState_Chai_Jump::LateTick()
 
 void CState_Chai_Jump::Exit()
 {
+	m_pChai->m_tMoveDesc.bJump = FALSE;
 }
 
 const wstring& CState_Chai_Jump::Check_Transition()
 {
-	__super::Check_Transition();
+	if (m_pChai->Get_Model()->Is_FinishAnimation())
+	{
+		return m_pChai->m_StateNames[STATE_CH::IDLE_00];
+	}
 
-	return m_pChai->m_StateNames[STATE_CH::IDLE_00];
+	return m_strName;
 }
 
 CState_Chai_Jump* CState_Chai_Jump::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

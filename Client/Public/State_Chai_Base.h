@@ -28,6 +28,9 @@ protected:
 	virtual const wstring& Check_Transition() override;
 
 protected:
+	void Set_LastFramePos();
+
+protected:
 	CChai* m_pChai = { nullptr };
 
 public:

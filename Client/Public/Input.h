@@ -23,6 +23,8 @@ public:
 	static const _bool Left();
 	static const _bool Right();
 
+
+
 	/* Action */
 	static const _bool Move();
 	static const _bool Jump();

@@ -95,6 +95,8 @@ CComponent* const CGameObject::Get_Component(const _uint& iIndex)
 		
 		iComIndex++;
 	}
+
+	return nullptr;
 }
 
 CModel* CGameObject::Get_Model()

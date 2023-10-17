@@ -20,35 +20,60 @@ HRESULT CState_Chai_Attack_1::Initialize(CStateMachine* pStateMachine, const wst
 HRESULT CState_Chai_Attack_1::Enter()
 {
 	m_pChai->m_tFightDesc.bAttack = TRUE;
-	m_pChai->m_tFightDesc.iCombo = 1;
-
-	m_pChai->Get_Model()->Set_Animation(STATE_CH::ATK_LIGHT_00, FALSE);
 
 	return S_OK;
 }
 
 const wstring& CState_Chai_Attack_1::Tick(const _float& fTimeDelta)
 {
-	return Check_Transition();
+	return m_strName;
 }
 
 const wstring& CState_Chai_Attack_1::LateTick()
 {
+	if (Input::Attack())
+	{
+		++m_pChai->m_tFightDesc.iCombo;
+
+		if (1 == m_pChai->m_tFightDesc.iCombo)
+		{
+			m_pChai->Get_Model()->Set_Animation(STATE_CH::ATK_LIGHT_00, FALSE);
+		}
+		else if (2 == m_pChai->m_tFightDesc.iCombo)
+		{
+			m_pChai->Get_Model()->Set_Animation(STATE_CH::ATK_LIGHT_01, FALSE);
+		}
+		else if (3 == m_pChai->m_tFightDesc.iCombo)
+		{
+			m_pChai->Get_Model()->Set_Animation(STATE_CH::ATK_LIGHT_02, FALSE);
+			m_pChai->m_tFightDesc.iCombo = 0;
+		}
+	}
+
 	return Check_Transition();
 }
 
 void CState_Chai_Attack_1::Exit()
 {
+	Set_LastFramePos();
 }
 
 const wstring& CState_Chai_Attack_1::Check_Transition()
 {
-	__super::Check_Transition();
+	if(m_pChai->Get_Model()->Is_FinishAnimation())
+	{
+		if (Input::Move())
+		{
+			return m_pChai->m_StateNames[STATE_CH::RUN_00];
+		}
+		else
+		{
+			return m_pChai->m_StateNames[STATE_CH::IDLE_00];
+		}
+	}
 
-	//if(m_pChai->Get_Model()->Is_FinishAnimation())
-	//	return m_pChai->m_StateNames[STATE_CH::IDLE];
 
-	return m_pChai->m_StateNames[STATE_CH::IDLE_00];
+	return m_strName;
 }
 
 CState_Chai_Attack_1* CState_Chai_Attack_1::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

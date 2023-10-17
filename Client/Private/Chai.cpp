@@ -60,6 +60,11 @@ void CChai::Tick(_float fTimeDelta)
 
 void CChai::LateTick(_float fTimeDelta)
 {
+	if (FAILED(m_pModelCom->Update(fTimeDelta)))
+		return;
+
+	__super::Update_RootMotion();
+
 	if (FAILED(m_pStateMachineCom->LateTick(fTimeDelta)))
 		return;
 

@@ -183,7 +183,7 @@ HRESULT CModel::Update_Anim(_float fTimeDelta)
 		}*/
 
 		/* 현재 애니메이션이 모두 재생되었다면 */
-		if (pCurAnim->Get_MaxFrameCount() == m_TweenDesc.cur.iCurFrame + 1)
+		if (0 == m_TweenDesc.cur.iNextFrame)
 		{
 			//m_TweenDesc.cur.fAnimAcc = 0.f;
 			m_bFinishAnim = TRUE;
@@ -262,12 +262,21 @@ void CModel::Set_Animation(const _uint& iAnimIndex, const _bool& bLoop, const _f
 {
 	m_TweenDesc.ClearNextAnim();
 
-	m_TweenDesc.next.iAnimIndex = iAnimIndex % Get_AnimationCount();
-	m_TweenDesc.next.bLoop = bLoop;
-	m_TweenDesc.next.fSpeed = fSpeed;
-
-	if(!m_TweenDesc.next.bLoop)
-		m_iPrevAnimIndex = m_TweenDesc.cur.iAnimIndex;
+	if (m_bFinishAnim)
+	{
+		m_TweenDesc.ClearCurAnim();
+		m_TweenDesc.cur.iAnimIndex = iAnimIndex % Get_AnimationCount();
+		m_TweenDesc.cur.bLoop = bLoop;
+		m_TweenDesc.cur.fSpeed = fSpeed;
+	}
+	else
+	{
+		m_TweenDesc.next.iAnimIndex = iAnimIndex % Get_AnimationCount();
+		m_TweenDesc.next.bLoop = bLoop;
+		m_TweenDesc.next.fSpeed = fSpeed;
+	}
+	/*if(!m_TweenDesc.next.bLoop)
+		m_iPrevAnimIndex = m_TweenDesc.cur.iAnimIndex;*/
 }
 
 void CModel::Set_BoneIndex(const BONE_TYPE& eType, const _int iIndex)

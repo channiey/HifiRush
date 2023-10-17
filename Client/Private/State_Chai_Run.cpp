@@ -26,6 +26,49 @@ HRESULT CState_Chai_Run::Enter()
 
 const wstring& CState_Chai_Run::Tick(const _float& fTimeDelta)
 {
+	Move(fTimeDelta);
+
+	return m_strName;
+}
+
+const wstring& CState_Chai_Run::LateTick()
+{
+	return Check_Transition();
+}
+
+void CState_Chai_Run::Exit()
+{
+}
+
+const wstring& CState_Chai_Run::Check_Transition()
+{
+	if (m_pChai->m_tFightDesc.bDamaged)
+	{
+		return m_pChai->m_StateNames[STATE_CH::DMG_LIGHT];
+	}
+
+	/* Movement */
+	
+	if (Input::Shift())
+	{
+		if (!m_pChai->m_tMoveDesc.bDash) /* Dash */
+		{
+			return m_pChai->m_StateNames[STATE_CH::DASH_FRONT_00];
+		}
+	}
+	else if (Input::Move())
+	{
+		if (m_pChai->m_tMoveDesc.bGround) /* Run */
+		{
+			return m_pChai->m_StateNames[STATE_CH::RUN_00];
+		}
+	}
+
+	return m_pChai->m_StateNames[STATE_CH::IDLE_00];
+}
+
+void CState_Chai_Run::Move(const _float& fTimeDelta)
+{
 	CTransform* pTranform = m_pChai->Get_Transform();
 
 	if (Input::Up() && !Input::Left() && !Input::Right()) // Up
@@ -59,7 +102,7 @@ const wstring& CState_Chai_Run::Tick(const _float& fTimeDelta)
 	else if (Input::Up() && Input::Left() && !Input::Right()) // Up + Left
 	{
 		Vec4 vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY()
-					+ GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY().Inverse();
+			+ GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY().Inverse();
 
 		vDir.Normalize();
 		//Vec4 vRotDir = Vec4::Lerp(pTranform->Get_State(CTransform::STATE_LOOK), vDir, fTimeDelta * 20.f);
@@ -94,48 +137,11 @@ const wstring& CState_Chai_Run::Tick(const _float& fTimeDelta)
 			+ GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY();
 
 		vDir.Normalize();
-		
+
 		//Vec4 vRotDir = Vec4::Lerp(pTranform->Get_State(CTransform::STATE_LOOK), vDir, fTimeDelta * 20.f);
 		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
 		pTranform->Set_Look(vDir);
 	}
-
-	return Check_Transition();
-}
-
-const wstring& CState_Chai_Run::LateTick()
-{
-	return Check_Transition();
-}
-
-void CState_Chai_Run::Exit()
-{
-}
-
-const wstring& CState_Chai_Run::Check_Transition()
-{
-	if (m_pChai->m_tFightDesc.bDamaged)
-	{
-		return m_pChai->m_StateNames[STATE_CH::DMG_LIGHT];
-	}
-
-	/* Movement */
-	if (Input::Move())
-	{
-		if (m_pChai->m_tMoveDesc.bGround) /* Run */
-		{
-			return m_pChai->m_StateNames[STATE_CH::RUN_00];
-		}
-	}
-	else if (Input::Shift())
-	{
-		if (!m_pChai->m_tMoveDesc.bDash) /* Dash */
-		{
-			return m_pChai->m_StateNames[STATE_CH::DASH_FRONT_00];
-		}
-	}
-
-	return m_pChai->m_StateNames[STATE_CH::IDLE_00];
 }
 
 CState_Chai_Run* CState_Chai_Run::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

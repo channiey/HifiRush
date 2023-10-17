@@ -28,7 +28,7 @@ const wstring& CState_Chai_Idle::Tick(const _float& fTimeDelta)
 {
 	// ... 
 
-	return Check_Transition();
+	return m_strName;
 }
 
 const wstring& CState_Chai_Idle::LateTick()
@@ -64,8 +64,23 @@ const wstring& CState_Chai_Idle::Check_Transition()
 			return m_pChai->m_StateNames[STATE_CH::DASH_FRONT_00];
 		}
 	}
+	//else if (Input::Jump())
+	//{
+	//	if (m_pChai->m_tMoveDesc.bGround && !m_pChai->m_tMoveDesc.bJump) /* Jump */
+	//	{
+	//		return m_pChai->m_StateNames[STATE_CH::JUMP_00];
+	//	}
+	//	if (m_pChai->m_tMoveDesc.bJump && !m_pChai->m_tMoveDesc.bDoubleJump) /* Double Jump */
+	//	{
+	//		return m_pChai->m_StateNames[STATE_CH::DOUBLE_JUMP_00];
+	//	}
+	//}
+	else if (Input::Attack())
+	{
+		return m_pChai->m_StateNames[STATE_CH::ATK_LIGHT_00];
+	}
 
-	return m_pChai->m_StateNames[STATE_CH::IDLE_00];
+	return m_strName;
 }
 
 CState_Chai_Idle* CState_Chai_Idle::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

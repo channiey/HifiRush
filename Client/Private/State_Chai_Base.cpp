@@ -96,6 +96,13 @@ const wstring& CState_Chai_Base::Check_Transition()
 	return m_pChai->m_StateNames[STATE_CH::IDLE_00];
 }
 
+void CState_Chai_Base::Set_LastFramePos()
+{
+	Vec4 vPos = m_pChai->Get_Transform()->Get_FinalPosition();
+	m_pChai->Get_Transform()->Set_Position(vPos);
+	m_pChai->Get_Transform()->Set_RootPos(Vec4::Zero);
+}
+
 CState* CState_Chai_Base::Clone(void* pArg)
 {
 	return nullptr;
