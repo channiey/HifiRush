@@ -43,6 +43,9 @@ void CState_Chai_Dash::Exit()
 
 const wstring& CState_Chai_Dash::Check_Transition()
 {	
+	if (m_pChai->Get_Model()->Is_Tween())
+		return m_strName;
+
 	if(m_pChai->Get_Model()->Is_Half_Animation())
 	{
 		if(Input::Move())

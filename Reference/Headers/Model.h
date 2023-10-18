@@ -123,8 +123,10 @@ public:
 	const _bool&			Is_Finish_Tween() const {return m_bFinishTween; }
 
 	const _bool				Is_Half_Animation();
+	const _bool				Is_OneThirds_Animation();
 	const _bool				Is_TwoThirds_Animation();
 	const _bool&			Is_Finish_Animation() { return m_bFinishAnimation; }
+	const _bool				Is_Tween();
 
 private: 
     HRESULT					Read_BoneData(const string& strPath);

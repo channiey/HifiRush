@@ -44,6 +44,9 @@ void CState_Chai_Idle::Exit()
 
 const wstring& CState_Chai_Idle::Check_Transition()
 {
+	if (m_pChai->Get_Model()->Is_Tween())
+		return m_strName;
+
 	if (m_pChai->m_tFightDesc.bDamaged)
 	{
 		return StateNames[STATE_DAMAGED];
@@ -64,21 +67,10 @@ const wstring& CState_Chai_Idle::Check_Transition()
 			return StateNames[STATE_DASH];
 		}
 	}
-	//else if (Input::Jump())
-	//{
-	//	if (m_pChai->m_tMoveDesc.bGround && !m_pChai->m_tMoveDesc.bJump) /* Jump */
-	//	{
-	//		return StateNames[ANIM_CH::JUMP_00];
-	//	}
-	//	if (m_pChai->m_tMoveDesc.bJump && !m_pChai->m_tMoveDesc.bDoubleJump) /* Double Jump */
-	//	{
-	//		return StateNames[ANIM_CH::DOUBLE_JUMP_00];
-	//	}
-	//}
-	/*else if (Input::Attack())
+	else if (Input::Attack()) /* Attack */
 	{
 		return StateNames[STATE_ATTACK];
-	}*/
+	}
 
 	return m_strName;
 }

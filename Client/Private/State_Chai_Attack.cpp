@@ -19,25 +19,40 @@ HRESULT CState_Chai_Attack::Initialize(CStateMachine* pStateMachine, const wstri
 
 HRESULT CState_Chai_Attack::Enter()
 {
-	++m_pChai->m_tFightDesc.iStep;
-
-	if(0 == m_pChai->m_tFightDesc.iStep)
-		m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_00, FALSE);
-	else if (1 == m_pChai->m_tFightDesc.iStep)
-		m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_01, FALSE);
-	else if (2 == m_pChai->m_tFightDesc.iStep)
-		m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_02, FALSE);
-	else if (3 == m_pChai->m_tFightDesc.iStep)
-	{
-		m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_03, FALSE);
-		m_pChai->m_tFightDesc.iStep = -1;
-	}
+	m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_00, FALSE);
 
 	return S_OK;
 }
 
 const wstring& CState_Chai_Attack::Tick(const _float& fTimeDelta)
 {
+	CModel* pModel = m_pChai->Get_Model();
+	
+	if (GAME_INSTNACE->Key_Down(VK_LBUTTON) && pModel->Is_OneThirds_Animation())
+	{
+		cout << "IN\n";
+
+		++m_pChai->m_tFightDesc.iStep;
+
+		switch (m_pChai->m_tFightDesc.iStep)
+		{
+		case 0:
+			m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_01, FALSE);
+			break;
+		case 1:
+			m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_02, FALSE);
+			break;
+		case 2:
+		{
+			m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_03, FALSE);
+			m_pChai->m_tFightDesc.iStep = -1;
+		}
+		break;
+		default:
+			break;
+		}
+	}
+
 	return m_strName;
 }
 
@@ -49,12 +64,15 @@ const wstring& CState_Chai_Attack::LateTick()
 
 void CState_Chai_Attack::Exit()
 {
-	//Set_LastFramePos();
+	m_pChai->m_tFightDesc.iStep = -1;
 }
 
 const wstring& CState_Chai_Attack::Check_Transition()
 {
-	if(m_pChai->Get_Model()->Is_Finish_Animation())
+	if (m_pChai->Get_Model()->Is_Tween())
+		return m_strName;
+
+	if(m_pChai->Get_Model()->Is_TwoThirds_Animation())
 	{
 		if (Input::Move())
 		{

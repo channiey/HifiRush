@@ -26,17 +26,17 @@ public:
 	const Vec4		Get_Position()  const { return  static_cast<Vec4>(m_WorldMatrix.m[STATE_POSITION]); }
 	const Vec4		Get_FinalPosition();
 
-	const Vec4		Get_Right()		const { return  static_cast<Vec4>(m_WorldMatrix.m[STATE_RIGHT]); }
-	const Vec4		Get_Left()		const { return -(static_cast<Vec4>(m_WorldMatrix.m[STATE_RIGHT])); }
-	const Vec4		Get_Up()		const { return  static_cast<Vec4>(m_WorldMatrix.m[STATE_UP]); }
-	const Vec4		Get_Down()		const { return -(static_cast<Vec4>(m_WorldMatrix.m[STATE_UP])); }
-	const Vec4		Get_Forward()	const { return  static_cast<Vec4>(m_WorldMatrix.m[STATE_LOOK]); }
-	const Vec4		Get_Backward()	const { return -(static_cast<Vec4>(m_WorldMatrix.m[STATE_LOOK])); }
+	Vec4		Get_Right()		const { return  static_cast<Vec4>(m_WorldMatrix.m[STATE_RIGHT]); }
+	Vec4		Get_Left()		const { return -(static_cast<Vec4>(m_WorldMatrix.m[STATE_RIGHT])); }
+	Vec4		Get_Up()		const { return  static_cast<Vec4>(m_WorldMatrix.m[STATE_UP]); }
+	Vec4		Get_Down()		const { return -(static_cast<Vec4>(m_WorldMatrix.m[STATE_UP])); }
+	Vec4		Get_Forward()	const { return  static_cast<Vec4>(m_WorldMatrix.m[STATE_LOOK]); }
+	Vec4		Get_Backward()	const { return -(static_cast<Vec4>(m_WorldMatrix.m[STATE_LOOK])); }
 
 	const Matrix&	Get_LocalMat() const { return m_WorldMatrix; }
 	const Matrix	Get_WorldMat(); /* 루트 애니메이션 포지션 적용되지 않은 매트릭스 */
 	const Matrix	Get_FinalMat(); /* 루트 애니메이션 포지션 적용된 매트릭스 */
-	const Vec4		Get_State(STATE eState) { return XMLoadFloat4x4(&m_WorldMatrix).r[eState]; }
+	Vec4		Get_State(STATE eState) { return XMLoadFloat4x4(&m_WorldMatrix).r[eState]; }
 	const Vec4		Get_RootPos() const { return m_vRootPos; }
 public: 
 	void	Set_Scale(const Vec3& vScale);
