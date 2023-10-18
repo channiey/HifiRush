@@ -366,14 +366,11 @@
     <ClInclude Include="..\Public\State_Chai_Run.h">
       <Filter>02.GameObjects\03.Character\00.Player\00.Models\00.Chai\StateMachine\State\02.Movement\00.Run</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\State_Chai_Attack_1.h">
+    <ClInclude Include="..\Public\State_Chai_Attack.h">
       <Filter>02.GameObjects\03.Character\00.Player\00.Models\00.Chai\StateMachine\State\03.Action\00.Attack</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Chai_Jump.h">
       <Filter>02.GameObjects\03.Character\00.Player\00.Models\00.Chai\StateMachine\State\02.Movement\02.Jump</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\State_Chai_DoubleJump.h">
-      <Filter>02.GameObjects\03.Character\00.Player\00.Models\00.Chai\StateMachine\State\02.Movement\03.Double_Jump</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Chai_Parry.h">
       <Filter>02.GameObjects\03.Character\00.Player\00.Models\00.Chai\StateMachine\State\03.Action\02.Parry</Filter>
@@ -506,11 +503,8 @@
     <ClCompile Include="..\Private\State_Chai_Run.cpp">
       <Filter>02.GameObjects\03.Character\00.Player\00.Models\00.Chai\StateMachine\State\02.Movement\00.Run</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\State_Chai_Attack_1.cpp">
+    <ClCompile Include="..\Private\State_Chai_Attack.cpp">
       <Filter>02.GameObjects\03.Character\00.Player\00.Models\00.Chai\StateMachine\State\03.Action\00.Attack</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\State_Chai_DoubleJump.cpp">
-      <Filter>02.GameObjects\03.Character\00.Player\00.Models\00.Chai\StateMachine\State\02.Movement\03.Double_Jump</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Chai_Jump.cpp">
       <Filter>02.GameObjects\03.Character\00.Player\00.Models\00.Chai\StateMachine\State\02.Movement\02.Jump</Filter>

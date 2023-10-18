@@ -207,11 +207,10 @@
     <ClInclude Include="..\public\MainApp.h" />
     <ClInclude Include="..\Public\Chai.h" />
     <ClInclude Include="..\Public\Peppermint.h" />
-    <ClInclude Include="..\Public\State_Chai_Attack_1.h" />
+    <ClInclude Include="..\Public\State_Chai_Attack.h" />
     <ClInclude Include="..\Public\State_Chai_Base.h" />
     <ClInclude Include="..\Public\State_Chai_Damaged.h" />
     <ClInclude Include="..\Public\State_Chai_Dash.h" />
-    <ClInclude Include="..\Public\State_Chai_DoubleJump.h" />
     <ClInclude Include="..\Public\State_Chai_Idle.h" />
     <ClInclude Include="..\Public\State_Chai_Jump.h" />
     <ClInclude Include="..\Public\State_Chai_Parry.h" />
@@ -281,11 +280,10 @@
     <ClCompile Include="..\private\MainApp.cpp" />
     <ClCompile Include="..\Private\Chai.cpp" />
     <ClCompile Include="..\Private\Peppermint.cpp" />
-    <ClCompile Include="..\Private\State_Chai_Attack_1.cpp" />
+    <ClCompile Include="..\Private\State_Chai_Attack.cpp" />
     <ClCompile Include="..\Private\State_Chai_Base.cpp" />
     <ClCompile Include="..\Private\State_Chai_Damaged.cpp" />
     <ClCompile Include="..\Private\State_Chai_Dash.cpp" />
-    <ClCompile Include="..\Private\State_Chai_DoubleJump.cpp" />
     <ClCompile Include="..\Private\State_Chai_Idle.cpp" />
     <ClCompile Include="..\Private\State_Chai_Jump.cpp" />
     <ClCompile Include="..\Private\State_Chai_Parry.cpp" />

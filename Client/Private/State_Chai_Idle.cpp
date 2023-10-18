@@ -19,7 +19,7 @@ HRESULT CState_Chai_Idle::Initialize(CStateMachine* pStateMachine, const wstring
 
 HRESULT CState_Chai_Idle::Enter()
 {
-	m_pChai->Get_Model()->Set_Animation(STATE_CH::IDLE_00, TRUE); /* TODO:: 애니메이션 다 적용하고 CChai에 있는 enum으로 사용 */
+	m_pChai->Get_Model()->Set_Animation(ANIM_CH::IDLE, TRUE); /* TODO:: 애니메이션 다 적용하고 CChai에 있는 enum으로 사용 */
 
 	return S_OK;
 }
@@ -46,7 +46,7 @@ const wstring& CState_Chai_Idle::Check_Transition()
 {
 	if (m_pChai->m_tFightDesc.bDamaged)
 	{
-		return m_pChai->m_StateNames[STATE_CH::DMG_LIGHT];
+		return StateNames[STATE_DAMAGED];
 	}
 
 	/* Movement */
@@ -54,31 +54,31 @@ const wstring& CState_Chai_Idle::Check_Transition()
 	{
 		if (m_pChai->m_tMoveDesc.bGround) /* Run */
 		{
-			return m_pChai->m_StateNames[STATE_CH::RUN_00];
+			return StateNames[STATE_RUN];
 		}
 	}
 	else if (Input::Shift())
 	{
 		if (!m_pChai->m_tMoveDesc.bDash) /* Dash */
 		{
-			return m_pChai->m_StateNames[STATE_CH::DASH_FRONT_00];
+			return StateNames[STATE_DASH];
 		}
 	}
 	//else if (Input::Jump())
 	//{
 	//	if (m_pChai->m_tMoveDesc.bGround && !m_pChai->m_tMoveDesc.bJump) /* Jump */
 	//	{
-	//		return m_pChai->m_StateNames[STATE_CH::JUMP_00];
+	//		return StateNames[ANIM_CH::JUMP_00];
 	//	}
 	//	if (m_pChai->m_tMoveDesc.bJump && !m_pChai->m_tMoveDesc.bDoubleJump) /* Double Jump */
 	//	{
-	//		return m_pChai->m_StateNames[STATE_CH::DOUBLE_JUMP_00];
+	//		return StateNames[ANIM_CH::DOUBLE_JUMP_00];
 	//	}
 	//}
-	else if (Input::Attack())
+	/*else if (Input::Attack())
 	{
-		return m_pChai->m_StateNames[STATE_CH::ATK_LIGHT_00];
-	}
+		return StateNames[STATE_ATTACK];
+	}*/
 
 	return m_strName;
 }

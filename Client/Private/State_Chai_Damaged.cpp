@@ -19,7 +19,7 @@ HRESULT CState_Chai_Damaged::Initialize(CStateMachine* pStateMachine, const wstr
 
 HRESULT CState_Chai_Damaged::Enter()
 {
-	m_pChai->Get_Model()->Set_Animation(STATE_CH::DMG_LIGHT, FALSE);
+	m_pChai->Get_Model()->Set_Animation(ANIM_CH::DMG_LIGHT, FALSE);
 
 	return S_OK;
 }
@@ -43,7 +43,7 @@ const wstring& CState_Chai_Damaged::Check_Transition()
 {
 	__super::Check_Transition();
 
-	return m_pChai->m_StateNames[STATE_CH::IDLE_00];
+	return StateNames[STATE_IDLE];
 }
 
 CState_Chai_Damaged* CState_Chai_Damaged::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

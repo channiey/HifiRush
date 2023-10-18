@@ -16,7 +16,7 @@ public:
 {
 	_int	iAnimIndex	= 0;	
 	_uint	iCurFrame	= 0;
-	_uint	iNextFrame	= 0;
+	_uint	iNextFrame	= 1;
 	_float	fRatio		= 0.f;
 	_float	fFrameAcc	= 0.f;	
 	_float	fAnimAcc	= 0.f;
@@ -27,7 +27,7 @@ public:
 	void ClearAnim()
 	{
 		iCurFrame	= 0;
-		iNextFrame	= 0;
+		iNextFrame	= 1;
 		fRatio		= 0.f;
 		fFrameAcc	= 0.f;
 	}
@@ -49,15 +49,6 @@ public:
 		next.iAnimIndex = -1;
 	}
 
-	void ClearCurAnim()
-	{
-		cur.iAnimIndex = 0;
-		cur.iCurFrame = 0;
-		cur.iNextFrame = 0;
-		cur.fFrameAcc = 0.f;
-		fTweenAcc = 0.f;
-		fTweenRatio = 0.f;
-	}
 	void ClearNextAnim()
 	{
 		next.iAnimIndex = -1;
@@ -102,6 +93,10 @@ public:
 	class CBone*			Get_Bone(const char* pNodeName); 
 	class CBone*			Get_Bone(const _int& iIndex);
 	const Matrix			Get_AnimBoneMat(const BONE_TYPE& eType);
+	const Matrix			Get_AnimBoneMatNoneLerp(const BONE_TYPE& eType);
+	const Matrix			Get_SocketBoneMat(const BONE_TYPE& eType);
+	const Vec4				Get_AnimBonePos(const BONE_TYPE& eType);
+	const Vec4				Get_AnimBoneRootNoneLerp();
 
 
 	vector<class CMesh*>*	Get_Meshes() { return &m_Meshes; }
@@ -114,6 +109,7 @@ public:
 	const _uint				Get_AnimationCount() const { return (_uint)m_Animations.size(); }
 	const KEYFRAME_DESC		Get_CurAnimation() const { return m_TweenDesc.cur; }
 	const _uint				Get_CurAnimationIndex() const { return m_TweenDesc.cur.iAnimIndex; }
+	const TWEEN_DESC		Get_TweenDesc() const { return m_TweenDesc; }
 
 	_matrix					Get_PivotMatrix() { return XMLoadFloat4x4(&m_PivotMatrix); }
 	const TYPE&				Get_Type() const { return m_eModelType; }
@@ -124,7 +120,11 @@ public:
 
 public:
 	const _bool&			Is_RootMotion() const { return m_bRootAnimation; }
-	const _bool&			Is_FinishAnimation() const { return m_bFinishAnim; }
+	const _bool&			Is_Finish_Tween() const {return m_bFinishTween; }
+
+	const _bool				Is_Half_Animation();
+	const _bool				Is_TwoThirds_Animation();
+	const _bool&			Is_Finish_Animation() { return m_bFinishAnimation; }
 
 private: 
     HRESULT					Read_BoneData(const string& strPath);
@@ -143,6 +143,9 @@ private:
 
 	HRESULT					Clear_Cache();
 
+	void					Set_RootPosition_Tween(); /* 트윈 중 */
+	void					Set_RootPosition(); /* 트윈 없는 싱글 애니메이션 */
+
 private: 
 	TYPE						m_eModelType = TYPE_END;
 	Matrix						m_PivotMatrix = {};
@@ -155,11 +158,12 @@ private:
 	ID3D11ShaderResourceView*	m_pSrv = { nullptr };
 	vector<ANIM_TRANSFORM>		m_AnimTransforms;		/* 루트랑 소켓 매트릭스만 저장 */
 	TWEEN_DESC					m_TweenDesc = {};
-	_int						m_iPrevAnimIndex = -1;
-	_bool						m_bFinishAnim = FALSE;
-	_bool						m_bTweenFrame = TRUE; // 다음 애니메이션 트위닝시 다음 애님 프레임을 증가시킬지
 
+	_int						m_iPrevAnimIndex = -1;
+	Vec4						m_vPrevAnimRoot = {};
 	_bool						m_bRootAnimation = TRUE;
+	_bool						m_bFinishAnimation = FALSE;
+	_bool						m_bFinishTween = FALSE;
 	_int						m_AnimBoneIndecies[BONE_END];
 
 public:

@@ -7,9 +7,9 @@ class CStateMachine;
 END
 
 BEGIN(Client)
-enum STATE_CH 
+enum ANIM_CH 
 { 
-	ANNOY_00,
+	ANNOY_00, 
 	ANNOY_01,
 
 	ATK_FINAL_B_00,
@@ -34,44 +34,67 @@ enum STATE_CH
 	ATK_SPC_1,
 	ATK_SPC_2,
 
-	CEREMONY_00,
+	CEREMONY,
 
 	CLEAR_00,
 	CLEAR_01,
 
 	DMG_STRONG,
 	DMG_LIGHT,
-	DMG_ELEC_00,
+	DMG_ELEC,
 	DMG_HEAP_00,
 	DMG_HEAP_01,
 	DMG_HEAP_02,
 
-	DASH_BACK_00,
-	DASH_FRONT_00,
-	DASH_LEFT_00,
-	DASH_RIGHT_00,
+	DASH_BACK,
+	DASH_FRONT,
+	DASH_LEFT,
+	DASH_RIGHT,
 
-	DOUBLE_JUMP_00,
-	DOUBLE_JUMP_FALL_00,
+	DOUBLE_JUMP,
+	FALL_DOUBLE_JUMP,
 
 	FALL_00,
 
-	IDLE_00,
+	IDLE,
 
-	JUMP_00,
+	JUMP,
 	JUMP_DASH_00,
 	JUMP_DASH_01,
 
-	LAND_00,
+	LAND,
 	
 	PARRY_00,
 	PARRY_01,
 	PARRY_02,
 
-	RUN_00,
-	TALK_00,
+	RUN,
+	TALK,
 
-	STATE_END 
+	ANIM_END ,
+};
+
+enum STATE_CH
+{
+	STATE_IDLE,
+	STATE_RUN,
+	STATE_DASH,
+	STATE_JUMP,
+	STATE_ATTACK,
+	STATE_DAMAGED,
+	STATE_PARRY,
+	STATE_END
+};
+
+const wstring StateNames[STATE_END]
+{
+	L"IDLE",
+	L"RUN",
+	L"DASH",
+	L"JUMP",
+	L"ATTACK",
+	L"DAMAGED",
+	L"PARRY"
 };
 
 class CChai final : public CCharacter
@@ -104,7 +127,6 @@ private:
 
 private: 
 	CStateMachine*			m_pStateMachineCom = { nullptr };
-	vector<wstring>			m_StateNames;
 
 public:
 	static CChai* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -122,10 +144,9 @@ private:
 	friend class CState_Chai_Run;
 	friend class CState_Chai_Dash;
 	friend class CState_Chai_Jump;
-	friend class CState_Chai_DoubleJump;
 	
 	/* Action */
-	friend class CState_Chai_Attack_1;
+	friend class CState_Chai_Attack;
 	friend class CState_Chai_Damaged;
 	friend class CState_Chai_Parry;
 };

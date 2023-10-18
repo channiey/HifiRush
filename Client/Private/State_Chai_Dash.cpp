@@ -21,42 +21,37 @@ HRESULT CState_Chai_Dash::Enter()
 {
 	m_pChai->m_tMoveDesc.bDash = TRUE;
 
-	m_pChai->Get_Model()->Set_Animation(STATE_CH::DASH_FRONT_00, FALSE);
+	m_pChai->Get_Model()->Set_Animation(ANIM_CH::DASH_FRONT, FALSE);
 
 	return S_OK;
 }
 
 const wstring& CState_Chai_Dash::Tick(const _float& fTimeDelta)
 {
-
 	return m_strName;
 }
 
 const wstring& CState_Chai_Dash::LateTick()
 {
-	
 	return Check_Transition();
 }
 
 void CState_Chai_Dash::Exit()
 {
 	m_pChai->m_tMoveDesc.bDash = FALSE;
-
-	Set_LastFramePos();
 }
 
 const wstring& CState_Chai_Dash::Check_Transition()
-{
-	if (m_pChai->Get_Model()->Is_FinishAnimation())
+{	
+	if(m_pChai->Get_Model()->Is_Half_Animation())
 	{
-		if (Input::Move())
-		{
-			return m_pChai->m_StateNames[STATE_CH::RUN_00];
-		}
-		else
-		{
-			return m_pChai->m_StateNames[STATE_CH::IDLE_00];
-		}
+		if(Input::Move())
+			return StateNames[STATE_RUN];
+	}
+
+	if (m_pChai->Get_Model()->Is_TwoThirds_Animation())
+	{
+		return StateNames[STATE_IDLE];
 	}
 
 	return m_strName;

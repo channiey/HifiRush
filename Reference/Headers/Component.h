@@ -69,9 +69,9 @@ public:
 	const _bool& Is_Active() const { return m_bActive; }
 
 public:
-	class CGameObject* Get_Owner() const { return m_pOwenr; }
+	class CGameObject* Get_Owner() const { return m_pOwner; }
 	const wstring& Get_Name() const { return m_strName; }
-	HRESULT Set_Owner(class CGameObject* pParent) { if (nullptr == pParent) return E_FAIL; else m_pOwenr = pParent; return S_OK; }
+	HRESULT Set_Owner(class CGameObject* pParent) { if (nullptr == pParent) return E_FAIL; else m_pOwner = pParent; return S_OK; }
 	void Set_Name(const wstring& strName) { m_strName = strName; }
 public:
 	/* Active 이벤트 처리를 위한 가상함수화, 오버라이드시 __super::Active()먼저 호출 필요 */
@@ -85,7 +85,7 @@ protected:
 
 	_bool					m_bClone = { FALSE };
 	/* 아직 미사용 */
-	class CGameObject*		m_pOwenr = { nullptr };
+	class CGameObject*		m_pOwner = { nullptr };
 
 	wstring					m_strName;
 

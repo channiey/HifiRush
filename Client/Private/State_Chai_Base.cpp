@@ -26,7 +26,7 @@ const wstring& CState_Chai_Base::Check_Transition()
 {
 	//if (m_pChai->m_tFightDesc.bDamaged)
 	//{
-	//	return m_pChai->m_StateNames[STATE_CH::DMG_LIGHT];
+	//	return StateNames[ANIM_CH::DMG_LIGHT];
 	//}
 
 	///* Movement */
@@ -34,30 +34,30 @@ const wstring& CState_Chai_Base::Check_Transition()
 	//{
 	//	if (m_pChai->m_tMoveDesc.bGround) /* Run */
 	//	{
-	//		return m_pChai->m_StateNames[STATE_CH::RUN_00];
+	//		return StateNames[ANIM_CH::RUN_00];
 	//	}
 	//}
 	//else if (Input::Shift()) 
 	//{
 	//	if (!m_pChai->m_tMoveDesc.bDash) /* Dash */
 	//	{
-	//		return m_pChai->m_StateNames[STATE_CH::DASH_FRONT_00];
+	//		return StateNames[ANIM_CH::DASH_FRONT_00];
 	//	}
 	//}
 	//else if (Input::Jump())
 	//{
 	//	if (m_pChai->m_tMoveDesc.bGround) /* Jump */
 	//	{
-	//		return m_pChai->m_StateNames[STATE_CH::JUMP_00];
+	//		return StateNames[ANIM_CH::JUMP_00];
 	//	}
 	//	else if (m_pChai->m_tMoveDesc.bJump) /* Double Jump */
 	//	{
-	//		return m_pChai->m_StateNames[STATE_CH::DOUBLE_JUMP_00];
+	//		return StateNames[ANIM_CH::DOUBLE_JUMP_00];
 	//	}
 	//}
 	//else if (!m_pChai->m_tMoveDesc.bGround && !m_pChai->m_tMoveDesc.bJump) /* Fall */
 	//{
-	//	return m_pChai->m_StateNames[STATE_CH::FALL_00];
+	//	return StateNames[ANIM_CH::FALL_00];
 	//}
 
 	///* Action */
@@ -65,17 +65,17 @@ const wstring& CState_Chai_Base::Check_Transition()
 	//{
 	//	if (!m_pChai->m_tFightDesc.bAttack)
 	//	{
-	//		return m_pChai->m_StateNames[STATE_CH::ATK_LIGHT_00];
+	//		return StateNames[ANIM_CH::ATK_LIGHT_00];
 	//	}
 	//	else
 	//	{
 	//		if (1 == m_pChai->m_tFightDesc.iCombo)
 	//		{
-	//			return m_pChai->m_StateNames[STATE_CH::ATK_LIGHT_01];
+	//			return StateNames[ANIM_CH::ATK_LIGHT_01];
 	//		}
 	//		else if (2 == m_pChai->m_tFightDesc.iCombo)
 	//		{
-	//			return m_pChai->m_StateNames[STATE_CH::ATK_LIGHT_02];
+	//			return StateNames[ANIM_CH::ATK_LIGHT_02];
 	//		}
 	//	}
 	//}
@@ -86,14 +86,14 @@ const wstring& CState_Chai_Base::Check_Transition()
 	//else if (Input::Parry()) /* Parry */
 	//{
 	//	if (!m_pChai->m_tFightDesc.bParry)
-	//		return m_pChai->m_StateNames[STATE_CH::PARRY_00];
+	//		return StateNames[ANIM_CH::PARRY_00];
 	//}
 	//else if (Input::Magnet()) /* Magnet */
 	//{
 	//	/* 근처에 자석 있는지 등 조건 확인 후 리턴 */
 	//}
 
-	return m_pChai->m_StateNames[STATE_CH::IDLE_00];
+	return StateNames[STATE_IDLE];
 }
 
 void CState_Chai_Base::Set_LastFramePos()

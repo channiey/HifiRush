@@ -2,12 +2,12 @@
 #include "State_Chai_Base.h"
 
 BEGIN(Client)
-class CState_Chai_Attack_1 final : public CState_Chai_Base
+class CState_Chai_Attack final : public CState_Chai_Base
 {
 private:
-	CState_Chai_Attack_1();
-	CState_Chai_Attack_1(const CState_Chai_Attack_1& rhs);
-	virtual ~CState_Chai_Attack_1() = default;
+	CState_Chai_Attack();
+	CState_Chai_Attack(const CState_Chai_Attack& rhs);
+	virtual ~CState_Chai_Attack() = default;
 
 public:
 	virtual HRESULT Initialize(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);
@@ -22,7 +22,7 @@ public:
 	const wstring& Check_Transition() override;
 
 public:
-	static CState_Chai_Attack_1* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);
+	static CState_Chai_Attack* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);
 	virtual CState* Clone(void* pArg) override;
 	virtual void Free() override;
 };

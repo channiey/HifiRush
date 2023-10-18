@@ -106,7 +106,7 @@ HRESULT CCharacter::Update_RootMotion()
 	if (!m_pModelCom->Is_RootMotion())
 		return S_OK;
 
-	m_pTransformCom->Set_RootPos(Vec4(m_pModelCom->Get_AnimBoneMat(CModel::BONE_ROOT).m[3]));
+	m_pTransformCom->Set_RootPos(m_pModelCom->Get_AnimBonePos(CModel::BONE_ROOT));
 
 	return S_OK;
 }

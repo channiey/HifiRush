@@ -27,12 +27,13 @@ HRESULT CLevel_Proto::Initialize()
 	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, g_StrLayerID[LAYER_PLAYER], L"Player_Chai"))
 		return E_FAIL;
 
-	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, g_StrLayerID[LAYER_ENV_STATIC], L"Env_Static_Terrain"))
+	/*if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, g_StrLayerID[LAYER_ENV_STATIC], L"Env_Static_Terrain"))
+		return E_FAIL;*/
+
+	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, g_StrLayerID[LAYER_ENV_STATIC], L"Env_Static_Bldg_Inside_Battle_A"))
 		return E_FAIL;
 
-	/*if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, g_StrLayerID[LAYER_ENV_STATIC], L"Env_Static_Bldg_Inside_Battle_A"))
-		return E_FAIL;
-	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, g_StrLayerID[LAYER_ENV_STATIC], L"Env_Static_Bldg_Outside_BK"))
+	/*if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, g_StrLayerID[LAYER_ENV_STATIC], L"Env_Static_Bldg_Outside_BK"))
 		return E_FAIL;*/
  	return S_OK;
 }

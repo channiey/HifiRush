@@ -329,8 +329,8 @@ void CTransform::LookAt(Vec4 vPoint)
 
 const Matrix CTransform::Get_WorldMat()
 {
-	if (m_pOwenr->Is_Parent())
-		return m_pOwenr->Get_Parent()->Get_Transform()->Get_WorldMat() * m_WorldMatrix;
+	if (m_pOwner->Is_Parent())
+		return m_pOwner->Get_Parent()->Get_Transform()->Get_WorldMat() * m_WorldMatrix;
 	
 	return m_WorldMatrix;
 }
@@ -343,8 +343,8 @@ const Matrix CTransform::Get_FinalMat()
 
 	memcpy(&matFinal.m[3], &vfinalPos, sizeof(Vec3));
 
-	if (m_pOwenr->Is_Parent())
-		return m_pOwenr->Get_Parent()->Get_Transform()->Get_FinalMat() * matFinal;
+	if (m_pOwner->Is_Parent())
+		return m_pOwner->Get_Parent()->Get_Transform()->Get_FinalMat() * matFinal;
 
 	return matFinal;
 }
