@@ -1,6 +1,10 @@
 #include "..\Default\stdafx.h"
 #include "State_Chai_Idle.h"
 
+#ifdef _DEBUG
+#include "ImGui_Manager.h"
+#endif // _DEBUG
+
 CState_Chai_Idle::CState_Chai_Idle()
 {
 }
@@ -68,7 +72,12 @@ const wstring& CState_Chai_Idle::Check_Transition()
 	}
 	else if (Input::Attack()) 
 	{
-		return StateNames[STATE_ATTACK];
+#ifdef _DEBUG
+if(!CImGui_Manager::GetInstance()->Is_ClickedWindow())
+	return StateNames[STATE_ATTACK];	
+#else
+	return StateNames[STATE_ATTACK];
+#endif // _DEBUG
 	}
 	else if (Input::Parry())
 	{

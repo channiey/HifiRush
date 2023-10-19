@@ -4,7 +4,7 @@
 BEGIN(Client)
 class CState_Chai_Attack final : public CState_Chai_Base
 {
-	enum class ATTACK_TYPE { LIGHT, STRONG, SPECIAL, TYPEEND };
+	enum class ATTACK_TYPE { LIGHT, STRONG, THROW, SPECIAL, TYPEEND };
 
 private:
 	CState_Chai_Attack();

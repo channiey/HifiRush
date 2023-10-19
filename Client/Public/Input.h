@@ -16,8 +16,6 @@ public:
 	static const _bool Space();
 	static const _bool Shift();
 	static const _bool Ctrl();
-	static const _bool LBtn();
-	static const _bool RBtn();
 	static const _bool Up();
 	static const _bool Down();
 	static const _bool Left();
@@ -29,11 +27,18 @@ public:
 	static const _bool Move();
 	static const _bool Jump();
 
-	static const _bool Attack();
 	static const _bool Parry();
 	static const _bool Interact();
 	static const _bool Magnet();
 
+	static const _bool Attack();
+	static const _bool LBtn();
+	static const _bool RBtn();
+	static const _bool MBtn();
+
+	static _bool bLeft;
+	static _bool bRight;
+	static _bool bCenter;
 
 public:
 	virtual void Free() override;

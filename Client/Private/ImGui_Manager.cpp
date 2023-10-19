@@ -92,12 +92,21 @@ HRESULT CImGui_Manager::Render()
 
 	FAILED_CHECK_RETURN(ImGui_Render(), E_FAIL);
 
-	m_bClickedWindow = ImGui::GetIO().WantCaptureMouse && ImGui::IsMouseDown(0) ? TRUE : FALSE;
 
 	/* Picking */
 	//Picking_Event();
 
 	return S_OK;
+}
+
+const _bool CImGui_Manager::Is_ClickedWindow()
+{
+	if(ImGui::GetIO().WantCaptureMouse 
+		&& ((GAME_INSTNACE->Key_Down(VK_LBUTTON) || GAME_INSTNACE->Key_Pressing(VK_LBUTTON))
+		|| (GAME_INSTNACE->Key_Down(VK_RBUTTON) || GAME_INSTNACE->Key_Pressing(VK_RBUTTON))))
+	return TRUE;
+
+	return FALSE;
 }
 
 HRESULT CImGui_Manager::ImGui_SetUp(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

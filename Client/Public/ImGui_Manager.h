@@ -63,7 +63,7 @@ public:
 
 public:
 	const _bool&	Is_Active() const { return m_bActive; }
-	const _bool		Is_ClickedWindow() const { return m_bClickedWindow; }
+	const _bool		Is_ClickedWindow();
 	const _bool&	Is_EdittingAnim() const { return m_bEdittingAnim; }
 
 	void			Set_Active(const _bool& bActive) { m_bActive = bActive; }

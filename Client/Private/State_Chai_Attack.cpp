@@ -19,8 +19,21 @@ HRESULT CState_Chai_Attack::Initialize(CStateMachine* pStateMachine, const wstri
 
 HRESULT CState_Chai_Attack::Enter()
 {
-	m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_00, FALSE, 1.4f);
-
+	if (Input::LBtn())
+	{
+		m_eAttackType = ATTACK_TYPE::LIGHT;
+		m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_00, FALSE);
+	}
+	else if (Input::RBtn())
+	{
+		m_eAttackType = ATTACK_TYPE::STRONG;
+		m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_SINGLE_00, FALSE);
+	}
+	else if (Input::MBtn())
+	{
+		m_eAttackType = ATTACK_TYPE::THROW;
+		m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_SINGLE_02, FALSE);
+	}
 	return S_OK;
 }
 
@@ -28,7 +41,7 @@ const wstring& CState_Chai_Attack::Tick(const _float& fTimeDelta)
 {
 	CModel* pModel = m_pChai->Get_Model();
 	
-	if (Input::LBtn() && pModel->Is_OneThirds_Animation())
+	if (Input::Attack() && pModel->Is_OneThirds_Animation())
 	{
 		++m_pChai->m_tFightDesc.iStep;
 		
@@ -36,18 +49,36 @@ const wstring& CState_Chai_Attack::Tick(const _float& fTimeDelta)
 		{
 		case 0: 
 		{
-			m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_01, FALSE, 1.4f);
-			break;
+			if (ATTACK_TYPE::LIGHT == m_eAttackType && Input::LBtn())
+			{
+				m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_01, FALSE);
+			}
+			else if (ATTACK_TYPE::STRONG == m_eAttackType && Input::RBtn())
+			{
+				m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_SINGLE_01, FALSE);
+			}
 		}
+			break;
 		case 1:
 		{
-			m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_02, FALSE, 1.4f);
+			if (ATTACK_TYPE::LIGHT == m_eAttackType && Input::LBtn())
+			{
+				m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_02, FALSE);
+			}
+			else if (ATTACK_TYPE::STRONG == m_eAttackType && Input::RBtn())
+			{
+				m_pChai->m_tFightDesc.iStep = -1;
+				m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_SPC_2, FALSE);
+			}
 		}
 			break;
 		case 2:
 		{
-			m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_03, FALSE, 1.4f);
-			m_pChai->m_tFightDesc.iStep = -1;
+			if (ATTACK_TYPE::LIGHT == m_eAttackType && Input::LBtn())
+			{
+				m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_03, FALSE);
+				m_pChai->m_tFightDesc.iStep = -1;
+			}
 		}
 			break;
 		default:

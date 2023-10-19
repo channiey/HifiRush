@@ -20,7 +20,7 @@ public:
 	_float	fRatio		= 0.f;
 	_float	fFrameAcc	= 0.f;	
 	_float	fAnimAcc	= 0.f;
-	_float	fSpeed		= 1.f;	
+	_float	fSpeed		= 1.4f;	
 
 	_int	bLoop		= TRUE;
 
@@ -115,7 +115,7 @@ public:
 	const TYPE&				Get_Type() const { return m_eModelType; }
 
 public:
-	void					Set_Animation(const _uint& iAnimIndex, const _bool& bLoop = FALSE, const _float& fSpeed = 1.f);
+	void					Set_Animation(const _uint& iAnimIndex, const _bool& bLoop = FALSE, const _float& fSpeed = 1.4f);
 	void					Set_BoneIndex(const BONE_TYPE& eType, const _int iIndex);
 
 public:
