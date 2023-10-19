@@ -17,12 +17,12 @@ private:
 	CGameInstance();
 	virtual ~CGameInstance() = default;
 
-public: /* For.GameInstance */
+public: 
 	HRESULT Initialize_Engine(_uint iNumLevels, HINSTANCE hInst, const GRAPHIC_DESC& GraphicDesc, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext);
-	void Tick(_float fTimeDelta);
-	void LateTick(_float fTimeDelta);
-	void FinishTick();
-	void Clear(_uint iLevelIndex);
+	void	Tick(_float fTimeDelta);
+	void	LateTick(_float fTimeDelta);
+	void	FinishTick();
+	void	Clear(_uint iLevelIndex);
 
 public: /* For.Timer_Manager */
 	_float	Compute_TimeDelta(const wstring& strTimerTag);
@@ -112,6 +112,7 @@ private:
 	class CPipeLine*				m_pPipeLine				= { nullptr };
 	class CCollision_Manager*		m_pCollision_Manager	= { nullptr };
 	class CCamera_Manager*			m_pCamera_Manager		= { nullptr };
+
 public:
 	static void Release_Engine();
 	virtual void Free() override;

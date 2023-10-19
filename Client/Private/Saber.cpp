@@ -33,11 +33,11 @@ HRESULT CSaber::Initialize(void* pArg)
 
 	// << : 임시 코드 
 	{
-		m_pModelCom->Set_Animation(71, TRUE);
+		m_pModelCom->Set_Animation(ANIM_SA::IDLE_ATTACK, TRUE, DF_PL_TIME, DF_TW_TIME);
 
 		Vec3 vPos{ 2.5f, 0.f, -1.5f };
 		m_pTransformCom->Set_Position(vPos);
-		m_pTransformCom->Rotate(m_pTransformCom->Get_Up(), RAD2DEG(90.f));
+		m_pTransformCom->Rotate(m_pTransformCom->Get_Up(), DEG2RAD(180.f));
 	}
 	// >> 
 
@@ -46,8 +46,8 @@ HRESULT CSaber::Initialize(void* pArg)
 
 void CSaber::Tick(_float fTimeDelta)
 {
-	//if (FAILED(m_pBehaviourTreeCom->Tick(fTimeDelta)))
-	//	return;
+	/*if (FAILED(m_pBehaviourTreeCom->Tick(fTimeDelta)))
+		return;*/
 
 	__super::Tick(fTimeDelta);
 }
@@ -56,6 +56,14 @@ void CSaber::LateTick(_float fTimeDelta)
 {
 	if (FAILED(m_pModelCom->Update(fTimeDelta)))
 		return;
+
+	// << : 임시 코드 
+	if (m_pModelCom->Get_CurAnimationIndex() == ANIM_SA::DMG_05 && m_pModelCom->Is_Finish_Animation())
+	{
+		m_pModelCom->Set_Animation(ANIM_SA::IDLE_ATTACK, TRUE, DF_PL_TIME, DF_TW_TIME);
+	}
+	// >> 
+
 
 	/*if (FAILED(m_pBehaviourTreeCom->LateTick(fTimeDelta)))
 		return;*/
@@ -125,7 +133,7 @@ HRESULT CSaber::Ready_Chilren()
 {
 	CWeapon* pChild = nullptr;
 
-	pChild = dynamic_cast<CWeapon*>(GAME_INSTNACE->Add_GameObject(LV_STATIC, g_StrLayerID[LAYER_WEAPON], L"Weapon_Saber_Sword"));
+	pChild = dynamic_cast<CWeapon*>(GAME_INSTNACE->Add_GameObject(LV_PROTO, g_strLayerID[LAYER_WEAPON], L"Weapon_Saber_Sword"));
 	{
 		if (FAILED(Add_Child(pChild)))
 			return E_FAIL;
@@ -147,6 +155,21 @@ HRESULT CSaber::Bind_ShaderResources()
 
 void CSaber::OnCollision_Enter(CGameObject* pGameObject)
 {
+	const wstring& strLayer = pGameObject->Get_LayerTag();
+
+	if (strLayer == g_strLayerID[LAYER_WEAPON])
+	{
+		if (g_strLayerID[LAYER_PLAYER] == pGameObject->Get_Parent()->Get_LayerTag())
+		{
+			/* 플레이어 무기에 맞음 */
+
+			if (m_pModelCom->Get_CurAnimationIndex() != ANIM_SA::DMG_05)
+			{
+				m_pModelCom->Set_Animation(ANIM_SA::DMG_05, FALSE, DF_PL_TIME, DF_TW_TIME);
+
+			}
+		}
+	}
 }
 
 void CSaber::OnCollision_Stay(CGameObject* pGameObject)

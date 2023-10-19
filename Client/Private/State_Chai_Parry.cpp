@@ -21,22 +21,22 @@ HRESULT CState_Chai_Parry::Enter()
 {
 	m_pChai->m_tFightDesc.bParry = TRUE;
 
-	switch (rand() % 3)
-	{
-	case 0:
-		m_pChai->Get_Model()->Set_Animation(ANIM_CH::PARRY_00, FALSE, 2.2f);
-		break;
-	case 1 :
-		m_pChai->Get_Model()->Set_Animation(ANIM_CH::PARRY_01, FALSE, 2.2f);
-		break;
-	case 2:
-		m_pChai->Get_Model()->Set_Animation(ANIM_CH::PARRY_02, FALSE, 2.2f);
-		break;
-	default:
-		m_pChai->Get_Model()->Set_Animation(ANIM_CH::PARRY_02, FALSE, 2.2f);
-		break;
-	}
-
+	//switch (rand() % 3)
+	//{
+	//case 0:
+	//	m_pChai->Get_Model()->Set_Animation(ANIM_CH::PARRY_00, FALSE, 2.2f, DF_TW_TIME);
+	//	break;														  
+	//case 1 :														  
+	//	m_pChai->Get_Model()->Set_Animation(ANIM_CH::PARRY_01, FALSE, 2.2f, DF_TW_TIME);
+	//	break;														  
+	//case 2:															  
+	//	m_pChai->Get_Model()->Set_Animation(ANIM_CH::PARRY_02, FALSE, 2.2f, DF_TW_TIME);
+	//	break;														  
+	//default:														  
+	//	m_pChai->Get_Model()->Set_Animation(ANIM_CH::PARRY_02, FALSE, 2.2f, DF_TW_TIME);
+	//	break;
+	//}
+	m_pChai->Get_Model()->Set_Animation(ANIM_CH::PARRY_02, FALSE, 2.2f, DF_TW_TIME);
 	return S_OK;
 }
 

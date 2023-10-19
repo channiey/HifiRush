@@ -72,10 +72,17 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, HINSTANCE hInst, cons
 
 void CGameInstance::Tick(_float fTimeDelta)
 {
-	NULL_CHECK(m_pLevel_Manager);
-	NULL_CHECK(m_pObject_Manager);
-	NULL_CHECK(m_pInput_Device);
-	NULL_CHECK(m_pPipeLine);
+	if (nullptr == m_pLevel_Manager)
+		return;
+
+	if (nullptr == m_pObject_Manager)
+		return;
+
+	if (nullptr == m_pInput_Device)
+		return;
+
+	if (nullptr == m_pPipeLine)
+		return;
 
 	m_pInput_Device->Tick();
 

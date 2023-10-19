@@ -5,12 +5,11 @@
 BEGIN(Engine)
 
 /*
-
 	원형을 클론에서 사용하는 루트, 컴포짓, 데코레이터는 원형과 클론을 컴포넌트처럼 만들어야 한다.
 
 	액션은 그럴 필요 없음
-
 */
+
 class ENGINE_DLL CNode_Root final : public CNode
 {
 

@@ -21,7 +21,7 @@ HRESULT CState_Chai_Dash::Enter()
 {
 	m_pChai->m_tMoveDesc.bDash = TRUE;
 
-	m_pChai->Get_Model()->Set_Animation(ANIM_CH::DASH_FRONT, FALSE, 1.3f);
+	m_pChai->Get_Model()->Set_Animation(ANIM_CH::DASH_FRONT, FALSE, 1.3f, DF_TW_TIME);
 
 	return S_OK;
 }

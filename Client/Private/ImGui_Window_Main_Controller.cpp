@@ -39,19 +39,27 @@ void CImGui_Window_Main_Controller::Show_Window()
 		}
 
 		/* 카메라 관련 버튼을 나열한다. */
-		ImGui::SeparatorText("Camera");
+		ImGui::SeparatorText("Debug");
 		{
-			/* 렌더 타겟 뷰*/
+			/* 렌더 타겟 뷰 */
 			if (ImGui::Button("RTV"))
 			{
 
 			}
 			ImGui::SameLine();
 
-			/* 디버그 카메라*/
-			if (ImGui::Button("Debug Cam"))
+			/* 디버그 카메라 */
+			if (ImGui::Button("Cam"))
 			{
 
+			}
+			ImGui::SameLine();
+
+			/* 디버그 콜라이더 */
+			if (ImGui::Button("Col"))
+			{
+				m_pImGui_Manager->m_bRenderCollider 
+					= !m_pImGui_Manager->m_bRenderCollider;
 			}
 		}
 

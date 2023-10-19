@@ -300,13 +300,16 @@ HRESULT CModel::Bind_Material(CShader * pShader, _uint iMaterialIndex, aiTexture
 	return m_Materials[iMaterialIndex].pTexture[eTextureType]->Bind_ShaderResource(pShader, pConstantName, 0);
 }
 
-void CModel::Set_Animation(const _uint& iAnimIndex, const _bool& bLoop, const _float& fSpeed)
+void CModel::Set_Animation(const _uint& iAnimIndex, const _bool& bLoop, const _float& fSpeed, const _float& fTweenDuration)
 {
 	m_TweenDesc.ClearNextAnim();
 
 	m_TweenDesc.next.iAnimIndex = iAnimIndex % Get_AnimationCount();
 	m_TweenDesc.next.bLoop = bLoop;
 	m_TweenDesc.next.fSpeed = fSpeed;
+	m_TweenDesc.fTweenDuration = fTweenDuration;
+
+	m_TweenDesc.cur.fSpeed = fSpeed;
 }
 
 void CModel::Set_BoneIndex(const BONE_TYPE& eType, const _int iIndex)

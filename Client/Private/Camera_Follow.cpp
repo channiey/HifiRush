@@ -33,10 +33,10 @@ HRESULT CCamera_Follow::Initialize(void * pArg)
 
 	/* Set Camera */
 	{
-		m_pCameraCom->Set_Distance(6.f);
+		m_pCameraCom->Set_Distance(5.5f);
 		m_pCameraCom->Set_MouseSensitiveX(0.3f);
 		m_pCameraCom->Set_MouseSensitiveY(0.3f);
-		m_pCameraCom->Set_LookAtOffSet(Vec4{0.f, 2.f, 0.f, 1.f });
+		m_pCameraCom->Set_LookAtOffSet(Vec4{0.f, 1.8f, 0.f, 1.f });
 	}
 	return S_OK;
 }
@@ -46,7 +46,7 @@ void CCamera_Follow::Tick(_float fTimeDelta)
 	/* TODO:: 고쳐야하느니라 */
 	if (nullptr == m_pCameraCom->Get_TargetObj())
 	{
-		CGameObject* pObj = GAME_INSTNACE->Get_GameObject(LV_PROTO, g_StrLayerID[LAYER_PLAYER], L"Player_Chai_000");
+		CGameObject* pObj = GAME_INSTNACE->Get_GameObject(LV_PROTO, g_strLayerID[LAYER_PLAYER], L"Player_Chai_000");
 
 		if (nullptr != pObj)
 		{

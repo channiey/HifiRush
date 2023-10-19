@@ -241,6 +241,18 @@
     <Filter Include="02.GameObjects\03.Character\01.Enemy\00.Saber\00.Model">
       <UniqueIdentifier>{49c3f617-7d20-48a2-87d8-e7d470947d71}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\03.Character\01.Enemy\00.Saber\01.BehaviourTree\Node\00.Root">
+      <UniqueIdentifier>{f0424c1b-0cc9-4418-92d3-625f2846030e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\01.Enemy\00.Saber\01.BehaviourTree\Node\01.Composit">
+      <UniqueIdentifier>{1f1e12f3-701f-4e1c-8ca9-67254f82b68c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\01.Enemy\00.Saber\01.BehaviourTree\Node\02.Decorator">
+      <UniqueIdentifier>{97078053-f1c2-4efa-8631-3c17bfd11cfe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\01.Enemy\00.Saber\01.BehaviourTree\Node\03.Action">
+      <UniqueIdentifier>{9afd42f2-ee0d-4ba1-9580-14a700051411}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

@@ -108,13 +108,13 @@ HRESULT CLevel_Loading::Parse_LevelData(const _uint& iLevelID)
 	shared_ptr<Util_File> file = make_shared<Util_File>();
 	if (nullptr == file) return E_FAIL;
 
-	if (!Util_File::IsExistFile(Util_String::ToString(g_StrLevelPath[iLevelID])))
+	if (!Util_File::IsExistFile(Util_String::ToString(g_strLevelPath[iLevelID])))
 	{
 		MSG_BOX("Nothing Level File");
 		return E_FAIL;
 	}
 
-	file->Open(g_StrLevelPath[iLevelID], FileMode::Read);
+	file->Open(g_strLevelPath[iLevelID], FileMode::Read);
 
 	/* 현재 레벨의 전체 레이어 갯수 */
 	const size_t countLayer = file->Read<size_t>();

@@ -145,16 +145,6 @@ HRESULT CImGui_Manager::ImGui_Render()
 	return S_OK;
 }
 
-HRESULT CImGui_Manager::Init_Gizmo()
-{
-	return E_NOTIMPL;
-}
-
-HRESULT CImGui_Manager::Draw_Gizmo()
-{
-	return E_NOTIMPL;
-}
-
 //void CImGui_Manager::Picking_Event()
 //{	
 //	m_bClickedWindow = ImGui::GetIO().WantCaptureMouse && ImGui::IsMouseDown(0) ? TRUE : FALSE;

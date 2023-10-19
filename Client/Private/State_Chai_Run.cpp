@@ -19,7 +19,7 @@ HRESULT CState_Chai_Run::Initialize(CStateMachine* pStateMachine, const wstring&
 
 HRESULT CState_Chai_Run::Enter()
 {
-	m_pChai->Get_Model()->Set_Animation(ANIM_CH::RUN, TRUE, 1.4f); 
+	m_pChai->Get_Model()->Set_Animation(ANIM_CH::RUN, TRUE, DF_PL_TIME, DF_TW_TIME);
 
 	return S_OK;
 }

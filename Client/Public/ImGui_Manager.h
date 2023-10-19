@@ -73,15 +73,12 @@ public:
 
 	HRESULT			Clear_ReferenceData();
 
+	const _bool&		Is_Render_Collider() const { return m_bRenderCollider; }
 
 private:
 	HRESULT			ImGui_SetUp(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	void			ImGui_Tick();
 	HRESULT			ImGui_Render();
-
-private:
-	HRESULT			Init_Gizmo();
-	HRESULT			Draw_Gizmo();
 
 private:
 	/* 현재 정보를 초기화 한다. */
@@ -118,6 +115,9 @@ private:
 
 	/* 현재 애니메이션 재생 여부 */
 	_bool							m_bEdittingAnim = FALSE;
+
+
+	_bool							m_bRenderCollider = TRUE;
 
 private:
 	ID3D11Device* m_pDevice = { nullptr };

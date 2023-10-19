@@ -77,7 +77,7 @@ void CImGui_Window_Sub_Com_Model::Show_Animations()
 	{
 		if (0 <= m_iCurAnimIndex)
 		{
-			pModel->Set_Animation(m_iCurAnimIndex, FALSE);
+			pModel->Set_Animation(m_iCurAnimIndex, FALSE, DF_PL_TIME, DF_TW_TIME);
 		}
 	}
 

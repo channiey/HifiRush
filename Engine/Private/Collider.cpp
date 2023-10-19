@@ -64,18 +64,18 @@ HRESULT CCollider::Initialize(void * pArg)
 void CCollider::OnCollision_Enter(CGameObject* pGameObject)
 {
 	++m_iCollison;
-	pGameObject->OnCollision_Enter(pGameObject);
+	m_pOwner->OnCollision_Enter(pGameObject);
 }
 
 void CCollider::OnCollision_Stay(CGameObject* pGameObject)
 {
-	pGameObject->OnCollision_Stay(pGameObject);
+	m_pOwner->OnCollision_Stay(pGameObject);
 }
 
 void CCollider::OnCollision_Exit(CGameObject* pGameObject)
 {
 	--m_iCollison;
-	pGameObject->OnCollision_Exit(pGameObject);
+	m_pOwner->OnCollision_Exit(pGameObject);
 }
 
 _matrix CCollider::Remove_Rotation(_fmatrix Matrix)

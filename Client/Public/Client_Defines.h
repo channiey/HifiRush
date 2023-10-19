@@ -28,7 +28,7 @@ namespace Client
 		LV_PROTO,
 		LV_END
 	};
-	static const wchar_t* g_StrLevelID[LV_END]
+	static const wchar_t* g_strLevelID[LV_END]
 	{
 		L"STATIC",
 		L"LOADING",
@@ -40,7 +40,7 @@ namespace Client
 		L"PROTO"
 
 	};
-	static const std::wstring g_StrLevelPath[LV_END]
+	static const std::wstring g_strLevelPath[LV_END]
 	{
 		TEXT("../Bin/Resources/Data/Level/Static.level"),
 		TEXT("../Bin/Resources/Data/Level/Loading.level"),
@@ -69,7 +69,7 @@ namespace Client
 		LAYER_UI,
 		LAYER_END
 	};
-	static const wchar_t* g_StrLayerID[LAYER_END] /* 업데이트 순서에 따른 정렬 */
+	static const wchar_t* g_strLayerID[LAYER_END] /* 업데이트 순서에 따른 정렬 */
 	{
 		L"Layer_00_Env_Static",
 		L"Layer_01_Env_Interactable",

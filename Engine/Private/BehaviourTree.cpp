@@ -87,8 +87,6 @@ HRESULT CBehaviourTree::Set_Active(const _bool& bActive)
 
 	FAILED_CHECK_RETURN(__super::Set_Active(bActive), E_FAIL);
 	
-	//...
-
 	return S_OK;
 }
 

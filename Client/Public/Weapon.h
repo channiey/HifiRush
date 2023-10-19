@@ -39,6 +39,11 @@ private:
 	HRESULT				Bind_ShaderResources();
 
 private:
+	virtual void		OnCollision_Enter(CGameObject* pGameObject) override;
+	virtual void		OnCollision_Stay(CGameObject* pGameObject) override;
+	virtual void		OnCollision_Exit(CGameObject* pGameObject) override;
+
+private:
 	CShader*			m_pShaderCom		= { nullptr };
 	CRenderer*			m_pRendererCom		= { nullptr };
 	CTransform*			m_pTransformCom		= { nullptr };

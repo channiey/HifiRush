@@ -18,26 +18,27 @@ HRESULT CLevel_Proto::Initialize()
 {
 	
 	CGameObject* pObject = nullptr;
+
 	//if (FAILED(CLevel_Loading::Parse_LevelData(LV_PROTO)))
 	//	return E_FAIL;
 
-	/*if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, g_StrLayerID[LAYER_CAMERA], L"Camera_Debug"))
+	/*if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, g_strLayerID[LAYER_CAMERA], L"Camera_Debug"))
 		return E_FAIL;*/
 
-	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, g_StrLayerID[LAYER_CAMERA], L"Camera_Follow"))
+	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, g_strLayerID[LAYER_CAMERA], L"Camera_Follow"))
 		return E_FAIL;
 
-	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, g_StrLayerID[LAYER_PLAYER], L"Player_Chai"))
+	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, g_strLayerID[LAYER_PLAYER], L"Player_Chai"))
 		return E_FAIL;
 
-	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, g_StrLayerID[LAYER_ENEMY], L"Enemy_Saber"))
+	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, g_strLayerID[LAYER_ENEMY], L"Enemy_Saber"))
 		return E_FAIL;
 
-	/*if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, g_StrLayerID[LAYER_ENV_STATIC], L"Env_Static_Terrain"))
+	/*if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, g_strLayerID[LAYER_ENV_STATIC], L"Env_Static_Terrain"))
 		return E_FAIL;*/
 
 	
-	pObject = GAME_INSTNACE->Add_GameObject(LV_PROTO, g_StrLayerID[LAYER_ENV_STATIC], L"Env_Static_Bldg_Inside_Battle_A");
+	pObject = GAME_INSTNACE->Add_GameObject(LV_PROTO, g_strLayerID[LAYER_ENV_STATIC], L"Env_Static_Bldg_Inside_Battle_A");
 	{
 		if (nullptr == pObject) 
 			return E_FAIL;
@@ -45,51 +46,25 @@ HRESULT CLevel_Proto::Initialize()
 		pObject->Get_Transform()->Set_Scale(Vec3(0.7f, 0.7f, 0.7f));
 	}
 
-	/*if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, g_StrLayerID[LAYER_ENV_STATIC], L"Env_Static_Bldg_Outside_BK"))
+	/*if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, g_strLayerID[LAYER_ENV_STATIC], L"Env_Static_Bldg_Outside_BK"))
 		return E_FAIL;*/
+
  	return S_OK;
 }
 
 HRESULT CLevel_Proto::Tick(_float fTimeDelta)
 {
-	int k = 0;
-
-	/*if (!CImGui_Manager::GetInstance()->Is_ClickedWindow())
-	{
-		CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
-		{
-			if (pGameInstance->Key_Down(VK_LBUTTON))
-			{
-				list<CGameObject*>* pLayer = pGameInstance->Get_Layer(LV_PROTO, g_StrLayerID[LAYER_ENV_STATIC]);
-
-				for (auto& pObj : *pLayer)
-				{
-					RAYHIT_DESC hit;
-					if (pGameInstance->Check_Collision_PickingRay(pObj->Get_Model(), pObj->Get_Transform()->Get_WorldMat(), hit, TRUE))
-					{
-						int k = 0;
-					}
-				}
-			}
-		}
-		RELEASE_INSTANCE(CGameInstance);
-	}*/
-
 	return S_OK;
 }
 
 HRESULT CLevel_Proto::LateTick(_float fTimeDelta)
 {
-	int k = 0;
+	SetWindowText(g_hWnd, g_strLevelID[LV_PROTO]);
 
-	SetWindowText(g_hWnd, g_StrLevelID[LV_PROTO]);
-
-	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
-
-	//pGameInstance->Check_Collision_Layer(g_StrLayerID[LAYER_ENV_STATIC], g_StrLayerID[LAYER_ENV_STATIC], CCollider::SPHERE, CCollider::SPHERE);
-
-	RELEASE_INSTANCE(CGameInstance);
-
+	GAME_INSTNACE->Check_Collision_Layer(g_strLayerID[LAYER_ENEMY]
+										, g_strLayerID[LAYER_WEAPON]
+										, CCollider::SPHERE
+										, CCollider::SPHERE);
 	return S_OK;
 }
 

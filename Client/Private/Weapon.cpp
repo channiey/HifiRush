@@ -5,6 +5,10 @@
 #include "Util_File.h"
 #include "Util_String.h"
 
+#ifdef _DEBUG
+#include "ImGui_Manager.h"
+#endif // _DEBUG
+
 CWeapon::CWeapon(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
 {
@@ -41,7 +45,7 @@ void CWeapon::Tick(_float fTimeDelta)
 	/* Update Colliders */
 	for (auto& pCollider : m_pColliderComs)
 	{
-		if (nullptr != pCollider)
+		if (nullptr != pCollider && pCollider->Is_Active())
 			pCollider->Update(m_pParent->Get_Model()->Get_SocketBoneMat(m_eSocketType) 
 								* m_pTransformCom->Get_WorldMat());
 	}
@@ -60,7 +64,7 @@ void CWeapon::LateTick(_float fTimeDelta)
 #ifdef _DEBUG
 	for (auto& pCollider : m_pColliderComs)
 	{
-		if (nullptr != pCollider)
+		if (nullptr != pCollider && pCollider->Is_Active() && CImGui_Manager::GetInstance()->Is_Render_Collider())
 			m_pRendererCom->Add_DebugGroup(pCollider);
 	}
 #endif // _DEBUG
@@ -133,6 +137,8 @@ HRESULT CWeapon::Ready_Components()
 			return E_FAIL;
 
 		m_pColliderComs.push_back(pCollider);
+
+		pCollider->Set_Active(FALSE);
 	}
 
 	return S_OK;
@@ -151,6 +157,21 @@ HRESULT CWeapon::Bind_ShaderResources()
 		return E_FAIL;
 
 	return S_OK;
+}
+
+void CWeapon::OnCollision_Enter(CGameObject* pGameObject)
+{
+	m_pParent->OnCollision_Enter(pGameObject);
+}
+
+void CWeapon::OnCollision_Stay(CGameObject* pGameObject)
+{
+	m_pParent->OnCollision_Stay(pGameObject);
+}
+
+void CWeapon::OnCollision_Exit(CGameObject* pGameObject)
+{
+	m_pParent->OnCollision_Stay(pGameObject);
 }
 
 CWeapon* CWeapon::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

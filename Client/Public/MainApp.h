@@ -41,11 +41,10 @@ private:
 
 private:
 	HRESULT Open_Level(LEVEL_ID eLEVEL_ID);
+
 	/* 모든 레벨에서 사용되는 컴포넌트 원형을 생성한다. */
 	HRESULT Ready_Prototype_Components(); 
 
-	/* Test Code */
-	HRESULT Test_CreateAndSave_Texture_inDynamic();
 
 public:
 	static CMainApp* Create();

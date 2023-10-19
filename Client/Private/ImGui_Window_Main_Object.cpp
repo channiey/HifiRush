@@ -145,7 +145,7 @@ void CImGui_Window_Main_Object::Show_Object_Transform()
 				vVec = pTransform->Get_FinalPosition();
 				_float fPos[3] = { vVec.x, vVec.y, vVec.z };
 				ImGui::DragFloat3("Pos", (_float*)&fPos, 0.5f);
-				//pTransform->Set_State(CTransform::STATE_POSITION, Vec4(fPos[0], fPos[1], fPos[2], 1));
+				pTransform->Set_State(CTransform::STATE_POSITION, Vec4(fPos[0], fPos[1], fPos[2], 1));
 
 				/* Rotation */
 				Vec3 vRot = pTransform->Get_Rotation(); /* Euler */

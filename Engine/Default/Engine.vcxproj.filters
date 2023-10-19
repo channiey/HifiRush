@@ -130,33 +130,6 @@
     <Filter Include="01.Utiltiy\03.Components\Component\12.BehaviourTree">
       <UniqueIdentifier>{23a6d698-a399-41e5-bb42-392d34d90484}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utiltiy\03.Components\Component\12.BehaviourTree\BlackBoard">
-      <UniqueIdentifier>{c6b485d2-db76-4803-be6a-08947c066b8d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utiltiy\03.Components\Component\12.BehaviourTree\Nodes">
-      <UniqueIdentifier>{63022527-327c-452e-be61-693a766817e5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utiltiy\03.Components\Component\12.BehaviourTree\Nodes\Root">
-      <UniqueIdentifier>{92462c25-c76a-4b27-9a54-a41bf069360d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utiltiy\03.Components\Component\12.BehaviourTree\Nodes\Action">
-      <UniqueIdentifier>{0e455717-1df9-4968-95ad-542b2ff1d096}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utiltiy\03.Components\Component\12.BehaviourTree\Nodes\Composit">
-      <UniqueIdentifier>{c0ee0fa2-70b3-46cd-a531-886d74a361ff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utiltiy\03.Components\Component\12.BehaviourTree\Nodes\Composit\Selector">
-      <UniqueIdentifier>{1a6d97ec-eac7-4b6a-8c3d-c91e08691fc9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utiltiy\03.Components\Component\12.BehaviourTree\Nodes\Composit\Sequence">
-      <UniqueIdentifier>{faf92d62-3793-4f5e-9583-95c2401d196b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utiltiy\03.Components\Component\12.BehaviourTree\Nodes\Composit\Parallel">
-      <UniqueIdentifier>{14dad74e-6e8e-4583-8ead-0085300c449a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utiltiy\03.Components\Component\12.BehaviourTree\Nodes\Decorator">
-      <UniqueIdentifier>{80834f17-9ebf-44d3-9463-70efc5999ea8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utiltiy\03.Components\Component\08.Model\00.Bone">
       <UniqueIdentifier>{9aa9b747-c0aa-4efd-af76-f85e4df08191}</UniqueIdentifier>
     </Filter>
@@ -219,6 +192,33 @@
     </Filter>
     <Filter Include="01.Utiltiy\03.Components\Component\13.Navigation\Cell">
       <UniqueIdentifier>{40330e0e-2319-44ab-9347-aec355c1695f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\12.BehaviourTree\00.BlackBoard">
+      <UniqueIdentifier>{c6b485d2-db76-4803-be6a-08947c066b8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node">
+      <UniqueIdentifier>{63022527-327c-452e-be61-693a766817e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node\01.Composit">
+      <UniqueIdentifier>{c0ee0fa2-70b3-46cd-a531-886d74a361ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node\01.Composit\Selector">
+      <UniqueIdentifier>{1a6d97ec-eac7-4b6a-8c3d-c91e08691fc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node\01.Composit\Sequence">
+      <UniqueIdentifier>{faf92d62-3793-4f5e-9583-95c2401d196b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node\01.Composit\Parallel">
+      <UniqueIdentifier>{14dad74e-6e8e-4583-8ead-0085300c449a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node\03.Action">
+      <UniqueIdentifier>{0e455717-1df9-4968-95ad-542b2ff1d096}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node\02.Decorator">
+      <UniqueIdentifier>{80834f17-9ebf-44d3-9463-70efc5999ea8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node\00.Root">
+      <UniqueIdentifier>{92462c25-c76a-4b27-9a54-a41bf069360d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -298,25 +298,25 @@
       <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Node.h">
-      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\Nodes</Filter>
+      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Blackboard.h">
-      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\BlackBoard</Filter>
+      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\00.BlackBoard</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Node_Action.h">
-      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\Nodes\Action</Filter>
+      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node\03.Action</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Node_Selector.h">
-      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\Nodes\Composit\Selector</Filter>
+      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node\01.Composit\Selector</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Node_Sequence.h">
-      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\Nodes\Composit\Sequence</Filter>
+      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node\01.Composit\Sequence</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Node_Root.h">
-      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\Nodes\Root</Filter>
+      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node\00.Root</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Node_Parallel.h">
-      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\Nodes\Composit\Parallel</Filter>
+      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node\01.Composit\Parallel</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Transform.h">
       <Filter>01.Utiltiy\03.Components\Component\04.Transform</Filter>
@@ -474,25 +474,25 @@
       <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Blackboard.cpp">
-      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\BlackBoard</Filter>
+      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\00.BlackBoard</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Node.cpp">
-      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\Nodes</Filter>
+      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Node_Action.cpp">
-      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\Nodes\Action</Filter>
+      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node\03.Action</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Node_Selector.cpp">
-      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\Nodes\Composit\Selector</Filter>
+      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node\01.Composit\Selector</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Node_Sequence.cpp">
-      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\Nodes\Composit\Sequence</Filter>
+      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node\01.Composit\Sequence</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Node_Root.cpp">
-      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\Nodes\Root</Filter>
+      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node\00.Root</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Node_Parallel.cpp">
-      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\Nodes\Composit\Parallel</Filter>
+      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node\01.Composit\Parallel</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Transform.cpp">
       <Filter>01.Utiltiy\03.Components\Component\04.Transform</Filter>

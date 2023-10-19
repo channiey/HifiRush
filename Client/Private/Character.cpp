@@ -2,6 +2,10 @@
 #include "Character.h"
 #include "GameInstance.h"
 
+#ifdef _DEBUG
+#include "ImGui_Manager.h"
+#endif // _DEBUG
+
 
 CCharacter::CCharacter(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
@@ -36,7 +40,7 @@ void CCharacter::Tick(_float fTimeDelta)
 
 	for (auto& pCollider : m_pColliderComs)
 	{
-		if (nullptr != pCollider)
+		if (nullptr != pCollider && pCollider->Is_Active())
 			pCollider->Update(m_pTransformCom->Get_FinalMat());
 	}
 }
@@ -51,7 +55,7 @@ void CCharacter::LateTick(_float fTimeDelta)
 #ifdef _DEBUG
 	for (auto& pCollider : m_pColliderComs)
 	{
-		if (nullptr != pCollider)
+		if (nullptr != pCollider && pCollider->Is_Active() && CImGui_Manager::GetInstance()->Is_Render_Collider())
 			m_pRendererCom->Add_DebugGroup(pCollider);
 	}
 #endif // _DEBUG

@@ -164,7 +164,7 @@ HRESULT CChai::Ready_Chilren()
 {
 	CWeapon* pChild = nullptr;
 	
-	pChild = dynamic_cast<CWeapon*>(GAME_INSTNACE->Add_GameObject(LV_STATIC, g_StrLayerID[LAYER_WEAPON], L"Weapon_Chai_Guitar_Explore"));
+	pChild = dynamic_cast<CWeapon*>(GAME_INSTNACE->Add_GameObject(LV_PROTO, g_strLayerID[LAYER_WEAPON], L"Weapon_Chai_Guitar_Explore"));
 	{
 		if (FAILED(Add_Child(pChild)))
 			return E_FAIL;

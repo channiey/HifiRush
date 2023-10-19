@@ -6,6 +6,9 @@ BEGIN(Engine)
 #define MAX_MODEL_TRANSFORMS	600 
 #define MAX_MODEL_KEYFRAMES		400 
 
+#define DF_PL_TIME		1.4f
+#define DF_TW_TIME		0.2f
+
 class ENGINE_DLL CModel final : public CComponent
 {
 public:
@@ -20,7 +23,7 @@ public:
 	_float	fRatio		= 0.f;
 	_float	fFrameAcc	= 0.f;	
 	_float	fAnimAcc	= 0.f;
-	_float	fSpeed		= 1.4f;	
+	_float	fSpeed		= DF_PL_TIME;
 
 	_int	bLoop		= TRUE;
 
@@ -38,10 +41,10 @@ public:
 	KEYFRAME_DESC cur	= {};
 	KEYFRAME_DESC next	= {};
 
-	float fTweenDuration = 0.2f;
-	float fTweenRatio	 = 0.f;
-	float fTweenAcc		 = 0.f;
-	float fPadding		 = 0.f;
+	_float fTweenDuration = DF_TW_TIME;
+	_float fTweenRatio	 = 0.f;
+	_float fTweenAcc		 = 0.f;
+	_float fPadding		 = 0.f;
 
 	TweenDesc()
 	{
@@ -57,6 +60,7 @@ public:
 		next.fFrameAcc = 0.f;
 		fTweenAcc		= 0.f;
 		fTweenRatio		= 0.f;
+		fTweenDuration = DF_TW_TIME;
 	}
 
 }TWEEN_DESC;
@@ -115,7 +119,7 @@ public:
 	const TYPE&				Get_Type() const { return m_eModelType; }
 
 public:
-	void					Set_Animation(const _uint& iAnimIndex, const _bool& bLoop = FALSE, const _float& fSpeed = 1.4f);
+	void					Set_Animation(const _uint& iAnimIndex, const _bool& bLoop, const _float& fSpeed, const _float& fTweenDuration);
 	void					Set_BoneIndex(const BONE_TYPE& eType, const _int iIndex);
 
 public:
