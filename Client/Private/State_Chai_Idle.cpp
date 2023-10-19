@@ -52,24 +52,27 @@ const wstring& CState_Chai_Idle::Check_Transition()
 		return StateNames[STATE_DAMAGED];
 	}
 
-	/* Movement */
 	if (Input::Move())
 	{
-		if (m_pChai->m_tMoveDesc.bGround) /* Run */
+		if (m_pChai->m_tMoveDesc.bGround) 
 		{
 			return StateNames[STATE_RUN];
 		}
 	}
 	else if (Input::Shift())
 	{
-		if (!m_pChai->m_tMoveDesc.bDash) /* Dash */
+		if (!m_pChai->m_tMoveDesc.bDash)
 		{
 			return StateNames[STATE_DASH];
 		}
 	}
-	else if (Input::Attack()) /* Attack */
+	else if (Input::Attack()) 
 	{
 		return StateNames[STATE_ATTACK];
+	}
+	else if (Input::Parry())
+	{
+		return StateNames[STATE_PARRY];
 	}
 
 	return m_strName;

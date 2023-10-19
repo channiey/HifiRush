@@ -31,7 +31,7 @@ const wstring& CState_Chai_Attack::Tick(const _float& fTimeDelta)
 	if (Input::LBtn() && pModel->Is_OneThirds_Animation())
 	{
 		++m_pChai->m_tFightDesc.iStep;
-
+		
 		switch (m_pChai->m_tFightDesc.iStep)
 		{
 		case 0: 
@@ -76,7 +76,6 @@ const wstring& CState_Chai_Attack::Check_Transition()
 
 	if(m_pChai->Get_Model()->Is_TwoThirds_Animation())
 	{
-		/* Move는 Idle에서 전이한다. */
 		return StateNames[STATE_IDLE];
 	}
 

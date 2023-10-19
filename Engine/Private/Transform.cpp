@@ -129,14 +129,21 @@ void CTransform::Set_RootPos(const Vec4& vPos)
 
 void CTransform::Set_Scale(const Vec3& vScale)
 {
-	for (_int i = 0; i < 3; ++i)
-	{
-		Vec3 v(m_WorldMatrix.m[i][0], m_WorldMatrix.m[i][1], m_WorldMatrix.m[i][2]);
-		v.Normalize();
+	Set_State(CTransform::STATE_RIGHT,
+		XMVector3Normalize(Get_State(CTransform::STATE_RIGHT)) * XMVectorGetX(vScale));
+	Set_State(CTransform::STATE_UP,
+		XMVector3Normalize(Get_State(CTransform::STATE_UP)) * XMVectorGetY(vScale));
+	Set_State(CTransform::STATE_LOOK,
+		XMVector3Normalize(Get_State(CTransform::STATE_LOOK)) * XMVectorGetZ(vScale));
 
-		for (_int j = 0; j < 3; ++j)
-			m_WorldMatrix.m[i][j] = *(((_float*)&v) + j) * *(((_float*)&vScale) + j);
-	}
+	//for (_int i = 0; i < 3; ++i)
+	//{
+	//	Vec3 v(m_WorldMatrix.m[i][0], m_WorldMatrix.m[i][1], m_WorldMatrix.m[i][2]);
+	//	v.Normalize();
+
+	//	for (_int j = 0; j < 3; ++j)
+	//		m_WorldMatrix.m[i][j] = *(((_float*)&v) + j) * *(((_float*)&vScale) + j);
+	//}
 }
 
 void CTransform::Set_Rotation(const Vec3& vEulers, const _bool& bWorld)

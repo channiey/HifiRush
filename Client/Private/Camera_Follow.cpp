@@ -33,7 +33,7 @@ HRESULT CCamera_Follow::Initialize(void * pArg)
 
 	/* Set Camera */
 	{
-		m_pCameraCom->Set_Distance(7.f);
+		m_pCameraCom->Set_Distance(6.f);
 		m_pCameraCom->Set_MouseSensitiveX(0.3f);
 		m_pCameraCom->Set_MouseSensitiveY(0.3f);
 		m_pCameraCom->Set_LookAtOffSet(Vec4{0.f, 2.f, 0.f, 1.f });
@@ -119,7 +119,7 @@ void CCamera_Follow::Move(const _float& fTimeDelta)
 				m_fElevation = 3.13f;
 
 			/* ÀÓ½Ã °­Á¦ °íÁ¤ */
-			m_fElevation = 1.f;
+			m_fElevation = 0.9f;
 		}
 
 		/* ±¸¸é ÁÂÇ¥°è(±ØÁÂÇ¥°è) -> ¿Þ¼Õ Á÷±³ ÁÂÇ¥°è */

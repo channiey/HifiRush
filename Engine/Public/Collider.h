@@ -16,12 +16,18 @@ public:
 		Vec3			vSize		= Vec3::One;
 		Vec3			vRotation = Vec3(0.f, DEG2RAD(45.f), 0.f);
 
-		tagColliderDesc() {};
+		tagColliderDesc() : 
+			vCenter(Vec3::Zero), vSize(Vec3::One), vRotation(Vec3(0.f, DEG2RAD(45.f), 0.f))
+		{
+			vCenter.y = vSize.y * 0.5f;
+		}
 		tagColliderDesc(const _float fMag)
 			: vCenter(Vec3::Zero), vSize(Vec3::One * fMag), vRotation(Vec3(0.f, DEG2RAD(45.f), 0.f)) 
 		{
 			vCenter.y = vSize.y * 0.5f;
 		}
+		tagColliderDesc(const Vec3& vCenter, const _float fMag)
+			: vCenter(vCenter), vSize(Vec3::One* fMag), vRotation(Vec3(0.f, DEG2RAD(45.f), 0.f)) {};
 	}COLLIDERDESC;
 
 protected:

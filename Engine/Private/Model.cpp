@@ -888,7 +888,7 @@ const Matrix CModel::Get_SocketBoneMat(const BONE_TYPE& eType)
 		Vec4 m_vCurAnimRoot = Vec4(Get_AnimBoneLocal(m_TweenDesc.cur.iAnimIndex, m_TweenDesc.cur.iCurFrame, BONE_ROOT).m[3]);
 		Vec4 m_vNextAnimRoot = Vec4(Get_AnimBoneLocal(m_TweenDesc.next.iAnimIndex, m_TweenDesc.next.iCurFrame, BONE_ROOT).m[3]);
 
-		/* Dash -> IDLE, RUN */
+		/* Attack, Dash -> IDLE, RUN */
 		if (Vec4::UnitW != m_vCurAnimRoot && Vec4::UnitW == m_vNextAnimRoot)
 		{
 			matBone = Get_AnimBoneMat(eType);
@@ -909,7 +909,9 @@ const Matrix CModel::Get_SocketBoneMat(const BONE_TYPE& eType)
 
 	}
 	else
+	{
 		matBone = Get_AnimBoneMat(eType);
+	}
 	
 
 	return matBone;
@@ -966,17 +968,14 @@ void CModel::Set_RootPosition_Tween()
 {
 	if (!m_bRootAnimation) return;
 
-	/* 다음 애니메이션 루트 포지션이 0 이라면, 현재 애니메이션의 루트 포지션만을 사용한다. */
-	/* 아니라면 보간된 루트 포지션을 사용한다. */
-
 	Vec4 vRootPos, m_vNextAnimRoot;
 
 	m_vNextAnimRoot = Vec4(Get_AnimBoneLocal(m_TweenDesc.next.iAnimIndex, m_TweenDesc.next.iCurFrame, BONE_ROOT).m[3]);
 
-	if (Vec4::UnitW == m_vNextAnimRoot)
-		vRootPos = Get_AnimBoneRootNoneLerp();
-	else
-		vRootPos = Get_AnimBonePos(BONE_ROOT);
+	if (Vec4::UnitW == m_vNextAnimRoot)			/* 다음 애님이 제자리 애니메이션이라면 */
+		vRootPos = Get_AnimBoneRootNoneLerp();	/* 다음 애님 보간 없이 현재 애님 루트 포지션으로 셋 */
+	else										/* 아니라면 */
+		vRootPos = Get_AnimBonePos(BONE_ROOT);	/* 다음 애님과 현재 애님이 보간된 루트 포지션으로 셋 */
 
 	m_pOwner->Get_Transform()->Set_RootPos(vRootPos);
 }

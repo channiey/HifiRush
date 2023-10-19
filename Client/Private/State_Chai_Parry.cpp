@@ -21,14 +21,28 @@ HRESULT CState_Chai_Parry::Enter()
 {
 	m_pChai->m_tFightDesc.bParry = TRUE;
 
-	m_pChai->Get_Model()->Set_Animation(ANIM_CH::PARRY_00, FALSE);
+	switch (rand() % 3)
+	{
+	case 0:
+		m_pChai->Get_Model()->Set_Animation(ANIM_CH::PARRY_00, FALSE, 2.2f);
+		break;
+	case 1 :
+		m_pChai->Get_Model()->Set_Animation(ANIM_CH::PARRY_01, FALSE, 2.2f);
+		break;
+	case 2:
+		m_pChai->Get_Model()->Set_Animation(ANIM_CH::PARRY_02, FALSE, 2.2f);
+		break;
+	default:
+		m_pChai->Get_Model()->Set_Animation(ANIM_CH::PARRY_02, FALSE, 2.2f);
+		break;
+	}
 
 	return S_OK;
 }
 
 const wstring& CState_Chai_Parry::Tick(const _float& fTimeDelta)
 {
-	return Check_Transition();
+	return m_strName;
 }
 
 const wstring& CState_Chai_Parry::LateTick()
@@ -43,8 +57,15 @@ void CState_Chai_Parry::Exit()
 
 const wstring& CState_Chai_Parry::Check_Transition()
 {
+	if (m_pChai->Get_Model()->Is_Tween())
+		return m_strName;
 
-	return StateNames[STATE_IDLE];
+	if (m_pChai->Get_Model()->Is_TwoThirds_Animation())
+	{
+		return StateNames[STATE_IDLE];
+	}
+
+	return m_strName;
 }
 
 CState_Chai_Parry* CState_Chai_Parry::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

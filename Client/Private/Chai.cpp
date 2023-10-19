@@ -46,7 +46,7 @@ HRESULT CChai::Initialize(void* pArg)
 	if (FAILED(Ready_Chilren()))
 		return E_FAIL;
 	
-	m_pTransformCom->Set_Scale(Vec3(1.5f, 1.5f, 1.5f));
+	m_pTransformCom->Set_Scale(Vec3(1.f, 1.f, 1.f));
 
 	return S_OK;
 }
@@ -105,6 +105,18 @@ HRESULT CChai::Ready_Components()
 		TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 	
+	/* Com_Collider_Sphere */
+	CCollider_Sphere* pCollider = nullptr;
+	{
+		CCollider::COLLIDERDESC	ColliderDesc(Vec3{ 0.f, 0.9f, 0.f }, 0.9f);
+
+		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
+			TEXT("Com_Collider_Sphere"), (CComponent**)&pCollider, &ColliderDesc)))
+			return E_FAIL;
+
+		m_pColliderComs.push_back(pCollider);
+	}
+
 	/* Com_StateMachine */
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_StateMachine"),
 		TEXT("Com_StateMachine"), (CComponent**)&m_pStateMachineCom)))
@@ -142,22 +154,10 @@ HRESULT CChai::Ready_Components()
 			if (FAILED(m_pStateMachineCom->Add_State(pState)))
 				return E_FAIL;
 
-			pState = CState_Chai_Damaged::Create(m_pStateMachineCom, StateNames[STATE_PARRY], this);
+			pState = CState_Chai_Parry::Create(m_pStateMachineCom, StateNames[STATE_PARRY], this);
 			if (FAILED(m_pStateMachineCom->Add_State(pState)))
 				return E_FAIL;
 		}
-	}
-
-	/* Com_Collider_Sphere */
-	CCollider_Sphere* pCollider = nullptr;
-	{
-		CCollider::COLLIDERDESC	ColliderDesc{ 1.f };
-
-		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
-			TEXT("Com_Collider_Sphere"), (CComponent**)&pCollider, &ColliderDesc)))
-			return E_FAIL;
-		
-		m_pColliderComs.push_back(pCollider);
 	}
 
 	return S_OK;

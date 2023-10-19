@@ -42,7 +42,8 @@ void CWeapon::Tick(_float fTimeDelta)
 	for (auto& pCollider : m_pColliderComs)
 	{
 		if (nullptr != pCollider)
-			pCollider->Update(m_pParent->Get_Model()->Get_SocketBoneMat(m_eSocketType) * m_pTransformCom->Get_WorldMat());
+			pCollider->Update(m_pParent->Get_Model()->Get_SocketBoneMat(m_eSocketType) 
+								* m_pTransformCom->Get_WorldMat());
 	}
 }
 
@@ -125,20 +126,23 @@ HRESULT CWeapon::Ready_Components()
 
 	/* Com_Collider_Sphere */
 	CCollider::COLLIDERDESC		ColliderDesc{ 30.f };
-	ColliderDesc.vCenter = { 0, 0, -75 };
-	CCollider_Sphere* pCollider = nullptr;
-	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
-		TEXT("Com_Collider_Sphere"), (CComponent**)&pCollider, &ColliderDesc)))
-		return E_FAIL;
+	{
+		ColliderDesc.vCenter = { 0, 0, -75 };
+		CCollider_Sphere* pCollider = nullptr;
+		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
+			TEXT("Com_Collider_Sphere"), (CComponent**)&pCollider, &ColliderDesc)))
+			return E_FAIL;
 
-	m_pColliderComs.push_back(pCollider);
+		m_pColliderComs.push_back(pCollider);
+	}
 
 	return S_OK;
 }
 
 HRESULT CWeapon::Bind_ShaderResources()
 {
-	if (FAILED(GAME_INSTNACE->Bind_TransformToShader(m_pShaderCom, "g_WorldMatrix", m_pParent->Get_Model()->Get_SocketBoneMat(m_eSocketType) * m_pTransformCom->Get_WorldMat())))
+	if (FAILED(GAME_INSTNACE->Bind_TransformToShader(m_pShaderCom, "g_WorldMatrix", 
+		m_pParent->Get_Model()->Get_SocketBoneMat(m_eSocketType) * m_pTransformCom->Get_WorldMat())))
 		return E_FAIL;
 
 	if (FAILED(GAME_INSTNACE->Bind_TransformToShader(m_pShaderCom, "g_ViewMatrix", CPipeLine::STATE_VIEW)))
