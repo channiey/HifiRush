@@ -19,7 +19,7 @@ HRESULT CState_Chai_Run::Initialize(CStateMachine* pStateMachine, const wstring&
 
 HRESULT CState_Chai_Run::Enter()
 {
-	m_pChai->Get_Model()->Set_Animation(ANIM_CH::RUN, TRUE, 0.1f); /* TODO:: 애니메이션 다 적용하고 CChai에 있는 enum으로 사용 */
+	m_pChai->Get_Model()->Set_Animation(ANIM_CH::RUN, TRUE, 1.4f); 
 
 	return S_OK;
 }
@@ -79,7 +79,7 @@ void CState_Chai_Run::Move(const _float& fTimeDelta)
 	CTransform* pTranform = m_pChai->Get_Transform();
 
 	Vec4 vDir, vRotDir, vLook;
-
+	Vec3 vScale = pTranform->Get_Scale();
 	vLook = pTranform->Get_State(CTransform::STATE_LOOK).Normalized();
 
 	if (Input::Up() && !Input::Left() && !Input::Right()) // Up
@@ -171,6 +171,9 @@ void CState_Chai_Run::Move(const _float& fTimeDelta)
 		pTranform->Set_Look(vRotDir);
 		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
 	}
+
+	if (Vec3::Zero == pTranform->Get_Scale())
+		pTranform->Set_Scale(vScale);
 }
 
 CState_Chai_Run* CState_Chai_Run::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

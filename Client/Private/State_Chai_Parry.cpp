@@ -43,7 +43,6 @@ void CState_Chai_Parry::Exit()
 
 const wstring& CState_Chai_Parry::Check_Transition()
 {
-	__super::Check_Transition();
 
 	return StateNames[STATE_IDLE];
 }

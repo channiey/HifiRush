@@ -19,7 +19,7 @@ HRESULT CState_Chai_Attack::Initialize(CStateMachine* pStateMachine, const wstri
 
 HRESULT CState_Chai_Attack::Enter()
 {
-	m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_00, FALSE);
+	m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_00, FALSE, 1.4f);
 
 	return S_OK;
 }
@@ -28,26 +28,28 @@ const wstring& CState_Chai_Attack::Tick(const _float& fTimeDelta)
 {
 	CModel* pModel = m_pChai->Get_Model();
 	
-	if (GAME_INSTNACE->Key_Down(VK_LBUTTON) && pModel->Is_OneThirds_Animation())
+	if (Input::LBtn() && pModel->Is_OneThirds_Animation())
 	{
-		cout << "IN\n";
-
 		++m_pChai->m_tFightDesc.iStep;
 
 		switch (m_pChai->m_tFightDesc.iStep)
 		{
-		case 0:
-			m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_01, FALSE);
+		case 0: 
+		{
+			m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_01, FALSE, 1.4f);
 			break;
+		}
 		case 1:
-			m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_02, FALSE);
+		{
+			m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_02, FALSE, 1.4f);
+		}
 			break;
 		case 2:
 		{
-			m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_03, FALSE);
+			m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_03, FALSE, 1.4f);
 			m_pChai->m_tFightDesc.iStep = -1;
 		}
-		break;
+			break;
 		default:
 			break;
 		}
@@ -74,14 +76,8 @@ const wstring& CState_Chai_Attack::Check_Transition()
 
 	if(m_pChai->Get_Model()->Is_TwoThirds_Animation())
 	{
-		if (Input::Move())
-		{
-			return StateNames[STATE_RUN];
-		}
-		else
-		{
-			return StateNames[STATE_IDLE];
-		}
+		/* Move는 Idle에서 전이한다. */
+		return StateNames[STATE_IDLE];
 	}
 
 	return m_strName;

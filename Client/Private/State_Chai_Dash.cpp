@@ -21,7 +21,7 @@ HRESULT CState_Chai_Dash::Enter()
 {
 	m_pChai->m_tMoveDesc.bDash = TRUE;
 
-	m_pChai->Get_Model()->Set_Animation(ANIM_CH::DASH_FRONT, FALSE);
+	m_pChai->Get_Model()->Set_Animation(ANIM_CH::DASH_FRONT, FALSE, 1.3f);
 
 	return S_OK;
 }
@@ -46,14 +46,9 @@ const wstring& CState_Chai_Dash::Check_Transition()
 	if (m_pChai->Get_Model()->Is_Tween())
 		return m_strName;
 
-	if(m_pChai->Get_Model()->Is_Half_Animation())
-	{
-		if(Input::Move())
-			return StateNames[STATE_RUN];
-	}
-
-	if (m_pChai->Get_Model()->Is_TwoThirds_Animation())
-	{
+	if (m_pChai->Get_Model()->Is_OneThirds_Animation())
+	{		
+		/* Move는 Idle에서 전이한다. */
 		return StateNames[STATE_IDLE];
 	}
 

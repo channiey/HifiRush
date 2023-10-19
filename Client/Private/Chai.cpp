@@ -46,6 +46,8 @@ HRESULT CChai::Initialize(void* pArg)
 	if (FAILED(Ready_Chilren()))
 		return E_FAIL;
 	
+	m_pTransformCom->Set_Scale(Vec3(1.5f, 1.5f, 1.5f));
+
 	return S_OK;
 }
 

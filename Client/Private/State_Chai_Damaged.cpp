@@ -41,8 +41,6 @@ void CState_Chai_Damaged::Exit()
 
 const wstring& CState_Chai_Damaged::Check_Transition()
 {
-	__super::Check_Transition();
-
 	return StateNames[STATE_IDLE];
 }
 

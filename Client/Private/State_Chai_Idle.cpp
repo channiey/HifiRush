@@ -19,7 +19,7 @@ HRESULT CState_Chai_Idle::Initialize(CStateMachine* pStateMachine, const wstring
 
 HRESULT CState_Chai_Idle::Enter()
 {
-	m_pChai->Get_Model()->Set_Animation(ANIM_CH::IDLE, TRUE); /* TODO:: 애니메이션 다 적용하고 CChai에 있는 enum으로 사용 */
+	m_pChai->Get_Model()->Set_Animation(ANIM_CH::IDLE, TRUE, 1.5f); 
 
 	return S_OK;
 }

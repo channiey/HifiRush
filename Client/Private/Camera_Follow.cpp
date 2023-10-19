@@ -33,9 +33,10 @@ HRESULT CCamera_Follow::Initialize(void * pArg)
 
 	/* Set Camera */
 	{
-		m_pCameraCom->Set_Distance(10.f);
+		m_pCameraCom->Set_Distance(7.f);
 		m_pCameraCom->Set_MouseSensitiveX(0.3f);
 		m_pCameraCom->Set_MouseSensitiveY(0.3f);
+		m_pCameraCom->Set_LookAtOffSet(Vec4{0.f, 2.f, 0.f, 1.f });
 	}
 	return S_OK;
 }
@@ -138,6 +139,7 @@ void CCamera_Follow::Move(const _float& fTimeDelta)
 	}
 
 	/* Set */
+	
 	m_pTransformCom->Set_Position(vCamWorldPos);
 	m_pTransformCom->LookAt(vLookAt);
 }

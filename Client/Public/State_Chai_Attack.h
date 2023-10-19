@@ -4,6 +4,8 @@
 BEGIN(Client)
 class CState_Chai_Attack final : public CState_Chai_Base
 {
+	enum class ATTACK_TYPE { LIGHT, STRONG, SPECIAL, TYPEEND };
+
 private:
 	CState_Chai_Attack();
 	CState_Chai_Attack(const CState_Chai_Attack& rhs);
@@ -20,6 +22,9 @@ public:
 
 public:
 	const wstring& Check_Transition() override;
+
+private:
+	ATTACK_TYPE m_eAttackType = ATTACK_TYPE::TYPEEND;
 
 public:
 	static CState_Chai_Attack* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);

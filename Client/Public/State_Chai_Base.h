@@ -25,9 +25,6 @@ protected:
 	virtual HRESULT Initialize(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);
 
 protected:
-	virtual const wstring& Check_Transition() override;
-
-protected:
 	void Set_LastFramePos();
 
 protected:

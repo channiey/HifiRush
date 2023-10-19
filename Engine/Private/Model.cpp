@@ -161,11 +161,11 @@ HRESULT CModel::Update_Anim(_float fTimeDelta)
 {
 	m_TweenDesc.cur.fFrameAcc += fTimeDelta;
 	m_TweenDesc.cur.fAnimAcc += fTimeDelta;
-	int k = 0;
+
 	CAnimation* pCurAnim = Get_Animation(m_TweenDesc.cur.iAnimIndex);
 	if (nullptr != pCurAnim)
 	{
-		_float timePerFrame = 1 / pCurAnim->Get_TickPerSecond();
+		_float timePerFrame = 1 / (pCurAnim->Get_TickPerSecond() * m_TweenDesc.cur.fSpeed);
 
 		/* 한 프레임 끝 */
 		if (m_TweenDesc.cur.fFrameAcc >= timePerFrame)
@@ -244,7 +244,7 @@ HRESULT CModel::Update_Anim(_float fTimeDelta)
 			{
 				m_TweenDesc.next.fFrameAcc += fTimeDelta;
 
-				_float timePerFrame = 1.f / pNextAnim->Get_TickPerSecond();
+				_float timePerFrame = 1.f / (pNextAnim->Get_TickPerSecond() * m_TweenDesc.next.fSpeed);
 
 				if (m_TweenDesc.next.fRatio >= 1.f)
 				{
