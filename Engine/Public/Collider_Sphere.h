@@ -23,6 +23,11 @@ public:
 	virtual _bool		Check_Collision(CCollider* pTargetCollider);
 	virtual _bool		Check_Collision(Ray& ray, OUT RAYHIT_DESC& pHitDesc);
 
+public:
+	virtual void		Set_Collider_Offset(const Vec3 vCenter) override;
+	virtual void		Set_Collider_Size(const _float vSize) override;
+	virtual void		Set_ColliderDesc(const COLLIDERDESC tDesc) override;
+
 
 #ifdef _DEBUG
 public:

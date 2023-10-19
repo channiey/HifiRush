@@ -4,7 +4,7 @@
 BEGIN(Engine)
 
 #define MAX_MODEL_TRANSFORMS	600 
-#define MAX_MODEL_KEYFRAMES		200 
+#define MAX_MODEL_KEYFRAMES		400 
 
 class ENGINE_DLL CModel final : public CComponent
 {

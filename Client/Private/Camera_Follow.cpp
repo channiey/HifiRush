@@ -43,6 +43,7 @@ HRESULT CCamera_Follow::Initialize(void * pArg)
 
 void CCamera_Follow::Tick(_float fTimeDelta)
 {	
+	/* TODO:: 고쳐야하느니라 */
 	if (nullptr == m_pCameraCom->Get_TargetObj())
 	{
 		CGameObject* pObj = GAME_INSTNACE->Get_GameObject(LV_PROTO, g_StrLayerID[LAYER_PLAYER], L"Player_Chai_000");

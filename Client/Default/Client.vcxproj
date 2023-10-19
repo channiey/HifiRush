@@ -207,6 +207,7 @@
     <ClInclude Include="..\public\MainApp.h" />
     <ClInclude Include="..\Public\Chai.h" />
     <ClInclude Include="..\Public\Peppermint.h" />
+    <ClInclude Include="..\Public\Saber.h" />
     <ClInclude Include="..\Public\State_Chai_Attack.h" />
     <ClInclude Include="..\Public\State_Chai_Base.h" />
     <ClInclude Include="..\Public\State_Chai_Damaged.h" />
@@ -280,6 +281,7 @@
     <ClCompile Include="..\private\MainApp.cpp" />
     <ClCompile Include="..\Private\Chai.cpp" />
     <ClCompile Include="..\Private\Peppermint.cpp" />
+    <ClCompile Include="..\Private\Saber.cpp" />
     <ClCompile Include="..\Private\State_Chai_Attack.cpp" />
     <ClCompile Include="..\Private\State_Chai_Base.cpp" />
     <ClCompile Include="..\Private\State_Chai_Damaged.cpp" />

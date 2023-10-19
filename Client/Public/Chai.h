@@ -101,9 +101,9 @@ class CChai final : public CCharacter
 {
 	enum CHILD_TYPE	{ CH_WEAPON_RIGHT, CH_END };
 
-protected:
+private:
 	CChai(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CChai(const CCharacter& rhs);
+	CChai(const CChai& rhs);
 	virtual ~CChai() = default;
 
 public:
@@ -130,7 +130,7 @@ private:
 
 public:
 	static CChai* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CCharacter* Clone(void* pArg) override; 
+	virtual CChai* Clone(void* pArg) override;
 	virtual void Free() override;
 
 private:

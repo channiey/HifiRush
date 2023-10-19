@@ -8,6 +8,7 @@
 #include "GameObject.h"
 #include "Model.h"
 #include "Chai.h"
+#include "Saber.h"
 CLevel_Proto::CLevel_Proto(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -27,6 +28,9 @@ HRESULT CLevel_Proto::Initialize()
 		return E_FAIL;
 
 	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, g_StrLayerID[LAYER_PLAYER], L"Player_Chai"))
+		return E_FAIL;
+
+	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, g_StrLayerID[LAYER_ENEMY], L"Enemy_Saber"))
 		return E_FAIL;
 
 	/*if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, g_StrLayerID[LAYER_ENV_STATIC], L"Env_Static_Terrain"))

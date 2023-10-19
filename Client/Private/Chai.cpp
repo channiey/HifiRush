@@ -4,7 +4,6 @@
 #include "GameInstance.h"
 #include "Animation.h"
 
-
 #include "Weapon.h"
 
 /* Genral */
@@ -26,7 +25,7 @@ CChai::CChai(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 }
 
-CChai::CChai(const CCharacter& rhs)
+CChai::CChai(const CChai& rhs)
 	: CCharacter(rhs)
 {
 }
@@ -46,8 +45,6 @@ HRESULT CChai::Initialize(void* pArg)
 	if (FAILED(Ready_Chilren()))
 		return E_FAIL;
 	
-	m_pTransformCom->Set_Scale(Vec3(1.f, 1.f, 1.f));
-
 	return S_OK;
 }
 
@@ -173,6 +170,10 @@ HRESULT CChai::Ready_Chilren()
 			return E_FAIL;
 
 		pChild->Set_Socket(CModel::BONE_SOCKET_RIGHT); 
+
+		CCollider::COLLIDERDESC		ColliderDesc{ Vec3(0, 0, -75), 30.f };
+
+		pChild->Get_Collider_Sphere()->Set_ColliderDesc(ColliderDesc);
 	}
 	return S_OK;
 }
@@ -207,7 +208,7 @@ CChai * CChai::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	return pInstance;
 }
 
-CCharacter * CChai::Clone(void* pArg)
+CChai* CChai::Clone(void* pArg)
 {
 	CChai*	pInstance = new CChai(*this);
 

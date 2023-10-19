@@ -404,9 +404,9 @@ HRESULT CModel::Read_BoneData(const string& strPath)
 
 		if(strName == "origin_$AssimpFbx$_Translation")
 			m_AnimBoneIndecies[BONE_ROOT] = (_uint)i;
-		else if (strName == "r_attach_hand_00" || strName == "r_hand_attah_00")
+		else if (strName == "r_attach_hand_00" || strName == "r_hand_attach_00")
 			m_AnimBoneIndecies[BONE_SOCKET_RIGHT] = (_uint)i;
-		else if (strName == "l_attach_hand_00" || strName == "l_hand_attah_00")
+		else if (strName == "l_attach_hand_00" || strName == "l_hand_attach_00")
 			m_AnimBoneIndecies[BONE_SOCKET_LEFT] = (_uint)i;
 
 		m_Bones.push_back(pBone);

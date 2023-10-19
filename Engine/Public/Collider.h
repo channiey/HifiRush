@@ -26,7 +26,7 @@ public:
 		{
 			vCenter.y = vSize.y * 0.5f;
 		}
-		tagColliderDesc(const Vec3& vCenter, const _float fMag)
+		tagColliderDesc(const Vec3 vCenter, const _float fMag)
 			: vCenter(vCenter), vSize(Vec3::One* fMag), vRotation(Vec3(0.f, DEG2RAD(45.f), 0.f)) {};
 	}COLLIDERDESC;
 
@@ -58,6 +58,9 @@ public:
 	const _bool			Is_Trigger() const { return m_bTrigger; }
 
 	void				Set_Trigger(const _bool& bTrigger) { m_bTrigger = bTrigger; }
+	virtual void		Set_Collider_Offset(const Vec3 vCenter) { memcpy(&m_ColliderDesc.vCenter, &vCenter, sizeof(Vec3)); }
+	virtual void		Set_Collider_Size(const _float vSize) { memcpy(&m_ColliderDesc.vSize, &vSize, sizeof(Vec3)); }
+	virtual void		Set_ColliderDesc(const COLLIDERDESC tDesc) { memcpy(&m_ColliderDesc, &tDesc, sizeof(COLLIDERDESC)); }
 protected:
 	_matrix				Remove_Rotation(_fmatrix Matrix);
 

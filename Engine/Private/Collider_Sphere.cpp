@@ -77,6 +77,42 @@ _bool CCollider_Sphere::Check_Collision(Ray& ray, OUT RAYHIT_DESC& pHitDesc)
 	return m_pSphere->Intersects(ray.position, ray.direction, pHitDesc.fDistance);
 }
 
+void CCollider_Sphere::Set_Collider_Offset(const Vec3 vCenter)
+{
+	__super::Set_Collider_Offset(vCenter);
+
+	Safe_Delete(m_pOriginal_Sphere);
+	Safe_Delete(m_pSphere);
+
+	m_pOriginal_Sphere = new BoundingSphere(m_ColliderDesc.vCenter, m_ColliderDesc.vSize.x);
+
+	m_pSphere = new BoundingSphere(*m_pOriginal_Sphere);
+}
+
+void CCollider_Sphere::Set_Collider_Size(const _float vSize)
+{
+	__super::Set_Collider_Size(vSize);
+
+	Safe_Delete(m_pOriginal_Sphere);
+	Safe_Delete(m_pSphere);
+
+	m_pOriginal_Sphere = new BoundingSphere(m_ColliderDesc.vCenter, m_ColliderDesc.vSize.x);
+
+	m_pSphere = new BoundingSphere(*m_pOriginal_Sphere);
+}
+
+void CCollider_Sphere::Set_ColliderDesc(const COLLIDERDESC tDesc)
+{
+	__super::Set_ColliderDesc(tDesc);
+
+	Safe_Delete(m_pOriginal_Sphere);
+	Safe_Delete(m_pSphere);
+
+	m_pOriginal_Sphere = new BoundingSphere(m_ColliderDesc.vCenter, m_ColliderDesc.vSize.x);
+
+	m_pSphere = new BoundingSphere(*m_pOriginal_Sphere);
+}
+
 HRESULT CCollider_Sphere::Render()
 {
 	if (FAILED(__super::Render()))

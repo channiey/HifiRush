@@ -9,6 +9,7 @@
 /* Character*/
 #include "Chai.h"
 #include "Peppermint.h"
+#include "Saber.h"
 
 /* Weapon */
 #include "Weapon.h"
@@ -134,14 +135,19 @@ HRESULT CLoader::Load_Prototype()
 			CCollider_Sphere::Create(m_pDevice, m_pContext, CCollider::SPHERE))))
 			return E_FAIL;
 
+		/* For.Prototype_Component_Camera */
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Camera"),
+			CCamera::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+		
 		/* For.Prototype_Component_StateMachine */
 		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_StateMachine"),
 			CStateMachine::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		/* For.Prototype_Component_Camera */
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Camera"),
-			CCamera::Create(m_pDevice, m_pContext))))
+		/* For.Prototype_Component_BehaviourTree */
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_BehaviourTree"),
+			CBehaviourTree::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 	}
@@ -203,6 +209,12 @@ HRESULT CLoader::Load_Prototype()
 		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.01f);
 		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Chai"),
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Chai", PivotMatrix))))
+			return E_FAIL;
+
+		/* For.Prototype_Component_Model_Saber */
+		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.01f);
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Saber"),
+			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Saber", PivotMatrix))))
 			return E_FAIL;
 
 
@@ -273,6 +285,11 @@ HRESULT CLoader::Load_Prototype()
 		/* For.Prototype_GameObject_Player_Chai */
 		if (FAILED(pGameInstance->Add_Prototype(TEXT("Player_Chai"),
 			CChai::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Enemy_Saber */
+		if (FAILED(pGameInstance->Add_Prototype(TEXT("Enemy_Saber"),
+			CSaber::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For.Prototype_GameObject_Proto_Weapon */
