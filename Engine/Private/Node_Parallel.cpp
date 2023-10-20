@@ -8,9 +8,9 @@ CNode_Parallel::CNode_Parallel(const CNode_Parallel& rhs)
 {
 }
 
-HRESULT CNode_Parallel::Initialize_Node(class CBlackboard* pBlackboard)
+HRESULT CNode_Parallel::Initialize_Node()
 {
-	if (FAILED(__super::Initialize_Node(pBlackboard)))
+	if (FAILED(__super::Initialize_Node()))
 		return E_FAIL;
 
 	m_eType = NODE_TYPE::PARALLEL;
@@ -74,11 +74,11 @@ HRESULT CNode_Parallel::Reset_Node()
 	return S_OK;
 }
 
-CNode_Parallel* CNode_Parallel::Create(class CBlackboard* pBlackboard)
+CNode_Parallel* CNode_Parallel::Create()
 {
 	CNode_Parallel* pInstance = new CNode_Parallel();
 
-	if (FAILED(pInstance->Initialize_Node(pBlackboard)))
+	if (FAILED(pInstance->Initialize_Node()))
 	{
 		MSG_BOX("Failed to Created : CNode_Parallel");
 		Safe_Release(pInstance);

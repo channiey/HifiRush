@@ -6,7 +6,9 @@
 
 #include "Weapon.h"
 
-#include "Blackboard_Saver.h"
+#include "Blackboard_Saber.h"
+#include "Node_Damaged_Saber.h"
+#include "Node_Tracked_Saber.h"
 
 CSaber::CSaber(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCharacter(pDevice, pContext)
@@ -38,6 +40,7 @@ HRESULT CSaber::Initialize(void* pArg)
 
 	// << : 임시 코드 
 	{
+		m_pModelCom->Set_Animation(ANIM_SA::IDLE_ATTACK, TRUE, DF_PL_TIME, DF_TW_TIME);
 		Vec3 vPos{ 2.5f, 0.f, -1.5f };
 		m_pTransformCom->Set_Position(vPos);
 		m_pTransformCom->Rotate(m_pTransformCom->Get_Up(), DEG2RAD(180.f));
@@ -106,7 +109,9 @@ HRESULT CSaber::Ready_Components()
 		TEXT("Com_BehaviourTree"), (CComponent**)&m_pBehaviourTreeCom)))
 		return E_FAIL;
 
-	/* Com_Collider_Sphere */
+	/* Collider */
+
+	/* SA_COL_DAMAGED */
 	CCollider_Sphere* pCollider = nullptr;
 	{
 		CCollider::COLLIDERDESC	ColliderDesc(Vec3{ 0.f, 0.9f, 0.f }, 0.9f);
@@ -123,15 +128,22 @@ HRESULT CSaber::Ready_Components()
 
 HRESULT CSaber::Ready_BehavoiurTree()
 {
+	CBlackboard_Saber* pBlackboard	= nullptr;
+	CNode* pRootNode			= nullptr;
+	CNode* pSequenceNode		= nullptr;
+	CNode* pSelectorNode		= nullptr;
+	CNode* pNode				= nullptr;
+
+
 	/* Blackboard */
-	CBlackboard* pBlackboard = CBlackboard_Saver::Create(this);
+	pBlackboard = CBlackboard_Saber::Create(this);
 	{
 		if (nullptr == pBlackboard)
 			return E_FAIL;
 	}
 
 	/* 00.Root */
-	CNode* pRootNode = CNode_Root::Create(pBlackboard);
+	pRootNode = CNode_Root::Create();
 	{
 		if (nullptr == pRootNode)
 			return E_FAIL;
@@ -140,26 +152,46 @@ HRESULT CSaber::Ready_BehavoiurTree()
 			return E_FAIL;
 	}
 
-	/* 01. Sequence */
-	CNode* pSequenceNode = CNode_Sequence::Create(pBlackboard);
+	/* 01. Selector */
+	pSelectorNode = CNode_Selector::Create();
 	{
-		if (nullptr == pSequenceNode)
+		if (nullptr == pSelectorNode)
 			return E_FAIL;
 
-		if (FAILED(pRootNode->Add_ChildNode(pSequenceNode)))
+		if (FAILED(pRootNode->Add_ChildNode(pSelectorNode)))
 			return E_FAIL;
 	}
 
-	/* 02. Wait */
-	CNode* pWaitNode = CNode_Wait::Create(pBlackboard, 5.f);
+	/* 01-00. Damaged */
+	pNode = CNode_Damaged_Saber::Create(pBlackboard);
 	{
-		if (nullptr == pWaitNode)
+		if (nullptr == pNode)
 			return E_FAIL;
 
-		if (FAILED(pSequenceNode->Add_ChildNode(pWaitNode)))
+		if (FAILED(pSelectorNode->Add_ChildNode(pNode)))
 			return E_FAIL;
 	}
 
+	/* 01-01. Sequence */
+	pSequenceNode = CNode_Sequence::Create();
+	{
+		if (nullptr == pNode)
+			return E_FAIL;
+
+		if (FAILED(pSelectorNode->Add_ChildNode(pSequenceNode)))
+			return E_FAIL;
+	}
+
+	/* 01-01-00 Tracked */
+	pNode = CNode_Tracked_Saber::Create(pBlackboard);
+	{
+		if (nullptr == pNode)
+			return E_FAIL;
+
+		if (FAILED(pSequenceNode->Add_ChildNode(pNode)))
+			return E_FAIL;
+	}
+	
 	return S_OK;
 }
 
@@ -187,24 +219,24 @@ HRESULT CSaber::Bind_ShaderResources()
 	return S_OK;
 }
 
-void CSaber::OnCollision_Enter(CGameObject* pGameObject)
+void CSaber::OnCollision_Enter(CCollider* pCollider)
 {
+	CGameObject* pGameObject = pCollider->Get_Owner();
 	const wstring& strLayer = pGameObject->Get_LayerTag();
-
 	if (strLayer == g_strLayerID[LAYER_WEAPON])
 	{
 		if (g_strLayerID[LAYER_PLAYER] == pGameObject->Get_Parent()->Get_LayerTag())
 		{
-			/* 플레이어 무기에 맞음 */
+			m_tFightDesc.bDamaged = TRUE;
 		}
 	}
 }
 
-void CSaber::OnCollision_Stay(CGameObject* pGameObject)
+void CSaber::OnCollision_Stay(CCollider* pCollider)
 {
 }
 
-void CSaber::OnCollision_Exit(CGameObject* pGameObject)
+void CSaber::OnCollision_Exit(CCollider* pCollider)
 {
 }
 

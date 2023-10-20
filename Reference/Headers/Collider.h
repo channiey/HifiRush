@@ -41,9 +41,9 @@ public:
 	virtual void		Update(Matrix TransformMatrix) = 0;
 
 public:
-	void				OnCollision_Enter(class CGameObject* pGameObject);
-	void				OnCollision_Stay(class CGameObject* pGameObject);
-	void				OnCollision_Exit(class CGameObject* pGameObject);
+	void				OnCollision_Enter(CCollider* pCollider);
+	void				OnCollision_Stay(CCollider* pCollider);
+	void				OnCollision_Exit(CCollider* pCollider);
 
 public:
 	virtual _bool		Check_Collision(CCollider* pTargetCollider) = 0;

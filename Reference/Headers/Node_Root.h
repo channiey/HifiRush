@@ -18,7 +18,7 @@ private:
 	virtual ~CNode_Root() = default;
 
 public:
-	virtual HRESULT Initialize_Node(class CBlackboard* pBlackboard);
+	virtual HRESULT Initialize_Node();
 	virtual const NODE_STATE Evaluate(const _float& fTimeDelta);
 
 public:
@@ -26,7 +26,7 @@ public:
 	virtual HRESULT Reset_Node();
 
 public:
-	static CNode_Root* Create(class CBlackboard* pBlackboard);
+	static CNode_Root* Create();
 	virtual void Free();
 };
 

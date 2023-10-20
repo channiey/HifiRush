@@ -9,9 +9,9 @@ CNode_Wait::CNode_Wait(const CNode_Wait& rhs)
 {
 }
 
-HRESULT CNode_Wait::Initialize_Node(class CBlackboard* pBlackboard, const _float& fTime)
+HRESULT CNode_Wait::Initialize_Node(const _float& fTime)
 {
-	if (FAILED(__super::Initialize_Node(pBlackboard)))
+	if (FAILED(__super::Initialize_Node()))
 		return E_FAIL;
 
 	m_fLimitAcc = fTime;
@@ -23,12 +23,10 @@ HRESULT CNode_Wait::Initialize_Node(class CBlackboard* pBlackboard, const _float
 
 const NODE_STATE CNode_Wait::Evaluate(const _float& fTimeDelta)
 {
-	/* 이전에 성공 했다면 바로 다음 노드로 */
 	if (NODE_STATE::SUCCESS == m_eState)
 		return m_eState;
 
 	m_fAcc += fTimeDelta;
-	cout << m_fAcc << endl;
 
 	if (m_fLimitAcc <= m_fAcc)
 	{
@@ -51,13 +49,13 @@ HRESULT CNode_Wait::Reset_Node()
 	return S_OK;
 }
 
-CNode_Wait* CNode_Wait::Create(class CBlackboard* pBlackboard, const _float& fTime)
+CNode_Wait* CNode_Wait::Create(const _float& fTime)
 {
 	CNode_Wait* pInstance = new CNode_Wait();
 
-	if (FAILED(pInstance->Initialize_Node(pBlackboard, fTime)))
+	if (FAILED(pInstance->Initialize_Node(fTime)))
 	{
-		MSG_BOX("Failed to Created : CNode_Root");
+		MSG_BOX("Failed to Created : CNode_Wait");
 		Safe_Release(pInstance);
 	}
 
@@ -66,4 +64,5 @@ CNode_Wait* CNode_Wait::Create(class CBlackboard* pBlackboard, const _float& fTi
 
 void CNode_Wait::Free()
 {
+	__super::Free();
 }

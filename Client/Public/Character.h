@@ -30,6 +30,7 @@ public:
 		_bool	bParry = FALSE;
 		_int	iCombo = -1;
 		_int	iStep = -1;
+
 	}FIGHT_DESC;
 
 	typedef struct tagMovementDesc

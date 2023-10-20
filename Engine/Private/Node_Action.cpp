@@ -8,9 +8,9 @@ CNode_Action::CNode_Action(const CNode_Action& rhs)
 {
 }
 
-HRESULT CNode_Action::Initialize_Node(class CBlackboard* pBlackboard)
+HRESULT CNode_Action::Initialize_Node()
 {
-	if (FAILED(__super::Initialize_Node(pBlackboard)))
+	if (FAILED(__super::Initialize_Node()))
 		return E_FAIL;
 
 	m_eType = NODE_TYPE::ACTION;

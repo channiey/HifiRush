@@ -13,7 +13,7 @@ protected:
 	virtual ~CNode_Sequence() = default;
 
 public:	
-	virtual HRESULT Initialize_Node(class CBlackboard* pBlackboard);
+	virtual HRESULT Initialize_Node();
 	virtual const NODE_STATE Evaluate(const _float& fTimeDelta);
 
 public:
@@ -21,7 +21,7 @@ public:
 	virtual HRESULT Reset_Node() override;
 
 public:
-	static CNode_Sequence* Create(class CBlackboard* pBlackboard);
+	static CNode_Sequence* Create();
 	virtual void Free();
 };
 

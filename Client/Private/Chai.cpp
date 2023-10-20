@@ -110,16 +110,19 @@ HRESULT CChai::Ready_Components()
 		TEXT("Com_StateMachine"), (CComponent**)&m_pStateMachineCom)))
 		return E_FAIL;
 
-	/* Com_Collider_Sphere */
-	CCollider_Sphere* pCollider = nullptr;
+	/* Collider */
 	{
-		CCollider::COLLIDERDESC	ColliderDesc(Vec3{ 0.f, 0.9f, 0.f }, 0.9f);
+		/* Com_Collider_Sphere */
+		CCollider_Sphere* pCollider = nullptr;
+		{
+			CCollider::COLLIDERDESC	ColliderDesc(Vec3{ 0.f, 0.9f, 0.f }, 0.9f);
 
-		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
-			TEXT("Com_Collider_Sphere"), (CComponent**)&pCollider, &ColliderDesc)))
-			return E_FAIL;
+			if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
+				TEXT("Com_Collider_Sphere"), (CComponent**)&pCollider, &ColliderDesc)))
+				return E_FAIL;
 
-		m_pColliderComs.push_back(pCollider);
+			m_pColliderComs.push_back(pCollider);
+		}
 	}
 
 	return S_OK;
@@ -190,15 +193,15 @@ HRESULT CChai::Bind_ShaderResources()
 	return S_OK;
 }
 
-void CChai::OnCollision_Enter(CGameObject* pGameObject)
+void CChai::OnCollision_Enter(CCollider* pCollider)
 {
 }
 
-void CChai::OnCollision_Stay(CGameObject* pGameObject)
+void CChai::OnCollision_Stay(CCollider* pCollider)
 {
 }
 
-void CChai::OnCollision_Exit(CGameObject* pGameObject)
+void CChai::OnCollision_Exit(CCollider* pCollider)
 {
 }
 

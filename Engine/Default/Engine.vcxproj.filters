@@ -193,9 +193,6 @@
     <Filter Include="01.Utiltiy\03.Components\Component\13.Navigation\Cell">
       <UniqueIdentifier>{40330e0e-2319-44ab-9347-aec355c1695f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utiltiy\03.Components\Component\12.BehaviourTree\00.BlackBoard">
-      <UniqueIdentifier>{c6b485d2-db76-4803-be6a-08947c066b8d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node">
       <UniqueIdentifier>{63022527-327c-452e-be61-693a766817e5}</UniqueIdentifier>
     </Filter>
@@ -222,6 +219,9 @@
     </Filter>
     <Filter Include="01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node\03.Action\00.Wait">
       <UniqueIdentifier>{bbe80efd-77d7-4830-8d9f-85ac26f61a05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\12.BehaviourTree\00.BlackBoard %28Not Used, Only Type%29">
+      <UniqueIdentifier>{c6b485d2-db76-4803-be6a-08947c066b8d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -304,7 +304,7 @@
       <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Blackboard.h">
-      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\00.BlackBoard</Filter>
+      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\00.BlackBoard %28Not Used, Only Type%29</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Node_Action.h">
       <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node\03.Action</Filter>
@@ -480,7 +480,7 @@
       <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Blackboard.cpp">
-      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\00.BlackBoard</Filter>
+      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\00.BlackBoard %28Not Used, Only Type%29</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Node.cpp">
       <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node</Filter>

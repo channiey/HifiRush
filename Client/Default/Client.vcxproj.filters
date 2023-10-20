@@ -175,9 +175,6 @@
     <Filter Include="97.ImGui\Windows\03.Sub\00.Object_Components\Anim">
       <UniqueIdentifier>{b3fbccd0-47dd-4c34-8b8c-d87cc6c8d6b6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Character\01.Enemy\00.Saber">
-      <UniqueIdentifier>{08464023-45a9-4835-9324-9503bfeee10e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\03.Character\00.Player\00.Models\01.Peppermint\00.Model">
       <UniqueIdentifier>{c338e1c2-dfde-439c-b3a5-d6ea202e3a19}</UniqueIdentifier>
     </Filter>
@@ -232,17 +229,32 @@
     <Filter Include="02.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.StateMachine\State\03.Action\02.Parry">
       <UniqueIdentifier>{c1d50e8d-522f-4538-ad33-edd44c747d04}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Character\01.Enemy\00.Saber\01.BehaviourTree">
+    <Filter Include="02.GameObjects\03.Character\01.Enemy\01.Saber">
+      <UniqueIdentifier>{08464023-45a9-4835-9324-9503bfeee10e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree">
       <UniqueIdentifier>{0bd0f243-b8b2-4027-b9b8-3ebef4375173}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Character\01.Enemy\00.Saber\00.Model">
-      <UniqueIdentifier>{49c3f617-7d20-48a2-87d8-e7d470947d71}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Character\01.Enemy\00.Saber\01.BehaviourTree\01.Nodes">
+    <Filter Include="02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes">
       <UniqueIdentifier>{62e468e1-c067-4119-9433-31c56f9bc1fe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Character\01.Enemy\00.Saber\01.BehaviourTree\00.Blackboard">
+    <Filter Include="02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\00.Blackboard">
       <UniqueIdentifier>{4f0a3543-9eef-450a-a039-e63db732b773}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\01.Enemy\01.Saber\00.Model">
+      <UniqueIdentifier>{49c3f617-7d20-48a2-87d8-e7d470947d71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\00.Damaged">
+      <UniqueIdentifier>{1ebf8194-ac09-4ed0-9c76-0a70c0bb71d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\01.Target">
+      <UniqueIdentifier>{28a86c7e-2dc8-4ac4-859f-ebe101c034f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\02.Closed">
+      <UniqueIdentifier>{ee1d097e-3620-4455-8722-ba74f67e9651}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\03.Attack">
+      <UniqueIdentifier>{d8698a2d-561e-4307-a4ba-a20e083a15be}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -397,10 +409,19 @@
       <Filter>02.GameObjects\03.Character\00.Player\00.Models\01.Peppermint\00.Model</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Saber.h">
-      <Filter>02.GameObjects\03.Character\01.Enemy\00.Saber\00.Model</Filter>
+      <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\00.Model</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Blackboard_Saver.h">
-      <Filter>02.GameObjects\03.Character\01.Enemy\00.Saber\01.BehaviourTree\00.Blackboard</Filter>
+    <ClInclude Include="..\Public\Blackboard_Saber.h">
+      <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\00.Blackboard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Node_Damaged_Saber.h">
+      <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\00.Damaged</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Node_Action_Saber.h">
+      <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Node_Tracked_Saber.h">
+      <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\01.Target</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -540,10 +561,19 @@
       <Filter>02.GameObjects\03.Character\00.Player\00.Models\01.Peppermint\00.Model</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Saber.cpp">
-      <Filter>02.GameObjects\03.Character\01.Enemy\00.Saber\00.Model</Filter>
+      <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\00.Model</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Blackboard_Saver.cpp">
-      <Filter>02.GameObjects\03.Character\01.Enemy\00.Saber\01.BehaviourTree\00.Blackboard</Filter>
+    <ClCompile Include="..\Private\Blackboard_Saber.cpp">
+      <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\00.Blackboard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Node_Damaged_Saber.cpp">
+      <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\00.Damaged</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Node_Action_Saber.cpp">
+      <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Node_Tracked_Saber.cpp">
+      <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\01.Target</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

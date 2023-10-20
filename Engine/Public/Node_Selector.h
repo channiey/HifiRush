@@ -13,16 +13,15 @@ protected:
 	virtual ~CNode_Selector() = default;
 
 public:
-	virtual HRESULT Initialize_Node(class CBlackboard* pBlackboard);
+	virtual HRESULT Initialize_Node();
 	virtual const NODE_STATE Evaluate(const _float& fTimeDelta);
-
 
 public:
 	HRESULT Add_ChildNode(CNode* pChildNode) override;
 	virtual HRESULT Reset_Node() override;
 
 public:
-	static CNode_Selector* Create(class CBlackboard* pBlackboard);
+	static CNode_Selector* Create();
 	virtual void Free();
 };
 

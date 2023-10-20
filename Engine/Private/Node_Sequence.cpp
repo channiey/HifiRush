@@ -8,9 +8,9 @@ CNode_Sequence::CNode_Sequence(const CNode_Sequence& rhs)
 {
 }
 
-HRESULT CNode_Sequence::Initialize_Node(class CBlackboard* pBlackboard)
+HRESULT CNode_Sequence::Initialize_Node()
 {
-	if (FAILED(__super::Initialize_Node(pBlackboard)))
+	if (FAILED(__super::Initialize_Node()))
 		return E_FAIL;
 
 	m_eType = NODE_TYPE::SEQUENCE;
@@ -26,8 +26,7 @@ const NODE_STATE CNode_Sequence::Evaluate(const _float& fTimeDelta)
 	/* 자식노드의 실행 결과가 성공일 경우, 다음 자식노드를 실행한다. 실패나 러닝일 경우 바로 반환 */
 	for (auto iter : m_ChildNodes)
 	{
-		/* 실행할 자식노드가 성공 상태라면 다시 실행할 필요 없음 */
-		if (nullptr == iter || NODE_STATE::SUCCESS == iter->Get_State()) 
+		if (nullptr == iter) 
 			continue;
 
 		m_eState = iter->Evaluate(fTimeDelta);
@@ -37,8 +36,6 @@ const NODE_STATE CNode_Sequence::Evaluate(const _float& fTimeDelta)
 	}
 
 	/* 모든 자식 노드가 성공했다면 시퀀스도 성공한다.*/
-	m_eState = NODE_STATE::SUCCESS;
-
 	return m_eState;
 }
 
@@ -67,11 +64,11 @@ HRESULT CNode_Sequence::Reset_Node()
 	return S_OK;
 }
 
-CNode_Sequence* CNode_Sequence::Create(class CBlackboard* pBlackboard)
+CNode_Sequence* CNode_Sequence::Create()
 {
 	CNode_Sequence* pInstance = new CNode_Sequence();
 
-	if (FAILED(pInstance->Initialize_Node(pBlackboard)))
+	if (FAILED(pInstance->Initialize_Node()))
 	{
 		MSG_BOX("Failed to Created : CNode_Sequence");
 		Safe_Release(pInstance);

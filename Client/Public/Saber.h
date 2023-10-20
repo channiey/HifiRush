@@ -5,6 +5,7 @@ BEGIN(Engine)
 class CBehaviourTree;
 END
 
+BEGIN(Client)
 
 enum ANIM_SA
 {
@@ -139,9 +140,9 @@ private:
 	HRESULT				Bind_ShaderResources();
 
 private:
-	virtual void		OnCollision_Enter(CGameObject* pGameObject) override;
-	virtual void		OnCollision_Stay(CGameObject* pGameObject) override;
-	virtual void		OnCollision_Exit(CGameObject* pGameObject) override;
+	virtual void		OnCollision_Enter(CCollider* pCollider) override;
+	virtual void		OnCollision_Stay(CCollider* pCollider) override;
+	virtual void		OnCollision_Exit(CCollider* pCollider) override;
 
 private:
 	CBehaviourTree*		m_pBehaviourTreeCom = { nullptr };
@@ -152,6 +153,7 @@ public:
 	virtual void Free() override;
 
 private:
-	
+	friend class CNode_Damaged_Saber;
+	friend class CNode_Tracked_Saber;
 };
-
+END

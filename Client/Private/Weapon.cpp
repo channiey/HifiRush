@@ -159,19 +159,19 @@ HRESULT CWeapon::Bind_ShaderResources()
 	return S_OK;
 }
 
-void CWeapon::OnCollision_Enter(CGameObject* pGameObject)
+void CWeapon::OnCollision_Enter(CCollider* pCollider)
 {
-	m_pParent->OnCollision_Enter(pGameObject);
+	m_pParent->OnCollision_Enter(pCollider);
 }
 
-void CWeapon::OnCollision_Stay(CGameObject* pGameObject)
+void CWeapon::OnCollision_Stay(CCollider* pCollider)
 {
-	m_pParent->OnCollision_Stay(pGameObject);
+	m_pParent->OnCollision_Stay(pCollider);
 }
 
-void CWeapon::OnCollision_Exit(CGameObject* pGameObject)
+void CWeapon::OnCollision_Exit(CCollider* pCollider)
 {
-	m_pParent->OnCollision_Stay(pGameObject);
+	m_pParent->OnCollision_Stay(pCollider);
 }
 
 CWeapon* CWeapon::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

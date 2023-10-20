@@ -61,21 +61,21 @@ HRESULT CCollider::Initialize(void * pArg)
 	return S_OK;
 }
 
-void CCollider::OnCollision_Enter(CGameObject* pGameObject)
+void CCollider::OnCollision_Enter(CCollider* pCollider)
 {
 	++m_iCollison;
-	m_pOwner->OnCollision_Enter(pGameObject);
+	m_pOwner->OnCollision_Enter(pCollider);
 }
 
-void CCollider::OnCollision_Stay(CGameObject* pGameObject)
+void CCollider::OnCollision_Stay(CCollider* pCollider)
 {
-	m_pOwner->OnCollision_Stay(pGameObject);
+	m_pOwner->OnCollision_Stay(pCollider);
 }
 
-void CCollider::OnCollision_Exit(CGameObject* pGameObject)
+void CCollider::OnCollision_Exit(CCollider* pCollider)
 {
 	--m_iCollison;
-	m_pOwner->OnCollision_Exit(pGameObject);
+	m_pOwner->OnCollision_Exit(pCollider);
 }
 
 _matrix CCollider::Remove_Rotation(_fmatrix Matrix)

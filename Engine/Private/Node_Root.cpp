@@ -8,9 +8,9 @@ CNode_Root::CNode_Root(const CNode_Root& rhs)
 {
 }
 
-HRESULT CNode_Root::Initialize_Node(class CBlackboard* pBlackboard)
+HRESULT CNode_Root::Initialize_Node()
 {
-	if (FAILED(__super::Initialize_Node(pBlackboard)))
+	if (FAILED(__super::Initialize_Node()))
 		return E_FAIL;
 
 	m_eType = NODE_TYPE::ROOT;
@@ -55,11 +55,11 @@ HRESULT CNode_Root::Reset_Node()
 	return S_OK;
 }
 
-CNode_Root* CNode_Root::Create(class CBlackboard* pBlackboard)
+CNode_Root* CNode_Root::Create()
 {
 	CNode_Root* pInstance = new CNode_Root();
 
-	if (FAILED(pInstance->Initialize_Node(pBlackboard)))
+	if (FAILED(pInstance->Initialize_Node()))
 	{
 		MSG_BOX("Failed to Created : CNode_Root");
 		Safe_Release(pInstance);

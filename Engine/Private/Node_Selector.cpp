@@ -8,9 +8,9 @@ CNode_Selector::CNode_Selector(const CNode_Selector& rhs)
 {
 }
 
-HRESULT CNode_Selector::Initialize_Node(class CBlackboard* pBlackboard)
+HRESULT CNode_Selector::Initialize_Node()
 {
-	if (FAILED(__super::Initialize_Node(pBlackboard)))
+	if (FAILED(__super::Initialize_Node()))
 		return E_FAIL;
 
 	m_eType = NODE_TYPE::SELECTOR;
@@ -37,9 +37,6 @@ const NODE_STATE CNode_Selector::Evaluate(const _float& fTimeDelta)
 	}
 
 	/* 모든 자식 노드가 실패했다면 셀렉터도 실패한다.*/
-
-	m_eState = NODE_STATE::FAILURE;
-
 	return m_eState;
 }
 
@@ -68,11 +65,11 @@ HRESULT CNode_Selector::Reset_Node()
 	return S_OK;
 }
 
-CNode_Selector* CNode_Selector::Create(class CBlackboard* pBlackboard)
+CNode_Selector* CNode_Selector::Create()
 {
 	CNode_Selector* pInstance = new CNode_Selector();
 
-	if (FAILED(pInstance->Initialize_Node(pBlackboard)))
+	if (FAILED(pInstance->Initialize_Node()))
 	{
 		MSG_BOX("Failed to Created : CNode_Selector");
 		Safe_Release(pInstance);

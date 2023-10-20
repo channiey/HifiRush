@@ -10,15 +10,16 @@ class ENGINE_DLL CBlackboard abstract : public CBase
 {
 
 protected:
-	CBlackboard(class CGameObject* pGameObject);
+	CBlackboard();
+	//CBlackboard(CGameObject* pGameObject);
 	CBlackboard(const CBlackboard& rhs);
 	virtual ~CBlackboard() = default;
 
 public:
-	CGameObject* Get_Owner() const { return m_pOwner; }
+	//CGameObject* Get_Owner() const { return m_pOwner; }
 
 protected:
-	CGameObject* m_pOwner;
+	//CGameObject* m_pOwner;
 
 public:
 	virtual void Free();

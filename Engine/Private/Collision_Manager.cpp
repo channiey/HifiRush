@@ -86,22 +86,22 @@ void CCollision_Manager::Check_Collision_Layer(const wstring& strLayerTag1, cons
 				{
 					if (!pObj1->Is_Active() || !pObj2->Is_Active()) // 둘 중 하나 삭제 예정
 					{
-						pCollider1->OnCollision_Exit(pObj2);
-						pCollider2->OnCollision_Exit(pObj1);
+						pCollider1->OnCollision_Exit(pCollider2);
+						pCollider2->OnCollision_Exit(pCollider1);
 						iter->second = FALSE;
 					}
 					else // 삭제 예정 없음
 					{
-						pCollider1->OnCollision_Stay(pObj2);
-						pCollider2->OnCollision_Stay(pObj1);
+						pCollider1->OnCollision_Stay(pCollider2);
+						pCollider2->OnCollision_Stay(pCollider1);
 					}
 				}
 				else // 이번에 처음 충돌 
 				{
 					if (pObj1->Is_Active() && pObj2->Is_Active())
 					{
-						pCollider1->OnCollision_Enter(pObj2);
-						pCollider2->OnCollision_Enter(pObj1);
+						pCollider1->OnCollision_Enter(pCollider2);
+						pCollider2->OnCollision_Enter(pCollider1);
 						iter->second = TRUE;
 					}
 				}
@@ -110,8 +110,8 @@ void CCollision_Manager::Check_Collision_Layer(const wstring& strLayerTag1, cons
 			{
 				if (iter->second) // 이전에 충돌
 				{
-					pCollider1->OnCollision_Exit(pObj2);
-					pCollider2->OnCollision_Exit(pObj1);
+					pCollider1->OnCollision_Exit(pCollider2);
+					pCollider2->OnCollision_Exit(pCollider1);
 					iter->second = FALSE;
 				}
 			}

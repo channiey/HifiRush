@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Character.h"
 
 BEGIN(Engine)
@@ -122,9 +121,9 @@ private:
 	HRESULT				Bind_ShaderResources();
 
 private:
-	virtual void		OnCollision_Enter(CGameObject* pGameObject) override;
-	virtual void		OnCollision_Stay(CGameObject* pGameObject) override;
-	virtual void		OnCollision_Exit(CGameObject* pGameObject) override;
+	virtual void		OnCollision_Enter(CCollider* pCollider) override;
+	virtual void		OnCollision_Stay(CCollider* pCollider) override;
+	virtual void		OnCollision_Exit(CCollider* pCollider) override;
 
 private: 
 	CStateMachine*		m_pStateMachineCom = { nullptr };

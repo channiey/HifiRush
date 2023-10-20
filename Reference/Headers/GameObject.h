@@ -26,9 +26,9 @@ public:
 	virtual HRESULT		Render();
 
 public: 
-	virtual void		OnCollision_Enter(class CGameObject* pGameObject) {};
-	virtual void		OnCollision_Stay(class CGameObject* pGameObject) {};
-	virtual void		OnCollision_Exit(class CGameObject* pGameObject) {};
+	virtual void		OnCollision_Enter(class CCollider* pCollider) {};
+	virtual void		OnCollision_Stay(class CCollider* pCollider) {};
+	virtual void		OnCollision_Exit(class CCollider* pCollider) {};
 
 public: 
 	const _bool 		Is_Active() const { return m_eState == STATE_ACTIVE ? TRUE : FALSE; }

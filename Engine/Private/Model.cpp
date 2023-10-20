@@ -302,6 +302,9 @@ HRESULT CModel::Bind_Material(CShader * pShader, _uint iMaterialIndex, aiTexture
 
 void CModel::Set_Animation(const _uint& iAnimIndex, const _bool& bLoop, const _float& fSpeed, const _float& fTweenDuration)
 {
+	if (iAnimIndex == m_TweenDesc.cur.iAnimIndex || iAnimIndex == m_TweenDesc.next.iAnimIndex)
+		return;
+
 	m_TweenDesc.ClearNextAnim();
 
 	m_TweenDesc.next.iAnimIndex = iAnimIndex % Get_AnimationCount();
