@@ -8,8 +8,11 @@ CNode_Root::CNode_Root(const CNode_Root& rhs)
 {
 }
 
-HRESULT CNode_Root::Initialize_Node()
+HRESULT CNode_Root::Initialize_Node(class CBlackboard* pBlackboard)
 {
+	if (FAILED(__super::Initialize_Node(pBlackboard)))
+		return E_FAIL;
+
 	m_eType = NODE_TYPE::ROOT;
 
 	return S_OK;
@@ -17,8 +20,8 @@ HRESULT CNode_Root::Initialize_Node()
 
 const NODE_STATE CNode_Root::Evaluate(const _float& fTimeDelta)
 {
-	if (Is_ChildNode())
-		return NODE_STATE::FAILURE; /* TODO 이에 대한 처리 추가로 필요 */
+	if (!Is_ChildNode())
+		return NODE_STATE::FAILURE; 
 
 	return m_pChildNodes.front()->Evaluate(fTimeDelta);
 }
@@ -35,11 +38,11 @@ HRESULT CNode_Root::Add_ChildNode(CNode* pChildNode)
 	return S_OK;
 }
 
-CNode_Root* CNode_Root::Create(void* pArg)
+CNode_Root* CNode_Root::Create(class CBlackboard* pBlackboard)
 {
 	CNode_Root* pInstance = new CNode_Root();
 
-	if (FAILED(pInstance->Initialize_Node()))
+	if (FAILED(pInstance->Initialize_Node(pBlackboard)))
 	{
 		MSG_BOX("Failed to Created : CNode_Root");
 		Safe_Release(pInstance);

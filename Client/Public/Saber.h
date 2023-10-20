@@ -133,6 +133,7 @@ public:
 private:
 	HRESULT				Ready_Components();
 	HRESULT				Ready_Chilren();
+	HRESULT				Ready_BehavoiurTree();
 
 private:
 	HRESULT				Bind_ShaderResources();
@@ -143,7 +144,7 @@ private:
 	virtual void		OnCollision_Exit(CGameObject* pGameObject) override;
 
 private:
-	CBehaviourTree* m_pBehaviourTreeCom = { nullptr };
+	CBehaviourTree*		m_pBehaviourTreeCom = { nullptr };
 
 public:
 	static CSaber* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

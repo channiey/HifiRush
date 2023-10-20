@@ -8,8 +8,11 @@ CNode_Selector::CNode_Selector(const CNode_Selector& rhs)
 {
 }
 
-HRESULT CNode_Selector::Initialize_Node()
+HRESULT CNode_Selector::Initialize_Node(class CBlackboard* pBlackboard)
 {
+	if (FAILED(__super::Initialize_Node(pBlackboard)))
+		return E_FAIL;
+
 	m_eType = NODE_TYPE::SELECTOR;
 
 	return S_OK;
@@ -17,16 +20,19 @@ HRESULT CNode_Selector::Initialize_Node()
 
 const NODE_STATE CNode_Selector::Evaluate(const _float& fTimeDelta)
 {
-	if (!Is_ChildNode()) return NODE_STATE::FAILURE;
+	if (!Is_ChildNode())
+		return NODE_STATE::FAILURE;
 
-	/* 단 하나의 자식노드라도 성공 혹은 Running을 반환할 때까지 실행한다. */
+	/* 단 하나의 자식노드라도 SUCCESS 혹은 RUNNING을 반환할 때까지 실행한다. */
 	for (auto iter : m_pChildNodes)
 	{
-		if (nullptr == iter) continue;
+		if (nullptr == iter) 
+			continue;
 
 		const NODE_STATE& eState = iter->Evaluate(fTimeDelta);
 
-		if (NODE_STATE::FAILURE != eState) return eState;
+		if (NODE_STATE::FAILURE != eState) 
+			return eState;
 	}
 
 	/* 모든 자식 노드가 실패했다면 셀렉터도 실패한다.*/
@@ -35,18 +41,19 @@ const NODE_STATE CNode_Selector::Evaluate(const _float& fTimeDelta)
 
 HRESULT CNode_Selector::Add_ChildNode(CNode* pChildNode)
 {
-	NULL_CHECK_RETURN(pChildNode, E_FAIL);
+	if (nullptr == pChildNode)
+		return E_FAIL;
 
 	m_pChildNodes.push_back(pChildNode);
 
 	return S_OK;
 }
 
-CNode_Selector* CNode_Selector::Create(void* pArg)
+CNode_Selector* CNode_Selector::Create(class CBlackboard* pBlackboard)
 {
 	CNode_Selector* pInstance = new CNode_Selector();
 
-	if (FAILED(pInstance->Initialize_Node()))
+	if (FAILED(pInstance->Initialize_Node(pBlackboard)))
 	{
 		MSG_BOX("Failed to Created : CNode_Selector");
 		Safe_Release(pInstance);

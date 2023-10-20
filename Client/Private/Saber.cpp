@@ -6,6 +6,8 @@
 
 #include "Weapon.h"
 
+#include "Blackboard_Saver.h"
+
 CSaber::CSaber(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCharacter(pDevice, pContext)
 {
@@ -31,10 +33,11 @@ HRESULT CSaber::Initialize(void* pArg)
 	if (FAILED(Ready_Chilren()))
 		return E_FAIL;
 
+	if (FAILED(Ready_BehavoiurTree()))
+		return E_FAIL;
+
 	// << : 임시 코드 
 	{
-		m_pModelCom->Set_Animation(ANIM_SA::IDLE_ATTACK, TRUE, DF_PL_TIME, DF_TW_TIME);
-
 		Vec3 vPos{ 2.5f, 0.f, -1.5f };
 		m_pTransformCom->Set_Position(vPos);
 		m_pTransformCom->Rotate(m_pTransformCom->Get_Up(), DEG2RAD(180.f));
@@ -46,8 +49,8 @@ HRESULT CSaber::Initialize(void* pArg)
 
 void CSaber::Tick(_float fTimeDelta)
 {
-	/*if (FAILED(m_pBehaviourTreeCom->Tick(fTimeDelta)))
-		return;*/
+	if (FAILED(m_pBehaviourTreeCom->Tick(fTimeDelta)))
+		return;
 
 	__super::Tick(fTimeDelta);
 }
@@ -57,16 +60,8 @@ void CSaber::LateTick(_float fTimeDelta)
 	if (FAILED(m_pModelCom->Update(fTimeDelta)))
 		return;
 
-	// << : 임시 코드 
-	if (m_pModelCom->Get_CurAnimationIndex() == ANIM_SA::DMG_05 && m_pModelCom->Is_Finish_Animation())
-	{
-		m_pModelCom->Set_Animation(ANIM_SA::IDLE_ATTACK, TRUE, DF_PL_TIME, DF_TW_TIME);
-	}
-	// >> 
-
-
-	/*if (FAILED(m_pBehaviourTreeCom->LateTick(fTimeDelta)))
-		return;*/
+	if (FAILED(m_pBehaviourTreeCom->LateTick(fTimeDelta)))
+		return;
 
 	__super::LateTick(fTimeDelta);
 }
@@ -106,6 +101,11 @@ HRESULT CSaber::Ready_Components()
 		TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 
+	/* Comp_BehaviourTree*/
+	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_BehaviourTree"),
+		TEXT("Com_BehaviourTree"), (CComponent**)&m_pBehaviourTreeCom)))
+		return E_FAIL;
+
 	/* Com_Collider_Sphere */
 	CCollider_Sphere* pCollider = nullptr;
 	{
@@ -118,12 +118,36 @@ HRESULT CSaber::Ready_Components()
 		m_pColliderComs.push_back(pCollider);
 	}
 
-	/* Comp_BehaviourTree*/
-	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_BehaviourTree"),
-		TEXT("Com_BehaviourTree"), (CComponent**)&m_pBehaviourTreeCom)))
-		return E_FAIL;
+	return S_OK;
+}
+
+HRESULT CSaber::Ready_BehavoiurTree()
+{
+	/* Blackboard */
+	CBlackboard* pBlackboard = CBlackboard_Saver::Create(this);
 	{
-		
+		if (nullptr == pBlackboard)
+			return E_FAIL;
+	}
+
+	/* 00.Root */
+	CNode* pRootNode = CNode_Root::Create(pBlackboard);
+	{
+		if (nullptr == pRootNode)
+			return E_FAIL;
+
+		if (FAILED(m_pBehaviourTreeCom->Set_RootNode(pRootNode)))
+			return E_FAIL;
+	}
+
+	/* 01. Sequence */
+	CNode* pSequenceNode = CNode_Sequence::Create(pBlackboard);
+	{
+		if (nullptr == pSequenceNode)
+			return E_FAIL;
+
+		if (FAILED(pRootNode->Add_ChildNode(pSequenceNode)))
+			return E_FAIL;
 	}
 
 	return S_OK;
@@ -162,12 +186,6 @@ void CSaber::OnCollision_Enter(CGameObject* pGameObject)
 		if (g_strLayerID[LAYER_PLAYER] == pGameObject->Get_Parent()->Get_LayerTag())
 		{
 			/* 플레이어 무기에 맞음 */
-
-			if (m_pModelCom->Get_CurAnimationIndex() != ANIM_SA::DMG_05)
-			{
-				m_pModelCom->Set_Animation(ANIM_SA::DMG_05, FALSE, DF_PL_TIME, DF_TW_TIME);
-
-			}
 		}
 	}
 }

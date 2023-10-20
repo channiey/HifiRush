@@ -19,14 +19,14 @@ protected:
 	virtual ~CNode_Root() = default;
 
 public:
-	virtual HRESULT Initialize_Node();
+	virtual HRESULT Initialize_Node(class CBlackboard* pBlackboard);
 	virtual const NODE_STATE Evaluate(const _float& fTimeDelta);
 
 public:
 	HRESULT Add_ChildNode(CNode* pChildNode) override;
 
-private:
-	static CNode_Root* Create(void* pArg = nullptr);
+public:
+	static CNode_Root* Create(class CBlackboard* pBlackboard);
 	virtual void Free();
 };
 

@@ -235,23 +235,14 @@
     <Filter Include="02.GameObjects\03.Character\01.Enemy\00.Saber\01.BehaviourTree">
       <UniqueIdentifier>{0bd0f243-b8b2-4027-b9b8-3ebef4375173}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Character\01.Enemy\00.Saber\01.BehaviourTree\Node">
-      <UniqueIdentifier>{62e468e1-c067-4119-9433-31c56f9bc1fe}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\03.Character\01.Enemy\00.Saber\00.Model">
       <UniqueIdentifier>{49c3f617-7d20-48a2-87d8-e7d470947d71}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Character\01.Enemy\00.Saber\01.BehaviourTree\Node\00.Root">
-      <UniqueIdentifier>{f0424c1b-0cc9-4418-92d3-625f2846030e}</UniqueIdentifier>
+    <Filter Include="02.GameObjects\03.Character\01.Enemy\00.Saber\01.BehaviourTree\01.Nodes">
+      <UniqueIdentifier>{62e468e1-c067-4119-9433-31c56f9bc1fe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Character\01.Enemy\00.Saber\01.BehaviourTree\Node\01.Composit">
-      <UniqueIdentifier>{1f1e12f3-701f-4e1c-8ca9-67254f82b68c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Character\01.Enemy\00.Saber\01.BehaviourTree\Node\02.Decorator">
-      <UniqueIdentifier>{97078053-f1c2-4efa-8631-3c17bfd11cfe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Character\01.Enemy\00.Saber\01.BehaviourTree\Node\03.Action">
-      <UniqueIdentifier>{9afd42f2-ee0d-4ba1-9580-14a700051411}</UniqueIdentifier>
+    <Filter Include="02.GameObjects\03.Character\01.Enemy\00.Saber\01.BehaviourTree\00.Blackboard">
+      <UniqueIdentifier>{4f0a3543-9eef-450a-a039-e63db732b773}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -408,6 +399,9 @@
     <ClInclude Include="..\Public\Saber.h">
       <Filter>02.GameObjects\03.Character\01.Enemy\00.Saber\00.Model</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Blackboard_Saver.h">
+      <Filter>02.GameObjects\03.Character\01.Enemy\00.Saber\01.BehaviourTree\00.Blackboard</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -547,6 +541,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Saber.cpp">
       <Filter>02.GameObjects\03.Character\01.Enemy\00.Saber\00.Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Blackboard_Saver.cpp">
+      <Filter>02.GameObjects\03.Character\01.Enemy\00.Saber\01.BehaviourTree\00.Blackboard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

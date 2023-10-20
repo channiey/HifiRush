@@ -6,8 +6,8 @@ BEGIN(Engine)
 #define MAX_MODEL_TRANSFORMS	600 
 #define MAX_MODEL_KEYFRAMES		400 
 
-#define DF_PL_TIME		1.4f
-#define DF_TW_TIME		0.2f
+#define DF_PL_TIME				1.4f
+#define DF_TW_TIME				0.2f
 
 class ENGINE_DLL CModel final : public CComponent
 {

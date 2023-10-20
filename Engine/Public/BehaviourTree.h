@@ -8,8 +8,16 @@ enum class NODE_STATE
 {
 	SUCCESS,
 	FAILURE,
-	RUNNING,
+	RUNNING, 
 	TYPEEND
+
+	/* RUNNING 
+	* 
+		조건의 평가 혹은 자식 노드들의 평가가 한프레임 안에서 처리될 수 없는 경우 게임의 흐름을 방해하지 않고
+
+		다음 프레임에서 다시 체크하기 위해 사용된다. 
+	*/
+	
 };
 
 enum class NODE_TYPE
@@ -19,7 +27,7 @@ enum class NODE_TYPE
 	ROOT,
 
 	/* Composit */
-	/* 여러 개의 자식 노드를 가질 수 있다.*/
+	/* 여러 개의 자식 노드(Action, Composit, Decorator)를 가질 수 있다.*/
 	SEQUENCE,	/* Child중 하나라도 Failure or Running을 반환할 때까지 반복해서 실행 */
 				/* 다수의 작업을 차례대로 실행하되 그중 하나가 작동하지 않으면 작업 전체를 취소 할 때 */
 	SELECTOR,	/* Child중 하나라도 Success or Running을 반환할 때까지 반복해서 실행 -> 단 하나만 실행 */
@@ -60,20 +68,20 @@ public:
 	virtual HRESULT LateTick(const _float& fTimeDelta);
 
 public:
-	const NODE_STATE&			Get_State() const { return m_eState; }
-	class CNode* const			Get_RootNode() const { return m_pRootNode; }
-	class CBlackboard* const	Get_Blackboard() const { return m_pBlackboard; }
+	const NODE_STATE&	Get_State() const { return m_eState; }
+	class CNode* 		Get_RootNode() const { return m_pRootNode; }
+	class CBlackboard* 	Get_Blackboard() const { return m_pBlackboard; }
 
 public:
-	HRESULT						Set_RootNode(class CNode* const pRootNode);
-	HRESULT						Set_Blackboard(class CBlackboard* const pBlackboard);
+	HRESULT				Set_RootNode(class CNode* const pRootNode);
+	HRESULT				Set_Blackboard(class CBlackboard* const pBlackboard);
 
-	virtual HRESULT				Set_Active(const _bool& bActive) override;
+	virtual HRESULT		Set_Active(const _bool& bActive) override;
 
 private:
-	NODE_STATE					m_eState = { NODE_STATE::RUNNING };
-	class CNode*				m_pRootNode = { nullptr };
-	class CBlackboard*			m_pBlackboard = { nullptr };
+	NODE_STATE			m_eState = { NODE_STATE::RUNNING };
+	class CNode*		m_pRootNode = { nullptr };
+	class CBlackboard*	m_pBlackboard = { nullptr };
 
 public:
 	static CBehaviourTree* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

@@ -14,7 +14,7 @@ protected:
 	virtual ~CNode_Action() = default;
 
 public:
-	virtual HRESULT Initialize_Node();
+	virtual HRESULT Initialize_Node(class CBlackboard* pBlackboard);
 	virtual const NODE_STATE Evaluate(const _float& fTimeDelta) PURE;
 
 public:

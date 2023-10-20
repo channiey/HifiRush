@@ -33,35 +33,40 @@ HRESULT CBehaviourTree::Initialize(void * pArg)
 
 HRESULT CBehaviourTree::Tick(const _float& fTimeDelta)
 {
-	/* 루트 노드의 실행 결과로 성공 혹은 실패로 나왔다면 실행을 중지한다. */
-	
-	if (nullptr == m_pRootNode || NODE_STATE::RUNNING != m_eState)
+	if (nullptr == m_pRootNode)
 		return E_FAIL;
 
 	m_eState = m_pRootNode->Evaluate(fTimeDelta);
+	
+	//if (nullptr == m_pRootNode || NODE_STATE::RUNNING != m_eState)
+	//	return E_FAIL;
 
-	//if (NODE_STATE::RUNNING == m_eState) return E_FAIL;
+	//if (NODE_STATE::RUNNING != m_pRootNode->Evaluate(fTimeDelta))
+	//	return E_FAIL;
 
 	return S_OK;
 }
 
 HRESULT CBehaviourTree::LateTick(const _float& fTimeDelta)
 {	
-	/* 루트 노드의 실행 결과로 성공 혹은 실패로 나왔다면 실행을 중지한다. */
-
-	if (nullptr == m_pRootNode || NODE_STATE::RUNNING != m_eState)
+	if (nullptr == m_pRootNode)
 		return E_FAIL;
 
 	m_eState = m_pRootNode->Evaluate(fTimeDelta);
 
-	//if (NODE_STATE::RUNNING == m_eState) return E_FAIL;
+	/*if (nullptr == m_pRootNode || NODE_STATE::RUNNING != m_eState)
+		return E_FAIL;
+
+	if (NODE_STATE::RUNNING != m_pRootNode->Evaluate(fTimeDelta))
+		return E_FAIL;*/
 
 	return S_OK;
 }
 
 HRESULT CBehaviourTree::Set_RootNode(CNode* const pRootNode)
 {
-	NULL_CHECK_RETURN(pRootNode, E_FAIL);
+	if (nullptr == pRootNode)
+		return E_FAIL;
 	
 	m_pRootNode = pRootNode;
 
@@ -72,7 +77,8 @@ HRESULT CBehaviourTree::Set_RootNode(CNode* const pRootNode)
 
 HRESULT CBehaviourTree::Set_Blackboard(CBlackboard* const pBlackboard)
 {
-	NULL_CHECK_RETURN(pBlackboard, E_FAIL);
+	if (nullptr == pBlackboard)
+		return E_FAIL;
 
 	m_pBlackboard = pBlackboard;
 

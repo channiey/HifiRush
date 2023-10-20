@@ -116,6 +116,7 @@ public:
 private:
 	HRESULT				Ready_Components();
 	HRESULT				Ready_Chilren();
+	HRESULT				Ready_StateMachine();
 
 private:
 	HRESULT				Bind_ShaderResources();
@@ -126,7 +127,7 @@ private:
 	virtual void		OnCollision_Exit(CGameObject* pGameObject) override;
 
 private: 
-	CStateMachine*			m_pStateMachineCom = { nullptr };
+	CStateMachine*		m_pStateMachineCom = { nullptr };
 
 public:
 	static CChai* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

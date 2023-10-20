@@ -5,6 +5,7 @@
 #include "Base.h"
 #include "Engine_Defines.h"
 #include "BehaviourTree.h"
+#include "Blackboard.h"
 
 BEGIN(Engine)
 
@@ -17,6 +18,7 @@ protected:
 	virtual ~CNode() = default;
 
 public:
+	virtual HRESULT Initialize_Node(class CBlackboard* pBlackboard);
 	/* 자식 노드를 순차적으로 실행하고 결과를 반환한다. (행동 트리에서의 Tick 역할) */
 	virtual const NODE_STATE Evaluate(const _float& fTimeDelta) PURE;
 
@@ -27,13 +29,15 @@ public:
 	virtual HRESULT Add_ChildNode(CNode* pChildNode) PURE;
 
 protected:
-	NODE_STATE m_eState = { NODE_STATE::TYPEEND };
-	NODE_TYPE m_eType = { NODE_TYPE::TYPEEND };
-	list<CNode*> m_pChildNodes;
-	wstring m_strName = {};
+	NODE_STATE		m_eState = { NODE_STATE::TYPEEND };
+	NODE_TYPE		m_eType = { NODE_TYPE::TYPEEND };
+	list<CNode*>	m_pChildNodes;
+	wstring			m_strName = {};
+
+	CBlackboard*	m_pBlackboard = { nullptr };
 
 protected:
-	const _bool Is_ChildNode() const { return m_pChildNodes.empty(); }
+	const _bool		Is_ChildNode() const { return !m_pChildNodes.empty(); }
 
 public:
 	virtual void Free();
