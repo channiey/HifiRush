@@ -12,8 +12,7 @@ BEGIN(Engine)
 
 class ENGINE_DLL CNode_Root final : public CNode
 {
-
-protected:
+private:
 	CNode_Root();
 	CNode_Root(const CNode_Root& rhs);
 	virtual ~CNode_Root() = default;
@@ -24,6 +23,7 @@ public:
 
 public:
 	HRESULT Add_ChildNode(CNode* pChildNode) override;
+	virtual HRESULT Reset_Node();
 
 public:
 	static CNode_Root* Create(class CBlackboard* pBlackboard);

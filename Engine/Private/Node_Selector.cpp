@@ -24,19 +24,23 @@ const NODE_STATE CNode_Selector::Evaluate(const _float& fTimeDelta)
 		return NODE_STATE::FAILURE;
 
 	/* 단 하나의 자식노드라도 SUCCESS 혹은 RUNNING을 반환할 때까지 실행한다. */
-	for (auto iter : m_pChildNodes)
+	/* ex 세 개 자식 노드중 하나라도 성공 했다면 다음 브랜치로 넘어간다.*/
+	for (auto iter : m_ChildNodes)
 	{
 		if (nullptr == iter) 
 			continue;
 
-		const NODE_STATE& eState = iter->Evaluate(fTimeDelta);
+		m_eState = iter->Evaluate(fTimeDelta);
 
-		if (NODE_STATE::FAILURE != eState) 
-			return eState;
+		if (NODE_STATE::FAILURE != m_eState)
+			return m_eState;
 	}
 
 	/* 모든 자식 노드가 실패했다면 셀렉터도 실패한다.*/
-	return NODE_STATE::FAILURE;
+
+	m_eState = NODE_STATE::FAILURE;
+
+	return m_eState;
 }
 
 HRESULT CNode_Selector::Add_ChildNode(CNode* pChildNode)
@@ -44,7 +48,22 @@ HRESULT CNode_Selector::Add_ChildNode(CNode* pChildNode)
 	if (nullptr == pChildNode)
 		return E_FAIL;
 
-	m_pChildNodes.push_back(pChildNode);
+	m_ChildNodes.push_back(pChildNode);
+
+	pChildNode->Set_ParentNode(this);
+
+	return S_OK;
+}
+
+HRESULT CNode_Selector::Reset_Node()
+{
+	__super::Reset_Node();
+
+	for (auto iter : m_ChildNodes)
+	{
+		if (nullptr != iter)
+			iter->Reset_Node();
+	}
 
 	return S_OK;
 }

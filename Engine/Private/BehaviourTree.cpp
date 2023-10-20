@@ -36,14 +36,12 @@ HRESULT CBehaviourTree::Tick(const _float& fTimeDelta)
 	if (nullptr == m_pRootNode)
 		return E_FAIL;
 
+	/* 만약 이전 프레임 실행 결과가 success였다면, 모든 노드를 재귀적으로 리셋하고 다시 평가한다. */
+	if (NODE_STATE::SUCCESS == m_eState)
+		m_pRootNode->Reset_Node();
+
 	m_eState = m_pRootNode->Evaluate(fTimeDelta);
 	
-	//if (nullptr == m_pRootNode || NODE_STATE::RUNNING != m_eState)
-	//	return E_FAIL;
-
-	//if (NODE_STATE::RUNNING != m_pRootNode->Evaluate(fTimeDelta))
-	//	return E_FAIL;
-
 	return S_OK;
 }
 
@@ -53,12 +51,6 @@ HRESULT CBehaviourTree::LateTick(const _float& fTimeDelta)
 		return E_FAIL;
 
 	m_eState = m_pRootNode->Evaluate(fTimeDelta);
-
-	/*if (nullptr == m_pRootNode || NODE_STATE::RUNNING != m_eState)
-		return E_FAIL;
-
-	if (NODE_STATE::RUNNING != m_pRootNode->Evaluate(fTimeDelta))
-		return E_FAIL;*/
 
 	return S_OK;
 }

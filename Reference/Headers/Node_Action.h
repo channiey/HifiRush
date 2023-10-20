@@ -20,6 +20,7 @@ public:
 public:
 	/* 액션은 Leaf 노드로서 자식 노드를 갖지 않는다.*/
 	HRESULT Add_ChildNode(CNode* pChildNode) override { return E_FAIL; }
+	virtual HRESULT Reset_Node() override;
 
 private:
 	virtual void Free();

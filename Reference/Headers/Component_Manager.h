@@ -26,6 +26,7 @@
 #include "Node_Selector.h"
 #include "Node_Parallel.h"
 #include "Node_Action.h"
+#include "Node_Wait.h"
 
 #include "Camera.h"
 

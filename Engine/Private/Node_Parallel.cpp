@@ -29,7 +29,7 @@ const NODE_STATE CNode_Parallel::Evaluate(const _float& fTimeDelta)
 	_bool bAnyFailure = FALSE;
 	_bool bAnyRunning = FALSE;
 
-	for (auto iter : m_pChildNodes)
+	for (auto iter : m_ChildNodes)
 	{
 		if (nullptr == iter) continue;
 
@@ -43,7 +43,10 @@ const NODE_STATE CNode_Parallel::Evaluate(const _float& fTimeDelta)
 		}
 	}
 
-	return bAnyFailure ? NODE_STATE::FAILURE : (bAnyRunning ? NODE_STATE::RUNNING : NODE_STATE::SUCCESS);
+	m_eState = bAnyFailure ? 
+		NODE_STATE::FAILURE : (bAnyRunning ? NODE_STATE::RUNNING : NODE_STATE::SUCCESS);
+	
+	return m_eState;
 }
 
 HRESULT CNode_Parallel::Add_ChildNode(CNode* pChildNode)
@@ -51,7 +54,22 @@ HRESULT CNode_Parallel::Add_ChildNode(CNode* pChildNode)
 	if (nullptr == pChildNode)
 		return E_FAIL;
 
-	m_pChildNodes.push_back(pChildNode);
+	m_ChildNodes.push_back(pChildNode);
+
+	pChildNode->Set_ParentNode(this);
+
+	return S_OK;
+}
+
+HRESULT CNode_Parallel::Reset_Node()
+{
+	__super::Reset_Node();
+
+	for (auto iter : m_ChildNodes)
+	{
+		if (nullptr != iter)
+			iter->Reset_Node();
+	}
 
 	return S_OK;
 }

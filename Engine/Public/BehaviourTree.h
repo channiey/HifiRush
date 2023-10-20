@@ -16,6 +16,9 @@ enum class NODE_STATE
 		조건의 평가 혹은 자식 노드들의 평가가 한프레임 안에서 처리될 수 없는 경우 게임의 흐름을 방해하지 않고
 
 		다음 프레임에서 다시 체크하기 위해 사용된다. 
+		
+		즉 이번 프레임에서 런닝을 반환했으면 부모의 자식중 런닝을 반환한 노드부터 다시 실행된다. 
+
 	*/
 	
 };
@@ -28,10 +31,10 @@ enum class NODE_TYPE
 
 	/* Composit */
 	/* 여러 개의 자식 노드(Action, Composit, Decorator)를 가질 수 있다.*/
-	SEQUENCE,	/* Child중 하나라도 Failure or Running을 반환할 때까지 반복해서 실행 */
+	SEQUENCE,	/* (== AND) Child중 하나라도 Failure or Running을 반환할 때까지 반복해서 실행 */
 				/* 다수의 작업을 차례대로 실행하되 그중 하나가 작동하지 않으면 작업 전체를 취소 할 때 */
-	SELECTOR,	/* Child중 하나라도 Success or Running을 반환할 때까지 반복해서 실행 -> 단 하나만 실행 */
-				/* 어떤 게 필요한지 결정한 다음 실행할 작업이나 브랜치를 결정할 때 */
+	SELECTOR,	/* (== OR) Child중 하나라도 Success or Running을 반환할 때까지 반복해서 실행 -> 단 하나만 실행 */
+				/* 우선순위 노드중 가장 먼저 앞 우선순위가 성공이라면 뒤는 실행하지 않는다.  */
 	PARALLEL,	/* Child가 어떤 값을 반환하든, 모든 child를 순차적으로 실행한다. */
 
 

@@ -150,6 +150,16 @@ HRESULT CSaber::Ready_BehavoiurTree()
 			return E_FAIL;
 	}
 
+	/* 02. Wait */
+	CNode* pWaitNode = CNode_Wait::Create(pBlackboard, 5.f);
+	{
+		if (nullptr == pWaitNode)
+			return E_FAIL;
+
+		if (FAILED(pSequenceNode->Add_ChildNode(pWaitNode)))
+			return E_FAIL;
+	}
+
 	return S_OK;
 }
 

@@ -18,6 +18,7 @@ public:
 
 public:
 	HRESULT Add_ChildNode(CNode* pChildNode) override;
+	virtual HRESULT Reset_Node() override;
 
 public:
 	static CNode_Parallel* Create(class CBlackboard* pBlackboard);

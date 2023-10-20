@@ -23,21 +23,26 @@ public:
 	virtual const NODE_STATE Evaluate(const _float& fTimeDelta) PURE;
 
 public:
+	const NODE_STATE& Get_State() const { return m_eState; }
 	void Set_Name(const wstring& strName) { m_strName = strName; }
+	void Set_ParentNode(CNode* pNode) { m_pParentNode = pNode; }
+	CNode* Get_ParentNode() const { return m_pParentNode; }
 
 public:
 	virtual HRESULT Add_ChildNode(CNode* pChildNode) PURE;
+	virtual HRESULT Reset_Node();
 
 protected:
-	NODE_STATE		m_eState = { NODE_STATE::TYPEEND };
-	NODE_TYPE		m_eType = { NODE_TYPE::TYPEEND };
-	list<CNode*>	m_pChildNodes;
-	wstring			m_strName = {};
+	wstring			m_strName	= {};
+	NODE_TYPE		m_eType		= { NODE_TYPE::TYPEEND };
+	NODE_STATE		m_eState	= { NODE_STATE::TYPEEND };
+	list<CNode*>	m_ChildNodes;
+	CNode*			m_pParentNode = { nullptr };
 
 	CBlackboard*	m_pBlackboard = { nullptr };
 
 protected:
-	const _bool		Is_ChildNode() const { return !m_pChildNodes.empty(); }
+	const _bool		Is_ChildNode() const { return !m_ChildNodes.empty(); }
 
 public:
 	virtual void Free();

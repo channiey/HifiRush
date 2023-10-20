@@ -220,6 +220,9 @@
     <Filter Include="01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node\00.Root">
       <UniqueIdentifier>{92462c25-c76a-4b27-9a54-a41bf069360d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node\03.Action\00.Wait">
+      <UniqueIdentifier>{bbe80efd-77d7-4830-8d9f-85ac26f61a05}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -405,6 +408,9 @@
     <ClInclude Include="..\Public\Cell.h">
       <Filter>01.Utiltiy\03.Components\Component\13.Navigation\Cell</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Node_Wait.h">
+      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node\03.Action\00.Wait</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -577,6 +583,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Cell.cpp">
       <Filter>01.Utiltiy\03.Components\Component\13.Navigation\Cell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Node_Wait.cpp">
+      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node\03.Action\00.Wait</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

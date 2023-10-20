@@ -18,6 +18,13 @@ HRESULT CNode_Action::Initialize_Node(class CBlackboard* pBlackboard)
 	return S_OK;
 }
 
+HRESULT CNode_Action::Reset_Node()
+{
+	__super::Reset_Node();
+
+	return S_OK;
+}
+
 void CNode_Action::Free()
 {
 	__super::Free();

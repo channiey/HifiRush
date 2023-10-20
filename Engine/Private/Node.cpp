@@ -21,9 +21,16 @@ HRESULT CNode::Initialize_Node(class CBlackboard* pBlackboard)
 	return S_OK;
 }
 
+HRESULT CNode::Reset_Node()
+{
+	m_eState = NODE_STATE::TYPEEND;
+
+	return S_OK;
+}
+
 void CNode::Free()
 {
-	for (auto iter : m_pChildNodes)
+	for (auto iter : m_ChildNodes)
 	{
 		if (nullptr == iter) continue;
 
