@@ -76,11 +76,11 @@ HRESULT CCharacter::Render()
 HRESULT CCharacter::Ready_Components()
 {
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Renderer"),
-		TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
+		ComponentNames[COM_RENDERER], (CComponent**)&m_pRendererCom)))
 		return E_FAIL;
 
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Transform"),
-		TEXT("Com_Transform"), (CComponent**)&m_pTransformCom)))
+		ComponentNames[COM_TRANSFORM], (CComponent**)&m_pTransformCom)))
 		return E_FAIL;
 
 	return S_OK;

@@ -38,7 +38,7 @@ void CGameObject::Tick(_float fTimeDelta)
 
 void CGameObject::LateTick(_float fTimeDelta)
 {
-	Compute_CamZ(Get_Transform()->Get_State(CTransform::STATE_POSITION));
+	//Compute_CamZ(Get_Transform()->Get_State(CTransform::STATE_POSITION));
 }
 
 HRESULT CGameObject::Render()
@@ -48,37 +48,37 @@ HRESULT CGameObject::Render()
 
 CTransform* CGameObject::Get_Transform()
 {
-	return dynamic_cast<CTransform*>(Get_Component(TEXT("Com_Transform")));
+	return dynamic_cast<CTransform*>(Get_Component(ComponentNames[COM_TRANSFORM]));
 }
 
 CVIBuffer* CGameObject::Get_VIBuffer()
 {
-	return dynamic_cast<CVIBuffer*>(Get_Component(TEXT("Com_VIBuffer")));
+	return dynamic_cast<CVIBuffer*>(Get_Component(ComponentNames[COM_VIBUFFER]));
 }
 
 CCollider_Sphere* CGameObject::Get_Collider_Sphere()
 {
-	return dynamic_cast<CCollider_Sphere*>(Get_Component(TEXT("Com_Collider_Sphere")));
+	return dynamic_cast<CCollider_Sphere*>(Get_Component(ComponentNames[COM_COLLIDER_SPHERE]));
 }
 
 CCollider_AABB* CGameObject::Get_Collider_AABB()
 {
-	return dynamic_cast<CCollider_AABB*>(Get_Component(TEXT("Com_Collider_AABB")));
+	return dynamic_cast<CCollider_AABB*>(Get_Component(ComponentNames[COM_COLLIDER_AABB]));
 }
 
 CCollider_OBB* CGameObject::Get_Collider_OBB()
 {
-	return dynamic_cast<CCollider_OBB*>(Get_Component(TEXT("Com_Collider_OBB")));
+	return dynamic_cast<CCollider_OBB*>(Get_Component(ComponentNames[COM_COLLIDER_OBB]));
 }
 
 CStateMachine* CGameObject::Get_StateMachine()
 {
-	return dynamic_cast<CStateMachine*>(Get_Component(TEXT("Com_StateMachine")));
+	return dynamic_cast<CStateMachine*>(Get_Component(ComponentNames[COM_STATEMACHINE]));
 }
 
 CCamera* CGameObject::Get_Camera()
 {
-	return dynamic_cast<CCamera*>(Get_Component(TEXT("Com_Camera")));
+	return dynamic_cast<CCamera*>(Get_Component(ComponentNames[COM_CAMERA]));
 }
 
 CComponent* const CGameObject::Get_Component(const _uint& iIndex)

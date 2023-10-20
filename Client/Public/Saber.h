@@ -117,7 +117,7 @@ enum ANIM_SA
 
 class CSaber final : public CCharacter
 {
-	enum CHILD_TYPE { SA_WEAPON_RIGHT, SA_END };
+	enum CHILD_TYPE { SA_WEAPON_RIGHT, SA_TRIGGER_TRACKED, SA_END };
 
 private:
 	CSaber(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -140,9 +140,9 @@ private:
 	HRESULT				Bind_ShaderResources();
 
 private:
-	virtual void		OnCollision_Enter(CCollider* pCollider) override;
-	virtual void		OnCollision_Stay(CCollider* pCollider) override;
-	virtual void		OnCollision_Exit(CCollider* pCollider) override;
+	virtual void		OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild = -1) override;
+	virtual void		OnCollision_Stay(CCollider* pCollider, const _int& iIndexAsChild = -1) override;
+	virtual void		OnCollision_Exit(CCollider* pCollider, const _int& iIndexAsChild = -1) override;
 
 private:
 	CBehaviourTree*		m_pBehaviourTreeCom = { nullptr };

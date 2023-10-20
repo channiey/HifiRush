@@ -62,7 +62,7 @@ void CImGui_Window_Sub_Com_Nav::Clear_Reference_Data()
 
 HRESULT CImGui_Window_Sub_Com_Nav::Bake()
 {
-	list<class CGameObject*>* pGameObjects = m_pGameInstance->Get_Layer(m_pImGui_Manager->m_iIndex_CurLevelID, g_strLayerID[LAYER_ENV_STATIC]);
+	list<class CGameObject*>* pGameObjects = m_pGameInstance->Get_Layer(m_pImGui_Manager->m_iIndex_CurLevelID, LayerNames[LAYER_ENV_STATIC]);
 
 	if (nullptr == pGameObjects)
 		return E_FAIL;

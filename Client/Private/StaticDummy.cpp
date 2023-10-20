@@ -109,11 +109,11 @@ HRESULT CStaticDummy::Render()
 HRESULT CStaticDummy::Ready_Components()
 {
 	/* For.Com_Transform */
-	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Transform"), TEXT("Com_Transform"), (CComponent**)&m_pTransformCom)))
+	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Transform"), ComponentNames[COM_TRANSFORM], (CComponent**)&m_pTransformCom)))
 		return E_FAIL;
 
 	/* For.Com_Renderer */
-	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
+	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Renderer"), ComponentNames[COM_RENDERER], (CComponent**)&m_pRendererCom)))
 		return E_FAIL;
 
 	/* For.Com_Shader */
@@ -127,23 +127,8 @@ HRESULT CStaticDummy::Ready_Components()
 	const string		tag = "Prototype_Component_Model_Static_";
 	const string		name = Util_String::ToString(Get_Name());
 
-	if (FAILED(__super::Add_Component(LV_STATIC, Util_String::ToWString(tag + name), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+	if (FAILED(__super::Add_Component(LV_STATIC, Util_String::ToWString(tag + name), ComponentNames[COM_MODEL], (CComponent**)&m_pModelCom)))
 		return E_FAIL;
-
-	/* Com_Collider_Sphere */
-	//CCollider::COLLIDERDESC		ColliderDesc;
-	//{
-	//	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
-
-	//	ColliderDesc.vSize = _float3(5.f, 5.f, 5.f);
-	//	ColliderDesc.vCenter = _float3(0.f, ColliderDesc.vSize.y * 0.5f, 0.f);
-	//	ColliderDesc.vRotation = _float3(0.f, XMConvertToRadians(45.f), 0.f);
-	//}
-	//CCollider_Sphere* pCollider = nullptr;
-	//if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
-	//	TEXT("Com_Collider_Sphere"), (CComponent**)&pCollider, &ColliderDesc)))
-	//	return E_FAIL;
-	//m_pColliderComs.push_back(pCollider);
 
 	return S_OK;
 }

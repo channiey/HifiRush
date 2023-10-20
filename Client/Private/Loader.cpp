@@ -25,6 +25,10 @@
 #include "StaticDummy.h"
 #include "Terrain.h"
 
+/* Trigger */
+
+#include "TriggerDummy.h"
+
 
 
 CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
@@ -291,6 +295,12 @@ HRESULT CLoader::Load_Prototype()
 		if (FAILED(pGameInstance->Add_Prototype(TEXT("Enemy_Saber"),
 			CSaber::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
+
+		/* For.Prototype_GameObject_Trigger_Dummy */
+		if (FAILED(pGameInstance->Add_Prototype(TEXT("Trigger_Dummy"),
+			CTriggerDummy::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 
 		/* For.Prototype_GameObject_Proto_Weapon */
 		{

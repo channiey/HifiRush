@@ -26,9 +26,9 @@ public:
 	virtual HRESULT		Render();
 
 public: 
-	virtual void		OnCollision_Enter(class CCollider* pCollider) {};
-	virtual void		OnCollision_Stay(class CCollider* pCollider) {};
-	virtual void		OnCollision_Exit(class CCollider* pCollider) {};
+	virtual void		OnCollision_Enter(class CCollider* pCollider, const _int& iIndexAsChild = -1) {};
+	virtual void		OnCollision_Stay(class CCollider* pCollider, const _int& iIndexAsChild = -1) {};
+	virtual void		OnCollision_Exit(class CCollider* pCollider, const _int& iIndexAsChild = -1) {};
 
 public: 
 	const _bool 		Is_Active() const { return m_eState == STATE_ACTIVE ? TRUE : FALSE; }
@@ -63,6 +63,7 @@ public:
 	CGameObject*					Get_Child(const _uint& iIndex) { if (m_Children.size() <= iIndex) return nullptr; return m_Children[iIndex]; }
 	const vector<CGameObject*>&		Get_Children() const { return m_Children; }
 	CGameObject*					Get_Parent() const { return m_pParent; }
+	const _int&						Get_IndexAsChild() const { return m_iIndexAsChild; }
 
 public: 
 	virtual void	Set_State(const OBJ_STATE& eState);
@@ -71,6 +72,7 @@ public:
 	void			Set_LayerTag(const wstring& strLayer) { m_strLayer = strLayer; }
 	void			Set_Picked(const _bool& bPicked) { m_bPicked = bPicked; }
 	void			Set_Parent(CGameObject* pParent) { m_pParent = pParent; }
+	void			Set_IndexAsChild(const _int iIndex) { m_iIndexAsChild = iIndex; }
 
 public:
 	HRESULT			Add_Child(CGameObject* pChild) { if (nullptr == pChild) return E_FAIL;  m_Children.push_back(pChild); pChild->Set_Parent(this);  return S_OK; }
@@ -83,20 +85,22 @@ protected:
 	COMPONENTS				m_Components;
 	MONOBEHAVIOURS			m_MonoBehaviours;
 
-	wstring					m_strName = { };
-	wstring					m_strLayer = { };
+	wstring					m_strName		= { };
+	wstring					m_strLayer		= { };
 
-	OBJ_STATE				m_eState = { STATE_ACTIVE };
-	_bool					m_bRender = { TRUE };	
-	_bool					m_bRenderCol = { TRUE };
+	OBJ_STATE				m_eState		= { STATE_ACTIVE };
+	_bool					m_bRender		= { TRUE };	
+	_bool					m_bRenderCol	= { TRUE };
 
-	_float					m_fCamDistance = 0.f;
+	_float					m_fCamDistance	= { 0.f };
 
-	CGameObject*			m_pParent = { nullptr };
+	CGameObject*			m_pParent		= { nullptr };
 	vector<CGameObject*>	m_Children;
 
-	_uint					m_iPickID = { 0 };
-	_bool					m_bPicked = FALSE;
+	_uint					m_iPickID		= { 0 };
+	_bool					m_bPicked		= FALSE;
+
+	_int					m_iIndexAsChild = { -1 };
 
 protected:
 	HRESULT Add_Component(_uint iLevelIndex, const wstring& strPrototypeTag, const wstring& strComponentTag, _Inout_ CComponent** ppOut, void* pArg = nullptr);

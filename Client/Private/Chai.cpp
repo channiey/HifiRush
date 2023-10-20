@@ -97,32 +97,29 @@ HRESULT CChai::Ready_Components()
 {
 	/* Com_Shader */
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Shader_VTF"),
-		TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
+		ComponentNames[COM_SHADER], (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 
 	/* Com_Model */
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Model_Chai"),
-		TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+		ComponentNames[COM_MODEL], (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 	
 	/* Com_StateMachine */
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_StateMachine"),
-		TEXT("Com_StateMachine"), (CComponent**)&m_pStateMachineCom)))
+		ComponentNames[COM_STATEMACHINE], (CComponent**)&m_pStateMachineCom)))
 		return E_FAIL;
 
-	/* Collider */
+	/* Com_Collider */
+	CCollider_Sphere* pCollider = nullptr;
 	{
-		/* Com_Collider_Sphere */
-		CCollider_Sphere* pCollider = nullptr;
-		{
-			CCollider::COLLIDERDESC	ColliderDesc(Vec3{ 0.f, 0.9f, 0.f }, 0.9f);
+		CCollider::COLLIDERDESC	ColliderDesc(Vec3{ 0.f, 0.9f, 0.f }, 0.9f);
 
-			if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
-				TEXT("Com_Collider_Sphere"), (CComponent**)&pCollider, &ColliderDesc)))
-				return E_FAIL;
+		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
+			ComponentNames[COM_COLLIDER_SPHERE], (CComponent**)&pCollider, &ColliderDesc)))
+			return E_FAIL;
 
-			m_pColliderComs.push_back(pCollider);
-		}
+		m_pColliderComs.push_back(pCollider);
 	}
 
 	return S_OK;
@@ -174,7 +171,7 @@ HRESULT CChai::Ready_Chilren()
 {
 	CWeapon* pChild = nullptr;
 	
-	pChild = dynamic_cast<CWeapon*>(GAME_INSTNACE->Add_GameObject(LV_PROTO, g_strLayerID[LAYER_WEAPON], L"Weapon_Chai_Guitar_Explore"));
+	pChild = dynamic_cast<CWeapon*>(GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_WEAPON], L"Weapon_Chai_Guitar_Explore"));
 	{
 		if (FAILED(Add_Child(pChild)))
 			return E_FAIL;
@@ -184,6 +181,7 @@ HRESULT CChai::Ready_Chilren()
 		CCollider::COLLIDERDESC		ColliderDesc{ Vec3(0, 0, -75), 30.f };
 
 		pChild->Get_Collider_Sphere()->Set_ColliderDesc(ColliderDesc);
+		pChild->Set_IndexAsChild(CHILD_TYPE::CH_WEAPON_RIGHT);
 	}
 	return S_OK;
 }
@@ -193,15 +191,15 @@ HRESULT CChai::Bind_ShaderResources()
 	return S_OK;
 }
 
-void CChai::OnCollision_Enter(CCollider* pCollider)
+void CChai::OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild)
 {
 }
 
-void CChai::OnCollision_Stay(CCollider* pCollider)
+void CChai::OnCollision_Stay(CCollider* pCollider, const _int& iIndexAsChild)
 {
 }
 
-void CChai::OnCollision_Exit(CCollider* pCollider)
+void CChai::OnCollision_Exit(CCollider* pCollider, const _int& iIndexAsChild)
 {
 }
 

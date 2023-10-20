@@ -25,7 +25,7 @@ HRESULT CLevel_Logo::Tick(_float fTimeDelta)
 
 HRESULT CLevel_Logo::LateTick(_float fTimeDelta)
 {
-	SetWindowText(g_hWnd, g_strLevelID[LV_LOGO]);
+	SetWindowText(g_hWnd, LevelNames[LV_LOGO]);
 
 	/*if (CGameInstance::GetInstance()->Key_Down(VK_SPACE))
 	{

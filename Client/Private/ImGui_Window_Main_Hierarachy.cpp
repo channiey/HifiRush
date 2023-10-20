@@ -111,7 +111,7 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Levels()
 		if (LV_LOGO < i && LV_STAGE_03 != i)
 			ImGui::SameLine();
 
-		const char* strLevel = Util_String::WC2C(g_strLevelID[i]);
+		const char* strLevel = Util_String::WC2C(LevelNames[i]);
 		if (ImGui::Button(strLevel))
 		{
 			/* 버튼을 눌렀다면 해당 버튼의 인덱스를 현재 레벨로 지정한다. */
@@ -338,11 +338,11 @@ void CImGui_Window_Main_Hierarachy::Show_MiniLayers()
 			{
 				const bool is_selected = (m_iTempMiniLayer == i);
 
-				const char* strLayer = Util_String::WC2C(g_strLayerID[i]);
+				const char* strLayer = Util_String::WC2C(LayerNames[i]);
 				/* 특정 레이어가 선택 되었다면 해당 레이어를 게임인스턴스에 추가한다. */
 				if (ImGui::Selectable(strLayer, is_selected))
 				{
-					m_pGameInstance->Add_Layer(m_pGameInstance->Get_CurLevelIndex(), g_strLayerID[i]);
+					m_pGameInstance->Add_Layer(m_pGameInstance->Get_CurLevelIndex(), LayerNames[i]);
 					m_iTempMiniLayer = (_uint)i;
 				}
 				delete strLayer;
@@ -359,7 +359,7 @@ void CImGui_Window_Main_Hierarachy::Show_MiniLayers()
 void CImGui_Window_Main_Hierarachy::Save_LevelData()
 {
 	shared_ptr<Util_File> file = make_shared<Util_File>();
-	file->Open(g_strLevelPath[m_pImGui_Manager->m_iIndex_CurLevelID], FileMode::Write);
+	file->Open(LevelPaths[m_pImGui_Manager->m_iIndex_CurLevelID], FileMode::Write);
 
 	/* 현재 레벨의 모든 레이어를 가져온다. */
 	map<const wstring, class CLayer*>* pLayers = m_pGameInstance->Get_All_Layer(m_pImGui_Manager->m_iIndex_CurLevelID);

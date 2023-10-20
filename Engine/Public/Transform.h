@@ -51,8 +51,8 @@ public:
 	void	Translate(const Vec3& vTranslation);
 	void	Translate(const Vec4& vTranslation) { Translate(vTranslation.ToVec3()); }
 
-	void	Set_Position(Vec4& vPos) { memcpy(m_WorldMatrix.m[STATE_POSITION], &vPos, sizeof(Vec4)); }
-	void	Set_Position(Vec3& vPos) { memcpy(m_WorldMatrix.m[STATE_POSITION], &vPos, sizeof(Vec3)); }
+	void	Set_Position(Vec4 vPos) { memcpy(m_WorldMatrix.m[STATE_POSITION], &vPos, sizeof(Vec4)); }
+	void	Set_Position(Vec3 vPos) { memcpy(m_WorldMatrix.m[STATE_POSITION], &vPos, sizeof(Vec3)); }
 
 	void	Set_WorldMat(const Matrix& matrix) { memcpy(&m_WorldMatrix, &matrix, sizeof(Matrix)); }
 	void	Set_Look(const Vec4& vLookDir);

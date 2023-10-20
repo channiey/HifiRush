@@ -256,6 +256,9 @@
     <Filter Include="02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\03.Attack">
       <UniqueIdentifier>{d8698a2d-561e-4307-a4ba-a20e083a15be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\09.Trigger">
+      <UniqueIdentifier>{36699b74-e39a-4743-a482-c28876ed3a0a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -423,6 +426,9 @@
     <ClInclude Include="..\Public\Node_Tracked_Saber.h">
       <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\01.Target</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\TriggerDummy.h">
+      <Filter>02.GameObjects\09.Trigger</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -574,6 +580,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Node_Tracked_Saber.cpp">
       <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\01.Target</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TriggerDummy.cpp">
+      <Filter>02.GameObjects\09.Trigger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

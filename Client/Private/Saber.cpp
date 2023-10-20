@@ -5,6 +5,7 @@
 #include "Animation.h"
 
 #include "Weapon.h"
+#include "TriggerDummy.h"
 
 #include "Blackboard_Saber.h"
 #include "Node_Damaged_Saber.h"
@@ -96,28 +97,26 @@ HRESULT CSaber::Ready_Components()
 {
 	/* Com_Shader */
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Shader_VTF"),
-		TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
+		ComponentNames[COM_SHADER], (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 
 	/* Com_Model */
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Model_Saber"),
-		TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+		ComponentNames[COM_MODEL], (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 
-	/* Comp_BehaviourTree*/
+	/* Com_BehaviourTree*/
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_BehaviourTree"),
-		TEXT("Com_BehaviourTree"), (CComponent**)&m_pBehaviourTreeCom)))
+		ComponentNames[COM_BEHAVIOURTREE], (CComponent**)&m_pBehaviourTreeCom)))
 		return E_FAIL;
 
-	/* Collider */
-
-	/* SA_COL_DAMAGED */
+	/* Com_Collider */
 	CCollider_Sphere* pCollider = nullptr;
 	{
 		CCollider::COLLIDERDESC	ColliderDesc(Vec3{ 0.f, 0.9f, 0.f }, 0.9f);
 
 		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
-			TEXT("Com_Collider_Sphere"), (CComponent**)&pCollider, &ColliderDesc)))
+			ComponentNames[COM_COLLIDER_SPHERE], (CComponent**)&pCollider, &ColliderDesc)))
 			return E_FAIL;
 
 		m_pColliderComs.push_back(pCollider);
@@ -197,19 +196,29 @@ HRESULT CSaber::Ready_BehavoiurTree()
 
 HRESULT CSaber::Ready_Chilren()
 {
-	CWeapon* pChild = nullptr;
+	CWeapon* pWeapon = nullptr;
 
-	pChild = dynamic_cast<CWeapon*>(GAME_INSTNACE->Add_GameObject(LV_PROTO, g_strLayerID[LAYER_WEAPON], L"Weapon_Saber_Sword"));
+	pWeapon = dynamic_cast<CWeapon*>(GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_WEAPON], L"Weapon_Saber_Sword"));
 	{
-		if (FAILED(Add_Child(pChild)))
+		if (FAILED(Add_Child(pWeapon)))
 			return E_FAIL;
 
-		pChild->Set_Socket(CModel::BONE_SOCKET_RIGHT);
+		pWeapon->Set_Socket(CModel::BONE_SOCKET_RIGHT);
 
 		CCollider::COLLIDERDESC		ColliderDesc{ Vec3(95, 0, 0), 30.f };
 
-		pChild->Get_Collider_Sphere()->Set_ColliderDesc(ColliderDesc);
+		pWeapon->Get_Collider_Sphere()->Set_ColliderDesc(ColliderDesc);
+		pWeapon->Set_IndexAsChild(CHILD_TYPE::SA_WEAPON_RIGHT);
+	}
 
+	CTriggerDummy* pTrigger = nullptr;
+	{
+		CCollider::COLLIDERDESC		ColliderDesc{ Vec3(0, 0, 0), 5.f };
+		CTriggerDummy::TRIGGER_DESC TriggerDesc(ColliderDesc, CCollider::SPHERE, CHILD_TYPE::SA_TRIGGER_TRACKED);
+		pTrigger = dynamic_cast<CTriggerDummy*>(GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_TRIGGER], L"Trigger_Dummy", &TriggerDesc));
+		
+		if (FAILED(Add_Child(pTrigger)))
+			return E_FAIL;
 	}
 	return S_OK;
 }
@@ -219,24 +228,25 @@ HRESULT CSaber::Bind_ShaderResources()
 	return S_OK;
 }
 
-void CSaber::OnCollision_Enter(CCollider* pCollider)
+void CSaber::OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild)
 {
 	CGameObject* pGameObject = pCollider->Get_Owner();
 	const wstring& strLayer = pGameObject->Get_LayerTag();
-	if (strLayer == g_strLayerID[LAYER_WEAPON])
+
+	if (strLayer == LayerNames[LAYER_WEAPON])
 	{
-		if (g_strLayerID[LAYER_PLAYER] == pGameObject->Get_Parent()->Get_LayerTag())
+		if (LayerNames[LAYER_PLAYER] == pGameObject->Get_Parent()->Get_LayerTag())
 		{
 			m_tFightDesc.bDamaged = TRUE;
 		}
 	}
 }
 
-void CSaber::OnCollision_Stay(CCollider* pCollider)
+void CSaber::OnCollision_Stay(CCollider* pCollider, const _int& iIndexAsChild)
 {
 }
 
-void CSaber::OnCollision_Exit(CCollider* pCollider)
+void CSaber::OnCollision_Exit(CCollider* pCollider, const _int& iIndexAsChild)
 {
 }
 
