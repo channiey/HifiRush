@@ -25,7 +25,7 @@ public:
 	_float	fAnimAcc	= 0.f;
 	_float	fSpeed		= DF_PL_TIME;
 
-	_int	bLoop		= TRUE;
+	_int	iPadding = 0;
 
 	void ClearAnim()
 	{
@@ -119,7 +119,8 @@ public:
 	const TYPE&				Get_Type() const { return m_eModelType; }
 
 public:
-	void					Set_Animation(const _uint& iAnimIndex, const _bool& bLoop, const _float& fSpeed, const _float& fTweenDuration);
+	void					Set_Animation(const _uint& iAnimIndex, const _float& fSpeed, const _float& fTweenDuration);
+	void					Set_AnimationSpeed(const _float& fSpeed);
 	void					Set_BoneIndex(const BONE_TYPE& eType, const _int iIndex);
 
 public:
@@ -131,6 +132,7 @@ public:
 	const _bool				Is_TwoThirds_Animation();
 	const _bool&			Is_Finish_Animation() { return m_bFinishAnimation; }
 	const _bool				Is_Tween();
+	const _bool				Is_Contain_InTween(const _uint& iAnimIndex);
 
 private: 
     HRESULT					Read_BoneData(const string& strPath);
@@ -165,7 +167,6 @@ private:
 	vector<ANIM_TRANSFORM>		m_AnimTransforms;		/* 루트랑 소켓 매트릭스만 저장 */
 	TWEEN_DESC					m_TweenDesc = {};
 
-	_int						m_iPrevAnimIndex = -1;
 	Vec4						m_vPrevAnimRoot = {};
 	_bool						m_bRootAnimation = TRUE;
 	_bool						m_bFinishAnimation = FALSE;

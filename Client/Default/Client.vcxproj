@@ -185,7 +185,9 @@
     <ClInclude Include="..\Public\Blackboard_Saber.h" />
     <ClInclude Include="..\Public\Camera_Debug.h" />
     <ClInclude Include="..\Public\Camera_Follow.h" />
+    <ClInclude Include="..\Public\Chai_Guitar_Explore.h" />
     <ClInclude Include="..\Public\Character.h" />
+    <ClInclude Include="..\Public\Enemy.h" />
     <ClInclude Include="..\Public\ImGui_Window_Sub_Com_Model.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\ImGui_Manager.h" />
@@ -208,10 +210,13 @@
     <ClInclude Include="..\public\MainApp.h" />
     <ClInclude Include="..\Public\Chai.h" />
     <ClInclude Include="..\Public\Node_Action_Saber.h" />
-    <ClInclude Include="..\Public\Node_Damaged_Saber.h" />
-    <ClInclude Include="..\Public\Node_Tracked_Saber.h" />
+    <ClInclude Include="..\Public\Node_IsAttack_Saber.h" />
+    <ClInclude Include="..\Public\Node_IsDamaged_Saber.h" />
+    <ClInclude Include="..\Public\Node_IsClosed_Saber.h" />
+    <ClInclude Include="..\Public\Node_IsTracked_Saber.h" />
     <ClInclude Include="..\Public\Peppermint.h" />
     <ClInclude Include="..\Public\Saber.h" />
+    <ClInclude Include="..\Public\Saber_Sword.h" />
     <ClInclude Include="..\Public\State_Chai_Attack.h" />
     <ClInclude Include="..\Public\State_Chai_Base.h" />
     <ClInclude Include="..\Public\State_Chai_Damaged.h" />
@@ -262,7 +267,9 @@
     <ClCompile Include="..\Private\Blackboard_Saber.cpp" />
     <ClCompile Include="..\Private\Camera_Debug.cpp" />
     <ClCompile Include="..\Private\Camera_Follow.cpp" />
+    <ClCompile Include="..\Private\Chai_Guitar_Explore.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
+    <ClCompile Include="..\Private\Enemy.cpp" />
     <ClCompile Include="..\Private\ImGui_Window_Sub_Com_Model.cpp" />
     <ClCompile Include="..\Private\ImGui_Manager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -287,10 +294,12 @@
     <ClCompile Include="..\private\MainApp.cpp" />
     <ClCompile Include="..\Private\Chai.cpp" />
     <ClCompile Include="..\Private\Node_Action_Saber.cpp" />
-    <ClCompile Include="..\Private\Node_Damaged_Saber.cpp" />
-    <ClCompile Include="..\Private\Node_Tracked_Saber.cpp" />
+    <ClCompile Include="..\Private\Node_IsAttack_Saber.cpp" />
+    <ClCompile Include="..\Private\Node_IsDamaged_Saber.cpp" />
+    <ClCompile Include="..\Private\Node_IsTracked_Saber.cpp" />
     <ClCompile Include="..\Private\Peppermint.cpp" />
     <ClCompile Include="..\Private\Saber.cpp" />
+    <ClCompile Include="..\Private\Saber_Sword.cpp" />
     <ClCompile Include="..\Private\State_Chai_Attack.cpp" />
     <ClCompile Include="..\Private\State_Chai_Base.cpp" />
     <ClCompile Include="..\Private\State_Chai_Damaged.cpp" />
@@ -303,6 +312,7 @@
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\Private\TriggerDummy.cpp" />
     <ClCompile Include="..\Private\Weapon.cpp" />
+    <ClCompile Include="..\Public\Node_IsClosed_Saber.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

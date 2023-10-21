@@ -15,9 +15,9 @@ END
 
 BEGIN(Client)
 
-class CWeapon final : public CGameObject
+class CWeapon abstract : public CGameObject
 {
-private:
+protected:
 	CWeapon(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CWeapon(const CWeapon& rhs);
 	virtual ~CWeapon() = default;
@@ -32,18 +32,18 @@ public:
 public:
 	void				Set_Socket(const CModel::BONE_TYPE& eType);
 
-private:
+protected:
 	HRESULT				Ready_Components();
 
-private:
+protected:
 	HRESULT				Bind_ShaderResources();
 
-private:
+protected:
 	virtual void		OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild = -1) override;
 	virtual void		OnCollision_Stay(CCollider* pCollider, const _int& iIndexAsChild = -1) override;
 	virtual void		OnCollision_Exit(CCollider* pCollider, const _int& iIndexAsChild = -1) override;
 
-private:
+protected:
 	CShader*			m_pShaderCom		= { nullptr };
 	CRenderer*			m_pRendererCom		= { nullptr };
 	CTransform*			m_pTransformCom		= { nullptr };
@@ -53,8 +53,7 @@ private:
 	CModel::BONE_TYPE	m_eSocketType = CModel::BONE_END;
 
 public:
-	static CWeapon* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CGameObject* Clone(void* pArg);
+	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual void Free() override;
 
 };

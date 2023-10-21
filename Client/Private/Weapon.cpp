@@ -121,26 +121,6 @@ HRESULT CWeapon::Ready_Components()
 		TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 
-	/* For.Com_Model */
-	const string		tag = "Prototype_Component_Model_";
-	const string		name = Util_String::ToString(Get_Name());
-
-	if (FAILED(__super::Add_Component(LV_STATIC, Util_String::ToWString(tag + name), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
-		return E_FAIL;
-
-	/* Com_Collider_Sphere */
-	CCollider::COLLIDERDESC		ColliderDesc{};
-	{
-		CCollider_Sphere* pCollider = nullptr;
-		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
-			TEXT("Com_Collider_Sphere"), (CComponent**)&pCollider, &ColliderDesc)))
-			return E_FAIL;
-
-		m_pColliderComs.push_back(pCollider);
-
-		pCollider->Set_Active(FALSE);
-	}
-
 	return S_OK;
 }
 
@@ -174,31 +154,6 @@ void CWeapon::OnCollision_Exit(CCollider* pCollider, const _int& iIndexAsChild)
 	m_pParent->OnCollision_Stay(pCollider, m_iIndexAsChild);
 }
 
-CWeapon* CWeapon::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-{
-	CWeapon* pInstance = new CWeapon(pDevice, pContext);
-
-	if (FAILED(pInstance->Initialize_Prototype()))
-	{
-		MSG_BOX("Failed To Created : CWeapon");
-		Safe_Release(pInstance);
-	}
-
-	return pInstance;
-}
-
-CGameObject* CWeapon::Clone(void* pArg)
-{
-	CWeapon* pInstance = new CWeapon(*this);
-
-	if (FAILED(pInstance->Initialize(pArg)))
-	{
-		MSG_BOX("Failed To Cloned : CWeapon");
-		Safe_Release(pInstance);
-	}
-
-	return pInstance;
-}
 
 void CWeapon::Free()
 {
@@ -207,7 +162,6 @@ void CWeapon::Free()
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pShaderCom);
-	Safe_Release(m_pModelCom);
 	for (auto& pCollider : m_pColliderComs)
 		Safe_Release(pCollider);
 }

@@ -8,16 +8,18 @@
 #include "TriggerDummy.h"
 
 #include "Blackboard_Saber.h"
-#include "Node_Damaged_Saber.h"
-#include "Node_Tracked_Saber.h"
+#include "Node_IsDamaged_Saber.h"
+#include "Node_IsTracked_Saber.h"
+#include "Node_IsClosed_Saber.h"
+#include "Node_IsAttack_Saber.h"
 
 CSaber::CSaber(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CCharacter(pDevice, pContext)
+	: CEnemy(pDevice, pContext)
 {
 }
 
 CSaber::CSaber(const CSaber& rhs)
-	: CCharacter(rhs)
+	: CEnemy(rhs)
 {
 }
 
@@ -41,32 +43,29 @@ HRESULT CSaber::Initialize(void* pArg)
 
 	// << : 임시 코드 
 	{
-		m_pModelCom->Set_Animation(ANIM_SA::IDLE_ATTACK, TRUE, DF_PL_TIME, DF_TW_TIME);
-		Vec3 vPos{ 2.5f, 0.f, -1.5f };
-		m_pTransformCom->Set_Position(vPos);
-		m_pTransformCom->Rotate(m_pTransformCom->Get_Up(), DEG2RAD(180.f));
+		m_pTransformCom->Set_Position(Vec3{ 2.5f, 0.f, -1.5f });
 	}
 	// >> 
 
 	return S_OK;
 }
 
+static _int i = 0;
 void CSaber::Tick(_float fTimeDelta)
 {
-	if (FAILED(m_pBehaviourTreeCom->Tick(fTimeDelta)))
-		return;
+	// << : 임시 코드 (나중에 트리거가 할 일)
+	if (++i == 10)
+	{
+		Set_State(OBJ_STATE::STATE_UNACTIVE);
+		Set_State(OBJ_STATE::STATE_ACTIVE);
+	}
+	// >> 
 
 	__super::Tick(fTimeDelta);
 }
 
 void CSaber::LateTick(_float fTimeDelta)
 {
-	if (FAILED(m_pModelCom->Update(fTimeDelta)))
-		return;
-
-	if (FAILED(m_pBehaviourTreeCom->LateTick(fTimeDelta)))
-		return;
-
 	__super::LateTick(fTimeDelta);
 }
 
@@ -75,39 +74,19 @@ HRESULT CSaber::Render()
 	if (FAILED(__super::Render()))
 		return E_FAIL;
 
-	if (FAILED(Bind_ShaderResources()))
-		return E_FAIL;
-
-	for (_uint i = 0; i < m_pModelCom->Get_MeshCount(); ++i)
-	{
-		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, m_pModelCom->Get_MaterialIndex(i), aiTextureType_DIFFUSE, "g_DiffuseTexture")))
-			return E_FAIL;
-
-		//if (FAILED(m_pModelCom->SetUp_OnShader(m_pShaderCom, m_pModelCom->Get_MaterialIndex(i), aiTextureType_NORMALS, "g_NormalTexture")))
-		//	return E_FAIL;
-
-		if (FAILED(m_pModelCom->Render(m_pShaderCom, i)))
-			return E_FAIL;
-	}
-
 	return S_OK;
+}
+
+void CSaber::Set_State(const OBJ_STATE& eState)
+{
+	__super::Set_State(eState);
 }
 
 HRESULT CSaber::Ready_Components()
 {
-	/* Com_Shader */
-	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Shader_VTF"),
-		ComponentNames[COM_SHADER], (CComponent**)&m_pShaderCom)))
-		return E_FAIL;
-
 	/* Com_Model */
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Model_Saber"),
 		ComponentNames[COM_MODEL], (CComponent**)&m_pModelCom)))
-		return E_FAIL;
-
-	/* Com_BehaviourTree*/
-	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_BehaviourTree"),
-		ComponentNames[COM_BEHAVIOURTREE], (CComponent**)&m_pBehaviourTreeCom)))
 		return E_FAIL;
 
 	/* Com_Collider */
@@ -162,7 +141,7 @@ HRESULT CSaber::Ready_BehavoiurTree()
 	}
 
 	/* 01-00. Damaged */
-	pNode = CNode_Damaged_Saber::Create(pBlackboard);
+	pNode = CNode_IsDamaged_Saber::Create(pBlackboard);
 	{
 		if (nullptr == pNode)
 			return E_FAIL;
@@ -182,7 +161,27 @@ HRESULT CSaber::Ready_BehavoiurTree()
 	}
 
 	/* 01-01-00 Tracked */
-	pNode = CNode_Tracked_Saber::Create(pBlackboard);
+	pNode = CNode_IsTracked_Saber::Create(pBlackboard);
+	{
+		if (nullptr == pNode)
+			return E_FAIL;
+
+		if (FAILED(pSequenceNode->Add_ChildNode(pNode)))
+			return E_FAIL;
+	}
+
+	/* 01-01-01 Colsed */
+	pNode = CNode_IsClosed_Saber::Create(pBlackboard);
+	{
+		if (nullptr == pNode)
+			return E_FAIL;
+
+		if (FAILED(pSequenceNode->Add_ChildNode(pNode)))
+			return E_FAIL;
+	}
+
+	/* 01-01-02 Attack */
+	pNode = CNode_IsAttack_Saber::Create(pBlackboard);
 	{
 		if (nullptr == pNode)
 			return E_FAIL;
@@ -197,9 +196,9 @@ HRESULT CSaber::Ready_BehavoiurTree()
 HRESULT CSaber::Ready_Chilren()
 {
 	CWeapon* pWeapon = nullptr;
-
-	pWeapon = dynamic_cast<CWeapon*>(GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_WEAPON], L"Weapon_Saber_Sword"));
 	{
+		pWeapon = dynamic_cast<CWeapon*>(GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_WEAPON], L"Weapon_Saber_Sword"));
+	
 		if (FAILED(Add_Child(pWeapon)))
 			return E_FAIL;
 
@@ -211,7 +210,7 @@ HRESULT CSaber::Ready_Chilren()
 		pWeapon->Set_IndexAsChild(CHILD_TYPE::SA_WEAPON_RIGHT);
 	}
 
-	CTriggerDummy* pTrigger = nullptr;
+	/*CTriggerDummy* pTrigger = nullptr;
 	{
 		CCollider::COLLIDERDESC		ColliderDesc{ Vec3(0, 0, 0), 5.f };
 		CTriggerDummy::TRIGGER_DESC TriggerDesc(ColliderDesc, CCollider::SPHERE, CHILD_TYPE::SA_TRIGGER_TRACKED);
@@ -219,7 +218,7 @@ HRESULT CSaber::Ready_Chilren()
 		
 		if (FAILED(Add_Child(pTrigger)))
 			return E_FAIL;
-	}
+	}*/
 	return S_OK;
 }
 
@@ -230,24 +229,17 @@ HRESULT CSaber::Bind_ShaderResources()
 
 void CSaber::OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild)
 {
-	CGameObject* pGameObject = pCollider->Get_Owner();
-	const wstring& strLayer = pGameObject->Get_LayerTag();
-
-	if (strLayer == LayerNames[LAYER_WEAPON])
-	{
-		if (LayerNames[LAYER_PLAYER] == pGameObject->Get_Parent()->Get_LayerTag())
-		{
-			m_tFightDesc.bDamaged = TRUE;
-		}
-	}
+	__super::OnCollision_Enter(pCollider, iIndexAsChild);
 }
 
 void CSaber::OnCollision_Stay(CCollider* pCollider, const _int& iIndexAsChild)
 {
+	__super::OnCollision_Stay(pCollider, iIndexAsChild);
 }
 
 void CSaber::OnCollision_Exit(CCollider* pCollider, const _int& iIndexAsChild)
 {
+	__super::OnCollision_Exit(pCollider, iIndexAsChild);
 }
 
 CSaber* CSaber::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -279,6 +271,4 @@ CSaber* CSaber::Clone(void* pArg)
 void CSaber::Free()
 {
 	__super::Free();
-
-	Safe_Release(m_pBehaviourTreeCom);
 }

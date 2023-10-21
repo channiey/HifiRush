@@ -129,23 +129,19 @@ private:
 	CStateMachine*		m_pStateMachineCom = { nullptr };
 
 public:
-	static CChai* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CChai* Clone(void* pArg) override;
-	virtual void Free() override;
+	static CChai*		Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual CChai*		Clone(void* pArg) override;
+	virtual void		Free() override;
 
 private:
-	/* Base */
 	friend class CState_Chai_Base;
 
-	/* General */
 	friend class CState_Chai_Idle;
 
-	/* Movement */
 	friend class CState_Chai_Run;
 	friend class CState_Chai_Dash;
 	friend class CState_Chai_Jump;
 	
-	/* Action */
 	friend class CState_Chai_Attack;
 	friend class CState_Chai_Damaged;
 	friend class CState_Chai_Parry;

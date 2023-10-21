@@ -43,7 +43,7 @@ HRESULT CLevel_Proto::Initialize()
 		if (nullptr == pObject) 
 			return E_FAIL;
 
-		pObject->Get_Transform()->Set_Scale(Vec3(0.7f, 0.7f, 0.7f));
+		pObject->Get_Transform()->Set_Scale(Vec3(0.6f, 0.6f, 0.6f));
 	}
 
 	/*if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_ENV_STATIC], L"Env_Static_Bldg_Outside_BK"))

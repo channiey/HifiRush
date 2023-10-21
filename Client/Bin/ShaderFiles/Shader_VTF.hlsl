@@ -41,17 +41,14 @@ struct KeyframeDesc
     float fAnimAcc;
     float fSpeed;
     
-    // 1바이트 4개, 총 4바이트
-    int bLoop;
+    int iPadding;
 };
 
 struct TweenFrameDesc
 {
-    // 28바이트 2개, 총 56바이트
     KeyframeDesc cur;
     KeyframeDesc next;
     
-    // 4바이트 4개 총 16바이트
     float fTweenDuration;
     float fTweenRatio;
     float fTweenAcc;

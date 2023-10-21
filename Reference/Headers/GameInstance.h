@@ -49,6 +49,8 @@ public: /* For.Object_Manager */
 	class CLayer* Get_LayerClass(_uint iLevelIndex, const wstring& strLayerTag);
 	class CGameObject* Get_Player();
 	class CGameObject* Get_GameObject(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag);
+	class CGameObject* Get_GameObject_InCurLevel(const wstring& strLayerTag, const wstring& strPrototypeTag);
+	class CGameObject* Get_GameObject_InCurLevel_InLayerFirst(const wstring& strLayerTag);
 	const _int Get_ObjectIndex(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strName);
 
 	HRESULT	Add_Prototype(const wstring& strPrototypeTag, class CGameObject* pPrototype);

@@ -16,12 +16,20 @@ private:
 	virtual ~CBlackboard_Saber() = default;
 
 public:
-	 CSaber*	 m_pSaber			= { nullptr };
+	CSaber*				m_pSaber			= { nullptr };
 	
-	const _float		 m_fCanBattleDist	= { 5.f };
-	const _float		 m_fCanAttackDist	= { 1.f };
+	const _float		m_fCanBattleDist	= { 10.f };
+	const _float		m_fCanAttackDist	= { 3.f };
+	_float				m_fCurTargetDist	= { 0.f };
 
-	CCharacter*  m_pTarget			= { nullptr };
+	_float				m_fAttackFreqTime	= { 5.f };
+	_float				m_fAttackAccTime	= { 0.f };
+
+	ANIM_SA				m_ePrevAttackAnim	= ANIM_SA::ATTACK_JUMP_CUT;
+	ANIM_SA				m_ePrevEscapeAnim	= ANIM_SA::DOUBLE_STEP_LEFT_00;
+
+	ANIM_SA				m_eCurAttackAnim	= ANIM_SA::ATTACK_JUMP_CUT;
+	ANIM_SA				m_eCurEscapeAnim	= ANIM_SA::DOUBLE_STEP_LEFT_00;
 
 public:
 	static CBlackboard_Saber* Create(CGameObject* pGameObject);

@@ -300,18 +300,22 @@ HRESULT CModel::Bind_Material(CShader * pShader, _uint iMaterialIndex, aiTexture
 	return m_Materials[iMaterialIndex].pTexture[eTextureType]->Bind_ShaderResource(pShader, pConstantName, 0);
 }
 
-void CModel::Set_Animation(const _uint& iAnimIndex, const _bool& bLoop, const _float& fSpeed, const _float& fTweenDuration)
+void CModel::Set_Animation(const _uint& iAnimIndex, const _float& fSpeed, const _float& fTweenDuration)
 {
-	if (iAnimIndex == m_TweenDesc.cur.iAnimIndex || iAnimIndex == m_TweenDesc.next.iAnimIndex)
-		return;
+	/*if (iAnimIndex == m_TweenDesc.cur.iAnimIndex && -1 != m_TweenDesc.next.iAnimIndex || iAnimIndex == m_TweenDesc.next.iAnimIndex)
+		return;*/
 
 	m_TweenDesc.ClearNextAnim();
 
 	m_TweenDesc.next.iAnimIndex = iAnimIndex % Get_AnimationCount();
-	m_TweenDesc.next.bLoop = bLoop;
 	m_TweenDesc.next.fSpeed = fSpeed;
 	m_TweenDesc.fTweenDuration = fTweenDuration;
 
+	m_TweenDesc.cur.fSpeed = fSpeed;
+}
+
+void CModel::Set_AnimationSpeed(const _float& fSpeed)
+{
 	m_TweenDesc.cur.fSpeed = fSpeed;
 }
 
@@ -351,6 +355,14 @@ const _bool CModel::Is_Tween()
 		return TRUE;
 	else
 		return FALSE;
+}
+
+const _bool CModel::Is_Contain_InTween(const _uint& iAnimIndex)
+{
+	if (iAnimIndex == m_TweenDesc.cur.iAnimIndex || iAnimIndex == m_TweenDesc.next.iAnimIndex)
+		return TRUE;
+
+	return FALSE;
 }
 
 const _bool CModel::Is_Half_Animation()

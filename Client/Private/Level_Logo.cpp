@@ -27,7 +27,7 @@ HRESULT CLevel_Logo::LateTick(_float fTimeDelta)
 {
 	SetWindowText(g_hWnd, LevelNames[LV_LOGO]);
 
-	/*if (CGameInstance::GetInstance()->Key_Down(VK_SPACE))
+	if (CGameInstance::GetInstance()->Key_Down(VK_SPACE))
 	{
 		CGameInstance*	pGameInstance = CGameInstance::GetInstance();
 		Safe_AddRef(pGameInstance);
@@ -36,7 +36,7 @@ HRESULT CLevel_Logo::LateTick(_float fTimeDelta)
 			return E_FAIL;
 
 		Safe_Release(pGameInstance);
-	}*/
+	}
 
 	return S_OK;
 }

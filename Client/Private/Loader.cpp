@@ -26,10 +26,11 @@
 #include "Terrain.h"
 
 /* Trigger */
-
 #include "TriggerDummy.h"
 
-
+/* Weapon */
+#include "Chai_Guitar_Explore.h"
+#include "Saber_Sword.h"
 
 CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: m_pDevice(pDevice)
@@ -41,13 +42,8 @@ CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 
 _uint APIENTRY ThreadEntry(void* pArg)
 {
-	/* DX가 사용하는 모든 컴 객체를 초기화한다.  */
-	/* ID3D11Device는 공유 스레드이므로 스레드간 동시 접근이 가능하지만 */
-	/* ID3D11DeviceContext는 단일 스레드 접근만 허용하므로 스레드 동기화를 필요로 한다. */
-
 	HRESULT hr = CoInitializeEx(nullptr, 0);
 
-	/* 새롭게 생성된 스레드가 일한다. */
 	CLoader*		pLoader = (CLoader*)pArg;
 
 	pLoader->Loading();
@@ -61,7 +57,6 @@ HRESULT CLoader::Initialize(LEVEL_ID eNextLevel)
 
 	m_eNextLevel = eNextLevel;
 
-	/* 생성한 스레드가 호출해야하는 함수의 주소를 3번째 인자로 넣어준다. */
 	m_hThread = (HANDLE)_beginthreadex(nullptr, 0, ThreadEntry, this, 0, nullptr);
 	if (0 == m_hThread)
 		return E_FAIL;
@@ -71,12 +66,9 @@ HRESULT CLoader::Initialize(LEVEL_ID eNextLevel)
 
 _int CLoader::Loading()
 {
-	/* 참고로 모든 레벨에서 사용되는 컴포넌트 원형은 MainApp에서 생성한다. */
-
 	EnterCriticalSection(&m_Critical_Section);
 
 	HRESULT		hr = 0;
-
 
 	switch (m_eNextLevel)
 	{
@@ -224,19 +216,32 @@ HRESULT CLoader::Load_Prototype()
 
 		/* For.Prototype_Component_Model_Weapon */
 		{
-			PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f)) * Matrix::CreateRotationZ(DEG2RAD(180.f)) * Matrix::CreateRotationX(DEG2RAD(90.f));
-
-			const string		tag = "Prototype_Component_Model_Weapon_";
-			const string		filePath = "../Bin/Resources/Models/Weapon";
-			vector<string>		fileNames = Util_File::GetAllFolderNames(filePath);
-
-			for (string& name : fileNames)
+			/* For.Prototype_Component_Model_Chai_Guitar_Explore */
 			{
-				if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString(tag + name),
-					CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Weapon/" + name, PivotMatrix))))
+				PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f)) * Matrix::CreateRotationZ(DEG2RAD(180.f)) * Matrix::CreateRotationX(DEG2RAD(90.f));
+
+				const string		tag = "Prototype_Component_Model_Weapon_Chai_Guitar_Explore";
+				const string		filePath = "../Bin/Resources/Models/Weapon/Chai_Guitar_Explore";
+
+				if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString(tag),
+					CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Weapon/Chai_Guitar_Explore", PivotMatrix))))
+					return E_FAIL;
+			}
+			/* For.Prototype_Component_Model_Saber_Sword */
+			{
+				PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f)) * Matrix::CreateRotationZ(DEG2RAD(90.f)) * Matrix::CreateRotationX(DEG2RAD(90.f));
+				const string		tag = "Prototype_Component_Model_Weapon_Saber_Sword";
+				const string		filePath = "../Bin/Resources/Models/Weapon/Saber_Sword";
+
+				if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString(tag),
+					CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Weapon/Saber_Sword", PivotMatrix))))
 					return E_FAIL;
 			}
 		}
+
+
+
+
 
 		/* For.Prototype_Component_Model_Static */
 		PivotMatrix = Matrix::Identity * Matrix::CreateScale(0.01f);
@@ -302,15 +307,22 @@ HRESULT CLoader::Load_Prototype()
 			return E_FAIL;
 
 
-		/* For.Prototype_GameObject_Proto_Weapon */
+		/* For.Prototype_GameObject_Weapon */
 		{
-			const string		tag = "Weapon_";
-			const string		filePath = "../Bin/Resources/Models/Weapon";
-			vector<string>		fileNames = Util_File::GetAllFolderNames(filePath);
-
-			for (string& name : fileNames)
+			/* For.Prototype_GameObject_Weapon_Chai_Guitar_Explore */
 			{
-				if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString(tag + name), CWeapon::Create(m_pDevice, m_pContext))))
+				const string		tag = "Weapon_Chai_Guitar_Explore";
+				const string		filePath = "../Bin/Resources/Models/Weapon/Chai_Guitar_Explore";
+
+				if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString(tag), CChai_Guitar_Explore::Create(m_pDevice, m_pContext))))
+					return E_FAIL;
+			}
+			/* For.Prototype_GameObject_Weapon_Saber_Sword */
+			{
+				const string		tag = "Weapon_Saber_Sword";
+				const string		filePath = "../Bin/Resources/Models/Weapon/Saber_Sword";
+
+				if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString(tag), CSaber_Sword::Create(m_pDevice, m_pContext))))
 					return E_FAIL;
 			}
 		}

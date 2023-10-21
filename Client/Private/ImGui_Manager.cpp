@@ -57,13 +57,13 @@ HRESULT CImGui_Manager::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* p
 	/* Create Main_Window Object */
 	pWindow = CImGui_Window_Main_Object::Create();
 	NULL_CHECK_RETURN(pWindow, E_FAIL);
-	pWindow->Set_Active(TRUE);
+	pWindow->Set_Active(FALSE);
 	m_pMainWindows.push_back(pWindow);
 
 	/* Create Main_Window Hierarachy */
 	pWindow = CImGui_Window_Main_Hierarachy::Create();
 	NULL_CHECK_RETURN(pWindow, E_FAIL);
-	pWindow->Set_Active(TRUE);
+	pWindow->Set_Active(FALSE);
 	m_pMainWindows.push_back(pWindow);
 
 	/* Create Main_Window Demo */

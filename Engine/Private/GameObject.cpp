@@ -101,12 +101,12 @@ CComponent* const CGameObject::Get_Component(const _uint& iIndex)
 
 CModel* CGameObject::Get_Model()
 {
-	return dynamic_cast<CModel*>(Get_Component(TEXT("Com_Model")));
+	return dynamic_cast<CModel*>(Get_Component(ComponentNames[COM_MODEL]));
 }
 
 CShader* CGameObject::Get_Shader()
 {
-	return dynamic_cast<CShader*>(Get_Component(TEXT("Com_Shader")));
+	return dynamic_cast<CShader*>(Get_Component(ComponentNames[COM_SHADER]));
 }
 
 CMonoBehaviour* const CGameObject::Get_MonoBehaviour(const _uint& iIndex)
@@ -119,6 +119,9 @@ CMonoBehaviour* const CGameObject::Get_MonoBehaviour(const _uint& iIndex)
 
 void CGameObject::Set_State(const OBJ_STATE& eState)
 {
+	if (eState == m_eState)
+		return;
+
 	for (auto& pChild : m_Children)
 		pChild->Set_State(eState);
 

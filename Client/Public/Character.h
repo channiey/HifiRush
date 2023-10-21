@@ -3,7 +3,6 @@
 #include "Client_Defines.h"
 #include "GameObject.h"
 
-
 BEGIN(Engine)
 class CModel;
 class CShader;
@@ -31,6 +30,9 @@ public:
 		_int	iCombo = -1;
 		_int	iStep = -1;
 
+		CCharacter* pTarget = nullptr;
+		CCharacter* pAttacker = nullptr;
+
 	}FIGHT_DESC;
 
 	typedef struct tagMovementDesc
@@ -55,7 +57,6 @@ public:
 
 	}MOVEMENT_DESC;
 
-
 	typedef struct tagStatDesc
 	{
 		_float fMaxHp = 100.f;
@@ -75,11 +76,11 @@ protected:
 	virtual ~CCharacter() = default;
 
 public:
-	virtual HRESULT		Initialize_Prototype();
-	virtual HRESULT		Initialize(void* pArg);
-	virtual void		Tick(_float fTimeDelta);
-	virtual void		LateTick(_float fTimeDelta);
-	virtual HRESULT		Render();
+	virtual HRESULT			Initialize_Prototype();
+	virtual HRESULT			Initialize(void* pArg);
+	virtual void			Tick(_float fTimeDelta);
+	virtual void			LateTick(_float fTimeDelta);
+	virtual HRESULT			Render();
 
 public:
 	const STAT_DESC&		Get_StatDesc() const { return m_tStatDesc; }
@@ -87,31 +88,31 @@ public:
 	const MOVEMENT_DESC&	Get_MovementDesc() const { return m_tMoveDesc; }
 
 protected:
-	HRESULT				Ready_Components();
-	HRESULT				Ready_ChildObjects();
+	HRESULT					Ready_Components();
+	HRESULT					Ready_ChildObjects();
 
 protected:
-	HRESULT				Bind_ShaderResources();
+	HRESULT					Bind_ShaderResources();
 
 protected:
-	HRESULT				Update_RootMotion();
+	HRESULT					Update_RootMotion();
 
 protected:
-	CShader*			m_pShaderCom		= { nullptr };
-	CRenderer*			m_pRendererCom		= { nullptr };
-	CTransform*			m_pTransformCom		= { nullptr };
-	CModel*				m_pModelCom			= { nullptr };
-	CNavigation*		m_pNavigationCom	= { nullptr };
-	vector<CCollider*>  m_pColliderComs;
+	CShader*				m_pShaderCom		= { nullptr };
+	CRenderer*				m_pRendererCom		= { nullptr };
+	CTransform*				m_pTransformCom		= { nullptr };
+	CModel*					m_pModelCom			= { nullptr };
+	CNavigation*			m_pNavigationCom	= { nullptr };
+	vector<CCollider*>		m_pColliderComs;
 
 protected:
-	STAT_DESC			m_tStatDesc;
-	FIGHT_DESC			m_tFightDesc;
-	MOVEMENT_DESC		m_tMoveDesc;
+	STAT_DESC				m_tStatDesc;
+	FIGHT_DESC				m_tFightDesc;
+	MOVEMENT_DESC			m_tMoveDesc;
 
 public:
-	virtual CCharacter* Clone(void* pArg)= 0;
-	virtual void Free() override;
+	virtual CCharacter*		Clone(void* pArg)= 0;
+	virtual void			Free() override;
 };
 
 END

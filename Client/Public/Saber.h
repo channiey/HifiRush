@@ -1,9 +1,5 @@
 #pragma once
-#include "Character.h"
-
-BEGIN(Engine)
-class CBehaviourTree;
-END
+#include "Enemy.h"
 
 BEGIN(Client)
 
@@ -115,7 +111,7 @@ enum ANIM_SA
 	WALK_RIGHT_FRONT_00,
 };
 
-class CSaber final : public CCharacter
+class CSaber final : public CEnemy
 {
 	enum CHILD_TYPE { SA_WEAPON_RIGHT, SA_TRIGGER_TRACKED, SA_END };
 
@@ -131,6 +127,9 @@ public:
 	virtual void		LateTick(_float fTimeDelta);
 	virtual HRESULT		Render();
 
+public:
+	virtual void		Set_State(const OBJ_STATE& eState) override;
+
 private:
 	HRESULT				Ready_Components();
 	HRESULT				Ready_Chilren();
@@ -144,16 +143,15 @@ private:
 	virtual void		OnCollision_Stay(CCollider* pCollider, const _int& iIndexAsChild = -1) override;
 	virtual void		OnCollision_Exit(CCollider* pCollider, const _int& iIndexAsChild = -1) override;
 
-private:
-	CBehaviourTree*		m_pBehaviourTreeCom = { nullptr };
-
 public:
-	static CSaber* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CSaber* Clone(void* pArg) override;
-	virtual void Free() override;
+	static CSaber*		Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual CSaber*		Clone(void* pArg) override;
+	virtual void		Free() override;
 
 private:
-	friend class CNode_Damaged_Saber;
-	friend class CNode_Tracked_Saber;
+	friend class CNode_IsDamaged_Saber;
+	friend class CNode_IsTracked_Saber;
+	friend class CNode_IsClosed_Saber;
+	friend class CNode_IsAttack_Saber;
 };
 END

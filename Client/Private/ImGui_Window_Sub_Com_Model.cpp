@@ -46,8 +46,8 @@ void CImGui_Window_Sub_Com_Model::Clear_Reference_Data()
 
 void CImGui_Window_Sub_Com_Model::Show_Animations()
 {
-	CGameObject* pObj = m_pImGui_Manager->m_pCurObject;
-	CModel* pModel = pObj->Get_Model();
+	CGameObject*	pObj = m_pImGui_Manager->m_pCurObject;
+	CModel*			pModel = pObj->Get_Model();
 	
 	if (nullptr == pModel)
 	{
@@ -59,29 +59,46 @@ void CImGui_Window_Sub_Com_Model::Show_Animations()
 		Set_Active(FALSE);
 		return;
 	}
-
-	m_pImGui_Manager->m_bEdittingAnim = !m_pImGui_Manager->m_bEdittingAnim ? TRUE : FALSE;
-
-	const vector<class CAnimation*>& Animations = pObj->Get_Model()->Get_Animations();
-
-	const char** items = new const char* [Animations.size()];
-	int index = 0;
-
-	for (auto& pAnim : Animations)
+	
+	
+	/* Animation List */
 	{
-		items[index] = _strdup(pAnim->Get_Name().c_str());
-		++index;
-	}
+		m_pImGui_Manager->m_bEdittingAnim = !m_pImGui_Manager->m_bEdittingAnim ? TRUE : FALSE;
 
-	if (ImGui::Combo("Animations", &m_iCurAnimIndex, items, (_int)Animations.size()))
-	{
-		if (0 <= m_iCurAnimIndex)
+		const vector<class CAnimation*>& Animations = pObj->Get_Model()->Get_Animations();
+
+		const char** items = new const char* [Animations.size()];
+		int index = 0;
+
+		for (auto& pAnim : Animations)
 		{
-			pModel->Set_Animation(m_iCurAnimIndex, FALSE, DF_PL_TIME, DF_TW_TIME);
+			items[index] = _strdup(pAnim->Get_Name().c_str());
+			++index;
 		}
+
+		if (ImGui::Combo("Animations", &m_iCurAnimIndex, items, (_int)Animations.size()))
+		{
+			if (0 <= m_iCurAnimIndex)
+			{
+				pModel->Set_Animation(m_iCurAnimIndex, DF_PL_TIME, DF_TW_TIME);
+			}
+		}
+
+		delete[] items;
 	}
 
-	delete[] items;
+
+	/* Animation Speed */
+	{
+		_float fAnimSpeed = pModel->Get_TweenDesc().cur.fSpeed;
+
+		if (ImGui::DragFloat("Animation Speed", &fAnimSpeed, 0.01f))
+		{
+			pModel->Set_AnimationSpeed(fAnimSpeed);
+		}
+
+
+	}
 }
 
 CImGui_Window_Sub_Com_Model* CImGui_Window_Sub_Com_Model::Create()

@@ -69,7 +69,6 @@ public:
 	HRESULT				Set_Owner(class CGameObject* pParent) { if (nullptr == pParent) return E_FAIL; else m_pOwner = pParent; return S_OK; }
 	void				Set_Name(const wstring& strName) { m_strName = strName; }
 	
-	/* Active 이벤트 처리를 위한 가상함수화, 오버라이드시 __super::Active()먼저 호출 필요 */
 	virtual HRESULT		Set_Active(const _bool& bActive) { m_bActive = bActive; return S_OK; }
 	const _bool&		Is_Active() const { return m_bActive; }
 

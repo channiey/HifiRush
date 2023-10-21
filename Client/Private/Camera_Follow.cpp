@@ -52,6 +52,7 @@ void CCamera_Follow::Tick(_float fTimeDelta)
 		{
 			m_pCameraCom->Set_TargetObj(pObj);
 			m_pCameraCom->Set_LookAtObj(pObj);
+			m_pTransformCom->Set_Position(pObj->Get_Transform()->Get_FinalPosition());
 		}
 	}
 
@@ -80,7 +81,7 @@ HRESULT CCamera_Follow::Ready_Components()
 {
 	/* Com_Transform */
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Transform"),
-		TEXT("Com_Transform"), (CComponent**)&m_pTransformCom)))
+		ComponentNames[COM_TRANSFORM], (CComponent**)&m_pTransformCom)))
 		return E_FAIL;
 
 	/* Com_Camera */
@@ -92,7 +93,7 @@ HRESULT CCamera_Follow::Ready_Components()
 		desc.fFar = 1000.0f;
 	}
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Camera"),
-		TEXT("Com_Camera"), (CComponent**)&m_pCameraCom, &desc)))
+		ComponentNames[COM_CAMERA], (CComponent**)&m_pCameraCom, &desc)))
 		return E_FAIL;
 
 

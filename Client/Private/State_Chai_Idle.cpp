@@ -23,7 +23,7 @@ HRESULT CState_Chai_Idle::Initialize(CStateMachine* pStateMachine, const wstring
 
 HRESULT CState_Chai_Idle::Enter()
 {
-	m_pChai->Get_Model()->Set_Animation(ANIM_CH::IDLE, TRUE, 1.5f, DF_TW_TIME);
+	m_pChai->Get_Model()->Set_Animation(ANIM_CH::IDLE, 1.5f, DF_TW_TIME);
 
 	return S_OK;
 }

@@ -22,7 +22,7 @@ HRESULT CState_Chai_Jump::Enter()
 	m_pChai->m_tMoveDesc.bGround = FALSE;
 	m_pChai->m_tMoveDesc.bJump = TRUE;
 
-	m_pChai->Get_Model()->Set_Animation(ANIM_CH::JUMP, FALSE, DF_PL_TIME, DF_TW_TIME);
+	m_pChai->Get_Model()->Set_Animation(ANIM_CH::JUMP, DF_PL_TIME, DF_TW_TIME);
 
 	return S_OK;
 }

@@ -300,6 +300,23 @@ CGameObject* CGameInstance::Get_GameObject(_uint iLevelIndex, const wstring& str
 	return m_pObject_Manager->Get_GameObject(iLevelIndex, strLayerTag, strPrototypeTag);
 }
 
+CGameObject* CGameInstance::Get_GameObject_InCurLevel(const wstring& strLayerTag, const wstring& strPrototypeTag)
+{
+	if (nullptr == m_pObject_Manager)
+		return nullptr;
+
+	return m_pObject_Manager->Get_GameObject(Get_CurLevelIndex(), strLayerTag, strPrototypeTag);
+}
+
+CGameObject* CGameInstance::Get_GameObject_InCurLevel_InLayerFirst(const wstring& strLayerTag)
+{
+	list<class CGameObject*>* pLayer = Get_Layer(Get_CurLevelIndex(), strLayerTag);
+	if (nullptr == pLayer || pLayer->empty())
+		return nullptr;
+
+	return pLayer->front();
+}
+
 const _int CGameInstance::Get_ObjectIndex(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strName)
 {
 	if (nullptr == m_pObject_Manager)

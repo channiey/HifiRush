@@ -14,6 +14,9 @@ CCharacter::CCharacter(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 CCharacter::CCharacter(const CCharacter& rhs)
 	: CGameObject(rhs)
+	, m_tStatDesc(rhs.m_tStatDesc)
+	, m_tFightDesc(rhs.m_tFightDesc)
+	, m_tMoveDesc(rhs.m_tMoveDesc)
 
 {
 }

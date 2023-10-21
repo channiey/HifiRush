@@ -36,7 +36,7 @@ HRESULT CState_Chai_Parry::Enter()
 	//	m_pChai->Get_Model()->Set_Animation(ANIM_CH::PARRY_02, FALSE, 2.2f, DF_TW_TIME);
 	//	break;
 	//}
-	m_pChai->Get_Model()->Set_Animation(ANIM_CH::PARRY_02, FALSE, 2.2f, DF_TW_TIME);
+	m_pChai->Get_Model()->Set_Animation(ANIM_CH::PARRY_02, 2.2f, DF_TW_TIME);
 	return S_OK;
 }
 
