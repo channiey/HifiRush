@@ -29,10 +29,6 @@ const NODE_STATE CNode_Move_Saber::Evaluate(const _float& fTimeDelta)
 	{
 		if (Is_ReachTarget())
 		{
-			// << : 임시 코드 
-			if (!m_pBlackboard_Saber->m_pSaber->Get_Model()->Is_Contain_InTween(ANIM_SA::IDLE_ATTACK))
-				m_pBlackboard_Saber->m_pSaber->Get_Model()->Set_Animation(ANIM_SA::IDLE_ATTACK, DF_PL_TIME, DF_TW_TIME);
-			// >> : 
 			return NODE_STATE::SUCCESS;
 		}
 		else

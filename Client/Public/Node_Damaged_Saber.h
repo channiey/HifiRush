@@ -17,7 +17,7 @@ public:
 	virtual const NODE_STATE Evaluate(const _float& fTimeDelta);
 
 private:
-	const _bool Check_Condition(const _float& fTimeDelta);
+	virtual const _bool Check_Condition(const _float& fTimeDelta) override;
 
 
 private:

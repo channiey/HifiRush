@@ -42,7 +42,7 @@ const NODE_STATE CNode_Sequence::Evaluate(const _float& fTimeDelta)
 			return m_eState;
 		}
 
-		if (NODE_STATE::FAILURE != m_eState)
+		if (NODE_STATE::FAILURE == m_eState)
 		{
 			m_iterRunning = m_ChildNodes.end();
 			return m_eState;
@@ -50,6 +50,7 @@ const NODE_STATE CNode_Sequence::Evaluate(const _float& fTimeDelta)
 	}
 
 	/* 모든 자식 노드가 성공했다면 시퀀스도 성공한다.*/
+	m_iterRunning = m_ChildNodes.end();
 	return m_eState;
 }
 

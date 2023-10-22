@@ -367,7 +367,7 @@ const _bool CModel::Is_Contain_InTween(const _uint& iAnimIndex)
 
 const _bool CModel::Is_Playing_Animation(const _uint& iAnimIndex)
 {
-	/* 현재 애니메이션으로 재생중이거나, 다음 애니메이션으로 예약 되어있을 경우 TRUE */
+	/* 현재 애니메이션으로 재생중(2/3까지)이거나, 다음 애니메이션으로 예약 되어있을 경우 TRUE */
 
 	if (m_TweenDesc.cur.iAnimIndex != iAnimIndex && m_TweenDesc.next.iAnimIndex == iAnimIndex)
 		return TRUE;

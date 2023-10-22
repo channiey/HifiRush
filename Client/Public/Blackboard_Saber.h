@@ -20,7 +20,7 @@ public:
 	
 	const _float		m_fCanAttackDist	= { 5.f };
 
-	_float				m_fAttackFreqTime	= { 5.f };
+	_float				m_fAttackFreqTime	= { 3.f };
 	_float				m_fAttackAccTime	= { 0.f };
 
 public:

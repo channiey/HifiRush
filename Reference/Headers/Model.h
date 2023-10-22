@@ -12,8 +12,9 @@ BEGIN(Engine)
 class ENGINE_DLL CModel final : public CComponent
 {
 public:
-	enum			TYPE		{ TYPE_NONANIM, TYPE_ANIM, TYPE_END };
-	enum			BONE_TYPE	{ BONE_ROOT, BONE_SOCKET_LEFT, BONE_SOCKET_RIGHT, BONE_END };
+	enum			TYPE			{ TYPE_NONANIM, TYPE_ANIM, TYPE_END };
+	enum			BONE_TYPE		{ BONE_ROOT, BONE_SOCKET_LEFT, BONE_SOCKET_RIGHT, BONE_END };
+	enum            ANIM_PROGRESS	{ ONE_THIRDS, HALF, TWO_THIRDS, FINISH, PROGRESS_END };
 
 	typedef struct	KeyframeDesc
 {
