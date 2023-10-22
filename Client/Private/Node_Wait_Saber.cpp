@@ -31,7 +31,7 @@ const NODE_STATE CNode_Wait_Saber::Evaluate(const _float& fTimeDelta)
 	}
 	else
 	{
-		Wait();	
+		Wait(fTimeDelta);
 		return NODE_STATE::FAILURE;
 	}
 }
@@ -50,16 +50,10 @@ const _bool CNode_Wait_Saber::Check_Condition(const _float& fTimeDelta)
 }
 
 
-void CNode_Wait_Saber::Wait()
+void CNode_Wait_Saber::Wait(const _float& fTimeDelta)
 {
 	/* Set Look */
-	if(!m_pBlackboard_Saber->m_pSaber->Get_Model()->Is_Tween())
-	{
-		Vec4 vDir = Vec4(m_pBlackboard_Saber->m_pSaber->m_tFightDesc.pTarget->Get_Transform()->Get_FinalPosition()
-			- m_pBlackboard_Saber->m_pSaber->Get_Transform()->Get_FinalPosition()).Normalized();
-
-		m_pBlackboard_Saber->m_pSaber->Get_Transform()->Set_Look(vDir);
-	}
+	Set_LookAtTarget(fTimeDelta);
 
 	m_eCurAnim = ANIM_SA::IDLE_ATTACK;
 

@@ -22,6 +22,7 @@ public:
 
 protected:
 	const _bool Is_Playing_Animation();
+	void	Set_LookAtTarget(const _float& fTimeDelta);
 
 protected:
 	CBlackboard_Saber* m_pBlackboard_Saber = { nullptr };

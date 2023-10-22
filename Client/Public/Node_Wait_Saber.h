@@ -20,7 +20,7 @@ private:
 	virtual const _bool Check_Condition(const _float& fTimeDelta) override;
 
 private:
-	void Wait();
+	void Wait(const _float& fTimeDelta);
 
 public:
 	static CNode_Wait_Saber* Create(class CBlackboard* pBlackboard);

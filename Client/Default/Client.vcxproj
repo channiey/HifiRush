@@ -212,6 +212,7 @@
     <ClInclude Include="..\Public\Node_Action_Saber.h" />
     <ClInclude Include="..\Public\Node_Attack_Saber.h" />
     <ClInclude Include="..\Public\Node_Damaged_Saber.h" />
+    <ClInclude Include="..\Public\Node_Idle_Saber.h" />
     <ClInclude Include="..\Public\Node_Move_Saber.h" />
     <ClInclude Include="..\Public\Node_Wait_Saber.h" />
     <ClInclude Include="..\Public\Peppermint.h" />
@@ -296,6 +297,7 @@
     <ClCompile Include="..\Private\Node_Action_Saber.cpp" />
     <ClCompile Include="..\Private\Node_Attack_Saber.cpp" />
     <ClCompile Include="..\Private\Node_Damaged_Saber.cpp" />
+    <ClCompile Include="..\Private\Node_Idle_Saber.cpp" />
     <ClCompile Include="..\Private\Node_Move_Saber.cpp" />
     <ClCompile Include="..\Private\Node_Wait_Saber.cpp" />
     <ClCompile Include="..\Private\Peppermint.cpp" />

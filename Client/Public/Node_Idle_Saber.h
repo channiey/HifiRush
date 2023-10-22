@@ -5,12 +5,12 @@
 #include "Node_Action_Saber.h"
 
 BEGIN(Client)
-class CNode_Attack_Saber final : public CNode_Action_Saber
+class CNode_Idle_Saber final : public CNode_Action_Saber
 {
 private:
-	CNode_Attack_Saber();
-	CNode_Attack_Saber(const CNode_Attack_Saber& rhs);
-	virtual ~CNode_Attack_Saber() = default;
+	CNode_Idle_Saber();
+	CNode_Idle_Saber(const CNode_Idle_Saber& rhs);
+	virtual ~CNode_Idle_Saber() = default;
 
 public:
 	HRESULT Initialize_Node(class CBlackboard* pBlackboard);
@@ -20,11 +20,10 @@ private:
 	virtual const _bool Check_Condition(const _float& fTimeDelta) override;
 
 private:
-	void Attack();
-	void Reset_BT();
+	void Wait(const _float& fTimeDelta);
 
 public:
-	static CNode_Attack_Saber* Create(class CBlackboard* pBlackboard);
+	static CNode_Idle_Saber* Create(class CBlackboard* pBlackboard);
 	virtual void Free();
 };
 END

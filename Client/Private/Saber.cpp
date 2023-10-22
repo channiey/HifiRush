@@ -8,6 +8,8 @@
 #include "TriggerDummy.h"
 
 #include "Blackboard_Saber.h"
+#include "Node_Action_Saber.h"
+#include "Node_Idle_Saber.h"
 #include "Node_Damaged_Saber.h"
 #include "Node_Move_Saber.h"
 #include "Node_Wait_Saber.h"
@@ -160,7 +162,17 @@ HRESULT CSaber::Ready_BehavoiurTree()
 			return E_FAIL;
 	}
 
-	/* 01-01-00 Move */
+	/* 01-01-00 Idle */
+	pNode = CNode_Idle_Saber::Create(pBlackboard);
+	{
+		if (nullptr == pNode)
+			return E_FAIL;
+
+		if (FAILED(pSequenceNode->Add_ChildNode(pNode)))
+			return E_FAIL;
+	}
+
+	/* 01-01-01 Move */
 	pNode = CNode_Move_Saber::Create(pBlackboard);
 	{
 		if (nullptr == pNode)
@@ -170,7 +182,7 @@ HRESULT CSaber::Ready_BehavoiurTree()
 			return E_FAIL;
 	}
 
-	/* 01-01-01 Wait */
+	/* 01-01-02 Wait */
 	pNode = CNode_Wait_Saber::Create(pBlackboard);
 	{
 		if (nullptr == pNode)
@@ -180,7 +192,7 @@ HRESULT CSaber::Ready_BehavoiurTree()
 			return E_FAIL;
 	}
 
-	/* 01-01-02 Attack */
+	/* 01-01-03 Attack */
 	pNode = CNode_Attack_Saber::Create(pBlackboard);
 	{
 		if (nullptr == pNode)

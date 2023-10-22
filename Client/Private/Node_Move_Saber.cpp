@@ -33,14 +33,14 @@ const NODE_STATE CNode_Move_Saber::Evaluate(const _float& fTimeDelta)
 		}
 		else
 		{
-			Move_ToTarget();
+			Move_ToTarget(fTimeDelta);
 			return NODE_STATE::RUNNING;
 		}
 
 	}
 	else /* 지금은 여기 들어올 일 없음 */
 	{
-		Hover_Target();
+		Wait(fTimeDelta);
 		return NODE_STATE::FAILURE;
 	}
 }
@@ -61,35 +61,25 @@ const _bool CNode_Move_Saber::Is_ReachTarget()
 	return FALSE;
 }
 
-void CNode_Move_Saber::Move_ToTarget()
+void CNode_Move_Saber::Move_ToTarget(const _float& fTimeDelta)
 {
 	/* Set Look */
-	{
-		Vec4 vDir = Vec4(m_pBlackboard_Saber->m_pSaber->m_tFightDesc.pTarget->Get_Transform()->Get_FinalPosition()
-						- m_pBlackboard_Saber->m_pSaber->Get_Transform()->Get_FinalPosition()).Normalized();
+	Set_LookAtTarget(fTimeDelta);
 
-		m_pBlackboard_Saber->m_pSaber->Get_Transform()->Set_Look(vDir);
-	}
-
-	/* Translate */
+	/* Play Animation */
 	if (!m_pBlackboard_Saber->m_pSaber->Get_Model()->Is_Contain_InTween(ANIM_SA::DOUBLE_STEP_FRONT_00))
 		m_pBlackboard_Saber->m_pSaber->Get_Model()->Set_Animation(ANIM_SA::DOUBLE_STEP_FRONT_00, DF_PL_TIME, DF_TW_TIME);
 }
 
 
-void CNode_Move_Saber::Hover_Target() 
+void CNode_Move_Saber::Wait(const _float& fTimeDelta)
 {
 	/* Set Look */
-	{
-		Vec4 vDir = Vec4(m_pBlackboard_Saber->m_pSaber->m_tFightDesc.pTarget->Get_Transform()->Get_FinalPosition()
-			- m_pBlackboard_Saber->m_pSaber->Get_Transform()->Get_FinalPosition()).Normalized();
+	Set_LookAtTarget(fTimeDelta);
 
-		m_pBlackboard_Saber->m_pSaber->Get_Transform()->Set_Look(vDir);
-	}
-
-	/* Translate */
-	if (!m_pBlackboard_Saber->m_pSaber->Get_Model()->Is_Contain_InTween(ANIM_SA::DOUBLE_STEP_RIGHT_BACK_00))// && m_pBlackboard_Saber->m_pSaber->Get_Model()->Is_TwoThirds_Animation())
-		m_pBlackboard_Saber->m_pSaber->Get_Model()->Set_Animation(ANIM_SA::DOUBLE_STEP_RIGHT_BACK_00, DF_PL_TIME, DF_TW_TIME);
+	/* Play Animation */
+	if (!m_pBlackboard_Saber->m_pSaber->Get_Model()->Is_Contain_InTween(ANIM_SA::IDLE_ATTACK))
+		m_pBlackboard_Saber->m_pSaber->Get_Model()->Set_Animation(ANIM_SA::IDLE_ATTACK, DF_PL_TIME, DF_TW_TIME);
 }
 
 

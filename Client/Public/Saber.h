@@ -151,7 +151,9 @@ public:
 	virtual void		Free() override;
 
 private:
+	friend class CNode_Action_Saber;
 	friend class CNode_Damaged_Saber;
+	friend class CNode_Idle_Saber;
 	friend class CNode_Move_Saber;
 	friend class CNode_Wait_Saber;
 	friend class CNode_Attack_Saber;

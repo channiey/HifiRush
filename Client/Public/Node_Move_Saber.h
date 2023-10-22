@@ -21,8 +21,8 @@ private:
 
 private:
 	const _bool	Is_ReachTarget();
-	void Move_ToTarget();
-	void Hover_Target();
+	void Move_ToTarget(const _float& fTimeDelta);
+	void Wait(const _float& fTimeDelta);
 
 public:
 	static CNode_Move_Saber* Create(class CBlackboard* pBlackboard);

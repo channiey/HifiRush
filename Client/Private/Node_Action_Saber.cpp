@@ -33,6 +33,26 @@ const _bool CNode_Action_Saber::Is_Playing_Animation()
 
 }
 
+void CNode_Action_Saber::Set_LookAtTarget(const _float& fTimeDelta)
+{
+	/* Set Look */
+	if (!m_pBlackboard_Saber->m_pSaber->Get_Model()->Is_Tween())
+	{
+		Vec4 vRotDir, vLook, vTargetDir;
+
+		vLook = m_pBlackboard_Saber->m_pSaber->Get_Transform()->Get_Forward();
+		vTargetDir = Vec4(m_pBlackboard_Saber->m_pSaber->m_tFightDesc.pTarget->Get_Transform()->Get_FinalPosition()
+			- m_pBlackboard_Saber->m_pSaber->Get_Transform()->Get_FinalPosition()).Normalized();
+
+		if (3.f < acos(vTargetDir.Dot((vLook))))
+			vRotDir = Vec4::Lerp(vLook, vTargetDir, 0.66f);
+		else
+			vRotDir = Vec4::Lerp(vLook, vTargetDir, fTimeDelta * 20.f);
+
+		m_pBlackboard_Saber->m_pSaber->Get_Transform()->Set_Look(vRotDir);
+	}
+}
+
 void CNode_Action_Saber::Free()
 {
 	__super::Free();
