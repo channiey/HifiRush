@@ -17,7 +17,6 @@ CCharacter::CCharacter(const CCharacter& rhs)
 	, m_tStatDesc(rhs.m_tStatDesc)
 	, m_tFightDesc(rhs.m_tFightDesc)
 	, m_tMoveDesc(rhs.m_tMoveDesc)
-
 {
 }
 

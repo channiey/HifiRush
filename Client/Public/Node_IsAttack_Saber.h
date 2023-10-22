@@ -17,6 +17,9 @@ public:
 	virtual const NODE_STATE Evaluate(const _float& fTimeDelta);
 
 private:
+	virtual const _bool Check_Condition(const _float& fTimeDelta) override;
+
+private:
 	void Attack();
 	void Escape();
 

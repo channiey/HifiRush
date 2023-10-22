@@ -411,6 +411,9 @@
     <ClInclude Include="..\Public\Node_Wait.h">
       <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node\03.Action\00.Wait</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Rigidbody.h">
+      <Filter>01.Utiltiy\03.Components\Component\07.RigidBody</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -586,6 +589,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Node_Wait.cpp">
       <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node\03.Action\00.Wait</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Rigidbody.cpp">
+      <Filter>01.Utiltiy\03.Components\Component\07.RigidBody</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

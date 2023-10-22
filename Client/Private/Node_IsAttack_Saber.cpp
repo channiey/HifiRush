@@ -22,8 +22,8 @@ HRESULT CNode_IsAttack_Saber::Initialize_Node(CBlackboard* pBlackboard)
 
 const NODE_STATE CNode_IsAttack_Saber::Evaluate(const _float& fTimeDelta)
 {
-	if (!m_pBlackboard_Saber->m_pSaber->Get_Model()->Is_Contain_InTween(m_pBlackboard_Saber->m_eCurAttackAnim))
-		m_pBlackboard_Saber->m_fAttackAccTime += fTimeDelta;
+	/*if (!m_pBlackboard_Saber->m_pSaber->Get_Model()->Is_Contain_InTween(m_pBlackboard_Saber->m_eCurAttackAnim))
+		m_pBlackboard_Saber->m_fAttackAccTime += fTimeDelta;*/
 
 	if (m_pBlackboard_Saber->m_fAttackAccTime <= m_pBlackboard_Saber->m_fAttackFreqTime)
 	{
@@ -38,9 +38,14 @@ const NODE_STATE CNode_IsAttack_Saber::Evaluate(const _float& fTimeDelta)
 	}
 }
 
+const _bool CNode_IsAttack_Saber::Check_Condition(const _float& fTimeDelta)
+{
+	return _bool();
+}
+
 void CNode_IsAttack_Saber::Attack()
 {
-	m_pBlackboard_Saber->m_ePrevAttackAnim = m_pBlackboard_Saber->m_eCurAttackAnim;
+	/*m_pBlackboard_Saber->m_ePrevAttackAnim = m_pBlackboard_Saber->m_eCurAttackAnim;
 	m_pBlackboard_Saber->m_eCurAttackAnim = Change_AttackAnim();
 
 	if (!m_pBlackboard_Saber->m_pSaber->Get_Model()->Is_Contain_InTween(m_pBlackboard_Saber->m_eCurAttackAnim))
@@ -49,30 +54,30 @@ void CNode_IsAttack_Saber::Attack()
 		{
 			m_pBlackboard_Saber->m_pSaber->Get_Model()->Set_Animation(m_pBlackboard_Saber->m_eCurAttackAnim, DF_PL_TIME, DF_TW_TIME);
 		}
-	}
+	}*/
 }
 
 void CNode_IsAttack_Saber::Escape()
 {
-	m_pBlackboard_Saber->m_ePrevEscapeAnim = m_pBlackboard_Saber->m_eCurEscapeAnim;
-	m_pBlackboard_Saber->m_eCurEscapeAnim = Change_EscapeAnim();
+	//m_pBlackboard_Saber->m_ePrevEscapeAnim = m_pBlackboard_Saber->m_eCurEscapeAnim;
+	//m_pBlackboard_Saber->m_eCurEscapeAnim = Change_EscapeAnim();
 
-	/* Set Look */
-	{
-		Vec4 vDir = Vec4(m_pBlackboard_Saber->m_pSaber->m_tFightDesc.pTarget->Get_Transform()->Get_FinalPosition()
-			- m_pBlackboard_Saber->m_pSaber->Get_Transform()->Get_FinalPosition()).Normalized();
+	///* Set Look */
+	//{
+	//	Vec4 vDir = Vec4(m_pBlackboard_Saber->m_pSaber->m_tFightDesc.pTarget->Get_Transform()->Get_FinalPosition()
+	//		- m_pBlackboard_Saber->m_pSaber->Get_Transform()->Get_FinalPosition()).Normalized();
 
-		m_pBlackboard_Saber->m_pSaber->Get_Transform()->Set_Look(vDir);
-	}
+	//	m_pBlackboard_Saber->m_pSaber->Get_Transform()->Set_Look(vDir);
+	//}
 
-	/* Translate */
-	if (!m_pBlackboard_Saber->m_pSaber->Get_Model()->Is_Contain_InTween(m_pBlackboard_Saber->m_eCurEscapeAnim))
-	{
-		if (m_pBlackboard_Saber->m_pSaber->Get_Model()->Is_TwoThirds_Animation())
-		{
-			m_pBlackboard_Saber->m_pSaber->Get_Model()->Set_Animation(m_pBlackboard_Saber->m_eCurEscapeAnim, DF_PL_TIME, DF_TW_TIME);
-		}
-	}
+	///* Translate */
+	//if (!m_pBlackboard_Saber->m_pSaber->Get_Model()->Is_Contain_InTween(m_pBlackboard_Saber->m_eCurEscapeAnim))
+	//{
+	//	if (m_pBlackboard_Saber->m_pSaber->Get_Model()->Is_TwoThirds_Animation())
+	//	{
+	//		m_pBlackboard_Saber->m_pSaber->Get_Model()->Set_Animation(m_pBlackboard_Saber->m_eCurEscapeAnim, DF_PL_TIME, DF_TW_TIME);
+	//	}
+	//}
 }
 
 const ANIM_SA CNode_IsAttack_Saber::Change_AttackAnim()

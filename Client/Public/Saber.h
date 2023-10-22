@@ -32,12 +32,12 @@ enum ANIM_SA
 	DOUBLE_STEP_LEFT_02,
 	DOUBLE_STEP_LEFT_BACK_00,
 	DOUBLE_STEP_LEFT_FRONE_00,
-	DOUBLE_STRP_RIGHT_00,
-	DOUBLE_STRP_RIGHT_01,
-	DOUBLE_STRP_RIGHT_02, // 3까지 있음
-	DOUBLE_STRP_RIGHT_BACK_00,
-	DOUBLE_STRP_RIGHT_FRONT_00,
-	DOUBLE_STRP_RIGHT_03,
+	DOUBLE_STEP_RIGHT_00,
+	DOUBLE_STEP_RIGHT_01,
+	DOUBLE_STEP_RIGHT_02, // 3까지 있음
+	DOUBLE_STEP_RIGHT_BACK_00,
+	DOUBLE_STEP_RIGHT_FRONT_00,
+	DOUBLE_STEP_RIGHT_03,
 
 	ESCAPE_BACK_00,
 	ESCAPE_BACK_01,
@@ -149,8 +149,8 @@ public:
 	virtual void		Free() override;
 
 private:
-	friend class CNode_IsDamaged_Saber;
-	friend class CNode_IsTracked_Saber;
+	friend class CNode_Damaged_Saber;
+	friend class CNode_Move_Saber;
 	friend class CNode_IsClosed_Saber;
 	friend class CNode_IsAttack_Saber;
 };

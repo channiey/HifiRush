@@ -27,4 +27,6 @@ HRESULT CNode_Action_Saber::Initialize_Node(CBlackboard* pBlackboard)
 void CNode_Action_Saber::Free()
 {
 	__super::Free();
+	
+	Safe_Release(m_pBlackboard_Saber);
 }

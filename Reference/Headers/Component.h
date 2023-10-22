@@ -22,6 +22,7 @@ enum COMPONENT_TYPE
 	COM_STATEMACHINE,
 	COM_BEHAVIOURTREE,
 	COM_CAMERA,
+	COM_RIGIDBODY,
 	COM_END
 };
 
@@ -43,6 +44,7 @@ static const wstring ComponentNames[COM_END]
 	L"Com_StateMachine",
 	L"Com_BehaviourTree",
 	L"Com_Camera",
+	L"Com_Rigidbody"
 };
 
 

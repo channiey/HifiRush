@@ -22,7 +22,7 @@ HRESULT CNode_IsClosed_Saber::Initialize_Node(CBlackboard* pBlackboard)
 
 const NODE_STATE CNode_IsClosed_Saber::Evaluate(const _float& fTimeDelta)
 {
-	if (m_pBlackboard_Saber->m_fCurTargetDist <= m_pBlackboard_Saber->m_fCanAttackDist)
+	/*if (m_pBlackboard_Saber->m_fCurTargetDist <= m_pBlackboard_Saber->m_fCanAttackDist)
 	{
 		return NODE_STATE::SUCCESS;
 	}
@@ -31,8 +31,13 @@ const NODE_STATE CNode_IsClosed_Saber::Evaluate(const _float& fTimeDelta)
 		Move();
 
 		return NODE_STATE::RUNNING;
-	}
+	}*/
 	return NODE_STATE::FAILURE;
+}
+
+const _bool CNode_IsClosed_Saber::Check_Condition(const _float& fTimeDelta)
+{
+	return _bool();
 }
 
 void CNode_IsClosed_Saber::Move()

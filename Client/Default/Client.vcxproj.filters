@@ -250,15 +250,6 @@
     <Filter Include="02.GameObjects\09.Trigger\MonoBehaviour">
       <UniqueIdentifier>{d277882a-5ab0-4549-8066-f50c9749dee2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\00.IsDamaged">
-      <UniqueIdentifier>{1ebf8194-ac09-4ed0-9c76-0a70c0bb71d8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\01.IsTarget">
-      <UniqueIdentifier>{28a86c7e-2dc8-4ac4-859f-ebe101c034f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\02.IsClosed">
-      <UniqueIdentifier>{ee1d097e-3620-4455-8722-ba74f67e9651}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\04.Weapon\00.Player">
       <UniqueIdentifier>{0fc9f048-93db-4403-88bb-b29a5434bc39}</UniqueIdentifier>
     </Filter>
@@ -271,8 +262,14 @@
     <Filter Include="02.GameObjects\04.Weapon\00.Player\00.Chai_Guitar_Explore">
       <UniqueIdentifier>{87592788-6ff5-4f21-9c97-ec9147761885}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\03.IsAttack">
-      <UniqueIdentifier>{d8698a2d-561e-4307-a4ba-a20e083a15be}</UniqueIdentifier>
+    <Filter Include="02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\01.Move">
+      <UniqueIdentifier>{28a86c7e-2dc8-4ac4-859f-ebe101c034f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\00.Damaged">
+      <UniqueIdentifier>{1ebf8194-ac09-4ed0-9c76-0a70c0bb71d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\02.Attack">
+      <UniqueIdentifier>{ee1d097e-3620-4455-8722-ba74f67e9651}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -432,14 +429,11 @@
     <ClInclude Include="..\Public\Blackboard_Saber.h">
       <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\00.Blackboard</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Node_IsDamaged_Saber.h">
-      <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\00.IsDamaged</Filter>
+    <ClInclude Include="..\Public\Node_Damaged_Saber.h">
+      <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\00.Damaged</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Node_Action_Saber.h">
       <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Node_IsTracked_Saber.h">
-      <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\01.IsTarget</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\TriggerDummy.h">
       <Filter>02.GameObjects\09.Trigger</Filter>
@@ -447,17 +441,20 @@
     <ClInclude Include="..\Public\Enemy.h">
       <Filter>02.GameObjects\03.Character\01.Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Node_IsClosed_Saber.h">
-      <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\02.IsClosed</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Saber_Sword.h">
       <Filter>02.GameObjects\04.Weapon\01.Enemy\00.Saber_Sword</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Chai_Guitar_Explore.h">
       <Filter>02.GameObjects\04.Weapon\00.Player\00.Chai_Guitar_Explore</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Node_IsClosed_Saber.h">
+      <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\Node_IsAttack_Saber.h">
-      <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\03.IsAttack</Filter>
+      <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Node_Move_Saber.h">
+      <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\01.Move</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -602,14 +599,11 @@
     <ClCompile Include="..\Private\Blackboard_Saber.cpp">
       <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\00.Blackboard</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Node_IsDamaged_Saber.cpp">
-      <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\00.IsDamaged</Filter>
+    <ClCompile Include="..\Private\Node_Damaged_Saber.cpp">
+      <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\00.Damaged</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Node_Action_Saber.cpp">
       <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Node_IsTracked_Saber.cpp">
-      <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\01.IsTarget</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\TriggerDummy.cpp">
       <Filter>02.GameObjects\09.Trigger</Filter>
@@ -617,17 +611,20 @@
     <ClCompile Include="..\Private\Enemy.cpp">
       <Filter>02.GameObjects\03.Character\01.Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="..\Public\Node_IsClosed_Saber.cpp">
-      <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\02.IsClosed</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Saber_Sword.cpp">
       <Filter>02.GameObjects\04.Weapon\01.Enemy\00.Saber_Sword</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Chai_Guitar_Explore.cpp">
       <Filter>02.GameObjects\04.Weapon\00.Player\00.Chai_Guitar_Explore</Filter>
     </ClCompile>
+    <ClCompile Include="..\Public\Node_IsClosed_Saber.cpp">
+      <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\Node_IsAttack_Saber.cpp">
-      <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\03.IsAttack</Filter>
+      <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Node_Move_Saber.cpp">
+      <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\01.Move</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

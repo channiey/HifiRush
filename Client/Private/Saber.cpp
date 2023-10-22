@@ -8,8 +8,8 @@
 #include "TriggerDummy.h"
 
 #include "Blackboard_Saber.h"
-#include "Node_IsDamaged_Saber.h"
-#include "Node_IsTracked_Saber.h"
+#include "Node_Damaged_Saber.h"
+#include "Node_Move_Saber.h"
 #include "Node_IsClosed_Saber.h"
 #include "Node_IsAttack_Saber.h"
 
@@ -141,7 +141,7 @@ HRESULT CSaber::Ready_BehavoiurTree()
 	}
 
 	/* 01-00. Damaged */
-	pNode = CNode_IsDamaged_Saber::Create(pBlackboard);
+	pNode = CNode_Damaged_Saber::Create(pBlackboard);
 	{
 		if (nullptr == pNode)
 			return E_FAIL;
@@ -160,8 +160,8 @@ HRESULT CSaber::Ready_BehavoiurTree()
 			return E_FAIL;
 	}
 
-	/* 01-01-00 Tracked */
-	pNode = CNode_IsTracked_Saber::Create(pBlackboard);
+	/* 01-01-00 Move */
+	pNode = CNode_Move_Saber::Create(pBlackboard);
 	{
 		if (nullptr == pNode)
 			return E_FAIL;
@@ -170,25 +170,25 @@ HRESULT CSaber::Ready_BehavoiurTree()
 			return E_FAIL;
 	}
 
-	/* 01-01-01 Colsed */
-	pNode = CNode_IsClosed_Saber::Create(pBlackboard);
-	{
-		if (nullptr == pNode)
-			return E_FAIL;
+	///* 01-01-01 Colsed */
+	//pNode = CNode_IsClosed_Saber::Create(pBlackboard);
+	//{
+	//	if (nullptr == pNode)
+	//		return E_FAIL;
 
-		if (FAILED(pSequenceNode->Add_ChildNode(pNode)))
-			return E_FAIL;
-	}
+	//	if (FAILED(pSequenceNode->Add_ChildNode(pNode)))
+	//		return E_FAIL;
+	//}
 
-	/* 01-01-02 Attack */
-	pNode = CNode_IsAttack_Saber::Create(pBlackboard);
-	{
-		if (nullptr == pNode)
-			return E_FAIL;
+	///* 01-01-02 Attack */
+	//pNode = CNode_IsAttack_Saber::Create(pBlackboard);
+	//{
+	//	if (nullptr == pNode)
+	//		return E_FAIL;
 
-		if (FAILED(pSequenceNode->Add_ChildNode(pNode)))
-			return E_FAIL;
-	}
+	//	if (FAILED(pSequenceNode->Add_ChildNode(pNode)))
+	//		return E_FAIL;
+	//}
 	
 	return S_OK;
 }

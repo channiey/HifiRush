@@ -5,12 +5,12 @@
 #include "Node_Action_Saber.h"
 
 BEGIN(Client)
-class CNode_IsClosed_Saber final : public CNode_Action_Saber
+class CNode_Damaged_Saber final : public CNode_Action_Saber
 {
 private:
-	CNode_IsClosed_Saber();
-	CNode_IsClosed_Saber(const CNode_IsClosed_Saber& rhs);
-	virtual ~CNode_IsClosed_Saber() = default;
+	CNode_Damaged_Saber();
+	CNode_Damaged_Saber(const CNode_Damaged_Saber& rhs);
+	virtual ~CNode_Damaged_Saber() = default;
 
 public:
 	HRESULT Initialize_Node(class CBlackboard* pBlackboard);
@@ -18,10 +18,12 @@ public:
 
 private:
 	virtual const _bool Check_Condition(const _float& fTimeDelta) override;
-	void Move();
+
+private:
+	void Damaged();
 
 public:
-	static CNode_IsClosed_Saber* Create(class CBlackboard* pBlackboard);
+	static CNode_Damaged_Saber* Create(class CBlackboard* pBlackboard);
 	virtual void Free();
 };
 END

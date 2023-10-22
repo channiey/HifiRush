@@ -197,6 +197,7 @@
     <ClInclude Include="..\Public\QuadTree.h" />
     <ClInclude Include="..\Public\RenderTarget.h" />
     <ClInclude Include="..\Public\Collider_Sphere.h" />
+    <ClInclude Include="..\Public\Rigidbody.h" />
     <ClInclude Include="..\Public\ThreadPool.h" />
     <ClInclude Include="..\Public\Util_File.h" />
     <ClInclude Include="..\public\GameInstance.h" />
@@ -262,6 +263,7 @@
     <ClCompile Include="..\Private\QuadTree.cpp" />
     <ClCompile Include="..\Private\RenderTarget.cpp" />
     <ClCompile Include="..\Private\Collider_Sphere.cpp" />
+    <ClCompile Include="..\Private\Rigidbody.cpp" />
     <ClCompile Include="..\Private\ThreadPool.cpp" />
     <ClCompile Include="..\Private\Util_File.cpp" />
     <ClCompile Include="..\private\GameInstance.cpp" />

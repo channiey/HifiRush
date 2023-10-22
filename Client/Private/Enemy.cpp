@@ -116,6 +116,7 @@ HRESULT CEnemy::Bind_ShaderResources()
 	return S_OK;
 }
 
+static int k = 0;
 void CEnemy::OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild)
 {
 	CGameObject*	pGameObject = pCollider->Get_Owner();
@@ -124,6 +125,7 @@ void CEnemy::OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild)
 	{
 		if (LayerNames[LAYER_PLAYER] == pGameObject->Get_Parent()->Get_LayerTag())
 		{
+			cout << "HIT" << ++k << endl;
 			m_tFightDesc.bDamaged = TRUE;
 			m_tFightDesc.pAttacker = dynamic_cast<CCharacter*>(pGameObject->Get_Parent());
 		}

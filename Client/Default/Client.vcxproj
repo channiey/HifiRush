@@ -211,9 +211,9 @@
     <ClInclude Include="..\Public\Chai.h" />
     <ClInclude Include="..\Public\Node_Action_Saber.h" />
     <ClInclude Include="..\Public\Node_IsAttack_Saber.h" />
-    <ClInclude Include="..\Public\Node_IsDamaged_Saber.h" />
+    <ClInclude Include="..\Public\Node_Damaged_Saber.h" />
     <ClInclude Include="..\Public\Node_IsClosed_Saber.h" />
-    <ClInclude Include="..\Public\Node_IsTracked_Saber.h" />
+    <ClInclude Include="..\Public\Node_Move_Saber.h" />
     <ClInclude Include="..\Public\Peppermint.h" />
     <ClInclude Include="..\Public\Saber.h" />
     <ClInclude Include="..\Public\Saber_Sword.h" />
@@ -295,8 +295,8 @@
     <ClCompile Include="..\Private\Chai.cpp" />
     <ClCompile Include="..\Private\Node_Action_Saber.cpp" />
     <ClCompile Include="..\Private\Node_IsAttack_Saber.cpp" />
-    <ClCompile Include="..\Private\Node_IsDamaged_Saber.cpp" />
-    <ClCompile Include="..\Private\Node_IsTracked_Saber.cpp" />
+    <ClCompile Include="..\Private\Node_Damaged_Saber.cpp" />
+    <ClCompile Include="..\Private\Node_Move_Saber.cpp" />
     <ClCompile Include="..\Private\Peppermint.cpp" />
     <ClCompile Include="..\Private\Saber.cpp" />
     <ClCompile Include="..\Private\Saber_Sword.cpp" />

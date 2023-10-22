@@ -21,6 +21,9 @@ public:
 	HRESULT Add_ChildNode(CNode* pChildNode) override { return E_FAIL; }
 	virtual HRESULT Reset_Node() override;
 
+protected:
+	virtual const _bool Check_Condition(const _float& fTimeDelta) { return TRUE; }
+
 public:
 	virtual void Free();
 };
