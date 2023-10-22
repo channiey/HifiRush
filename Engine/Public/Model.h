@@ -113,7 +113,7 @@ public:
 	const _uint				Get_AnimationCount() const { return (_uint)m_Animations.size(); }
 	const KEYFRAME_DESC		Get_CurAnimation() const { return m_TweenDesc.cur; }
 	const _uint				Get_CurAnimationIndex() const { return m_TweenDesc.cur.iAnimIndex; }
-	const TWEEN_DESC		Get_TweenDesc() const { return m_TweenDesc; }
+	const TWEEN_DESC&		Get_TweenDesc() const { return m_TweenDesc; }
 
 	_matrix					Get_PivotMatrix() { return XMLoadFloat4x4(&m_PivotMatrix); }
 	const TYPE&				Get_Type() const { return m_eModelType; }
@@ -133,6 +133,7 @@ public:
 	const _bool&			Is_Finish_Animation() { return m_bFinishAnimation; }
 	const _bool				Is_Tween();
 	const _bool				Is_Contain_InTween(const _uint& iAnimIndex);
+	const _bool				Is_Playing_Animation(const _uint& iAnimIndex);
 
 private: 
     HRESULT					Read_BoneData(const string& strPath);

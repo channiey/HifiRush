@@ -1,5 +1,6 @@
 #include "..\Default\stdafx.h"
 
+#include "GameInstance.h"
 #include "Node_Action_Saber.h"
 
 
@@ -22,6 +23,14 @@ HRESULT CNode_Action_Saber::Initialize_Node(CBlackboard* pBlackboard)
 		return E_FAIL;
 
 	return S_OK;
+}
+
+const _bool CNode_Action_Saber::Is_Playing_Animation()
+{
+	/* 현재 애니메이션으로 재생중이거나, 다음 애니메이션에 예약 되어있을 경우 TRUE */
+
+	return m_pBlackboard_Saber->m_pSaber->Get_Model()->Is_Playing_Animation(m_eCurAnim);
+
 }
 
 void CNode_Action_Saber::Free()

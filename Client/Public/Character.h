@@ -57,6 +57,8 @@ public:
 
 		_float	fNockBackPower = 100.f;
 
+		_float	fDashPower = 100.f;
+
 	}PHYSICS_DESC;
 
 	typedef struct tagStatDesc

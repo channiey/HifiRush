@@ -24,7 +24,6 @@ const NODE_STATE CNode_Selector::Evaluate(const _float& fTimeDelta)
 		return NODE_STATE::FAILURE;
 
 	/* 단 하나의 자식노드라도 SUCCESS 혹은 RUNNING을 반환할 때까지 실행한다. */
-	/* ex 세 개 자식 노드중 하나라도 성공 했다면 다음 브랜치로 넘어간다.*/
 	for (auto iter : m_ChildNodes)
 	{
 		if (nullptr == iter) 

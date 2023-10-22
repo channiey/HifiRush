@@ -21,7 +21,12 @@ public:
 	HRESULT Add_ChildNode(CNode* pChildNode) override { return E_FAIL; }
 
 protected:
+	const _bool Is_Playing_Animation();
+
+protected:
 	CBlackboard_Saber* m_pBlackboard_Saber = { nullptr };
+
+	ANIM_SA				m_eCurAnim = ANIM_SA::TYPEEND;
 
 public:
 	virtual void Free();

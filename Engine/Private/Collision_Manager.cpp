@@ -74,7 +74,8 @@ void CCollision_Manager::Check_Collision_Layer(const wstring& strLayerTag1, cons
 				break;
 			}
 
-			if (nullptr == pCollider1 || nullptr == pCollider2 || pCollider1 == pCollider2) continue;
+			if (nullptr == pCollider1 || nullptr == pCollider2 || pCollider1 == pCollider2
+				|| !pCollider1->Is_Active() || !pCollider2->Is_Active()) continue;
 
 			/* 충돌 정보 세팅 */
 			Set_Info(iter, pCollider1, pCollider2);

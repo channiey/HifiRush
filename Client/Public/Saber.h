@@ -109,6 +109,8 @@ enum ANIM_SA
 	WALK_RIFHT_01,
 	WALK_RIGHT_BACK_00,
 	WALK_RIGHT_FRONT_00,
+
+	TYPEEND
 };
 
 class CSaber final : public CEnemy

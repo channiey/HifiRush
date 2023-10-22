@@ -365,6 +365,20 @@ const _bool CModel::Is_Contain_InTween(const _uint& iAnimIndex)
 	return FALSE;
 }
 
+const _bool CModel::Is_Playing_Animation(const _uint& iAnimIndex)
+{
+	/* 현재 애니메이션으로 재생중이거나, 다음 애니메이션으로 예약 되어있을 경우 TRUE */
+
+	if (m_TweenDesc.cur.iAnimIndex != iAnimIndex && m_TweenDesc.next.iAnimIndex == iAnimIndex)
+		return TRUE;
+	else if (m_TweenDesc.cur.iAnimIndex == iAnimIndex && m_TweenDesc.next.iAnimIndex == iAnimIndex)
+		return TRUE;
+	else if (m_TweenDesc.cur.iAnimIndex == iAnimIndex && !Is_TwoThirds_Animation())
+		return TRUE;
+
+	return FALSE;
+}
+
 const _bool CModel::Is_Half_Animation()
 {
 	CAnimation* pCurAnim = Get_Animation(m_TweenDesc.cur.iAnimIndex);

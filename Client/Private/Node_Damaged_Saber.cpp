@@ -3,7 +3,6 @@
 #include "GameInstance.h"
 #include "Node_Damaged_Saber.h"
 
-
 CNode_Damaged_Saber::CNode_Damaged_Saber()
 {
 }
@@ -19,12 +18,9 @@ HRESULT CNode_Damaged_Saber::Initialize_Node(CBlackboard* pBlackboard)
 
 	return S_OK;
 }
-
-static int iDamaged = 0;
-
 const NODE_STATE CNode_Damaged_Saber::Evaluate(const _float& fTimeDelta)
 {
-	if (nullptr == m_pBlackboard_Saber->m_pSaber || nullptr == m_pBlackboard_Saber->m_pSaber->m_tFightDesc.pAttacker)
+	if (nullptr == m_pBlackboard_Saber->m_pSaber->m_tFightDesc.pAttacker)
 		return NODE_STATE::FAILURE;
 
 	if (Check_Condition(fTimeDelta))
@@ -33,8 +29,19 @@ const NODE_STATE CNode_Damaged_Saber::Evaluate(const _float& fTimeDelta)
 		return NODE_STATE::SUCCESS;
 	}
 	else
-		return NODE_STATE::FAILURE;
+	{
+		if (Is_Playing_Animation())
+		{
+			return NODE_STATE::RUNNING;
+		}
+		else
+		{
+			m_pBlackboard_Saber->m_pSaber->m_tFightDesc.pAttacker = nullptr;
+			return NODE_STATE::FAILURE;
+		}
+	}
 }
+
 
 const _bool CNode_Damaged_Saber::Check_Condition(const _float& fTimeDelta)
 {
@@ -46,7 +53,7 @@ const _bool CNode_Damaged_Saber::Check_Condition(const _float& fTimeDelta)
 
 void CNode_Damaged_Saber::Damaged()
 {
-	/* 회전 및 넉백 */
+	/* 룩 변경 */
 	{
 		Vec4 vAttackerDirInverse = m_pBlackboard_Saber->m_pSaber->m_tFightDesc.pAttacker->Get_Transform()->Get_Backward();
 
@@ -58,17 +65,17 @@ void CNode_Damaged_Saber::Damaged()
 		m_pBlackboard_Saber->m_pSaber->m_tStatDesc.fCurHp -= m_pBlackboard_Saber->m_pSaber->m_tFightDesc.pAttacker->Get_StatDesc().fAd;
 
 		/* 죽었다면 */
-		if (0 <= m_pBlackboard_Saber->m_pSaber->m_tStatDesc.fCurHp)
-		{
-			m_pBlackboard_Saber->m_pSaber->m_tStatDesc.fCurHp = 0.f;
-			m_pBlackboard_Saber->m_pSaber->m_tStatDesc.bDead = TRUE;
+		//if (0 >= m_pBlackboard_Saber->m_pSaber->m_tStatDesc.fCurHp)
+		//{
+		//	m_pBlackboard_Saber->m_pSaber->m_tStatDesc.fCurHp = 0.f;
+		//	m_pBlackboard_Saber->m_pSaber->m_tStatDesc.bDead = TRUE;
 
-			/* TODO:: 애니메이션 재생 후 고정 필요 */
-		}
-		else
+		//	/* TODO:: 애니메이션 재생 후 고정 필요 */
+		//}
+		//else
 		{
-			cout << "DAMAGED\n";
-			m_pBlackboard_Saber->m_pSaber->Get_Model()->Set_Animation(ANIM_SA::DMG_05, DF_PL_TIME, DF_TW_TIME);
+			m_eCurAnim = ANIM_SA::DMG_05;
+			m_pBlackboard_Saber->m_pSaber->Get_Model()->Set_Animation(m_eCurAnim, DF_PL_TIME, DF_TW_TIME);
 		}
 	}
 

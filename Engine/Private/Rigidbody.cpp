@@ -42,7 +42,7 @@ HRESULT CRigidbody::Initialize(void* pArg)
 
 void CRigidbody::Tick(const _float& fTimeDelta)
 {
-	if (m_eType == RIGIDBODY_TYPE::STATIC || Check_Sleep())
+	if (Check_Sleep() || m_eType == RIGIDBODY_TYPE::STATIC)
 		return;
 
 	m_bKinematic ? Update_Kinematic(fTimeDelta) : Update_Kinetic(fTimeDelta);
