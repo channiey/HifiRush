@@ -24,15 +24,29 @@ const NODE_STATE CNode_Sequence::Evaluate(const _float& fTimeDelta)
 		return NODE_STATE::FAILURE;
 
 	/* 자식노드의 실행 결과가 성공일 경우, 다음 자식노드를 실행한다. 실패나 러닝일 경우 바로 반환 */
-	for (auto iter : m_ChildNodes)
+	
+	list<CNode*>::iterator iter 
+		= (m_ChildNodes.end() != m_iterRunning) ? m_iterRunning : m_ChildNodes.begin();
+
+	for (; iter != m_ChildNodes.end(); iter++)
 	{
-		if (nullptr == iter) 
+		if (nullptr == *iter)
 			continue;
 
-		m_eState = iter->Evaluate(fTimeDelta);
+		m_eState = (*iter)->Evaluate(fTimeDelta);
 
-		if (NODE_STATE::SUCCESS != m_eState)
+		/* 실행 결과가 running이라면 다음 업데이트때 이 노드부터 시작*/
+		if (NODE_STATE::RUNNING == m_eState) 
+		{
+			m_iterRunning = iter;
 			return m_eState;
+		}
+
+		if (NODE_STATE::FAILURE != m_eState)
+		{
+			m_iterRunning = m_ChildNodes.end();
+			return m_eState;
+		}
 	}
 
 	/* 모든 자식 노드가 성공했다면 시퀀스도 성공한다.*/

@@ -10,8 +10,7 @@
 #include "Blackboard_Saber.h"
 #include "Node_Damaged_Saber.h"
 #include "Node_Move_Saber.h"
-#include "Node_IsClosed_Saber.h"
-#include "Node_IsAttack_Saber.h"
+#include "Node_Attack_Saber.h"
 
 CSaber::CSaber(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CEnemy(pDevice, pContext)
@@ -170,25 +169,17 @@ HRESULT CSaber::Ready_BehavoiurTree()
 			return E_FAIL;
 	}
 
-	///* 01-01-01 Colsed */
-	//pNode = CNode_IsClosed_Saber::Create(pBlackboard);
-	//{
-	//	if (nullptr == pNode)
-	//		return E_FAIL;
+	/* 01-01-01 Attack */
+	/*pNode = CNode_Attack_Saber::Create(pBlackboard);
+	{
+		if (nullptr == pNode)
+			return E_FAIL;
 
-	//	if (FAILED(pSequenceNode->Add_ChildNode(pNode)))
-	//		return E_FAIL;
-	//}
+		if (FAILED(pSequenceNode->Add_ChildNode(pNode)))
+			return E_FAIL;
+	}*/
 
-	///* 01-01-02 Attack */
-	//pNode = CNode_IsAttack_Saber::Create(pBlackboard);
-	//{
-	//	if (nullptr == pNode)
-	//		return E_FAIL;
-
-	//	if (FAILED(pSequenceNode->Add_ChildNode(pNode)))
-	//		return E_FAIL;
-	//}
+	
 	
 	return S_OK;
 }

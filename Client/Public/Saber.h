@@ -153,7 +153,6 @@ public:
 private:
 	friend class CNode_Damaged_Saber;
 	friend class CNode_Move_Saber;
-	friend class CNode_IsClosed_Saber;
-	friend class CNode_IsAttack_Saber;
+	friend class CNode_Attack_Saber;
 };
 END

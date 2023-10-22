@@ -20,6 +20,9 @@ public:
 	HRESULT Add_ChildNode(CNode* pChildNode) override;
 	virtual HRESULT Reset_Node() override;
 
+private:
+	list<CNode*>::iterator m_iterRunning = m_ChildNodes.end();
+
 public:
 	static CNode_Sequence* Create();
 	virtual void Free();
