@@ -58,14 +58,14 @@ const wstring& CState_Chai_Idle::Check_Transition()
 
 	if (Input::Move())
 	{
-		if (m_pChai->m_tMoveDesc.bGround) 
+		if (m_pChai->m_tPhysicsDesc.bGround) 
 		{
 			return StateNames[STATE_RUN];
 		}
 	}
 	else if (Input::Shift())
 	{
-		if (!m_pChai->m_tMoveDesc.bDash)
+		if (!m_pChai->m_tPhysicsDesc.bDash)
 		{
 			return StateNames[STATE_DASH];
 		}

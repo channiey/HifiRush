@@ -81,6 +81,11 @@ CCamera* CGameObject::Get_Camera()
 	return dynamic_cast<CCamera*>(Get_Component(ComponentNames[COM_CAMERA]));
 }
 
+CRigidbody* CGameObject::Get_Rigidbody()
+{
+	return dynamic_cast<CRigidbody*>(Get_Component(ComponentNames[COM_RIGIDBODY]));
+}
+
 CComponent* const CGameObject::Get_Component(const _uint& iIndex)
 {
 	if(m_Components.size() <= iIndex)

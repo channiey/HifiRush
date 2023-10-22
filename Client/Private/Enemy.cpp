@@ -43,6 +43,8 @@ void CEnemy::Tick(_float fTimeDelta)
 	if (FAILED(m_pBehaviourTreeCom->Tick(fTimeDelta)))
 		return;
 
+	m_pRigidbodyCom->Tick(fTimeDelta);
+
 	__super::Tick(fTimeDelta);
 }
 
@@ -107,6 +109,12 @@ HRESULT CEnemy::Ready_Components()
 		ComponentNames[COM_BEHAVIOURTREE], (CComponent**)&m_pBehaviourTreeCom)))
 		return E_FAIL;
 
+	/* Com_Rigidbody*/
+	CRigidbody::RIGIDBODY_TYPE eType = CRigidbody::RIGIDBODY_TYPE::DYNAMIC;
+	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Rigidbody"),
+		ComponentNames[COM_RIGIDBODY], (CComponent**)&m_pRigidbodyCom, &eType)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -145,4 +153,5 @@ void CEnemy::Free()
 	__super::Free();
 
 	Safe_Release(m_pBehaviourTreeCom);
+	Safe_Release(m_pRigidbodyCom);
 }

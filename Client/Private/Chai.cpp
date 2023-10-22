@@ -56,6 +56,8 @@ void CChai::Tick(_float fTimeDelta)
 	if (FAILED(m_pStateMachineCom->Tick(fTimeDelta)))
 		return;
 
+	m_pRigidbodyCom->Tick(fTimeDelta);
+
 	__super::Tick(fTimeDelta);
 }
 
@@ -108,6 +110,12 @@ HRESULT CChai::Ready_Components()
 	/* Com_StateMachine */
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_StateMachine"),
 		ComponentNames[COM_STATEMACHINE], (CComponent**)&m_pStateMachineCom)))
+		return E_FAIL;
+
+	/* Com_Rigidbody*/
+	CRigidbody::RIGIDBODY_TYPE eType = CRigidbody::RIGIDBODY_TYPE::DYNAMIC;
+	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Rigidbody"),
+		ComponentNames[COM_RIGIDBODY], (CComponent**)&m_pRigidbodyCom, &eType)))
 		return E_FAIL;
 
 	/* Com_Collider */
@@ -177,10 +185,6 @@ HRESULT CChai::Ready_Chilren()
 			return E_FAIL;
 
 		pChild->Set_Socket(CModel::BONE_SOCKET_RIGHT); 
-
-		CCollider::COLLIDERDESC		ColliderDesc{ Vec3(0, 0, -75), 30.f };
-
-		pChild->Get_Collider_Sphere()->Set_ColliderDesc(ColliderDesc);
 		pChild->Set_IndexAsChild(CHILD_TYPE::CH_WEAPON_RIGHT);
 	}
 	return S_OK;
@@ -193,6 +197,13 @@ HRESULT CChai::Bind_ShaderResources()
 
 void CChai::OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild)
 {
+	CGameObject* pGameObject = pCollider->Get_Owner();
+	
+	if (iIndexAsChild == CH_WEAPON_RIGHT)
+	{
+		if (LayerNames[LAYER_ENEMY] == pGameObject->Get_LayerTag())
+			KnockBack(pGameObject);
+	}
 }
 
 void CChai::OnCollision_Stay(CCollider* pCollider, const _int& iIndexAsChild)
@@ -234,4 +245,5 @@ void CChai::Free()
 	__super::Free();
 
 	Safe_Release(m_pStateMachineCom);
+	Safe_Release(m_pRigidbodyCom);
 }

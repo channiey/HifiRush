@@ -19,7 +19,7 @@ HRESULT CState_Chai_Dash::Initialize(CStateMachine* pStateMachine, const wstring
 
 HRESULT CState_Chai_Dash::Enter()
 {
-	m_pChai->m_tMoveDesc.bDash = TRUE;
+	m_pChai->m_tPhysicsDesc.bDash = TRUE;
 
 	m_pChai->Get_Model()->Set_Animation(ANIM_CH::DASH_FRONT, 1.3f, DF_TW_TIME);
 
@@ -38,7 +38,7 @@ const wstring& CState_Chai_Dash::LateTick()
 
 void CState_Chai_Dash::Exit()
 {
-	m_pChai->m_tMoveDesc.bDash = FALSE;
+	m_pChai->m_tPhysicsDesc.bDash = FALSE;
 }
 
 const wstring& CState_Chai_Dash::Check_Transition()

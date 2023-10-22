@@ -14,7 +14,7 @@ CRigidbody::CRigidbody(const CRigidbody& rhs)
 	, m_bSleep(rhs.m_bSleep)
 	, m_bUseGravity(rhs.m_bUseGravity)
 	, m_bKinematic(rhs.m_bKinematic)
-	, m_fDrag(rhs.m_fDrag)
+	, m_fFriction(rhs.m_fFriction)
 	, m_fMass (rhs.m_fMass)
 	, m_fGravitionalConstant(rhs.m_fGravitionalConstant)
 	, m_byConstraints(rhs.m_byConstraints)
@@ -32,19 +32,20 @@ HRESULT CRigidbody::Initialize_Prototype()
 
 HRESULT CRigidbody::Initialize(void* pArg)
 {
+	if (nullptr == pArg)
+		return E_FAIL;
+
+	memmove(&m_eType, pArg, sizeof(RIGIDBODY_TYPE));
+
 	return S_OK;
 }
 
 void CRigidbody::Tick(const _float& fTimeDelta)
 {
-	if (Check_Sleep()) 
+	if (m_eType == RIGIDBODY_TYPE::STATIC || Check_Sleep())
 		return;
 
 	m_bKinematic ? Update_Kinematic(fTimeDelta) : Update_Kinetic(fTimeDelta);
-}
-
-void CRigidbody::LateTick(const _float& fTimeDelta)
-{
 }
 
 void CRigidbody::Add_Force(const Vec3& vForce, const FORCE_MODE& eMode)
@@ -104,9 +105,9 @@ void CRigidbody::Update_Kinetic(const _float& fTimeDelta)
 
 	m_vLinearVelocity += m_vLinearAcceleration * fTimeDelta;
 
-	const _float fLinearResistance = m_fDrag; // + m_fMaterialDrag;
+	const _float fLinearResistance = m_fFriction; 
 
-	(fLinearResistance < 1.f) ? (m_vLinearVelocity = m_vLinearVelocity * (1.f - fLinearResistance)) : (m_vLinearVelocity = Vec3::Zero);
+	m_vLinearVelocity =  (fLinearResistance < 1.f) ? (m_vLinearVelocity * (1.f - fLinearResistance)) : (m_vLinearVelocity = Vec3::Zero);
 
 	if (m_byConstraints)
 	{
@@ -114,6 +115,8 @@ void CRigidbody::Update_Kinetic(const _float& fTimeDelta)
 		while (i < 3)
 			(m_byConstraints & 1 << i) ? (*(((_float*)&m_vLinearVelocity) + i++) = 0) : i++;
 	}
+
+	Update_Transform(fTimeDelta);
 }
 
 void CRigidbody::Update_Kinematic(const _float& fTimeDelta)

@@ -42,14 +42,14 @@ public:
 	void	Set_Scale(const Vec3& vScale);
 
 	void	Set_Rotation(const Vec3& vEulers, const _bool& bWorld = FALSE); /* 항등 행렬을 기준으로 회전값을 세팅한다. (누적X) */
-	void	Set_Rotation(const Vec4& vEulers, const _bool& bWorld = FALSE) { Set_Rotation(vEulers.ToVec3(), bWorld); }
+	void	Set_Rotation(const Vec4& vEulers, const _bool& bWorld = FALSE) { Set_Rotation(vEulers.xyz(), bWorld); }
 	void	Set_Rotation(const Vec3& vAxis, const _float fRad);
 	void	Rotate(const Vec3& vEulers, const _bool& bWorld = FALSE); /* 현재 행렬을 기준으로 회전 값을 세팅한다 (누적O) */
-	void	Rotate(const Vec4& vEulers, const _bool& bWorld = FALSE) { Rotate(vEulers.ToVec3(), bWorld); }
+	void	Rotate(const Vec4& vEulers, const _bool& bWorld = FALSE) { Rotate(vEulers.xyz(), bWorld); }
 	void	Rotate(const Vec4& vAxis, const _float& fRad);
 
 	void	Translate(const Vec3& vTranslation);
-	void	Translate(const Vec4& vTranslation) { Translate(vTranslation.ToVec3()); }
+	void	Translate(const Vec4& vTranslation) { Translate(vTranslation.xyz()); }
 
 	void	Set_Position(Vec4 vPos) { memcpy(m_WorldMatrix.m[STATE_POSITION], &vPos, sizeof(Vec4)); }
 	void	Set_Position(Vec3 vPos) { memcpy(m_WorldMatrix.m[STATE_POSITION], &vPos, sizeof(Vec3)); }

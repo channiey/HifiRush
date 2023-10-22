@@ -452,7 +452,7 @@ namespace DirectX
             static const Vector4 UnitW;
 
             /* User */
-            Vector3 ToVec3() const  noexcept { return Vector3(x, y, z); }
+            Vector3 xyz() const  noexcept { return Vector3(x, y, z); }
 
             Vector4 Normalized() noexcept;
 

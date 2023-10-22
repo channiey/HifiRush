@@ -16,7 +16,7 @@ CCharacter::CCharacter(const CCharacter& rhs)
 	: CGameObject(rhs)
 	, m_tStatDesc(rhs.m_tStatDesc)
 	, m_tFightDesc(rhs.m_tFightDesc)
-	, m_tMoveDesc(rhs.m_tMoveDesc)
+	, m_tPhysicsDesc(rhs.m_tPhysicsDesc)
 {
 }
 
@@ -115,6 +115,16 @@ HRESULT CCharacter::Update_RootMotion()
 	m_pTransformCom->Set_RootPos(m_pModelCom->Get_AnimBonePos(CModel::BONE_ROOT));
 
 	return S_OK;
+}
+
+void CCharacter::KnockBack(CGameObject* pGameObject)
+{
+	CRigidbody* pRigidbody = pGameObject->Get_Rigidbody();
+
+	if (nullptr == pRigidbody) 
+		return;
+
+	pRigidbody->Add_Force(m_pTransformCom->Get_Forward().ZeroY().xyz() * m_tPhysicsDesc.fNockBackPower, CRigidbody::FORCE_MODE::IMPULSE);
 }
 
 void CCharacter::Free()

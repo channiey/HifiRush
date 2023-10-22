@@ -3,6 +3,7 @@
 
 BEGIN(Engine)
 class CStateMachine;
+class CRigidbody;
 END
 
 BEGIN(Client)
@@ -127,6 +128,7 @@ private:
 
 private: 
 	CStateMachine*		m_pStateMachineCom = { nullptr };
+	CRigidbody*			m_pRigidbodyCom = { nullptr };
 
 public:
 	static CChai*		Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

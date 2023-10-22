@@ -44,7 +44,7 @@ void CCollider_Sphere::Update(Matrix TransformMatrix)
 
 	//CTransform* pTransformCom = Get_Parent()->Get_Transform();
 
-	//m_pSphere->Center = m_ColliderDesc.vCenter + pTransformCom->Get_Position().ToVec3();
+	//m_pSphere->Center = m_ColliderDesc.vCenter + pTransformCom->Get_Position().xyz();
 
 }
 

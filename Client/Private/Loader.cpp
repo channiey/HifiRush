@@ -116,6 +116,26 @@ HRESULT CLoader::Load_Prototype()
 			CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Prototype/Terrain/Height1.bmp")))))
 			return E_FAIL;
 
+		/* For.Prototype_Component_Camera */
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Camera"),
+			CCamera::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_Component_Rigidbody */
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Rigidbody"),
+			CRigidbody::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+		
+		/* For.Prototype_Component_StateMachine */
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_StateMachine"),
+			CStateMachine::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_Component_BehaviourTree */
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_BehaviourTree"),
+			CBehaviourTree::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 		/* For.Prototype_Component_Collider_AABB */
 		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Collider_AABB"),
 			CCollider_AABB::Create(m_pDevice, m_pContext, CCollider::AABB))))
@@ -130,22 +150,6 @@ HRESULT CLoader::Load_Prototype()
 		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
 			CCollider_Sphere::Create(m_pDevice, m_pContext, CCollider::SPHERE))))
 			return E_FAIL;
-
-		/* For.Prototype_Component_Camera */
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Camera"),
-			CCamera::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-		
-		/* For.Prototype_Component_StateMachine */
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_StateMachine"),
-			CStateMachine::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-
-		/* For.Prototype_Component_BehaviourTree */
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_BehaviourTree"),
-			CBehaviourTree::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-
 	}
 
 	/* For.Texture */

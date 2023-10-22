@@ -3,6 +3,7 @@
 
 BEGIN(Engine)
 class CBehaviourTree;
+class CRigidbody;
 END
 
 BEGIN(Client)
@@ -39,6 +40,7 @@ protected:
 
 protected:
 	CBehaviourTree*		m_pBehaviourTreeCom = { nullptr };
+	CRigidbody*			m_pRigidbodyCom = { nullptr };
 
 public:
 	virtual CEnemy*		Clone(void* pArg) PURE;

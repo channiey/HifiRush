@@ -54,7 +54,7 @@ const wstring& CState_Chai_Run::Check_Transition()
 	
 	if (Input::Shift())
 	{
-		if (!m_pChai->m_tMoveDesc.bDash)
+		if (!m_pChai->m_tPhysicsDesc.bDash)
 		{
 			return StateNames[STATE_DASH];
 		}
@@ -65,14 +65,14 @@ const wstring& CState_Chai_Run::Check_Transition()
 	}
 	else if (Input::Parry())
 	{
-		if (m_pChai->m_tMoveDesc.bGround) 
+		if (m_pChai->m_tPhysicsDesc.bGround) 
 		{
 			return StateNames[STATE_PARRY];
 		}
 	}
 	else if (Input::Move())
 	{
-		if (m_pChai->m_tMoveDesc.bGround)
+		if (m_pChai->m_tPhysicsDesc.bGround)
 		{
 			return StateNames[STATE_RUN];
 		}
@@ -98,7 +98,7 @@ void CState_Chai_Run::Move(const _float& fTimeDelta)
 			vRotDir = Vec4::Lerp(vLook, vDir, fTimeDelta * 20.f);
 
 		pTranform->Set_Look(vRotDir);
-		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
+		pTranform->Translate(vDir * m_pChai->m_tPhysicsDesc.fMaxForwardSpeed * fTimeDelta);
 	}
 	else if (Input::Down() && !Input::Left() && !Input::Right()) // Down
 	{
@@ -110,7 +110,7 @@ void CState_Chai_Run::Move(const _float& fTimeDelta)
 			vRotDir = Vec4::Lerp(vLook, vDir, fTimeDelta * 20.f);
 
 		pTranform->Set_Look(vRotDir);
-		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
+		pTranform->Translate(vDir * m_pChai->m_tPhysicsDesc.fMaxForwardSpeed * fTimeDelta);
 	}
 	else if (Input::Left() && !Input::Up() && !Input::Down()) // Left 
 	{
@@ -122,7 +122,7 @@ void CState_Chai_Run::Move(const _float& fTimeDelta)
 			vRotDir = Vec4::Lerp(vLook, vDir, fTimeDelta * 20.f);
 
 		pTranform->Set_Look(vRotDir);
-		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
+		pTranform->Translate(vDir * m_pChai->m_tPhysicsDesc.fMaxForwardSpeed * fTimeDelta);
 	}
 	else if (Input::Right() && !Input::Up() && !Input::Down()) // Right 
 	{
@@ -134,7 +134,7 @@ void CState_Chai_Run::Move(const _float& fTimeDelta)
 			vRotDir = Vec4::Lerp(vLook, vDir, fTimeDelta * 20.f);
 
 		pTranform->Set_Look(vRotDir);
-		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
+		pTranform->Translate(vDir * m_pChai->m_tPhysicsDesc.fMaxForwardSpeed * fTimeDelta);
 	}
 	else if (Input::Up() && Input::Left() && !Input::Right()) // Up + Left
 	{
@@ -144,7 +144,7 @@ void CState_Chai_Run::Move(const _float& fTimeDelta)
 		vDir.Normalize();
 		vRotDir = Vec4::Lerp(vLook, vDir, fTimeDelta * 20.f);
 		pTranform->Set_Look(vRotDir);
-		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
+		pTranform->Translate(vDir * m_pChai->m_tPhysicsDesc.fMaxForwardSpeed * fTimeDelta);
 	}
 	else if (Input::Up() && !Input::Left() && Input::Right()) // Up + Right
 	{
@@ -155,7 +155,7 @@ void CState_Chai_Run::Move(const _float& fTimeDelta)
 
 		vRotDir = Vec4::Lerp(vLook, vDir, fTimeDelta * 20.f);
 		pTranform->Set_Look(vRotDir);
-		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
+		pTranform->Translate(vDir * m_pChai->m_tPhysicsDesc.fMaxForwardSpeed * fTimeDelta);
 	}
 	else if (Input::Down() && Input::Left() && !Input::Right()) // Down + Left
 	{
@@ -165,7 +165,7 @@ void CState_Chai_Run::Move(const _float& fTimeDelta)
 		vDir.Normalize();
 		vRotDir = Vec4::Lerp(vLook, vDir, fTimeDelta * 20.f);
 		pTranform->Set_Look(vRotDir);
-		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
+		pTranform->Translate(vDir * m_pChai->m_tPhysicsDesc.fMaxForwardSpeed * fTimeDelta);
 	}
 	else if (Input::Down() && !Input::Left() && Input::Right()) // Down + Right
 	{
@@ -175,7 +175,7 @@ void CState_Chai_Run::Move(const _float& fTimeDelta)
 		vDir.Normalize();
 		vRotDir = Vec4::Lerp(vLook, vDir, fTimeDelta * 20.f);
 		pTranform->Set_Look(vRotDir);
-		pTranform->Translate(vDir * m_pChai->m_tMoveDesc.fMaxForwardSpeed * fTimeDelta);
+		pTranform->Translate(vDir * m_pChai->m_tPhysicsDesc.fMaxForwardSpeed * fTimeDelta);
 	}
 
 	if (Vec3::Zero == pTranform->Get_Scale())

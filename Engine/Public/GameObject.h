@@ -53,6 +53,7 @@ public:
 	class CCollider_OBB*		Get_Collider_OBB();
 	class CStateMachine*		Get_StateMachine();
 	class CCamera*				Get_Camera();
+	class CRigidbody*			Get_Rigidbody();
 	
 	class CComponent* const			Get_Component(const _uint& iIndex);
 	class CComponent* const			Get_Component(const wstring& strComponentTag) { return Find_Component(strComponentTag); };

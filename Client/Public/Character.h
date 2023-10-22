@@ -35,7 +35,7 @@ public:
 
 	}FIGHT_DESC;
 
-	typedef struct tagMovementDesc
+	typedef struct tagPhysicsDesc
 	{
 		_float  fMaxForwardSpeed = 10.f;
 		_float  fMinForwardSpeed = 10.f;
@@ -43,7 +43,7 @@ public:
 		_float  fMinTurnSpeed = 10.f;
 		_float  fMaxTurnSpeed = 20.f;
 
-		_float  fGravity = 0.f;
+		_float  fGravity = -9.8f;
 
 		_bool   bGround = TRUE;
 		_bool   bJump = FALSE;
@@ -55,7 +55,9 @@ public:
 
 		_float  fJumpSpeed = 10.f;
 
-	}MOVEMENT_DESC;
+		_float	fNockBackPower = 100.f;
+
+	}PHYSICS_DESC;
 
 	typedef struct tagStatDesc
 	{
@@ -85,7 +87,7 @@ public:
 public:
 	const STAT_DESC&		Get_StatDesc() const { return m_tStatDesc; }
 	const FIGHT_DESC&		Get_FightDesc() const { return m_tFightDesc; }
-	const MOVEMENT_DESC&	Get_MovementDesc() const { return m_tMoveDesc; }
+	const PHYSICS_DESC&		Get_PhysicsDesc() const { return m_tPhysicsDesc; }
 
 protected:
 	HRESULT					Ready_Components();
@@ -98,6 +100,9 @@ protected:
 	HRESULT					Update_RootMotion();
 
 protected:
+	void					KnockBack(CGameObject* pGameObject);
+
+protected:
 	CShader*				m_pShaderCom		= { nullptr };
 	CRenderer*				m_pRendererCom		= { nullptr };
 	CTransform*				m_pTransformCom		= { nullptr };
@@ -108,7 +113,7 @@ protected:
 protected:
 	STAT_DESC				m_tStatDesc;
 	FIGHT_DESC				m_tFightDesc;
-	MOVEMENT_DESC			m_tMoveDesc;
+	PHYSICS_DESC			m_tPhysicsDesc;
 
 public:
 	virtual CCharacter*		Clone(void* pArg)= 0;

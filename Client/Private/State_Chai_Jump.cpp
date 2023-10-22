@@ -19,8 +19,8 @@ HRESULT CState_Chai_Jump::Initialize(CStateMachine* pStateMachine, const wstring
 
 HRESULT CState_Chai_Jump::Enter()
 {
-	m_pChai->m_tMoveDesc.bGround = FALSE;
-	m_pChai->m_tMoveDesc.bJump = TRUE;
+	m_pChai->m_tPhysicsDesc.bGround = FALSE;
+	m_pChai->m_tPhysicsDesc.bJump = TRUE;
 
 	m_pChai->Get_Model()->Set_Animation(ANIM_CH::JUMP, DF_PL_TIME, DF_TW_TIME);
 
@@ -39,7 +39,7 @@ const wstring& CState_Chai_Jump::LateTick()
 
 void CState_Chai_Jump::Exit()
 {
-	m_pChai->m_tMoveDesc.bJump = FALSE;
+	m_pChai->m_tPhysicsDesc.bJump = FALSE;
 }
 
 const wstring& CState_Chai_Jump::Check_Transition()

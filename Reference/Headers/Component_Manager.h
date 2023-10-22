@@ -29,6 +29,7 @@
 #include "Node_Wait.h"
 
 #include "Camera.h"
+#include "Rigidbody.h"
 
 #include "Navigation.h"
 

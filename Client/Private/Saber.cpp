@@ -203,10 +203,6 @@ HRESULT CSaber::Ready_Chilren()
 			return E_FAIL;
 
 		pWeapon->Set_Socket(CModel::BONE_SOCKET_RIGHT);
-
-		CCollider::COLLIDERDESC		ColliderDesc{ Vec3(95, 0, 0), 30.f };
-
-		pWeapon->Get_Collider_Sphere()->Set_ColliderDesc(ColliderDesc);
 		pWeapon->Set_IndexAsChild(CHILD_TYPE::SA_WEAPON_RIGHT);
 	}
 

@@ -188,7 +188,7 @@ void CTransform::Set_Rotation(const Vec3& vEulers, const _bool& bWorld)
 
 	// 현재의 스케일과 위치 정보를 추출합니다.
 	Vec3 scale = Get_Scale();
-	Vec3 position = Get_Position().ToVec3();
+	Vec3 position = Get_Position().xyz();
 
 	// 쿼터니언을 회전 행렬로 변환합니다.
 	Matrix matRotation = Matrix::CreateFromQuaternion(finalQuat);
@@ -344,7 +344,7 @@ const Matrix CTransform::Get_WorldMat()
 
 const Matrix CTransform::Get_FinalMat()
 {
-	Vec3	vfinalPos = m_vRootPos.ToVec3() + Vec4(m_WorldMatrix.m[3]).ToVec3();
+	Vec3	vfinalPos = m_vRootPos.xyz() + Vec4(m_WorldMatrix.m[3]).xyz();
 
 	Matrix	matFinal = m_WorldMatrix;
 
