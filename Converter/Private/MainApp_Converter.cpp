@@ -16,16 +16,16 @@ HRESULT CMainApp_Converter::Start_Convert()
 		if (FAILED(Convert_Character()))
 			return E_FAIL;
 
-		//if (FAILED(Convert_Env_Static()))
-		//	return E_FAIL;
+		if (FAILED(Convert_Env_Static()))
+			return E_FAIL;
 
-		//if (FAILED(Convert_Env_Anim()))
-		//	return E_FAIL;
+		if (FAILED(Convert_Env_Anim()))
+			return E_FAIL;
 
+		if (FAILED(Convert_Weapon()))
+			return E_FAIL;
+		
 		//if (FAILED(Convert_SelectiveModel()))
-		//	return E_FAIL;
-
-		//if (FAILED(Convert_Weapon()))
 		//	return E_FAIL;
 
 	}

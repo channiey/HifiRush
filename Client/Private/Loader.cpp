@@ -22,6 +22,7 @@
 #include "BackGround.h"
 
 /* Env */
+#include "SkyBox.h"
 #include "StaticDummy.h"
 #include "Terrain.h"
 
@@ -116,6 +117,11 @@ HRESULT CLoader::Load_Prototype()
 			CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Prototype/Terrain/Height1.bmp")))))
 			return E_FAIL;
 
+		/* For.Prototype_Component_VIBuffer_Cube */
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"),
+			CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 		/* For.Prototype_Component_Camera */
 		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Camera"),
 			CCamera::Create(m_pDevice, m_pContext))))
@@ -169,34 +175,34 @@ HRESULT CLoader::Load_Prototype()
 		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Texture_Terrain_Mask"),
 			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Prototype/Terrain/Mask.bmp"), 1))))
 			return E_FAIL;
+
+		/* For.Prototype_Component_Texture_Sky */
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Texture_Sky"),
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Prototype/SkyBox/Sky_%d.dds"), 4))))
+			return E_FAIL;
 	}
 
 	/* For.Shader */
 	m_strLoading = TEXT("Loding... : Shader");
 	{
 		/* For.Prototype_Component_Shader_VtxNorTex*/
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Shader_VtxNorTex"),
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, ShaderNames[SHADER_NORMAL],
 			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl"), VTXNORTEX::Elements, VTXNORTEX::iNumElements))))
 			return E_FAIL;
 
-		/* For.Prototype_Component_Shader_Model */
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Shader_Model"),
-			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxModel.hlsl"), VTXMODEL_DECLARATION::Elements, VTXMODEL_DECLARATION::iNumElements))))
-			return E_FAIL;
-
-		/* For.Prototype_Component_Shader_AnimModel */
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Shader_AnimModel"),
-			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxAnimModel.hlsl"), VTXANIMMODEL_DECLARATION::Elements, VTXANIMMODEL_DECLARATION::iNumElements))))
-			return E_FAIL;
-
 		/* For.Prototype_Component_Shader_VtxMesh */
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Shader_VtxMesh"),
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, ShaderNames[SHADER_STATIC],
 			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxMesh.hlsl"), VTXMESH::Elements, VTXMESH::iNumElements))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Shader_VTF */
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Shader_VTF"),
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, ShaderNames[SHADER_VTF],
 			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VTF.hlsl"), VTXANIMMESH::Elements, VTXANIMMESH::iNumElements))))
+			return E_FAIL;
+
+		/* For.Prototype_Component_Shader_VtxCube */
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, ShaderNames[SHADER_CUBE],
+			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxCube.hlsl"), VTXCUBE::Elements, VTXCUBE::iNumElements))))
 			return E_FAIL;
 	}
 
@@ -335,6 +341,13 @@ HRESULT CLoader::Load_Prototype()
 		if (FAILED(pGameInstance->Add_Prototype(TEXT("Env_Static_Terrain"),
 			CTerrain::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
+
+		if (FAILED(pGameInstance->Add_Prototype(TEXT("Env_SkyBox"),
+			CSkyBox::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+
+
 
 		///* For.Prototype_GameObject_Proto_Static */
 		if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_Static_Bldg_Inside_Battle_A"), CStaticDummy::Create(m_pDevice, m_pContext))))

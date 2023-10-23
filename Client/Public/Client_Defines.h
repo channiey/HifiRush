@@ -55,6 +55,7 @@ namespace Client
 	/* Layer */
 	enum LAYER_ID 
 	{
+		LAYER_ENV_SKYBOX,
 		LAYER_ENV_STATIC,
 		LAYER_ENV_INTERACTALBE,
 		LAYER_PLAYER,
@@ -71,19 +72,34 @@ namespace Client
 	};
 	static const wchar_t* LayerNames[LAYER_END] /* 업데이트 순서에 따른 정렬 */
 	{
-		L"Layer_00_Env_Static",
-		L"Layer_01_Env_Interactable",
-		L"Layer_02_Player",
-		L"Layer_03_Enemy",
-		L"Layer_04_Npc",
-		L"Layer_05_Weapon",
-		L"Layer_06_Projectile",
-		L"Layer_07_Trigger",
-		L"Layer_08_Light",
-		L"Layer_09_Effect",
-		L"Layer_10_Camera",
-		L"Layer_11_Ui",
+		L"Layer_00_Env_SkyBox"
+		L"Layer_01_Env_Static",
+		L"Layer_02_Env_Interactable",
+		L"Layer_03_Player",
+		L"Layer_04_Enemy",
+		L"Layer_05_Npc",
+		L"Layer_06_Weapon",
+		L"Layer_07_Projectile",
+		L"Layer_08_Trigger",
+		L"Layer_09_Light",
+		L"Layer_10_Effect",
+		L"Layer_11_Camera",
+		L"Layer_12_Ui",
 	};
+
+	enum SHADER_ID
+	{
+		SHADER_UI, SHADER_NORMAL, SHADER_STATIC, SHADER_VTF, SHADER_CUBE, SHADER_END
+	};
+	static const wchar_t* ShaderNames[SHADER_END] /* 업데이트 순서에 따른 정렬 */
+	{
+		L"Prototype_Component_Shader_VtxPosTex",
+		L"Prototype_Component_Shader_VtxNorTex",
+		L"Prototype_Component_Shader_VtxMesh",
+		L"Prototype_Component_Shader_VTF",
+		L"Prototype_Component_Shader_VtxCube"
+	};
+
 
 	enum CAMERA_ID { CAM_DEBUG, CAM_FOLLOW, CAM_HILIGHT, CAM_END };
 }

@@ -85,9 +85,6 @@
     <Filter Include="02.GameObjects\03.Character\99.Proto">
       <UniqueIdentifier>{a574bb1d-749c-4fb5-bf19-b9a30b09a18d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\01.Environment\00.Static">
-      <UniqueIdentifier>{e151be76-84ac-4349-93d8-75c7d1b50d66}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\02.Light\00.Directional">
       <UniqueIdentifier>{fd10c28d-7c9b-481f-9e12-de5b00b280bc}</UniqueIdentifier>
     </Filter>
@@ -115,20 +112,8 @@
     <Filter Include="01.Levels\01.Stage\Stage_01">
       <UniqueIdentifier>{8501a2da-fead-442c-a8a6-46c59345adad}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\01.Environment\00.Static\StaticDummy">
-      <UniqueIdentifier>{740c7b71-1c0a-4ebc-9619-28a0fc0626b5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\01.Environment\99.Terrain">
       <UniqueIdentifier>{39cbdfb5-bb6c-40ec-a138-fdd9bc2c1663}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\01.Environment\01.Anim">
-      <UniqueIdentifier>{8fb0483e-5266-43dc-92e3-d568cc733951}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\01.Environment\01.Anim\Trigger">
-      <UniqueIdentifier>{355ae19c-b78b-4b4a-b4e9-5fa4e6cf8f34}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\01.Environment\01.Anim\Moveable">
-      <UniqueIdentifier>{c826dd7b-e31c-4f41-80f9-bfda419f6dd5}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\03.Character\02.NPC">
       <UniqueIdentifier>{400c1cb4-75ac-4a99-bc55-470322a4b2a8}</UniqueIdentifier>
@@ -280,6 +265,24 @@
     <Filter Include="02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\02.Idle">
       <UniqueIdentifier>{277cae15-24c8-4b8f-8338-2fe522ceb6a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\01.Environment\01.Static">
+      <UniqueIdentifier>{e151be76-84ac-4349-93d8-75c7d1b50d66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Environment\01.Static\StaticDummy">
+      <UniqueIdentifier>{740c7b71-1c0a-4ebc-9619-28a0fc0626b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Environment\02.Anim">
+      <UniqueIdentifier>{8fb0483e-5266-43dc-92e3-d568cc733951}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Environment\02.Anim\Trigger">
+      <UniqueIdentifier>{355ae19c-b78b-4b4a-b4e9-5fa4e6cf8f34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Environment\02.Anim\Moveable">
+      <UniqueIdentifier>{c826dd7b-e31c-4f41-80f9-bfda419f6dd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Environment\00.SkyBox">
+      <UniqueIdentifier>{583c4a7b-e367-4cfc-8a6e-f1fd6a21792b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -360,9 +363,6 @@
     <ClInclude Include="..\Public\Camera_Debug.h">
       <Filter>02.GameObjects\00.Camera\00.Debug</Filter>
     </ClInclude>
-    <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp">
-      <Filter>96.ShaderFiles</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\BackGround.h">
       <Filter>02.GameObjects\10.UI\99.Proto</Filter>
     </ClInclude>
@@ -382,7 +382,7 @@
       <Filter>01.Levels\02.Ending</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\StaticDummy.h">
-      <Filter>02.GameObjects\01.Environment\00.Static\StaticDummy</Filter>
+      <Filter>02.GameObjects\01.Environment\01.Static\StaticDummy</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Character.h">
       <Filter>02.GameObjects\03.Character</Filter>
@@ -467,6 +467,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\Node_Idle_Saber.h">
       <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\02.Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SkyBox.h">
+      <Filter>02.GameObjects\01.Environment\00.SkyBox</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -555,7 +558,7 @@
       <Filter>01.Levels\98.Proto</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\StaticDummy.cpp">
-      <Filter>02.GameObjects\01.Environment\00.Static\StaticDummy</Filter>
+      <Filter>02.GameObjects\01.Environment\01.Static\StaticDummy</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Character.cpp">
       <Filter>02.GameObjects\03.Character</Filter>
@@ -641,6 +644,9 @@
     <ClCompile Include="..\Private\Node_Idle_Saber.cpp">
       <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\02.Idle</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\SkyBox.cpp">
+      <Filter>02.GameObjects\01.Environment\00.SkyBox</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -657,19 +663,13 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
       <Filter>96.ShaderFiles</Filter>
     </FxCompile>
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxModel.hlsl">
-      <Filter>96.ShaderFiles</Filter>
-    </FxCompile>
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimModel.hlsl">
-      <Filter>96.ShaderFiles</Filter>
-    </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl">
       <Filter>96.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VTF.hlsl">
       <Filter>96.ShaderFiles</Filter>
     </FxCompile>
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMesh.hlsl">
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl">
       <Filter>96.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

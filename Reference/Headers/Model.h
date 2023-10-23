@@ -123,7 +123,7 @@ public:
 	void					Set_Animation(const _uint& iAnimIndex, const _float& fSpeed, const _float& fTweenDuration);
 	void					Set_AnimationSpeed(const _float& fSpeed);
 	void					Set_BoneIndex(const BONE_TYPE& eType, const _int iIndex);
-
+	void					Set_RootAnimation(const _bool bRootAnim) { m_bRootAnimation = bRootAnim; }
 public:
 	const _bool&			Is_RootMotion() const { return m_bRootAnimation; }
 	const _bool&			Is_Finish_Tween() const {return m_bFinishTween; }

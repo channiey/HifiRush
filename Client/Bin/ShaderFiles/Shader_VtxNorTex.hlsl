@@ -1,3 +1,5 @@
+#include "Engine_Shader_Defines.hlsl"
+
 matrix			g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 texture2D		g_Texture;
 
@@ -15,28 +17,6 @@ vector			g_vMtrlSpecular = vector(1.f, 1.f, 1.f, 1.f);
 texture2D		g_DiffuseTexture[2];
 texture2D		g_MaskTexture;
 
-sampler LinearSampler = sampler_state {
-    Filter = MIN_MAG_MIP_LINEAR;
-    AddressU = wrap;
-    AddressV = wrap;
-};
-
-sampler PointSampler = sampler_state {
-    Filter = MIN_MAG_MIP_POINT;
-    AddressU = wrap;
-    AddressV = wrap;
-};
-
-RasterizerState FillModeWireFrame
-{
-    FillMode = WireFrame;
-
-};
-RasterizerState FillModeSolid
-{
-    FillMode = Solid;
-
-};
 struct VS_IN
 {
 	float3		vPosition : POSITION;
@@ -129,34 +109,19 @@ PS_OUT PS_MAIN(PS_IN In)
 }
 
 
-PS_OUT PS_GRID(PS_IN In)
-{
-    PS_OUT Out = (PS_OUT) 0;
-
-    Out.vColor = vector(1.f, 1.f, 1.f, 0.5f);
-
-    return Out;
-}
-
 technique11 DefaultTechnique
 {
 	pass Terrain
 	{
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		HullShader = NULL;
 		DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN();
-    }
-    pass Grid
-    {
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        HullShader = NULL;
-        DomainShader = NULL;
-        PixelShader = compile ps_5_0 PS_GRID();
-
-        SetRasterizerState(FillModeWireFrame);
     }
 }
 

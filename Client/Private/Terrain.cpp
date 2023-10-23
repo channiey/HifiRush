@@ -47,7 +47,7 @@ HRESULT CTerrain::Render()
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
-	m_pShaderCom->Begin(1);
+	m_pShaderCom->Begin(0);
 
 	m_pVIBufferCom->Render();
 
@@ -62,7 +62,7 @@ HRESULT CTerrain::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Shader */
-	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Shader_VtxNorTex"),
+	if (FAILED(__super::Add_Component(LV_STATIC, ShaderNames[SHADER_NORMAL],
 		TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 

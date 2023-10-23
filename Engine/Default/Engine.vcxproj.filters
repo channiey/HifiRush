@@ -220,8 +220,11 @@
     <Filter Include="01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node\03.Action\00.Wait">
       <UniqueIdentifier>{bbe80efd-77d7-4830-8d9f-85ac26f61a05}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utiltiy\03.Components\Component\12.BehaviourTree\00.BlackBoard %28Not Used, Only Type%29">
+    <Filter Include="01.Utiltiy\03.Components\Component\12.BehaviourTree\00.BlackBoard">
       <UniqueIdentifier>{c6b485d2-db76-4803-be6a-08947c066b8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\97.ShaderFiles">
+      <UniqueIdentifier>{b0d0ede1-d54f-4c69-b2e7-9868be2189c8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -304,7 +307,7 @@
       <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Blackboard.h">
-      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\00.BlackBoard %28Not Used, Only Type%29</Filter>
+      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\00.BlackBoard</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Node_Action.h">
       <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node\03.Action</Filter>
@@ -414,6 +417,9 @@
     <ClInclude Include="..\Public\Rigidbody.h">
       <Filter>01.Utiltiy\03.Components\Component\07.RigidBody</Filter>
     </ClInclude>
+    <ClInclude Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hlsl">
+      <Filter>01.Utiltiy\97.ShaderFiles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -483,7 +489,7 @@
       <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Blackboard.cpp">
-      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\00.BlackBoard %28Not Used, Only Type%29</Filter>
+      <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\00.BlackBoard</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Node.cpp">
       <Filter>01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node</Filter>
@@ -598,5 +604,10 @@
     <None Include="..\Public\SimpleMath.inl">
       <Filter>01.Utiltiy\98.Utils\00.Math</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Cell.hlsl">
+      <Filter>01.Utiltiy\97.ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

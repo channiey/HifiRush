@@ -100,7 +100,7 @@ void CEnemy::Set_State(const OBJ_STATE& eState)
 HRESULT CEnemy::Ready_Components()
 {
 	/* Com_Shader */
-	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Shader_VTF"),
+	if (FAILED(__super::Add_Component(LV_STATIC, ShaderNames[SHADER_VTF],
 		ComponentNames[COM_SHADER], (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 

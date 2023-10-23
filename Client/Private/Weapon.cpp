@@ -117,7 +117,7 @@ HRESULT CWeapon::Ready_Components()
 		return E_FAIL;
 
 	/* For.Com_Shader */
-	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Shader_VtxMesh"),
+	if (FAILED(__super::Add_Component(LV_STATIC, ShaderNames[SHADER_STATIC],
 		TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 

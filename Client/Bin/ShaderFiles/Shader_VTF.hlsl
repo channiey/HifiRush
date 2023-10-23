@@ -1,5 +1,5 @@
+#include "Engine_Shader_Defines.hlsl"
 
-/* 상수테이블. */
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
 vector g_vLightDir = vector(1.f, -1.f, 1.f, 0.f);
@@ -14,25 +14,10 @@ vector g_vMtrlSpecular = vector(1.f, 1.f, 1.f, 1.f);
 
 vector g_vCamPosition;
 
-texture2D g_DiffuseTexture;
-
-sampler LinearSampler = sampler_state
-{
-    Filter = MIN_MAG_MIP_LINEAR;
-    AddressU = wrap;
-    AddressV = wrap;
-};
-
-sampler PointSampler = sampler_state
-{
-    Filter = MIN_MAG_MIP_POINT;
-    AddressU = wrap;
-    AddressV = wrap;
-};
+Texture2D g_DiffuseTexture;
 
 struct KeyframeDesc
 {
-    // 4바이트 6개, 총 24바이트
     int iAnimIndex;
     uint iCurFrame;
     uint iNextFrame;
@@ -207,6 +192,10 @@ technique11 DefaultTechnique
 {
     pass Mesh
     {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         HullShader = NULL;

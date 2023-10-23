@@ -132,7 +132,7 @@ HRESULT CMainApp::Ready_Prototype_Components()
 		return E_FAIL;
 
 	/* For.Prototype_Component_Shader_VtxPosTex */
-	if (FAILED(m_pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
+	if (FAILED(m_pGameInstance->Add_PrototypeCom(LV_STATIC, ShaderNames[SHADER_UI],
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosTex.hlsl"), VTXPOSTEX::Elements, VTXPOSTEX::iNumElements))))
 		return E_FAIL;
 

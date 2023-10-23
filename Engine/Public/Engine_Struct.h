@@ -104,19 +104,15 @@ namespace Engine
 
 	}VTXNORTEX;
 
-	typedef struct tagVertexCubeTexture
+	typedef struct ENGINE_DLL tagVertex_Position_Cube_Texcoord
 	{
 		XMFLOAT3		vPosition;
-		XMFLOAT3		vTexture;
+		XMFLOAT3		vTexcoord;
 
-	}VTXCUBETEX;
+		static const unsigned int				iNumElements = 2;
+		static const D3D11_INPUT_ELEMENT_DESC	Elements[iNumElements];
 
-	typedef struct ENGINE_DLL tagVertexCubeTexture_Declaration
-	{
-		static const unsigned int iNumElements = 2;
-		static const D3D11_INPUT_ELEMENT_DESC Elements[iNumElements];
-
-	}VTXCUBETEX_DECLARATION;
+	}VTXCUBE;
 
 	typedef struct tagVertexModel
 	{
