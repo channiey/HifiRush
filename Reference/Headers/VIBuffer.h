@@ -21,7 +21,7 @@ public:
 public:
 	Vec3*			Get_VerticesPos() const { return m_pVerticesPos; }
 	Vec3*			Get_VerticesNor() const { return m_pVerticesNor; }
-	const _uint&	Get_IndicesNum() const { return m_iNumPrimitives; }
+	//const _uint&	Get_IndicesNum() const { return m_iNumPrimitives; }
 	const _uint&	Get_NumPrimitives() const { return m_iNumPrimitives; }
 
 protected:
@@ -37,13 +37,13 @@ protected:
 	Vec3*							m_pVerticesNor = nullptr;
 
 protected:
-	_uint						m_iNumVertexBuffers = 0;
-	_uint						m_iNumVertices = 0;
-	_uint						m_iStride = 0;
+	_uint						m_iNumVertexBuffers = 0; // 버텍스 버퍼 갯수(m_iNumVBs)
+	_uint						m_iNumVertices = 0; // 버텍스 갯수(")
+	_uint						m_iStride = 0; // 버텍스 하나 크기 (")
 
-	_uint						m_iNumPrimitives = 0;
-	_uint						m_iIndexSizeofPrimitive = 0;
-	_uint						m_iNumIndicesofPrimitive = 0;
+	_uint						m_iNumPrimitives = 0; // 폴리곤 갯수(m_iNumIndices)
+	_uint						m_iIndexSizeofPrimitive = 0; // 인덱스 하나 크기(m_iIndexStride)
+	_uint						m_iNumIndicesofPrimitive = 0;  // 폴리곤 하나가 사용하는 인덱스 갯수 (3개)
 
 	DXGI_FORMAT					m_eIndexFormat;
 

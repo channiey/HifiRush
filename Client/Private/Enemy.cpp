@@ -40,10 +40,8 @@ HRESULT CEnemy::Initialize(void* pArg)
 
 void CEnemy::Tick(_float fTimeDelta)
 {
-	/*if (FAILED(m_pBehaviourTreeCom->Tick(fTimeDelta)))
-		return;*/
-
-	m_pRigidbodyCom->Tick(fTimeDelta);
+	if (nullptr != m_pRigidbodyCom)
+		m_pRigidbodyCom->Tick(fTimeDelta);
 
 	__super::Tick(fTimeDelta);
 }
@@ -63,21 +61,6 @@ HRESULT CEnemy::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL;
-
-	if (FAILED(Bind_ShaderResources()))
-		return E_FAIL;
-
-	for (_uint i = 0; i < m_pModelCom->Get_MeshCount(); ++i)
-	{
-		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, m_pModelCom->Get_MaterialIndex(i), aiTextureType_DIFFUSE, "g_DiffuseTexture")))
-			return E_FAIL;
-
-		//if (FAILED(m_pModelCom->SetUp_OnShader(m_pShaderCom, m_pModelCom->Get_MaterialIndex(i), aiTextureType_NORMALS, "g_NormalTexture")))
-		//	return E_FAIL;
-
-		if (FAILED(m_pModelCom->Render(m_pShaderCom, i)))
-			return E_FAIL;
-	}
 
 	return S_OK;
 }
@@ -99,11 +82,6 @@ void CEnemy::Set_State(const OBJ_STATE& eState)
 
 HRESULT CEnemy::Ready_Components()
 {
-	/* Com_Shader */
-	if (FAILED(__super::Add_Component(LV_STATIC, ShaderNames[SHADER_VTF],
-		ComponentNames[COM_SHADER], (CComponent**)&m_pShaderCom)))
-		return E_FAIL;
-
 	/* Com_BehaviourTree*/
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_BehaviourTree"),
 		ComponentNames[COM_BEHAVIOURTREE], (CComponent**)&m_pBehaviourTreeCom)))
@@ -115,12 +93,6 @@ HRESULT CEnemy::Ready_Components()
 		ComponentNames[COM_RIGIDBODY], (CComponent**)&m_pRigidbodyCom, &eType)))
 		return E_FAIL;
 
-	return S_OK;
-}
-
-
-HRESULT CEnemy::Bind_ShaderResources()
-{
 	return S_OK;
 }
 

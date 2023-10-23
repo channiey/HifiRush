@@ -22,33 +22,26 @@ HRESULT CLevel_Proto::Initialize()
 	//if (FAILED(CLevel_Loading::Parse_LevelData(LV_PROTO)))
 	//	return E_FAIL;
 
-	/*if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_CAMERA], L"Camera_Debug"))
+	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_CAMERA], L"Camera_Debug"))
+		return E_FAIL;
+
+	/*if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_CAMERA], L"Camera_Follow"))
 		return E_FAIL;*/
 
-	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_CAMERA], L"Camera_Follow"))
-		return E_FAIL;
+	//if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_PLAYER], L"Player_Chai"))
+	//	return E_FAIL;
 
-	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_PLAYER], L"Player_Chai"))
-		return E_FAIL;
+	//if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_ENEMY], L"Enemy_Saber"))
+	//	return E_FAIL;
 
-	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_ENEMY], L"Enemy_Saber"))
-		return E_FAIL;
-
-	
-	pObject = GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_ENV_STATIC], L"Env_Static_Bldg_Inside_Battle_A");
-	{
-		if (nullptr == pObject) 
-			return E_FAIL;
-
-		/* 피벗 매트릭스로 옮기자 */
-		pObject->Get_Transform()->Set_Scale(Vec3(0.6f, 0.6f, 0.6f));
-	}
+	/*if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_ENV_STATIC], L"Env_Static_Bldg_Inside_Battle_A"))
+		return E_FAIL;*/
 
 	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_ENV_SKYBOX], L"Env_SkyBox"))
 		return E_FAIL;
 
-	/*if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_ENV_STATIC], L"Env_Static_Bldg_Outside_BK"))
-		return E_FAIL;*/
+	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_ENV_STATIC], L"Env_Static_Bldg_Outside_BK"))
+		return E_FAIL;
 
  	return S_OK;
 }

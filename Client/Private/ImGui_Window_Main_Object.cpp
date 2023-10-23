@@ -3,7 +3,6 @@
 
 #include "ImGui_Window_Main_Object.h"
 
-#include "ImGui_Window_Sub_Com_Nav.h"
 #include "ImGui_Window_Sub_Com_Model.h"
 
 #include "GameObject.h"
@@ -16,18 +15,8 @@ CImGui_Window_Main_Object::CImGui_Window_Main_Object()
 
 HRESULT CImGui_Window_Main_Object::Initialize()
 {
-	/* Create Sub_Window_Nav */
-	CImGui_Window* pWindow = CImGui_Window_Sub_Com_Nav::Create();
-	{
-		if (nullptr == pWindow)
-			return E_FAIL;
-
-		pWindow->Set_Active(FALSE);
-		m_pChildWindows.emplace(m_pImGui_Manager->str_SubWindowType[m_pImGui_Manager->WINDOW_SUB_COM_NAV], pWindow);
-	}
-	
 	/* Component - Anim */
-	pWindow = CImGui_Window_Sub_Com_Model::Create();
+	CImGui_Window* pWindow = CImGui_Window_Sub_Com_Model::Create();
 	{
 		if (nullptr == pWindow)
 			return E_FAIL;
@@ -158,19 +147,19 @@ void CImGui_Window_Main_Object::Show_Object_Transform()
 						for (size_t i = 0; i < 3; i++)
 							fRotPrev[i] = fRot[i];
 
-						pTransform->Set_Rotation(Vec3::Right, fRot[0]);
+						pTransform->Set_Rotation(Vec3::Right, fRot[0] * -1.f);
 					}
 					else if (fRot[1] != fRotPrev[1])
 					{
 						for (size_t i = 0; i < 3; i++)
 							fRotPrev[i] = fRot[i];
-						pTransform->Set_Rotation(Vec3::Up, fRot[1]);
+						pTransform->Set_Rotation(Vec3::Up, fRot[1] * -1.f);
 					}
 					else if (fRot[2] != fRotPrev[2])
 					{
 						for (size_t i = 0; i < 3; i++)
 							fRotPrev[i] = fRot[i];
-						pTransform->Set_Rotation(Vec3::Forward, fRot[2]);
+						pTransform->Set_Rotation(Vec3::Forward, fRot[2] * -1.f);
 					}
 				}
 

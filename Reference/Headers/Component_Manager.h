@@ -1,5 +1,7 @@
 #pragma once
 
+#pragma region headers
+
 #include "Transform.h"
 #include "Model.h"
 
@@ -11,6 +13,7 @@
 #include "Collider_AABB.h"
 #include "Collider_Sphere.h"
 
+#include "VIBuffer_Cell.h"
 #include "VIBuffer_Rect.h"
 #include "VIBuffer_Cube.h"
 #include "VIBuffer_Terrain.h"
@@ -35,8 +38,7 @@
 
 #include "MonoBehaviour.h"
 
-/* 컴포넌트들의 원형을 보관한다. */
-/* 사본은 실제 컴포넌트를 사용하고자 하는 객체들이 각각 보관한다. */
+#pragma endregion
 
 BEGIN(Engine)
 
@@ -49,22 +51,19 @@ private:
 	virtual ~CComponent_Manager() = default;
 
 public:
-	HRESULT Reserve_Manager(_uint iNumLevels);
+	HRESULT				Reserve_Manager(_uint iNumLevels);
 
 public:
-	/* 컴포넌트 원형 객체를 추가한다. -> 컴포넌트 매니저가 들고 있다.*/
-	HRESULT Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, class CComponent* pPrototype);
-	/* 컴포넌트 원형을 클론한다. -> 실제 컴포넌트를 사용하는 객체가 들고있다.*/
-	class CComponent* Clone_Component(_uint iLevelIndex, const wstring& strPrototypeTag, void* pArg);
+	HRESULT				Add_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag, class CComponent* pPrototype); // 원형 -> 매니저 보관
+	class CComponent*	Clone_Component(_uint iLevelIndex, const wstring& strPrototypeTag, void* pArg); // 사본 -> 객체 보관 
+
+private:
+	class CComponent*	Find_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag);
 
 private:
 	_uint											m_iNumLevels = { 0 };
-	/* 원형객체들을 레벨별로 보관할까?! */
-	map<const wstring, class CComponent*>*			m_pPrototypes = { nullptr };
+	map<const wstring, class CComponent*>*			m_pPrototypes = { nullptr }; // 원형 객체는 레벨별로 보관
 	typedef map<const wstring, class CComponent*>	PROTOTYPES;
-
-private:
-	class CComponent* Find_Prototype(_uint iLevelIndex, const wstring& strPrototypeTag);
 
 public:
 	virtual void Free() override;

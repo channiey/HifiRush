@@ -23,6 +23,9 @@
 #include "GameInstance.h"
 #include "GameObject.h"
 
+/* Temp */
+#include "ImGui_Window_Sub_Nav.h"
+
 IMPLEMENT_SINGLETON(CImGui_Manager)
 
 CImGui_Manager::CImGui_Manager()
@@ -57,13 +60,13 @@ HRESULT CImGui_Manager::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* p
 	/* Create Main_Window Object */
 	pWindow = CImGui_Window_Main_Object::Create();
 	NULL_CHECK_RETURN(pWindow, E_FAIL);
-	pWindow->Set_Active(FALSE);
+	pWindow->Set_Active(TRUE);
 	m_pMainWindows.push_back(pWindow);
 
 	/* Create Main_Window Hierarachy */
 	pWindow = CImGui_Window_Main_Hierarachy::Create();
 	NULL_CHECK_RETURN(pWindow, E_FAIL);
-	pWindow->Set_Active(FALSE);
+	pWindow->Set_Active(TRUE);
 	m_pMainWindows.push_back(pWindow);
 
 	/* Create Main_Window Demo */
@@ -72,6 +75,14 @@ HRESULT CImGui_Manager::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* p
 	pWindow->Set_Active(FALSE);
 	m_pMainWindows.push_back(pWindow);
 
+
+
+
+	/* Create Sub_Window_Nav */
+	pWindow = CImGui_Window_Sub_Nav::Create();
+	NULL_CHECK_RETURN(pWindow, E_FAIL);
+	pWindow->Set_Active(TRUE);
+	m_pMainWindows.push_back(pWindow);
 	return S_OK;
 }
 
@@ -81,6 +92,7 @@ HRESULT CImGui_Manager::Render()
 		return S_OK;
 
 	/* 메인 윈도우들을 렌더링 한다. */
+
 	ImGui_Tick();
 	{
 		for (auto& iter : m_pMainWindows)
@@ -89,8 +101,8 @@ HRESULT CImGui_Manager::Render()
 				iter->Show_Window();
 		}
 	}
-
-	FAILED_CHECK_RETURN(ImGui_Render(), E_FAIL);
+	if (FAILED(ImGui_Render()))
+		return E_FAIL;
 
 
 	/* Picking */

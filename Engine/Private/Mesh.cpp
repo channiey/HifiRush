@@ -107,17 +107,20 @@ HRESULT CMesh::Ready_StaticVertices(vector<VTXMODEL>& Vertices, _fmatrix PivotMa
 	m_pVerticesPos = new Vec3[m_iNumVertices];
 	ZeroMemory(m_pVerticesPos, sizeof(Vec3) * m_iNumVertices);
 
+	m_pVerticesNor = new Vec3[m_iNumVertices];
+	ZeroMemory(m_pVerticesNor, sizeof(Vec3) * m_iNumVertices);
+
 	for (_uint i = 0; i < m_iNumVertices; ++i)
 	{
 		memcpy(&pVerticeStatic[i].vPosition, &Vertices[i].vPosition, sizeof(_float3));
 		XMStoreFloat3(&pVerticeStatic[i].vPosition, XMVector3TransformCoord(XMLoadFloat3(&pVerticeStatic[i].vPosition), PivotMatrix));
 
-		memcpy(&m_pVerticesPos[i], &Vertices[i].vPosition, sizeof(_float3));
+		memcpy(&m_pVerticesPos[i], &pVerticeStatic[i].vPosition, sizeof(_float3));
 
 		memcpy(&pVerticeStatic[i].vNormal, &Vertices[i].vNormal, sizeof(_float3));
 		XMStoreFloat3(&pVerticeStatic[i].vNormal, XMVector3TransformNormal(XMLoadFloat3(&pVerticeStatic[i].vNormal), PivotMatrix));
 		
-		//memcpy(&m_pVerticesNor[i], &Vertices[i].vPosition, sizeof(_float3));
+		memcpy(&m_pVerticesNor[i], &pVerticeStatic[i].vNormal, sizeof(_float3));
 
 		memcpy(&pVerticeStatic[i].vTexture, &Vertices[i].vTexture, sizeof(_float2));
 

@@ -70,19 +70,26 @@ void CMainApp::Tick(_float fTimeDelta)
 HRESULT CMainApp::Render()
 {
 	/* 장면 초기화 */
-	FAILED_CHECK_RETURN(m_pGameInstance->Clear_BackBuffer_View(_float4(0.5f, 0.5f, 0.5f, 1.f)), E_FAIL);
-	FAILED_CHECK_RETURN(m_pGameInstance->Clear_DepthStencil_View(), E_FAIL);
+	if (FAILED(m_pGameInstance->Clear_BackBuffer_View(_float4(0.5f, 0.5f, 0.5f, 1.f))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Clear_DepthStencil_View()))
+		return E_FAIL;
 	{
 		/* 게임 내 객체 렌더링 */
-		FAILED_CHECK_RETURN(m_pRenderer->Draw_RenderObjects(), E_FAIL);
+		if (FAILED(m_pRenderer->Draw_RenderObjects()))
+			return E_FAIL;
 
 		/* ImGui 업데이트 및 렌더링 */
 #ifdef _DEBUG
-		if(LV_LOADING != m_pGameInstance->Get_CurLevelIndex())
-			FAILED_CHECK_RETURN(m_pImGui_Manager->Render(), E_FAIL);
+		if (LV_LOADING != m_pGameInstance->Get_CurLevelIndex())
+		{
+			if (FAILED(m_pImGui_Manager->Render()))
+				return E_FAIL;
+		}
 #endif // _DEBUG
 	}
-	FAILED_CHECK_RETURN(m_pGameInstance->Present(), E_FAIL);
+	if(FAILED(m_pGameInstance->Present()))
+		return E_FAIL;
 	return S_OK;
 }
 

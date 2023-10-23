@@ -154,9 +154,6 @@
     <Filter Include="02.GameObjects\03.Character\00.Player\01.Input">
       <UniqueIdentifier>{3192c611-76d0-4580-9cf2-8d3494f804a4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="97.ImGui\Windows\03.Sub\00.Object_Components\Nav">
-      <UniqueIdentifier>{a5d2abe7-ebbc-49f4-b69a-00a5c591c8c8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="97.ImGui\Windows\03.Sub\00.Object_Components\Anim">
       <UniqueIdentifier>{b3fbccd0-47dd-4c34-8b8c-d87cc6c8d6b6}</UniqueIdentifier>
     </Filter>
@@ -283,6 +280,9 @@
     <Filter Include="02.GameObjects\01.Environment\00.SkyBox">
       <UniqueIdentifier>{583c4a7b-e367-4cfc-8a6e-f1fd6a21792b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="97.ImGui\Windows\03.Sub\02.Nav">
+      <UniqueIdentifier>{2416b0b5-2b6f-432a-a60b-8f22ba776d12}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -357,9 +357,6 @@
     <ClInclude Include="..\Public\ImGui_Window_Main_Demo.h">
       <Filter>97.ImGui\Windows\04.Demo</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\ImGui_Window_Sub_Prefabs.h">
-      <Filter>97.ImGui\Windows\03.Sub\01.Hierarachy_Prefabs</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Camera_Debug.h">
       <Filter>02.GameObjects\00.Camera\00.Debug</Filter>
     </ClInclude>
@@ -420,9 +417,6 @@
     <ClInclude Include="..\Public\State_Chai_Parry.h">
       <Filter>02.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.StateMachine\State\03.Action\02.Parry</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\ImGui_Window_Sub_Com_Nav.h">
-      <Filter>97.ImGui\Windows\03.Sub\00.Object_Components\Nav</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\ImGui_Window_Sub_Com_Model.h">
       <Filter>97.ImGui\Windows\03.Sub\00.Object_Components\Anim</Filter>
     </ClInclude>
@@ -470,6 +464,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\SkyBox.h">
       <Filter>02.GameObjects\01.Environment\00.SkyBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui_Window_Sub_Prefabs.h">
+      <Filter>97.ImGui\Windows\03.Sub\01.Hierarachy_Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui_Window_Sub_Nav.h">
+      <Filter>97.ImGui\Windows\03.Sub\02.Nav</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -533,9 +533,6 @@
     <ClCompile Include="..\Private\ImGui_Window_Main_Object.cpp">
       <Filter>97.ImGui\Windows\01.Object</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\ImGui_Window_Sub_Prefabs.cpp">
-      <Filter>97.ImGui\Windows\03.Sub\01.Hierarachy_Prefabs</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Camera_Debug.cpp">
       <Filter>02.GameObjects\00.Camera\00.Debug</Filter>
     </ClCompile>
@@ -596,9 +593,6 @@
     <ClCompile Include="..\Private\State_Chai_Parry.cpp">
       <Filter>02.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.StateMachine\State\03.Action\02.Parry</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\ImGui_Window_Sub_Com_Nav.cpp">
-      <Filter>97.ImGui\Windows\03.Sub\00.Object_Components\Nav</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\ImGui_Window_Sub_Com_Model.cpp">
       <Filter>97.ImGui\Windows\03.Sub\00.Object_Components\Anim</Filter>
     </ClCompile>
@@ -646,6 +640,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\SkyBox.cpp">
       <Filter>02.GameObjects\01.Environment\00.SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_Window_Sub_Prefabs.cpp">
+      <Filter>97.ImGui\Windows\03.Sub\01.Hierarachy_Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_Window_Sub_Nav.cpp">
+      <Filter>97.ImGui\Windows\03.Sub\02.Nav</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

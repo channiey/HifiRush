@@ -56,7 +56,8 @@ void CChai::Tick(_float fTimeDelta)
 	if (FAILED(m_pStateMachineCom->Tick(fTimeDelta)))
 		return;
 
-	m_pRigidbodyCom->Tick(fTimeDelta);
+	if(nullptr != m_pRigidbodyCom)
+		m_pRigidbodyCom->Tick(fTimeDelta);
 
 	__super::Tick(fTimeDelta);
 }
@@ -77,31 +78,11 @@ HRESULT CChai::Render()
 	if (FAILED(__super::Render()))
 		return E_FAIL;
 
-	if (FAILED(Bind_ShaderResources()))
-		return E_FAIL;
-
-	for (_uint i = 0; i < m_pModelCom->Get_MeshCount(); ++i)
-	{
-		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, m_pModelCom->Get_MaterialIndex(i), aiTextureType_DIFFUSE, "g_DiffuseTexture")))
-			return E_FAIL;
-
-		//if (FAILED(m_pModelCom->SetUp_OnShader(m_pShaderCom, m_pModelCom->Get_MaterialIndex(i), aiTextureType_NORMALS, "g_NormalTexture")))
-		//	return E_FAIL;
-
-		if (FAILED(m_pModelCom->Render(m_pShaderCom, i)))
-			return E_FAIL;
-	}
-
 	return S_OK;
 }
 
 HRESULT CChai::Ready_Components()
 {
-	/* Com_Shader */
-	if (FAILED(__super::Add_Component(LV_STATIC, ShaderNames[SHADER_VTF],
-		ComponentNames[COM_SHADER], (CComponent**)&m_pShaderCom)))
-		return E_FAIL;
-
 	/* Com_Model */
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Model_Chai"),
 		ComponentNames[COM_MODEL], (CComponent**)&m_pModelCom)))
@@ -187,11 +168,6 @@ HRESULT CChai::Ready_Chilren()
 		pChild->Set_Socket(CModel::BONE_SOCKET_RIGHT); 
 		pChild->Set_IndexAsChild(CHILD_TYPE::CH_WEAPON_RIGHT);
 	}
-	return S_OK;
-}
-
-HRESULT CChai::Bind_ShaderResources()
-{
 	return S_OK;
 }
 

@@ -39,7 +39,8 @@ public:
 		WINDOW_SUB_PREFABS,
 		WINDOW_SUB_MINI_LAYERS,/* 이거 왜 따로 클래스 안뺐지? */
 
-		WINDOW_SUB_COM_NAV,
+		WINDOW_SUB_NAV,
+
 		WINDOW_SUB_COM_MODEL,
 		WINDOW_SUB_END
 	};
@@ -48,7 +49,7 @@ public:
 		"Prefabs",
 		"Layers Choice",
 
-		"Com_Nav",
+		"Nav",
 		"Com_Model"
 	};
 
@@ -87,7 +88,7 @@ private:
 	void			Reset_Index_CurObject();
 	void			Reset_Index_PrefabObject();
 
-private:
+public:
 	CGameInstance*					m_pGameInstance = { nullptr };
 	_bool							m_bActive = TRUE;
 
@@ -130,8 +131,8 @@ private: /* Friend Class */
 	friend class CImGui_Window_Main_Demo;
 
 	friend class CImGui_Window_Sub_Prefabs;
+	friend class CImGui_Window_Sub_Nav;
 
-	friend class CImGui_Window_Sub_Com_Nav;
 	friend class CImGui_Window_Sub_Com_Model;
 
 public:

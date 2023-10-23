@@ -83,6 +83,14 @@ namespace Engine
 
 	}FACEINDICES32;
 
+	typedef struct ENGINE_DLL tagVertex_Position
+	{
+		XMFLOAT3		vPosition;
+
+		static const unsigned int				iNumElements = 1;
+		static const D3D11_INPUT_ELEMENT_DESC	Elements[iNumElements];
+	}VTXPOS;
+
 	typedef struct ENGINE_DLL tagVertex_Position_Texcoord
 	{
 		XMFLOAT3		vPosition;

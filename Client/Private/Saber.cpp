@@ -232,11 +232,6 @@ HRESULT CSaber::Ready_Chilren()
 	return S_OK;
 }
 
-HRESULT CSaber::Bind_ShaderResources()
-{
-	return S_OK;
-}
-
 void CSaber::OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild)
 {
 	__super::OnCollision_Enter(pCollider, iIndexAsChild);

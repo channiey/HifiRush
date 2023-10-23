@@ -119,9 +119,6 @@ private:
 	HRESULT				Ready_StateMachine();
 
 private:
-	HRESULT				Bind_ShaderResources();
-
-private:
 	virtual void		OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild = -1) override;
 	virtual void		OnCollision_Stay(CCollider* pCollider, const _int& iIndexAsChild = -1) override;
 	virtual void		OnCollision_Exit(CCollider* pCollider, const _int& iIndexAsChild = -1) override;

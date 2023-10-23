@@ -72,7 +72,7 @@ namespace Client
 	};
 	static const wchar_t* LayerNames[LAYER_END] /* 업데이트 순서에 따른 정렬 */
 	{
-		L"Layer_00_Env_SkyBox"
+		L"Layer_00_Env_SkyBox",
 		L"Layer_01_Env_Static",
 		L"Layer_02_Env_Interactable",
 		L"Layer_03_Player",

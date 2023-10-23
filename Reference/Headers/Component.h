@@ -15,6 +15,7 @@ enum COMPONENT_TYPE
 	COM_COLLIDER_AABB,
 	COM_COLLIDER_SPHERE,
 	COM_VIBUFFER,
+	COM_VIBUFFER_CELL,
 	COM_VIBUFFER_RECT,
 	COM_VIBUFFER_CUBE,
 	COM_VIBUFFER_TERRAIN,
@@ -23,6 +24,7 @@ enum COMPONENT_TYPE
 	COM_BEHAVIOURTREE,
 	COM_CAMERA,
 	COM_RIGIDBODY,
+	COM_NAVIGATION,
 	COM_END
 };
 
@@ -37,6 +39,7 @@ static const wstring ComponentNames[COM_END]
 	L"Com_Collider_AABB",
 	L"Com_Collider_Sphere",
 	L"Com_VIBuffer",
+	L"Com_VIBuffer_Cell",
 	L"Com_VIBuffer_Rect",
 	L"Com_VIBuffer_Cube",
 	L"Com_VIBuffer_Terrain",
@@ -44,7 +47,8 @@ static const wstring ComponentNames[COM_END]
 	L"Com_StateMachine",
 	L"Com_BehaviourTree",
 	L"Com_Camera",
-	L"Com_Rigidbody"
+	L"Com_Rigidbody",
+	L"Com_Navigation"
 };
 
 
