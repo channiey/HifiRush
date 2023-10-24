@@ -1,4 +1,3 @@
-/* TODO 이거 엔진 디파인에 선언하면 왜 심플매스랑 충돌나지? */
 #pragma once
 
 #include "Base.h"
@@ -24,26 +23,25 @@ public:
 
 #ifdef _DEBUG
 public:
-	void	Set_RenderRange(const _float fRange) { m_fRenderRange = fRange; }
-	const _float& Get_RenderRange() const { return m_fRenderRange; }
+	void			Set_RenderRange(const _float fRange) { m_fRenderRange = fRange; }
+	void			Set_Render(const _bool& bRender) { m_bRender = bRender; }
+	void			Set_Render() { m_bRender = !m_bRender; }
 
-	void	Set_Render(const _bool& bRender) { m_bRender = bRender; }
-	void	Set_Render() { m_bRender = !m_bRender; }
-	const _bool& Is_Render() const { return m_bRender; }
+	const _float&	Get_RenderRange() const { return m_fRenderRange; }
+	const size_t	Get_CountCells() const { return m_Cells.size(); }
 
-	const size_t Get_CountCells() const { return m_Cells.size(); }
-	const _bool Is_EmptyCells() const { return m_Cells.empty(); }
-
+	const _bool&	Is_Render() const { return m_bRender; }
+	const _bool		Is_EmptyCells() const { return m_Cells.empty(); }
 #endif // _DEBUG
 
 public:
-	HRESULT Set_NavDate(vector<CCell*>& Cells); /* For ImGui*/
-	HRESULT Save_NavData(const wstring& strFilePath);
-	HRESULT Load_NavData(const wstring& strFilePath);
-	HRESULT Clear_NavDate();
+	HRESULT			Set_NavDate(vector<CCell*>& Cells);
+	HRESULT			Save_NavData(const wstring& strFilePath);
+	HRESULT			Load_NavData(const wstring& strFilePath);
+	HRESULT			Clear_NavDate();
 
 public:
-	const _bool	Can_Move(_fvector vPoint, _int& iCurIndex);
+	const _bool		Can_Move(_fvector vPoint, _int& iCurIndex);
 
 private:
 	ID3D11Device* m_pDevice = { nullptr };

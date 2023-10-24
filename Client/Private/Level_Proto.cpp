@@ -16,12 +16,17 @@ CLevel_Proto::CLevel_Proto(ID3D11Device * pDevice, ID3D11DeviceContext * pContex
 
 HRESULT CLevel_Proto::Initialize()
 {
-	
-	CGameObject* pObject = nullptr;
 
 	//if (FAILED(CLevel_Loading::Parse_LevelData(LV_PROTO)))
 	//	return E_FAIL;
 
+	if (FAILED(CNavMesh::GetInstance()->Load_NavData(NavPaths[LV_PROTO])))
+		return E_FAIL;
+
+
+	CGameObject* pObject = nullptr;
+
+	
 	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_CAMERA], L"Camera_Debug"))
 		return E_FAIL;
 
@@ -40,8 +45,8 @@ HRESULT CLevel_Proto::Initialize()
 	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_ENV_SKYBOX], L"Env_SkyBox"))
 		return E_FAIL;
 
-	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_ENV_STATIC], L"Env_Static_Bldg_Outside_BK"))
-		return E_FAIL;
+	/*if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_ENV_STATIC], L"Env_Static_Bldg_Outside_BK"))
+		return E_FAIL;*/
 
  	return S_OK;
 }

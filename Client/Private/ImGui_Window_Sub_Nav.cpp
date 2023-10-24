@@ -127,7 +127,9 @@ HRESULT CImGui_Window_Sub_Nav::Bake()
 
 HRESULT CImGui_Window_Sub_Nav::Save_NavData()
 {
-	
+	if (FAILED(CNavMesh::GetInstance()->Save_NavData(NavPaths[m_pImGui_Manager->m_iIndex_CurLevelID])))
+		return E_FAIL;
+
 	return S_OK;
 }
 
