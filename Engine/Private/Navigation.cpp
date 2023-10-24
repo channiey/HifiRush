@@ -99,33 +99,38 @@ _bool CNavigation::Can_Move(_fvector vPoint)
 	/* 반환값이 단순 bool 값이 아니라 여러 열거체로 사용가능 drop, jump, wall, 등 */
 	/* 수업 코드상 트랜스폼 컴포넌트에서 사용 -> CTransform::Go_Straight() */
 
-	_int		iNeighborIndex = 0;
+	//_int		iNeighborIndex = 0;
 
-	if (true == m_Cells[m_iCurrentIndex]->Is_Out(vPoint, XMLoadFloat4x4(&m_WorldMatrix), &iNeighborIndex))
-	{
-		/* 나간 방향에 이웃셀이 있으면 움직여야해! */
-		if (-1 != iNeighborIndex)
-		{
-			while (true)
-			{
-				if (-1 == iNeighborIndex)
-					return false;
+	//if (true == m_Cells[m_iCurrentIndex]->Is_Out(vPoint, XMLoadFloat4x4(&m_WorldMatrix), &iNeighborIndex))
+	//{
+	//	/* 나간 방향에 이웃셀이 있으면 움직여야해! */
+	//	if (-1 != iNeighborIndex)
+	//	{
+	//		while (true)
+	//		{
+	//			if (-1 == iNeighborIndex)
+	//				return false;
 
-				if (false == m_Cells[iNeighborIndex]->Is_Out(vPoint, XMLoadFloat4x4(&m_WorldMatrix), &iNeighborIndex))
-				{
-					m_iCurrentIndex = iNeighborIndex;
-					break;
-				}
-			}			
-			return true;
-		}
-		else
-			return false;
+	//			if (false == m_Cells[iNeighborIndex]->Is_Out(vPoint, XMLoadFloat4x4(&m_WorldMatrix), &iNeighborIndex))
+	//			{
+	//				m_iCurrentIndex = iNeighborIndex;
+	//				break;
+	//			}
+	//		}			
+	//		return true;
+	//	}
+	//	else
+	//		return false;
 
-	}
-	else
-		return true;	
+	//}
+	//else
+	//	return true;	
+
+	return TRUE;
+
 }
+
+
 
 #ifdef _DEBUG
 
@@ -241,14 +246,17 @@ HRESULT CNavigation::Set_Neighbors()
 	return S_OK;
 }
 
-HRESULT CNavigation::Save_Date()
+HRESULT CNavigation::Clear_CellData()
 {
-	return E_NOTIMPL;
-}
+	if (!m_Cells.empty())
+	{
+		for (auto& pCell : m_Cells)
+			Safe_Release(pCell);
 
-HRESULT CNavigation::Load_Date()
-{
-	return E_NOTIMPL;
+		m_Cells.clear();
+		m_Cells.shrink_to_fit();
+	}
+	return S_OK;
 }
 
 CNavigation * CNavigation::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, const wstring & strNavigationDataFiles)

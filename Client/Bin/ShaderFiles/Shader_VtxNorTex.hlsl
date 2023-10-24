@@ -14,8 +14,8 @@ vector			g_vMtrlAmbient = vector(0.4f, 0.4f, 0.4f, 1.f);
 vector			g_vMtrlSpecular = vector(1.f, 1.f, 1.f, 1.f);
 
 /* 매태리얼에서 Diffuse 값을 가리킨다(매태리얼 구조체 사용X). */
-texture2D		g_DiffuseTexture[2];
-texture2D		g_MaskTexture;
+Texture2D		g_DiffuseTexture[2];
+Texture2D		g_MaskTexture;
 
 struct VS_IN
 {

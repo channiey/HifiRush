@@ -14,7 +14,7 @@ vector			g_vMtrlSpecular = vector(1.f, 1.f, 1.f, 1.f);
 
 vector			g_vCamPosition;
 
-texture2D		g_DiffuseTexture;
+Texture2D		g_DiffuseTexture;
 
 struct VS_IN
 {

@@ -1,8 +1,8 @@
 #include "Engine_Shader_Defines.hlsl"
 
 matrix		g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
-texture2D	g_Texture;
-texture2D	g_Textures[2];
+Texture2D	g_Texture;
+Texture2D	g_Textures[2];
 
 struct VS_IN
 {

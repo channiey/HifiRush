@@ -6,7 +6,6 @@
 BEGIN(Engine)
 
 class CCell;
-class CShader;
 END
 
 BEGIN(Client)
@@ -25,22 +24,26 @@ public:
 	virtual void	Clear_Reference_Data() override;
 
 private:
+	HRESULT			Clear();
 	HRESULT			Bake();
-	HRESULT			Save();
-	HRESULT			Render();
+	HRESULT			Save_NavData();
 
 private:
-	HRESULT			Create_Cells();
-	HRESULT			Set_Neighbors();
+	HRESULT			Create_Cells(vector<CCell*>& Cells);
+	HRESULT			Set_Neighbors(vector<CCell*>& Cells);
 
 private:
-	_float			m_fMaxAngle		= 80.f;
+	void			Render_PopUp_Clear();
+	void			Render_PopUp_Save();
+
+private:
+	_float			m_fMaxSlope		= 80.f;
 	_float			m_fMinArea		= -1.f;
-	_float			m_fRenderRange	= 50.f;
 
-	_bool			m_bRender = TRUE;
-	vector<CCell*>	m_Cells;
-	CShader*		m_pShader = { nullptr };
+
+	_bool			m_bPopUp_Clear = FALSE;
+	_bool			m_bPopUp_Save = FALSE;
+
 
 public:
 	static CImGui_Window_Sub_Nav* Create();

@@ -29,6 +29,7 @@
 
 //--------------------------------------------
 // ABOUT THE MEANING OF THE 'static' KEYWORD:
+// ABOUT THE MEANING OF THE 'static' KEYWORD:
 //--------------------------------------------
 // In this demo code, we frequently use 'static' variables inside functions.
 // A static variable persists across calls. It is essentially a global variable but declared inside the scope of the function.

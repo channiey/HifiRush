@@ -109,13 +109,22 @@ const _bool Util_File::IsExistFile(const string& path)
 	return false;
 }
 
-void Util_File::CheckOrCreatePath(const string& path)
+HRESULT Util_File::CheckOrCreatePath(const string& path)
 {
 	/* 2단계 위까지 검사한다. */
 
 	auto p = filesystem::path(path);
-	filesystem::create_directory(p.parent_path().parent_path());
-	filesystem::create_directory(p.parent_path());
+
+	if (!filesystem::is_directory(p.parent_path().parent_path().parent_path()))
+		return E_FAIL;
+
+	if(!filesystem::is_directory(p.parent_path().parent_path()))
+		filesystem::create_directory(p.parent_path().parent_path());
+	
+	if (!filesystem::is_directory(p.parent_path()))
+		filesystem::create_directory(p.parent_path());
+
+	return TRUE;
 }
 
 vector<string> Util_File::GetAllFolderNames(const string& path)

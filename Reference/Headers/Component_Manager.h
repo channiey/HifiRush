@@ -34,7 +34,7 @@
 #include "Camera.h"
 #include "Rigidbody.h"
 
-#include "Navigation.h"
+#include "NavMeshAgent.h"
 
 #include "MonoBehaviour.h"
 

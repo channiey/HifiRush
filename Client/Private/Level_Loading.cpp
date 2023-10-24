@@ -102,9 +102,6 @@ HRESULT CLevel_Loading::LateTick(_float fTimeDelta)
 
 HRESULT CLevel_Loading::Parse_LevelData(const _uint& iLevelID)
 {
-	CGameInstance* pGameInstance = CGameInstance::GetInstance();
-	Safe_AddRef(pGameInstance);
-
 	shared_ptr<Util_File> file = make_shared<Util_File>();
 	if (nullptr == file) return E_FAIL;
 
@@ -135,7 +132,7 @@ HRESULT CLevel_Loading::Parse_LevelData(const _uint& iLevelID)
 
 			/* 읽은 데이터를 바탕으로 파싱한다. */
 			{
-				CGameObject* pObj = pGameInstance->Add_GameObject(iLevelID, strLayer, strName);
+				CGameObject* pObj = GAME_INSTNACE->Add_GameObject(iLevelID, strLayer, strName);
 				if (nullptr == pObj) continue;
 
 				pObj->Set_State((CGameObject::OBJ_STATE)eStae);
@@ -149,10 +146,9 @@ HRESULT CLevel_Loading::Parse_LevelData(const _uint& iLevelID)
 		}
 	}
 
-	Safe_Release(pGameInstance);
-
 	return S_OK;
 }
+
 
 CLevel_Loading * CLevel_Loading::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, LEVEL_ID eNextLevel)
 {

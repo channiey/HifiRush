@@ -187,9 +187,6 @@
     <Filter Include="01.Utiltiy\03.Components\Component\14.MonoBehaviour">
       <UniqueIdentifier>{09aed11d-2cb8-4746-ac39-0391fe350fae}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utiltiy\03.Components\Component\13.Navigation">
-      <UniqueIdentifier>{0542f6d8-dea3-4ad6-9afb-3cfdc8149822}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utiltiy\03.Components\Component\12.BehaviourTree\01.Node">
       <UniqueIdentifier>{63022527-327c-452e-be61-693a766817e5}</UniqueIdentifier>
     </Filter>
@@ -223,11 +220,23 @@
     <Filter Include="01.Utiltiy\97.ShaderFiles">
       <UniqueIdentifier>{b0d0ede1-d54f-4c69-b2e7-9868be2189c8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utiltiy\03.Components\Component\13.Navigation\Cell">
-      <UniqueIdentifier>{f5b33533-7839-43bc-9642-4e05a84a7aa5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utiltiy\03.Components\Component\00.VIBuffer\Cell">
       <UniqueIdentifier>{27a451af-4156-46c5-acac-b070ed92b82f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\13.NavmeshAgent">
+      <UniqueIdentifier>{0542f6d8-dea3-4ad6-9afb-3cfdc8149822}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\13.NavmeshAgent\Cell">
+      <UniqueIdentifier>{f5b33533-7839-43bc-9642-4e05a84a7aa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\13.NavmeshAgent\NavMeshAgent">
+      <UniqueIdentifier>{1438fd8e-8921-4ecb-9bfe-3081bbd228ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\13.NavmeshAgent\NavMesh">
+      <UniqueIdentifier>{af9595dc-6244-40bb-ad88-d8cab27474df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\13.NavmeshAgent\Not Used">
+      <UniqueIdentifier>{8c40f0bf-ad6b-4430-911f-eb85e8ba62bf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -418,13 +427,19 @@
       <Filter>01.Utiltiy\97.ShaderFiles</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Navigation.h">
-      <Filter>01.Utiltiy\03.Components\Component\13.Navigation</Filter>
+      <Filter>01.Utiltiy\03.Components\Component\13.NavmeshAgent</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Cell.h">
-      <Filter>01.Utiltiy\03.Components\Component\13.Navigation\Cell</Filter>
+      <Filter>01.Utiltiy\03.Components\Component\13.NavmeshAgent\Cell</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\VIBuffer_Cell.h">
       <Filter>01.Utiltiy\03.Components\Component\00.VIBuffer\Cell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NavMesh.h">
+      <Filter>01.Utiltiy\03.Components\Component\13.NavmeshAgent\NavMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NavMeshAgent.h">
+      <Filter>01.Utiltiy\03.Components\Component\13.NavmeshAgent\NavMeshAgent</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -599,14 +614,20 @@
     <ClCompile Include="..\Private\Rigidbody.cpp">
       <Filter>01.Utiltiy\03.Components\Component\07.RigidBody</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Navigation.cpp">
-      <Filter>01.Utiltiy\03.Components\Component\13.Navigation</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Cell.cpp">
-      <Filter>01.Utiltiy\03.Components\Component\13.Navigation\Cell</Filter>
+      <Filter>01.Utiltiy\03.Components\Component\13.NavmeshAgent\Cell</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_Cell.cpp">
       <Filter>01.Utiltiy\03.Components\Component\00.VIBuffer\Cell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Navigation.cpp">
+      <Filter>01.Utiltiy\03.Components\Component\13.NavmeshAgent\Not Used</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NavMesh.cpp">
+      <Filter>01.Utiltiy\03.Components\Component\13.NavmeshAgent\NavMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NavMeshAgent.cpp">
+      <Filter>01.Utiltiy\03.Components\Component\13.NavmeshAgent\NavMeshAgent</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -206,6 +206,8 @@
     <ClInclude Include="..\Public\Frustum.h" />
     <ClInclude Include="..\Public\Collider_OBB.h" />
     <ClInclude Include="..\Public\Navigation.h" />
+    <ClInclude Include="..\Public\NavMesh.h" />
+    <ClInclude Include="..\Public\NavMeshAgent.h" />
     <ClInclude Include="..\Public\Node_Wait.h" />
     <ClInclude Include="..\Public\QuadTree.h" />
     <ClInclude Include="..\Public\RenderTarget.h" />
@@ -273,6 +275,8 @@
     <ClCompile Include="..\Private\Frustum.cpp" />
     <ClCompile Include="..\Private\Collider_OBB.cpp" />
     <ClCompile Include="..\Private\Navigation.cpp" />
+    <ClCompile Include="..\Private\NavMesh.cpp" />
+    <ClCompile Include="..\Private\NavMeshAgent.cpp" />
     <ClCompile Include="..\Private\Node_Wait.cpp" />
     <ClCompile Include="..\Private\QuadTree.cpp" />
     <ClCompile Include="..\Private\RenderTarget.cpp" />

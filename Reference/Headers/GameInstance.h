@@ -24,6 +24,10 @@ public:
 	void	FinishTick();
 	void	Clear(_uint iLevelIndex);
 
+public:
+	ID3D11Device* Get_Device() const { return m_pDevice; }
+	ID3D11DeviceContext* Get_Context() const { return m_pContext; }
+
 public: /* For.Timer_Manager */
 	_float	Compute_TimeDelta(const wstring& strTimerTag);
 	HRESULT	Add_Timer(const wstring& strTimerTag);
@@ -35,7 +39,6 @@ public: /* For.Graphic_Device */
 	ID3D11Device*	Get_Device();
 	GRAPHIC_DESC	Get_GraphicDesc();
 	const Viewport	Get_ViewPort();
-
 
 public: /* For.Level_Manager */
 	HRESULT		Open_Level(_uint iLevelIndex, class CLevel* pNewLevel);
@@ -114,6 +117,11 @@ private:
 	class CPipeLine*				m_pPipeLine				= { nullptr };
 	class CCollision_Manager*		m_pCollision_Manager	= { nullptr };
 	class CCamera_Manager*			m_pCamera_Manager		= { nullptr };
+	class CNavMesh*					m_pNavMesh				= { nullptr };
+
+private:
+	ID3D11Device* m_pDevice = { nullptr };
+	ID3D11DeviceContext* m_pContext = { nullptr };
 
 public:
 	static void Release_Engine();

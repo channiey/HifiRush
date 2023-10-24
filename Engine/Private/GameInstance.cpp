@@ -7,6 +7,7 @@
 #include "Profiler_Manager.h"
 #include "Camera_Manager.h"
 #include "GameObject.h"
+#include "NavMesh.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -21,6 +22,7 @@ CGameInstance::CGameInstance()
 	, m_pPipeLine(CPipeLine::GetInstance())
 	, m_pCollision_Manager(CCollision_Manager::GetInstance())
 	, m_pCamera_Manager(CCamera_Manager::GetInstance())
+	, m_pNavMesh(CNavMesh::GetInstance())
 
 {
 	Safe_AddRef(m_pPipeLine);
@@ -33,6 +35,7 @@ CGameInstance::CGameInstance()
 	Safe_AddRef(m_pProfiler_Manager);
 	Safe_AddRef(m_pCollision_Manager);
 	Safe_AddRef(m_pCamera_Manager);
+	Safe_AddRef(m_pNavMesh);
 }
 
 HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, HINSTANCE hInst, const GRAPHIC_DESC& GraphicDesc, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext)
@@ -40,6 +43,9 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, HINSTANCE hInst, cons
 	/* 그래픽디바이스 초기화 처리. */
 	if (FAILED(m_pGraphic_Device->Ready_Graphic_Device(GraphicDesc, ppDevice, ppContext)))
 		return E_FAIL;
+
+	m_pDevice = *ppDevice;
+	m_pContext = *ppContext;
 
 	/* 사운드디바이스 초기화 처리. */
 
@@ -65,6 +71,9 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, HINSTANCE hInst, cons
 
 	/* 카메라 매니저의 초기화 처리 */
 	if (FAILED(m_pCamera_Manager->Initialize()))
+		return E_FAIL;
+
+	if (FAILED(m_pNavMesh->Initialize(m_pDevice, m_pContext)))
 		return E_FAIL;
 
 	return S_OK;
@@ -579,7 +588,7 @@ void CGameInstance::Release_Engine()
 	CPipeLine::GetInstance()->DestroyInstance();
 	CProfiler_Manager::GetInstance()->DestroyInstance();
 	CCollision_Manager::GetInstance()->DestroyInstance();
-
+	CNavMesh::GetInstance()->DestroyInstance();
 }
 
 void CGameInstance::Free()
@@ -594,4 +603,8 @@ void CGameInstance::Free()
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pProfiler_Manager);
 	Safe_Release(m_pCollision_Manager);
+	Safe_Release(m_pNavMesh);
+
+	Safe_Release(m_pDevice);
+	Safe_Release(m_pContext);
 }

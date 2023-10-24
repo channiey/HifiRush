@@ -69,7 +69,7 @@ public:
 	static const _bool IsExistFile(const string& path);
 
 	/* 경로가 존재하는지 확인하고 없다면 생성 */
-	static void CheckOrCreatePath(const string& path);
+	static HRESULT CheckOrCreatePath(const string& path);
 
 	/* 주어진 경로 내의 모든 폴더명을 읽어 반환한다. */
 	static vector<string> GetAllFolderNames(const string& path);

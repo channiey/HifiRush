@@ -35,8 +35,7 @@ public:
 private:
 	HRESULT				Set_Neighbors();
 
-	HRESULT				Save_Date();
-	HRESULT				Load_Date();
+	HRESULT				Clear_CellData();
 
 private:
 	static _float4x4				m_WorldMatrix; // 스태틱 객체의 월드 매트릭스

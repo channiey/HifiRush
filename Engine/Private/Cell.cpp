@@ -83,14 +83,14 @@ _bool CCell::Compare_Points(const _float3 * pSourPoint, const _float3 * pDestPoi
 	return false;
 }
 
-_bool CCell::Is_Out(_fvector vPoint, _fmatrix WorldMatrix, _int* pNeighborIndex)
+_bool CCell::Is_Out(_fvector vPoint, _int* pNeighborIndex)
 {
 	/* 셀의 변의 노말과, 포인트로부터 객체 위치의 방향 벡터를 내적한 결과가 양수라면 나갔다고 판정 */
 
 	for (size_t i = 0; i < LINE_END; i++)
 	{
 		_vector		vSour = XMVector3Normalize(vPoint - XMLoadFloat3(&m_vPoints_InWorld[i]));
-		_vector		vDest = XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat3(&m_vNormals[i]), WorldMatrix));
+		_vector		vDest = m_vNormals[i]; //  XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat3(&m_vNormals[i]), WorldMatrix));
 
 		if (0 < XMVectorGetX(XMVector3Dot(vSour, vDest)))
 		{

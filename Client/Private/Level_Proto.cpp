@@ -34,8 +34,8 @@ HRESULT CLevel_Proto::Initialize()
 	//if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_ENEMY], L"Enemy_Saber"))
 	//	return E_FAIL;
 
-	/*if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_ENV_STATIC], L"Env_Static_Bldg_Inside_Battle_A"))
-		return E_FAIL;*/
+	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_ENV_STATIC], L"Env_Static_Bldg_Inside_Battle_A"))
+		return E_FAIL;
 
 	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_ENV_SKYBOX], L"Env_SkyBox"))
 		return E_FAIL;

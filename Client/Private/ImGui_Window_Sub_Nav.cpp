@@ -4,6 +4,7 @@
 #include "ImGui_Window_Sub_Nav.h"
 #include "GameObject.h"
 #include "Util_String.h"
+#include "Util_File.h"
 
 #include "Cell.h"
 
@@ -25,38 +26,62 @@ void CImGui_Window_Sub_Nav::Show_Window()
 	if (ImGui::Begin(m_pImGui_Manager->str_SubWindowType[m_pImGui_Manager->WINDOW_SUB_NAV], NULL, window_flags))
 	{
 		/* Input */
-		ImGui::DragFloat("Max Anlge", &m_fMaxAngle, 0.5f);
+		{
+			ImGui::DragFloat("Max Anlge", &m_fMaxSlope, 0.5f);
 
-		ImGui::DragFloat("Min Area", &m_fMinArea, 0.05f);
+			ImGui::DragFloat("Min Area", &m_fMinArea, 0.05f);
 
-		ImGui::DragFloat("Render Range", &m_fRenderRange, 1.f);
+			_float fRenderRange = CNavMesh::GetInstance()->Get_RenderRange();
+			if (ImGui::DragFloat("Render Range", &fRenderRange, 1.f))
+			{
+				CNavMesh::GetInstance()->Set_RenderRange(fRenderRange);
+			}
+
+		}
 
 		/* Button */
-		if (ImGui::Button("Auto Bake"))
 		{
-			if (FAILED(Bake()))
-				return;
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("Render"))
-		{
-			m_bRender = !m_bRender;
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("Save"))
-		{
-			if (FAILED(Save()))
-				return;
-		}
-		ImGui::SameLine();
+			if (ImGui::Button("Clear"))
+			{
+				m_bPopUp_Clear = TRUE;
+			}
+			ImGui::SameLine();
 
+			if (ImGui::Button("Auto Bake"))
+			{
+				if (FAILED(Bake()))
+					return;
+			}
+			ImGui::SameLine();
+
+			if (ImGui::Button("Render"))
+			{
+				CNavMesh::GetInstance()->Set_Render();
+			}
+			ImGui::SameLine();
+
+			if (ImGui::Button("Save"))
+			{
+				m_bPopUp_Save = TRUE;
+			}
+			ImGui::SameLine();
+		}
 
 		/* Text */
-		ImGui::Text("Cells : %d", m_Cells.size());
+		{
+			ImGui::Text("Cells : %d", CNavMesh::GetInstance()->Get_CountCells());
+		}
 
 		/* Render */
-		if (!m_Cells.empty()&& m_bRender)
-			Render();		
+		if (CNavMesh::GetInstance()->Is_Render())
+			CNavMesh::GetInstance()->Render();
+
+		/* PopUp */
+
+		if (m_bPopUp_Clear)
+			Render_PopUp_Clear();
+		if (m_bPopUp_Save)
+			Render_PopUp_Save();
 	}
 	ImGui::End();
 
@@ -66,102 +91,48 @@ void CImGui_Window_Sub_Nav::Show_Window()
 
 void CImGui_Window_Sub_Nav::Clear_Reference_Data()
 {
+	Clear();
+
+	m_fMaxSlope = 80.f;
+	m_fMinArea = -1.f;
+
+	m_bPopUp_Clear = FALSE;
+	m_bPopUp_Save = FALSE;
+}
+
+HRESULT CImGui_Window_Sub_Nav::Clear()
+{
+	if (!CNavMesh::GetInstance()->Is_EmptyCells())
+		CNavMesh::GetInstance()->Clear_NavDate();
+
+	return S_OK;
 }
 
 HRESULT CImGui_Window_Sub_Nav::Bake()
 {
+	vector<CCell*> Cells;
 
-	if (!m_Cells.empty())
-	{
-		for (auto& pCell : m_Cells)
-			Safe_Release(pCell);
+	if (!CNavMesh::GetInstance()->Is_EmptyCells())
+		return S_OK;
 
-		m_Cells.clear();
-		m_Cells.shrink_to_fit();
-	}
-
-
-	if (FAILED(Create_Cells()))
+	if (FAILED(Create_Cells(Cells)))
 		return E_FAIL;
 
-	if (FAILED(Set_Neighbors()))
+	if (FAILED(Set_Neighbors(Cells)))
 		return E_FAIL;
 	
-	if (nullptr == m_pShader)
-	{
-		m_pShader = CShader::Create(m_pImGui_Manager->m_pDevice, m_pImGui_Manager->m_pContext, TEXT("../Bin/ShaderFiles/Shader_Cell.hlsl"), VTXPOS::Elements, VTXPOS::iNumElements);
-		if (nullptr == m_pShader)
-			return E_FAIL;
-	}
+	CNavMesh::GetInstance()->Set_NavDate(Cells);
 	return S_OK;
 }
 
-HRESULT CImGui_Window_Sub_Nav::Save()
+HRESULT CImGui_Window_Sub_Nav::Save_NavData()
 {
-	if (ImGui::Begin("Save", NULL))
-	{
-		
-		if (ImGui::Button("Save"))
-		{
-			
-		}
-
-	}
-	ImGui::End();
-
+	
 	return S_OK;
 }
 
-HRESULT CImGui_Window_Sub_Nav::Render()
-{
 
-	/* WVP 세팅 */
-	{
-		Matrix matWorld;
-
-		if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", &matWorld)))
-			return E_FAIL;
-
-		_float4x4 matView = GAME_INSTNACE->Get_Transform(CPipeLine::STATE_VIEW);
-		_float4x4 matProj = GAME_INSTNACE->Get_Transform(CPipeLine::STATE_PROJ);
-
-		if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrix", &matView)))
-			return E_FAIL;
-
-		if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &matProj)))
-			return E_FAIL;
-	}
-
-
-	/* Draw Cells */
-	{
-		_float4 vColor{ 0.f, 1.f, 0.f, 1.f };
-		if (FAILED(m_pShader->Bind_RawValue("g_vLineColor", &vColor, sizeof(_float4))))
-			return E_FAIL;
-
-		_float		fHeight = 0.f;
-		if (FAILED(m_pShader->Bind_RawValue("g_fHeight", &fHeight, sizeof(_float))))
-			return E_FAIL;
-
-		if (FAILED(m_pShader->Begin(0)))
-			return E_FAIL;
-
-		for (auto& pCell : m_Cells)
-		{
-			if (nullptr != pCell)
-			{
-				_float fDist = Vec3(pCell->Get_CenterPoint() - GAME_INSTNACE->Get_CamPosition().xyz()).Length();
-				if (m_fRenderRange < fDist)
-					continue;
-				pCell->Render();
-			}
-		}
-	}
-
-	return S_OK;
-}
-
-HRESULT CImGui_Window_Sub_Nav::Create_Cells()
+HRESULT CImGui_Window_Sub_Nav::Create_Cells(vector<CCell*>& Cells)
 {
 	list<class CGameObject*>* pGameObjects = m_pGameInstance->Get_Layer(m_pImGui_Manager->m_iIndex_CurLevelID, LayerNames[LAYER_ENV_STATIC]);
 
@@ -208,14 +179,14 @@ HRESULT CImGui_Window_Sub_Nav::Create_Cells()
 				Vec3 vPoint_B = Points[CCell::POINT_B] = VerticesPosWorld[1];
 				Vec3 vPoint_C = Points[CCell::POINT_C] = VerticesPosWorld[2];
 
-				/* 각도 필터링 */
+				/* 경사도 필터링 */
 				{
 					Vec3 vPolygonNormal = VerticesNor[Indices[i]._0] + VerticesNor[Indices[i]._1] + VerticesNor[Indices[i]._2];
 					vPolygonNormal.Normalize();
 
 					_float fTheta = acos(vPolygonNormal.Dot(Vec3::Up));
 
-					if (m_fMaxAngle <= RAD2DEG(fTheta))
+					if (m_fMaxSlope <= RAD2DEG(fTheta))
 						continue;
 				}
 
@@ -236,38 +207,72 @@ HRESULT CImGui_Window_Sub_Nav::Create_Cells()
 				CCell* pCell = CCell::Create(m_pImGui_Manager->m_pDevice, m_pImGui_Manager->m_pContext, VerticesPosWorld, 0);
 
 				if (nullptr != pCell)
-					m_Cells.push_back(pCell);
+					Cells.push_back(pCell);
 			}
 		}
 	}
 	return S_OK;
 }
 
-HRESULT CImGui_Window_Sub_Nav::Set_Neighbors()
+HRESULT CImGui_Window_Sub_Nav::Set_Neighbors(vector<CCell*>& Cells)
 
 {	/* 네비게이션을 구성하는 각각의 셀들의 이웃을 설정한다. */
 
-	for (size_t i = 0; i < m_Cells.size() - 1; i++)
+	for (size_t i = 0; i < Cells.size() - 1; i++)
 	{
-		for (size_t j = i + 1; j < m_Cells.size(); j++)
+		for (size_t j = i + 1; j < Cells.size(); j++)
 		{
-			if (true == m_Cells[j]->Compare_Points(m_Cells[i]->Get_Point(CCell::POINT_A), m_Cells[i]->Get_Point(CCell::POINT_B)))
+			if (true == Cells[j]->Compare_Points(Cells[i]->Get_Point(CCell::POINT_A), Cells[i]->Get_Point(CCell::POINT_B)))
 			{
-				m_Cells[i]->Set_Neighbor(CCell::LINE_AB, m_Cells[j]);
+				Cells[i]->Set_Neighbor(CCell::LINE_AB, Cells[j]);
 			}
 
-			else if (true == m_Cells[j]->Compare_Points(m_Cells[i]->Get_Point(CCell::POINT_B), m_Cells[i]->Get_Point(CCell::POINT_C)))
+			else if (true == Cells[j]->Compare_Points(Cells[i]->Get_Point(CCell::POINT_B), Cells[i]->Get_Point(CCell::POINT_C)))
 			{
-				m_Cells[i]->Set_Neighbor(CCell::LINE_BC, m_Cells[j]);
+				Cells[i]->Set_Neighbor(CCell::LINE_BC, Cells[j]);
 			}
 
-			else if (true == m_Cells[j]->Compare_Points(m_Cells[i]->Get_Point(CCell::POINT_C), m_Cells[i]->Get_Point(CCell::POINT_A)))
+			else if (true == Cells[j]->Compare_Points(Cells[i]->Get_Point(CCell::POINT_C), Cells[i]->Get_Point(CCell::POINT_A)))
 			{
-				m_Cells[i]->Set_Neighbor(CCell::LINE_CA, m_Cells[j]);
+				Cells[i]->Set_Neighbor(CCell::LINE_CA, Cells[j]);
 			}
 		}
 	}
 	return S_OK;
+}
+
+void CImGui_Window_Sub_Nav::Render_PopUp_Clear()
+{
+	ImGui::OpenPopup("PopUp");
+	if (ImGui::BeginPopup("PopUp"))
+	{
+		ImGui::Text("Are you Sure?");
+		ImGui::SameLine();
+
+		if (ImGui::Button("OK"))
+		{
+			m_bPopUp_Clear = FALSE;
+			Clear();
+		}
+		ImGui::EndPopup();
+	}
+}
+
+void CImGui_Window_Sub_Nav::Render_PopUp_Save()
+{
+	ImGui::OpenPopup("PopUp");
+	if (ImGui::BeginPopup("PopUp"))
+	{
+		ImGui::Text("Are you Sure?");
+		ImGui::SameLine();
+
+		if (ImGui::Button("OK"))
+		{
+			m_bPopUp_Save = FALSE;
+			Save_NavData();
+		}
+		ImGui::EndPopup();
+	}
 }
 
 CImGui_Window_Sub_Nav* CImGui_Window_Sub_Nav::Create()
@@ -286,11 +291,6 @@ CImGui_Window_Sub_Nav* CImGui_Window_Sub_Nav::Create()
 void CImGui_Window_Sub_Nav::Free()
 {
 	__super::Free();
-
-	for (auto& pCell : m_Cells)
-		Safe_Release(pCell);
-
-	Safe_Release(m_pShader);
 }
 
 #endif // _DEBUG

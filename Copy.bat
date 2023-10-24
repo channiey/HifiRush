@@ -1,4 +1,4 @@
-// 명령어		옵션		원본파일 위치					사본파일 저장 위치
+rem  명령어		옵션		원본파일 위치					사본파일 저장 위치
 	
 xcopy		/y/s	.\Engine\Public\*.*						.\Reference\Headers\		
 xcopy		/y		.\Engine\Bin\*.lib						.\Reference\Librarys\	

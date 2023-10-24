@@ -24,7 +24,7 @@ enum COMPONENT_TYPE
 	COM_BEHAVIOURTREE,
 	COM_CAMERA,
 	COM_RIGIDBODY,
-	COM_NAVIGATION,
+	COM_NAVMESHAGENT,
 	COM_END
 };
 
@@ -48,7 +48,7 @@ static const wstring ComponentNames[COM_END]
 	L"Com_BehaviourTree",
 	L"Com_Camera",
 	L"Com_Rigidbody",
-	L"Com_Navigation"
+	L"Com_NavMeshAgent"
 };
 
 

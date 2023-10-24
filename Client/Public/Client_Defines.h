@@ -51,6 +51,17 @@ namespace Client
 		TEXT("../Bin/Resources/Data/Level/Ending.level"),
 		TEXT("../Bin/Resources/Data/Level/Proto.level"),
 	};
+	static const std::wstring NavPaths[LV_END]
+	{
+			TEXT("../Bin/Resources/Data/Nav/Static.nav"),
+			TEXT("../Bin/Resources/Data/Nav/Loading.nav"),
+			TEXT("../Bin/Resources/Data/Nav/Logo.nav"),
+			TEXT("../Bin/Resources/Data/Nav/Stage_01.nav"),
+			TEXT("../Bin/Resources/Data/Nav/Stage_02.nav"),
+			TEXT("../Bin/Resources/Data/Nav/Stage_03.nav"),
+			TEXT("../Bin/Resources/Data/Nav/Ending.nav"),
+			TEXT("../Bin/Resources/Data/Nav/Proto.nav"),
+	};
 
 	/* Layer */
 	enum LAYER_ID 
