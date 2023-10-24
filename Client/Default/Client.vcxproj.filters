@@ -40,27 +40,6 @@
     <Filter Include="97.ImGui\Windows">
       <UniqueIdentifier>{58e9641a-5e91-4bbe-8558-7dcc06dd06e5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="97.ImGui\Windows\00.Controller">
-      <UniqueIdentifier>{d5ec2c91-2d9e-4e57-95a5-576bf7b84325}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="97.ImGui\Windows\01.Object">
-      <UniqueIdentifier>{ae165aa8-c601-4dfd-811c-cb5d819d7134}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="97.ImGui\Windows\02.Hierarachy">
-      <UniqueIdentifier>{3bf209e3-4602-41fc-b34a-09431189ee60}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="97.ImGui\Windows\03.Sub">
-      <UniqueIdentifier>{f6477610-fb6a-48a9-9359-e3b145365c49}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="97.ImGui\Windows\03.Sub\00.Object_Components">
-      <UniqueIdentifier>{7d62c950-b215-4662-a74f-672e4bb8d4d4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="97.ImGui\Windows\03.Sub\01.Hierarachy_Prefabs">
-      <UniqueIdentifier>{fec1a2e0-72f7-4c59-a278-4159940fa0fc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="97.ImGui\Windows\04.Demo">
-      <UniqueIdentifier>{d900bdc0-016c-4311-a8b5-aa79439f9305}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Levels\02.Ending">
       <UniqueIdentifier>{a3fb452d-868d-42bc-a99b-d12613c146a3}</UniqueIdentifier>
     </Filter>
@@ -153,9 +132,6 @@
     </Filter>
     <Filter Include="02.GameObjects\03.Character\00.Player\01.Input">
       <UniqueIdentifier>{3192c611-76d0-4580-9cf2-8d3494f804a4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="97.ImGui\Windows\03.Sub\00.Object_Components\Anim">
-      <UniqueIdentifier>{b3fbccd0-47dd-4c34-8b8c-d87cc6c8d6b6}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\03.Character\00.Player\00.Models\01.Peppermint\00.Model">
       <UniqueIdentifier>{c338e1c2-dfde-439c-b3a5-d6ea202e3a19}</UniqueIdentifier>
@@ -280,8 +256,38 @@
     <Filter Include="02.GameObjects\01.Environment\00.SkyBox">
       <UniqueIdentifier>{583c4a7b-e367-4cfc-8a6e-f1fd6a21792b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="97.ImGui\Windows\03.Sub\02.Nav">
-      <UniqueIdentifier>{2416b0b5-2b6f-432a-a60b-8f22ba776d12}</UniqueIdentifier>
+    <Filter Include="97.ImGui\Windows\99.Demo">
+      <UniqueIdentifier>{d900bdc0-016c-4311-a8b5-aa79439f9305}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\Windows\03.Sub">
+      <UniqueIdentifier>{f6477610-fb6a-48a9-9359-e3b145365c49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\Windows\03.Sub\00.Object_Components">
+      <UniqueIdentifier>{7d62c950-b215-4662-a74f-672e4bb8d4d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\Windows\03.Sub\00.Object_Components\Anim">
+      <UniqueIdentifier>{b3fbccd0-47dd-4c34-8b8c-d87cc6c8d6b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\Windows\03.Sub\01.Hierarachy_Prefabs">
+      <UniqueIdentifier>{fec1a2e0-72f7-4c59-a278-4159940fa0fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\Windows\00.Main">
+      <UniqueIdentifier>{e64b1c95-ee2a-4ab9-b7af-0671fe1e7498}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\Windows\00.Main\00.Controller">
+      <UniqueIdentifier>{d5ec2c91-2d9e-4e57-95a5-576bf7b84325}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\Windows\00.Main\01.Object">
+      <UniqueIdentifier>{ae165aa8-c601-4dfd-811c-cb5d819d7134}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\Windows\00.Main\02.Hierarachy">
+      <UniqueIdentifier>{3bf209e3-4602-41fc-b34a-09431189ee60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\Windows\01.Mid">
+      <UniqueIdentifier>{cdc99dad-fe1d-4b0f-ab43-00e92412c7a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\Windows\01.Mid\00.Nav">
+      <UniqueIdentifier>{6f1b53e5-eaaa-4b44-abcf-7095214f7593}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -346,16 +352,16 @@
       <Filter>97.ImGui\Windows</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ImGui_Window_Main_Controller.h">
-      <Filter>97.ImGui\Windows\00.Controller</Filter>
+      <Filter>97.ImGui\Windows\00.Main\00.Controller</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ImGui_Window_Main_Object.h">
-      <Filter>97.ImGui\Windows\01.Object</Filter>
+      <Filter>97.ImGui\Windows\00.Main\01.Object</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ImGui_Window_Main_Hierarachy.h">
-      <Filter>97.ImGui\Windows\02.Hierarachy</Filter>
+      <Filter>97.ImGui\Windows\00.Main\02.Hierarachy</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ImGui_Window_Main_Demo.h">
-      <Filter>97.ImGui\Windows\04.Demo</Filter>
+      <Filter>97.ImGui\Windows\99.Demo</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Camera_Debug.h">
       <Filter>02.GameObjects\00.Camera\00.Debug</Filter>
@@ -468,8 +474,8 @@
     <ClInclude Include="..\Public\ImGui_Window_Sub_Prefabs.h">
       <Filter>97.ImGui\Windows\03.Sub\01.Hierarachy_Prefabs</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\ImGui_Window_Sub_Nav.h">
-      <Filter>97.ImGui\Windows\03.Sub\02.Nav</Filter>
+    <ClInclude Include="..\Public\ImGui_Window_Mid_Nav.h">
+      <Filter>97.ImGui\Windows\01.Mid\00.Nav</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -522,16 +528,16 @@
       <Filter>97.ImGui\Windows</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ImGui_Window_Main_Controller.cpp">
-      <Filter>97.ImGui\Windows\00.Controller</Filter>
+      <Filter>97.ImGui\Windows\00.Main\00.Controller</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ImGui_Window_Main_Demo.cpp">
-      <Filter>97.ImGui\Windows\04.Demo</Filter>
+      <Filter>97.ImGui\Windows\99.Demo</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ImGui_Window_Main_Hierarachy.cpp">
-      <Filter>97.ImGui\Windows\02.Hierarachy</Filter>
+      <Filter>97.ImGui\Windows\00.Main\02.Hierarachy</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ImGui_Window_Main_Object.cpp">
-      <Filter>97.ImGui\Windows\01.Object</Filter>
+      <Filter>97.ImGui\Windows\00.Main\01.Object</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Camera_Debug.cpp">
       <Filter>02.GameObjects\00.Camera\00.Debug</Filter>
@@ -644,8 +650,8 @@
     <ClCompile Include="..\Private\ImGui_Window_Sub_Prefabs.cpp">
       <Filter>97.ImGui\Windows\03.Sub\01.Hierarachy_Prefabs</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\ImGui_Window_Sub_Nav.cpp">
-      <Filter>97.ImGui\Windows\03.Sub\02.Nav</Filter>
+    <ClCompile Include="..\Private\ImGui_Window_Mid_Nav.cpp">
+      <Filter>97.ImGui\Windows\01.Mid\00.Nav</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

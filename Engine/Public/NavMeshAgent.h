@@ -4,6 +4,7 @@
 
 BEGIN(Engine)
 class CNavMesh;
+class CTransfrom;
 
 class ENGINE_DLL CNavMeshAgent final : public CComponent
 {
@@ -11,8 +12,11 @@ public:
 	typedef struct tagNavMeshAgentDesc
 	{
 		_int			iCurIndex = { -1 };
+		CTransform*		pTransfrom = { nullptr };
 
-		tagNavMeshAgentDesc(const _int& _iCurIndex) : iCurIndex(_iCurIndex) {};
+		tagNavMeshAgentDesc() {};
+		tagNavMeshAgentDesc(const _int& _iCurIndex, CTransform* pTransform)
+			: iCurIndex(_iCurIndex), pTransfrom(pTransform){};
 
 	}NAVMESHAGENT_DESC;
 

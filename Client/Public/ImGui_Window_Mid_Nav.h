@@ -10,11 +10,11 @@ END
 
 BEGIN(Client)
 
-class CImGui_Window_Sub_Nav final : public CImGui_Window
+class CImGui_Window_Mid_Nav final : public CImGui_Window
 {
 protected:
-	CImGui_Window_Sub_Nav();
-	virtual~CImGui_Window_Sub_Nav() = default;
+	CImGui_Window_Mid_Nav();
+	virtual~CImGui_Window_Mid_Nav() = default;
 
 public:
 	virtual HRESULT Initialize() override;
@@ -48,7 +48,7 @@ private:
 
 
 public:
-	static CImGui_Window_Sub_Nav* Create();
+	static CImGui_Window_Mid_Nav* Create();
 	virtual void Free() override;
 
 };

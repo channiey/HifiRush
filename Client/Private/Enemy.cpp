@@ -103,11 +103,16 @@ HRESULT CEnemy::Ready_Components()
 
 	/* Com_NavMeshAgent*/
 	const _int iIndex = CNavMesh::GetInstance()->Find_Cell(m_pTransformCom->Get_FinalPosition().xyz());
-	if (iIndex < 0) return E_FAIL;
-	CNavMeshAgent::NAVMESHAGENT_DESC tDesc(iIndex);
-	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_NavMeshAgent"),
-		ComponentNames[COM_NAVMESHAGENT], (CComponent**)&m_pNavMeshAgentCom, &tDesc)))
-		return E_FAIL;
+	{
+		if (iIndex < 0)
+			return E_FAIL;
+
+		CNavMeshAgent::NAVMESHAGENT_DESC tDesc(iIndex, m_pTransformCom);
+
+		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_NavMeshAgent"),
+			ComponentNames[COM_NAVMESHAGENT], (CComponent**)&m_pNavMeshAgentCom, &tDesc)))
+			return E_FAIL;
+	}
 
 	return S_OK;
 }

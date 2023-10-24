@@ -1,7 +1,7 @@
 #ifdef _DEBUG
 #include "../Default/stdafx.h"
 
-#include "ImGui_Window_Sub_Nav.h"
+#include "ImGui_Window_Mid_Nav.h"
 #include "GameObject.h"
 #include "NavMesh.h"
 #include "Util_String.h"
@@ -9,22 +9,22 @@
 
 #include "Cell.h"
 
-CImGui_Window_Sub_Nav::CImGui_Window_Sub_Nav()
+CImGui_Window_Mid_Nav::CImGui_Window_Mid_Nav()
 {
 }
 
-HRESULT CImGui_Window_Sub_Nav::Initialize()
+HRESULT CImGui_Window_Mid_Nav::Initialize()
 {
 	return S_OK;
 }
 
-void CImGui_Window_Sub_Nav::Show_Window()
+void CImGui_Window_Mid_Nav::Show_Window()
 {
 	ImGuiWindowFlags window_flags = 0;
 	//window_flags |= ImGuiWindowFlags_NoMove;
 	//window_flags |= ImGuiWindowFlags_NoResize;
 
-	if (ImGui::Begin(m_pImGui_Manager->str_SubWindowType[m_pImGui_Manager->WINDOW_SUB_NAV], NULL, window_flags))
+	if (ImGui::Begin(m_pImGui_Manager->str_MainWindowType[m_pImGui_Manager->WINDOW_MAIN_NAV], NULL, window_flags))
 	{
 		/* Input */
 		{
@@ -98,7 +98,7 @@ void CImGui_Window_Sub_Nav::Show_Window()
 	Show_ChildWindow();
 }
 
-void CImGui_Window_Sub_Nav::Clear_Reference_Data()
+void CImGui_Window_Mid_Nav::Clear_Reference_Data()
 {
 	Clear();
 
@@ -109,7 +109,7 @@ void CImGui_Window_Sub_Nav::Clear_Reference_Data()
 	m_bPopUp_Save = FALSE;
 }
 
-HRESULT CImGui_Window_Sub_Nav::Clear()
+HRESULT CImGui_Window_Mid_Nav::Clear()
 {
 	if (!CNavMesh::GetInstance()->Is_EmptyCells())
 		CNavMesh::GetInstance()->Clear_NavDate();
@@ -117,7 +117,7 @@ HRESULT CImGui_Window_Sub_Nav::Clear()
 	return S_OK;
 }
 
-HRESULT CImGui_Window_Sub_Nav::Bake()
+HRESULT CImGui_Window_Mid_Nav::Bake()
 {
 	vector<CCell*> Cells;
 
@@ -134,7 +134,7 @@ HRESULT CImGui_Window_Sub_Nav::Bake()
 	return S_OK;
 }
 
-HRESULT CImGui_Window_Sub_Nav::Save_NavData()
+HRESULT CImGui_Window_Mid_Nav::Save_NavData()
 {
 	if (FAILED(CNavMesh::GetInstance()->Save_NavData(NavPaths[m_pImGui_Manager->m_iIndex_CurLevelID])))
 		return E_FAIL;
@@ -142,7 +142,7 @@ HRESULT CImGui_Window_Sub_Nav::Save_NavData()
 	return S_OK;
 }
 
-HRESULT CImGui_Window_Sub_Nav::Load_NavData()
+HRESULT CImGui_Window_Mid_Nav::Load_NavData()
 {
 	if (FAILED(CNavMesh::GetInstance()->Load_NavData(NavPaths[m_pImGui_Manager->m_iIndex_CurLevelID])))
 		return E_FAIL;
@@ -151,7 +151,7 @@ HRESULT CImGui_Window_Sub_Nav::Load_NavData()
 }
 
 
-HRESULT CImGui_Window_Sub_Nav::Create_Cells(vector<CCell*>& Cells)
+HRESULT CImGui_Window_Mid_Nav::Create_Cells(vector<CCell*>& Cells)
 {
 	list<class CGameObject*>* pGameObjects = m_pGameInstance->Get_Layer(m_pImGui_Manager->m_iIndex_CurLevelID, LayerNames[LAYER_ENV_STATIC]);
 
@@ -233,7 +233,7 @@ HRESULT CImGui_Window_Sub_Nav::Create_Cells(vector<CCell*>& Cells)
 	return S_OK;
 }
 
-HRESULT CImGui_Window_Sub_Nav::Set_Neighbors(vector<CCell*>& Cells)
+HRESULT CImGui_Window_Mid_Nav::Set_Neighbors(vector<CCell*>& Cells)
 {	
 	/* 네비게이션을 구성하는 각각의 셀들의 이웃을 설정한다. */
 	
@@ -263,7 +263,7 @@ HRESULT CImGui_Window_Sub_Nav::Set_Neighbors(vector<CCell*>& Cells)
 	return S_OK;
 }
 
-void CImGui_Window_Sub_Nav::Render_PopUp_Clear()
+void CImGui_Window_Mid_Nav::Render_PopUp_Clear()
 {
 	ImGui::OpenPopup("PopUp");
 	if (ImGui::BeginPopup("PopUp"))
@@ -280,7 +280,7 @@ void CImGui_Window_Sub_Nav::Render_PopUp_Clear()
 	}
 }
 
-void CImGui_Window_Sub_Nav::Render_PopUp_Save()
+void CImGui_Window_Mid_Nav::Render_PopUp_Save()
 {
 	ImGui::OpenPopup("PopUp");
 	if (ImGui::BeginPopup("PopUp"))
@@ -297,7 +297,7 @@ void CImGui_Window_Sub_Nav::Render_PopUp_Save()
 	}
 }
 
-void CImGui_Window_Sub_Nav::Render_PopUp_Load()
+void CImGui_Window_Mid_Nav::Render_PopUp_Load()
 {
 	ImGui::OpenPopup("PopUp");
 	if (ImGui::BeginPopup("PopUp"))
@@ -314,20 +314,20 @@ void CImGui_Window_Sub_Nav::Render_PopUp_Load()
 	}
 }
 
-CImGui_Window_Sub_Nav* CImGui_Window_Sub_Nav::Create()
+CImGui_Window_Mid_Nav* CImGui_Window_Mid_Nav::Create()
 {
-	CImGui_Window_Sub_Nav* pInstance = new CImGui_Window_Sub_Nav();
+	CImGui_Window_Mid_Nav* pInstance = new CImGui_Window_Mid_Nav();
 
 	if (FAILED(pInstance->Initialize()))
 	{
-		MSG_BOX("Failed to Created : CImGui_Window_Sub_Nav");
+		MSG_BOX("Failed to Created : CImGui_Window_Mid_Nav");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CImGui_Window_Sub_Nav::Free()
+void CImGui_Window_Mid_Nav::Free()
 {
 	__super::Free();
 }

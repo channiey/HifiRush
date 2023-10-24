@@ -114,14 +114,12 @@ HRESULT CChai::Ready_Components()
 	{
 		if(iIndex < 0 ) 
 			return E_FAIL;
-		CNavMeshAgent::NAVMESHAGENT_DESC tDesc(iIndex);
+
+		CNavMeshAgent::NAVMESHAGENT_DESC tDesc(iIndex, m_pTransformCom);
 		
 		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_NavMeshAgent"),
 			ComponentNames[COM_NAVMESHAGENT], (CComponent**)&m_pNavMeshAgentCom, &tDesc)))
 			return E_FAIL;
-
-		/* Temp */
-		m_pTransformCom->Set_NavMeshAgent(m_pNavMeshAgentCom);
 	}
 
 	/* Com_Collider */

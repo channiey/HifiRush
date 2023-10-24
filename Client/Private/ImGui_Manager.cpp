@@ -12,19 +12,20 @@
 /* Manager */
 #include "ImGui_Manager.h"
 
-/* Window */
+/* Main Window */
 #include "ImGui_Window.h"
 #include "ImGui_Window_Main_Controller.h"
 #include "ImGui_Window_Main_Object.h"
 #include "ImGui_Window_Main_Hierarachy.h"
 #include "ImGui_Window_Main_Demo.h"
 
+/* Sub Mid */
+#include "ImGui_Window_Mid_Nav.h"
+
 /* Other Class */
 #include "GameInstance.h"
 #include "GameObject.h"
 
-/* Temp */
-#include "ImGui_Window_Sub_Nav.h"
 
 IMPLEMENT_SINGLETON(CImGui_Manager)
 
@@ -69,20 +70,22 @@ HRESULT CImGui_Manager::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* p
 	pWindow->Set_Active(TRUE);
 	m_pMainWindows.push_back(pWindow);
 
-	/* Create Main_Window Demo */
-	pWindow = CImGui_Window_Main_Demo::Create();
+
+
+	/* Create Sub_Window_Nav */
+	pWindow = CImGui_Window_Mid_Nav::Create();
 	NULL_CHECK_RETURN(pWindow, E_FAIL);
 	pWindow->Set_Active(FALSE);
 	m_pMainWindows.push_back(pWindow);
 
 
-
-
-	/* Create Sub_Window_Nav */
-	pWindow = CImGui_Window_Sub_Nav::Create();
+	/* Create Main_Window Demo */
+	pWindow = CImGui_Window_Main_Demo::Create();
 	NULL_CHECK_RETURN(pWindow, E_FAIL);
-	pWindow->Set_Active(TRUE);
+	pWindow->Set_Active(FALSE);
 	m_pMainWindows.push_back(pWindow);
+	
+	
 	return S_OK;
 }
 
@@ -156,50 +159,6 @@ HRESULT CImGui_Manager::ImGui_Render()
 
 	return S_OK;
 }
-
-//void CImGui_Manager::Picking_Event()
-//{	
-//	m_bClickedWindow = ImGui::GetIO().WantCaptureMouse && ImGui::IsMouseDown(0) ? TRUE : FALSE;
-//
-//	/* 현재 ImGui창을 클릭하지 않았다면 */
-//	if (!m_bClickedWindow)
-//	{
-//		Pick_Object();
-//		//Hold_Object();
-//	}
-//	else
-//	{
-//
-//	}
-//		//m_bHoldingObject = FALSE;
-//}
-//
-//void CImGui_Manager::Pick_Object()
-//{
-//	if (!m_pGameInstance->Key_Down(VK_LBUTTON))
-//		return;
-//
-// 	CGameObject* pGameObect = m_pGameInstance->Get_Pick_Object();
-//	if (nullptr != pGameObect)
-//	{
-//		const _int iIndex = m_pGameInstance->Get_ObjectIndex(m_pGameInstance->Get_CurLevelIndex(), pGameObect->Get_LayerTag(), pGameObect->Get_Name());
-//		//if (0 < iIndex) 
-//		{
-//			//if (m_pCurObject != nullptr)
-//				//Safe_Release(m_pCurObject);
-//			if (nullptr != m_pCurObject && m_pCurObject->Is_Picked())
-//				m_pCurObject->Set_Picked(FALSE);
-//
-//
-//			m_pCurObject			= pGameObect;
-//			m_pCurObject->Set_Picked(TRUE);
-//			m_strIndex_CurObject	= pGameObect->Get_Name();
-//			m_iIndex_CurObject		= iIndex;
-//
-//			//Safe_AddRef(m_pCurObject);
-//		}
-//	}
-//}
 
 void CImGui_Manager::Reset_Index_CurLevel()
 {

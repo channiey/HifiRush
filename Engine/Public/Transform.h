@@ -61,9 +61,6 @@ public:
 
 	void	Set_RootPos(const Vec4& vPos, _bool bNotAgent = FALSE);
 
-	/* Temp */
-	void	Set_NavMeshAgent(class CNavMeshAgent* pAgent) { m_pNavMeshAgentCom = pAgent; }
-
 public:
 	const Vec3	ToEulerAngles(Quaternion quat);
 	void		LookAt(Vec4 vPoint);
@@ -83,6 +80,9 @@ public:
 	static CTransform* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CComponent* Clone(void* pArg) override;
 	virtual void Free() override;
+
+private:
+	friend class CNavMeshAgent;
 };
 
 END

@@ -22,6 +22,9 @@ public:
 
 		WINDOW_MAIN_OBJECT_INFO,
 		WINDOW_MAIN_HIEARACHY,
+
+		WINDOW_MAIN_NAV,
+
 		WINDOW_MAIN_DEMO,
 
 		WINDOW_MAIN_END
@@ -31,6 +34,7 @@ public:
 		"Controller",
 		"Object Info",
 		"Hierarachy",
+		"Nav",
 		"Demo",
 	};
 
@@ -39,7 +43,6 @@ public:
 		WINDOW_SUB_PREFABS,
 		WINDOW_SUB_MINI_LAYERS,/* 이거 왜 따로 클래스 안뺐지? */
 
-		WINDOW_SUB_NAV,
 
 		WINDOW_SUB_COM_MODEL,
 		WINDOW_SUB_END
@@ -49,7 +52,6 @@ public:
 		"Prefabs",
 		"Layers Choice",
 
-		"Nav",
 		"Com_Model"
 	};
 
@@ -127,15 +129,21 @@ private:
 	ID3D11DeviceContext* m_pContext = { nullptr };
 
 private: /* Friend Class */
+
+	/* Main */
 	friend class CImGui_Window_Main_Controller;
 	friend class CImGui_Window_Main_Object;
 	friend class CImGui_Window_Main_Hierarachy;
-	friend class CImGui_Window_Main_Demo;
 
+	/* Mid */
+	friend class CImGui_Window_Mid_Nav;
+	
+	/* Sub*/
 	friend class CImGui_Window_Sub_Prefabs;
-	friend class CImGui_Window_Sub_Nav;
-
 	friend class CImGui_Window_Sub_Com_Model;
+
+	/* Demo */
+	friend class CImGui_Window_Main_Demo;
 
 public:
 	virtual void	Free() override;

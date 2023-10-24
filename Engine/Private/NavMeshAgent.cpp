@@ -24,13 +24,25 @@ HRESULT CNavMeshAgent::Initialize(void* pArg)
 	if (nullptr == pArg)
 		return E_FAIL;
 
-	memmove(&m_iCurIndex, pArg, sizeof NAVMESHAGENT_DESC);
+	NAVMESHAGENT_DESC tDesc;
+	{
+		memmove(&tDesc, pArg, sizeof(NAVMESHAGENT_DESC));
+		if (nullptr == tDesc.pTransfrom)
+			return E_FAIL;
+	}
+
+	m_iCurIndex = tDesc.iCurIndex;
+
+	tDesc.pTransfrom->m_pNavMeshAgentCom = this;
 
 	return S_OK;
 }
 
 HRESULT CNavMeshAgent::Render()
 {
+	if (!m_pNavMesh->Is_Render())
+		return S_OK;
+
 	if (FAILED(m_pNavMesh->Render_Cell(m_iCurIndex)))
 		return E_FAIL;
 

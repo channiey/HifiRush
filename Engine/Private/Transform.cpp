@@ -96,6 +96,7 @@ const Vec4 CTransform::Get_FinalPosition()
 
 void CTransform::Set_Position(Vec3 vPos, _bool bNotAgent)
 { 
+	/* Check Not Apply Agent Filtering (for RootAnimation) */
 	if (bNotAgent)
 	{
 		memcpy(m_WorldMatrix.m[STATE_POSITION], &vPos, sizeof(Vec3));
@@ -103,19 +104,14 @@ void CTransform::Set_Position(Vec3 vPos, _bool bNotAgent)
 	}
 
 	/* Check NavMeshAgent */
+	if (nullptr != m_pNavMeshAgentCom)
 	{
 		Vec3 vTemp = vPos + m_vRootPos;
-		if (nullptr != m_pNavMeshAgentCom && m_pNavMeshAgentCom->Can_Move(vTemp))
-		{
-			memcpy(m_WorldMatrix.m[STATE_POSITION], &vPos, sizeof(Vec3));
+		if (!m_pNavMeshAgentCom->Can_Move(vTemp))
 			return;
-		}
-		else if (nullptr != m_pNavMeshAgentCom && !m_pNavMeshAgentCom->Can_Move(vTemp))
-		{
-			return;
-		}
 	}
 
+	/* Apply */
 	memcpy(m_WorldMatrix.m[STATE_POSITION], &vPos, sizeof(Vec3)); 
 }
 
@@ -151,19 +147,14 @@ void CTransform::Set_RootPos(const Vec4& vPos, _bool bNotAgent)
 	Vec4 vRootPos = vPos;
 
 	/* Check NavMeshAgent */
+	if (nullptr != m_pNavMeshAgentCom)
 	{
 		Vec3 vTemp = (vDir.Normalized() * vRootPos.ZeroW().Length()) + Vec4(m_WorldMatrix.m[3]).xyz();
-		if (nullptr != m_pNavMeshAgentCom && m_pNavMeshAgentCom->Can_Move(vTemp))
-		{
-			m_vRootPos = vDir.Normalized() * vRootPos.ZeroW().Length();
+		if (!m_pNavMeshAgentCom->Can_Move(vTemp))
 			return;
-		}
-		else if (nullptr != m_pNavMeshAgentCom && !m_pNavMeshAgentCom->Can_Move(vTemp))
-		{
-			return;
-		}
 	}
 
+	/* Apply */
 	m_vRootPos = vDir.Normalized() * vRootPos.ZeroW().Length();
 }
 
@@ -327,20 +318,14 @@ void CTransform::Rotate(const Vec4& vAxis, const _float& fRad)
 void CTransform::Translate(const Vec3& vTranslation, _bool bNotAgent)
 {
 	/* Check NavMeshAgent */
+	if (nullptr != m_pNavMeshAgentCom)
 	{
 		Vec3 vTemp = vTranslation + Vec4(m_WorldMatrix.m[3]).xyz();
-		if (nullptr != m_pNavMeshAgentCom && m_pNavMeshAgentCom->Can_Move(vTemp))
-		{
-			for (_uint i = 0; i < 3; ++i)
-				*((_float*)(&m_WorldMatrix.m[3]) + i) += *((_float*)&vTranslation + i);
+		if (!m_pNavMeshAgentCom->Can_Move(vTemp))
 			return;
-		}
-		else if (nullptr != m_pNavMeshAgentCom && !m_pNavMeshAgentCom->Can_Move(vTemp))
-		{
-			return;
-		}
 	}
 
+	/* Apply */
 	for (_uint i = 0; i < 3; ++i)
 		*((_float*)(&m_WorldMatrix.m[3]) + i) += *((_float*)&vTranslation + i);
 }

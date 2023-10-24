@@ -199,7 +199,7 @@ const _bool CNavMesh::Can_Move(_fvector vPoint, _int& iCurIndex)
 	/* 반환값이 단순 bool 값이 아니라 여러 열거체로 사용가능 drop, jump, wall, 등 */
 	/* 수업 코드상 트랜스폼 컴포넌트에서 사용 -> CTransform::Go_Straight() */
 
-	if (m_Cells.empty())
+	if (m_Cells.empty() || m_Cells.size() <= iCurIndex)
 		return FALSE;
 
 	_int		iNeighborIndex = 0;
