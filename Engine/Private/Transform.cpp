@@ -94,8 +94,14 @@ const Vec4 CTransform::Get_FinalPosition()
 	return Vec4(matFinal.m[3]);
 }
 
-void CTransform::Set_Position(Vec3 vPos)
+void CTransform::Set_Position(Vec3 vPos, _bool bNotAgent)
 { 
+	if (bNotAgent)
+	{
+		memcpy(m_WorldMatrix.m[STATE_POSITION], &vPos, sizeof(Vec3));
+		return;
+	}
+
 	/* Check NavMeshAgent */
 	{
 		Vec3 vTemp = vPos + m_vRootPos;
@@ -139,17 +145,17 @@ void CTransform::Set_State(STATE eState, Vec4 vState)
 	XMStoreFloat4x4(&m_WorldMatrix, StateMatrix);
 }
 
-void CTransform::Set_RootPos(const Vec4& vPos)
+void CTransform::Set_RootPos(const Vec4& vPos, _bool bNotAgent)
 {
 	Vec4 vDir = Get_State(STATE_LOOK);
-	Vec4 vRotoPos = vPos;
+	Vec4 vRootPos = vPos;
 
 	/* Check NavMeshAgent */
 	{
-		Vec3 vTemp = (vDir.Normalized() * vRotoPos.ZeroW().Length()) + Vec4(m_WorldMatrix.m[3]).xyz();
+		Vec3 vTemp = (vDir.Normalized() * vRootPos.ZeroW().Length()) + Vec4(m_WorldMatrix.m[3]).xyz();
 		if (nullptr != m_pNavMeshAgentCom && m_pNavMeshAgentCom->Can_Move(vTemp))
 		{
-			m_vRootPos = vDir.Normalized() * vRotoPos.ZeroW().Length();
+			m_vRootPos = vDir.Normalized() * vRootPos.ZeroW().Length();
 			return;
 		}
 		else if (nullptr != m_pNavMeshAgentCom && !m_pNavMeshAgentCom->Can_Move(vTemp))
@@ -158,7 +164,7 @@ void CTransform::Set_RootPos(const Vec4& vPos)
 		}
 	}
 
-	m_vRootPos = vDir.Normalized() * vRotoPos.ZeroW().Length();
+	m_vRootPos = vDir.Normalized() * vRootPos.ZeroW().Length();
 }
 
 void CTransform::Set_Scale(const Vec3& vScale)
@@ -318,7 +324,7 @@ void CTransform::Rotate(const Vec4& vAxis, const _float& fRad)
 	Set_State(STATE_LOOK, vLook);
 }
 
-void CTransform::Translate(const Vec3& vTranslation)
+void CTransform::Translate(const Vec3& vTranslation, _bool bNotAgent)
 {
 	/* Check NavMeshAgent */
 	{

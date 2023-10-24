@@ -49,17 +49,17 @@ public:
 	void	Rotate(const Vec4& vEulers, const _bool& bWorld = FALSE) { Rotate(vEulers.xyz(), bWorld); }
 	void	Rotate(const Vec4& vAxis, const _float& fRad);
 
-	void	Translate(const Vec3& vTranslation);
-	void	Translate(const Vec4& vTranslation) { Translate(vTranslation.xyz()); }
+	void	Translate(const Vec3& vTranslation, _bool bNotAgent = FALSE);
+	void	Translate(const Vec4& vTranslation, _bool bNotAgent = FALSE) { Translate(vTranslation.xyz(), bNotAgent); }
 
-	void	Set_Position(Vec4 vPos) { Set_Position(vPos.xyz()); }
-	void	Set_Position(Vec3 vPos); 
+	void	Set_Position(Vec4 vPos, _bool bNotAgent = FALSE) { Set_Position(vPos.xyz(), bNotAgent); }
+	void	Set_Position(Vec3 vPos, _bool bNotAgent = FALSE); 
 
 	void	Set_WorldMat(const Matrix& matrix) { memcpy(&m_WorldMatrix, &matrix, sizeof(Matrix)); }
 	void	Set_Look(const Vec4& vLookDir);
 	void	Set_State(STATE eState, Vec4 vState);
 
-	void	Set_RootPos(const Vec4& vPos);
+	void	Set_RootPos(const Vec4& vPos, _bool bNotAgent = FALSE);
 
 	/* Temp */
 	void	Set_NavMeshAgent(class CNavMeshAgent* pAgent) { m_pNavMeshAgentCom = pAgent; }

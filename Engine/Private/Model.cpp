@@ -188,7 +188,7 @@ HRESULT CModel::Update_Anim(_float fTimeDelta)
 			{
 				CTransform* pTransform = m_pOwner->Get_Transform();
 				Vec4 vPos = pTransform->Get_FinalPosition();
-				pTransform->Set_Position(vPos);
+				pTransform->Set_Position(vPos, TRUE);
 				pTransform->Set_RootPos(Vec4::Zero);
 			}
 
@@ -228,7 +228,7 @@ HRESULT CModel::Update_Anim(_float fTimeDelta)
 
 				CTransform* pTransform = m_pOwner->Get_Transform();
 				Vec4 vPos = pTransform->Get_FinalPosition();
-				pTransform->Set_Position(vPos);
+				pTransform->Set_Position(vPos, TRUE);
 				pTransform->Set_RootPos(Vec4::Zero);
 			}
 
