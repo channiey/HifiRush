@@ -88,14 +88,17 @@ void CState_Chai_Run::Move(const _float& fTimeDelta)
 	Vec4 vDir, vRotDir, vLook;
 	vLook = pTranform->Get_State(CTransform::STATE_LOOK).Normalized();
 
+	const _float fRotConstMax = 66.f;
+	const _float fRotConstNormal = 20.f;
+
 	if (Input::Up() && !Input::Left() && !Input::Right()) // Up
 	{
 		vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY().Normalized();
 		
 		if(3.f < acos(vDir.Dot((vLook))))
-			vRotDir = Vec4::Lerp(vLook, vDir, 0.66f);
+			vRotDir = Vec4::Lerp(vLook, vDir, fRotConstMax);
 		else
-			vRotDir = Vec4::Lerp(vLook, vDir, fTimeDelta * 20.f);
+			vRotDir = Vec4::Lerp(vLook, vDir, fTimeDelta * fRotConstNormal);
 
 		pTranform->Set_Look(vRotDir);
 		pTranform->Translate(vDir * m_pChai->m_tPhysicsDesc.fMaxForwardSpeed * fTimeDelta);
@@ -105,9 +108,9 @@ void CState_Chai_Run::Move(const _float& fTimeDelta)
 		vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY().Normalized().Inverse();
 
 		if (3.f < acos(vDir.Dot((vLook))))
-			vRotDir = Vec4::Lerp(vLook, vDir, 0.66f);
+			vRotDir = Vec4::Lerp(vLook, vDir, fRotConstMax);
 		else
-			vRotDir = Vec4::Lerp(vLook, vDir, fTimeDelta * 20.f);
+			vRotDir = Vec4::Lerp(vLook, vDir, fTimeDelta * fRotConstNormal);
 
 		pTranform->Set_Look(vRotDir);
 		pTranform->Translate(vDir * m_pChai->m_tPhysicsDesc.fMaxForwardSpeed * fTimeDelta);
@@ -117,9 +120,9 @@ void CState_Chai_Run::Move(const _float& fTimeDelta)
 		vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY().Normalized().Inverse();
 
 		if (3.f < acos(vDir.Dot((vLook))))
-			vRotDir = Vec4::Lerp(vLook, vDir, 0.66f);
+			vRotDir = Vec4::Lerp(vLook, vDir, fRotConstMax);
 		else
-			vRotDir = Vec4::Lerp(vLook, vDir, fTimeDelta * 20.f);
+			vRotDir = Vec4::Lerp(vLook, vDir, fTimeDelta * fRotConstNormal);
 
 		pTranform->Set_Look(vRotDir);
 		pTranform->Translate(vDir * m_pChai->m_tPhysicsDesc.fMaxForwardSpeed * fTimeDelta);
@@ -129,9 +132,9 @@ void CState_Chai_Run::Move(const _float& fTimeDelta)
 		vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY().Normalized();
 
 		if (3.f < acos(vDir.Dot((vLook))))
-			vRotDir = Vec4::Lerp(vLook, vDir, 0.66f);
+			vRotDir = Vec4::Lerp(vLook, vDir, fRotConstMax);
 		else
-			vRotDir = Vec4::Lerp(vLook, vDir, fTimeDelta * 20.f);
+			vRotDir = Vec4::Lerp(vLook, vDir, fTimeDelta * fRotConstNormal);
 
 		pTranform->Set_Look(vRotDir);
 		pTranform->Translate(vDir * m_pChai->m_tPhysicsDesc.fMaxForwardSpeed * fTimeDelta);
@@ -142,7 +145,7 @@ void CState_Chai_Run::Move(const _float& fTimeDelta)
 			+ GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY().Inverse();
 
 		vDir.Normalize();
-		vRotDir = Vec4::Lerp(vLook, vDir, fTimeDelta * 20.f);
+		vRotDir = Vec4::Lerp(vLook, vDir, fTimeDelta * fRotConstNormal);
 		pTranform->Set_Look(vRotDir);
 		pTranform->Translate(vDir * m_pChai->m_tPhysicsDesc.fMaxForwardSpeed * fTimeDelta);
 	}
@@ -153,7 +156,7 @@ void CState_Chai_Run::Move(const _float& fTimeDelta)
 
 		vDir.Normalize();
 
-		vRotDir = Vec4::Lerp(vLook, vDir, fTimeDelta * 20.f);
+		vRotDir = Vec4::Lerp(vLook, vDir, fTimeDelta * fRotConstNormal);
 		pTranform->Set_Look(vRotDir);
 		pTranform->Translate(vDir * m_pChai->m_tPhysicsDesc.fMaxForwardSpeed * fTimeDelta);
 	}
@@ -163,7 +166,7 @@ void CState_Chai_Run::Move(const _float& fTimeDelta)
 			+ GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY().Inverse();
 
 		vDir.Normalize();
-		vRotDir = Vec4::Lerp(vLook, vDir, fTimeDelta * 20.f);
+		vRotDir = Vec4::Lerp(vLook, vDir, fTimeDelta * fRotConstNormal);
 		pTranform->Set_Look(vRotDir);
 		pTranform->Translate(vDir * m_pChai->m_tPhysicsDesc.fMaxForwardSpeed * fTimeDelta);
 	}
@@ -173,7 +176,7 @@ void CState_Chai_Run::Move(const _float& fTimeDelta)
 			+ GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY();
 
 		vDir.Normalize();
-		vRotDir = Vec4::Lerp(vLook, vDir, fTimeDelta * 20.f);
+		vRotDir = Vec4::Lerp(vLook, vDir, fTimeDelta * fRotConstNormal);
 		pTranform->Set_Look(vRotDir);
 		pTranform->Translate(vDir * m_pChai->m_tPhysicsDesc.fMaxForwardSpeed * fTimeDelta);
 	}

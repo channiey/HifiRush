@@ -24,22 +24,25 @@ public:
 	const Vec4		Get_CurCamera_State(const _uint iState);
 
 public:
-	HRESULT		Set_CurCamera(const _uint& iKey);
+	HRESULT			Set_CurCamera(const _uint& iKey);
 
-	HRESULT		Add_Camera(const _uint& iKey, CGameObject* pCamera);
-	HRESULT		Change_Camera(const _uint& iKey) {};
+	HRESULT			Add_Camera(const _uint& iKey, CGameObject* pCamera);
+	HRESULT			Change_Camera(const _uint& iKey);
+	HRESULT			Change_Camera_Inverse();
 
-
-private:
-	CGameObject* Find_Camera(const _uint& iKey);
 
 private:
-	CGameObject* m_pPreCamera = { nullptr };
-	CGameObject* m_pCurCamera = { nullptr };
+	CGameObject*	Find_Camera(const _uint& iKey);
+
+private:
+	CGameObject*				m_pPreCamera = { nullptr };
+	CGameObject*				m_pCurCamera = { nullptr };
 	
-	CPipeLine* m_pPipeLine = { nullptr };
+	CPipeLine*					m_pPipeLine = { nullptr };
 
-	map<_uint, CGameObject*> m_Cameras;
+	map<_uint, CGameObject*>	m_Cameras;
+
+	_bool						m_bCameraChange = FALSE;
 
 public:
 	virtual void Free() override;

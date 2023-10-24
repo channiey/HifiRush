@@ -19,6 +19,10 @@
 #include "State_Chai_Damaged.h"
 #include "State_Chai_Parry.h"
 
+#ifdef _DEBUG
+#include "ImGui_Manager.h"
+#endif // _DEBUG
+
 
 CChai::CChai(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CCharacter(pDevice, pContext)
@@ -53,22 +57,28 @@ HRESULT CChai::Initialize(void* pArg)
 
 void CChai::Tick(_float fTimeDelta)
 {
-	if (FAILED(m_pStateMachineCom->Tick(fTimeDelta)))
-		return;
+	if (!CImGui_Manager::GetInstance()->Is_DebugCam())
+	{
+		if (FAILED(m_pStateMachineCom->Tick(fTimeDelta)))
+			return;
 
-	if(nullptr != m_pRigidbodyCom)
-		m_pRigidbodyCom->Tick(fTimeDelta);
+		if(nullptr != m_pRigidbodyCom)
+			m_pRigidbodyCom->Tick(fTimeDelta);
+	}
 
 	__super::Tick(fTimeDelta);
 }
 
 void CChai::LateTick(_float fTimeDelta)
 {
-	if (FAILED(m_pModelCom->Update(fTimeDelta)))
-		return;
+	if (!CImGui_Manager::GetInstance()->Is_DebugCam())
+	{
+		if (FAILED(m_pModelCom->Update(fTimeDelta)))
+			return;
 
-	if (FAILED(m_pStateMachineCom->LateTick(fTimeDelta)))
-		return;
+		if (FAILED(m_pStateMachineCom->LateTick(fTimeDelta)))
+			return;
+	}
 
 	__super::LateTick(fTimeDelta);
 }
@@ -97,6 +107,12 @@ HRESULT CChai::Ready_Components()
 	CRigidbody::RIGIDBODY_TYPE eType = CRigidbody::RIGIDBODY_TYPE::DYNAMIC;
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Rigidbody"),
 		ComponentNames[COM_RIGIDBODY], (CComponent**)&m_pRigidbodyCom, &eType)))
+		return E_FAIL;
+
+	/* Com_NavMeshAgent*/
+	CNavMeshAgent::NAVMESHAGENT_DESC tDesc(0);
+	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_NavMeshAgent"),
+		ComponentNames[COM_NAVMESHAGENT], (CComponent**)&m_pNavMeshAgentCom, &tDesc)))
 		return E_FAIL;
 
 	/* Com_Collider */

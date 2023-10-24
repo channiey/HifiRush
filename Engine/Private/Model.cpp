@@ -159,6 +159,9 @@ HRESULT CModel::Update(_float fTimeDelta)
 
 HRESULT CModel::Update_Anim(_float fTimeDelta)
 {
+	if (m_bStopAnim)
+		return TRUE;
+
 	m_TweenDesc.cur.fFrameAcc += fTimeDelta;
 	m_TweenDesc.cur.fAnimAcc += fTimeDelta;
 

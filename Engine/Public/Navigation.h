@@ -12,7 +12,9 @@ public:
 	/* 스태틱은 사용하지 않고, 다이나믹 애들만 초기 위치 주고 사용 */
 	typedef struct tagNavigationDesc 
 	{
-		_int			iCurrentIndex = { -1 };
+		_int			iCurIndex = { -1 };
+
+		tagNavigationDesc(const _int& _iCurIndex) : iCurIndex(_iCurIndex) {};
 
 	}NAVIGATION_DESC;
 

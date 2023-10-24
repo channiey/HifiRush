@@ -38,6 +38,7 @@ public:
 	const _float&		Get_MouseSensitiveY() const { return m_fMouseSensitiveY; }
 
 	const PROJ_DESC&	Get_ProjDesc() const { return m_tProjDesc; }
+	const _uint&		Get_Key() const { return m_iKey; }
 
 public:
 	void Set_TargetObj(CGameObject* pObj)	{ m_pTargetObj = pObj; }
@@ -52,6 +53,8 @@ public:
 	void Set_LockX(const _bool& bLock) { m_bLockX = bLock; }
 	void Set_LockY(const _bool& bLock) { m_bLockY = bLock; }
 	void Set_Fovy(const _float& fFovy) { m_tProjDesc.fFovy = fFovy; }
+
+	void Set_Key(const _uint& iKey) { m_iKey = iKey; }
 
 public:
 	const _bool Is_TargetObj() const { return nullptr != m_pTargetObj ? TRUE : FALSE; }
@@ -78,6 +81,8 @@ private:
 	_float			m_fDistance = { 0.f };
 	_float			m_fMouseSensitiveX = { 1.f };
 	_float			m_fMouseSensitiveY = { 1.f };
+
+	_uint			m_iKey = { 99 };
 
 public:
 	static CCamera* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

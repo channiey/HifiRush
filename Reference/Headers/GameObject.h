@@ -54,6 +54,7 @@ public:
 	class CStateMachine*		Get_StateMachine();
 	class CCamera*				Get_Camera();
 	class CRigidbody*			Get_Rigidbody();
+	class CNavMeshAgent*		Get_NavMeshAgent();
 	
 	class CComponent* const			Get_Component(const _uint& iIndex);
 	class CComponent* const			Get_Component(const wstring& strComponentTag) { return Find_Component(strComponentTag); };

@@ -426,9 +426,6 @@
     <ClInclude Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hlsl">
       <Filter>01.Utiltiy\97.ShaderFiles</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Navigation.h">
-      <Filter>01.Utiltiy\03.Components\Component\13.NavmeshAgent</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Cell.h">
       <Filter>01.Utiltiy\03.Components\Component\13.NavmeshAgent\Cell</Filter>
     </ClInclude>
@@ -440,6 +437,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\NavMeshAgent.h">
       <Filter>01.Utiltiy\03.Components\Component\13.NavmeshAgent\NavMeshAgent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Navigation.h">
+      <Filter>01.Utiltiy\03.Components\Component\13.NavmeshAgent\Not Used</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -66,6 +66,7 @@ public:
 	const _bool&	Is_Active() const { return m_bActive; }
 	const _bool		Is_ClickedWindow();
 	const _bool&	Is_EdittingAnim() const { return m_bEdittingAnim; }
+	const _bool&	Is_DebugCam() const { return m_bDebugCam; }
 
 	void			Set_Active(const _bool& bActive) { m_bActive = bActive; }
 	void			Set_Active_Main_Window(const WINDOW_MAIN_TYPE& eType, const _bool& bActive);
@@ -74,7 +75,7 @@ public:
 
 	HRESULT			Clear_ReferenceData();
 
-	const _bool&		Is_Render_Collider() const { return m_bRenderCollider; }
+	const _bool&	Is_Render_Collider() const { return m_bRenderCollider; }
 
 private:
 	HRESULT			ImGui_SetUp(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -119,6 +120,7 @@ public:
 
 
 	_bool							m_bRenderCollider = TRUE;
+	_bool							m_bDebugCam = FALSE;
 
 private:
 	ID3D11Device* m_pDevice = { nullptr };

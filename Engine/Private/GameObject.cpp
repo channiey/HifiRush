@@ -86,6 +86,11 @@ CRigidbody* CGameObject::Get_Rigidbody()
 	return dynamic_cast<CRigidbody*>(Get_Component(ComponentNames[COM_RIGIDBODY]));
 }
 
+CNavMeshAgent* CGameObject::Get_NavMeshAgent()
+{
+	return dynamic_cast<CNavMeshAgent*>(Get_Component(ComponentNames[COM_NAVMESHAGENT]));
+}
+
 CComponent* const CGameObject::Get_Component(const _uint& iIndex)
 {
 	if(m_Components.size() <= iIndex)

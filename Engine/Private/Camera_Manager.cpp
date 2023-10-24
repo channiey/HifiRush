@@ -78,10 +78,52 @@ HRESULT CCamera_Manager::Add_Camera(const _uint& iKey, CGameObject* pCamera)
 	if(nullptr == pCamera|| nullptr != Find_Camera(iKey))
 		return E_FAIL;
 
+	pCamera->Get_Camera()->Set_Key(iKey);
+
+	/* 이전에 추가되었던 카메라들은 비활성화 */
+	for(auto& Pair : m_Cameras)
+		Pair.second->Set_State(CGameObject::OBJ_STATE::STATE_UNACTIVE);
+
 	m_Cameras.insert({ iKey, pCamera });
 
-	if (nullptr == m_pCurCamera)
-		m_pCurCamera = pCamera;
+	m_pCurCamera = pCamera;
+
+	return S_OK;
+}
+
+HRESULT CCamera_Manager::Change_Camera(const _uint& iKey)
+{
+	auto iter = m_Cameras.find(iKey);
+
+	if (iter == m_Cameras.end())
+		return E_FAIL;
+
+	m_pPreCamera = m_pCurCamera;
+	m_pPreCamera->Set_State(CGameObject::OBJ_STATE::STATE_UNACTIVE);
+
+	m_pCurCamera = iter->second;
+	m_pCurCamera->Set_State(CGameObject::OBJ_STATE::STATE_ACTIVE);
+
+	return S_OK;
+}
+
+HRESULT CCamera_Manager::Change_Camera_Inverse()
+{
+	if (nullptr == m_pPreCamera)
+		return S_OK;
+
+	_uint iPreCameraKey = m_pPreCamera->Get_Camera()->Get_Key();
+
+	m_pPreCamera = m_pCurCamera;
+	m_pPreCamera->Set_State(CGameObject::OBJ_STATE::STATE_UNACTIVE);
+
+	auto iter = m_Cameras.find(iPreCameraKey);
+
+	if (iter == m_Cameras.end())
+		return E_FAIL;
+
+	m_pCurCamera = iter->second;
+	m_pCurCamera->Set_State(CGameObject::OBJ_STATE::STATE_ACTIVE);
 
 	return S_OK;
 }

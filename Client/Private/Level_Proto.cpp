@@ -16,7 +16,6 @@ CLevel_Proto::CLevel_Proto(ID3D11Device * pDevice, ID3D11DeviceContext * pContex
 
 HRESULT CLevel_Proto::Initialize()
 {
-
 	//if (FAILED(CLevel_Loading::Parse_LevelData(LV_PROTO)))
 	//	return E_FAIL;
 
@@ -30,11 +29,11 @@ HRESULT CLevel_Proto::Initialize()
 	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_CAMERA], L"Camera_Debug"))
 		return E_FAIL;
 
-	/*if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_CAMERA], L"Camera_Follow"))
-		return E_FAIL;*/
+	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_CAMERA], L"Camera_Follow"))
+		return E_FAIL;
 
-	//if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_PLAYER], L"Player_Chai"))
-	//	return E_FAIL;
+	if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_PLAYER], L"Player_Chai"))
+		return E_FAIL;
 
 	//if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_ENEMY], L"Enemy_Saber"))
 	//	return E_FAIL;

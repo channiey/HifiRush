@@ -3,6 +3,7 @@
 
 #include "ImGui_Window_Sub_Nav.h"
 #include "GameObject.h"
+#include "NavMesh.h"
 #include "Util_String.h"
 #include "Util_File.h"
 

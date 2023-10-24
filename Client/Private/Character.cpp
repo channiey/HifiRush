@@ -158,6 +158,7 @@ void CCharacter::Free()
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pShaderCom);
+	Safe_Release(m_pNavMeshAgentCom);
 
 	for (auto& pCollider : m_pColliderComs)
 		Safe_Release(pCollider);

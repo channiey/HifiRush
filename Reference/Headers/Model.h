@@ -124,6 +124,7 @@ public:
 	void					Set_AnimationSpeed(const _float& fSpeed);
 	void					Set_BoneIndex(const BONE_TYPE& eType, const _int iIndex);
 	void					Set_RootAnimation(const _bool bRootAnim) { m_bRootAnimation = bRootAnim; }
+
 public:
 	const _bool&			Is_RootMotion() const { return m_bRootAnimation; }
 	const _bool&			Is_Finish_Tween() const {return m_bFinishTween; }
@@ -135,6 +136,9 @@ public:
 	const _bool				Is_Tween();
 	const _bool				Is_Contain_InTween(const _uint& iAnimIndex);
 	const _bool				Is_Playing_Animation(const _uint& iAnimIndex);
+
+	const _bool&			Is_StopAnimation() const { return m_bStopAnim; }
+	void					Stop_Animation(const _bool& bStop) { m_bStopAnim = bStop; }
 
 private: 
     HRESULT					Read_BoneData(const string& strPath);
@@ -174,6 +178,8 @@ private:
 	_bool						m_bFinishAnimation = FALSE;
 	_bool						m_bFinishTween = FALSE;
 	_int						m_AnimBoneIndecies[BONE_END];
+
+	_bool						m_bStopAnim = FALSE;
 
 public:
 	static CModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const string& strPath, _fmatrix PivotMatrix = XMMatrixIdentity());

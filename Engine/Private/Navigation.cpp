@@ -77,7 +77,7 @@ HRESULT CNavigation::Initialize(void * pArg)
 	NAVIGATION_DESC*		pNaviDesc = (NAVIGATION_DESC*)pArg;
 
 	/*  이 네비게이션을 이용하고자하는 객체가 어떤 셀에 있는지 저장한다. */
-	m_iCurrentIndex = pNaviDesc->iCurrentIndex;
+	//m_iCurrentIndex = pNaviDesc->iCurrentIndex;
 
 	return S_OK;
 }

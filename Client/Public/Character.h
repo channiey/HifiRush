@@ -9,7 +9,7 @@ class CShader;
 class CCollider;
 class CRenderer;
 class CTransform;
-class CNavigation;
+class CNavMeshAgent;
 END
 
 BEGIN(Client)
@@ -109,7 +109,7 @@ protected:
 	CRenderer*				m_pRendererCom		= { nullptr };
 	CTransform*				m_pTransformCom		= { nullptr };
 	CModel*					m_pModelCom			= { nullptr };
-	CNavigation*			m_pNavigationCom	= { nullptr };
+	CNavMeshAgent*			m_pNavMeshAgentCom	= { nullptr };
 	vector<CCollider*>		m_pColliderComs;
 
 protected:

@@ -142,6 +142,11 @@ HRESULT CLoader::Load_Prototype()
 			CBehaviourTree::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+		/* For.Prototype_Component_NavMeshAgent */
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_NavMeshAgent"),
+			CNavMeshAgent::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 		/* For.Prototype_Component_Collider_AABB */
 		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Collider_AABB"),
 			CCollider_AABB::Create(m_pDevice, m_pContext, CCollider::AABB))))
@@ -211,17 +216,17 @@ HRESULT CLoader::Load_Prototype()
 	{
 		Matrix PivotMatrix = Matrix::Identity;
 
-		///* For.Prototype_Component_Model_Chai */
-		//PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.01f);
-		//if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Chai"),
-		//	CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Chai", PivotMatrix))))
-		//	return E_FAIL;
+		/* For.Prototype_Component_Model_Chai */
+		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.01f);
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Chai"),
+			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Chai", PivotMatrix))))
+			return E_FAIL;
 
-		///* For.Prototype_Component_Model_Saber */
-		//PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.01f);
-		//if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Saber"),
-		//	CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Saber", PivotMatrix))))
-		//	return E_FAIL;
+		/* For.Prototype_Component_Model_Saber */
+		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.01f);
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Saber"),
+			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Saber", PivotMatrix))))
+			return E_FAIL;
 
 
 		/* For.Prototype_Component_Model_Weapon */

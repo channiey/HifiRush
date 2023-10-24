@@ -51,7 +51,18 @@ void CImGui_Window_Main_Controller::Show_Window()
 			/* 디버그 카메라 */
 			if (ImGui::Button("Cam"))
 			{
-
+				if (!m_pImGui_Manager->m_bDebugCam)
+				{
+					m_pImGui_Manager->m_bDebugCam = TRUE;
+					if (FAILED(GAME_INSTNACE->Change_Camera(CAMERA_ID::CAM_DEBUG)))
+						assert(FALSE);
+				}
+				else
+				{
+					m_pImGui_Manager->m_bDebugCam = FALSE;
+					if(FAILED(GAME_INSTNACE->Change_Camera_Inverse()))
+						assert(FALSE);
+				}
 			}
 			ImGui::SameLine();
 

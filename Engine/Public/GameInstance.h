@@ -41,8 +41,8 @@ public: /* For.Graphic_Device */
 	const Viewport	Get_ViewPort();
 
 public: /* For.Level_Manager */
-	HRESULT		Open_Level(_uint iLevelIndex, class CLevel* pNewLevel);
-	const _uint Get_CurLevelIndex();
+	HRESULT			Open_Level(_uint iLevelIndex, class CLevel* pNewLevel);
+	const _uint		Get_CurLevelIndex();
 
 public: /* For.Object_Manager */
 	map<const wstring, class CGameObject*>*	Get_Prototypes();
@@ -104,7 +104,9 @@ public: /* For.Camera_Manager */
 	CGameObject*	Get_CurCamera();
 	HRESULT			Set_CurCamera(const _uint& iKey);
 	HRESULT			Add_Camera(const _uint& iKey, CGameObject* pCamera);
-	Vec4		Get_CurCamera_State(const _uint iState);
+	Vec4			Get_CurCamera_State(const _uint iState);
+	HRESULT			Change_Camera(const _uint& iKey);
+	HRESULT			Change_Camera_Inverse();
 
 private:
 	class CTimer_Manager*			m_pTimer_Manager		= { nullptr };

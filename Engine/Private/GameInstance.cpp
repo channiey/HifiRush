@@ -575,6 +575,22 @@ Vec4 CGameInstance::Get_CurCamera_State(const _uint iState)
 	return m_pCamera_Manager->Get_CurCamera_State(iState);
 }
 
+HRESULT CGameInstance::Change_Camera(const _uint& iKey)
+{
+	if (nullptr == m_pCamera_Manager)
+		return E_FAIL;
+
+	return m_pCamera_Manager->Change_Camera(iKey);
+}
+
+HRESULT CGameInstance::Change_Camera_Inverse()
+{
+	if (nullptr == m_pCamera_Manager)
+		return E_FAIL;
+
+	return m_pCamera_Manager->Change_Camera_Inverse();
+}
+
 void CGameInstance::Release_Engine()
 {
 	CGameInstance::GetInstance()->DestroyInstance();
