@@ -110,10 +110,19 @@ HRESULT CChai::Ready_Components()
 		return E_FAIL;
 
 	/* Com_NavMeshAgent*/
-	CNavMeshAgent::NAVMESHAGENT_DESC tDesc(0);
-	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_NavMeshAgent"),
-		ComponentNames[COM_NAVMESHAGENT], (CComponent**)&m_pNavMeshAgentCom, &tDesc)))
-		return E_FAIL;
+	const _int iIndex = CNavMesh::GetInstance()->Find_Cell(m_pTransformCom->Get_FinalPosition().xyz());
+	{
+		if(iIndex < 0 ) 
+			return E_FAIL;
+		CNavMeshAgent::NAVMESHAGENT_DESC tDesc(iIndex);
+		
+		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_NavMeshAgent"),
+			ComponentNames[COM_NAVMESHAGENT], (CComponent**)&m_pNavMeshAgentCom, &tDesc)))
+			return E_FAIL;
+
+		/* Temp */
+		m_pTransformCom->Set_NavMeshAgent(m_pNavMeshAgentCom);
+	}
 
 	/* Com_Collider */
 	CCollider_Sphere* pCollider = nullptr;

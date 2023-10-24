@@ -28,6 +28,7 @@ public:
 	const _int		Get_NeighborIndex(LINE eLine) const { return m_iNeighborIndices[eLine]; }
 	const _float3*	Get_Normal(LINE eLine) const { return &m_vNormals[eLine]; }
 	Vec3			Get_CenterPoint() const { return m_vCenterPoint; }
+	const Vec3*		Get_Points() const { return m_vPoints_InWorld; }
 	
 public:
 	void			Set_Index(const _uint& iIndex) { memcpy(&m_iIndex, &iIndex, sizeof(_uint)); }

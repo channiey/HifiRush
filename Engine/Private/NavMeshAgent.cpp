@@ -1,5 +1,8 @@
 #include "GameInstance.h"
 #include "NavMesh.h"
+
+#include "GameObject.h"
+
 CNavMeshAgent::CNavMeshAgent(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CComponent(pDevice, pContext)
 {
@@ -22,6 +25,14 @@ HRESULT CNavMeshAgent::Initialize(void* pArg)
 		return E_FAIL;
 
 	memmove(&m_iCurIndex, pArg, sizeof NAVMESHAGENT_DESC);
+
+	return S_OK;
+}
+
+HRESULT CNavMeshAgent::Render()
+{
+	if (FAILED(m_pNavMesh->Render_Cell(m_iCurIndex)))
+		return E_FAIL;
 
 	return S_OK;
 }

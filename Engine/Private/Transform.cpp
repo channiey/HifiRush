@@ -1,6 +1,7 @@
 #include "..\Public\Transform.h"
-#include "Shader.h"
 #include "GameObject.h"
+#include "Shader.h"
+#include "NavMeshAgent.h"
 
 CTransform::CTransform(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CComponent(pDevice, pContext)
@@ -345,10 +346,14 @@ const Matrix CTransform::Get_WorldMat()
 const Matrix CTransform::Get_FinalMat()
 {
 	Vec3	vfinalPos = m_vRootPos.xyz() + Vec4(m_WorldMatrix.m[3]).xyz();
+	
+	/* 네비 메시 에이전트의 이동이 가능하다면 파이널 포지션을 업데이트한다. 아니라면 전 프레임 파이널 포지션을 사용한다. */
+	if(nullptr != m_pNavMeshAgentCom && m_pNavMeshAgentCom->Can_Move(vfinalPos))
+		memcpy(&m_vPrevFinalPos, &vfinalPos, sizeof(Vec3));
 
 	Matrix	matFinal = m_WorldMatrix;
 
-	memcpy(&matFinal.m[3], &vfinalPos, sizeof(Vec3));
+	memcpy(&matFinal.m[3], &m_vPrevFinalPos, sizeof(Vec3));
 
 	if (m_pOwner->Is_Parent())
 		return m_pOwner->Get_Parent()->Get_Transform()->Get_FinalMat() * matFinal;
@@ -386,4 +391,5 @@ void CTransform::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pNavMeshAgentCom);
 }

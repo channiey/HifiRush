@@ -60,10 +60,14 @@ void CImGui_Window_Sub_Nav::Show_Window()
 				CNavMesh::GetInstance()->Set_Render();
 			}
 			ImGui::SameLine();
-
 			if (ImGui::Button("Save"))
 			{
 				m_bPopUp_Save = TRUE;
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Load"))
+			{
+				m_bPopUp_Load = TRUE;
 			}
 			ImGui::SameLine();
 		}
@@ -73,16 +77,20 @@ void CImGui_Window_Sub_Nav::Show_Window()
 			ImGui::Text("Cells : %d", CNavMesh::GetInstance()->Get_CountCells());
 		}
 
+		/* PopUp */
+		{
+			if (m_bPopUp_Clear)
+				Render_PopUp_Clear();
+			if (m_bPopUp_Save)
+				Render_PopUp_Save();
+			if (m_bPopUp_Load)
+				Render_PopUp_Load();
+		}
+
 		/* Render */
 		if (CNavMesh::GetInstance()->Is_Render())
 			CNavMesh::GetInstance()->Render();
 
-		/* PopUp */
-
-		if (m_bPopUp_Clear)
-			Render_PopUp_Clear();
-		if (m_bPopUp_Save)
-			Render_PopUp_Save();
 	}
 	ImGui::End();
 
@@ -134,6 +142,14 @@ HRESULT CImGui_Window_Sub_Nav::Save_NavData()
 	return S_OK;
 }
 
+HRESULT CImGui_Window_Sub_Nav::Load_NavData()
+{
+	if (FAILED(CNavMesh::GetInstance()->Load_NavData(NavPaths[m_pImGui_Manager->m_iIndex_CurLevelID])))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 
 HRESULT CImGui_Window_Sub_Nav::Create_Cells(vector<CCell*>& Cells)
 {
@@ -178,6 +194,11 @@ HRESULT CImGui_Window_Sub_Nav::Create_Cells(vector<CCell*>& Cells)
 				XMStoreFloat3(&VerticesPosWorld[2],
 					XMVector3TransformCoord(XMLoadFloat3(&VerticesPos[Indices[i]._2]), matWorld));
 
+				for (size_t j = 0; j < CCell::POINT_END; j++)
+				{
+					VerticesPosWorld[j].y += 0.01f;
+				}
+
 				Vec3 vPoint_A = Points[CCell::POINT_A] = VerticesPosWorld[0];
 				Vec3 vPoint_B = Points[CCell::POINT_B] = VerticesPosWorld[1];
 				Vec3 vPoint_C = Points[CCell::POINT_C] = VerticesPosWorld[2];
@@ -207,7 +228,7 @@ HRESULT CImGui_Window_Sub_Nav::Create_Cells(vector<CCell*>& Cells)
 				}
 
 				/* 최종 생성 */
-				CCell* pCell = CCell::Create(m_pImGui_Manager->m_pDevice, m_pImGui_Manager->m_pContext, VerticesPosWorld, 0);
+				CCell* pCell = CCell::Create(m_pImGui_Manager->m_pDevice, m_pImGui_Manager->m_pContext, VerticesPosWorld, Cells.size());
 
 				if (nullptr != pCell)
 					Cells.push_back(pCell);
@@ -273,6 +294,23 @@ void CImGui_Window_Sub_Nav::Render_PopUp_Save()
 		{
 			m_bPopUp_Save = FALSE;
 			Save_NavData();
+		}
+		ImGui::EndPopup();
+	}
+}
+
+void CImGui_Window_Sub_Nav::Render_PopUp_Load()
+{
+	ImGui::OpenPopup("PopUp");
+	if (ImGui::BeginPopup("PopUp"))
+	{
+		ImGui::Text("Are you Sure?");
+		ImGui::SameLine();
+
+		if (ImGui::Button("OK"))
+		{
+			m_bPopUp_Load = FALSE;
+			Load_NavData();
 		}
 		ImGui::EndPopup();
 	}

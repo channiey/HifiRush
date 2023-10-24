@@ -38,6 +38,7 @@ public:
 	const Matrix	Get_FinalMat(); /* 루트 애니메이션 포지션 적용된 매트릭스 */
 	Vec4			Get_State(STATE eState) { return XMLoadFloat4x4(&m_WorldMatrix).r[eState]; }
 	const Vec4		Get_RootPos() const { return m_vRootPos; }
+
 public: 
 	void	Set_Scale(const Vec3& vScale);
 
@@ -60,6 +61,9 @@ public:
 
 	void	Set_RootPos(const Vec4& vPos);
 
+	/* Temp */
+	void	Set_NavMeshAgent(class CNavMeshAgent* pAgent) { m_pNavMeshAgentCom = pAgent; }
+
 public:
 	const Vec3	ToEulerAngles(Quaternion quat);
 	void		LookAt(Vec4 vPoint);
@@ -71,6 +75,10 @@ private:
 	Matrix		m_WorldMatrix	= {};
 	Matrix		m_RotMatrix		= {};
 	Vec4		m_vRootPos		= {};
+	Vec3		m_vPrevFinalPos = {};
+
+private:
+	class CNavMeshAgent* m_pNavMeshAgentCom = { nullptr };
 
 public:
 	static CTransform* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

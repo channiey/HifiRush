@@ -18,6 +18,7 @@ public:
 	HRESULT	Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 #ifdef _DEBUG
 	HRESULT Render();
+	HRESULT Render_Cell(const _int& iInedx);
 #endif // _DEBUG
 
 
@@ -35,13 +36,20 @@ public:
 #endif // _DEBUG
 
 public:
+	const _int		Find_Cell(Vec3 vWorldPos);
+
+public:
 	HRESULT			Set_NavDate(vector<CCell*>& Cells);
 	HRESULT			Save_NavData(const wstring& strFilePath);
 	HRESULT			Load_NavData(const wstring& strFilePath);
 	HRESULT			Clear_NavDate();
 
+
 public:
 	const _bool		Can_Move(_fvector vPoint, _int& iCurIndex);
+
+private:
+	HRESULT			Bind_ShaderResources();
 
 private:
 	ID3D11Device* m_pDevice = { nullptr };

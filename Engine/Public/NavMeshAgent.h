@@ -24,13 +24,14 @@ private:
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
+	virtual HRESULT Render() override;
 
 public:
-	const _bool						Can_Move(_fvector vPoint);
+	const _bool		Can_Move(_fvector vPoint);
 
 private:
-	_int							m_iCurIndex = { -1 };
-	CNavMesh*						m_pNavMesh = { nullptr };
+	_int			m_iCurIndex = { -1 };
+	CNavMesh*		m_pNavMesh = { nullptr };
 
 public:
 	static CNavMeshAgent* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

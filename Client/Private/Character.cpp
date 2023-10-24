@@ -69,8 +69,11 @@ HRESULT CCharacter::Render()
 	if (FAILED(__super::Render()))
 		return E_FAIL;
 
-	if (FAILED(Bind_ShaderResources()))
-		return E_FAIL;
+	if (nullptr != m_pNavMeshAgentCom)
+	{
+		if (FAILED(m_pNavMeshAgentCom->Render()))
+			return E_FAIL;
+	}
 
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;

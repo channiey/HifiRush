@@ -34,47 +34,63 @@ HRESULT CNavMesh::Render()
 	if (!m_bRender || nullptr == m_pShader)
 		return S_OK;
 
-	/* WVP 세팅 */
+	if (FAILED(Bind_ShaderResources()))
+		return E_FAIL;
+
+	/* Color */
+	_float4 vColor{ 0.f, 1.f, 0.f, 1.f };
+	if (FAILED(m_pShader->Bind_RawValue("g_vLineColor", &vColor, sizeof(_float4))))
+		return E_FAIL;
+
+	/* Height */
+	_float	fHeight = 0.f;
+	if (FAILED(m_pShader->Bind_RawValue("g_fHeight", &fHeight, sizeof(_float))))
+		return E_FAIL;
+	
+	/* Render */
+	if (FAILED(m_pShader->Begin(0)))
+		return E_FAIL;
+	
+	for (auto& pCell : m_Cells)
 	{
-		Matrix matWorld;
-
-		if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", &matWorld)))
-			return E_FAIL;
-
-		_float4x4 matView = GAME_INSTNACE->Get_Transform(CPipeLine::STATE_VIEW);
-		_float4x4 matProj = GAME_INSTNACE->Get_Transform(CPipeLine::STATE_PROJ);
-
-		if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrix", &matView)))
-			return E_FAIL;
-
-		if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &matProj)))
-			return E_FAIL;
+		if (nullptr != pCell)
+		{
+			/* Check Range */
+			_float fDist = Vec3(pCell->Get_CenterPoint() - GAME_INSTNACE->Get_CamPosition().xyz()).Length();
+			if (m_fRenderRange < fDist)
+				continue;
+			pCell->Render();
+		}
 	}
 
-	/* Draw Cells */
+	return S_OK;
+}
+HRESULT CNavMesh::Render_Cell(const _int& iInedx)
+{
+	if (!m_bRender || nullptr == m_pShader || m_Cells.size() <= iInedx)
+		return S_OK;
+
+	if (FAILED(Bind_ShaderResources()))
+		return E_FAIL;
+
+	/* Color */
+	_float4 vColor{ 1.f, 0.f, 0.f, 1.f };
+	if (FAILED(m_pShader->Bind_RawValue("g_vLineColor", &vColor, sizeof(_float4))))
+		return E_FAIL;
+
+	/* Height */
+	_float		fHeight = 0.1f;
+	if (FAILED(m_pShader->Bind_RawValue("g_fHeight", &fHeight, sizeof(_float))))
+		return E_FAIL;
+
+	/* Render */
+	if (FAILED(m_pShader->Begin(0)))
+		return E_FAIL;
+
+	/*_float fDist = Vec3(m_Cells[iInedx]->Get_CenterPoint() - GAME_INSTNACE->Get_CamPosition().xyz()).Length();
+	if (m_fRenderRange >= fDist)*/
 	{
-		_float4 vColor{ 0.f, 1.f, 0.f, 1.f };
-		if (FAILED(m_pShader->Bind_RawValue("g_vLineColor", &vColor, sizeof(_float4))))
-			return E_FAIL;
-
-		_float		fHeight = 0.f;
-		if (FAILED(m_pShader->Bind_RawValue("g_fHeight", &fHeight, sizeof(_float))))
-			return E_FAIL;
-
-		if (FAILED(m_pShader->Begin(0)))
-			return E_FAIL;
-
-		for (auto& pCell : m_Cells)
-		{
-			if (nullptr != pCell)
-			{
-				/* Check Range */
-				_float fDist = Vec3(pCell->Get_CenterPoint() - GAME_INSTNACE->Get_CamPosition().xyz()).Length();
-				if (m_fRenderRange < fDist)
-					continue;
-				pCell->Render();
-			}
-		}
+		m_Cells[iInedx]->Render();
 	}
 
 	return S_OK;
@@ -185,30 +201,53 @@ const _bool CNavMesh::Can_Move(_fvector vPoint, _int& iCurIndex)
 
 	_int		iNeighborIndex = 0;
 
-	if (true == m_Cells[iCurIndex]->Is_Out(vPoint, &iNeighborIndex))
+	/* 현재 셀을 나갔는가 */
+	if (m_Cells[iCurIndex]->Is_Out(vPoint, &iNeighborIndex))
 	{
-		/* 나간 방향에 이웃셀이 있으면 움직여야해! */
+		/* 나간 방향에 이웃셀이 있는가 */
 		if (-1 != iNeighborIndex)
 		{
-			while (true)
+			while (TRUE)
 			{
 				if (-1 == iNeighborIndex)
-					return false;
+					return FALSE;
 
-				if (false == m_Cells[iNeighborIndex]->Is_Out(vPoint, &iNeighborIndex))
+				if (FALSE == m_Cells[iNeighborIndex]->Is_Out(vPoint, &iNeighborIndex))
 				{
 					iCurIndex = iNeighborIndex;
 					break;
 				}
 			}
-			return true;
+			return TRUE;
 		}
 		else
-			return false;
+			return FALSE;
 
 	}
 	else
-		return true;
+		return TRUE;
+}
+
+HRESULT CNavMesh::Bind_ShaderResources()
+{
+	/* WVP 세팅 */
+	{
+		Matrix matWorld;
+
+		if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", &matWorld)))
+			return E_FAIL;
+
+		_float4x4 matView = GAME_INSTNACE->Get_Transform(CPipeLine::STATE_VIEW);
+		_float4x4 matProj = GAME_INSTNACE->Get_Transform(CPipeLine::STATE_PROJ);
+
+		if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrix", &matView)))
+			return E_FAIL;
+
+		if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &matProj)))
+			return E_FAIL;
+	}
+
+	return S_OK;
 }
 
 HRESULT CNavMesh::Clear_NavDate()
@@ -222,6 +261,32 @@ HRESULT CNavMesh::Clear_NavDate()
 		m_Cells.shrink_to_fit();
 	}
 	return S_OK;
+}
+
+const _int CNavMesh::Find_Cell(Vec3 vWorldPos)
+{
+	vWorldPos.y += 0.1f;
+
+	Ray ray(vWorldPos, Vec3::Down);
+
+	_int iIndex = -1;
+	_float fMinDist = 9999;
+
+	for (auto& pCell : m_Cells)
+	{
+		const Vec3* vPoints = pCell->Get_Points();
+		_float fDist;
+		if (ray.Intersects(vPoints[CCell::POINT_A], vPoints[CCell::POINT_B], vPoints[CCell::POINT_C], fDist))
+		{
+			if (fDist < fMinDist)
+			{
+				fMinDist = fDist;
+				iIndex = pCell->Get_Index();
+			}			
+		}
+	}
+
+	return iIndex;
 }
 
 
