@@ -39,10 +39,7 @@ HRESULT CNavMeshAgent::Render()
 
 const _bool CNavMeshAgent::Can_Move(_fvector vPoint)
 {
-	if (m_pNavMesh->Can_Move(vPoint, m_iCurIndex))
-		return FALSE;
-
-	return TRUE;
+	return m_pNavMesh->Can_Move(vPoint, m_iCurIndex);
 }
 
 CNavMeshAgent* CNavMeshAgent::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

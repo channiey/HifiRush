@@ -47,7 +47,7 @@ void CWeapon::Tick(_float fTimeDelta)
 	{
 		if (nullptr != pCollider && pCollider->Is_Active())
 			pCollider->Update(m_pParent->Get_Model()->Get_SocketBoneMat(m_eSocketType) 
-								* m_pTransformCom->Get_WorldMat());
+								* m_pTransformCom->Get_FinalMat());
 	}
 }
 
@@ -129,7 +129,7 @@ HRESULT CWeapon::Ready_Components()
 HRESULT CWeapon::Bind_ShaderResources()
 {
 	if (FAILED(GAME_INSTNACE->Bind_TransformToShader(m_pShaderCom, "g_WorldMatrix", 
-		m_pParent->Get_Model()->Get_SocketBoneMat(m_eSocketType) * m_pTransformCom->Get_WorldMat())))
+		m_pParent->Get_Model()->Get_SocketBoneMat(m_eSocketType) * m_pTransformCom->Get_FinalMat())))
 		return E_FAIL;
 
 	if (FAILED(GAME_INSTNACE->Bind_TransformToShader(m_pShaderCom, "g_ViewMatrix", CPipeLine::STATE_VIEW)))

@@ -194,11 +194,6 @@ HRESULT CImGui_Window_Sub_Nav::Create_Cells(vector<CCell*>& Cells)
 				XMStoreFloat3(&VerticesPosWorld[2],
 					XMVector3TransformCoord(XMLoadFloat3(&VerticesPos[Indices[i]._2]), matWorld));
 
-				for (size_t j = 0; j < CCell::POINT_END; j++)
-				{
-					VerticesPosWorld[j].y += 0.01f;
-				}
-
 				Vec3 vPoint_A = Points[CCell::POINT_A] = VerticesPosWorld[0];
 				Vec3 vPoint_B = Points[CCell::POINT_B] = VerticesPosWorld[1];
 				Vec3 vPoint_C = Points[CCell::POINT_C] = VerticesPosWorld[2];
@@ -228,7 +223,7 @@ HRESULT CImGui_Window_Sub_Nav::Create_Cells(vector<CCell*>& Cells)
 				}
 
 				/* 최종 생성 */
-				CCell* pCell = CCell::Create(m_pImGui_Manager->m_pDevice, m_pImGui_Manager->m_pContext, VerticesPosWorld, Cells.size());
+				CCell* pCell = CCell::Create(m_pImGui_Manager->m_pDevice, m_pImGui_Manager->m_pContext, VerticesPosWorld, (_uint)Cells.size());
 
 				if (nullptr != pCell)
 					Cells.push_back(pCell);
@@ -239,26 +234,29 @@ HRESULT CImGui_Window_Sub_Nav::Create_Cells(vector<CCell*>& Cells)
 }
 
 HRESULT CImGui_Window_Sub_Nav::Set_Neighbors(vector<CCell*>& Cells)
-
-{	/* 네비게이션을 구성하는 각각의 셀들의 이웃을 설정한다. */
-
-	for (size_t i = 0; i < Cells.size() - 1; i++)
+{	
+	/* 네비게이션을 구성하는 각각의 셀들의 이웃을 설정한다. */
+	
+	for (auto& pSourCell : Cells)
 	{
-		for (size_t j = i + 1; j < Cells.size(); j++)
+		for (auto& pDestCell : Cells)
 		{
-			if (true == Cells[j]->Compare_Points(Cells[i]->Get_Point(CCell::POINT_A), Cells[i]->Get_Point(CCell::POINT_B)))
+			if (pSourCell == pDestCell)
+				continue;
+
+			if (true == pDestCell->Compare_Points(pSourCell->Get_Point(CCell::POINT_A), pSourCell->Get_Point(CCell::POINT_B)))
 			{
-				Cells[i]->Set_Neighbor(CCell::LINE_AB, Cells[j]);
+				pSourCell->Set_Neighbor(CCell::LINE_AB, pDestCell);
 			}
 
-			else if (true == Cells[j]->Compare_Points(Cells[i]->Get_Point(CCell::POINT_B), Cells[i]->Get_Point(CCell::POINT_C)))
+			else if (true == pDestCell->Compare_Points(pSourCell->Get_Point(CCell::POINT_B), pSourCell->Get_Point(CCell::POINT_C)))
 			{
-				Cells[i]->Set_Neighbor(CCell::LINE_BC, Cells[j]);
+				pSourCell->Set_Neighbor(CCell::LINE_BC, pDestCell);
 			}
 
-			else if (true == Cells[j]->Compare_Points(Cells[i]->Get_Point(CCell::POINT_C), Cells[i]->Get_Point(CCell::POINT_A)))
+			else if (true == pDestCell->Compare_Points(pSourCell->Get_Point(CCell::POINT_C), pSourCell->Get_Point(CCell::POINT_A)))
 			{
-				Cells[i]->Set_Neighbor(CCell::LINE_CA, Cells[j]);
+				pSourCell->Set_Neighbor(CCell::LINE_CA, pDestCell);
 			}
 		}
 	}

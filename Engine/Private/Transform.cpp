@@ -94,6 +94,25 @@ const Vec4 CTransform::Get_FinalPosition()
 	return Vec4(matFinal.m[3]);
 }
 
+void CTransform::Set_Position(Vec3 vPos)
+{ 
+	/* Check NavMeshAgent */
+	{
+		Vec3 vTemp = vPos + m_vRootPos;
+		if (nullptr != m_pNavMeshAgentCom && m_pNavMeshAgentCom->Can_Move(vTemp))
+		{
+			memcpy(m_WorldMatrix.m[STATE_POSITION], &vPos, sizeof(Vec3));
+			return;
+		}
+		else if (nullptr != m_pNavMeshAgentCom && !m_pNavMeshAgentCom->Can_Move(vTemp))
+		{
+			return;
+		}
+	}
+
+	memcpy(m_WorldMatrix.m[STATE_POSITION], &vPos, sizeof(Vec3)); 
+}
+
 void CTransform::Set_Look(const Vec4& vLookDir)
 {
 	Vec4		vDir = vLookDir;
@@ -124,6 +143,20 @@ void CTransform::Set_RootPos(const Vec4& vPos)
 {
 	Vec4 vDir = Get_State(STATE_LOOK);
 	Vec4 vRotoPos = vPos;
+
+	/* Check NavMeshAgent */
+	{
+		Vec3 vTemp = (vDir.Normalized() * vRotoPos.ZeroW().Length()) + Vec4(m_WorldMatrix.m[3]).xyz();
+		if (nullptr != m_pNavMeshAgentCom && m_pNavMeshAgentCom->Can_Move(vTemp))
+		{
+			m_vRootPos = vDir.Normalized() * vRotoPos.ZeroW().Length();
+			return;
+		}
+		else if (nullptr != m_pNavMeshAgentCom && !m_pNavMeshAgentCom->Can_Move(vTemp))
+		{
+			return;
+		}
+	}
 
 	m_vRootPos = vDir.Normalized() * vRotoPos.ZeroW().Length();
 }
@@ -287,6 +320,21 @@ void CTransform::Rotate(const Vec4& vAxis, const _float& fRad)
 
 void CTransform::Translate(const Vec3& vTranslation)
 {
+	/* Check NavMeshAgent */
+	{
+		Vec3 vTemp = vTranslation + Vec4(m_WorldMatrix.m[3]).xyz();
+		if (nullptr != m_pNavMeshAgentCom && m_pNavMeshAgentCom->Can_Move(vTemp))
+		{
+			for (_uint i = 0; i < 3; ++i)
+				*((_float*)(&m_WorldMatrix.m[3]) + i) += *((_float*)&vTranslation + i);
+			return;
+		}
+		else if (nullptr != m_pNavMeshAgentCom && !m_pNavMeshAgentCom->Can_Move(vTemp))
+		{
+			return;
+		}
+	}
+
 	for (_uint i = 0; i < 3; ++i)
 		*((_float*)(&m_WorldMatrix.m[3]) + i) += *((_float*)&vTranslation + i);
 }
@@ -346,14 +394,10 @@ const Matrix CTransform::Get_WorldMat()
 const Matrix CTransform::Get_FinalMat()
 {
 	Vec3	vfinalPos = m_vRootPos.xyz() + Vec4(m_WorldMatrix.m[3]).xyz();
-	
-	/* 네비 메시 에이전트의 이동이 가능하다면 파이널 포지션을 업데이트한다. 아니라면 전 프레임 파이널 포지션을 사용한다. */
-	if(nullptr != m_pNavMeshAgentCom && m_pNavMeshAgentCom->Can_Move(vfinalPos))
-		memcpy(&m_vPrevFinalPos, &vfinalPos, sizeof(Vec3));
 
 	Matrix	matFinal = m_WorldMatrix;
 
-	memcpy(&matFinal.m[3], &m_vPrevFinalPos, sizeof(Vec3));
+	memcpy(&matFinal.m[3], &vfinalPos, sizeof(Vec3));
 
 	if (m_pOwner->Is_Parent())
 		return m_pOwner->Get_Parent()->Get_Transform()->Get_FinalMat() * matFinal;

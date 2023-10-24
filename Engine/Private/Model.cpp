@@ -800,7 +800,7 @@ void CModel::Create_AnimationTransform(uint32 iAnimIndex, vector<ANIM_TRANSFORM>
 				pAnimTransform[iAnimIndex].transforms[iFrameIndex][BONE_ROOT]
 					= m_Bones[iBoneIndex]->Get_OffSetMatrix() * m_Bones[iBoneIndex]->Get_CombinedTransformation() * Get_PivotMatrix();
 			}
-			else if (m_AnimBoneIndecies[BONE_SOCKET_LEFT] == iBoneIndex)
+			/*else if (m_AnimBoneIndecies[BONE_SOCKET_LEFT] == iBoneIndex)
 			{
 				pAnimTransform[iAnimIndex].transforms[iFrameIndex][BONE_SOCKET_LEFT]
 					= m_Bones[iBoneIndex]->Get_OffSetMatrix() * m_Bones[iBoneIndex]->Get_CombinedTransformation() * Get_PivotMatrix();
@@ -809,7 +809,7 @@ void CModel::Create_AnimationTransform(uint32 iAnimIndex, vector<ANIM_TRANSFORM>
 			{
 				pAnimTransform[iAnimIndex].transforms[iFrameIndex][BONE_SOCKET_RIGHT]
 					= m_Bones[iBoneIndex]->Get_OffSetMatrix() * m_Bones[iBoneIndex]->Get_CombinedTransformation() * Get_PivotMatrix();
-			}
+			}*/
 		}
 	}
 }
@@ -834,6 +834,16 @@ void CModel::Create_AnimationTransformCache(uint32 iAnimIndex, vector<ANIM_TRANS
 			
 			m_Bones[iBoneIndex]->Set_CombinedTransformation();
 
+			if (m_AnimBoneIndecies[BONE_SOCKET_LEFT] == iBoneIndex)
+			{
+				m_AnimTransforms[iAnimIndex].transforms[iFrameIndex][BONE_SOCKET_LEFT]
+					= m_Bones[iBoneIndex]->Get_OffSetMatrix() * m_Bones[iBoneIndex]->Get_CombinedTransformation() * Get_PivotMatrix();
+			}
+			else if (m_AnimBoneIndecies[BONE_SOCKET_RIGHT] == iBoneIndex)
+			{
+				m_AnimTransforms[iAnimIndex].transforms[iFrameIndex][BONE_SOCKET_RIGHT]
+					= m_Bones[iBoneIndex]->Get_OffSetMatrix() * m_Bones[iBoneIndex]->Get_CombinedTransformation() * Get_PivotMatrix();
+			}
 			pAnimTransformCache[iAnimIndex].transforms[iFrameIndex][iBoneIndex]
 				= m_Bones[iBoneIndex]->Get_OffSetMatrix() * m_Bones[iBoneIndex]->Get_CombinedTransformation() * Get_PivotMatrix();
 		}

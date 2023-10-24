@@ -31,7 +31,7 @@ HRESULT CNavMesh::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContex
 #ifdef _DEBUG
 HRESULT CNavMesh::Render()
 {
-	if (!m_bRender || nullptr == m_pShader)
+	if (!m_bRender || nullptr == m_pShader || m_Cells.empty())
 		return S_OK;
 
 	if (FAILED(Bind_ShaderResources()))
@@ -43,7 +43,7 @@ HRESULT CNavMesh::Render()
 		return E_FAIL;
 
 	/* Height */
-	_float	fHeight = 0.f;
+	_float	fHeight = 0.01f;
 	if (FAILED(m_pShader->Bind_RawValue("g_fHeight", &fHeight, sizeof(_float))))
 		return E_FAIL;
 	
@@ -67,7 +67,7 @@ HRESULT CNavMesh::Render()
 }
 HRESULT CNavMesh::Render_Cell(const _int& iInedx)
 {
-	if (!m_bRender || nullptr == m_pShader || m_Cells.size() <= iInedx)
+	if (!m_bRender || nullptr == m_pShader || m_Cells.size() <= iInedx || m_Cells.empty())
 		return S_OK;
 
 	if (FAILED(Bind_ShaderResources()))
@@ -198,6 +198,9 @@ const _bool CNavMesh::Can_Move(_fvector vPoint, _int& iCurIndex)
 {
 	/* 반환값이 단순 bool 값이 아니라 여러 열거체로 사용가능 drop, jump, wall, 등 */
 	/* 수업 코드상 트랜스폼 컴포넌트에서 사용 -> CTransform::Go_Straight() */
+
+	if (m_Cells.empty())
+		return FALSE;
 
 	_int		iNeighborIndex = 0;
 

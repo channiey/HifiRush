@@ -52,8 +52,8 @@ public:
 	void	Translate(const Vec3& vTranslation);
 	void	Translate(const Vec4& vTranslation) { Translate(vTranslation.xyz()); }
 
-	void	Set_Position(Vec4 vPos) { memcpy(m_WorldMatrix.m[STATE_POSITION], &vPos, sizeof(Vec4)); }
-	void	Set_Position(Vec3 vPos) { memcpy(m_WorldMatrix.m[STATE_POSITION], &vPos, sizeof(Vec3)); }
+	void	Set_Position(Vec4 vPos) { Set_Position(vPos.xyz()); }
+	void	Set_Position(Vec3 vPos); 
 
 	void	Set_WorldMat(const Matrix& matrix) { memcpy(&m_WorldMatrix, &matrix, sizeof(Matrix)); }
 	void	Set_Look(const Vec4& vLookDir);
@@ -75,7 +75,6 @@ private:
 	Matrix		m_WorldMatrix	= {};
 	Matrix		m_RotMatrix		= {};
 	Vec4		m_vRootPos		= {};
-	Vec3		m_vPrevFinalPos = {};
 
 private:
 	class CNavMeshAgent* m_pNavMeshAgentCom = { nullptr };

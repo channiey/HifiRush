@@ -170,7 +170,7 @@ private:
 	vector<class CAnimation*>	m_Animations;
 
 	ID3D11ShaderResourceView*	m_pSrv = { nullptr };
-	vector<ANIM_TRANSFORM>		m_AnimTransforms;		/* 루트랑 소켓 매트릭스만 저장 */
+	vector<ANIM_TRANSFORM>		m_AnimTransforms;		/* 루트랑 소켓 매트릭스만 저장 (루트는 루트 적용됨, 소켓은 루트 적용안됨) */
 	TWEEN_DESC					m_TweenDesc = {};
 
 	Vec4						m_vPrevAnimRoot = {};
