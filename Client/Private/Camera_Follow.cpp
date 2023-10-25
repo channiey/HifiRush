@@ -38,6 +38,7 @@ HRESULT CCamera_Follow::Initialize(void * pArg)
 		m_pCameraCom->Set_MouseSensitiveY(0.1f);
 		m_pCameraCom->Set_LookAtOffSet(Vec4{0.f, 1.8f, 0.f, 1.f });
 	}
+
 	return S_OK;
 }
 

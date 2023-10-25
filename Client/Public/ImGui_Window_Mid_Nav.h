@@ -33,10 +33,11 @@ public:
 	void			Edit_Update();
 	HRESULT			Create_Cell(Vec3 vPoint);
 	HRESULT			Delete_Cell();
+	HRESULT			Delete_Point();
 
 private:
 	HRESULT			Create_Cells(vector<CCell*>& Cells);
-	HRESULT			Set_Neighbors(vector<CCell*>& Cells);
+	HRESULT			Set_Neighbors();
 
 private:
 	void			Render_PopUp_Clear();
@@ -70,7 +71,6 @@ private:
 public:
 	static CImGui_Window_Mid_Nav* Create();
 	virtual void Free() override;
-
 };
 END
 

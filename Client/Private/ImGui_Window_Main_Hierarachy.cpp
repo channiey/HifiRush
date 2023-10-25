@@ -365,14 +365,21 @@ void CImGui_Window_Main_Hierarachy::Save_LevelData()
 	map<const wstring, class CLayer*>* pLayers = m_pGameInstance->Get_All_Layer(m_pImGui_Manager->m_iIndex_CurLevelID);
 	NULL_CHECK(pLayers);
 
-	file->Write<size_t>(pLayers->size());
+	file->Write<size_t>(pLayers->size() -1); /* 무기 삭제*/
 
 	/* 현재 레벨의 모든 레이어를 순회한다. */
 	for (auto& Pair : *pLayers)
 	{
 		if (nullptr == Pair.second) continue;
 
+		/* 무기는 어차피 소유 캐릭터 자체 생산이므로 건너 뛴다. */
+		{
+			if (LayerNames[LAYER_WEAPON] == Pair.first) continue;
+
+
+		}
 		file->Write<size_t>(Pair.second->Get_Objects()->size());
+
 
 		/* 레이어 내에 오브젝트 리스트를 순회한다. */
 		for (auto& obj : *Pair.second->Get_Objects())
@@ -392,7 +399,6 @@ void CImGui_Window_Main_Hierarachy::Save_LevelData()
 
 			/* 트랜스폼 */
 			file->Write<Matrix>(obj->Get_Transform()->Get_WorldMat());
-
 		}
 	}
 }

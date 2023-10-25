@@ -126,6 +126,67 @@ HRESULT CNavMesh::Render_Cell(const _int& iInedx)
 	return S_OK;
 }
 
+HRESULT CNavMesh::Set_Neighbors()
+{
+	/* 네비게이션을 구성하는 각각의 셀들의 이웃을 설정한다. */
+
+	for (auto& pSourCell : m_Cells)
+	{
+		for (auto& pDestCell : m_Cells)
+		{
+			if (pSourCell == pDestCell)
+				continue;
+
+			if (true == pDestCell->Compare_Points(pSourCell->Get_Point(CCell::POINT_A), pSourCell->Get_Point(CCell::POINT_B)))
+			{
+				pSourCell->Set_Neighbor(CCell::LINE_AB, pDestCell);
+			}
+
+			else if (true == pDestCell->Compare_Points(pSourCell->Get_Point(CCell::POINT_B), pSourCell->Get_Point(CCell::POINT_C)))
+			{
+				pSourCell->Set_Neighbor(CCell::LINE_BC, pDestCell);
+			}
+
+			else if (true == pDestCell->Compare_Points(pSourCell->Get_Point(CCell::POINT_C), pSourCell->Get_Point(CCell::POINT_A)))
+			{
+				pSourCell->Set_Neighbor(CCell::LINE_CA, pDestCell);
+			}
+		}
+	}
+
+	return S_OK;
+}
+
+const _float CNavMesh::Get_AgentHeight(const _int& iIndex, const Vec3& vPos)
+{
+	if (m_Cells.empty() || iIndex < 0 || nullptr == m_Cells[iIndex])
+		return -1.f;
+
+	const _float3* vPoints = m_Cells[iIndex]->Get_Points();
+
+	_vector		vPlane;
+
+
+	/* How To */
+	{
+		/* 평면 방정식에 a, b, c, d 다 구했다. */
+		/* 내 위치 x, y, z */
+		// ax + by + cz + d = 0
+		// y = (-ax - cz - d) / b
+
+		/* 평면 상에 존재할 수 있도록하는 y를 구하자. */
+		/* 평면상에 존재하면 되는 것이기 때문에 x, z는 변할 이유가 없다. */
+	}
+
+	vPlane = XMPlaneFromPoints(XMLoadFloat3(&vPoints[CCell::POINT_A]),
+								XMLoadFloat3(&vPoints[CCell::POINT_B]),
+								XMLoadFloat3(&vPoints[CCell::POINT_C]));
+
+	_float	fY = ((-XMVectorGetX(vPlane) * XMVectorGetX(vPos) - (XMVectorGetZ(vPlane) * XMVectorGetZ(vPos)) - XMVectorGetW(vPlane))) / XMVectorGetY(vPlane);
+
+	return fY;
+}
+
 HRESULT CNavMesh::Set_NavDate(vector<CCell*>& Cells)
 {
 	if(FAILED(Clear_NavDate()))

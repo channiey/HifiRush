@@ -24,9 +24,11 @@ public:
 	void			Set_RenderRange(const _float fRange) { m_fRenderRange = fRange; }
 	void			Set_Render(const _bool& bRender) { m_bRender = bRender; }
 	void			Set_Render() { m_bRender = !m_bRender; }
+	HRESULT			Set_Neighbors();
 
 	const _float&	Get_RenderRange() const { return m_fRenderRange; }
 	const size_t	Get_CountCells() const { return m_Cells.size(); }
+	const _float	Get_AgentHeight(const _int& iIndex, const Vec3& vPos);
 	const vector<CCell*>& Get_Cells() const { return m_Cells; }
 
 	const _bool&	Is_Render() const { return m_bRender; }

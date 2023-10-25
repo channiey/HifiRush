@@ -273,6 +273,21 @@ HRESULT CLoader::Load_Prototype()
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/Bldg_Inside_Lobby_A", PivotMatrix))))
 			return E_FAIL;
 
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Container_Closed_Blue"),
+			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/Container_Closed_Blue", PivotMatrix))))
+			return E_FAIL;
+
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Container_Closed_Green"),
+			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/Container_Closed_Green", PivotMatrix))))
+			return E_FAIL;
+
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Container_Closed_Yellow"),
+			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/Container_Closed_Yellow", PivotMatrix))))
+			return E_FAIL;
+
+
+
+
 		//{
 		//	PivotMatrix = Matrix::Identity * Matrix::CreateScale(0.01f);
 
@@ -365,6 +380,15 @@ HRESULT CLoader::Load_Prototype()
 		if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_Static_Bldg_Outside_BK"), CStaticDummy::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 		if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_Static_Bldg_Inside_Lobby_A"), CStaticDummy::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_Static_Container_Closed_Blue"), CStaticDummy::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_Static_Container_Closed_Green"), CStaticDummy::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_Static_Container_Closed_Yellow"), CStaticDummy::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 		
 		//{

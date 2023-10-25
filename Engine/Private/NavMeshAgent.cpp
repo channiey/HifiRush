@@ -54,6 +54,11 @@ const _bool CNavMeshAgent::Can_Move(_fvector vPoint)
 	return m_pNavMesh->Can_Move(vPoint, m_iCurIndex);
 }
 
+const _float CNavMeshAgent::Get_Height(const Vec3& vPos)
+{
+	return m_pNavMesh->Get_AgentHeight(m_iCurIndex, vPos);
+}
+
 CNavMeshAgent* CNavMeshAgent::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CNavMeshAgent* pInstance = new CNavMeshAgent(pDevice, pContext);

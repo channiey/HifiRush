@@ -13,7 +13,7 @@ HRESULT CMainApp_Converter::Start_Convert()
 {
 	cout << "Start Binarization\n\n\n\n";
 	{
-		if (FAILED(Convert_Character()))
+		/*if (FAILED(Convert_Character()))
 			return E_FAIL;
 
 		if (FAILED(Convert_Env_Static()))
@@ -23,10 +23,10 @@ HRESULT CMainApp_Converter::Start_Convert()
 			return E_FAIL;
 
 		if (FAILED(Convert_Weapon()))
-			return E_FAIL;
+			return E_FAIL;*/
 		
-		//if (FAILED(Convert_SelectiveModel()))
-		//	return E_FAIL;
+		if (FAILED(Convert_SelectiveModel()))
+			return E_FAIL;
 
 	}
 	cout << "\n\n\nComplete Entire Binarization";
@@ -101,7 +101,6 @@ HRESULT CMainApp_Converter::Convert_Weapon()
 	}
 	return S_OK;
 
-	return E_NOTIMPL;
 }
 
 
@@ -110,10 +109,29 @@ HRESULT CMainApp_Converter::Convert_SelectiveModel()
 	{
 		const MODEL_TYPE	type = MODEL_TYPE::STATIC;
 		const string		savePath = "Environment/Static/";
-		const string		fileName = "StreetLamp_A";
+		const string		fileName = "Container_Closed_Blue";
 		shared_ptr<CConverter> converter = make_shared<CConverter>();
 		if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
 			ASSERT_LOG();
 	}
+
+	{
+		const MODEL_TYPE	type = MODEL_TYPE::STATIC;
+		const string		savePath = "Environment/Static/";
+		const string		fileName = "Container_Closed_Green";
+		shared_ptr<CConverter> converter = make_shared<CConverter>();
+		if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
+			ASSERT_LOG();
+	}
+
+	{
+		const MODEL_TYPE	type = MODEL_TYPE::STATIC;
+		const string		savePath = "Environment/Static/";
+		const string		fileName = "Container_Closed_Yellow";
+		shared_ptr<CConverter> converter = make_shared<CConverter>();
+		if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
+			ASSERT_LOG();
+	}
+
 	return S_OK;
 }

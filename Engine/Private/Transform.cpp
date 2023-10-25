@@ -113,6 +113,12 @@ void CTransform::Set_Position(Vec3 vPos, _bool bNotAgent)
 
 	/* Apply */
 	memcpy(m_WorldMatrix.m[STATE_POSITION], &vPos, sizeof(Vec3)); 
+
+	/* Agent Height */
+	if (nullptr != m_pNavMeshAgentCom)
+	{
+		m_WorldMatrix.m[STATE_POSITION][1] = m_pNavMeshAgentCom->Get_Height(Get_Position().xyz());
+	}
 }
 
 void CTransform::Set_Look(const Vec4& vLookDir)
@@ -328,6 +334,12 @@ void CTransform::Translate(const Vec3& vTranslation, _bool bNotAgent)
 	/* Apply */
 	for (_uint i = 0; i < 3; ++i)
 		*((_float*)(&m_WorldMatrix.m[3]) + i) += *((_float*)&vTranslation + i);
+
+	/* Agent Height */
+	if (nullptr != m_pNavMeshAgentCom)
+	{
+		m_WorldMatrix.m[STATE_POSITION][1] = m_pNavMeshAgentCom->Get_Height(Get_Position().xyz());
+	}
 }
 
 HRESULT CTransform::Bind_ShaderResources(CShader* pShader, const char* pConstantName)

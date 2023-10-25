@@ -99,12 +99,19 @@ void CImGui_Window_Mid_Nav::Show_Window()
 				ImGui::SameLine();
 				if (ImGui::Button("Relate"))
 				{
-					//CNavMesh::GetInstance()->
+					if (FAILED(Set_Neighbors()))
+						assert(FALSE);
 				}
 				ImGui::SameLine();
-				if (ImGui::Button("Delete"))
+				if (ImGui::Button("Del Cell"))
 				{
 					if (FAILED(Delete_Cell()))
+						assert(FALSE);
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("Del Point"))
+				{
+					if (FAILED(Delete_Point()))
 						assert(FALSE);
 				}
 			}
@@ -159,6 +166,8 @@ HRESULT CImGui_Window_Mid_Nav::Clear()
 	if (!CNavMesh::GetInstance()->Is_EmptyCells())
 		CNavMesh::GetInstance()->Clear_NavDate();
 
+	m_pPickedCell = nullptr;
+
 	return S_OK;
 }
 
@@ -172,10 +181,10 @@ HRESULT CImGui_Window_Mid_Nav::Bake()
 	if (FAILED(Create_Cells(Cells)))
 		return E_FAIL;
 
-	if (FAILED(Set_Neighbors(Cells)))
-		return E_FAIL;
-	
 	if (FAILED(CNavMesh::GetInstance()->Set_NavDate(Cells)))
+		return E_FAIL;
+
+	if (FAILED(Set_Neighbors()))
 		return E_FAIL;
 
 	return S_OK;
@@ -242,7 +251,7 @@ HRESULT CImGui_Window_Mid_Nav::Create_Cell(Vec3 vPoint)
 
 		Vec3 vCross = vLineAB.Cross(vLineAC);
 
-		if (0.f > vCross.y || 0.f < vCross.z)
+		if (0.f > vCross.y)
 		{
 			Vec3 vTemp = m_CellPointsCache[CCell::POINT_B];
 			m_CellPointsCache[CCell::POINT_B] = m_CellPointsCache[CCell::POINT_C];
@@ -275,6 +284,14 @@ HRESULT CImGui_Window_Mid_Nav::Delete_Cell()
 		if (FAILED(CNavMesh::GetInstance()->Delete_Cell(m_pPickedCell->Get_Index())))
 			return E_FAIL;
 	}
+
+	return S_OK;
+}
+
+HRESULT CImGui_Window_Mid_Nav::Delete_Point()
+{
+	if (!m_CellPointsCache.empty())
+		m_CellPointsCache.pop_back();
 
 	return S_OK;
 }
@@ -361,33 +378,13 @@ HRESULT CImGui_Window_Mid_Nav::Create_Cells(vector<CCell*>& Cells)
 	return S_OK;
 }
 
-HRESULT CImGui_Window_Mid_Nav::Set_Neighbors(vector<CCell*>& Cells)
+HRESULT CImGui_Window_Mid_Nav::Set_Neighbors()
 {	
 	/* 네비게이션을 구성하는 각각의 셀들의 이웃을 설정한다. */
 	
-	for (auto& pSourCell : Cells)
-	{
-		for (auto& pDestCell : Cells)
-		{
-			if (pSourCell == pDestCell)
-				continue;
+	CNavMesh::GetInstance()->Set_Neighbors();
 
-			if (true == pDestCell->Compare_Points(pSourCell->Get_Point(CCell::POINT_A), pSourCell->Get_Point(CCell::POINT_B)))
-			{
-				pSourCell->Set_Neighbor(CCell::LINE_AB, pDestCell);
-			}
 
-			else if (true == pDestCell->Compare_Points(pSourCell->Get_Point(CCell::POINT_B), pSourCell->Get_Point(CCell::POINT_C)))
-			{
-				pSourCell->Set_Neighbor(CCell::LINE_BC, pDestCell);
-			}
-
-			else if (true == pDestCell->Compare_Points(pSourCell->Get_Point(CCell::POINT_C), pSourCell->Get_Point(CCell::POINT_A)))
-			{
-				pSourCell->Set_Neighbor(CCell::LINE_CA, pDestCell);
-			}
-		}
-	}
 
 	/* 네비이션을 사용하는 오브젝트들의 현재 위치한 셀의 인덱스를 리셋하여 다시 적용한다. */
 
