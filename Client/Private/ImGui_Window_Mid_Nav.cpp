@@ -9,8 +9,6 @@
 
 #include "Cell.h"
 
-#include "Collision_Manager.h"
-
 CImGui_Window_Mid_Nav::CImGui_Window_Mid_Nav()
 {
 }
@@ -176,9 +174,19 @@ void CImGui_Window_Mid_Nav::Edit_Update()
 {
 	if (GAME_INSTNACE->Key_Down(VK_RBUTTON))
 	{
-		RAYHIT_DESC hit = CCollision_Manager::GetInstance()->Check_ScreenRay(LayerNames[LAYER_ENV_STATIC]);
+		RAYHIT_DESC hit = GAME_INSTNACE->Check_ScreenRay(LayerNames[LAYER_ENV_STATIC]);
 
 		if (nullptr != hit.pGameObject)
+		{
+			int k = 0;
+		}
+	}
+
+	if (GAME_INSTNACE->Key_Down(VK_MBUTTON))
+	{
+		CCell* pPickedCell = GAME_INSTNACE->Check_ScreenRay();
+
+		if (nullptr != pPickedCell)
 		{
 			int k = 0;
 		}

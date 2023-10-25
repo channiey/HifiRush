@@ -503,6 +503,30 @@ void CGameInstance::Check_Collision_Layer(const wstring& strLayerTag1, const wst
 	return m_pCollision_Manager->Check_Collision_Layer(strLayerTag1, strLayerTag2, eType1, eType2);
 }
 
+RAYHIT_DESC CGameInstance::Check_ScreenRay(const wstring& strLayerTag)
+{
+	if (nullptr == m_pCollision_Manager)
+		return RAYHIT_DESC();
+
+	return m_pCollision_Manager->Check_ScreenRay(strLayerTag);
+}
+
+CCell* CGameInstance::Check_ScreenRay()
+{
+	if (nullptr == m_pCollision_Manager)
+		return nullptr;
+
+	return m_pCollision_Manager->Check_ScreenRay();
+}
+
+const Ray CGameInstance::Create_ScreenRayLocal(Matrix matWorld)
+{
+	if (nullptr == m_pCollision_Manager)
+		return Ray();
+
+	return m_pCollision_Manager->Create_ScreenRayLocal(matWorld);
+}
+
 CGameObject* CGameInstance::Get_Camera(const _uint& iKey)
 {
 	if(nullptr == m_pCamera_Manager)

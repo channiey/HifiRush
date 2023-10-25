@@ -55,7 +55,7 @@ HRESULT CVIBuffer_Cell::Initialize_Prototype(const _float3* pPoints)
 
 	/* 정점버퍼와 인덱스 버퍼를 만드낟. */
 	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);
-	m_BufferDesc.ByteWidth = m_iNumPrimitives * m_iIndexSizeofPrimitive;
+	m_BufferDesc.ByteWidth = m_iNumPrimitives * m_iNumIndicesofPrimitive * m_iIndexSizeofPrimitive;
 	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT; 
 	m_BufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	m_BufferDesc.CPUAccessFlags = 0;

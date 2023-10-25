@@ -10,6 +10,9 @@
 #include "Collider_AABB.h"
 #include "Collider_OBB.h"
 
+#include "NavMesh.h"
+#include "Cell.h"
+
 IMPLEMENT_SINGLETON(CCollision_Manager)
 
 CCollision_Manager::CCollision_Manager()
@@ -124,12 +127,11 @@ RAYHIT_DESC CCollision_Manager::Check_ScreenRay(const wstring& strLayerTag)
 {
 	list<class CGameObject*>* pGameObjects = GAME_INSTNACE->Get_Layer(GAME_INSTNACE->Get_CurLevelIndex(), strLayerTag);
 
-	if(nullptr == pGameObjects)
-		return RAYHIT_DESC();
+	if(nullptr == pGameObjects) return RAYHIT_DESC();
 
-	_float		fMinDist = 1000.f;
-	_float		fDist = 0.f;
-	RAYHIT_DESC hit;
+	_float			fMinDist = 1000.f;
+	_float			fDist = 0.f;
+	RAYHIT_DESC		tHit;
 
 	for (auto& pGameObject : *pGameObjects)
 	{
@@ -141,9 +143,9 @@ RAYHIT_DESC CCollision_Manager::Check_ScreenRay(const wstring& strLayerTag)
 		vector<class CMesh*>* pMeshes = pModel->Get_Meshes();
 		if (nullptr == pMeshes) continue;
 
-		Matrix	matWorld = pGameObject->Get_Transform()->Get_WorldMat();
+		Matrix matWorld = pGameObject->Get_Transform()->Get_WorldMat();
 
-		const Ray ray = Create_ScreenRay(matWorld);
+		const Ray ray = Create_ScreenRayLocal(matWorld);
 
 		for (auto& pMesh : *pMeshes)
 		{
@@ -168,25 +170,53 @@ RAYHIT_DESC CCollision_Manager::Check_ScreenRay(const wstring& strLayerTag)
 								vHitWorldPos.y = floorf(vHitWorldPos.y + 0.5f);
 						}
 
-						hit.pGameObject = pGameObject;
-						hit.vHitPoint = vHitWorldPos;
-						hit.fDistance = rayDirection.Length();
+						tHit.pGameObject = pGameObject;
+						tHit.vHitPoint = vHitWorldPos;
+						tHit.fDistance = rayDirection.Length();
 					}
 				}
 			}
 		}
 	}
 
-	return hit;
+	return tHit;
 }
 
-const Ray CCollision_Manager::Create_ScreenRay(Matrix matWorld)
+CCell* CCollision_Manager::Check_ScreenRay()
 {
-	const Viewport viewPort = GAME_INSTNACE->Get_ViewPort();
+	const vector<CCell*>& Cells = CNavMesh::GetInstance()->Get_Cells();
 
-	Matrix matPI = GAME_INSTNACE->Get_Transform_Inverse(CPipeLine::STATE_PROJ);
-	Matrix matVI = GAME_INSTNACE->Get_Transform_Inverse(CPipeLine::STATE_VIEW);
-	Matrix matWI = matWorld.Invert();
+	const Ray ray = Create_ScreenRayWorld();
+
+	CCell* pPickedCell = nullptr; 
+
+	_float fMinDist = 1000.f;
+	_float fDist = 0.f;
+
+	for (auto& pCell : Cells)
+	{
+		const Vec3* Points = pCell->Get_Points();
+
+		if (ray.Intersects(Points[CCell::POINT_A], Points[CCell::POINT_B], Points[CCell::POINT_C], fDist))
+		{
+			if (fDist < fMinDist)
+			{
+				fMinDist = fDist;
+
+				pPickedCell = pCell;
+			}
+		}
+	}
+	
+	return pPickedCell;
+}
+
+const Ray CCollision_Manager::Create_ScreenRayLocal(Matrix matWorld)
+{
+	const Matrix	matPI = GAME_INSTNACE->Get_Transform_Inverse(CPipeLine::STATE_PROJ);
+	const Matrix	matVI = GAME_INSTNACE->Get_Transform_Inverse(CPipeLine::STATE_VIEW);
+	const Matrix	matWI = matWorld.Invert();
+	const Viewport	viewPort = GAME_INSTNACE->Get_ViewPort();
 
 	POINT pt;
 	{
@@ -194,28 +224,64 @@ const Ray CCollision_Manager::Create_ScreenRay(Matrix matWorld)
 		ScreenToClient(GAME_INSTNACE->Get_GraphicDesc().hWnd, &pt);
 	}
 
-	/* 뷰포트 -> 투영 스페이스 */
 	Vec3 vMousePos;
 	{
+		/* 뷰포트 -> 투영 스페이스 */
 		vMousePos.x = pt.x / (viewPort.width * 0.5f) - 1.f;
 		vMousePos.y = pt.y / -(viewPort.height * 0.5f) + 1.f;
 		vMousePos.z = 1.f;
+
+		/* 투영 스페이스 -> 뷰 스페이스 */
+		vMousePos = XMVector3TransformCoord(vMousePos, matPI);
 	}
 
-	/* 투영 스페이스 -> 뷰 스페이스 */
-	vMousePos = XMVector3TransformCoord(vMousePos, matPI);
-
-	/* 뷰 스페이스 -> 월드 스페이스 */
 	Ray ray;
 	{
 		ray.direction = vMousePos - ray.position;
 
-		vMousePos = XMVector3TransformCoord(ray.position, matVI);
+		/* 뷰 스페이스 -> 월드 스페이스 */
+		ray.position = XMVector3TransformCoord(ray.position, matVI);
 		ray.direction = XMVector3TransformNormal(ray.direction, matVI);
 
-
-		ray.position = XMVector3TransformCoord(vMousePos, matWI);
+		/* 월드 스페이스 -> 로컬 스페이스 */
+		ray.position = XMVector3TransformCoord(ray.position, matWI);
 		ray.direction = XMVector3TransformNormal(ray.direction, matWI);
+		ray.direction.Normalize();
+	}
+
+	return ray;
+}
+
+const Ray CCollision_Manager::Create_ScreenRayWorld()
+{
+	const Matrix	matPI = GAME_INSTNACE->Get_Transform_Inverse(CPipeLine::STATE_PROJ);
+	const Matrix	matVI = GAME_INSTNACE->Get_Transform_Inverse(CPipeLine::STATE_VIEW);
+	const Viewport	viewPort = GAME_INSTNACE->Get_ViewPort();
+
+	POINT pt;
+	{
+		GetCursorPos(&pt);
+		ScreenToClient(GAME_INSTNACE->Get_GraphicDesc().hWnd, &pt);
+	}
+
+	Vec3 vMousePos;
+	{
+		/* 뷰포트 -> 투영 스페이스 */
+		vMousePos.x = pt.x / (viewPort.width * 0.5f) - 1.f;
+		vMousePos.y = pt.y / -(viewPort.height * 0.5f) + 1.f;
+		vMousePos.z = 1.f;
+
+		/* 투영 스페이스 -> 뷰 스페이스 */
+		vMousePos = XMVector3TransformCoord(vMousePos, matPI);
+	}
+
+	Ray ray;
+	{
+		ray.direction = vMousePos - ray.position;
+
+		/* 뷰 스페이스 -> 월드 스페이스 */
+		ray.position = XMVector3TransformCoord(ray.position, matVI);
+		ray.direction = XMVector3TransformNormal(ray.direction, matVI);
 		ray.direction.Normalize();
 	}
 

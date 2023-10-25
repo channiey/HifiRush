@@ -27,6 +27,7 @@ public:
 
 	const _float&	Get_RenderRange() const { return m_fRenderRange; }
 	const size_t	Get_CountCells() const { return m_Cells.size(); }
+	const vector<CCell*>& Get_Cells() const { return m_Cells; }
 
 	const _bool&	Is_Render() const { return m_bRender; }
 	const _bool		Is_EmptyCells() const { return m_Cells.empty(); }

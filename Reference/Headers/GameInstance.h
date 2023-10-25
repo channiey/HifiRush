@@ -93,8 +93,10 @@ public: /* For.PipeLine */
 	Vec4	Get_CamPosition() const;
 
 public: /* For.Collision_Manager */
-	void		Check_Collision_Layer(const wstring& strLayerTag1, const wstring& strLayerTag2, const CCollider::TYPE& eType1, const CCollider::TYPE& eType2);
-	
+	void				Check_Collision_Layer(const wstring& strLayerTag1, const wstring& strLayerTag2, const CCollider::TYPE& eType1, const CCollider::TYPE& eType2);
+	RAYHIT_DESC			Check_ScreenRay(const wstring& strLayerTag);
+	CCell*				Check_ScreenRay();
+	const Ray			Create_ScreenRayLocal(Matrix matWorld);
 
 public: /* For.Camera_Manager */
 	CGameObject*	Get_Camera(const _uint& iKey);

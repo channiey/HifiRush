@@ -51,7 +51,6 @@ private:
 
 	_bool			m_bEditing = FALSE;
 
-
 public:
 	static CImGui_Window_Mid_Nav* Create();
 	virtual void Free() override;
