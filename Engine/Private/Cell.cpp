@@ -81,6 +81,27 @@ _bool CCell::Compare_Points(const _float3 * pSourPoint, const _float3 * pDestPoi
 	return false;
 }
 
+HRESULT CCell::Remove_Neighbor(const _int& iIndex)
+{
+	for (size_t i = 0; i < CCell::LINE_END; i++)
+	{
+		if (iIndex == m_iNeighborIndices[i])
+		{
+			m_iNeighborIndices[i] = -1;
+			return S_OK;
+		}
+	}
+	return E_FAIL;
+}
+
+HRESULT CCell::Clear_NeighborIndices()
+{
+	for (size_t i = 0; i < CCell::LINE_END; i++)
+		m_iNeighborIndices[i] = -1;
+
+	return S_OK;
+}
+
 _bool CCell::Is_Out(_fvector vPoint, _int* pNeighborIndex)
 {
 	/* 셀의 변의 노말과, 포인트로부터 객체 위치의 방향 벡터를 내적한 결과가 양수라면 나갔다고 판정 */

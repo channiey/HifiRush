@@ -94,7 +94,7 @@ public: /* For.PipeLine */
 
 public: /* For.Collision_Manager */
 	void				Check_Collision_Layer(const wstring& strLayerTag1, const wstring& strLayerTag2, const CCollider::TYPE& eType1, const CCollider::TYPE& eType2);
-	RAYHIT_DESC			Check_ScreenRay(const wstring& strLayerTag);
+	RAYHIT_DESC			Check_ScreenRay(const wstring& strLayerTag, const _bool& bSnap = FALSE);
 	CCell*				Check_ScreenRay();
 	const Ray			Create_ScreenRayLocal(Matrix matWorld);
 

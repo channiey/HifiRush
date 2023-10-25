@@ -29,7 +29,10 @@ private:
 	HRESULT			Save_NavData();
 	HRESULT			Load_NavData();
 
+public:
 	void			Edit_Update();
+	HRESULT			Create_Cell(Vec3 vPoint);
+	HRESULT			Delete_Cell();
 
 private:
 	HRESULT			Create_Cells(vector<CCell*>& Cells);
@@ -41,8 +44,11 @@ private:
 	void			Render_PopUp_Load();
 
 private:
+	void			Render_Sphere();
+
+private:
 	_float			m_fMaxSlope		= 80.f;
-	_float			m_fMinArea		= -1.f;
+	_float			m_fMinArea		= 0.5f;
 
 
 	_bool			m_bPopUp_Clear = FALSE;
@@ -50,6 +56,16 @@ private:
 	_bool			m_bPopUp_Load = FALSE;
 
 	_bool			m_bEditing = FALSE;
+
+	vector<Vec3>	m_CellPointsCache;
+
+	class CCell* m_pPickedCell = nullptr;
+
+private:
+	BoundingSphere* m_Shperes[3];
+	PrimitiveBatch<VertexPositionColor>* m_pBatch = nullptr;
+	BasicEffect* m_pEffect = nullptr;
+	ID3D11InputLayout* m_pInputLayout = nullptr;
 
 public:
 	static CImGui_Window_Mid_Nav* Create();

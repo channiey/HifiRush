@@ -292,6 +292,66 @@ HRESULT CNavMesh::Clear_NavDate()
 		m_Cells.clear();
 		m_Cells.shrink_to_fit();
 	}
+
+	if (!m_AddedCellsCache.empty())
+	{
+		for (auto& pCell : m_AddedCellsCache)
+			Safe_Release(pCell);
+
+		m_AddedCellsCache.clear();
+		m_AddedCellsCache.shrink_to_fit();
+	}
+	return S_OK;
+}
+
+HRESULT CNavMesh::Add_Cell(const Vec3* pPoints)
+{
+	CCell* pCell = CCell::Create(m_pDevice, m_pContext, pPoints, (_uint)m_Cells.size());
+
+	if (nullptr != pCell)
+	{
+		m_Cells.push_back(pCell);
+		m_AddedCellsCache.push_back(pCell);
+		return S_OK;
+	}
+
+	return E_FAIL;
+}
+
+HRESULT CNavMesh::Delete_Cell(const _uint iIndex)
+{
+	/* iIndex를 레퍼런스로 전달하면 아래 Safe_Release 부분에서 iIndex의 값이 바뀌게 된다. */
+
+	/* 캐시에서도 삭제 */
+	for (vector<CCell*>::iterator iter = m_AddedCellsCache.begin(); iter != m_AddedCellsCache.end();)
+	{
+		if (*iter == m_Cells[iIndex])
+		{
+			iter = m_AddedCellsCache.erase(iter);
+			break;
+		}
+		else
+			++iter;
+	}
+
+
+	const _int* NeighborIndeces = m_Cells[iIndex]->Get_NeighborIndices();
+
+	for (size_t i = 0; i < CCell::LINE_END; i++)
+	{
+		if(-1 != NeighborIndeces[i])
+			m_Cells[NeighborIndeces[i]]->Remove_Neighbor(iIndex);
+	}
+
+	Safe_Release(m_Cells[iIndex]);
+
+	if (0 == iIndex)
+		m_Cells.erase(m_Cells.begin());
+	else if (m_Cells.size() - 1 == iIndex)
+		m_Cells.pop_back();
+	else
+		m_Cells.erase(m_Cells.begin() + iIndex);
+
 	return S_OK;
 }
 
@@ -319,6 +379,45 @@ const _int CNavMesh::Find_Cell(Vec3 vWorldPos)
 	}
 
 	return iIndex;
+}
+
+void CNavMesh::Get_SnapCellPos(_Inout_ Vec3& vWorldPos)
+{
+	const _float	fCanSnapPointDistnace = 0.5f;
+
+	_float fMinDistance = 9999.f;
+
+	for (auto& pCell : m_AddedCellsCache)
+	{
+		if (nullptr == pCell) continue;
+
+		const Vec3* vPoints = pCell->Get_Points();
+
+		_float fDistWorldA = Vec3(vWorldPos - vPoints[CCell::POINT_A]).Length();
+		_float fDistWorldB = Vec3(vWorldPos - vPoints[CCell::POINT_B]).Length();
+		_float fDistWorldC = Vec3(vWorldPos - vPoints[CCell::POINT_C]).Length();
+
+		_float fCurMinDistance = min(min(fDistWorldA, fDistWorldB), fDistWorldC);
+
+		/* 세 점과 매개변수 사이 거리가 스냅 포인트보다 가깝고, 이전 최소 거리보다 작을 경우*/
+		if (fCurMinDistance <= fCanSnapPointDistnace && fCurMinDistance <= fMinDistance)
+		{
+			fMinDistance = fCurMinDistance;
+
+			if (fMinDistance == fDistWorldA)
+			{
+				vWorldPos = vPoints[CCell::POINT_A];
+			}
+			else if (fMinDistance == fDistWorldB)
+			{
+				vWorldPos = vPoints[CCell::POINT_B];
+			}
+			else if (fMinDistance == fDistWorldC)
+			{
+				vWorldPos = vPoints[CCell::POINT_C];
+			}
+		}
+	}
 }
 
 

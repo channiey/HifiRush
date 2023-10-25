@@ -32,8 +32,13 @@ public:
 	const _bool&	Is_Render() const { return m_bRender; }
 	const _bool		Is_EmptyCells() const { return m_Cells.empty(); }
 
+
+	HRESULT			Add_Cell(const Vec3* pPoints);
+	HRESULT			Delete_Cell(const _uint iIndex);
+
 public:
 	const _int		Find_Cell(Vec3 vWorldPos);
+	void			Get_SnapCellPos(_Inout_ Vec3& vWorldPos);
 
 public:
 	HRESULT			Set_NavDate(vector<CCell*>& Cells);
@@ -53,10 +58,12 @@ private:
 	ID3D11DeviceContext* m_pContext = { nullptr };
 	
 	vector<CCell*>	m_Cells;
-
+	vector<CCell*>  m_AddedCellsCache;
 	CShader*		m_pShader = { nullptr };
 	_float			m_fRenderRange = 10.f;
 	_bool			m_bRender = FALSE;
+
+
 
 public:
 	virtual void			Free();

@@ -41,10 +41,10 @@ protected:
 	_uint						m_iNumVertices = 0; // 버텍스 갯수(")
 	_uint						m_iStride = 0; // 버텍스 하나 크기 (")
 
-	_uint						m_iNumPrimitives = 0; // 폴리곤 갯수(m_iNumIndices)
-	_uint						m_iIndexSizeofPrimitive = 0; // 인덱스 하나 크기(m_iIndexStride)
-	_uint						m_iNumIndicesofPrimitive = 0;  // 폴리곤 하나가 사용하는 인덱스 갯수 (3개)
-
+	_uint						m_iNumPrimitives = 0;			// 폴리곤 갯수
+	_uint						m_iIndexSizeofPrimitive = 0;	// 인덱스 하나 크기
+	_uint						m_iNumIndicesofPrimitive = 0;	// 인덱스 갯수 
+	//							m_iNumIndices = m_iNumPrimitives * m_iNumIndicesofPrimitive
 	DXGI_FORMAT					m_eIndexFormat;
 
 

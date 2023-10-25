@@ -9,12 +9,31 @@
 
 #include "Cell.h"
 
+#include "DebugDraw.h"
+
+
 CImGui_Window_Mid_Nav::CImGui_Window_Mid_Nav()
 {
 }
 
 HRESULT CImGui_Window_Mid_Nav::Initialize()
 {
+	m_pBatch = new PrimitiveBatch<VertexPositionColor>(m_pImGui_Manager->m_pContext);
+	m_pEffect = new BasicEffect(m_pImGui_Manager->m_pDevice);
+
+	m_pEffect->SetVertexColorEnabled(true);
+
+	const void* pShaderByteCodes = nullptr;
+	size_t			iLength = 0;
+
+	m_pEffect->GetVertexShaderBytecode(&pShaderByteCodes, &iLength);
+
+	if (FAILED(m_pImGui_Manager->m_pDevice->CreateInputLayout(VertexPositionColor::InputElements, VertexPositionColor::InputElementCount, pShaderByteCodes, iLength, &m_pInputLayout)))
+		return E_FAIL;
+
+	m_Shperes[CCell::POINT_A] = new BoundingSphere(Vec3::Zero, 0.1f);
+	m_Shperes[CCell::POINT_B] = new BoundingSphere(Vec3::Zero, 0.1f);
+	m_Shperes[CCell::POINT_C] = new BoundingSphere(Vec3::Zero, 0.1f);
 	return S_OK;
 }
 
@@ -80,7 +99,13 @@ void CImGui_Window_Mid_Nav::Show_Window()
 				ImGui::SameLine();
 				if (ImGui::Button("Relate"))
 				{
-					
+					//CNavMesh::GetInstance()->
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("Delete"))
+				{
+					if (FAILED(Delete_Cell()))
+						assert(FALSE);
 				}
 			}
 		}
@@ -108,6 +133,8 @@ void CImGui_Window_Mid_Nav::Show_Window()
 		/* Render */
 		if (CNavMesh::GetInstance()->Is_Render())
 			CNavMesh::GetInstance()->Render();
+
+		Render_Sphere();
 
 	}
 	ImGui::End();
@@ -172,25 +199,84 @@ HRESULT CImGui_Window_Mid_Nav::Load_NavData()
 
 void CImGui_Window_Mid_Nav::Edit_Update()
 {
+	/* Create Cell */
 	if (GAME_INSTNACE->Key_Down(VK_RBUTTON))
 	{
-		RAYHIT_DESC hit = GAME_INSTNACE->Check_ScreenRay(LayerNames[LAYER_ENV_STATIC]);
+		/* 메시 피킹 위치 + 스냅 */
+		RAYHIT_DESC hit = GAME_INSTNACE->Check_ScreenRay(LayerNames[LAYER_ENV_STATIC], TRUE);
 
 		if (nullptr != hit.pGameObject)
 		{
-			int k = 0;
+			Vec3 vPickedPos = hit.vHitPoint;
+
+			/* 메시 외에 임의로 추가된 셀들과 스냅 체크*/
+			CNavMesh::GetInstance()->Get_SnapCellPos(vPickedPos);
+
+			if (FAILED(Create_Cell(vPickedPos)))
+			{
+				
+			}
 		}
 	}
 
+	/* Picked Cell */
 	if (GAME_INSTNACE->Key_Down(VK_MBUTTON))
 	{
-		CCell* pPickedCell = GAME_INSTNACE->Check_ScreenRay();
+		m_pPickedCell = GAME_INSTNACE->Check_ScreenRay();
+	}
+}
 
-		if (nullptr != pPickedCell)
+HRESULT CImGui_Window_Mid_Nav::Create_Cell(Vec3 vPoint)
+{	
+	if (CCell::POINT_END <= m_CellPointsCache.size())
+		m_CellPointsCache.clear();
+
+	m_CellPointsCache.push_back(vPoint);
+
+	if (CCell::POINT_END <= m_CellPointsCache.size())
+	{
+
+		/* 시계 방향 정렬 */
+		Vec3 vLineAB = Vec3(m_CellPointsCache[CCell::POINT_B] - m_CellPointsCache[CCell::POINT_A]).Normalized();
+		Vec3 vLineAC = Vec3(m_CellPointsCache[CCell::POINT_C] - m_CellPointsCache[CCell::POINT_A]).Normalized();
+
+		Vec3 vCross = vLineAB.Cross(vLineAC);
+
+		if (0.f > vCross.y || 0.f < vCross.z)
 		{
-			int k = 0;
+			Vec3 vTemp = m_CellPointsCache[CCell::POINT_B];
+			m_CellPointsCache[CCell::POINT_B] = m_CellPointsCache[CCell::POINT_C];
+			m_CellPointsCache[CCell::POINT_C] = vTemp;
+		}
+
+
+
+		/* 같은 점이 있는지 필터링 */
+		if (m_CellPointsCache[CCell::POINT_A] != m_CellPointsCache[CCell::POINT_B] && m_CellPointsCache[CCell::POINT_B] != m_CellPointsCache[CCell::POINT_C] && m_CellPointsCache[CCell::POINT_C] != m_CellPointsCache[CCell::POINT_A])
+		{
+			// 셀 생성 
+			Vec3 Points[CCell::POINT_END] = { m_CellPointsCache[CCell::POINT_A], m_CellPointsCache[CCell::POINT_B], m_CellPointsCache[CCell::POINT_C] };
+
+			if (FAILED(CNavMesh::GetInstance()->Add_Cell(Points)))
+			{
+				m_CellPointsCache.pop_back();
+				return E_FAIL;
+			}
 		}
 	}
+
+	return S_OK;
+}
+
+HRESULT CImGui_Window_Mid_Nav::Delete_Cell()
+{
+	if (nullptr != m_pPickedCell)
+	{
+		if (FAILED(CNavMesh::GetInstance()->Delete_Cell(m_pPickedCell->Get_Index())))
+			return E_FAIL;
+	}
+
+	return S_OK;
 }
 
 HRESULT CImGui_Window_Mid_Nav::Create_Cells(vector<CCell*>& Cells)
@@ -227,7 +313,7 @@ HRESULT CImGui_Window_Mid_Nav::Create_Cells(vector<CCell*>& Cells)
 
 
 				/* 로컬에서 월드로 올린다. */
-				Vec3 VerticesPosWorld[3];
+				Vec3 VerticesPosWorld[CCell::POINT_END];
 
 				XMStoreFloat3(&VerticesPosWorld[0],
 					XMVector3TransformCoord(XMLoadFloat3(&VerticesPos[Indices[i]._0]), matWorld));
@@ -302,6 +388,34 @@ HRESULT CImGui_Window_Mid_Nav::Set_Neighbors(vector<CCell*>& Cells)
 			}
 		}
 	}
+
+	/* 네비이션을 사용하는 오브젝트들의 현재 위치한 셀의 인덱스를 리셋하여 다시 적용한다. */
+
+	list<CGameObject*>* pLayers[3];
+
+	pLayers[0] = GAME_INSTNACE->Get_Layer(m_pImGui_Manager->m_iIndex_CurLevelID, LayerNames[LAYER_PLAYER]);
+	pLayers[1] = GAME_INSTNACE->Get_Layer(m_pImGui_Manager->m_iIndex_CurLevelID, LayerNames[LAYER_ENEMY]);
+	pLayers[2] = GAME_INSTNACE->Get_Layer(m_pImGui_Manager->m_iIndex_CurLevelID, LayerNames[LAYER_NPC]);
+
+
+	for (size_t i = 0; i < 3; i++)
+	{
+		if (nullptr == pLayers[i]) continue;
+		
+		for (auto& pCharacter : *pLayers[i])
+		{
+			if (nullptr == pCharacter) continue;
+
+			CNavMeshAgent* pNavMeshAgent = pCharacter->Get_NavMeshAgent();
+
+			if (nullptr == pNavMeshAgent) continue;
+
+			const _int iIndex = CNavMesh::GetInstance()->Find_Cell(pCharacter->Get_Transform()->Get_FinalPosition().xyz());
+
+			pNavMeshAgent->Set_CurIndex(iIndex);
+		}
+	}
+
 	return S_OK;
 }
 
@@ -327,7 +441,7 @@ void CImGui_Window_Mid_Nav::Render_PopUp_Save()
 	ImGui::OpenPopup("PopUp");
 	if (ImGui::BeginPopup("PopUp"))
 	{
-		ImGui::Text("Are you Sure?");
+		ImGui::Text("Did you set Neighbors?");
 		ImGui::SameLine();
 
 		if (ImGui::Button("OK"))
@@ -356,6 +470,30 @@ void CImGui_Window_Mid_Nav::Render_PopUp_Load()
 	}
 }
 
+void CImGui_Window_Mid_Nav::Render_Sphere()
+{
+	_float4 vColor(1.f, 0.f, 1.f, 1.f);
+
+	m_pEffect->SetWorld(XMMatrixIdentity());
+	m_pEffect->SetView(GAME_INSTNACE->Get_Transform(CPipeLine::STATE_VIEW));
+	m_pEffect->SetProjection(GAME_INSTNACE->Get_Transform(CPipeLine::STATE_PROJ));
+
+	m_pEffect->Apply(m_pImGui_Manager->m_pContext);
+
+	m_pImGui_Manager->m_pContext->IASetInputLayout(m_pInputLayout);
+
+	m_pBatch->Begin();
+
+	for (size_t i = 0; i < m_CellPointsCache.size(); i++)
+	{
+		m_Shperes[i]->Center = m_CellPointsCache[i];
+
+		DX::Draw(m_pBatch, *m_Shperes[i], XMLoadFloat4(&vColor));
+	}
+
+	m_pBatch->End();
+}
+
 CImGui_Window_Mid_Nav* CImGui_Window_Mid_Nav::Create()
 {
 	CImGui_Window_Mid_Nav* pInstance = new CImGui_Window_Mid_Nav();
@@ -372,6 +510,15 @@ CImGui_Window_Mid_Nav* CImGui_Window_Mid_Nav::Create()
 void CImGui_Window_Mid_Nav::Free()
 {
 	__super::Free();
+
+	for (size_t i = 0; i < 3; i++)
+	{
+		Safe_Delete(m_Shperes[i]);
+	}
+
+	Safe_Delete(m_pBatch);
+	Safe_Delete(m_pEffect);
+	Safe_Release(m_pInputLayout);
 }
 
 #endif // _DEBUG

@@ -15,7 +15,7 @@ HRESULT CVIBuffer_Cell::Initialize_Prototype(const _float3* pPoints)
 {
 	m_iNumVertexBuffers = 1;
 	m_iNumVertices = 3;
-	m_iStride = sizeof(VTXPOS); /* 정점하나의 크기 .*/
+	m_iStride = sizeof(VTXPOS);
 	
 	m_iNumPrimitives = 1;
 	m_iIndexSizeofPrimitive = sizeof(FACEINDICES16);
@@ -25,12 +25,10 @@ HRESULT CVIBuffer_Cell::Initialize_Prototype(const _float3* pPoints)
 
 #pragma region VERTEX_BUFFER
 
-	/* 정점버퍼와 인덱스 버퍼를 만드낟. */
 	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);
 
-	// m_BufferDesc.ByteWidth = 정점하나의 크기(Byte) * 정점의 갯수;
 	m_BufferDesc.ByteWidth = m_iStride * m_iNumVertices;
-	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT; /* 정적버퍼로 할당한다. (Lock, unLock 호출 불가)*/
+	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	m_BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	m_BufferDesc.CPUAccessFlags = 0;
 	m_BufferDesc.MiscFlags = 0;
@@ -53,7 +51,6 @@ HRESULT CVIBuffer_Cell::Initialize_Prototype(const _float3* pPoints)
 
 #pragma region INDEX_BUFFER
 
-	/* 정점버퍼와 인덱스 버퍼를 만드낟. */
 	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);
 	m_BufferDesc.ByteWidth = m_iNumPrimitives * m_iNumIndicesofPrimitive * m_iIndexSizeofPrimitive;
 	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT; 

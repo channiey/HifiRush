@@ -25,6 +25,7 @@ public:
 public:
 	const _uint&	Get_Index() const { return m_iIndex; }
 	const _float3*	Get_Point(POINTS ePoint) const { return &m_vPoints_InWorld[ePoint]; }	
+	const _int*		Get_NeighborIndices() const { return m_iNeighborIndices; }
 	const _int		Get_NeighborIndex(LINE eLine) const { return m_iNeighborIndices[eLine]; }
 	const _float3*	Get_Normal(LINE eLine) const { return &m_vNormals[eLine]; }
 	Vec3			Get_CenterPoint() const { return m_vCenterPoint; }
@@ -36,12 +37,16 @@ public:
 	void			Set_NeighborIndex(LINE eLine, _int iIndex) { memcpy(&m_iNeighborIndices[eLine], &iIndex, sizeof(_int)); }
 	void			Set_Neighbor(LINE eLine, CCell* pCell) { m_iNeighborIndices[eLine] = pCell->m_iIndex; }	
 	void			Set_Picked(const _bool bPicked) { m_bPicked = bPicked; }
+
 public:
 	_bool			Is_Out(_fvector vPoint, _int* pNeighborIndex);		
 	_bool			Is_Picked() const { return m_bPicked; }
 
 public:
 	_bool			Compare_Points(const _float3* pSourPoint, const _float3* pDestPoint);	
+
+	HRESULT			Remove_Neighbor(const _int& iIndex);
+	HRESULT			Clear_NeighborIndices();
 
 private:
 	ID3D11Device*			m_pDevice = { nullptr };

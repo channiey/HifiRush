@@ -123,7 +123,7 @@ void CCollision_Manager::Check_Collision_Layer(const wstring& strLayerTag1, cons
 	}
 }
 
-RAYHIT_DESC CCollision_Manager::Check_ScreenRay(const wstring& strLayerTag)
+RAYHIT_DESC CCollision_Manager::Check_ScreenRay(const wstring& strLayerTag, const _bool& bSnap)
 {
 	list<class CGameObject*>* pGameObjects = GAME_INSTNACE->Get_Layer(GAME_INSTNACE->Get_CurLevelIndex(), strLayerTag);
 
@@ -173,6 +173,36 @@ RAYHIT_DESC CCollision_Manager::Check_ScreenRay(const wstring& strLayerTag)
 						tHit.pGameObject = pGameObject;
 						tHit.vHitPoint = vHitWorldPos;
 						tHit.fDistance = rayDirection.Length();
+
+
+						/* Snap */
+						if(bSnap)
+						{
+							Vec3 vWorldPosA = XMVector3TransformCoord(VerticesPos[Indices[i]._0], matWorld);
+							Vec3 vWorldPosB = XMVector3TransformCoord(VerticesPos[Indices[i]._1], matWorld);
+							Vec3 vWorldPosC = XMVector3TransformCoord(VerticesPos[Indices[i]._2], matWorld);
+
+							_float fDistWorldA = Vec3(vHitWorldPos - vWorldPosA).Length();
+							_float fDistWorldB = Vec3(vHitWorldPos - vWorldPosB).Length();
+							_float fDistWorldC = Vec3(vHitWorldPos - vWorldPosC).Length();
+
+							_float fDistMinWorld = min(min(fDistWorldA, fDistWorldB), fDistWorldC);
+
+							const _float	fCanSnapDistnace = 0.5f;
+
+							if (fDistMinWorld <= fCanSnapDistnace && fDistMinWorld == fDistWorldA)
+							{
+								tHit.vHitPoint = vWorldPosA;
+							}
+							else if (fDistMinWorld <= fCanSnapDistnace && fDistMinWorld == fDistWorldB)
+							{
+								tHit.vHitPoint = vWorldPosB;
+							}
+							else if (fDistMinWorld <= fCanSnapDistnace && fDistMinWorld == fDistWorldC)
+							{
+								tHit.vHitPoint = vWorldPosC;
+							}
+						}
 					}
 				}
 			}

@@ -330,6 +330,9 @@ namespace DirectX
             static const Vector3 Forward;
             static const Vector3 Backward;
 
+
+            Vector3 Normalized() noexcept;
+
             ///* User */
             //Vector4 ToVec4Nor() const  noexcept { return Vector4(x, y, z, 0); }
             //Vector4 ToVec4Coord() const  noexcept { return Vector4(x, y, z, 1); }
@@ -2256,6 +2259,14 @@ namespace DirectX
             using namespace DirectX;
             XMMATRIX M = XMLoadFloat4x4(&m);
             XMVector3TransformNormalStream(resultArray, sizeof(XMFLOAT3), varray, sizeof(XMFLOAT3), count, M);
+        }
+
+        inline Vector3 Vector3::Normalized() noexcept
+        {
+            using namespace DirectX;
+            XMVECTOR v1 = XMLoadFloat3(this);
+            XMVECTOR X = XMVector3Normalize(v1);
+            return   X;
         }
 
 

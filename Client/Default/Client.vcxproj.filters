@@ -289,6 +289,9 @@
     <Filter Include="97.ImGui\Windows\01.Mid\00.Nav">
       <UniqueIdentifier>{6f1b53e5-eaaa-4b44-abcf-7095214f7593}</UniqueIdentifier>
     </Filter>
+    <Filter Include="97.ImGui\99.DebugDraw">
+      <UniqueIdentifier>{9a7ffda9-0972-41ff-9de7-13a20b062d95}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -477,6 +480,9 @@
     <ClInclude Include="..\Public\ImGui_Window_Mid_Nav.h">
       <Filter>97.ImGui\Windows\01.Mid\00.Nav</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\DebugDraw.h">
+      <Filter>97.ImGui\99.DebugDraw</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -652,6 +658,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\ImGui_Window_Mid_Nav.cpp">
       <Filter>97.ImGui\Windows\01.Mid\00.Nav</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DebugDraw.cpp">
+      <Filter>97.ImGui\99.DebugDraw</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -186,6 +186,7 @@
     <ClInclude Include="..\Public\Camera_Follow.h" />
     <ClInclude Include="..\Public\Chai_Guitar_Explore.h" />
     <ClInclude Include="..\Public\Character.h" />
+    <ClInclude Include="..\Public\DebugDraw.h" />
     <ClInclude Include="..\Public\Enemy.h" />
     <ClInclude Include="..\Public\ImGui_Window_Sub_Com_Model.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
@@ -270,6 +271,7 @@
     <ClCompile Include="..\Private\Camera_Follow.cpp" />
     <ClCompile Include="..\Private\Chai_Guitar_Explore.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
+    <ClCompile Include="..\Private\DebugDraw.cpp" />
     <ClCompile Include="..\Private\Enemy.cpp" />
     <ClCompile Include="..\Private\ImGui_Window_Sub_Com_Model.cpp" />
     <ClCompile Include="..\Private\ImGui_Manager.cpp">

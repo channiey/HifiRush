@@ -32,6 +32,7 @@ public:
 
 public:
 	const _bool		Can_Move(_fvector vPoint);
+	void			Set_CurIndex(const _int iIndex) { m_iCurIndex = iIndex; }
 
 private:
 	_int			m_iCurIndex = { -1 };
