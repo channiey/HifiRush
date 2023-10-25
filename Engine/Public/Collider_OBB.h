@@ -30,7 +30,7 @@ public:
 
 public:
 	virtual _bool Check_Collision(CCollider* pTargetCollider);
-	virtual _bool Check_Collision(Ray& ray, OUT RAYHIT_DESC& pHitDesc);
+	//virtual _bool Check_Collision(Ray& ray, OUT RAYHIT_DESC& pHitDesc);
 
 
 public:

@@ -29,6 +29,8 @@ private:
 	HRESULT			Save_NavData();
 	HRESULT			Load_NavData();
 
+	void			Edit_Update();
+
 private:
 	HRESULT			Create_Cells(vector<CCell*>& Cells);
 	HRESULT			Set_Neighbors(vector<CCell*>& Cells);
@@ -37,6 +39,7 @@ private:
 	void			Render_PopUp_Clear();
 	void			Render_PopUp_Save();
 	void			Render_PopUp_Load();
+
 private:
 	_float			m_fMaxSlope		= 80.f;
 	_float			m_fMinArea		= -1.f;
@@ -45,6 +48,8 @@ private:
 	_bool			m_bPopUp_Clear = FALSE;
 	_bool			m_bPopUp_Save = FALSE;
 	_bool			m_bPopUp_Load = FALSE;
+
+	_bool			m_bEditing = FALSE;
 
 
 public:

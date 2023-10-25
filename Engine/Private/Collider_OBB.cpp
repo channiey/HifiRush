@@ -75,10 +75,10 @@ _bool CCollider_OBB::Check_Collision(CCollider * pTargetCollider)
 	return bCollision;
 }
 
-_bool CCollider_OBB::Check_Collision(Ray& ray, OUT RAYHIT_DESC& pHitDesc)
-{
-	return m_pOBB->Intersects(ray.position, ray.direction, pHitDesc.fDistance);
-}
+//_bool CCollider_OBB::Check_Collision(Ray& ray, OUT RAYHIT_DESC& pHitDesc)
+//{
+//	return m_pOBB->Intersects(ray.position, ray.direction, pHitDesc.fDistance);
+//}
 
 _bool CCollider_OBB::Collision_OBB(CCollider * pTargetCollider)
 {

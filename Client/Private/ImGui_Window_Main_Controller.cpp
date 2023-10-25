@@ -128,6 +128,12 @@ void CImGui_Window_Main_Controller::Clear_Reference_Data()
 {
 }
 
+CCell* CImGui_Window_Main_Controller::Get_Picked_Cell()
+{
+
+	return nullptr;
+}
+
 CImGui_Window_Main_Controller* CImGui_Window_Main_Controller::Create()
 {
 	CImGui_Window_Main_Controller* pInstance = new CImGui_Window_Main_Controller();

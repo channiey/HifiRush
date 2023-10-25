@@ -28,8 +28,6 @@ HRESULT CCell::Initialize(const _float3 * pPoints, _uint iIndex)
 		XMStoreFloat3(&m_vNormals[i], XMVector3Normalize(XMLoadFloat3(&m_vNormals[i])));
 	}
 
-
-
 	m_vCenterPoint.x = (m_vPoints_InWorld[POINT_A].x + m_vPoints_InWorld[POINT_B].x + m_vPoints_InWorld[POINT_C].x) / 3.f;
 	m_vCenterPoint.y = (m_vPoints_InWorld[POINT_A].y + m_vPoints_InWorld[POINT_B].y + m_vPoints_InWorld[POINT_C].y) / 3.f;
 	m_vCenterPoint.z = (m_vPoints_InWorld[POINT_A].z + m_vPoints_InWorld[POINT_B].z + m_vPoints_InWorld[POINT_C].z) / 3.f;

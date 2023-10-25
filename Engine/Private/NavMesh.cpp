@@ -1,6 +1,7 @@
 #include "..\Public\NavMesh.h"
 
 #include "GameInstance.h"
+#include "Collision_Manager.h"
 #include "Cell.h"
 
 IMPLEMENT_SINGLETON(CNavMesh)
@@ -10,7 +11,6 @@ CNavMesh::CNavMesh()
 
 }
 
-
 HRESULT CNavMesh::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	m_pDevice = pDevice;
@@ -19,16 +19,13 @@ HRESULT CNavMesh::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContex
 	Safe_AddRef(m_pDevice);
 	Safe_AddRef(m_pContext);
 
-#ifdef _DEBUG
 	m_pShader = CShader::Create(m_pDevice,m_pContext, TEXT("../Bin/ShaderFiles/Shader_Cell.hlsl"), VTXPOS::Elements, VTXPOS::iNumElements);
 	if (nullptr == m_pShader)
 		return E_FAIL;
-#endif // _DEBUG
-	return TRUE;
 
+	return TRUE;
 }
 
-#ifdef _DEBUG
 HRESULT CNavMesh::Render()
 {
 	if (!m_bRender || nullptr == m_pShader || m_Cells.empty())
@@ -59,12 +56,45 @@ HRESULT CNavMesh::Render()
 			_float fDist = Vec3(pCell->Get_CenterPoint() - GAME_INSTNACE->Get_CamPosition().xyz()).Length();
 			if (m_fRenderRange < fDist)
 				continue;
+
+			/* Render */
+			pCell->Render();
+		}
+	}
+
+
+
+
+	/* Color */
+	_float4 vColor2{ 0.f, 0.f, 1.f, 1.f };
+	if (FAILED(m_pShader->Bind_RawValue("g_vLineColor", &vColor2, sizeof(_float4))))
+		return E_FAIL;
+
+	/* Height */
+	_float fHeight2 = 0.1f;
+	if (FAILED(m_pShader->Bind_RawValue("g_fHeight", &fHeight2, sizeof(_float))))
+		return E_FAIL;
+
+	if (FAILED(m_pShader->Begin(0)))
+		return E_FAIL;
+
+	for (auto& pCell : m_Cells)
+	{
+		if (nullptr != pCell && pCell->Is_Picked())
+		{
+			/* Check Range */
+			_float fDist = Vec3(pCell->Get_CenterPoint() - GAME_INSTNACE->Get_CamPosition().xyz()).Length();
+			if (m_fRenderRange < fDist)
+				continue;
+
+			/* Render */
 			pCell->Render();
 		}
 	}
 
 	return S_OK;
 }
+
 HRESULT CNavMesh::Render_Cell(const _int& iInedx)
 {
 	if (!m_bRender || nullptr == m_pShader || m_Cells.size() <= iInedx || m_Cells.empty())
@@ -95,7 +125,6 @@ HRESULT CNavMesh::Render_Cell(const _int& iInedx)
 
 	return S_OK;
 }
-#endif // _DEBUG
 
 HRESULT CNavMesh::Set_NavDate(vector<CCell*>& Cells)
 {

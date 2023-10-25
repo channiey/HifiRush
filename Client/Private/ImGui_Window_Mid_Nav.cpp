@@ -9,6 +9,8 @@
 
 #include "Cell.h"
 
+#include "Collision_Manager.h"
+
 CImGui_Window_Mid_Nav::CImGui_Window_Mid_Nav()
 {
 }
@@ -33,43 +35,56 @@ void CImGui_Window_Mid_Nav::Show_Window()
 			ImGui::DragFloat("Min Area", &m_fMinArea, 0.05f);
 
 			_float fRenderRange = CNavMesh::GetInstance()->Get_RenderRange();
-			if (ImGui::DragFloat("Render Range", &fRenderRange, 1.f))
-			{
-				CNavMesh::GetInstance()->Set_RenderRange(fRenderRange);
-			}
 
+			if (ImGui::DragFloat("Render Range", &fRenderRange, 1.f))
+				CNavMesh::GetInstance()->Set_RenderRange(fRenderRange);
 		}
 
 		/* Button */
 		{
-			if (ImGui::Button("Clear"))
+			ImGui::SeparatorText("Auto");
 			{
-				m_bPopUp_Clear = TRUE;
-			}
-			ImGui::SameLine();
+				if (ImGui::Button("Clear"))
+				{
+					m_bPopUp_Clear = TRUE;
+				}
+				ImGui::SameLine();
 
-			if (ImGui::Button("Auto Bake"))
-			{
-				if (FAILED(Bake()))
-					return;
-			}
-			ImGui::SameLine();
+				if (ImGui::Button("Auto Bake"))
+				{
+					if (FAILED(Bake()))
+						return;
+				}
+				ImGui::SameLine();
 
-			if (ImGui::Button("Render"))
-			{
-				CNavMesh::GetInstance()->Set_Render();
+				if (ImGui::Button("Render"))
+				{
+					CNavMesh::GetInstance()->Set_Render();
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("Save"))
+				{
+					m_bPopUp_Save = TRUE;
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("Load"))
+				{
+					m_bPopUp_Load = TRUE;
+				}
 			}
-			ImGui::SameLine();
-			if (ImGui::Button("Save"))
+
+			ImGui::SeparatorText("Custom");
 			{
-				m_bPopUp_Save = TRUE;
+				if (ImGui::Checkbox("Edit", &m_bEditing))
+				{
+					
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("Relate"))
+				{
+					
+				}
 			}
-			ImGui::SameLine();
-			if (ImGui::Button("Load"))
-			{
-				m_bPopUp_Load = TRUE;
-			}
-			ImGui::SameLine();
 		}
 
 		/* Text */
@@ -86,6 +101,11 @@ void CImGui_Window_Mid_Nav::Show_Window()
 			if (m_bPopUp_Load)
 				Render_PopUp_Load();
 		}
+
+		/* Update */
+		if (m_bEditing)
+			Edit_Update();
+
 
 		/* Render */
 		if (CNavMesh::GetInstance()->Is_Render())
@@ -130,7 +150,9 @@ HRESULT CImGui_Window_Mid_Nav::Bake()
 	if (FAILED(Set_Neighbors(Cells)))
 		return E_FAIL;
 	
-	CNavMesh::GetInstance()->Set_NavDate(Cells);
+	if (FAILED(CNavMesh::GetInstance()->Set_NavDate(Cells)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -150,6 +172,18 @@ HRESULT CImGui_Window_Mid_Nav::Load_NavData()
 	return S_OK;
 }
 
+void CImGui_Window_Mid_Nav::Edit_Update()
+{
+	if (GAME_INSTNACE->Key_Down(VK_RBUTTON))
+	{
+		RAYHIT_DESC hit = CCollision_Manager::GetInstance()->Check_ScreenRay(LayerNames[LAYER_ENV_STATIC]);
+
+		if (nullptr != hit.pGameObject)
+		{
+			int k = 0;
+		}
+	}
+}
 
 HRESULT CImGui_Window_Mid_Nav::Create_Cells(vector<CCell*>& Cells)
 {

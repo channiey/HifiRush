@@ -5,14 +5,6 @@
 #include "SimpleMath.h"
 namespace Engine
 {
-	typedef struct tagRayCastHitDesc
-	{
-		Vec3	vHitPoint	= Vec3::Zero;
-		void*	pGameObject = { nullptr };
-		_float	fDistance	= 0.f;
-
-	}RAYHIT_DESC;
-
 	typedef struct tagLightDesc
 	{
 		enum TYPE { LIGHT_DIRECTIONAL, LIGHT_POINT, LIGHT_END };

@@ -16,13 +16,10 @@ private:
 
 public:
 	HRESULT	Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-#ifdef _DEBUG
 	HRESULT Render();
 	HRESULT Render_Cell(const _int& iInedx);
-#endif // _DEBUG
 
 
-#ifdef _DEBUG
 public:
 	void			Set_RenderRange(const _float fRange) { m_fRenderRange = fRange; }
 	void			Set_Render(const _bool& bRender) { m_bRender = bRender; }
@@ -33,7 +30,6 @@ public:
 
 	const _bool&	Is_Render() const { return m_bRender; }
 	const _bool		Is_EmptyCells() const { return m_Cells.empty(); }
-#endif // _DEBUG
 
 public:
 	const _int		Find_Cell(Vec3 vWorldPos);
@@ -57,11 +53,9 @@ private:
 	
 	vector<CCell*>	m_Cells;
 
-#ifdef _DEBUG
 	CShader*		m_pShader = { nullptr };
 	_float			m_fRenderRange = 10.f;
 	_bool			m_bRender = FALSE;
-#endif
 
 public:
 	virtual void			Free();

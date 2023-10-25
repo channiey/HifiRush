@@ -9,7 +9,7 @@ class ENGINE_DLL CCell final : public CBase
 public:
 	enum POINTS		{ POINT_A, POINT_B, POINT_C, POINT_END };
 	enum LINE		{ LINE_AB, LINE_BC, LINE_CA, LINE_END };
-	enum CELL_TYPE	{ WALL, JUMP, TYPE_END };
+	
 private:
 	CCell(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual ~CCell() = default;
@@ -34,23 +34,28 @@ public:
 	void			Set_Index(const _uint& iIndex) { memcpy(&m_iIndex, &iIndex, sizeof(_uint)); }
 	void			Set_Normal(LINE eLine, Vec3 vNormal) { memcpy(&m_vNormals[eLine], &vNormal, sizeof(Vec3)); }
 	void			Set_NeighborIndex(LINE eLine, _int iIndex) { memcpy(&m_iNeighborIndices[eLine], &iIndex, sizeof(_int)); }
-	void			Set_Neighbor(LINE eLine, CCell* pCell) { m_iNeighborIndices[eLine] = pCell->m_iIndex; }	// 이웃 설정 
+	void			Set_Neighbor(LINE eLine, CCell* pCell) { m_iNeighborIndices[eLine] = pCell->m_iIndex; }	
+	void			Set_Picked(const _bool bPicked) { m_bPicked = bPicked; }
+public:
+	_bool			Is_Out(_fvector vPoint, _int* pNeighborIndex);		
+	_bool			Is_Picked() const { return m_bPicked; }
 
 public:
-	_bool			Is_Out(_fvector vPoint, _int* pNeighborIndex);		// 객체가 현재 셀을 나갔는지 판단 
-	_bool			Compare_Points(const _float3* pSourPoint, const _float3* pDestPoint);	// 이웃 설정 
+	_bool			Compare_Points(const _float3* pSourPoint, const _float3* pDestPoint);	
 
 private:
 	ID3D11Device*			m_pDevice = { nullptr };
 	ID3D11DeviceContext*	m_pContext = { nullptr };
 
 	_uint					m_iIndex = {};
-	Vec3					m_vPoints_InWorld[POINT_END];	// 스태틱 객체 월드로 올림 
+	Vec3					m_vPoints_InWorld[POINT_END];
 	Vec3					m_vNormals[LINE_END];
 	_int					m_iNeighborIndices[LINE_END] = { -1, -1, -1 };
 
 	Vec3					m_vCenterPoint;
-	//_float3					m_vPoints_Original[POINT_END];	// 로컬 
+
+	_float					m_fPlusHeight = 0.f; // 원래 정점에서 얼마나 올라갔냐 (공중 상태용) -> 정점을 나타내는 모든 데이터 y에 더함
+	_bool					m_bPicked = FALSE;
 
 #ifdef _DEBUG
 private:

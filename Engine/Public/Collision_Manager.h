@@ -15,9 +15,21 @@ union COLLIDER_ID
 
 BEGIN(Engine)
 
-class CCollision_Manager final : public CBase
+class CGameObject;
+
+typedef struct tagRayCastHitDesc
+{
+	Vec3			vHitPoint = Vec3::Zero;
+	CGameObject*	pGameObject = { nullptr };
+	_float			fDistance = 0.f;
+
+}RAYHIT_DESC;
+
+class ENGINE_DLL CCollision_Manager final : public CBase
 {
 	DECLARE_SINGLETON(CCollision_Manager)
+
+public:
 
 private:
 	CCollision_Manager();
@@ -31,16 +43,12 @@ public:
 												const wstring& strLayerTag2,
 												const CCollider::TYPE& eType1, 
 												const CCollider::TYPE& eType2);
-
-public: 
-	static const _bool	Check_Collision_Ray(Ray& ray, class CCollider* pCollider, OUT RAYHIT_DESC& hitDesc);
-	static const _bool	Check_Collision_PickingRay(class CCollider* pCollider, const Matrix& matWorld, OUT RAYHIT_DESC& hitDesc);
-	static const _bool	Check_Collision_PickingRay(class CModel* pModel, const Matrix& matWorld, OUT RAYHIT_DESC& hitDesc, const _bool& bPreInterSphere);
+public:
+	RAYHIT_DESC			Check_ScreenRay(const wstring& strLayerTag);
 
 
 public:
-	static Ray			Create_PickingRay(const Matrix& matWorld);
-	static Ray			Create_PickingRay2(const Matrix& matWorld);
+	const Ray			Create_ScreenRay(Matrix matWorld);
 
 private:
 	void				Set_Info(map<_ulonglong, _bool>::iterator& iter, class CCollider* pCollider1, class CCollider* pCollider2);

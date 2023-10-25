@@ -503,38 +503,6 @@ void CGameInstance::Check_Collision_Layer(const wstring& strLayerTag1, const wst
 	return m_pCollision_Manager->Check_Collision_Layer(strLayerTag1, strLayerTag2, eType1, eType2);
 }
 
-const _bool CGameInstance::Check_Collision_Ray(Ray& ray, CCollider* pCollider, OUT RAYHIT_DESC& hitDesc)
-{
-	if (nullptr == m_pCollision_Manager)
-		return FALSE;
-
-	return m_pCollision_Manager->Check_Collision_Ray(ray, pCollider, hitDesc);
-}
-
-const _bool CGameInstance::Check_Collision_PickingRay(CCollider* pCollider, const Matrix& matWorld, OUT RAYHIT_DESC& hitDesc)
-{
-	if (nullptr == m_pCollision_Manager)
-		return FALSE;
-
-	return m_pCollision_Manager->Check_Collision_PickingRay(pCollider, matWorld, hitDesc);
-}
-
-const _bool CGameInstance::Check_Collision_PickingRay(CModel* pModel, const Matrix& matWorld, OUT RAYHIT_DESC& hitDesc, const _bool& bPreInterSphere)
-{
-	if (nullptr == m_pCollision_Manager)
-		return FALSE;
-
-	return m_pCollision_Manager->Check_Collision_PickingRay(pModel, matWorld, hitDesc, bPreInterSphere);
-}
-
-Ray CGameInstance::Create_PickingRay(const Matrix& matWorld)
-{
-	if (nullptr == m_pCollision_Manager)
-		return Ray();
-
-	return m_pCollision_Manager->Create_PickingRay(matWorld);
-}
-
 CGameObject* CGameInstance::Get_Camera(const _uint& iKey)
 {
 	if(nullptr == m_pCamera_Manager)

@@ -72,10 +72,10 @@ _bool CCollider_Sphere::Check_Collision(CCollider * pTargetCollider)
 	return bCollision;
 }
 
-_bool CCollider_Sphere::Check_Collision(Ray& ray, OUT RAYHIT_DESC& pHitDesc)
-{
-	return m_pSphere->Intersects(ray.position, ray.direction, pHitDesc.fDistance);
-}
+//_bool CCollider_Sphere::Check_Collision(Ray& ray, OUT RAYHIT_DESC& pHitDesc)
+//{
+//	return m_pSphere->Intersects(ray.position, ray.direction, pHitDesc.fDistance);
+//}
 
 void CCollider_Sphere::Set_Collider_Offset(const Vec3 vCenter)
 {

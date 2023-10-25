@@ -47,7 +47,7 @@ public:
 
 public:
 	virtual _bool		Check_Collision(CCollider* pTargetCollider) = 0;
-	virtual _bool		Check_Collision(Ray& ray, OUT RAYHIT_DESC& pHitDesc) = 0;
+	//virtual _bool		Check_Collision(Ray& ray, OUT RAYHIT_DESC& pHitDesc) = 0;
 
 public:
 	TYPE				Get_Type() const { return m_eColliderType; }

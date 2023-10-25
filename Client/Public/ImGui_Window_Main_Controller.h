@@ -4,6 +4,7 @@
 #include "ImGui_Window.h"
 
 BEGIN(Engine)
+class CCell;
 END
 
 BEGIN(Client)
@@ -16,7 +17,7 @@ protected:
 
 public:
 	virtual HRESULT Initialize() override;
-	virtual void Show_Window() override;
+	virtual void	Show_Window() override;
 
 public:
 	virtual void Clear_Reference_Data() override;
@@ -25,7 +26,7 @@ public:
 
 
 private:
-
+	CCell* Get_Picked_Cell();
 
 public:
 	static CImGui_Window_Main_Controller* Create();
