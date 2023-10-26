@@ -406,14 +406,20 @@ HRESULT CNavMesh::Delete_Cell(const _uint iIndex)
 
 	Safe_Release(m_Cells[iIndex]);
 
-	if (0 == iIndex)
-		m_Cells.erase(m_Cells.begin());
-	else if (m_Cells.size() - 1 == iIndex)
-		m_Cells.pop_back();
-	else
-		m_Cells.erase(m_Cells.begin() + iIndex);
 
-	return S_OK;
+	for (vector<CCell*>::iterator iter = m_Cells.begin(); iter != m_Cells.end();)
+	{
+		if ((*iter)->Get_Index() == iIndex)
+		{
+			Safe_Release(*iter);
+			iter = m_Cells.erase(iter);
+			return S_OK;
+		}
+		else
+			++iter;
+	}
+
+	return E_FAIL;
 }
 
 const _int CNavMesh::Find_Cell(Vec3 vWorldPos)

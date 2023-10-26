@@ -45,6 +45,7 @@ public:
 public:
 	void					Set_Kinematic(const _bool& bKinematic) { m_bKinematic = bKinematic; }
 	void					Set_UseGravity(const _bool& bUse) { m_bUseGravity = bUse; }
+	void					Set_Gravity(const _float& fGravity) { m_fGravitionalConstant = fGravity; }
 	void					Set_Mass(const _float& fMass) { m_fMass = fMass;}
 	void					Set_Friction(const _float& fFriction) { m_fFriction = fFriction; }
 

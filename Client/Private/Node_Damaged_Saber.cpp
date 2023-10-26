@@ -75,7 +75,7 @@ void CNode_Damaged_Saber::Damaged()
 		//else
 		{
 			m_eCurAnim = ANIM_SA::DMG_05;
-			m_pBlackboard_Saber->m_pSaber->Get_Model()->Set_Animation(m_eCurAnim, DF_PL_TIME, DF_TW_TIME);
+			m_pBlackboard_Saber->m_pSaber->Get_Model()->Set_Animation(m_eCurAnim);
 		}
 	}
 

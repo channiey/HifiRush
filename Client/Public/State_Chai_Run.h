@@ -25,6 +25,7 @@ public:
 private:
 	void Move(const _float& fTimeDelta);
 
+private:
 	Vec3 m_vScale = {};
 
 public:

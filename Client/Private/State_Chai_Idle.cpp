@@ -23,7 +23,7 @@ HRESULT CState_Chai_Idle::Initialize(CStateMachine* pStateMachine, const wstring
 
 HRESULT CState_Chai_Idle::Enter()
 {
-	m_pChai->Get_Model()->Set_Animation(ANIM_CH::IDLE, 1.5f, DF_TW_TIME);
+	m_pChai->Get_Model()->Set_Animation(ANIM_CH::IDLE, 1.5f, 0.15f);
 
 	return S_OK;
 }
@@ -82,6 +82,10 @@ if(!CImGui_Manager::GetInstance()->Is_ClickedWindow())
 	else if (Input::Parry())
 	{
 		return StateNames[STATE_PARRY];
+	}
+	else if (Input::Jump())
+	{
+		return StateNames[STATE_JUMP];
 	}
 
 	return m_strName;

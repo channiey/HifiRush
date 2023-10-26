@@ -10,6 +10,8 @@ public:
 	enum POINTS		{ POINT_A, POINT_B, POINT_C, POINT_END };
 	enum LINE		{ LINE_AB, LINE_BC, LINE_CA, LINE_END };
 	
+	enum class CELL_TYPE { NORMAL, JUMP, TYPEEND };
+
 private:
 	CCell(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual ~CCell() = default;
@@ -61,6 +63,8 @@ private:
 
 	_float					m_fPlusHeight = 0.f; // 원래 정점에서 얼마나 올라갔냐 (공중 상태용) -> 정점을 나타내는 모든 데이터 y에 더함
 	_bool					m_bPicked = FALSE;
+
+	CELL_TYPE				m_eType = CELL_TYPE::NORMAL;
 
 #ifdef _DEBUG
 private:

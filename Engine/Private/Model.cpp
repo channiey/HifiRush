@@ -320,6 +320,7 @@ void CModel::Set_Animation(const _uint& iAnimIndex, const _float& fSpeed, const 
 void CModel::Set_AnimationSpeed(const _float& fSpeed)
 {
 	m_TweenDesc.cur.fSpeed = fSpeed;
+	m_TweenDesc.next.fSpeed = fSpeed;
 }
 
 void CModel::Set_BoneIndex(const BONE_TYPE& eType, const _int iIndex)

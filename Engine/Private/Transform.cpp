@@ -117,7 +117,8 @@ void CTransform::Set_Position(Vec3 vPos, _bool bNotAgent)
 	/* Agent Height */
 	if (nullptr != m_pNavMeshAgentCom)
 	{
-		m_WorldMatrix.m[STATE_POSITION][1] = m_pNavMeshAgentCom->Get_Height(Get_Position().xyz());
+		if(!m_pNavMeshAgentCom->Is_AirState())
+			m_WorldMatrix.m[STATE_POSITION][1] = m_pNavMeshAgentCom->Get_Height(Get_Position().xyz());
 	}
 }
 
@@ -338,7 +339,9 @@ void CTransform::Translate(const Vec3& vTranslation, _bool bNotAgent)
 	/* Agent Height */
 	if (nullptr != m_pNavMeshAgentCom)
 	{
-		m_WorldMatrix.m[STATE_POSITION][1] = m_pNavMeshAgentCom->Get_Height(Get_Position().xyz());
+		if (!m_pNavMeshAgentCom->Is_AirState())
+			m_WorldMatrix.m[STATE_POSITION][1] = m_pNavMeshAgentCom->Get_Height(Get_Position().xyz());
+
 	}
 }
 

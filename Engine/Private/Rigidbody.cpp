@@ -94,14 +94,14 @@ void CRigidbody::Clear_Force(const FORCE_MODE& eMode)
 
 void CRigidbody::Clear_NetPower()
 {
-	::ZeroMemory(&m_vLinearAcceleration, sizeof(Vec3));
-	::ZeroMemory(&m_vLinearVelocity, sizeof(Vec3));
+	ZeroMemory(&m_vLinearAcceleration, sizeof(Vec3));
+	ZeroMemory(&m_vLinearVelocity, sizeof(Vec3));
 }
 
 void CRigidbody::Update_Kinetic(const _float& fTimeDelta)
 {
 	if (m_bUseGravity)
-		m_vLinearVelocity.y -= m_fGravitionalConstant * fTimeDelta;
+		m_vLinearVelocity.y += m_fGravitionalConstant * fTimeDelta;
 
 	m_vLinearVelocity += m_vLinearAcceleration * fTimeDelta;
 

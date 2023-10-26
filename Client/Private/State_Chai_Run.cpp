@@ -19,7 +19,7 @@ HRESULT CState_Chai_Run::Initialize(CStateMachine* pStateMachine, const wstring&
 
 HRESULT CState_Chai_Run::Enter()
 {
-	m_pChai->Get_Model()->Set_Animation(ANIM_CH::RUN, DF_PL_TIME, DF_TW_TIME);
+	m_pChai->Get_Model()->Set_Animation(ANIM_CH::RUN, DF_PL_TIME, 0.1f);
 
 	return S_OK;
 }
@@ -52,7 +52,12 @@ const wstring& CState_Chai_Run::Check_Transition()
 
 	/* Movement */
 	
-	if (Input::Shift())
+	if (Input::Jump())
+	{
+		if (!m_pChai->m_tPhysicsDesc.bJump)
+			return StateNames[STATE_JUMP];
+	}
+	else if (Input::Shift())
 	{
 		if (!m_pChai->m_tPhysicsDesc.bDash)
 		{

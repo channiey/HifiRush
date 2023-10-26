@@ -58,7 +58,7 @@ void CNode_Wait_Saber::Wait(const _float& fTimeDelta)
 	m_eCurAnim = ANIM_SA::IDLE_ATTACK;
 
 	if (!m_pBlackboard_Saber->m_pSaber->Get_Model()->Is_Contain_InTween(m_eCurAnim))
-		m_pBlackboard_Saber->m_pSaber->Get_Model()->Set_Animation(m_eCurAnim, DF_PL_TIME, DF_TW_TIME);
+		m_pBlackboard_Saber->m_pSaber->Get_Model()->Set_Animation(m_eCurAnim);
 }
 
 CNode_Wait_Saber* CNode_Wait_Saber::Create(CBlackboard* pBlackboard)

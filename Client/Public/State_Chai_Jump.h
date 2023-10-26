@@ -21,6 +21,21 @@ public:
 public:
 	const wstring& Check_Transition() override;
 
+private:
+	const _bool Check_Land();
+	const _bool	Check_Fall();
+	void Set_FallSpeed();
+
+private:
+	void Move(const _float& fTimeDelta);
+	void Jump();
+
+private:
+	Vec3 m_vScale = {};
+
+	_bool m_bSetFallSpeed_InJump = FALSE;
+	_bool m_bSetFallSpeed_InDoubleJump = FALSE;
+
 public:
 	static CState_Chai_Jump* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);
 	virtual CState* Clone(void* pArg) override;

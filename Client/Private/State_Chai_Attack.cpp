@@ -22,18 +22,18 @@ HRESULT CState_Chai_Attack::Enter()
 	if (Input::LBtn())
 	{
 		m_eAttackType = ATTACK_TYPE::LIGHT;
-		m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_00, DF_PL_TIME, DF_TW_TIME);
+		m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_00);
 	}
 	else if (Input::RBtn())
 	{
 		m_eAttackType = ATTACK_TYPE::STRONG;
-		m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_SINGLE_00, DF_PL_TIME, DF_TW_TIME);
+		m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_SINGLE_00);
 
 	}
 	else if (Input::MBtn())
 	{
 		m_eAttackType = ATTACK_TYPE::THROW;
-		m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_SINGLE_02, DF_PL_TIME, DF_TW_TIME);
+		m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_SINGLE_02);
 
 		m_pChai->Get_Transform()->Set_Look(GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY().Normalized());
 	}
@@ -57,11 +57,11 @@ const wstring& CState_Chai_Attack::Tick(const _float& fTimeDelta)
 		{
 			if (ATTACK_TYPE::LIGHT == m_eAttackType && Input::LBtn())
 			{
-				m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_01, DF_PL_TIME, DF_TW_TIME);
+				m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_01);
 			}
 			else if (ATTACK_TYPE::STRONG == m_eAttackType && Input::RBtn())
 			{
-				m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_SINGLE_01, DF_PL_TIME, DF_TW_TIME);
+				m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_SINGLE_01);
 			}
 		}
 			break;
@@ -69,12 +69,12 @@ const wstring& CState_Chai_Attack::Tick(const _float& fTimeDelta)
 		{
 			if (ATTACK_TYPE::LIGHT == m_eAttackType && Input::LBtn())
 			{
-				m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_02, DF_PL_TIME, DF_TW_TIME);
+				m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_02);
 			}
 			else if (ATTACK_TYPE::STRONG == m_eAttackType && Input::RBtn())
 			{
 				m_pChai->m_tFightDesc.iStep = -1;
-				m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_SPC_2, DF_PL_TIME, DF_TW_TIME);
+				m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_SPC_2);
 			}
 		}
 			break;
@@ -82,7 +82,7 @@ const wstring& CState_Chai_Attack::Tick(const _float& fTimeDelta)
 		{
 			if (ATTACK_TYPE::LIGHT == m_eAttackType && Input::LBtn())
 			{
-				m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_03, DF_PL_TIME, DF_TW_TIME);
+				m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_03);
 				m_pChai->m_tFightDesc.iStep = -1;
 			}
 		}
@@ -97,7 +97,6 @@ const wstring& CState_Chai_Attack::Tick(const _float& fTimeDelta)
 
 const wstring& CState_Chai_Attack::LateTick()
 {
-
 	return Check_Transition();
 }
 

@@ -68,7 +68,7 @@ void CNode_Move_Saber::Move_ToTarget(const _float& fTimeDelta)
 
 	/* Play Animation */
 	if (!m_pBlackboard_Saber->m_pSaber->Get_Model()->Is_Contain_InTween(ANIM_SA::DOUBLE_STEP_FRONT_00))
-		m_pBlackboard_Saber->m_pSaber->Get_Model()->Set_Animation(ANIM_SA::DOUBLE_STEP_FRONT_00, DF_PL_TIME, DF_TW_TIME);
+		m_pBlackboard_Saber->m_pSaber->Get_Model()->Set_Animation(ANIM_SA::DOUBLE_STEP_FRONT_00);
 }
 
 
@@ -79,7 +79,7 @@ void CNode_Move_Saber::Wait(const _float& fTimeDelta)
 
 	/* Play Animation */
 	if (!m_pBlackboard_Saber->m_pSaber->Get_Model()->Is_Contain_InTween(ANIM_SA::IDLE_ATTACK))
-		m_pBlackboard_Saber->m_pSaber->Get_Model()->Set_Animation(ANIM_SA::IDLE_ATTACK, DF_PL_TIME, DF_TW_TIME);
+		m_pBlackboard_Saber->m_pSaber->Get_Model()->Set_Animation(ANIM_SA::IDLE_ATTACK);
 }
 
 

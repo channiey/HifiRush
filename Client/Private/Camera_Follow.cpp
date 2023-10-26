@@ -6,6 +6,8 @@
 #include "ImGui_Manager.h"
 #endif // _DEBUG
 
+#include "Character.h"
+
 CCamera_Follow::CCamera_Follow(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObject(pDevice, pContext)
 {
@@ -33,7 +35,7 @@ HRESULT CCamera_Follow::Initialize(void * pArg)
 
 	/* Set Camera */
 	{
-		m_pCameraCom->Set_Distance(5.5f);
+		m_pCameraCom->Set_Distance(5.f);
 		m_pCameraCom->Set_MouseSensitiveX(0.3f);
 		m_pCameraCom->Set_MouseSensitiveY(0.1f);
 		m_pCameraCom->Set_LookAtOffSet(Vec4{0.f, 1.8f, 0.f, 1.f });
@@ -130,10 +132,22 @@ void CCamera_Follow::Move(const _float& fTimeDelta)
 		vCamLocal.x = m_pCameraCom->Get_Distance() * sinf(m_fElevation) * cosf(m_fAzimuth);	// x = r * sin(위도 앙각) * cos(경도 방위각)
 		vCamLocal.y = m_pCameraCom->Get_Distance() * cosf(m_fElevation);					// y = r * cos(위도 앙각)
 		vCamLocal.z = m_pCameraCom->Get_Distance() * sinf(m_fElevation) * sinf(m_fAzimuth);	// z = r * sin(위도 앙각) * sin(경도 방위각)
+		
+		
+		Vec4 vCamWorldPosCache = m_pCameraCom->Get_TargetObj()->Get_Transform()->Get_FinalPosition() + vCamLocal;
 
-		vCamWorldPos = m_pCameraCom->Get_TargetObj()->Get_Transform()->Get_FinalPosition() + vCamLocal;
+		vCamWorldPos = Vec4::Lerp(m_pTransformCom->Get_Position(), vCamWorldPosCache, fTimeDelta * 7.5f);
 
-		vCamWorldPos = Vec4::Lerp(m_pTransformCom->Get_Position(), vCamWorldPos, fTimeDelta * 7.5f);
+		CCharacter* pTargetCharacter = dynamic_cast<CCharacter*>(m_pCameraCom->Get_TargetObj());
+		/*if (nullptr != pTargetCharacter)
+		{
+			if (pTargetCharacter->Get_PhysicsDesc().bJump)
+			{
+
+			}
+		}*/
+
+
 	}
 
 	/* Rotation */

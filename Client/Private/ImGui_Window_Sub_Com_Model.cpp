@@ -80,7 +80,7 @@ void CImGui_Window_Sub_Com_Model::Show_Animations()
 		{
 			if (0 <= m_iCurAnimIndex)
 			{
-				pModel->Set_Animation(m_iCurAnimIndex, DF_PL_TIME, DF_TW_TIME);
+				pModel->Set_Animation(m_iCurAnimIndex);
 			}
 		}
 

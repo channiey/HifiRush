@@ -283,6 +283,8 @@ HRESULT CImGui_Window_Mid_Nav::Delete_Cell()
 	{
 		if (FAILED(CNavMesh::GetInstance()->Delete_Cell(m_pPickedCell->Get_Index())))
 			return E_FAIL;
+
+		m_pPickedCell = nullptr;
 	}
 
 	return S_OK;

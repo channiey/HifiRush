@@ -19,7 +19,7 @@ HRESULT CState_Chai_Damaged::Initialize(CStateMachine* pStateMachine, const wstr
 
 HRESULT CState_Chai_Damaged::Enter()
 {
-	m_pChai->Get_Model()->Set_Animation(ANIM_CH::DMG_LIGHT, DF_PL_TIME, DF_TW_TIME);
+	m_pChai->Get_Model()->Set_Animation(ANIM_CH::DMG_LIGHT);
 
 	return S_OK;
 }
