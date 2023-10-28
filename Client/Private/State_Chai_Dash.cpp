@@ -19,8 +19,12 @@ HRESULT CState_Chai_Dash::Initialize(CStateMachine* pStateMachine, const wstring
 
 HRESULT CState_Chai_Dash::Enter()
 {
-	m_pChai->m_tPhysicsDesc.bDash = TRUE;
+	m_pChai->Get_Model()->Set_RootAnimation(FALSE);
+	m_pChai->Get_Model()->Set_Animation(ANIM_CH::DASH_FRONT, 2.f, 0.1f);
+
 	m_pChai->Get_Rigidbody()->Add_Force(m_pChai->Get_Transform()->Get_Forward().xyz() * m_pChai->m_tPhysicsDesc.fDashPower, CRigidbody::FORCE_MODE::IMPULSE);
+
+	m_pChai->m_tPhysicsDesc.bDash = TRUE;
 
 	return S_OK;
 }
@@ -38,6 +42,8 @@ const wstring& CState_Chai_Dash::LateTick()
 void CState_Chai_Dash::Exit()
 {
 	m_pChai->m_tPhysicsDesc.bDash = FALSE;
+
+	m_pChai->Get_Rigidbody()->Clear_NetPower();
 }
 
 const wstring& CState_Chai_Dash::Check_Transition()
@@ -47,7 +53,9 @@ const wstring& CState_Chai_Dash::Check_Transition()
 
 	if (m_pChai->Get_Model()->Is_OneThirds_Animation())
 	{		
-		/* Move는 Idle에서 전이한다. */
+		if (Input::Move())
+			return StateNames[STATE_RUN];
+
 		return StateNames[STATE_IDLE];
 	}
 

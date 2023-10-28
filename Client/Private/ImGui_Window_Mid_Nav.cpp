@@ -168,6 +168,8 @@ HRESULT CImGui_Window_Mid_Nav::Clear()
 
 	m_CellPicked.clear();
 	m_CellPointsCache.clear();
+	CNavMesh::GetInstance()->Set_Render(FALSE);
+	CNavMesh::GetInstance()->Set_RenderRange(10.f);
 
 	return S_OK;
 }

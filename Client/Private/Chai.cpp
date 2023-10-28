@@ -57,6 +57,11 @@ HRESULT CChai::Initialize(void* pArg)
 
 void CChai::Tick(_float fTimeDelta)
 {
+	cout << m_pTransformCom->Get_FinalPosition().x << "\t"
+		<< m_pTransformCom->Get_FinalPosition().y << "\t"
+		<< m_pTransformCom->Get_FinalPosition().z << "\n";
+
+
 	if (!CImGui_Manager::GetInstance()->Is_DebugCam())
 	{
 		if (FAILED(m_pStateMachineCom->Tick(fTimeDelta)))
@@ -71,6 +76,10 @@ void CChai::Tick(_float fTimeDelta)
 
 void CChai::LateTick(_float fTimeDelta)
 {
+	cout << m_pTransformCom->Get_FinalPosition().x << "\t"
+		<< m_pTransformCom->Get_FinalPosition().y << "\t"
+		<< m_pTransformCom->Get_FinalPosition().z << "\n";
+
 	if (!CImGui_Manager::GetInstance()->Is_DebugCam())
 	{
 		if (FAILED(m_pModelCom->Update(fTimeDelta)))

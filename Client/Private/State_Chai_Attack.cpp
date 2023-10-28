@@ -19,6 +19,10 @@ HRESULT CState_Chai_Attack::Initialize(CStateMachine* pStateMachine, const wstri
 
 HRESULT CState_Chai_Attack::Enter()
 {
+
+	cout << "\n\n######################## ATTACK ################\n\n\n";
+	m_pChai->Get_Model()->Set_RootAnimation(TRUE);
+
 	if (Input::LBtn())
 	{
 		m_eAttackType = ATTACK_TYPE::LIGHT;

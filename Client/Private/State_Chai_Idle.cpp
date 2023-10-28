@@ -23,6 +23,7 @@ HRESULT CState_Chai_Idle::Initialize(CStateMachine* pStateMachine, const wstring
 
 HRESULT CState_Chai_Idle::Enter()
 {
+	m_pChai->Get_Model()->Set_RootAnimation(FALSE);
 	m_pChai->Get_Model()->Set_Animation(ANIM_CH::IDLE, 1.5f, 0.15f);
 
 	return S_OK;
@@ -30,14 +31,12 @@ HRESULT CState_Chai_Idle::Enter()
 
 const wstring& CState_Chai_Idle::Tick(const _float& fTimeDelta)
 {
-	// ... 
 
 	return m_strName;
 }
 
 const wstring& CState_Chai_Idle::LateTick()
 {
-	// ... 
 
 	return Check_Transition();
 }
@@ -63,13 +62,13 @@ const wstring& CState_Chai_Idle::Check_Transition()
 			return StateNames[STATE_RUN];
 		}
 	}
-	/*else if (Input::Shift())
+	else if (Input::Shift())
 	{
 		if (!m_pChai->m_tPhysicsDesc.bDash)
 		{
 			return StateNames[STATE_DASH];
 		}
-	}*/
+	}
 	else if (Input::Attack()) 
 	{
 #ifdef _DEBUG

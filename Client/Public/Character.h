@@ -43,9 +43,9 @@ public:
 		_float  fMinTurnSpeed = 10.f;
 		_float  fMaxTurnSpeed = 20.f;
 
-		_float  fJumpPower = 400.f;
+		_float  fJumpPower = 550.f;
 
-		_float	fJumpGravity = -35.f;
+		_float	fJumpGravity = -15.f;
 		_float  fFallGravity = -160.f;
 
 		_bool   bGround = TRUE;
@@ -55,7 +55,7 @@ public:
 		_bool	bLanding = FALSE;
 
 		_bool   bDash = FALSE;
-		_float	fDashPower = 400.f;
+		_float	fDashPower = 600.f;
 
 		_float  fGroundedRayDistance = 5.f;
 

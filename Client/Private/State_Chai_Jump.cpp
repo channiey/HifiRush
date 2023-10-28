@@ -19,10 +19,11 @@ HRESULT CState_Chai_Jump::Initialize(CStateMachine* pStateMachine, const wstring
 
 HRESULT CState_Chai_Jump::Enter()
 {
+	m_pChai->Get_Model()->Set_RootAnimation(FALSE);
+	m_pChai->Get_Model()->Set_Animation(ANIM_CH::JUMP, 3.f, 0.1f);
+
 	m_pChai->m_tPhysicsDesc.bGround = FALSE;
 	m_pChai->m_tPhysicsDesc.bJump = TRUE;
-
-	m_pChai->Get_Model()->Set_Animation(ANIM_CH::JUMP);
 
 	m_pChai->Get_NavMeshAgent()->Set_AirState(TRUE);
 
