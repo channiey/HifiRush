@@ -12,7 +12,6 @@ public:
 	HRESULT Start_Convert();
 
 private:
-
 	HRESULT Convert_Character();
 	HRESULT	Convert_Env_Static();
 	HRESULT Convert_Env_Anim();
@@ -20,10 +19,6 @@ private:
 
 	HRESULT Convert_SelectiveModel();
 
-private:
-
-private:
-
-
+	HRESULT Convert_Custom();
 };
 

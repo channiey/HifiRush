@@ -63,13 +63,13 @@ const wstring& CState_Chai_Idle::Check_Transition()
 			return StateNames[STATE_RUN];
 		}
 	}
-	else if (Input::Shift())
+	/*else if (Input::Shift())
 	{
 		if (!m_pChai->m_tPhysicsDesc.bDash)
 		{
 			return StateNames[STATE_DASH];
 		}
-	}
+	}*/
 	else if (Input::Attack()) 
 	{
 #ifdef _DEBUG

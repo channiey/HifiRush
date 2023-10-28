@@ -55,13 +55,13 @@ public:
 		_bool	bLanding = FALSE;
 
 		_bool   bDash = FALSE;
+		_float	fDashPower = 400.f;
 
 		_float  fGroundedRayDistance = 5.f;
 
 
 		_float	fNockBackPower = 100.f;
 
-		_float	fDashPower = 100.f;
 
 	}PHYSICS_DESC;
 

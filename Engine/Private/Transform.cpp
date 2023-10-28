@@ -104,7 +104,7 @@ void CTransform::Set_Position(Vec3 vPos, _bool bNotAgent)
 	}
 
 	/* Check NavMeshAgent */
-	if (nullptr != m_pNavMeshAgentCom)
+	if (nullptr != m_pNavMeshAgentCom && m_pNavMeshAgentCom->Is_Active())
 	{
 		Vec3 vTemp = vPos + m_vRootPos;
 		if (!m_pNavMeshAgentCom->Can_Move(vTemp))
@@ -115,7 +115,7 @@ void CTransform::Set_Position(Vec3 vPos, _bool bNotAgent)
 	memcpy(m_WorldMatrix.m[STATE_POSITION], &vPos, sizeof(Vec3)); 
 
 	/* Agent Height */
-	if (nullptr != m_pNavMeshAgentCom)
+	if (nullptr != m_pNavMeshAgentCom && m_pNavMeshAgentCom->Is_Active())
 	{
 		if(!m_pNavMeshAgentCom->Is_AirState())
 			m_WorldMatrix.m[STATE_POSITION][1] = m_pNavMeshAgentCom->Get_Height(Get_Position().xyz());
@@ -154,7 +154,7 @@ void CTransform::Set_RootPos(const Vec4& vPos, _bool bNotAgent)
 	Vec4 vRootPos = vPos;
 
 	/* Check NavMeshAgent */
-	if (nullptr != m_pNavMeshAgentCom)
+	if (nullptr != m_pNavMeshAgentCom && m_pNavMeshAgentCom->Is_Active())
 	{
 		Vec3 vTemp = (vDir.Normalized() * vRootPos.ZeroW().Length()) + Vec4(m_WorldMatrix.m[3]).xyz();
 		if (!m_pNavMeshAgentCom->Can_Move(vTemp))
@@ -325,7 +325,7 @@ void CTransform::Rotate(const Vec4& vAxis, const _float& fRad)
 void CTransform::Translate(const Vec3& vTranslation, _bool bNotAgent)
 {
 	/* Check NavMeshAgent */
-	if (nullptr != m_pNavMeshAgentCom)
+	if (nullptr != m_pNavMeshAgentCom && m_pNavMeshAgentCom->Is_Active())
 	{
 		Vec3 vTemp = vTranslation + Vec4(m_WorldMatrix.m[3]).xyz();
 		if (!m_pNavMeshAgentCom->Can_Move(vTemp))
@@ -337,7 +337,7 @@ void CTransform::Translate(const Vec3& vTranslation, _bool bNotAgent)
 		*((_float*)(&m_WorldMatrix.m[3]) + i) += *((_float*)&vTranslation + i);
 
 	/* Agent Height */
-	if (nullptr != m_pNavMeshAgentCom)
+	if (nullptr != m_pNavMeshAgentCom && m_pNavMeshAgentCom->Is_Active())
 	{
 		if (!m_pNavMeshAgentCom->Is_AirState())
 			m_WorldMatrix.m[STATE_POSITION][1] = m_pNavMeshAgentCom->Get_Height(Get_Position().xyz());

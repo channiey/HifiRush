@@ -40,14 +40,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_DEBUG);
-
+   
+#if CONSOLE_LOG
 #ifdef UNICODE
 #pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
 #else
 #pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
 #endif
+#endif // CONSOLE_LOG
 
-#endif
+#endif // _DEBUG
 
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
@@ -68,6 +70,29 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	pMainApp = CMainApp::Create();
 	if (nullptr == pMainApp)
 		return FALSE;
+
+    /* Cursor Option*/
+    {
+        if (CURSOL_HIDE)
+            ShowCursor(FALSE);
+        if (CURSOL_LOCK)
+        {
+            RECT rc2;
+            POINT lt, rb;
+            GetClientRect(g_hWnd, &rc2);
+            lt.x = rc2.left;
+            lt.y = rc2.top;
+            rb.x = rc2.right;
+            rb.y = rc2.bottom;
+            ClientToScreen(g_hWnd, &lt);
+            ClientToScreen(g_hWnd, &rb);
+            rc2.left = lt.x;
+            rc2.top = lt.y;
+            rc2.right = rb.x;
+            rc2.bottom = rb.y;
+            ClipCursor(&rc2);
+        }
+    }
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));
 

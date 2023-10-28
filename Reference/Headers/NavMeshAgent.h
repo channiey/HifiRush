@@ -32,6 +32,7 @@ public:
 
 public:
 	const _float	Get_Height(const Vec3& vPos);
+	const _int&		Get_Index() const {return m_iCurIndex; }
 
 	void			Set_CurIndex(const _int iIndex) { m_iCurIndex = iIndex; }
 	void			Set_AirState(const _bool bAir) { m_bAirState = bAir; }

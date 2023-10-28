@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClInclude Include="..\Public\Converter.h" />
     <ClInclude Include="..\Public\asTypes.h" />
+    <ClInclude Include="..\Public\ConverterCustom.h" />
     <ClInclude Include="..\Public\SimpleMath.h" />
     <ClInclude Include="..\Public\Utils_File.h" />
     <ClInclude Include="..\Public\MainApp_Converter.h" />
@@ -159,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Converter.cpp" />
+    <ClCompile Include="..\Private\ConverterCustom.cpp" />
     <ClCompile Include="..\Private\SimpleMath.cpp" />
     <ClCompile Include="..\Private\Utils_File.cpp" />
     <ClCompile Include="..\Private\MainApp_Converter.cpp" />

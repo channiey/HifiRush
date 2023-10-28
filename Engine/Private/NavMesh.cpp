@@ -54,38 +54,8 @@ HRESULT CNavMesh::Render()
 		{
 			/* Check Range */
 			_float fDist = Vec3(pCell->Get_CenterPoint() - GAME_INSTNACE->Get_CamPosition().xyz()).Length();
-			if (m_fRenderRange < fDist)
-				continue;
 
-			/* Render */
-			pCell->Render();
-		}
-	}
-
-
-
-
-	/* Color */
-	_float4 vColor2{ 0.f, 0.f, 1.f, 1.f };
-	if (FAILED(m_pShader->Bind_RawValue("g_vLineColor", &vColor2, sizeof(_float4))))
-		return E_FAIL;
-
-	/* Height */
-	_float fHeight2 = 0.1f;
-	if (FAILED(m_pShader->Bind_RawValue("g_fHeight", &fHeight2, sizeof(_float))))
-		return E_FAIL;
-
-	if (FAILED(m_pShader->Begin(0)))
-		return E_FAIL;
-
-	for (auto& pCell : m_Cells)
-	{
-		if (nullptr != pCell && pCell->Is_Picked())
-		{
-			/* Check Range */
-			_float fDist = Vec3(pCell->Get_CenterPoint() - GAME_INSTNACE->Get_CamPosition().xyz()).Length();
-			if (m_fRenderRange < fDist)
-				continue;
+			if (m_fRenderRange < fDist) continue;
 
 			/* Render */
 			pCell->Render();
@@ -117,8 +87,9 @@ HRESULT CNavMesh::Render_Cell(const _int& iInedx)
 	if (FAILED(m_pShader->Begin(0)))
 		return E_FAIL;
 
-	/*_float fDist = Vec3(m_Cells[iInedx]->Get_CenterPoint() - GAME_INSTNACE->Get_CamPosition().xyz()).Length();
-	if (m_fRenderRange >= fDist)*/
+	_float fDist = Vec3(m_Cells[iInedx]->Get_CenterPoint() - GAME_INSTNACE->Get_CamPosition().xyz()).Length();
+
+	if (m_fRenderRange >= fDist)
 	{
 		m_Cells[iInedx]->Render();
 	}
@@ -126,22 +97,63 @@ HRESULT CNavMesh::Render_Cell(const _int& iInedx)
 	return S_OK;
 }
 
+HRESULT CNavMesh::Render_Picked()
+{
+	if (!m_bRender || nullptr == m_pShader || m_Cells.empty())
+		return S_OK;
+
+	if (FAILED(Bind_ShaderResources()))
+		return E_FAIL;
+
+	/* Color */
+	_float4 vColor{ 0.f, 0.f, 1.f, 1.f };
+	if (FAILED(m_pShader->Bind_RawValue("g_vLineColor", &vColor, sizeof(_float4))))
+		return E_FAIL;
+
+	/* Height */
+	_float		fHeight = 0.1f;
+	if (FAILED(m_pShader->Bind_RawValue("g_fHeight", &fHeight, sizeof(_float))))
+		return E_FAIL;
+
+	/* Render */
+	if (FAILED(m_pShader->Begin(0)))
+		return E_FAIL;
+
+	for (auto& pCell : m_Cells)
+	{
+		if (nullptr != pCell && pCell->Is_Picked())
+		{
+			/* Check Range */
+			_float fDist = Vec3(pCell->Get_CenterPoint() - GAME_INSTNACE->Get_CamPosition().xyz()).Length();
+
+			if (m_fRenderRange < fDist) continue;
+
+			/* Render */
+			pCell->Render();
+		}
+	}
+}
+
 HRESULT CNavMesh::Set_Neighbors()
 {
-	/* 네비게이션을 구성하는 각각의 셀들의 이웃을 설정한다. */
+	/* 01. 셀 자신의 인덱스 및 이웃의 인덱스까지 초기화 */
+	for (size_t i = 0; i < m_Cells.size(); i++)
+	{
+		m_Cells[i]->Set_Index((_uint)i);
+		m_Cells[i]->Clear_NeighborIndices();
+	}
 
+	/* 02. 네비게이션을 구성하는 각각 셀들의 이웃을 새로 설정한다. */
 	for (auto& pSourCell : m_Cells)
 	{
 		for (auto& pDestCell : m_Cells)
 		{
-			if (pSourCell == pDestCell)
-				continue;
+			if (pSourCell == pDestCell) continue;
 
 			if (true == pDestCell->Compare_Points(pSourCell->Get_Point(CCell::POINT_A), pSourCell->Get_Point(CCell::POINT_B)))
 			{
 				pSourCell->Set_Neighbor(CCell::LINE_AB, pDestCell);
 			}
-
 			else if (true == pDestCell->Compare_Points(pSourCell->Get_Point(CCell::POINT_B), pSourCell->Get_Point(CCell::POINT_C)))
 			{
 				pSourCell->Set_Neighbor(CCell::LINE_BC, pDestCell);
@@ -396,15 +408,15 @@ HRESULT CNavMesh::Delete_Cell(const _uint iIndex)
 	}
 
 
-	const _int* NeighborIndeces = m_Cells[iIndex]->Get_NeighborIndices();
+	/*const _int* NeighborIndeces = m_Cells[iIndex]->Get_NeighborIndices();
 
 	for (size_t i = 0; i < CCell::LINE_END; i++)
 	{
 		if(-1 != NeighborIndeces[i])
 			m_Cells[NeighborIndeces[i]]->Remove_Neighbor(iIndex);
-	}
+	}*/
 
-	Safe_Release(m_Cells[iIndex]);
+	//Safe_Release(m_Cells[iIndex]);
 
 
 	for (vector<CCell*>::iterator iter = m_Cells.begin(); iter != m_Cells.end();)
@@ -454,7 +466,7 @@ void CNavMesh::Get_SnapCellPos(_Inout_ Vec3& vWorldPos)
 
 	_float fMinDistance = 9999.f;
 
-	for (auto& pCell : m_AddedCellsCache)
+	for (auto& pCell : m_Cells)
 	{
 		if (nullptr == pCell) continue;
 

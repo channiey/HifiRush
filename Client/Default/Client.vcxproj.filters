@@ -172,9 +172,6 @@
     <Filter Include="02.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.StateMachine\State\02.Movement\01.Dash">
       <UniqueIdentifier>{a7d0508d-a5d2-4e21-a6ff-5b102c8dbd5e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.StateMachine\State\02.Movement\03.Double_Jump">
-      <UniqueIdentifier>{e07450a1-bded-4f50-b8c0-990f1e260546}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.StateMachine\State\03.Action">
       <UniqueIdentifier>{681f2993-99a3-4598-9c0e-83172478c05f}</UniqueIdentifier>
     </Filter>

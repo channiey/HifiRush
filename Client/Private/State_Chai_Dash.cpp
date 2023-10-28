@@ -20,8 +20,7 @@ HRESULT CState_Chai_Dash::Initialize(CStateMachine* pStateMachine, const wstring
 HRESULT CState_Chai_Dash::Enter()
 {
 	m_pChai->m_tPhysicsDesc.bDash = TRUE;
-
-	m_pChai->Get_Model()->Set_Animation(ANIM_CH::DASH_FRONT, 1.3f, DF_TW_TIME);
+	m_pChai->Get_Rigidbody()->Add_Force(m_pChai->Get_Transform()->Get_Forward().xyz() * m_pChai->m_tPhysicsDesc.fDashPower, CRigidbody::FORCE_MODE::IMPULSE);
 
 	return S_OK;
 }

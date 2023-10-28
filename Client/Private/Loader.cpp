@@ -233,7 +233,7 @@ HRESULT CLoader::Load_Prototype()
 		{
 			/* For.Prototype_Component_Model_Chai_Guitar_Explore */
 			{
-				PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f)) * Matrix::CreateRotationZ(DEG2RAD(180.f)) * Matrix::CreateRotationX(DEG2RAD(90.f));
+				PivotMatrix = Matrix::CreateRotationY(DEG2RAD(90.f)) * Matrix::CreateRotationZ(DEG2RAD(180.f)) * Matrix::CreateRotationX(DEG2RAD(90.f));
 
 				const string		tag = "Prototype_Component_Model_Weapon_Chai_Guitar_Explore";
 				const string		filePath = "../Bin/Resources/Models/Weapon/Chai_Guitar_Explore";
@@ -263,6 +263,10 @@ HRESULT CLoader::Load_Prototype()
 		
 		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Bldg_Inside_Battle_A"),
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/Bldg_Inside_Battle_A", PivotMatrix))))
+			return E_FAIL;
+
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Bldg_Inside_Battle_B"),
+			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/Bldg_Inside_Battle_B", PivotMatrix))))
 			return E_FAIL;
 
 		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Bldg_Outside_BK"),
@@ -376,6 +380,8 @@ HRESULT CLoader::Load_Prototype()
 
 		///* For.Prototype_GameObject_Proto_Static */
 		if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_Static_Bldg_Inside_Battle_A"), CStaticDummy::Create(m_pDevice, m_pContext))))
+			return E_FAIL; 
+		if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_Static_Bldg_Inside_Battle_B"), CStaticDummy::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 		if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_Static_Bldg_Outside_BK"), CStaticDummy::Create(m_pDevice, m_pContext))))
 			return E_FAIL;

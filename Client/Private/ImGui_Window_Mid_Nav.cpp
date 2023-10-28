@@ -166,7 +166,8 @@ HRESULT CImGui_Window_Mid_Nav::Clear()
 	if (!CNavMesh::GetInstance()->Is_EmptyCells())
 		CNavMesh::GetInstance()->Clear_NavDate();
 
-	m_pPickedCell = nullptr;
+	m_CellPicked.clear();
+	m_CellPointsCache.clear();
 
 	return S_OK;
 }
@@ -211,14 +212,14 @@ void CImGui_Window_Mid_Nav::Edit_Update()
 	/* Create Cell */
 	if (GAME_INSTNACE->Key_Down(VK_RBUTTON))
 	{
-		/* 메시 피킹 위치 + 스냅 */
-		RAYHIT_DESC hit = GAME_INSTNACE->Check_ScreenRay(LayerNames[LAYER_ENV_STATIC], TRUE);
+		/* 메시 피킹 위치 + 스냅 X*/
+		RAYHIT_DESC hit = GAME_INSTNACE->Check_ScreenRay(LayerNames[LAYER_ENV_STATIC], FALSE);
 
 		if (nullptr != hit.pGameObject)
 		{
 			Vec3 vPickedPos = hit.vHitPoint;
 
-			/* 메시 외에 임의로 추가된 셀들과 스냅 체크*/
+			/* 셀들과 스냅 체크*/
 			CNavMesh::GetInstance()->Get_SnapCellPos(vPickedPos);
 
 			if (FAILED(Create_Cell(vPickedPos)))
@@ -229,9 +230,12 @@ void CImGui_Window_Mid_Nav::Edit_Update()
 	}
 
 	/* Picked Cell */
-	if (GAME_INSTNACE->Key_Down(VK_MBUTTON))
+	if (GAME_INSTNACE->Key_Pressing(VK_MBUTTON))
 	{
-		m_pPickedCell = GAME_INSTNACE->Check_ScreenRay();
+		CCell* pPickedCell = GAME_INSTNACE->Check_ScreenRay();
+
+		if (nullptr != pPickedCell)
+			m_CellPicked.push_back(pPickedCell);
 	}
 }
 
@@ -251,12 +255,12 @@ HRESULT CImGui_Window_Mid_Nav::Create_Cell(Vec3 vPoint)
 
 		Vec3 vCross = vLineAB.Cross(vLineAC);
 
-		if (0.f > vCross.y)
+		/*if (0.f > vCross.y)
 		{
 			Vec3 vTemp = m_CellPointsCache[CCell::POINT_B];
 			m_CellPointsCache[CCell::POINT_B] = m_CellPointsCache[CCell::POINT_C];
 			m_CellPointsCache[CCell::POINT_C] = vTemp;
-		}
+		}*/
 
 
 
@@ -279,13 +283,16 @@ HRESULT CImGui_Window_Mid_Nav::Create_Cell(Vec3 vPoint)
 
 HRESULT CImGui_Window_Mid_Nav::Delete_Cell()
 {
-	if (nullptr != m_pPickedCell)
+	for (auto& pCell : m_CellPicked)
 	{
-		if (FAILED(CNavMesh::GetInstance()->Delete_Cell(m_pPickedCell->Get_Index())))
-			return E_FAIL;
-
-		m_pPickedCell = nullptr;
+		if (nullptr != pCell)
+		{
+			if (FAILED(CNavMesh::GetInstance()->Delete_Cell(pCell->Get_Index())))
+				return E_FAIL;
+		}
 	}
+
+	m_CellPicked.clear();
 
 	return S_OK;
 }
@@ -382,14 +389,10 @@ HRESULT CImGui_Window_Mid_Nav::Create_Cells(vector<CCell*>& Cells)
 
 HRESULT CImGui_Window_Mid_Nav::Set_Neighbors()
 {	
-	/* 네비게이션을 구성하는 각각의 셀들의 이웃을 설정한다. */
-	
+	/* 모든 셀의 현재 인덱스 및 이웃 인덱스 초기화, 네비게이션을 구성하는 각각의 셀들의 이웃을 설정한다. */
 	CNavMesh::GetInstance()->Set_Neighbors();
 
-
-
 	/* 네비이션을 사용하는 오브젝트들의 현재 위치한 셀의 인덱스를 리셋하여 다시 적용한다. */
-
 	list<CGameObject*>* pLayers[3];
 
 	pLayers[0] = GAME_INSTNACE->Get_Layer(m_pImGui_Manager->m_iIndex_CurLevelID, LayerNames[LAYER_PLAYER]);

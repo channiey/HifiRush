@@ -129,7 +129,12 @@ HRESULT CLevel_Loading::Parse_LevelData(const _uint& iLevelID)
 			_uint	eStae = file->Read<_uint>();
 			_bool	bRender = file->Read<_bool>();
 			Matrix	tMatrix = file->Read<Matrix>();
-
+			_bool	bNav = file->Read <_bool>();
+			
+			_int    iNavIndex;
+			if (bNav)
+				iNavIndex = file->Read<_int>();
+		
 			/* 읽은 데이터를 바탕으로 파싱한다. */
 			{
 				CGameObject* pObj = GAME_INSTNACE->Add_GameObject(iLevelID, strLayer, strName);
@@ -142,6 +147,13 @@ HRESULT CLevel_Loading::Parse_LevelData(const _uint& iLevelID)
 				if (nullptr == pTransform) continue;
 
 				pTransform->Set_WorldMat(tMatrix);
+
+				if (bNav)
+				{
+					CNavMeshAgent* pCom = pObj->Get_NavMeshAgent();
+					if (nullptr != pCom)
+						pCom->Set_CurIndex(iNavIndex);
+				}
 			}
 		}
 	}

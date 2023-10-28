@@ -91,6 +91,11 @@ CNavMeshAgent* CGameObject::Get_NavMeshAgent()
 	return dynamic_cast<CNavMeshAgent*>(Get_Component(ComponentNames[COM_NAVMESHAGENT]));
 }
 
+CBehaviourTree* CGameObject::Get_BehaviourTree()
+{
+	return dynamic_cast<CBehaviourTree*>(Get_Component(ComponentNames[COM_BEHAVIOURTREE]));
+}
+
 CComponent* const CGameObject::Get_Component(const _uint& iIndex)
 {
 	if(m_Components.size() <= iIndex)

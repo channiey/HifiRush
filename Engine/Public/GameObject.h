@@ -55,6 +55,7 @@ public:
 	class CCamera*				Get_Camera();
 	class CRigidbody*			Get_Rigidbody();
 	class CNavMeshAgent*		Get_NavMeshAgent();
+	class CBehaviourTree*		Get_BehaviourTree();
 	
 	class CComponent* const			Get_Component(const _uint& iIndex);
 	class CComponent* const			Get_Component(const wstring& strComponentTag) { return Find_Component(strComponentTag); };

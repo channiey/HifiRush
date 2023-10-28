@@ -46,17 +46,10 @@ HRESULT CCamera_Follow::Initialize(void * pArg)
 
 void CCamera_Follow::Tick(_float fTimeDelta)
 {	
-	/* TODO:: 고쳐야하느니라 */
 	if (nullptr == m_pCameraCom->Get_TargetObj())
 	{
-		CGameObject* pObj = GAME_INSTNACE->Get_GameObject(LV_PROTO, LayerNames[LAYER_PLAYER], L"Player_Chai_000");
-
-		if (nullptr != pObj)
-		{
-			m_pCameraCom->Set_TargetObj(pObj);
-			m_pCameraCom->Set_LookAtObj(pObj);
-			m_pTransformCom->Set_Position(pObj->Get_Transform()->Get_FinalPosition());
-		}
+		if (FAILED(Find_Target()))
+			return;
 	}
 
 	if (!m_pCameraCom->Is_TargetObj() || !m_pCameraCom->Is_LookAtObj())
@@ -103,64 +96,64 @@ HRESULT CCamera_Follow::Ready_Components()
 	return S_OK;
 }
 
+HRESULT CCamera_Follow::Find_Target()
+{
+	CGameObject* pObject = GAME_INSTNACE->Get_GameObject(LV_PROTO, LayerNames[LAYER_PLAYER], L"Player_Chai_000");
+
+	if (nullptr == pObject) return E_FAIL;
+
+	m_pCameraCom->Set_TargetObj(pObject);
+	m_pCameraCom->Set_LookAtObj(pObject);
+	//m_pTransformCom->Set_Position(pObject->Get_Transform()->Get_FinalPosition());
+
+	return S_OK;
+}
+
 void CCamera_Follow::Move(const _float& fTimeDelta)
 {
-	/* Position */
-	Vec4 vCamWorldPos;
+	m_pTransformCom->Set_Position(Calculate_Position(fTimeDelta));
+	m_pTransformCom->LookAt(Calculate_Look(fTimeDelta));
+}
+
+const Vec4 CCamera_Follow::Calculate_Position(const _float& fTimeDelta)
+{
+	_long	MouseMove = 0l;
+
+	if (MouseMove = GAME_INSTNACE->Get_DIMMoveState(CInput_Device::MMS_X))
+		m_vAngle.x += MouseMove * m_pCameraCom->Get_MouseSensitiveX() * fTimeDelta * -1.f;
+
+	if (MouseMove = GAME_INSTNACE->Get_DIMMoveState(CInput_Device::MMS_Y))
 	{
-		_long	MouseMove = 0l;
+		m_vAngle.y += MouseMove * m_pCameraCom->Get_MouseSensitiveY() * fTimeDelta;
 
-		if (MouseMove = GAME_INSTNACE->Get_DIMMoveState(CInput_Device::MMS_X))
-			m_fAzimuth += MouseMove * m_pCameraCom->Get_MouseSensitiveX() * fTimeDelta * -1.f;
-
-		if (MouseMove = GAME_INSTNACE->Get_DIMMoveState(CInput_Device::MMS_Y))
+		if (m_vAngle.y <= m_fMinAngleY) // 0.01f
 		{
-			m_fElevation += MouseMove * m_pCameraCom->Get_MouseSensitiveY() * fTimeDelta;
-
-			/* 회전 방지 */
-			if (m_fElevation <= 0.01f)
-				m_fElevation = 0.01f;
-			else if (3.13f < m_fElevation)
-				m_fElevation = 3.13f;
-
-			/* 임시 강제 고정 */
-			//m_fElevation = 0.9f;
+			m_vAngle.y = m_fMinAngleY;
+		}
+		else if (m_fMaxAngleY < m_vAngle.y) // 3.13f
+		{
+			m_vAngle.y = m_fMaxAngleY;
 		}
 
-		/* 구면 좌표계(극좌표계) -> 왼손 직교 좌표계 */
-		Vec4 vCamLocal;
-		vCamLocal.x = m_pCameraCom->Get_Distance() * sinf(m_fElevation) * cosf(m_fAzimuth);	// x = r * sin(위도 앙각) * cos(경도 방위각)
-		vCamLocal.y = m_pCameraCom->Get_Distance() * cosf(m_fElevation);					// y = r * cos(위도 앙각)
-		vCamLocal.z = m_pCameraCom->Get_Distance() * sinf(m_fElevation) * sinf(m_fAzimuth);	// z = r * sin(위도 앙각) * sin(경도 방위각)
-		
-		
-		Vec4 vCamWorldPosCache = m_pCameraCom->Get_TargetObj()->Get_Transform()->Get_FinalPosition() + vCamLocal;
-
-		vCamWorldPos = Vec4::Lerp(m_pTransformCom->Get_Position(), vCamWorldPosCache, fTimeDelta * 7.5f);
-
-		CCharacter* pTargetCharacter = dynamic_cast<CCharacter*>(m_pCameraCom->Get_TargetObj());
-		/*if (nullptr != pTargetCharacter)
-		{
-			if (pTargetCharacter->Get_PhysicsDesc().bJump)
-			{
-
-			}
-		}*/
-
-
+		/* 임시 강제 고정 */
+		//m_vAngle.y = 0.9f;
 	}
 
-	/* Rotation */
-	Vec4 vLookAt;
+	/* 구면 좌표계(극좌표계) -> 왼손 직교 좌표계 */
+	Vec4 vCamLocal;
 	{
-		vLookAt = m_pCameraCom->Get_TargetObj()->Get_Transform()->Get_FinalPosition() + m_pCameraCom->Get_LookAtOffSet();
-		vLookAt.w = 1.f;
+		vCamLocal.x = m_pCameraCom->Get_Distance() * sinf(m_vAngle.y) * cosf(m_vAngle.x);	// x = r * sin(위도 앙각) * cos(경도 방위각)
+		vCamLocal.y = m_pCameraCom->Get_Distance() * cosf(m_vAngle.y);						// y = r * cos(위도 앙각)
+		vCamLocal.z = m_pCameraCom->Get_Distance() * sinf(m_vAngle.y) * sinf(m_vAngle.x);	// z = r * sin(위도 앙각) * sin(경도 방위각)
+		vCamLocal.w = 0.f;
 	}
 
-	/* Set */
-	
-	m_pTransformCom->Set_Position(vCamWorldPos.OneW());
-	m_pTransformCom->LookAt(vLookAt);
+	return vCamLocal + m_pCameraCom->Get_TargetObj()->Get_Transform()->Get_FinalPosition();
+}
+
+const Vec4 CCamera_Follow::Calculate_Look(const _float& fTimeDelta)
+{
+	return Vec4(m_pCameraCom->Get_TargetObj()->Get_Transform()->Get_FinalPosition() + m_pCameraCom->Get_LookAtOffSet()).OneW();
 }
 
 CCamera_Follow * CCamera_Follow::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
@@ -195,5 +188,4 @@ void CCamera_Follow::Free()
 
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pCameraCom);
-	Safe_Release(m_pColliderCom);
 }

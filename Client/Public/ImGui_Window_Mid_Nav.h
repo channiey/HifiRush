@@ -60,7 +60,7 @@ private:
 
 	vector<Vec3>	m_CellPointsCache;
 
-	class CCell* m_pPickedCell = nullptr;
+	vector<class CCell*> m_CellPicked;
 
 private:
 	BoundingSphere* m_Shperes[3];

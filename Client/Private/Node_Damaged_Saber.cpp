@@ -79,6 +79,10 @@ void CNode_Damaged_Saber::Damaged()
 		}
 	}
 
+
+	m_pBlackboard_Saber->m_fResetTime = 0.5f;
+	m_pBlackboard_Saber->m_fAttackAccTime = 0.5f;
+
 	m_pBlackboard_Saber->m_pSaber->m_tFightDesc.bDamaged = FALSE;
 }
 

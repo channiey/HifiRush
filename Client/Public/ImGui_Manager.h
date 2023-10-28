@@ -121,7 +121,7 @@ public:
 	_bool							m_bEdittingAnim = FALSE;
 
 
-	_bool							m_bRenderCollider = TRUE;
+	_bool							m_bRenderCollider = FALSE;
 	_bool							m_bDebugCam = FALSE;
 
 private:

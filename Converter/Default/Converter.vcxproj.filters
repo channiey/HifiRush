@@ -63,6 +63,9 @@
     <ClInclude Include="..\Public\Utils_String.h">
       <Filter>97.Utility\String</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\ConverterCustom.h">
+      <Filter>01.Converter</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -85,6 +88,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Utils_String.cpp">
       <Filter>97.Utility\String</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ConverterCustom.cpp">
+      <Filter>01.Converter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -22,7 +22,7 @@ HRESULT CState_Chai_Attack::Enter()
 	if (Input::LBtn())
 	{
 		m_eAttackType = ATTACK_TYPE::LIGHT;
-		m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_00);
+		m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_00, 1.7f, DF_TW_TIME);
 	}
 	else if (Input::RBtn())
 	{
@@ -106,6 +106,23 @@ void CState_Chai_Attack::Exit()
 
 	m_pChai->Get_Child(CChai::CH_WEAPON_RIGHT)->Get_Collider_Sphere()->Set_Active(FALSE);
 }
+
+void CState_Chai_Attack::OnCollision_Enter(CGameObject* pGameObject)
+{
+	if (nullptr == pGameObject) return;
+
+
+}
+
+void CState_Chai_Attack::OnCollision_Stay(CGameObject* pGameObject)
+{
+}
+
+void CState_Chai_Attack::OnCollision_Exit(CGameObject* pGameObject)
+{
+}
+
+
 
 const wstring& CState_Chai_Attack::Check_Transition()
 {

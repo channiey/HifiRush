@@ -5,7 +5,6 @@
 
 BEGIN(Engine)
 class CTransform;
-class CCollider;
 END
 
 BEGIN(Client)
@@ -20,22 +19,28 @@ private:
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
-	virtual void Tick(_float fTimeDelta) override;
-	virtual void LateTick(_float fTimeDelta) override;
+	virtual void	Tick(_float fTimeDelta) override;
+	virtual void	LateTick(_float fTimeDelta) override;
 
 private:
-	HRESULT Ready_Components();
+	HRESULT			Ready_Components();
 
 private:
-	void Move(const _float& fTimeDelta);
+	HRESULT			Find_Target();
+
+private:
+	void			Move(const _float& fTimeDelta);
+	const Vec4		Calculate_Position(const _float& fTimeDelta);
+	const Vec4		Calculate_Look(const _float& fTimeDelta);
 
 private:
 	CTransform*		m_pTransformCom = { nullptr };
 	CCamera*		m_pCameraCom	= { nullptr };
-	CCollider*		m_pColliderCom	= { nullptr };
 
-	_float			m_fAzimuth		= 0.f;
-	_float			m_fElevation	= 1.f;
+private:
+	Vec2			m_vAngle		= { 0.f, 1.f };
+	_float			m_fMinAngleY = 0.7f;
+	_float			m_fMaxAngleY = 1.f;
 
 public:
 	static CCamera_Follow* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

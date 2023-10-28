@@ -110,7 +110,7 @@ HRESULT CChai::Ready_Components()
 		return E_FAIL;
 
 	/* Com_NavMeshAgent*/
-	const _int iIndex = CNavMesh::GetInstance()->Find_Cell(m_pTransformCom->Get_FinalPosition().xyz());
+	const _int iIndex = 0;// CNavMesh::GetInstance()->Find_Cell(m_pTransformCom->Get_FinalPosition().xyz());
 	{
 		if(iIndex < 0 ) 
 			return E_FAIL;
@@ -198,10 +198,14 @@ void CChai::OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild)
 {
 	CGameObject* pGameObject = pCollider->Get_Owner();
 	
+	/* 플레이어 무기의 충돌처리(공격 관련)은 스테이트에서 처리한다. */
 	if (iIndexAsChild == CH_WEAPON_RIGHT)
 	{
-		if (LayerNames[LAYER_ENEMY] == pGameObject->Get_LayerTag())
-			KnockBack(pGameObject);
+		CState_Chai_Base* pState = dynamic_cast<CState_Chai_Base*>(m_pStateMachineCom->Get_CurState());
+
+		if (nullptr != pState)
+			pState->OnCollision_Enter(pGameObject);
+	
 	}
 }
 

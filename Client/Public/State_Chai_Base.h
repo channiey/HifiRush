@@ -24,8 +24,10 @@ protected:
 protected:
 	virtual HRESULT Initialize(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);
 
-protected:
-	void Set_LastFramePos();
+public:
+	virtual void		OnCollision_Enter(CGameObject* pGameObject) {};
+	virtual void		OnCollision_Stay(CGameObject* pGameObject) {};
+	virtual void		OnCollision_Exit(CGameObject* pGameObject) {};
 
 protected:
 	CChai* m_pChai = { nullptr };

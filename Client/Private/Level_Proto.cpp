@@ -28,9 +28,8 @@ HRESULT CLevel_Proto::Initialize()
 
 	/* 테스트용 개인 로드 */
 	{
-		//CGameObject* pObject = nullptr;
+		CGameObject* pObject = nullptr;
 
-	
 		/*if (nullptr == GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_CAMERA], L"Camera_Debug"))
 			return E_FAIL;
 

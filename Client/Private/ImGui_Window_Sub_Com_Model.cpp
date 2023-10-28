@@ -26,10 +26,6 @@ void CImGui_Window_Sub_Com_Model::Show_Window()
 
 	if (ImGui::Begin(m_pImGui_Manager->str_SubWindowType[m_pImGui_Manager->WINDOW_SUB_COM_MODEL], NULL, window_flags))
 	{
-		//ImGui::SeparatorText("Bone");
-		//ImGui::SeparatorText("Anim");
-		
-
 		Show_Animations();
 	}
 	ImGui::End();
@@ -59,7 +55,6 @@ void CImGui_Window_Sub_Com_Model::Show_Animations()
 		Set_Active(FALSE);
 		return;
 	}
-	
 	
 	/* Animation List */
 	{
@@ -96,8 +91,6 @@ void CImGui_Window_Sub_Com_Model::Show_Animations()
 		{
 			pModel->Set_AnimationSpeed(fAnimSpeed);
 		}
-
-
 	}
 }
 

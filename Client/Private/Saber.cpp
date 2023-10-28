@@ -43,25 +43,22 @@ HRESULT CSaber::Initialize(void* pArg)
 	if (FAILED(Ready_BehavoiurTree()))
 		return E_FAIL;
 
-	// << : 임시 코드 
-	{
-		m_pTransformCom->Set_Position(Vec3{ 2.5f, 0.f, -1.5f });
-	}
-	// >> 
+	/* 임시 코드 */
+	m_pModelCom->Set_Animation(ANIM_SA::IDLE_ATTACK);
 
 	return S_OK;
 }
 
-static _int i = 0;
 void CSaber::Tick(_float fTimeDelta)
 {
-	// << : 임시 코드 (나중에 트리거가 할 일)
-	if (++i == 10)
+	/* 임시 코드 */
+	if (nullptr == m_tFightDesc.pTarget)
 	{
-		Set_State(OBJ_STATE::STATE_UNACTIVE);
-		Set_State(OBJ_STATE::STATE_ACTIVE);
+		CGameObject* pTarget = GAME_INSTNACE->Get_GameObject_InCurLevel_InLayerFirst(LayerNames[LAYER_PLAYER]);
+
+		if (nullptr != pTarget)
+			m_tFightDesc.pTarget = dynamic_cast<CCharacter*>(pTarget);
 	}
-	// >> 
 
 	__super::Tick(fTimeDelta);
 }
@@ -235,6 +232,15 @@ HRESULT CSaber::Ready_Chilren()
 void CSaber::OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild)
 {
 	__super::OnCollision_Enter(pCollider, iIndexAsChild);
+
+	CGameObject* pGameObject = pCollider->Get_Owner();
+
+	if (iIndexAsChild == SA_WEAPON_RIGHT)
+	{
+		if (LayerNames[LAYER_PLAYER] == pGameObject->Get_LayerTag())
+			KnockBack(pGameObject);
+	}
+
 }
 
 void CSaber::OnCollision_Stay(CCollider* pCollider, const _int& iIndexAsChild)

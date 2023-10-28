@@ -88,7 +88,7 @@ const wstring& CState_Chai_Jump::LateTick()
 void CState_Chai_Jump::Exit()
 {
 	m_pChai->Get_Rigidbody()->Clear_NetPower();
-	m_pChai->Get_Rigidbody()->Set_Kinematic(TRUE);
+	//m_pChai->Get_Rigidbody()->Set_Kinematic(TRUE);
 	m_pChai->Get_Rigidbody()->Set_UseGravity(FALSE);
 
 	m_pChai->Get_NavMeshAgent()->Set_AirState(FALSE);
@@ -277,7 +277,7 @@ void CState_Chai_Jump::Move(const _float& fTimeDelta)
 
 void CState_Chai_Jump::Jump()
 {
-	m_pChai->Get_Rigidbody()->Set_Kinematic(FALSE);
+	//m_pChai->Get_Rigidbody()->Set_Kinematic(FALSE);
 
 	m_pChai->Get_Rigidbody()->Clear_NetPower();
 	m_pChai->Get_Rigidbody()->Set_UseGravity(TRUE);

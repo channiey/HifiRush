@@ -33,7 +33,7 @@ HRESULT CBehaviourTree::Initialize(void * pArg)
 
 HRESULT CBehaviourTree::Tick(const _float& fTimeDelta)
 {
-	if (nullptr == m_pRootNode)
+	if (nullptr == m_pRootNode || !m_bActive)
 		return E_FAIL;
 
 	/* 만약 이전 프레임 실행 결과가 success였다면, 모든 노드를 재귀적으로 리셋하고 다시 평가한다. */
@@ -47,7 +47,7 @@ HRESULT CBehaviourTree::Tick(const _float& fTimeDelta)
 
 HRESULT CBehaviourTree::LateTick(const _float& fTimeDelta)
 {	
-	if (nullptr == m_pRootNode)
+	if (nullptr == m_pRootNode || !m_bActive)
 		return E_FAIL;
 
 	m_eState = m_pRootNode->Evaluate(fTimeDelta);

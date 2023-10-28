@@ -399,6 +399,16 @@ void CImGui_Window_Main_Hierarachy::Save_LevelData()
 
 			/* 트랜스폼 */
 			file->Write<Matrix>(obj->Get_Transform()->Get_WorldMat());
+
+			/* 네비게이션 */
+			CNavMeshAgent* pCom = obj->Get_NavMeshAgent();
+			if (nullptr != pCom)
+			{
+				file->Write<_bool>(TRUE);
+				file->Write<_int>(pCom->Get_Index());
+			}
+			else
+				file->Write<_bool>(FALSE);
 		}
 	}
 }

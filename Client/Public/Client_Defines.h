@@ -1,6 +1,5 @@
 #pragma once
 
-/* 클라이언트에 존재하는 모든 클래스가 인클루드해야할 내용을 담는다. */
 #include <process.h>
 
 #include "Engine_Defines.h" /* TODO 상호 참조 오류 가능성 존재*/
@@ -8,8 +7,13 @@
 using namespace std;
 namespace Client
 {
+
 #define FPS_LIMIT		66.f
-#define IS_MULTI_THREAD true
+
+#define CONSOLE_LOG     0
+#define CURSOL_LOCK     0
+#define CURSOL_HIDE     0
+#define OPEN_IMGUI      0
 
 	/* Window */
 	const unsigned int		g_iWinSizeX = 1280;

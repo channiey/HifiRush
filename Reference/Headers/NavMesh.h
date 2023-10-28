@@ -16,9 +16,10 @@ private:
 
 public:
 	HRESULT	Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+
 	HRESULT Render();
 	HRESULT Render_Cell(const _int& iInedx);
-
+	HRESULT Render_Picked();
 
 public:
 	void			Set_RenderRange(const _float fRange) { m_fRenderRange = fRange; }
