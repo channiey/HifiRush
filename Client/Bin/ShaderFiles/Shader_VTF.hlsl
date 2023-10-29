@@ -164,6 +164,7 @@ struct PS_OUT
     float4 vColor : SV_TARGET0;
 };
 
+
 PS_OUT PS_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
@@ -175,17 +176,16 @@ PS_OUT PS_MAIN(PS_IN In)
 
 
     vector vShade = max(dot(normalize(g_vLightDir) * -1.f, normalize(In.vNormal)), 0.f) +
-		g_vLightAmbient * g_vMtrlAmbient;
+		                g_vLightAmbient * g_vMtrlAmbient;
 
     vector vReflect = reflect(normalize(g_vLightDir), normalize(In.vNormal));
     vector vLook = In.vWorldPos - g_vCamPosition;
-
-    //  float fSpecular = pow(max(dot(normalize(vLook) * -1.f, normalize(vReflect)), 0.f), 30.f);
-
     
-    Out.vColor = (g_vLightDiffuse * vMtrlDiffuse) * saturate(vShade);//
-    //+ (g_vLightSpecular * g_vMtrlSpecular) * fSpecular;
+    
+    float rim = saturate(dot(normalize(In.vNormal), normalize(vLook)));
 
+    Out.vColor = (g_vLightDiffuse * vMtrlDiffuse) * (ceil(vShade * 3) / 3); //
+    
     return Out;
 }
 

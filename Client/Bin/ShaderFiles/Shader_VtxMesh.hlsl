@@ -80,9 +80,11 @@ PS_OUT PS_MAIN(PS_IN In)
 
 	float	fSpecular = pow(max(dot(normalize(vLook) * -1.f, normalize(vReflect)), 0.f), 30.f);
 
-	Out.vColor = (g_vLightDiffuse * vMtrlDiffuse) * saturate(vShade) +
-		(g_vLightSpecular * g_vMtrlSpecular) * fSpecular;
+	//Out.vColor = (g_vLightDiffuse * vMtrlDiffuse) * saturate(vShade) +
+	//	(g_vLightSpecular * g_vMtrlSpecular) * fSpecular;
 
+    Out.vColor = (g_vLightDiffuse * vMtrlDiffuse) * (ceil(vShade * 3) / 3); //
+	
 	return Out;
 }
 
