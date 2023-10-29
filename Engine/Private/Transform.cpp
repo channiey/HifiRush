@@ -163,10 +163,6 @@ void CTransform::Set_RootPos(const Vec4& vPos, _bool bNotAgent)
 
 	/* Apply */
 	m_vRootPos = vDir.Normalized() * vRootPos.ZeroW().Length();
-
-	cout << "Set_RootPos()" << "\t" << m_vRootPos.x << "\t"
-		 << m_vRootPos.y << "\t"
-		 << m_vRootPos.z << "\n";
 }
 
 void CTransform::Set_Scale(const Vec3& vScale)

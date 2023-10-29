@@ -215,7 +215,7 @@ HRESULT CModel::Update_Anim(_float fTimeDelta)
 		{
 			/* 특수 루트 포지션 셋 : 이전 애님 루트 포지션이 0이 아니라면 */
 			m_vPrevAnimRoot = Vec4(Get_AnimBoneLocal(m_TweenDesc.cur.iAnimIndex, m_TweenDesc.cur.iCurFrame, BONE_ROOT).m[3]);
-			if (Vec4::UnitW != m_vPrevAnimRoot && m_bPrevRootAnimation)
+			if (Vec4::UnitW != m_vPrevAnimRoot && (m_bPrevRootAnimation || m_bRootAnimation))
 			{
 				/* 다음 애니메이션 루트 포지션이 0 이라면, 현재 애니메이션의 루트 포지션만을 사용한다. */
 				Vec4 vRootPos, m_vNextAnimRoot;
@@ -1015,7 +1015,6 @@ void CModel::Set_RootPosition_Tween()
 {
 	if (!m_bRootAnimation) return;
 
-	cout << "Set_RootPosition_Tween()\n";
 	Vec4 vRootPos, m_vNextAnimRoot;
 
 	m_vNextAnimRoot = Vec4(Get_AnimBoneLocal(m_TweenDesc.next.iAnimIndex, m_TweenDesc.next.iCurFrame, BONE_ROOT).m[3]);
@@ -1024,11 +1023,6 @@ void CModel::Set_RootPosition_Tween()
 		vRootPos = Get_AnimBoneRootNoneLerp();	/* 다음 애님 보간 없이 현재 애님 루트 포지션으로 셋 */
 	else										/* 아니라면 */
 		vRootPos = Get_AnimBonePos(BONE_ROOT);	/* 다음 애님과 현재 애님이 보간된 루트 포지션으로 셋 */
-
-	cout << vRootPos.x << "\t"
-		<< vRootPos.y << "\t"
-		<< vRootPos.z << "\n";
-
 
 	m_pOwner->Get_Transform()->Set_RootPos(vRootPos);
 }

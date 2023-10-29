@@ -89,7 +89,6 @@ const wstring& CState_Chai_Jump::LateTick()
 void CState_Chai_Jump::Exit()
 {
 	m_pChai->Get_Rigidbody()->Clear_NetPower();
-	//m_pChai->Get_Rigidbody()->Set_Kinematic(TRUE);
 	m_pChai->Get_Rigidbody()->Set_UseGravity(FALSE);
 
 	m_pChai->Get_NavMeshAgent()->Set_AirState(FALSE);
