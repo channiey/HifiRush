@@ -24,7 +24,7 @@ HRESULT CState_Chai_Attack::Enter()
 	if (Input::LBtn())
 	{
 		m_eAttackType = ATTACK_TYPE::LIGHT;
-		m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_00, 1.7f, DF_TW_TIME);
+		m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_00);
 	}
 	else if (Input::RBtn())
 	{

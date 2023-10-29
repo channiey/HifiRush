@@ -250,9 +250,6 @@
     <Filter Include="02.GameObjects\01.Environment\02.Anim\Moveable">
       <UniqueIdentifier>{c826dd7b-e31c-4f41-80f9-bfda419f6dd5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\01.Environment\00.SkyBox">
-      <UniqueIdentifier>{583c4a7b-e367-4cfc-8a6e-f1fd6a21792b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="97.ImGui\Windows\99.Demo">
       <UniqueIdentifier>{d900bdc0-016c-4311-a8b5-aa79439f9305}</UniqueIdentifier>
     </Filter>
@@ -288,6 +285,15 @@
     </Filter>
     <Filter Include="97.ImGui\99.DebugDraw">
       <UniqueIdentifier>{9a7ffda9-0972-41ff-9de7-13a20b062d95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Environment\00.Sky">
+      <UniqueIdentifier>{583c4a7b-e367-4cfc-8a6e-f1fd6a21792b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Environment\00.Sky\00.SkyBox">
+      <UniqueIdentifier>{418b5b0f-ce05-40b5-9e82-761036478c70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Environment\00.Sky\01.SkySphere">
+      <UniqueIdentifier>{474b2e88-91aa-4701-8800-e28e1a8462c3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -468,9 +474,6 @@
     <ClInclude Include="..\Public\Node_Idle_Saber.h">
       <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\02.Idle</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\SkyBox.h">
-      <Filter>02.GameObjects\01.Environment\00.SkyBox</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\ImGui_Window_Sub_Prefabs.h">
       <Filter>97.ImGui\Windows\03.Sub\01.Hierarachy_Prefabs</Filter>
     </ClInclude>
@@ -479,6 +482,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\DebugDraw.h">
       <Filter>97.ImGui\99.DebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SkyBox.h">
+      <Filter>02.GameObjects\01.Environment\00.Sky\00.SkyBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SkySphere.h">
+      <Filter>02.GameObjects\01.Environment\00.Sky\01.SkySphere</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -647,9 +656,6 @@
     <ClCompile Include="..\Private\Node_Idle_Saber.cpp">
       <Filter>02.GameObjects\03.Character\01.Enemy\01.Saber\01.BehaviourTree\01.Nodes\02.Idle</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\SkyBox.cpp">
-      <Filter>02.GameObjects\01.Environment\00.SkyBox</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\ImGui_Window_Sub_Prefabs.cpp">
       <Filter>97.ImGui\Windows\03.Sub\01.Hierarachy_Prefabs</Filter>
     </ClCompile>
@@ -658,6 +664,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\DebugDraw.cpp">
       <Filter>97.ImGui\99.DebugDraw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SkyBox.cpp">
+      <Filter>02.GameObjects\01.Environment\00.Sky\00.SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SkySphere.cpp">
+      <Filter>02.GameObjects\01.Environment\00.Sky\01.SkySphere</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -682,6 +694,9 @@
       <Filter>96.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl">
+      <Filter>96.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxSkySphere.hlsl">
       <Filter>96.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

@@ -23,6 +23,7 @@
 
 /* Env */
 #include "SkyBox.h"
+#include "SkySphere.h"
 #include "StaticDummy.h"
 #include "Terrain.h"
 
@@ -185,6 +186,11 @@ HRESULT CLoader::Load_Prototype()
 		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Texture_Sky"),
 			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Prototype/SkyBox/Sky_%d.dds"), 4))))
 			return E_FAIL;
+
+		/* For.Prototype_Component_Texture_SkySphere */
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Texture_SkySphere"),
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Background/Sky/T_SkyBox_RoxanneBlueSkyAndCloud.png")))))
+			return E_FAIL;
 	}
 
 	/* For.Shader */
@@ -209,6 +215,12 @@ HRESULT CLoader::Load_Prototype()
 		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, ShaderNames[SHADER_CUBE],
 			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxCube.hlsl"), VTXCUBE::Elements, VTXCUBE::iNumElements))))
 			return E_FAIL;
+
+		/* For.Prototype_Component_Shader_VtxSkySphere */
+		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, ShaderNames[SHADER_SKY_SPHERE],
+			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxSkySphere.hlsl"), VTXMESH::Elements, VTXMESH::iNumElements))))
+			return E_FAIL;
+
 	}
 
 	/* For.Model */
@@ -311,6 +323,15 @@ HRESULT CLoader::Load_Prototype()
 		//		);*/
 		//	}
 		//}
+
+
+
+		/* For.Prototype_Component_Model_Geometry */
+		PivotMatrix = Matrix::Identity * Matrix::CreateScale(0.01f);
+
+  		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Geometry_Sphere"),
+			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Geometry/Sphere", PivotMatrix))))
+			return E_FAIL;
 	}
 
 	/* For.Prototype GameObject */
@@ -373,6 +394,10 @@ HRESULT CLoader::Load_Prototype()
 
 		if (FAILED(pGameInstance->Add_Prototype(TEXT("Env_SkyBox"),
 			CSkyBox::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_SkySphere"), 
+			CSkySphere::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 

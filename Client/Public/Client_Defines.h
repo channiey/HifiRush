@@ -13,7 +13,7 @@ namespace Client
 #define CONSOLE_LOG     0
 #define CURSOL_LOCK     0
 #define CURSOL_HIDE     0
-#define OPEN_IMGUI      0
+#define OPEN_IMGUI      1
 
 	/* Window */
 	const unsigned int		g_iWinSizeX = 1280;
@@ -104,7 +104,7 @@ namespace Client
 
 	enum SHADER_ID
 	{
-		SHADER_UI, SHADER_NORMAL, SHADER_STATIC, SHADER_VTF, SHADER_CUBE, SHADER_END
+		SHADER_UI, SHADER_NORMAL, SHADER_STATIC, SHADER_VTF, SHADER_CUBE, SHADER_SKY_SPHERE, SHADER_END
 	};
 	static const wchar_t* ShaderNames[SHADER_END] /* 업데이트 순서에 따른 정렬 */
 	{
@@ -112,7 +112,9 @@ namespace Client
 		L"Prototype_Component_Shader_VtxNorTex",
 		L"Prototype_Component_Shader_VtxMesh",
 		L"Prototype_Component_Shader_VTF",
-		L"Prototype_Component_Shader_VtxCube"
+		L"Prototype_Component_Shader_VtxCube",
+		L"Prototype_Component_Shader_VtxSkySphere"
+
 	};
 
 
