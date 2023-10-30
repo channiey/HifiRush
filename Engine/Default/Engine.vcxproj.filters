@@ -235,6 +235,12 @@
     <Filter Include="01.Utiltiy\03.Components\Component\13.NavmeshAgent\NavMesh">
       <UniqueIdentifier>{af9595dc-6244-40bb-ad88-d8cab27474df}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00.System\01.Device\Sound\Fmod">
+      <UniqueIdentifier>{c420cbb7-9f69-4883-a42d-8607969d8af5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\01.Device\Sound\Manager">
+      <UniqueIdentifier>{83a0416c-1be0-4c7c-9fda-22999959f63f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -435,6 +441,30 @@
     <ClInclude Include="..\Public\NavMeshAgent.h">
       <Filter>01.Utiltiy\03.Components\Component\13.NavmeshAgent\NavMeshAgent</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Sound_Manager.h">
+      <Filter>00.System\01.Device\Sound\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\FMOD\fmod.h">
+      <Filter>00.System\01.Device\Sound\Fmod</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\FMOD\fmod.hpp">
+      <Filter>00.System\01.Device\Sound\Fmod</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\FMOD\fmod_codec.h">
+      <Filter>00.System\01.Device\Sound\Fmod</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\FMOD\fmod_dsp.h">
+      <Filter>00.System\01.Device\Sound\Fmod</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\FMOD\fmod_errors.h">
+      <Filter>00.System\01.Device\Sound\Fmod</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\FMOD\fmod_memoryinfo.h">
+      <Filter>00.System\01.Device\Sound\Fmod</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\FMOD\fmod_output.h">
+      <Filter>00.System\01.Device\Sound\Fmod</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -619,6 +649,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\NavMeshAgent.cpp">
       <Filter>01.Utiltiy\03.Components\Component\13.NavmeshAgent\NavMeshAgent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Sound_Manager.cpp">
+      <Filter>00.System\01.Device\Sound\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

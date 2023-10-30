@@ -8,6 +8,7 @@
 #include "Camera_Manager.h"
 #include "GameObject.h"
 #include "NavMesh.h"
+#include "Sound_Manager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -23,6 +24,7 @@ CGameInstance::CGameInstance()
 	, m_pCollision_Manager(CCollision_Manager::GetInstance())
 	, m_pCamera_Manager(CCamera_Manager::GetInstance())
 	, m_pNavMesh(CNavMesh::GetInstance())
+	, m_pSound_Manager(CSound_Manager::GetInstance())
 
 {
 	Safe_AddRef(m_pPipeLine);
@@ -36,9 +38,10 @@ CGameInstance::CGameInstance()
 	Safe_AddRef(m_pCollision_Manager);
 	Safe_AddRef(m_pCamera_Manager);
 	Safe_AddRef(m_pNavMesh);
+	Safe_AddRef(m_pSound_Manager);
 }
 
-HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, HINSTANCE hInst, const GRAPHIC_DESC& GraphicDesc, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext)
+HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, HINSTANCE hInst, const GRAPHIC_DESC& GraphicDesc, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext, const char* strSoundFilePath)
 {
 	/* 그래픽디바이스 초기화 처리. */
 	if (FAILED(m_pGraphic_Device->Ready_Graphic_Device(GraphicDesc, ppDevice, ppContext)))
@@ -48,6 +51,8 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, HINSTANCE hInst, cons
 	m_pContext = *ppContext;
 
 	/* 사운드디바이스 초기화 처리. */
+	if (FAILED(m_pSound_Manager->Initialize(strSoundFilePath)))
+		return E_FAIL;
 
 	/* 입력디바이스 초기화 처리. */
 	if (FAILED(m_pInput_Device->Initialize(hInst, m_pGraphic_Device->Get_GraphicDesc().hWnd)))
@@ -605,6 +610,7 @@ void CGameInstance::Release_Engine()
 	CProfiler_Manager::GetInstance()->DestroyInstance();
 	CCollision_Manager::GetInstance()->DestroyInstance();
 	CNavMesh::GetInstance()->DestroyInstance();
+	CSound_Manager::GetInstance()->DestroyInstance();
 }
 
 void CGameInstance::Free()
@@ -620,6 +626,7 @@ void CGameInstance::Free()
 	Safe_Release(m_pProfiler_Manager);
 	Safe_Release(m_pCollision_Manager);
 	Safe_Release(m_pNavMesh);
+	Safe_Release(m_pSound_Manager);
 
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);

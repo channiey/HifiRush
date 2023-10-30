@@ -18,7 +18,7 @@ private:
 	virtual ~CGameInstance() = default;
 
 public: 
-	HRESULT Initialize_Engine(_uint iNumLevels, HINSTANCE hInst, const GRAPHIC_DESC& GraphicDesc, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext);
+	HRESULT Initialize_Engine(_uint iNumLevels, HINSTANCE hInst, const GRAPHIC_DESC& GraphicDesc, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext, const char* strSoundFilePath);
 	void	Tick(_float fTimeDelta);
 	void	LateTick(_float fTimeDelta);
 	void	FinishTick();
@@ -108,6 +108,8 @@ public: /* For.Camera_Manager */
 	HRESULT			Change_Camera_Inverse();
 	const map<_uint, CGameObject*>* Get_Cameras();
 
+public: /* For.Sound_Manager */
+
 private:
 	class CTimer_Manager*			m_pTimer_Manager		= { nullptr };
 	class CGraphic_Device*			m_pGraphic_Device		= { nullptr };
@@ -120,6 +122,7 @@ private:
 	class CCollision_Manager*		m_pCollision_Manager	= { nullptr };
 	class CCamera_Manager*			m_pCamera_Manager		= { nullptr };
 	class CNavMesh*					m_pNavMesh				= { nullptr };
+	class CSound_Manager*			m_pSound_Manager		= { nullptr };
 
 private:
 	ID3D11Device* m_pDevice = { nullptr };

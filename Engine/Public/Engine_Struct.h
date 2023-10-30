@@ -189,6 +189,189 @@ namespace Engine
 		unsigned int	iWinSizeX, iWinSizeY;
 
 	}GRAPHIC_DESC;
+
+	enum class LERP_MODE { DEFAULT, EASE_OUT, EASE_IN, EXPONENTIAL, SMOOTHSTEP, SMOOTHERSTEP, TYPEEND };
+	typedef struct tagLerpFloatDesc
+	{
+		/* Time */
+		_float		fStartTime	= 0.f;
+		_float		fEndTime	= 0.f;
+		_float		fCurTime	= 0.f;
+
+		/* Value */
+		_float		fStartValue		= 0.f;
+		_float		fTargetValue	= 0.f;
+		_float		fCurValue		= 0.f;
+
+		_bool		bActive			= FALSE;
+
+		LERP_MODE	eMode			= LERP_MODE::DEFAULT; // https://chicounity3d.wordpress.com/2014/05/23/how-to-lerp-like-a-pro/
+
+		void Start(const _float& _fTime, const _float _fStartValue, const _float& _fTargetValue, const LERP_MODE& _eMode = LERP_MODE::DEFAULT)
+		{
+			bActive			= TRUE;
+
+			fCurTime		= 0.f;
+			fEndTime		= _fTime;
+
+			fStartValue		= fCurValue = _fStartValue;
+			fTargetValue	= _fTargetValue;
+
+			eMode			= _eMode;
+		}
+
+		// Mode
+		void Update(const _float& fTimeDelta)
+		{
+			if (!bActive) return;
+
+			fCurTime += fTimeDelta;
+
+			if (fCurTime >= fEndTime)
+			{
+				Reset();
+				return;
+			}
+
+			_float t = fCurTime / fEndTime;
+
+			switch (eMode)
+			{
+			case LERP_MODE::DEFAULT:
+			{
+			}
+			break;
+			case LERP_MODE::EASE_OUT:
+			{
+				t = sinf(t * XM_PI * 0.5f);
+			}
+			break;
+			case LERP_MODE::EASE_IN:
+			{
+				t = 1.f - cosf(t * XM_PI * 0.5f);
+			}
+			break;
+			case LERP_MODE::EXPONENTIAL:
+			{
+				t = t * t;
+			}
+			break;
+			case LERP_MODE::SMOOTHSTEP:
+			{
+				t = t * t * (3.f - 2.f * t);
+
+			}
+			break;
+			case LERP_MODE::SMOOTHERSTEP:
+			{
+				t = t * t * t * (t * (6.f * t - 15.f) + 10.f);
+			}
+			break;
+			default:
+				break;
+			}
+			fCurValue = Lerp_Float(fStartValue, fTargetValue, t);
+
+		}
+
+		_float Lerp_Float(const _float& _f1, const _float& _f2, const _float _fTime) { return (1 - _fTime) * _f1 + (_fTime * _f2); }
+
+		void Reset()
+		{
+			bActive		= FALSE;
+
+			fStartTime = fEndTime = fCurTime	= 0.f;
+			fStartValue = fTargetValue = fCurValue	= 0.f;
+		}
+
+	}LERP_FLOAT_DESC;
+
+
+	typedef struct tagLerpVec3Desc
+	{
+		_float		fStartTime	= 0.f;
+		_float		fEndTime	= 0.f;
+		_float		fCurTime	= 0.f;
+
+		Vec3		vStartVec;
+		Vec3		vTargetVec;
+		Vec3		vCurVec;
+
+		_bool		bActive = FALSE;
+
+		LERP_MODE	eMode = LERP_MODE::DEFAULT;
+
+		void Start(const _float& _fTime, const Vec3 _fStartValue, const Vec3& _fTargetValue, const LERP_MODE& _eMode = LERP_MODE::DEFAULT)
+		{
+			bActive = TRUE;
+
+			fCurTime = 0.f;
+			fEndTime = _fTime;
+			
+			vStartVec = vCurVec = _fStartValue;
+			vTargetVec = _fTargetValue;
+
+			eMode = _eMode;
+		}
+
+		void Update_Lerp(const _float& fTimeDelta)
+		{
+			if (!bActive) return;
+
+			fCurTime += fTimeDelta;
+
+			if (fCurTime >= fEndTime)
+			{
+				bActive = FALSE;
+				fCurTime = fEndTime;
+			}
+
+			_float t = fCurTime / fEndTime;
+
+			switch (eMode)
+			{
+			case LERP_MODE::DEFAULT:
+			{
+			}
+			break;
+			case LERP_MODE::EASE_OUT:
+			{
+				t = sinf(t * XM_PI * 0.5f);
+			}
+			break;
+			case LERP_MODE::EASE_IN:
+			{
+				t = 1.f - cosf(t * XM_PI * 0.5f);
+			}
+			break;
+			case LERP_MODE::EXPONENTIAL:
+			{
+				t = t * t;
+			}
+			break;
+			case LERP_MODE::SMOOTHSTEP:
+			{
+				t = t * t * (3.f - 2.f * t);
+			}
+			break;
+			case LERP_MODE::SMOOTHERSTEP:
+			{
+				t = t * t * t * (t * (6.f * t - 15.f) + 10.f);
+			}
+			break;
+			}
+
+			vCurVec = Vec3::Lerp(vStartVec, vTargetVec, t);
+		}
+
+		void Reset()
+		{
+			bActive = FALSE;
+
+			fStartTime = fEndTime = fCurTime = 0;
+			vStartVec = vTargetVec = vCurVec = Vec3::Zero;
+		}
+	}LERP_VEC3_DESC;
 }
 
 #endif // Engine_Struct_h__

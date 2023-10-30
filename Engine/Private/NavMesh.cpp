@@ -132,6 +132,8 @@ HRESULT CNavMesh::Render_Picked()
 			pCell->Render();
 		}
 	}
+
+	return TRUE;
 }
 
 HRESULT CNavMesh::Set_Neighbors()

@@ -102,6 +102,7 @@ namespace Client
 		L"Layer_12_Ui",
 	};
 
+	/* Shader */
 	enum SHADER_ID
 	{
 		SHADER_UI, SHADER_NORMAL, SHADER_STATIC, SHADER_VTF, SHADER_CUBE, SHADER_SKY_SPHERE, SHADER_END
@@ -117,15 +118,30 @@ namespace Client
 
 	};
 
-
+	/* Camera */
 	enum CAMERA_ID { CAM_DEBUG, CAM_FOLLOW, CAM_END };
 	static const wchar_t* CameraNames[CAM_END]
 	{
 		L"Camera_Debug",
 		L"Camera_Follow",
-	
-
 	};
+
+	/* Sound Channel */
+	enum CHANNEL_ID 
+	{
+		/* BGM */
+		BGM_PRE,
+		BGM_CUR,
+
+		/* Player */
+		PLAYER_CHAI_,
+		PLAYER_PEPPERMINT,
+
+		/* Enemy */
+		CHANNEL_ID_END = MAX_CHANNEL
+	};
+	static const char* SoundFilePath = "../../Client/Bin/Resources/Sounds/";
+
 }
 
 extern HINSTANCE	g_hInst;

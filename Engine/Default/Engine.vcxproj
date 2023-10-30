@@ -77,6 +77,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>..\Bin\</OutDir>
+    <IncludePath>C:\Users\ChanYoon\Desktop\Programming\Projects\Hifi Rush\Source\Engine\Public\FMOD;C:\Users\ChanYoon\Desktop\Programming\Projects\Hifi Rush\Source\Engine\ThirdPartyLib;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -107,7 +108,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../Public/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Public/; </AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <ConformanceMode>Default</ConformanceMode>
@@ -115,8 +116,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;dinput8.lib;dxguid.lib;Effects11d.lib;DirectXTKd.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>../ThirdPartyLib/</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d11.lib;dinput8.lib;dxguid.lib;Effects11d.lib;DirectXTKd.lib;C:\Users\ChanYoon\Desktop\Programming\Projects\Hifi Rush\Source\Engine\ThirdPartyLib\fmodex64_vc.lib;C:\Users\ChanYoon\Desktop\Programming\Projects\Hifi Rush\Source\Engine\ThirdPartyLib\fmodex_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../ThirdPartyLib/;</AdditionalLibraryDirectories>
       <StackReserveSize>40000</StackReserveSize>
       <StackCommitSize>
       </StackCommitSize>
@@ -203,6 +204,13 @@
     <ClInclude Include="..\Public\Engine_Macro.h" />
     <ClInclude Include="..\Public\Engine_Struct.h" />
     <ClInclude Include="..\Public\Engine_Typedef.h" />
+    <ClInclude Include="..\Public\FMOD\fmod.h" />
+    <ClInclude Include="..\Public\FMOD\fmod.hpp" />
+    <ClInclude Include="..\Public\FMOD\fmod_codec.h" />
+    <ClInclude Include="..\Public\FMOD\fmod_dsp.h" />
+    <ClInclude Include="..\Public\FMOD\fmod_errors.h" />
+    <ClInclude Include="..\Public\FMOD\fmod_memoryinfo.h" />
+    <ClInclude Include="..\Public\FMOD\fmod_output.h" />
     <ClInclude Include="..\Public\Frustum.h" />
     <ClInclude Include="..\Public\Collider_OBB.h" />
     <ClInclude Include="..\Public\NavMesh.h" />
@@ -212,6 +220,7 @@
     <ClInclude Include="..\Public\RenderTarget.h" />
     <ClInclude Include="..\Public\Collider_Sphere.h" />
     <ClInclude Include="..\Public\Rigidbody.h" />
+    <ClInclude Include="..\Public\Sound_Manager.h" />
     <ClInclude Include="..\Public\ThreadPool.h" />
     <ClInclude Include="..\Public\Util_File.h" />
     <ClInclude Include="..\public\GameInstance.h" />
@@ -280,6 +289,7 @@
     <ClCompile Include="..\Private\RenderTarget.cpp" />
     <ClCompile Include="..\Private\Collider_Sphere.cpp" />
     <ClCompile Include="..\Private\Rigidbody.cpp" />
+    <ClCompile Include="..\Private\Sound_Manager.cpp" />
     <ClCompile Include="..\Private\ThreadPool.cpp" />
     <ClCompile Include="..\Private\Util_File.cpp" />
     <ClCompile Include="..\private\GameInstance.cpp" />

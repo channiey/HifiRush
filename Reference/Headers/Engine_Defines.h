@@ -73,6 +73,7 @@ using namespace DirectX;
 #include <ctime>
 #include <filesystem>
 
+
 /* Using */
 using namespace Engine;
 using namespace std;
@@ -80,3 +81,7 @@ using std::thread;
 
 /* Utility */
 #include "SimpleMath.h"
+
+#define MAX_CHANNEL 32
+
+
