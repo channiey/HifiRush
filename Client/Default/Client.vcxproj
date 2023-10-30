@@ -181,11 +181,14 @@
     <ClInclude Include="..\ImGui\imstb_textedit.h" />
     <ClInclude Include="..\ImGui\imstb_truetype.h" />
     <ClInclude Include="..\public\BackGround.h" />
+    <ClInclude Include="..\Public\BattleManager.h" />
+    <ClInclude Include="..\Public\BeatManager.h" />
     <ClInclude Include="..\Public\Blackboard_Saber.h" />
     <ClInclude Include="..\Public\Camera_Debug.h" />
     <ClInclude Include="..\Public\Camera_Follow.h" />
     <ClInclude Include="..\Public\Chai_Guitar_Explore.h" />
     <ClInclude Include="..\Public\Character.h" />
+    <ClInclude Include="..\Public\GameManager.h" />
     <ClInclude Include="..\Public\ImGui_Window_Mid_Cam.h" />
     <ClInclude Include="..\Public\SkySphere.h" />
     <ClInclude Include="..\Public\DebugDraw.h" />
@@ -268,11 +271,14 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\private\BackGround.cpp" />
+    <ClCompile Include="..\Private\BattleManager.cpp" />
+    <ClCompile Include="..\Private\BeatManager.cpp" />
     <ClCompile Include="..\Private\Blackboard_Saber.cpp" />
     <ClCompile Include="..\Private\Camera_Debug.cpp" />
     <ClCompile Include="..\Private\Camera_Follow.cpp" />
     <ClCompile Include="..\Private\Chai_Guitar_Explore.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
+    <ClCompile Include="..\Private\GameManager.cpp" />
     <ClCompile Include="..\Private\ImGui_Window_Mid_Cam.cpp" />
     <ClCompile Include="..\Private\SkySphere.cpp" />
     <ClCompile Include="..\Private\DebugDraw.cpp" />

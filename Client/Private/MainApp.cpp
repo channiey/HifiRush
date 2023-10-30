@@ -31,19 +31,16 @@ HRESULT CMainApp::Initialize()
 	GraphicDesc.iWinSizeX = g_iWinSizeX;
 	GraphicDesc.iWinSizeY = g_iWinSizeY;
 
-	if (FAILED(m_pEngineInstance->Initialize_Engine(LV_END, g_hInst, GraphicDesc, &m_pDevice, &m_pContext, SoundFilePath)))
+	if (FAILED(m_pEngineInstance->Initialize_Engine(LV_END, g_hInst, GraphicDesc, &m_pDevice, &m_pContext, SoundFilePath_Engine)))
 		return E_FAIL;
 
-	/* 1-2 모든 레벨에서 사용할 컴포넌트 원형을 생성한다. */
 	if (FAILED(Ready_Prototype_Components()))
 		return E_FAIL;
 
-	/* 1-3. 게임내에서 사용할 레벨(씬)을 생성한다. */
 	if (FAILED(Open_Level(LV_LOGO)))
 		return E_FAIL;
 
 #ifdef _DEBUG
-	/* 1-5. ImGui Manager을 세팅한다. */
 	if(FAILED(m_pImGui_Manager->Initialize(m_pDevice, m_pContext)))
 		return E_FAIL;
 #endif // _DEBUG

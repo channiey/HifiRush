@@ -17,6 +17,7 @@ HRESULT CLevel_Stage_01::Initialize()
 	if (FAILED(CLevel_Loading::Parse_LevelData(LV_STAGE_01)))
 		return E_FAIL;
 
+	ENGINE_INSTANCE->Play_Sound(BGM_FAST_PULSE, BGM_CUR, 1.f);
 	return S_OK;
 }
 

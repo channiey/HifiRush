@@ -140,8 +140,29 @@ namespace Client
 		/* Enemy */
 		CHANNEL_ID_END = MAX_CHANNEL
 	};
-	static const char* SoundFilePath = "../../Client/Bin/Resources/Sounds/";
 
+
+	/* Sound File */
+	enum SOUND_FILE_ID 
+	{
+		/* BGM FAST */
+		BGM_FAST_CANTSTOP, 
+		BGM_FAST_DEV, 
+		BGM_FAST_HEATWAVE,
+		BGM_FAST_MISSION,
+		BGM_FAST_PULSE, 
+		BGM_FAST_RUSH, 
+		BGM_FAST_SECURITY, 
+
+	
+		/* BGM MIDDLE */
+		BGM_MIDDLE_CHECK,
+		BGM_MIDDLE_DOWNTIME,
+		BGM_MIDDLE_UNRESTRICTED,
+
+		SOUND_FILE_END
+	};
+	static const char* SoundFilePath_Engine = "../../Client/Bin/Resources/Sounds/";
 }
 
 extern HINSTANCE	g_hInst;

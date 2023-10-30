@@ -15,10 +15,13 @@ HRESULT CSound_Manager::Initialize(string soundFilePath)
 
 	Load_SoundFile(soundFilePath);
 
+	if (FAILED(Load_SoundFileNames(soundFilePath)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
-void CSound_Manager::PlaySound(TCHAR* pSoundKey, _uint eChannelID, float fVolume)
+void CSound_Manager::PlaySound(_uint eSoundID, _uint eChannelID, float fVolume)
 {
 	Stop_Sound(eChannelID);
 
@@ -27,7 +30,7 @@ void CSound_Manager::PlaySound(TCHAR* pSoundKey, _uint eChannelID, float fVolume
 	iter = find_if(m_mapSound.begin(), m_mapSound.end(),
 		[&](auto& iter)->bool
 		{
-			return !lstrcmp(pSoundKey, iter.first);
+			return !lstrcmp(m_SoundNames[eSoundID], iter.first);
 		});
 
 	if (iter == m_mapSound.end())
@@ -46,14 +49,14 @@ void CSound_Manager::PlaySound(TCHAR* pSoundKey, _uint eChannelID, float fVolume
 
 }
 
-HRESULT CSound_Manager::Play_BGM(TCHAR* pSoundKey, _uint eChannelID, float fVolume)
+HRESULT CSound_Manager::Play_BGM(_uint eSoundID, _uint eChannelID, float fVolume)
 {
 
 	map<TCHAR*, FMOD_SOUND*>::iterator iter;
 
 	iter = find_if(m_mapSound.begin(), m_mapSound.end(), [&](auto& iter)->bool
 		{
-			return !lstrcmp(pSoundKey, iter.first);
+			return !lstrcmp(m_SoundNames[eSoundID], iter.first);
 		});
 
 	if (iter == m_mapSound.end())
@@ -64,6 +67,11 @@ HRESULT CSound_Manager::Play_BGM(TCHAR* pSoundKey, _uint eChannelID, float fVolu
 	FMOD_Channel_SetVolume(m_Channels[eChannelID], fVolume);
 	FMOD_System_Update(m_pSystem);
 
+	return S_OK;
+}
+
+HRESULT CSound_Manager::Add_BGM(_uint eSoundID, _uint eChannelID, float fVolume)
+{
 	return S_OK;
 }
 
@@ -129,10 +137,45 @@ void CSound_Manager::Load_SoundFile(string soundFilePath)
 	_findclose(handle);
 }
 
+HRESULT CSound_Manager::Load_SoundFileNames(string soundFilePath)
+{
+	/* exists는 파일 유무를 탐색, 내가 필요한건 폴더만,*/
+	//if (filesystem::exists(soundFilePath))
+	//	return E_FAIL;
+
+	for (const auto& entry : filesystem::directory_iterator(soundFilePath)) 
+	{
+		if (filesystem::is_regular_file(entry)) 
+		{ 
+			string fileName = entry.path().filename().string();
+
+			TCHAR* wcharPtr = new wchar_t[fileName.length() + 1];
+
+			size_t i;
+
+			for (i = 0; i < fileName.length(); ++i)
+			{
+				wcharPtr[i] = static_cast<wchar_t>(fileName[i]);
+			}
+			wcharPtr[i] = L'\0'; 
+
+			m_SoundNames.push_back(wcharPtr);
+		}
+	}
+
+	return TRUE;
+}
+
 
 void CSound_Manager::Free()
 {
 	__super::Free();
+
+	for (size_t i = 0; i < m_SoundNames.size(); ++i) 
+	{
+		delete[] m_SoundNames[i];
+	}
+	m_SoundNames.clear();
 
 	for (auto& Mypair : m_mapSound)
 	{

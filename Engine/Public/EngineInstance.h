@@ -109,6 +109,8 @@ public: /* For.Camera_Manager */
 	const map<_uint, CGameObject*>* Get_Cameras();
 
 public: /* For.Sound_Manager */
+	void	Play_Sound(_uint eSoundID, _uint eChannelID, float fVolume);
+	HRESULT Play_BGM(_uint eSoundID, _uint eChannelID, float fVolume);
 
 private:
 	class CTimer_Manager*			m_pTimer_Manager		= { nullptr };

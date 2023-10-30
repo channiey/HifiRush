@@ -596,6 +596,22 @@ const map<_uint, CGameObject*>* CEngineInstance::Get_Cameras()
 	return m_pCamera_Manager->Get_Cameras();
 }
 
+void CEngineInstance::Play_Sound(_uint eSoundID, _uint eChannelID, float fVolume)
+{
+	if (nullptr == m_pSound_Manager)
+		return;
+
+	return m_pSound_Manager->PlaySound(eSoundID, eChannelID, fVolume);
+}
+
+HRESULT CEngineInstance::Play_BGM(_uint eSoundID, _uint eChannelID, float fVolume)
+{
+	if (nullptr == m_pSound_Manager)
+		return E_FAIL;
+
+	return m_pSound_Manager->Play_BGM(eSoundID, eChannelID, fVolume);
+}
+
 void CEngineInstance::Release_Engine()
 {
 	CEngineInstance::GetInstance()->DestroyInstance();

@@ -37,15 +37,6 @@
     <Filter Include="01.Utiltiy\01.Level\Manager">
       <UniqueIdentifier>{d401dff7-3c68-47ac-9107-431b908baa1f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utiltiy\91.BroadCast">
-      <UniqueIdentifier>{d35a6d7b-db5e-4150-bcc3-9626d664ded4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utiltiy\91.BroadCast\Event">
-      <UniqueIdentifier>{76036d10-16b1-4848-b3c0-c0d04152ebb6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utiltiy\91.BroadCast\BroadCast">
-      <UniqueIdentifier>{5a206849-cf86-43e2-9d09-a27b95c0d14a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utiltiy\90.Optimization">
       <UniqueIdentifier>{55d3fbb0-0e3f-4e1e-9b56-3426f593aab2}</UniqueIdentifier>
     </Filter>
