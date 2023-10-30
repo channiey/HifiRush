@@ -34,6 +34,7 @@ public:
 	HRESULT			Create_Cell(Vec3 vPoint);
 	HRESULT			Delete_Cell();
 	HRESULT			Delete_Point();
+	HRESULT			Pick_Cell(CCell* pPickedCell);
 
 private:
 	HRESULT			Create_Cells(vector<CCell*>& Cells);
@@ -57,6 +58,7 @@ private:
 	_bool			m_bPopUp_Load = FALSE;
 
 	_bool			m_bEditing = FALSE;
+	_bool			m_bAutoCellHeight = FALSE;
 
 	vector<Vec3>	m_CellPointsCache;
 

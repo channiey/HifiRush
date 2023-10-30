@@ -23,7 +23,9 @@ public:
 		WINDOW_MAIN_OBJECT_INFO,
 		WINDOW_MAIN_HIEARACHY,
 
+		// 사실상 미드 
 		WINDOW_MAIN_NAV,
+		WINDOW_MAIN_CAM,
 
 		WINDOW_MAIN_DEMO,
 
@@ -34,7 +36,11 @@ public:
 		"Controller",
 		"Object Info",
 		"Hierarachy",
+		
+		
 		"Nav",
+		"Cam",
+
 		"Demo",
 	};
 
@@ -137,6 +143,7 @@ private: /* Friend Class */
 
 	/* Mid */
 	friend class CImGui_Window_Mid_Nav;
+	friend class CImGui_Window_Mid_Cam;
 	
 	/* Sub*/
 	friend class CImGui_Window_Sub_Prefabs;

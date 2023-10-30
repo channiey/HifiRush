@@ -398,7 +398,7 @@ HRESULT CNavMesh::Delete_Cell(const _uint iIndex)
 	/* 캐시에서도 삭제 */
 	for (vector<CCell*>::iterator iter = m_AddedCellsCache.begin(); iter != m_AddedCellsCache.end();)
 	{
-		if (*iter == m_Cells[iIndex])
+		if ((*iter)->Get_Index() == iIndex)
 		{
 			iter = m_AddedCellsCache.erase(iter);
 			break;
@@ -407,18 +407,7 @@ HRESULT CNavMesh::Delete_Cell(const _uint iIndex)
 			++iter;
 	}
 
-
-	/*const _int* NeighborIndeces = m_Cells[iIndex]->Get_NeighborIndices();
-
-	for (size_t i = 0; i < CCell::LINE_END; i++)
-	{
-		if(-1 != NeighborIndeces[i])
-			m_Cells[NeighborIndeces[i]]->Remove_Neighbor(iIndex);
-	}*/
-
-	//Safe_Release(m_Cells[iIndex]);
-
-
+	/* 원래 셀들에서도 삭제 */
 	for (vector<CCell*>::iterator iter = m_Cells.begin(); iter != m_Cells.end();)
 	{
 		if ((*iter)->Get_Index() == iIndex)
@@ -462,7 +451,7 @@ const _int CNavMesh::Find_Cell(Vec3 vWorldPos)
 
 void CNavMesh::Get_SnapCellPos(_Inout_ Vec3& vWorldPos)
 {
-	const _float	fCanSnapPointDistnace = 0.5f;
+	const _float	fCanSnapPointDistnace = 1.f;
 
 	_float fMinDistance = 9999.f;
 

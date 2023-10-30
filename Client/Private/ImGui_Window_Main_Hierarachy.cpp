@@ -31,8 +31,8 @@ HRESULT CImGui_Window_Main_Hierarachy::Initialize()
 void CImGui_Window_Main_Hierarachy::Show_Window()
 {
 	ImGuiWindowFlags window_flags = 0;
-	window_flags |= ImGuiWindowFlags_NoMove;
-	window_flags |= ImGuiWindowFlags_NoResize;
+	/*window_flags |= ImGuiWindowFlags_NoMove;
+	window_flags |= ImGuiWindowFlags_NoResize;*/
 
 	if (m_bLayerEvent) m_bLayerEvent = FALSE;
 	if (m_bObjectEvent) m_bObjectEvent = FALSE;
@@ -68,6 +68,25 @@ void CImGui_Window_Main_Hierarachy::Show_Window()
 		{
 			Show_MiniLayers();
 		}
+
+		/* Piciking */
+		if (m_bPickMode)
+		{
+			if (GAME_INSTNACE->Key_Down(VK_RBUTTON))
+			{
+				RAYHIT_DESC hit = GAME_INSTNACE->Check_ScreenRay(LayerNames[LAYER_ENV_STATIC], FALSE);
+
+				if (nullptr != hit.pGameObject)
+				{
+					if (nullptr != m_pImGui_Manager->m_pCurObject && m_pImGui_Manager->m_pCurObject->Is_Picked())
+						m_pImGui_Manager->m_pCurObject->Set_Picked(FALSE);
+
+					m_pImGui_Manager->m_pCurObject = hit.pGameObject;
+					m_pImGui_Manager->m_pCurObject->Set_Picked(TRUE);
+
+				}
+			}
+		}
 		
 	}
 	ImGui::End();
@@ -78,6 +97,10 @@ void CImGui_Window_Main_Hierarachy::Show_Window()
 
 void CImGui_Window_Main_Hierarachy::Clear_Reference_Data()
 {
+	if (nullptr != m_pImGui_Manager->m_pCurObject)
+		m_pImGui_Manager->m_pCurObject->Set_Picked(FALSE);
+
+	m_bPickMode = FALSE;
 }
 
 void CImGui_Window_Main_Hierarachy::Show_Hierarachy_FunctionButton()
@@ -244,14 +267,14 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Objects()
 			m_bObjectEvent = TRUE;
 		}
 	}
+	ImGui::SameLine();
 
-
-	/* 오브젝트 검색 */
-	//ImGui::Button("Find");
-	//ImGui::SameLine();
-	//static char str0[128] = "Enter the Name...";
-	//ImGui::InputText(" ", str0, IM_ARRAYSIZE(str0));
-
+	/* 오브젝트 피킹 */
+	if (ImGui::Checkbox("Pick", &m_bPickMode))
+	{
+		if (nullptr != m_pImGui_Manager->m_pCurObject && m_pImGui_Manager->m_pCurObject->Is_Picked())
+			m_pImGui_Manager->m_pCurObject->Set_Picked(TRUE);
+	}
 
 	/* 선택한 레벨, 레이어의 오브젝트들을 가져온다.*/
 	list<class CGameObject*>* pGameObjects = m_pGameInstance->Get_Layer(m_pImGui_Manager->m_iIndex_CurLevelID, m_pImGui_Manager->m_strIndex_CurLayer);
@@ -363,9 +386,19 @@ void CImGui_Window_Main_Hierarachy::Save_LevelData()
 
 	/* 현재 레벨의 모든 레이어를 가져온다. */
 	map<const wstring, class CLayer*>* pLayers = m_pGameInstance->Get_All_Layer(m_pImGui_Manager->m_iIndex_CurLevelID);
-	NULL_CHECK(pLayers);
+	if (nullptr == pLayers)
+		return;
 
-	file->Write<size_t>(pLayers->size() -1); /* 무기 삭제*/
+	/* 무기 필터링 - 무기는 저장할 필요 없음 */
+	{
+		auto iter = pLayers->find(LayerNames[LAYER_WEAPON]);
+
+		if(iter != pLayers->end())
+			file->Write<size_t>(pLayers->size() -1); 
+		else
+			file->Write<size_t>(pLayers->size());
+	}
+
 
 	/* 현재 레벨의 모든 레이어를 순회한다. */
 	for (auto& Pair : *pLayers)
@@ -375,11 +408,9 @@ void CImGui_Window_Main_Hierarachy::Save_LevelData()
 		/* 무기는 어차피 소유 캐릭터 자체 생산이므로 건너 뛴다. */
 		{
 			if (LayerNames[LAYER_WEAPON] == Pair.first) continue;
-
-
 		}
-		file->Write<size_t>(Pair.second->Get_Objects()->size());
 
+		file->Write<size_t>(Pair.second->Get_Objects()->size());
 
 		/* 레이어 내에 오브젝트 리스트를 순회한다. */
 		for (auto& obj : *Pair.second->Get_Objects())

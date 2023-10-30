@@ -23,6 +23,10 @@ public:
 	virtual void Tick(_float fTimeDelta) override;
 	virtual void LateTick(_float fTimeDelta) override;
 
+public:
+	_float Get_SpeedPerSec() const { return m_fSpeedPerSec; }
+	void Set_SpeedPerSec(const _float& fSpeed) { m_fSpeedPerSec = fSpeed; }
+
 private:
 	HRESULT Ready_Components();
 

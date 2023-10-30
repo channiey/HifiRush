@@ -21,6 +21,7 @@
 
 /* Sub Mid */
 #include "ImGui_Window_Mid_Nav.h"
+#include "ImGui_Window_Mid_Cam.h"
 
 /* Other Class */
 #include "GameInstance.h"
@@ -79,6 +80,12 @@ HRESULT CImGui_Manager::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* p
 
 	/* Create Sub_Window_Nav */
 	pWindow = CImGui_Window_Mid_Nav::Create();
+	NULL_CHECK_RETURN(pWindow, E_FAIL);
+	pWindow->Set_Active(FALSE);
+	m_pMainWindows.push_back(pWindow);
+
+	/* Create Sub_Window_Cam */
+	pWindow = CImGui_Window_Mid_Cam::Create();
 	NULL_CHECK_RETURN(pWindow, E_FAIL);
 	pWindow->Set_Active(FALSE);
 	m_pMainWindows.push_back(pWindow);

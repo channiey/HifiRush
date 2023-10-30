@@ -35,10 +35,10 @@ HRESULT CCamera_Follow::Initialize(void * pArg)
 
 	/* Set Camera */
 	{
-		m_pCameraCom->Set_Distance(5.f);
+		m_pCameraCom->Set_Distance(6.5f);
 		m_pCameraCom->Set_MouseSensitiveX(0.3f);
 		m_pCameraCom->Set_MouseSensitiveY(0.1f);
-		m_pCameraCom->Set_LookAtOffSet(Vec4{0.f, 1.8f, 0.f, 1.f });
+		m_pCameraCom->Set_LookAtOffSet(Vec4{0.f, 2.2f, 0.f, 1.f });
 	}
 
 	return S_OK;
@@ -98,7 +98,7 @@ HRESULT CCamera_Follow::Ready_Components()
 
 HRESULT CCamera_Follow::Find_Target()
 {
-	CGameObject* pObject = GAME_INSTNACE->Get_GameObject(LV_PROTO, LayerNames[LAYER_PLAYER], L"Player_Chai_000");
+	CGameObject* pObject = GAME_INSTNACE->Get_GameObject(GAME_INSTNACE->Get_CurLevelIndex(), LayerNames[LAYER_PLAYER], L"Player_Chai_000");
 
 	if (nullptr == pObject) return E_FAIL;
 

@@ -21,8 +21,8 @@ HRESULT CLevel_Proto::Initialize()
 		if (FAILED(CNavMesh::GetInstance()->Load_NavData(NavPaths[LV_PROTO])))
 			return E_FAIL;
 
-		if (FAILED(CLevel_Loading::Parse_LevelData(LV_PROTO)))
-			return E_FAIL;
+	/*	if (FAILED(CLevel_Loading::Parse_LevelData(LV_PROTO)))
+			return E_FAIL;*/
 	}
 
 

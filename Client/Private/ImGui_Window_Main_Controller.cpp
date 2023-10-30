@@ -15,8 +15,8 @@ HRESULT CImGui_Window_Main_Controller::Initialize()
 void CImGui_Window_Main_Controller::Show_Window()
 {
 	ImGuiWindowFlags window_flags = 0;
-	window_flags |= ImGuiWindowFlags_NoMove;
-	window_flags |= ImGuiWindowFlags_NoResize;
+	//window_flags |= ImGuiWindowFlags_NoMove;
+	//window_flags |= ImGuiWindowFlags_NoResize;
 
 	if (ImGui::Begin(m_pImGui_Manager->str_MainWindowType[m_pImGui_Manager->WINDOW_MAIN_CONTROLLER], NULL, window_flags))
 	{
@@ -45,24 +45,6 @@ void CImGui_Window_Main_Controller::Show_Window()
 			if (ImGui::Button("RTV"))
 			{
 
-			}
-			ImGui::SameLine();
-
-			/* 디버그 카메라 */
-			if (ImGui::Button("Cam"))
-			{
-				if (!m_pImGui_Manager->m_bDebugCam)
-				{
-					m_pImGui_Manager->m_bDebugCam = TRUE;
-					if (FAILED(GAME_INSTNACE->Change_Camera(CAMERA_ID::CAM_DEBUG)))
-						assert(FALSE);
-				}
-				else
-				{
-					m_pImGui_Manager->m_bDebugCam = FALSE;
-					if(FAILED(GAME_INSTNACE->Change_Camera_Inverse()))
-						assert(FALSE);
-				}
 			}
 			ImGui::SameLine();
 
@@ -107,6 +89,17 @@ void CImGui_Window_Main_Controller::Show_Window()
 
 			}
 			ImGui::SameLine();
+
+			/* 메인 윈도우 캠 버튼 */
+			if (ImGui::Button(m_pImGui_Manager->str_MainWindowType[m_pImGui_Manager->WINDOW_MAIN_CAM]))
+			{
+				m_pImGui_Manager->Set_Active_Main_Window(
+					m_pImGui_Manager->WINDOW_MAIN_CAM,
+					!m_pImGui_Manager->m_pMainWindows[m_pImGui_Manager->WINDOW_MAIN_CAM]->Is_Active());
+
+			}
+			ImGui::SameLine();
+
 
 			/* 메인 윈도우 데모 버튼 */
 			if (ImGui::Button(m_pImGui_Manager->str_MainWindowType[m_pImGui_Manager->WINDOW_MAIN_DEMO]))

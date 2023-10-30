@@ -226,16 +226,16 @@ HRESULT CLoader::Load_Prototype()
 	/* For.Model */
 	m_strLoading = TEXT("Loding... : Model");
 	{
-		Matrix PivotMatrix = Matrix::Identity;
+		Matrix PivotMatrix;
 
 		/* For.Prototype_Component_Model_Chai */
-		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.01f);
+		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.015f);
 		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Chai"),
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Chai", PivotMatrix))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Model_Saber */
-		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.01f);
+		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.015f);
 		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Saber"),
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Saber", PivotMatrix))))
 			return E_FAIL;
@@ -256,7 +256,7 @@ HRESULT CLoader::Load_Prototype()
 			}
 			/* For.Prototype_Component_Model_Saber_Sword */
 			{
-				PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f)) * Matrix::CreateRotationZ(DEG2RAD(90.f)) * Matrix::CreateRotationX(DEG2RAD(90.f));
+				PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f)) * Matrix::CreateRotationZ(DEG2RAD(90.f)) * Matrix::CreateRotationX(DEG2RAD(90.f)) * Matrix::CreateScale(1.5f);
 				const string		tag = "Prototype_Component_Model_Weapon_Saber_Sword";
 				const string		filePath = "../Bin/Resources/Models/Weapon/Saber_Sword";
 
@@ -266,14 +266,27 @@ HRESULT CLoader::Load_Prototype()
 			}
 		}
 
-
-
-
-
 		/* For.Prototype_Component_Model_Static */
-		PivotMatrix = Matrix::Identity * Matrix::CreateScale(0.006f);
+		{
+			PivotMatrix = Matrix::Identity * Matrix::CreateScale(0.01f);
+
+			/* 해당 경로 내의 모든 폴더명을 읽어 폴더명으로 오브젝트를 생성한다. */
+			const string		tag = "Prototype_Component_Model_Static_Env_Static_";
+			const string		filePath = "../Bin/Resources/Models/Environment/Static";
+			vector<string>		fileNames = Util_File::GetAllFolderNames(filePath);
+
+			for (string& name : fileNames)
+			{
+				if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString(tag + name),
+					CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/" + name, PivotMatrix))))
+					return E_FAIL;
+			}
+		}
+
+
+		//PivotMatrix = Matrix::Identity * Matrix::CreateScale(0.006f);
 		
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Bldg_Inside_Battle_A"),
+		/*if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Bldg_Inside_Battle_A"),
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/Bldg_Inside_Battle_A", PivotMatrix))))
 			return E_FAIL;
 
@@ -299,30 +312,12 @@ HRESULT CLoader::Load_Prototype()
 
 		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Container_Closed_Yellow"),
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/Container_Closed_Yellow", PivotMatrix))))
-			return E_FAIL;
+			return E_FAIL;*/
 
 
 
 
-		//{
-		//	PivotMatrix = Matrix::Identity * Matrix::CreateScale(0.01f);
-
-		//	/* 해당 경로 내의 모든 폴더명을 읽어 폴더명으로 오브젝트를 생성한다. */
-		//	const string		tag = "Prototype_Component_Model_Static_Env_Static_";
-		//	const string		filePath = "../Bin/Resources/Models/Environment/Static";
-		//	vector<string>		fileNames = Util_File::GetAllFolderNames(filePath);
-
-		//	for (string& name : fileNames)
-		//	{
-		//		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString(tag + name),
-		//			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/" + name, PivotMatrix))))
-		//			return E_FAIL;
-		//		/*threads.Push_Command(std::bind(&CGameInstance::Add_PrototypeCom, &pGameInstance,
-		//			LV_STATIC, Util_String::ToWString(tag + name),
-		//			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/" + name, PivotMatrix))
-		//		);*/
-		//	}
-		//}
+		
 
 
 
@@ -387,27 +382,24 @@ HRESULT CLoader::Load_Prototype()
 			}
 		}
 
+		/* For.Prototype_GameObject_Proto_Static */
+		{
+			/* 해당 경로 내의 모든 폴더명을 읽어 폴더명으로 오브젝트를 생성한다. */
+			const string		tag = "Env_Static_";
+			const string		filePath = "../Bin/Resources/Models/Environment/Static";
+			vector<string>		fileNames = Util_File::GetAllFolderNames(filePath);
 
-		if (FAILED(pGameInstance->Add_Prototype(TEXT("Env_Static_Terrain"),
-			CTerrain::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
+			for (string& name : fileNames)
+			{
+				if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString(tag + name), CStaticDummy::Create(m_pDevice, m_pContext))))
+					return E_FAIL;
+			}
+		}
 
-		if (FAILED(pGameInstance->Add_Prototype(TEXT("Env_SkyBox"),
-			CSkyBox::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-
-		if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_SkySphere"), 
-			CSkySphere::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-
-
-
-
-		///* For.Prototype_GameObject_Proto_Static */
-		if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_Static_Bldg_Inside_Battle_A"), CStaticDummy::Create(m_pDevice, m_pContext))))
+		/*if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_Static_Bldg_Inside_Battle_A"), CStaticDummy::Create(m_pDevice, m_pContext))))
 			return E_FAIL; 
-		if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_Static_Bldg_Inside_Battle_B"), CStaticDummy::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
+		//if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_Static_Bldg_Inside_Battle_B"), CStaticDummy::Create(m_pDevice, m_pContext))))
+		//	return E_FAIL;
 		if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_Static_Bldg_Outside_BK"), CStaticDummy::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 		if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_Static_Bldg_Inside_Lobby_A"), CStaticDummy::Create(m_pDevice, m_pContext))))
@@ -420,20 +412,21 @@ HRESULT CLoader::Load_Prototype()
 			return E_FAIL;
 
 		if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_Static_Container_Closed_Yellow"), CStaticDummy::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
+			return E_FAIL;*/
 		
-		//{
-		//	/* 해당 경로 내의 모든 폴더명을 읽어 폴더명으로 오브젝트를 생성한다. */
-		//	const string		tag = "Env_Static_";
-		//	const string		filePath = "../Bin/Resources/Models/Environment/Static";
-		//	vector<string>		fileNames = Util_File::GetAllFolderNames(filePath);
+		
 
-		//	for (string& name : fileNames)
-		//	{
-		//		if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString(tag + name), CStaticDummy::Create(m_pDevice, m_pContext))))
-		//			return E_FAIL;
-		//	}
-		//}
+		if (FAILED(pGameInstance->Add_Prototype(TEXT("Env_Static_Terrain"),
+			CTerrain::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(pGameInstance->Add_Prototype(TEXT("Env_SkyBox"),
+			CSkyBox::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_SkySphere"),
+			CSkySphere::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 	}
 
 	m_strLoading = TEXT("Loading Finish");

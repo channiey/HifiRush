@@ -87,7 +87,7 @@ namespace Client
 	};
 	static const wchar_t* LayerNames[LAYER_END] /* 업데이트 순서에 따른 정렬 */
 	{
-		L"Layer_00_Env_SkyBox",
+		L"Layer_00_Env_Sky",
 		L"Layer_01_Env_Static",
 		L"Layer_02_Env_Interactable",
 		L"Layer_03_Player",
@@ -118,7 +118,14 @@ namespace Client
 	};
 
 
-	enum CAMERA_ID { CAM_DEBUG, CAM_FOLLOW, CAM_HILIGHT, CAM_END };
+	enum CAMERA_ID { CAM_DEBUG, CAM_FOLLOW, CAM_END };
+	static const wchar_t* CameraNames[CAM_END]
+	{
+		L"Camera_Debug",
+		L"Camera_Follow",
+	
+
+	};
 }
 
 extern HINSTANCE	g_hInst;

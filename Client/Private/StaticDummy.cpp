@@ -90,6 +90,8 @@ HRESULT CStaticDummy::Render()
 	}
 	RELEASE_INSTANCE(CGameInstance);
 
+	_uint		iPicked = (_uint)m_bPicked;
+
 	_uint		iNumMeshes = m_pModelCom->Get_MeshCount();
 	for (_uint i = 0; i < iNumMeshes; ++i)
 	{
@@ -99,7 +101,7 @@ HRESULT CStaticDummy::Render()
 		/*if (FAILED(m_pModelCom->SetUp_OnShader(m_pShaderCom, m_pModelCom->Get_MaterialIndex(i), aiTextureType_NORMALS, "g_NormalTexture")))
 			return E_FAIL;*/
 
-		if (FAILED(m_pModelCom->Render(m_pShaderCom, i)))
+		if (FAILED(m_pModelCom->Render(m_pShaderCom, i, iPicked)))
 			return E_FAIL;
 	}
 

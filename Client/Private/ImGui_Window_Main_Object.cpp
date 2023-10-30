@@ -31,8 +31,8 @@ HRESULT CImGui_Window_Main_Object::Initialize()
 void CImGui_Window_Main_Object::Show_Window()
 {
 	ImGuiWindowFlags window_flags = 0;
-	window_flags |= ImGuiWindowFlags_NoMove;
-	window_flags |= ImGuiWindowFlags_NoResize;
+	/*window_flags |= ImGuiWindowFlags_NoMove;
+	window_flags |= ImGuiWindowFlags_NoResize;*/
 
 	if (ImGui::Begin(m_pImGui_Manager->str_MainWindowType[m_pImGui_Manager->WINDOW_MAIN_OBJECT_INFO], NULL, window_flags))
 	{

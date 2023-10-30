@@ -11,6 +11,9 @@ CLevel_Stage_01::CLevel_Stage_01(ID3D11Device * pDevice, ID3D11DeviceContext * p
 
 HRESULT CLevel_Stage_01::Initialize()
 {
+	if (FAILED(CNavMesh::GetInstance()->Load_NavData(NavPaths[LV_STAGE_01])))
+		return E_FAIL;
+
 	if (FAILED(CLevel_Loading::Parse_LevelData(LV_STAGE_01)))
 		return E_FAIL;
 
@@ -25,8 +28,29 @@ HRESULT CLevel_Stage_01::Tick(_float fTimeDelta)
 HRESULT CLevel_Stage_01::LateTick(_float fTimeDelta)
 {
 	SetWindowText(g_hWnd, LevelNames[LV_STAGE_01]);
+
+	if(FAILED(Check_Collision()))
+		return E_FAIL;
+
 	return S_OK;
 }
+
+HRESULT CLevel_Stage_01::Check_Collision()
+{
+	GAME_INSTNACE->Check_Collision_Layer(LayerNames[LAYER_ENEMY]
+		, LayerNames[LAYER_WEAPON]
+		, CCollider::SPHERE
+		, CCollider::SPHERE);
+
+
+	GAME_INSTNACE->Check_Collision_Layer(LayerNames[LAYER_PLAYER]
+		, LayerNames[LAYER_TRIGGER]
+		, CCollider::SPHERE
+		, CCollider::SPHERE);
+
+	return S_OK;
+}
+
 CLevel_Stage_01 * CLevel_Stage_01::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CLevel_Stage_01*	pInstance = new CLevel_Stage_01(pDevice, pContext);
@@ -43,6 +67,4 @@ CLevel_Stage_01 * CLevel_Stage_01::Create(ID3D11Device * pDevice, ID3D11DeviceCo
 void CLevel_Stage_01::Free()
 {
 	__super::Free();
-
-
 }

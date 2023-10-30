@@ -23,7 +23,7 @@ HRESULT CImGui_Window_Mid_Nav::Initialize()
 
 	m_pEffect->SetVertexColorEnabled(true);
 
-	const void* pShaderByteCodes = nullptr;
+	const void*		pShaderByteCodes = nullptr;
 	size_t			iLength = 0;
 
 	m_pEffect->GetVertexShaderBytecode(&pShaderByteCodes, &iLength);
@@ -31,9 +31,11 @@ HRESULT CImGui_Window_Mid_Nav::Initialize()
 	if (FAILED(m_pImGui_Manager->m_pDevice->CreateInputLayout(VertexPositionColor::InputElements, VertexPositionColor::InputElementCount, pShaderByteCodes, iLength, &m_pInputLayout)))
 		return E_FAIL;
 
-	m_Shperes[CCell::POINT_A] = new BoundingSphere(Vec3::Zero, 0.1f);
-	m_Shperes[CCell::POINT_B] = new BoundingSphere(Vec3::Zero, 0.1f);
-	m_Shperes[CCell::POINT_C] = new BoundingSphere(Vec3::Zero, 0.1f);
+	_float	fRadius = 0.5f;
+	Vec3	vOrigin = { 0.f, fRadius, 0.f };
+	m_Shperes[CCell::POINT_A] = new BoundingSphere(vOrigin, fRadius);
+	m_Shperes[CCell::POINT_B] = new BoundingSphere(vOrigin, fRadius);
+	m_Shperes[CCell::POINT_C] = new BoundingSphere(vOrigin, fRadius);
 	return S_OK;
 }
 
@@ -94,7 +96,7 @@ void CImGui_Window_Mid_Nav::Show_Window()
 			{
 				if (ImGui::Checkbox("Edit", &m_bEditing))
 				{
-					
+
 				}
 				ImGui::SameLine();
 				if (ImGui::Button("Relate"))
@@ -114,12 +116,48 @@ void CImGui_Window_Mid_Nav::Show_Window()
 					if (FAILED(Delete_Point()))
 						assert(FALSE);
 				}
+				ImGui::SameLine();
+				ImGui::Text("Cells : %d", CNavMesh::GetInstance()->Get_CountCells());
 			}
-		}
 
-		/* Text */
-		{
-			ImGui::Text("Cells : %d", CNavMesh::GetInstance()->Get_CountCells());
+
+			ImGui::SeparatorText("Points");
+			{
+				if (!m_CellPointsCache.empty())
+				{
+					if (ImGui::Checkbox("Auto Height", &m_bAutoCellHeight))
+					{
+
+					}
+
+					ImGui::PushItemWidth(100.f);
+					{
+						// x
+						_float fX = m_CellPointsCache.back().x;
+						if (ImGui::InputFloat("x", &fX, 0.01f, 0.1f, "%.3f"))
+						{
+							m_CellPointsCache.back().x = fX;
+						}
+						ImGui::SameLine();
+
+						// y 
+						_float fY = m_CellPointsCache.back().y;
+						if (ImGui::InputFloat("y", &fY, 0.01f, 0.1f, "%.3f"))
+						{
+							m_CellPointsCache.back().y = fY;
+						}
+						ImGui::SameLine();
+
+						// z
+						_float fZ = m_CellPointsCache.back().z;
+						if (ImGui::InputFloat("z", &fZ, 0.01f, 0.1f, "%.3f"))
+						{
+							m_CellPointsCache.back().z = fZ;
+						}
+					}
+					ImGui::PopItemWidth();
+				}
+			}
 		}
 
 		/* PopUp */
@@ -168,6 +206,7 @@ HRESULT CImGui_Window_Mid_Nav::Clear()
 
 	m_CellPicked.clear();
 	m_CellPointsCache.clear();
+
 	CNavMesh::GetInstance()->Set_Render(FALSE);
 	CNavMesh::GetInstance()->Set_RenderRange(10.f);
 
@@ -237,7 +276,10 @@ void CImGui_Window_Mid_Nav::Edit_Update()
 		CCell* pPickedCell = GAME_INSTNACE->Check_ScreenRay();
 
 		if (nullptr != pPickedCell)
-			m_CellPicked.push_back(pPickedCell);
+		{
+			if (FAILED(Pick_Cell(pPickedCell)))
+				assert(FALSE);
+		}
 	}
 }
 
@@ -246,6 +288,11 @@ HRESULT CImGui_Window_Mid_Nav::Create_Cell(Vec3 vPoint)
 	if (CCell::POINT_END <= m_CellPointsCache.size())
 		m_CellPointsCache.clear();
 
+	/* 이전 포인트의 y로 자동 세팅 */
+	if (m_bAutoCellHeight && !m_CellPointsCache.empty())
+	{
+		vPoint.y = m_CellPointsCache.back().y;
+	}
 	m_CellPointsCache.push_back(vPoint);
 
 	if (CCell::POINT_END <= m_CellPointsCache.size())
@@ -303,6 +350,22 @@ HRESULT CImGui_Window_Mid_Nav::Delete_Point()
 {
 	if (!m_CellPointsCache.empty())
 		m_CellPointsCache.pop_back();
+
+	return S_OK;
+}
+
+HRESULT CImGui_Window_Mid_Nav::Pick_Cell(CCell* pPickedCell)
+{
+	if (nullptr == pPickedCell)
+		return E_FAIL;
+
+	for (auto& pCell : m_CellPicked)
+	{
+		if (pCell == pPickedCell)
+			return S_OK;
+	}
+
+	m_CellPicked.push_back(pPickedCell);
 
 	return S_OK;
 }

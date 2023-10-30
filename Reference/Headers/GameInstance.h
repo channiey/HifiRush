@@ -106,6 +106,7 @@ public: /* For.Camera_Manager */
 	Vec4			Get_CurCamera_State(const _uint iState);
 	HRESULT			Change_Camera(const _uint& iKey);
 	HRESULT			Change_Camera_Inverse();
+	const map<_uint, CGameObject*>* Get_Cameras();
 
 private:
 	class CTimer_Manager*			m_pTimer_Manager		= { nullptr };

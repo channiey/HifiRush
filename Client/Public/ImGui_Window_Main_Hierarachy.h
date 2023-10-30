@@ -43,6 +43,8 @@ private:
 	/* Temp */
 	_uint		m_iTempMiniLayer = 0;
 
+	_bool		m_bPickMode = FALSE;
+
 public:
 	static CImGui_Window_Main_Hierarachy* Create();
 	virtual void Free() override;

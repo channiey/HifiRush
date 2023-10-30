@@ -88,6 +88,38 @@ PS_OUT PS_MAIN(PS_IN In)
 	return Out;
 }
 
+
+PS_OUT PS_RIM(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    vector vMtrlDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord);
+
+    if (vMtrlDiffuse.a < 0.3f)
+        discard;
+
+    vector vShade = max(dot(normalize(g_vLightDir) * -1.f, normalize(In.vNormal)), 0.f) +
+					g_vLightAmbient * g_vMtrlAmbient;
+
+    vector vReflect = reflect(normalize(g_vLightDir), normalize(In.vNormal));
+    vector vLook = In.vWorldPos - g_vCamPosition;
+
+    float fSpecular = pow(max(dot(normalize(vLook) * -1.f, normalize(vReflect)), 0.f), 30.f);
+
+	// 기존 라이팅 계산 코드 (vShade, fSpecular를 활용)
+
+	// 외곽선 라이팅 계산
+    float rimFactor = 1 - saturate(dot(normalize(In.vNormal), normalize(g_vLightDir)));
+    float3 rimColor = float3(1.0, 0.647, 0.0); // 주황색
+    float4 rimLight = float4(rimColor * rimFactor, 1.0); // 외곽선 라이팅을 float4로 변환
+
+	// 최종 색상 계산 (라이팅과 외곽선을 더함)	
+    Out.vColor = ((g_vLightDiffuse * vMtrlDiffuse) * (ceil(vShade * 3) / 3) +
+	             (g_vLightSpecular * g_vMtrlSpecular) * fSpecular) +rimLight;
+
+    return Out;
+}
+
 technique11 DefaultTechnique
 {
 	pass Mesh
@@ -102,6 +134,19 @@ technique11 DefaultTechnique
 		DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN();
     }	
+
+    pass Rim
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_RIM();
+    }
 }
 
 

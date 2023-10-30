@@ -583,6 +583,14 @@ HRESULT CGameInstance::Change_Camera_Inverse()
 	return m_pCamera_Manager->Change_Camera_Inverse();
 }
 
+const map<_uint, CGameObject*>* CGameInstance::Get_Cameras()
+{
+	if (nullptr == m_pCamera_Manager)
+		return nullptr;
+
+	return m_pCamera_Manager->Get_Cameras();
+}
+
 void CGameInstance::Release_Engine()
 {
 	CGameInstance::GetInstance()->DestroyInstance();

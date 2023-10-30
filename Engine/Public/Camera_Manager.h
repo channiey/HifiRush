@@ -20,6 +20,8 @@ public:
 
 public:
 	CGameObject*	Get_Camera(const _uint& iKey);
+	const map<_uint, CGameObject*>* Get_Cameras() const { return &m_Cameras; }
+
 	CGameObject*	Get_CurCamera() const { return m_pCurCamera; }
 	const Vec4		Get_CurCamera_State(const _uint iState);
 
