@@ -72,9 +72,9 @@ void CImGui_Window_Main_Hierarachy::Show_Window()
 		/* Piciking */
 		if (m_bPickMode)
 		{
-			if (GAME_INSTNACE->Key_Down(VK_RBUTTON))
+			if (ENGINE_INSTANCE->Key_Down(VK_RBUTTON))
 			{
-				RAYHIT_DESC hit = GAME_INSTNACE->Check_ScreenRay(LayerNames[LAYER_ENV_STATIC], FALSE);
+				RAYHIT_DESC hit = ENGINE_INSTANCE->Check_ScreenRay(LayerNames[LAYER_ENV_STATIC], FALSE);
 
 				if (nullptr != hit.pGameObject)
 				{
@@ -141,7 +141,7 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Levels()
 			//m_pImGui_Manager->m_iIndex_CurLevelID = i;
 
 			if(i != m_pImGui_Manager->m_iIndex_CurLevelID)
-				m_pGameInstance->Open_Level(LV_LOADING, CLevel_Loading::Create(m_pImGui_Manager->m_pDevice, m_pImGui_Manager->m_pContext, (LEVEL_ID)i));
+				m_pEngineInstance->Open_Level(LV_LOADING, CLevel_Loading::Create(m_pImGui_Manager->m_pDevice, m_pImGui_Manager->m_pContext, (LEVEL_ID)i));
 			
 			/*m_pImGui_Manager->Set_Active_Main_Window(m_pImGui_Manager->WINDOW_MAIN_OBJECT_INFO, FALSE);
 			m_pImGui_Manager->Set_Active_Main_Window(m_pImGui_Manager->WINDOW_MAIN_HIEARACHY, FALSE);
@@ -150,7 +150,7 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Levels()
 		else
 		{
 			/* 아니라면 게임인스턴스를 통해 현재 레벨을 받아온다. */
-			m_pImGui_Manager->m_iIndex_CurLevelID = m_pGameInstance->Get_CurLevelIndex();
+			m_pImGui_Manager->m_iIndex_CurLevelID = m_pEngineInstance->Get_CurLevelIndex();
 		}
 		delete strLevel;
 	}
@@ -168,7 +168,7 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Layers()
 	/* 레이어 삭제 */
 	if (ImGui::Button("Delete"))
 	{
-		m_pGameInstance->Delete_Layer(m_pImGui_Manager->m_iIndex_CurLevelID, m_pImGui_Manager->m_strIndex_CurLayer);
+		m_pEngineInstance->Delete_Layer(m_pImGui_Manager->m_iIndex_CurLevelID, m_pImGui_Manager->m_strIndex_CurLayer);
 		
 		m_pImGui_Manager->Reset_Index_CurLayer();
 		m_pImGui_Manager->Reset_Index_CurObject();
@@ -182,7 +182,7 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Layers()
 	{
 		/*if (nullptr != m_pImGui_Manager->m_pCurObject)
 		{
-			m_pGameInstance->Delete_GameObject(m_pGameInstance->Get_CurLevelIndex(), m_pImGui_Manager->m_pCurObject);
+			m_pEngineInstance->Delete_GameObject(m_pEngineInstance->Get_CurLevelIndex(), m_pImGui_Manager->m_pCurObject);
 			m_pImGui_Manager->Reset_Index_CurObject();
 
 			m_bObjectEvent = TRUE;
@@ -190,7 +190,7 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Layers()
 	}
 
 	/* 선택한 레벨의 레이어들을 가져온다.*/
-	map<const wstring, class CLayer*>* pLayers = m_pGameInstance->Get_All_Layer(m_pImGui_Manager->m_iIndex_CurLevelID);
+	map<const wstring, class CLayer*>* pLayers = m_pEngineInstance->Get_All_Layer(m_pImGui_Manager->m_iIndex_CurLevelID);
 	NULL_CHECK(pLayers);
 
 	if (ImGui::BeginListBox("##listbox 523", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
@@ -242,7 +242,7 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Objects()
 	{
 		if (nullptr != m_pImGui_Manager->m_pCurObject)
 		{
-			CGameObject* pClone = m_pGameInstance->Add_GameObject(
+			CGameObject* pClone = m_pEngineInstance->Add_GameObject(
 										m_pImGui_Manager->m_iIndex_CurLevelID,
 										m_pImGui_Manager->m_strIndex_CurLayer,
 										m_pImGui_Manager->m_pCurObject->Get_Name());
@@ -261,7 +261,7 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Objects()
 	{
 		if (nullptr != m_pImGui_Manager->m_pCurObject)
 		{
-			m_pGameInstance->Delete_GameObject(m_pGameInstance->Get_CurLevelIndex(), m_pImGui_Manager->m_pCurObject);
+			m_pEngineInstance->Delete_GameObject(m_pEngineInstance->Get_CurLevelIndex(), m_pImGui_Manager->m_pCurObject);
 			m_pImGui_Manager->Reset_Index_CurObject();
 
 			m_bObjectEvent = TRUE;
@@ -277,7 +277,7 @@ void CImGui_Window_Main_Hierarachy::Show_Hierarachy_Objects()
 	}
 
 	/* 선택한 레벨, 레이어의 오브젝트들을 가져온다.*/
-	list<class CGameObject*>* pGameObjects = m_pGameInstance->Get_Layer(m_pImGui_Manager->m_iIndex_CurLevelID, m_pImGui_Manager->m_strIndex_CurLayer);
+	list<class CGameObject*>* pGameObjects = m_pEngineInstance->Get_Layer(m_pImGui_Manager->m_iIndex_CurLevelID, m_pImGui_Manager->m_strIndex_CurLayer);
 
 	if (ImGui::BeginListBox("##listbox 1", ImVec2(-FLT_MIN, 7 * ImGui::GetTextLineHeightWithSpacing())))
 	{
@@ -365,7 +365,7 @@ void CImGui_Window_Main_Hierarachy::Show_MiniLayers()
 				/* 특정 레이어가 선택 되었다면 해당 레이어를 게임인스턴스에 추가한다. */
 				if (ImGui::Selectable(strLayer, is_selected))
 				{
-					m_pGameInstance->Add_Layer(m_pGameInstance->Get_CurLevelIndex(), LayerNames[i]);
+					m_pEngineInstance->Add_Layer(m_pEngineInstance->Get_CurLevelIndex(), LayerNames[i]);
 					m_iTempMiniLayer = (_uint)i;
 				}
 				delete strLayer;
@@ -385,7 +385,7 @@ void CImGui_Window_Main_Hierarachy::Save_LevelData()
 	file->Open(LevelPaths[m_pImGui_Manager->m_iIndex_CurLevelID], FileMode::Write);
 
 	/* 현재 레벨의 모든 레이어를 가져온다. */
-	map<const wstring, class CLayer*>* pLayers = m_pGameInstance->Get_All_Layer(m_pImGui_Manager->m_iIndex_CurLevelID);
+	map<const wstring, class CLayer*>* pLayers = m_pEngineInstance->Get_All_Layer(m_pImGui_Manager->m_iIndex_CurLevelID);
 	if (nullptr == pLayers)
 		return;
 

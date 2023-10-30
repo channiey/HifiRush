@@ -251,10 +251,10 @@ HRESULT CImGui_Window_Mid_Nav::Load_NavData()
 void CImGui_Window_Mid_Nav::Edit_Update()
 {
 	/* Create Cell */
-	if (GAME_INSTNACE->Key_Down(VK_RBUTTON))
+	if (ENGINE_INSTANCE->Key_Down(VK_RBUTTON))
 	{
 		/* 메시 피킹 위치 + 스냅 X*/
-		RAYHIT_DESC hit = GAME_INSTNACE->Check_ScreenRay(LayerNames[LAYER_ENV_STATIC], FALSE);
+		RAYHIT_DESC hit = ENGINE_INSTANCE->Check_ScreenRay(LayerNames[LAYER_ENV_STATIC], FALSE);
 
 		if (nullptr != hit.pGameObject)
 		{
@@ -271,9 +271,9 @@ void CImGui_Window_Mid_Nav::Edit_Update()
 	}
 
 	/* Picked Cell */
-	if (GAME_INSTNACE->Key_Pressing(VK_MBUTTON))
+	if (ENGINE_INSTANCE->Key_Pressing(VK_MBUTTON))
 	{
-		CCell* pPickedCell = GAME_INSTNACE->Check_ScreenRay();
+		CCell* pPickedCell = ENGINE_INSTANCE->Check_ScreenRay();
 
 		if (nullptr != pPickedCell)
 		{
@@ -372,7 +372,7 @@ HRESULT CImGui_Window_Mid_Nav::Pick_Cell(CCell* pPickedCell)
 
 HRESULT CImGui_Window_Mid_Nav::Create_Cells(vector<CCell*>& Cells)
 {
-	list<class CGameObject*>* pGameObjects = m_pGameInstance->Get_Layer(m_pImGui_Manager->m_iIndex_CurLevelID, LayerNames[LAYER_ENV_STATIC]);
+	list<class CGameObject*>* pGameObjects = m_pEngineInstance->Get_Layer(m_pImGui_Manager->m_iIndex_CurLevelID, LayerNames[LAYER_ENV_STATIC]);
 
 	if (nullptr == pGameObjects)
 		return E_FAIL;
@@ -460,9 +460,9 @@ HRESULT CImGui_Window_Mid_Nav::Set_Neighbors()
 	/* 네비이션을 사용하는 오브젝트들의 현재 위치한 셀의 인덱스를 리셋하여 다시 적용한다. */
 	list<CGameObject*>* pLayers[3];
 
-	pLayers[0] = GAME_INSTNACE->Get_Layer(m_pImGui_Manager->m_iIndex_CurLevelID, LayerNames[LAYER_PLAYER]);
-	pLayers[1] = GAME_INSTNACE->Get_Layer(m_pImGui_Manager->m_iIndex_CurLevelID, LayerNames[LAYER_ENEMY]);
-	pLayers[2] = GAME_INSTNACE->Get_Layer(m_pImGui_Manager->m_iIndex_CurLevelID, LayerNames[LAYER_NPC]);
+	pLayers[0] = ENGINE_INSTANCE->Get_Layer(m_pImGui_Manager->m_iIndex_CurLevelID, LayerNames[LAYER_PLAYER]);
+	pLayers[1] = ENGINE_INSTANCE->Get_Layer(m_pImGui_Manager->m_iIndex_CurLevelID, LayerNames[LAYER_ENEMY]);
+	pLayers[2] = ENGINE_INSTANCE->Get_Layer(m_pImGui_Manager->m_iIndex_CurLevelID, LayerNames[LAYER_NPC]);
 
 
 	for (size_t i = 0; i < 3; i++)
@@ -542,8 +542,8 @@ void CImGui_Window_Mid_Nav::Render_Sphere()
 	_float4 vColor(1.f, 0.f, 1.f, 1.f);
 
 	m_pEffect->SetWorld(XMMatrixIdentity());
-	m_pEffect->SetView(GAME_INSTNACE->Get_Transform(CPipeLine::STATE_VIEW));
-	m_pEffect->SetProjection(GAME_INSTNACE->Get_Transform(CPipeLine::STATE_PROJ));
+	m_pEffect->SetView(ENGINE_INSTANCE->Get_Transform(CPipeLine::STATE_VIEW));
+	m_pEffect->SetProjection(ENGINE_INSTANCE->Get_Transform(CPipeLine::STATE_PROJ));
 
 	m_pEffect->Apply(m_pImGui_Manager->m_pContext);
 

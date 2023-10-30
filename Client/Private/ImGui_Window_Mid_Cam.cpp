@@ -29,7 +29,7 @@ void CImGui_Window_Mid_Cam::Show_Window()
 
 	if (ImGui::Begin(m_pImGui_Manager->str_MainWindowType[m_pImGui_Manager->WINDOW_MAIN_CAM], NULL, window_flags))
 	{
-		const map<_uint, CGameObject*>* Cameras = GAME_INSTNACE->Get_Cameras();
+		const map<_uint, CGameObject*>* Cameras = ENGINE_INSTANCE->Get_Cameras();
 
 		/* Camera Buttons */
 		ImGui::SeparatorText("Cameras");
@@ -39,7 +39,7 @@ void CImGui_Window_Mid_Cam::Show_Window()
 				const char* strCamName = Util_String::WC2C(CameraNames[Pair->first]);
 				if (ImGui::Button(strCamName))
 				{
-					if (FAILED(GAME_INSTNACE->Change_Camera(Pair->first)))
+					if (FAILED(ENGINE_INSTANCE->Change_Camera(Pair->first)))
 						assert(FALSE);
 				}
 				delete strCamName;
@@ -55,7 +55,7 @@ void CImGui_Window_Mid_Cam::Show_Window()
 		{
 			if (nullptr != Cameras)
 			{
-				CAMERA_ID iCurCamKey = (CAMERA_ID)GAME_INSTNACE->Get_CurCamera()->Get_Camera()->Get_Key();
+				CAMERA_ID iCurCamKey = (CAMERA_ID)ENGINE_INSTANCE->Get_CurCamera()->Get_Camera()->Get_Key();
 
 				switch (iCurCamKey)
 				{
@@ -87,7 +87,7 @@ void CImGui_Window_Mid_Cam::Clear_Reference_Data()
 
 HRESULT CImGui_Window_Mid_Cam::Show_Property_DebugCam()
 {
-	CCamera_Debug* pCam = dynamic_cast<CCamera_Debug*>(GAME_INSTNACE->Get_CurCamera());
+	CCamera_Debug* pCam = dynamic_cast<CCamera_Debug*>(ENGINE_INSTANCE->Get_CurCamera());
 
 	if (nullptr == pCam) return E_FAIL;
 
@@ -111,7 +111,7 @@ HRESULT CImGui_Window_Mid_Cam::Show_Property_DebugCam()
 
 HRESULT CImGui_Window_Mid_Cam::Show_Property_FollowCam()
 {
-	CCamera_Follow* pCam = dynamic_cast<CCamera_Follow*>(GAME_INSTNACE->Get_CurCamera());
+	CCamera_Follow* pCam = dynamic_cast<CCamera_Follow*>(ENGINE_INSTANCE->Get_CurCamera());
 
 	if (nullptr == pCam) return E_FAIL;
 

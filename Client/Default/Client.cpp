@@ -13,7 +13,7 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 
 
 #include "MainApp.h"
-#include "GameInstance.h"
+#include "EngineInstance.h"
 
 #define MAX_LOADSTRING 100
 
@@ -98,7 +98,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     MSG msg;
 
-	CGameInstance*		pGameInstance = CGameInstance::GetInstance();
+	CEngineInstance*		pGameInstance = CEngineInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
 	if (FAILED(pGameInstance->Add_Timer(TEXT("Timer_Default"))))

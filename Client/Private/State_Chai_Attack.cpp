@@ -37,7 +37,7 @@ HRESULT CState_Chai_Attack::Enter()
 		m_eAttackType = ATTACK_TYPE::THROW;
 		m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_SINGLE_02);
 
-		m_pChai->Get_Transform()->Set_Look(GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY().Normalized());
+		m_pChai->Get_Transform()->Set_Look(ENGINE_INSTANCE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY().Normalized());
 	}
 
 	m_pChai->Get_Child(CChai::CH_WEAPON_RIGHT)->Get_Collider_Sphere()->Set_Active(TRUE);

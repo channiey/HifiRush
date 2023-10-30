@@ -223,7 +223,7 @@
     <ClInclude Include="..\Public\Sound_Manager.h" />
     <ClInclude Include="..\Public\ThreadPool.h" />
     <ClInclude Include="..\Public\Util_File.h" />
-    <ClInclude Include="..\public\GameInstance.h" />
+    <ClInclude Include="..\public\EngineInstance.h" />
     <ClInclude Include="..\public\GameObject.h" />
     <ClInclude Include="..\Public\Graphic_Device.h" />
     <ClInclude Include="..\Public\Bone.h" />
@@ -292,7 +292,7 @@
     <ClCompile Include="..\Private\Sound_Manager.cpp" />
     <ClCompile Include="..\Private\ThreadPool.cpp" />
     <ClCompile Include="..\Private\Util_File.cpp" />
-    <ClCompile Include="..\private\GameInstance.cpp" />
+    <ClCompile Include="..\private\EngineInstance.cpp" />
     <ClCompile Include="..\private\GameObject.cpp" />
     <ClCompile Include="..\Private\Graphic_Device.cpp" />
     <ClCompile Include="..\Private\Bone.cpp" />

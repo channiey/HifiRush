@@ -1,7 +1,7 @@
 #include "..\Default\stdafx.h"
 #include "..\Public\Peppermint.h"
 
-#include "GameInstance.h"
+#include "EngineInstance.h"
 
 Peppermint::Peppermint(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CCharacter(pDevice, pContext)

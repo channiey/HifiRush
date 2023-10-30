@@ -1,6 +1,6 @@
 #include "..\Public\Level_Manager.h"
 #include "Level.h"
-#include "GameInstance.h"
+#include "EngineInstance.h"
 
 IMPLEMENT_SINGLETON(CLevel_Manager)
 
@@ -28,7 +28,7 @@ HRESULT CLevel_Manager::Open_Level(_uint iLevelIndex, CLevel * pNewLevel)
 {
 	if (nullptr != m_pCurrentLevel)
 	{
-		CGameInstance*	pGameInstance = CGameInstance::GetInstance();
+		CEngineInstance*	pGameInstance = CEngineInstance::GetInstance();
 		Safe_AddRef(pGameInstance);
 
 		/* 기존에 추가되어있던 레벨용 자원을 정리한다. */

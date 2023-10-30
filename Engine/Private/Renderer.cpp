@@ -1,7 +1,7 @@
 #include "..\Public\Renderer.h"
 #include "GameObject.h"
 
-#include "GameInstance.h"
+#include "EngineInstance.h"
 
 CRenderer::CRenderer(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CComponent(pDevice, pContext)

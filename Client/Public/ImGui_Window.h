@@ -5,7 +5,7 @@
 #include "../ImGui/imgui_impl_win32.h" 
 #include "../ImGui/imgui_impl_dx11.h" 
 
-#include "GameInstance.h"
+#include "EngineInstance.h"
 #include "ImGui_Manager.h"
 
 #include "Client_Defines.h"
@@ -37,7 +37,7 @@ public:
 
 protected:
 	class CImGui_Manager* m_pImGui_Manager = { nullptr };
-	CGameInstance*		  m_pGameInstance = { nullptr };
+	CEngineInstance*		  m_pEngineInstance = { nullptr };
 
 	map<const char*, CImGui_Window*> m_pChildWindows;
 

@@ -1,5 +1,5 @@
 #include "..\Public\GameObject.h"
-#include "GameInstance.h"
+#include "EngineInstance.h"
 
 CGameObject::CGameObject(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: m_pDevice(pDevice)
@@ -165,7 +165,7 @@ HRESULT CGameObject::Add_Component(_uint iLevelIndex, const wstring & strPrototy
 	if (nullptr != Find_Component(strComponentTag))
 		return E_FAIL;
 
-	CComponent* pComponent = GAME_INSTNACE->Clone_Component(iLevelIndex, strPrototypeTag, pArg);
+	CComponent* pComponent = ENGINE_INSTANCE->Clone_Component(iLevelIndex, strPrototypeTag, pArg);
 
 	if (nullptr == pComponent)
 		return E_FAIL;

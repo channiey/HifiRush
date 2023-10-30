@@ -1,7 +1,7 @@
 #include "..\Default\stdafx.h"
 #include "..\Public\SkySphere.h"
 
-#include "GameInstance.h"
+#include "EngineInstance.h"
 
 CSkySphere::CSkySphere(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
@@ -40,7 +40,7 @@ void CSkySphere::Tick(_float fTimeDelta)
 
 void CSkySphere::LateTick(_float fTimeDelta)
 {
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, GAME_INSTNACE->Get_CamPosition());
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, ENGINE_INSTANCE->Get_CamPosition());
 
 	m_pRendererCom->Add_RenderGroup(CRenderer::RG_PRIORITY, this);
 }
@@ -91,10 +91,10 @@ HRESULT CSkySphere::Bind_ShaderResources()
 	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
 
-	if (FAILED(GAME_INSTNACE->Bind_TransformToShader(m_pShaderCom, "g_ViewMatrix", CPipeLine::STATE_VIEW)))
+	if (FAILED(ENGINE_INSTANCE->Bind_TransformToShader(m_pShaderCom, "g_ViewMatrix", CPipeLine::STATE_VIEW)))
 		return E_FAIL;
 
-	if (FAILED(GAME_INSTNACE->Bind_TransformToShader(m_pShaderCom, "g_ProjMatrix", CPipeLine::STATE_PROJ)))
+	if (FAILED(ENGINE_INSTANCE->Bind_TransformToShader(m_pShaderCom, "g_ProjMatrix", CPipeLine::STATE_PROJ)))
 		return E_FAIL;
 
 	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))

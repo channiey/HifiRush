@@ -1,7 +1,7 @@
 #include "..\Default\stdafx.h"
 #include "Blackboard_Saber.h"
 
-#include "GameInstance.h"
+#include "EngineInstance.h"
 
 
 CBlackboard_Saber::CBlackboard_Saber(class CGameObject* pGameObject)

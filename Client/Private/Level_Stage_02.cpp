@@ -1,7 +1,7 @@
 #include "..\Default\stdafx.h"
 #include "..\Public\Level_Stage_02.h"
 
-#include "GameInstance.h"
+#include "EngineInstance.h"
 #include "Level_Loading.h"
 
 CLevel_Stage_02::CLevel_Stage_02(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)

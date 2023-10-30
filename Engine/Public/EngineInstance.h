@@ -10,12 +10,12 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL CGameInstance final : public CBase
+class ENGINE_DLL CEngineInstance final : public CBase
 {
-	DECLARE_SINGLETON(CGameInstance)
+	DECLARE_SINGLETON(CEngineInstance)
 private:
-	CGameInstance();
-	virtual ~CGameInstance() = default;
+	CEngineInstance();
+	virtual ~CEngineInstance() = default;
 
 public: 
 	HRESULT Initialize_Engine(_uint iNumLevels, HINSTANCE hInst, const GRAPHIC_DESC& GraphicDesc, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext, const char* strSoundFilePath);

@@ -1,6 +1,6 @@
 #include "..\Default\stdafx.h"
 #include "..\Public\TriggerDummy.h"
-#include "GameInstance.h"
+#include "EngineInstance.h"
 
 #include "Util_String.h"
 

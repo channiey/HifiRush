@@ -1,5 +1,5 @@
 #include "Camera_Manager.h"
-#include "GameInstance.h"
+#include "EngineInstance.h"
 #include "GameObject.h"
 
 IMPLEMENT_SINGLETON(CCamera_Manager)

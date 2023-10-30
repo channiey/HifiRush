@@ -1,6 +1,6 @@
 #include "..\Public\Rigidbody.h"
 
-#include "GameInstance.h"
+#include "EngineInstance.h"
 #include "GameObject.h"
 
 CRigidbody::CRigidbody(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

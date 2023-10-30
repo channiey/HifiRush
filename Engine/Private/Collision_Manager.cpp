@@ -1,6 +1,6 @@
 #include "Collision_Manager.h"
 
-#include "GameInstance.h"
+#include "EngineInstance.h"
 
 #include "GameObject.h"
 #include "Model.h"
@@ -28,10 +28,10 @@ HRESULT CCollision_Manager::Initialize()
 void CCollision_Manager::Check_Collision_Layer(const wstring& strLayerTag1, const wstring& strLayerTag2, const CCollider::TYPE& eType1, const CCollider::TYPE& eType2)
 {
 	/* 레이어 가져오기 */
-	_uint iCurLevel = CGameInstance::GetInstance()->Get_CurLevelIndex();
+	_uint iCurLevel = CEngineInstance::GetInstance()->Get_CurLevelIndex();
 
-	list<CGameObject*>* pLayer1 = CGameInstance::GetInstance()->Get_Layer(iCurLevel, strLayerTag1);
-	list<CGameObject*>* pLayer2 = CGameInstance::GetInstance()->Get_Layer(iCurLevel, strLayerTag2);
+	list<CGameObject*>* pLayer1 = CEngineInstance::GetInstance()->Get_Layer(iCurLevel, strLayerTag1);
+	list<CGameObject*>* pLayer2 = CEngineInstance::GetInstance()->Get_Layer(iCurLevel, strLayerTag2);
 
 	if (nullptr == pLayer1 || nullptr == pLayer2 || pLayer1->empty() || pLayer2->empty()) return;
 
@@ -125,7 +125,7 @@ void CCollision_Manager::Check_Collision_Layer(const wstring& strLayerTag1, cons
 
 RAYHIT_DESC CCollision_Manager::Check_ScreenRay(const wstring& strLayerTag, const _bool& bSnap)
 {
-	list<class CGameObject*>* pGameObjects = GAME_INSTNACE->Get_Layer(GAME_INSTNACE->Get_CurLevelIndex(), strLayerTag);
+	list<class CGameObject*>* pGameObjects = ENGINE_INSTANCE->Get_Layer(ENGINE_INSTANCE->Get_CurLevelIndex(), strLayerTag);
 
 	if(nullptr == pGameObjects) return RAYHIT_DESC();
 
@@ -243,15 +243,15 @@ CCell* CCollision_Manager::Check_ScreenRay()
 
 const Ray CCollision_Manager::Create_ScreenRayLocal(Matrix matWorld)
 {
-	const Matrix	matPI = GAME_INSTNACE->Get_Transform_Inverse(CPipeLine::STATE_PROJ);
-	const Matrix	matVI = GAME_INSTNACE->Get_Transform_Inverse(CPipeLine::STATE_VIEW);
+	const Matrix	matPI = ENGINE_INSTANCE->Get_Transform_Inverse(CPipeLine::STATE_PROJ);
+	const Matrix	matVI = ENGINE_INSTANCE->Get_Transform_Inverse(CPipeLine::STATE_VIEW);
 	const Matrix	matWI = matWorld.Invert();
-	const Viewport	viewPort = GAME_INSTNACE->Get_ViewPort();
+	const Viewport	viewPort = ENGINE_INSTANCE->Get_ViewPort();
 
 	POINT pt;
 	{
 		GetCursorPos(&pt);
-		ScreenToClient(GAME_INSTNACE->Get_GraphicDesc().hWnd, &pt);
+		ScreenToClient(ENGINE_INSTANCE->Get_GraphicDesc().hWnd, &pt);
 	}
 
 	Vec3 vMousePos;
@@ -284,14 +284,14 @@ const Ray CCollision_Manager::Create_ScreenRayLocal(Matrix matWorld)
 
 const Ray CCollision_Manager::Create_ScreenRayWorld()
 {
-	const Matrix	matPI = GAME_INSTNACE->Get_Transform_Inverse(CPipeLine::STATE_PROJ);
-	const Matrix	matVI = GAME_INSTNACE->Get_Transform_Inverse(CPipeLine::STATE_VIEW);
-	const Viewport	viewPort = GAME_INSTNACE->Get_ViewPort();
+	const Matrix	matPI = ENGINE_INSTANCE->Get_Transform_Inverse(CPipeLine::STATE_PROJ);
+	const Matrix	matVI = ENGINE_INSTANCE->Get_Transform_Inverse(CPipeLine::STATE_VIEW);
+	const Viewport	viewPort = ENGINE_INSTANCE->Get_ViewPort();
 
 	POINT pt;
 	{
 		GetCursorPos(&pt);
-		ScreenToClient(GAME_INSTNACE->Get_GraphicDesc().hWnd, &pt);
+		ScreenToClient(ENGINE_INSTANCE->Get_GraphicDesc().hWnd, &pt);
 	}
 
 	Vec3 vMousePos;

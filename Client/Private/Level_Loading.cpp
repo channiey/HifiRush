@@ -1,7 +1,7 @@
 #include "..\Default\stdafx.h"
 #include "..\Public\Level_Loading.h"
 
-#include "GameInstance.h"
+#include "EngineInstance.h"
 #include "Loader.h"
 
 #include "GameObject.h"
@@ -55,11 +55,11 @@ HRESULT CLevel_Loading::LateTick(_float fTimeDelta)
 
 	SetWindowText(g_hWnd, strLoadingText.c_str());
 
-	if (CGameInstance::GetInstance()->Key_Down(VK_SPACE))
+	if (CEngineInstance::GetInstance()->Key_Down(VK_SPACE))
 	{
 		if (true == m_pLoader->Get_Finished())
 		{
-			CGameInstance*	pGameInstance = CGameInstance::GetInstance();
+			CEngineInstance*	pGameInstance = CEngineInstance::GetInstance();
 			Safe_AddRef(pGameInstance);
 
 			CLevel*		pNewLevel = nullptr;
@@ -137,7 +137,7 @@ HRESULT CLevel_Loading::Parse_LevelData(const _uint& iLevelID)
 		
 			/* 읽은 데이터를 바탕으로 파싱한다. */
 			{
-				CGameObject* pObj = GAME_INSTNACE->Add_GameObject(iLevelID, strLayer, strName);
+				CGameObject* pObj = ENGINE_INSTANCE->Add_GameObject(iLevelID, strLayer, strName);
 				if (nullptr == pObj) continue;
 
 				pObj->Set_State((CGameObject::OBJ_STATE)eStae);

@@ -1,7 +1,7 @@
 #include "..\Default\stdafx.h"
 #include "..\Public\Terrain.h"
 
-#include "GameInstance.h"
+#include "EngineInstance.h"
 
 CTerrain::CTerrain(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObject(pDevice, pContext)
@@ -94,7 +94,7 @@ HRESULT CTerrain::Bind_ShaderResources()
 	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
 
-	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+	CEngineInstance* pGameInstance = GET_INSTANCE(CEngineInstance);
 	{
 		if (FAILED(pGameInstance->Bind_TransformToShader(m_pShaderCom, "g_ViewMatrix", CPipeLine::STATE_VIEW)))
 			return E_FAIL;
@@ -106,7 +106,7 @@ HRESULT CTerrain::Bind_ShaderResources()
 		if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition", &vCamPos, sizeof(_float4))))
 			return E_FAIL;
 	}
-	RELEASE_INSTANCE(CGameInstance);
+	RELEASE_INSTANCE(CEngineInstance);
 
 	if (FAILED(m_pTextureCom[TEX_DIFFUSE]->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture")))
 		return E_FAIL;

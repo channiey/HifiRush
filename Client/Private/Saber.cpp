@@ -1,7 +1,7 @@
 #include "..\Default\stdafx.h"
 #include "Saber.h"
 
-#include "GameInstance.h"
+#include "EngineInstance.h"
 #include "Animation.h"
 
 #include "Weapon.h"
@@ -54,7 +54,7 @@ void CSaber::Tick(_float fTimeDelta)
 	/* 임시 코드 */
 	if (nullptr == m_tFightDesc.pTarget)
 	{
-		CGameObject* pTarget = GAME_INSTNACE->Get_GameObject_InCurLevel_InLayerFirst(LayerNames[LAYER_PLAYER]);
+		CGameObject* pTarget = ENGINE_INSTANCE->Get_GameObject_InCurLevel_InLayerFirst(LayerNames[LAYER_PLAYER]);
 
 		if (nullptr != pTarget)
 			m_tFightDesc.pTarget = dynamic_cast<CCharacter*>(pTarget);
@@ -208,7 +208,7 @@ HRESULT CSaber::Ready_Chilren()
 {
 	CWeapon* pWeapon = nullptr;
 	{
-		pWeapon = dynamic_cast<CWeapon*>(GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_WEAPON], L"Weapon_Saber_Sword"));
+		pWeapon = dynamic_cast<CWeapon*>(ENGINE_INSTANCE->Add_GameObject(LV_PROTO, LayerNames[LAYER_WEAPON], L"Weapon_Saber_Sword"));
 	
 		if (FAILED(Add_Child(pWeapon)))
 			return E_FAIL;
@@ -221,7 +221,7 @@ HRESULT CSaber::Ready_Chilren()
 	{
 		CCollider::COLLIDERDESC		ColliderDesc{ Vec3(0, 0, 0), 5.f };
 		CTriggerDummy::TRIGGER_DESC TriggerDesc(ColliderDesc, CCollider::SPHERE, CHILD_TYPE::SA_TRIGGER_TRACKED);
-		pTrigger = dynamic_cast<CTriggerDummy*>(GAME_INSTNACE->Add_GameObject(LV_PROTO, LayerNames[LAYER_TRIGGER], L"Trigger_Dummy", &TriggerDesc));
+		pTrigger = dynamic_cast<CTriggerDummy*>(ENGINE_INSTANCE->Add_GameObject(LV_PROTO, LayerNames[LAYER_TRIGGER], L"Trigger_Dummy", &TriggerDesc));
 		
 		if (FAILED(Add_Child(pTrigger)))
 			return E_FAIL;

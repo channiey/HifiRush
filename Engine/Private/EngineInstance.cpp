@@ -1,4 +1,4 @@
-#include "..\Public\GameInstance.h"
+#include "..\Public\EngineInstance.h"
 #include "Timer_Manager.h"
 #include "Graphic_Device.h"
 #include "Level_Manager.h"
@@ -10,9 +10,9 @@
 #include "NavMesh.h"
 #include "Sound_Manager.h"
 
-IMPLEMENT_SINGLETON(CGameInstance)
+IMPLEMENT_SINGLETON(CEngineInstance)
 
-CGameInstance::CGameInstance()
+CEngineInstance::CEngineInstance()
 	: m_pTimer_Manager(CTimer_Manager::GetInstance())
 	, m_pInput_Device(CInput_Device::GetInstance())
 	, m_pGraphic_Device(CGraphic_Device::GetInstance())
@@ -41,7 +41,7 @@ CGameInstance::CGameInstance()
 	Safe_AddRef(m_pSound_Manager);
 }
 
-HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, HINSTANCE hInst, const GRAPHIC_DESC& GraphicDesc, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext, const char* strSoundFilePath)
+HRESULT CEngineInstance::Initialize_Engine(_uint iNumLevels, HINSTANCE hInst, const GRAPHIC_DESC& GraphicDesc, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext, const char* strSoundFilePath)
 {
 	/* 그래픽디바이스 초기화 처리. */
 	if (FAILED(m_pGraphic_Device->Ready_Graphic_Device(GraphicDesc, ppDevice, ppContext)))
@@ -84,7 +84,7 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, HINSTANCE hInst, cons
 	return S_OK;
 }
 
-void CGameInstance::Tick(_float fTimeDelta)
+void CEngineInstance::Tick(_float fTimeDelta)
 {
 	if (nullptr == m_pLevel_Manager)
 		return;
@@ -108,24 +108,24 @@ void CGameInstance::Tick(_float fTimeDelta)
 	m_pPipeLine->Tick();
 }
 
-void CGameInstance::LateTick(_float fTimeDelta)
+void CEngineInstance::LateTick(_float fTimeDelta)
 {
 	m_pLevel_Manager->LateTick(fTimeDelta);
 	m_pObject_Manager->LateTick(fTimeDelta);
 }
 
-void CGameInstance::FinishTick()
+void CEngineInstance::FinishTick()
 {
 	m_pObject_Manager->FinishTick();
 	m_pProfiler_Manager->FinishTick();
 }
 
-void CGameInstance::Clear(_uint iLevelIndex)
+void CEngineInstance::Clear(_uint iLevelIndex)
 {
 	m_pObject_Manager->Clear(iLevelIndex);
 }
 
-_float CGameInstance::Compute_TimeDelta(const wstring & strTimerTag)
+_float CEngineInstance::Compute_TimeDelta(const wstring & strTimerTag)
 {
 	if (nullptr == m_pTimer_Manager)
 		return 0.f;
@@ -133,7 +133,7 @@ _float CGameInstance::Compute_TimeDelta(const wstring & strTimerTag)
 	return m_pTimer_Manager->Compute_TimeDelta(strTimerTag);	
 }
 
-HRESULT CGameInstance::Add_Timer(const wstring & strTimerTag)
+HRESULT CEngineInstance::Add_Timer(const wstring & strTimerTag)
 {
 	if (nullptr == m_pTimer_Manager)
 		return E_FAIL;
@@ -141,7 +141,7 @@ HRESULT CGameInstance::Add_Timer(const wstring & strTimerTag)
 	return m_pTimer_Manager->Add_Timer(strTimerTag);
 }
 
-HRESULT CGameInstance::Clear_BackBuffer_View(_float4 vClearColor)
+HRESULT CEngineInstance::Clear_BackBuffer_View(_float4 vClearColor)
 {
 	if (nullptr == m_pGraphic_Device)
 		return E_FAIL;
@@ -149,7 +149,7 @@ HRESULT CGameInstance::Clear_BackBuffer_View(_float4 vClearColor)
 	return m_pGraphic_Device->Clear_BackBuffer_View(vClearColor);
 }
 
-HRESULT CGameInstance::Clear_DepthStencil_View()
+HRESULT CEngineInstance::Clear_DepthStencil_View()
 {
 	if (nullptr == m_pGraphic_Device)
 		return E_FAIL;
@@ -157,7 +157,7 @@ HRESULT CGameInstance::Clear_DepthStencil_View()
 	return m_pGraphic_Device->Clear_DepthStencil_View();
 }
 
-HRESULT CGameInstance::Present()
+HRESULT CEngineInstance::Present()
 {
 	if (nullptr == m_pGraphic_Device)
 		return E_FAIL;
@@ -165,7 +165,7 @@ HRESULT CGameInstance::Present()
 	return m_pGraphic_Device->Present();
 }
 
-ID3D11Device* CGameInstance::Get_Device()
+ID3D11Device* CEngineInstance::Get_Device()
 {
 	if (nullptr == m_pGraphic_Device)
 		return nullptr;
@@ -173,7 +173,7 @@ ID3D11Device* CGameInstance::Get_Device()
 	return m_pGraphic_Device->Get_Device();
 }
 
-GRAPHIC_DESC CGameInstance::Get_GraphicDesc()
+GRAPHIC_DESC CEngineInstance::Get_GraphicDesc()
 {
 	if (nullptr == m_pGraphic_Device)
 		return GRAPHIC_DESC{};
@@ -181,7 +181,7 @@ GRAPHIC_DESC CGameInstance::Get_GraphicDesc()
 	return m_pGraphic_Device->Get_GraphicDesc();
 }
 
-const Viewport CGameInstance::Get_ViewPort()
+const Viewport CEngineInstance::Get_ViewPort()
 {
 	if (nullptr == m_pGraphic_Device)
 		return Viewport{};
@@ -189,7 +189,7 @@ const Viewport CGameInstance::Get_ViewPort()
 	return m_pGraphic_Device->Get_ViewPort();
 }
 
-HRESULT CGameInstance::Open_Level(_uint iLevelIndex, CLevel * pNewLevel)
+HRESULT CEngineInstance::Open_Level(_uint iLevelIndex, CLevel * pNewLevel)
 {
 	if (nullptr == m_pLevel_Manager)
 		return E_FAIL;
@@ -197,7 +197,7 @@ HRESULT CGameInstance::Open_Level(_uint iLevelIndex, CLevel * pNewLevel)
 	return m_pLevel_Manager->Open_Level(iLevelIndex, pNewLevel);
 }
 
-const _uint CGameInstance::Get_CurLevelIndex()
+const _uint CEngineInstance::Get_CurLevelIndex()
 {
 	if (nullptr == m_pLevel_Manager)
 		return E_FAIL;
@@ -205,7 +205,7 @@ const _uint CGameInstance::Get_CurLevelIndex()
 	return m_pLevel_Manager->Get_CurLevelIndex();
 }
 
-HRESULT CGameInstance::Add_Prototype(const wstring & strPrototypeTag, CGameObject * pPrototype)
+HRESULT CEngineInstance::Add_Prototype(const wstring & strPrototypeTag, CGameObject * pPrototype)
 {
 	if (nullptr == m_pObject_Manager)
 		return E_FAIL;
@@ -213,7 +213,7 @@ HRESULT CGameInstance::Add_Prototype(const wstring & strPrototypeTag, CGameObjec
 	return m_pObject_Manager->Add_Prototype(strPrototypeTag, pPrototype);	
 }
 
-class CGameObject* CGameInstance::Add_GameObject(const _uint iLevelIndex, const wstring & strLayerTag, const wstring & strPrototypeTag, void * pArg)
+class CGameObject* CEngineInstance::Add_GameObject(const _uint iLevelIndex, const wstring & strLayerTag, const wstring & strPrototypeTag, void * pArg)
 {
 	if (nullptr == m_pObject_Manager)
 		return nullptr;
@@ -221,7 +221,7 @@ class CGameObject* CGameInstance::Add_GameObject(const _uint iLevelIndex, const 
 	return m_pObject_Manager->Add_GameObject(iLevelIndex, strLayerTag, strPrototypeTag, pArg);
 }
 
-HRESULT CGameInstance::Delete_GameObject(const _uint iLevelIndex, CGameObject* pObj)
+HRESULT CEngineInstance::Delete_GameObject(const _uint iLevelIndex, CGameObject* pObj)
 {
 	if (nullptr == m_pObject_Manager)
 		return E_FAIL;
@@ -229,7 +229,7 @@ HRESULT CGameInstance::Delete_GameObject(const _uint iLevelIndex, CGameObject* p
 	return m_pObject_Manager->Delete_GameObject(iLevelIndex, pObj);
 }
  
-HRESULT CGameInstance::Reserve_Pool(const _uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag, const _uint& iNumObj, void* pArg)
+HRESULT CEngineInstance::Reserve_Pool(const _uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag, const _uint& iNumObj, void* pArg)
 {
 	if (nullptr == m_pObject_Manager)
 		return E_FAIL;
@@ -237,7 +237,7 @@ HRESULT CGameInstance::Reserve_Pool(const _uint iLevelIndex, const wstring& strL
 	return m_pObject_Manager->Reserve_Pool(iLevelIndex, strLayerTag, strPrototypeTag, iNumObj, pArg);
 }
 
-CGameObject* CGameInstance::Pop_Pool(const _uint iLevelIndex, const wstring& strPrototypeTag)
+CGameObject* CEngineInstance::Pop_Pool(const _uint iLevelIndex, const wstring& strPrototypeTag)
 {
 	if (nullptr == m_pObject_Manager)
 		return nullptr;
@@ -245,7 +245,7 @@ CGameObject* CGameInstance::Pop_Pool(const _uint iLevelIndex, const wstring& str
 	return m_pObject_Manager->Pop_Pool(iLevelIndex, strPrototypeTag);
 }
 
-HRESULT CGameInstance::Return_Pool(const _uint iLevelIndex, CGameObject* pObj)
+HRESULT CEngineInstance::Return_Pool(const _uint iLevelIndex, CGameObject* pObj)
 {
 	if (nullptr == m_pObject_Manager)
 		return E_FAIL;
@@ -253,7 +253,7 @@ HRESULT CGameInstance::Return_Pool(const _uint iLevelIndex, CGameObject* pObj)
 	return m_pObject_Manager->Return_Pool(iLevelIndex, pObj);
 }
 
-HRESULT CGameInstance::Add_Layer(_uint iLevelIndex, const wstring& strLayerTag)
+HRESULT CEngineInstance::Add_Layer(_uint iLevelIndex, const wstring& strLayerTag)
 {
 	if (nullptr == m_pObject_Manager)
 		return E_FAIL;
@@ -261,7 +261,7 @@ HRESULT CGameInstance::Add_Layer(_uint iLevelIndex, const wstring& strLayerTag)
 	return m_pObject_Manager->Add_Layer(iLevelIndex, strLayerTag);
 }
 
-HRESULT CGameInstance::Delete_Layer(_uint iLevelIndex, const wstring& strLayerTag)
+HRESULT CEngineInstance::Delete_Layer(_uint iLevelIndex, const wstring& strLayerTag)
 {
 	if (nullptr == m_pObject_Manager)
 		return E_FAIL;
@@ -269,7 +269,7 @@ HRESULT CGameInstance::Delete_Layer(_uint iLevelIndex, const wstring& strLayerTa
 	return m_pObject_Manager->Delete_Layer(iLevelIndex, strLayerTag);
 }
 
-map<const wstring, class CLayer*>* CGameInstance::Get_All_Layer(_uint iLevelIndex)
+map<const wstring, class CLayer*>* CEngineInstance::Get_All_Layer(_uint iLevelIndex)
 {
 	if (nullptr == m_pObject_Manager)
 		return nullptr;
@@ -277,7 +277,7 @@ map<const wstring, class CLayer*>* CGameInstance::Get_All_Layer(_uint iLevelInde
 	return m_pObject_Manager->Get_All_Layer(iLevelIndex);
 }
 
-map<const wstring, class CLayer*>* CGameInstance::Get_All_Layer_CurLevel()
+map<const wstring, class CLayer*>* CEngineInstance::Get_All_Layer_CurLevel()
 {
 	if (nullptr == m_pObject_Manager)
 		return nullptr;
@@ -285,7 +285,7 @@ map<const wstring, class CLayer*>* CGameInstance::Get_All_Layer_CurLevel()
 	return m_pObject_Manager->Get_All_Layer(Get_CurLevelIndex());
 }
 
-list<class CGameObject*>* CGameInstance::Get_Layer(_uint iLevelIndex, const wstring& strLayerTag)
+list<class CGameObject*>* CEngineInstance::Get_Layer(_uint iLevelIndex, const wstring& strLayerTag)
 {
 	if (nullptr == m_pObject_Manager)
 		return nullptr;
@@ -293,7 +293,7 @@ list<class CGameObject*>* CGameInstance::Get_Layer(_uint iLevelIndex, const wstr
 	return m_pObject_Manager->Get_Layer(iLevelIndex, strLayerTag);
 }
 
-CLayer* CGameInstance::Get_LayerClass(_uint iLevelIndex, const wstring& strLayerTag)
+CLayer* CEngineInstance::Get_LayerClass(_uint iLevelIndex, const wstring& strLayerTag)
 {
 	if (nullptr == m_pObject_Manager)
 		return nullptr;
@@ -301,12 +301,12 @@ CLayer* CGameInstance::Get_LayerClass(_uint iLevelIndex, const wstring& strLayer
 	return m_pObject_Manager->Get_LayerClass(iLevelIndex, strLayerTag);
 }
 
-CGameObject* CGameInstance::Get_Player()
+CGameObject* CEngineInstance::Get_Player()
 {
 	return nullptr;
 }
 
-CGameObject* CGameInstance::Get_GameObject(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag)
+CGameObject* CEngineInstance::Get_GameObject(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag)
 {
 	if (nullptr == m_pObject_Manager)
 		return nullptr;
@@ -314,7 +314,7 @@ CGameObject* CGameInstance::Get_GameObject(_uint iLevelIndex, const wstring& str
 	return m_pObject_Manager->Get_GameObject(iLevelIndex, strLayerTag, strPrototypeTag);
 }
 
-CGameObject* CGameInstance::Get_GameObject_InCurLevel(const wstring& strLayerTag, const wstring& strPrototypeTag)
+CGameObject* CEngineInstance::Get_GameObject_InCurLevel(const wstring& strLayerTag, const wstring& strPrototypeTag)
 {
 	if (nullptr == m_pObject_Manager)
 		return nullptr;
@@ -322,7 +322,7 @@ CGameObject* CGameInstance::Get_GameObject_InCurLevel(const wstring& strLayerTag
 	return m_pObject_Manager->Get_GameObject(Get_CurLevelIndex(), strLayerTag, strPrototypeTag);
 }
 
-CGameObject* CGameInstance::Get_GameObject_InCurLevel_InLayerFirst(const wstring& strLayerTag)
+CGameObject* CEngineInstance::Get_GameObject_InCurLevel_InLayerFirst(const wstring& strLayerTag)
 {
 	list<class CGameObject*>* pLayer = Get_Layer(Get_CurLevelIndex(), strLayerTag);
 	if (nullptr == pLayer || pLayer->empty())
@@ -331,7 +331,7 @@ CGameObject* CGameInstance::Get_GameObject_InCurLevel_InLayerFirst(const wstring
 	return pLayer->front();
 }
 
-const _int CGameInstance::Get_ObjectIndex(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strName)
+const _int CEngineInstance::Get_ObjectIndex(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strName)
 {
 	if (nullptr == m_pObject_Manager)
 		return -1;
@@ -339,7 +339,7 @@ const _int CGameInstance::Get_ObjectIndex(_uint iLevelIndex, const wstring& strL
 	return m_pObject_Manager->Get_ObjectIndex(iLevelIndex, strLayerTag, strName);
 }
 
-map<const wstring, class CGameObject*>* CGameInstance::Get_Prototypes()
+map<const wstring, class CGameObject*>* CEngineInstance::Get_Prototypes()
 {
 	if (nullptr == m_pObject_Manager)
 		return nullptr;
@@ -347,7 +347,7 @@ map<const wstring, class CGameObject*>* CGameInstance::Get_Prototypes()
 	return m_pObject_Manager->Get_Prototypes();
 }
 
-HRESULT CGameInstance::Add_PrototypeCom(_uint iLevelIndex, const wstring & strPrototypeTag, CComponent * pPrototype)
+HRESULT CEngineInstance::Add_PrototypeCom(_uint iLevelIndex, const wstring & strPrototypeTag, CComponent * pPrototype)
 {
 	if (nullptr == m_pComponent_Manager)
 		return E_FAIL;
@@ -355,14 +355,14 @@ HRESULT CGameInstance::Add_PrototypeCom(_uint iLevelIndex, const wstring & strPr
 	return m_pComponent_Manager->Add_Prototype(iLevelIndex, strPrototypeTag, pPrototype);
 }
 
-HRESULT CGameInstance::Bind_Add_PrototypeCom(function<bool(_uint iLevelIndex, const wstring& strPrototypeTag, class CComponent* pPrototype)>& other)
+HRESULT CEngineInstance::Bind_Add_PrototypeCom(function<bool(_uint iLevelIndex, const wstring& strPrototypeTag, class CComponent* pPrototype)>& other)
 {
-	other = std::bind(&CGameInstance::Add_PrototypeCom, this, placeholders::_1, placeholders::_2, placeholders::_3);
+	other = std::bind(&CEngineInstance::Add_PrototypeCom, this, placeholders::_1, placeholders::_2, placeholders::_3);
 
 	return E_NOTIMPL;
 }
 
-CComponent * CGameInstance::Clone_Component(_uint iLevelIndex, const wstring& strPrototypeTag, void* pArg)
+CComponent * CEngineInstance::Clone_Component(_uint iLevelIndex, const wstring& strPrototypeTag, void* pArg)
 {
 	if (nullptr == m_pComponent_Manager)
 		return nullptr;
@@ -371,7 +371,7 @@ CComponent * CGameInstance::Clone_Component(_uint iLevelIndex, const wstring& st
 }
 
 
-//HRESULT CGameInstance::Set_MultiThreading(const _uint& iNumThread)
+//HRESULT CEngineInstance::Set_MultiThreading(const _uint& iNumThread)
 //{
 //	if (nullptr == m_pThread_Manager)
 //		return E_FAIL;
@@ -379,7 +379,7 @@ CComponent * CGameInstance::Clone_Component(_uint iLevelIndex, const wstring& st
 //	return m_pThread_Manager->Set_MultiThreading(iNumThread);
 //}
 //
-//void CGameInstance::Finish_MultiThreading()
+//void CEngineInstance::Finish_MultiThreading()
 //{
 //	if (nullptr == m_pThread_Manager)
 //		return;
@@ -387,7 +387,7 @@ CComponent * CGameInstance::Clone_Component(_uint iLevelIndex, const wstring& st
 //	m_pThread_Manager->Finish_MultiThreading();
 //}
 
-const PROFILER_DESC CGameInstance::Get_ProfillingData() const
+const PROFILER_DESC CEngineInstance::Get_ProfillingData() const
 {
 	if (nullptr == m_pProfiler_Manager)
 	{
@@ -399,7 +399,7 @@ const PROFILER_DESC CGameInstance::Get_ProfillingData() const
 	return m_pProfiler_Manager->Get_Status();
 }
 
-_char CGameInstance::Get_DIKState(_uchar eKeyID)
+_char CEngineInstance::Get_DIKState(_uchar eKeyID)
 {
 	if (nullptr == m_pInput_Device)
 		return 0;
@@ -407,7 +407,7 @@ _char CGameInstance::Get_DIKState(_uchar eKeyID)
 	return m_pInput_Device->Get_DIKeyState(eKeyID);
 }
 
-_char CGameInstance::Get_DIMKeyState(CInput_Device::MOUSEKEYSTATE eMouseKeyID)
+_char CEngineInstance::Get_DIMKeyState(CInput_Device::MOUSEKEYSTATE eMouseKeyID)
 {
 	if (nullptr == m_pInput_Device)
 		return 0;
@@ -415,7 +415,7 @@ _char CGameInstance::Get_DIMKeyState(CInput_Device::MOUSEKEYSTATE eMouseKeyID)
 	return m_pInput_Device->Get_DIMouseState(eMouseKeyID);
 }
 
-_long CGameInstance::Get_DIMMoveState(CInput_Device::MOUSEMOVESTATE eMouseMoveID)
+_long CEngineInstance::Get_DIMMoveState(CInput_Device::MOUSEMOVESTATE eMouseMoveID)
 {
 	if (nullptr == m_pInput_Device)
 		return 0;
@@ -423,7 +423,7 @@ _long CGameInstance::Get_DIMMoveState(CInput_Device::MOUSEMOVESTATE eMouseMoveID
 	return m_pInput_Device->Get_DIMouseMove(eMouseMoveID);
 }
 
-const _bool CGameInstance::Key_Up(const _int& _iKey)
+const _bool CEngineInstance::Key_Up(const _int& _iKey)
 {
 	if (nullptr == m_pInput_Device)
 		return FALSE;
@@ -431,7 +431,7 @@ const _bool CGameInstance::Key_Up(const _int& _iKey)
 	return m_pInput_Device->Key_Up(_iKey);
 }
 
-const _bool CGameInstance::Key_Down(const _int& _iKey)
+const _bool CEngineInstance::Key_Down(const _int& _iKey)
 {
 	if (nullptr == m_pInput_Device)
 		return FALSE;
@@ -439,7 +439,7 @@ const _bool CGameInstance::Key_Down(const _int& _iKey)
 	return m_pInput_Device->Key_Down(_iKey);
 }
 
-const _bool CGameInstance::Key_Pressing(const _int& _iKey)
+const _bool CEngineInstance::Key_Pressing(const _int& _iKey)
 {
 	if (nullptr == m_pInput_Device)
 		return FALSE;
@@ -447,7 +447,7 @@ const _bool CGameInstance::Key_Pressing(const _int& _iKey)
 	return m_pInput_Device->Key_Pressing(_iKey);
 }
 
-//const _bool CGameInstance::Get_PickPos_Window(Vec2* vPickPos)
+//const _bool CEngineInstance::Get_PickPos_Window(Vec2* vPickPos)
 //{
 //	if (nullptr == m_pInput_Device)
 //		return FALSE;
@@ -455,7 +455,7 @@ const _bool CGameInstance::Key_Pressing(const _int& _iKey)
 //	return m_pInput_Device->Get_PickPos_Window(vPickPos);
 //}
 
-const _bool CGameInstance::Is_Focus()
+const _bool CEngineInstance::Is_Focus()
 {
 	if (nullptr == m_pInput_Device)
 		return FALSE;
@@ -463,12 +463,12 @@ const _bool CGameInstance::Is_Focus()
 	return m_pInput_Device->Is_Focus();
 }
 
-HRESULT CGameInstance::Bind_TransformToShader(CShader* pShader, const char* pConstantName, const Matrix& matTransform)
+HRESULT CEngineInstance::Bind_TransformToShader(CShader* pShader, const char* pConstantName, const Matrix& matTransform)
 {
 	return pShader->Bind_Matrix(pConstantName, &matTransform);
 }
 
-HRESULT CGameInstance::Bind_TransformToShader(CShader* pShader, const char* pConstantName, CPipeLine::TRANSFORM_STATE eState)
+HRESULT CEngineInstance::Bind_TransformToShader(CShader* pShader, const char* pConstantName, CPipeLine::TRANSFORM_STATE eState)
 {
 	if (nullptr == m_pPipeLine)
 		return E_FAIL;
@@ -476,7 +476,7 @@ HRESULT CGameInstance::Bind_TransformToShader(CShader* pShader, const char* pCon
 	return m_pPipeLine->Bind_TransformToShader(pShader, pConstantName, eState);
 }
 
-Matrix CGameInstance::Get_Transform(const CPipeLine::TRANSFORM_STATE& eState) const
+Matrix CEngineInstance::Get_Transform(const CPipeLine::TRANSFORM_STATE& eState) const
 {
 	if (nullptr == m_pPipeLine)
 		return Matrix();
@@ -484,7 +484,7 @@ Matrix CGameInstance::Get_Transform(const CPipeLine::TRANSFORM_STATE& eState) co
 	return m_pPipeLine->Get_Transform(eState);
 }
 
-Matrix CGameInstance::Get_Transform_Inverse(const CPipeLine::TRANSFORM_STATE& eState) const
+Matrix CEngineInstance::Get_Transform_Inverse(const CPipeLine::TRANSFORM_STATE& eState) const
 {
 	if (nullptr == m_pPipeLine)
 		return Matrix();
@@ -492,7 +492,7 @@ Matrix CGameInstance::Get_Transform_Inverse(const CPipeLine::TRANSFORM_STATE& eS
 	return m_pPipeLine->Get_Transform_Inverse(eState);
 }
 
-Vec4 CGameInstance::Get_CamPosition() const
+Vec4 CEngineInstance::Get_CamPosition() const
 {
 	if (nullptr == m_pPipeLine)
 		return Vec4();
@@ -500,7 +500,7 @@ Vec4 CGameInstance::Get_CamPosition() const
 	return m_pPipeLine->Get_CamPosition();
 }
 
-void CGameInstance::Check_Collision_Layer(const wstring& strLayerTag1, const wstring& strLayerTag2, const CCollider::TYPE& eType1, const CCollider::TYPE& eType2)
+void CEngineInstance::Check_Collision_Layer(const wstring& strLayerTag1, const wstring& strLayerTag2, const CCollider::TYPE& eType1, const CCollider::TYPE& eType2)
 {
 	if (nullptr == m_pCollision_Manager)
 		return;
@@ -508,7 +508,7 @@ void CGameInstance::Check_Collision_Layer(const wstring& strLayerTag1, const wst
 	return m_pCollision_Manager->Check_Collision_Layer(strLayerTag1, strLayerTag2, eType1, eType2);
 }
 
-RAYHIT_DESC CGameInstance::Check_ScreenRay(const wstring& strLayerTag, const _bool& bSnap)
+RAYHIT_DESC CEngineInstance::Check_ScreenRay(const wstring& strLayerTag, const _bool& bSnap)
 {
 	if (nullptr == m_pCollision_Manager)
 		return RAYHIT_DESC();
@@ -516,7 +516,7 @@ RAYHIT_DESC CGameInstance::Check_ScreenRay(const wstring& strLayerTag, const _bo
 	return m_pCollision_Manager->Check_ScreenRay(strLayerTag, bSnap);
 }
 
-CCell* CGameInstance::Check_ScreenRay()
+CCell* CEngineInstance::Check_ScreenRay()
 {
 	if (nullptr == m_pCollision_Manager)
 		return nullptr;
@@ -524,7 +524,7 @@ CCell* CGameInstance::Check_ScreenRay()
 	return m_pCollision_Manager->Check_ScreenRay();
 }
 
-const Ray CGameInstance::Create_ScreenRayLocal(Matrix matWorld)
+const Ray CEngineInstance::Create_ScreenRayLocal(Matrix matWorld)
 {
 	if (nullptr == m_pCollision_Manager)
 		return Ray();
@@ -532,7 +532,7 @@ const Ray CGameInstance::Create_ScreenRayLocal(Matrix matWorld)
 	return m_pCollision_Manager->Create_ScreenRayLocal(matWorld);
 }
 
-CGameObject* CGameInstance::Get_Camera(const _uint& iKey)
+CGameObject* CEngineInstance::Get_Camera(const _uint& iKey)
 {
 	if(nullptr == m_pCamera_Manager)
 		return nullptr;
@@ -540,7 +540,7 @@ CGameObject* CGameInstance::Get_Camera(const _uint& iKey)
 	return m_pCamera_Manager->Get_Camera(iKey);
 }
 
-CGameObject* CGameInstance::Get_CurCamera()
+CGameObject* CEngineInstance::Get_CurCamera()
 {
 	if (nullptr == m_pCamera_Manager)
 		return nullptr;
@@ -548,7 +548,7 @@ CGameObject* CGameInstance::Get_CurCamera()
 	return m_pCamera_Manager->Get_CurCamera();
 }
 
-HRESULT CGameInstance::Set_CurCamera(const _uint& iKey)
+HRESULT CEngineInstance::Set_CurCamera(const _uint& iKey)
 {
 	if (nullptr == m_pCamera_Manager)
 		return E_FAIL;
@@ -556,7 +556,7 @@ HRESULT CGameInstance::Set_CurCamera(const _uint& iKey)
 	return m_pCamera_Manager->Set_CurCamera(iKey);
 }
 
-HRESULT CGameInstance::Add_Camera(const _uint& iKey, CGameObject* pCamera)
+HRESULT CEngineInstance::Add_Camera(const _uint& iKey, CGameObject* pCamera)
 {
 	if (nullptr == m_pCamera_Manager)
 		return E_FAIL;
@@ -564,7 +564,7 @@ HRESULT CGameInstance::Add_Camera(const _uint& iKey, CGameObject* pCamera)
 	return m_pCamera_Manager->Add_Camera(iKey, pCamera);
 }
 
-Vec4 CGameInstance::Get_CurCamera_State(const _uint iState)
+Vec4 CEngineInstance::Get_CurCamera_State(const _uint iState)
 {
 	if (nullptr == m_pCamera_Manager)
 		return Vec4();
@@ -572,7 +572,7 @@ Vec4 CGameInstance::Get_CurCamera_State(const _uint iState)
 	return m_pCamera_Manager->Get_CurCamera_State(iState);
 }
 
-HRESULT CGameInstance::Change_Camera(const _uint& iKey)
+HRESULT CEngineInstance::Change_Camera(const _uint& iKey)
 {
 	if (nullptr == m_pCamera_Manager)
 		return E_FAIL;
@@ -580,7 +580,7 @@ HRESULT CGameInstance::Change_Camera(const _uint& iKey)
 	return m_pCamera_Manager->Change_Camera(iKey);
 }
 
-HRESULT CGameInstance::Change_Camera_Inverse()
+HRESULT CEngineInstance::Change_Camera_Inverse()
 {
 	if (nullptr == m_pCamera_Manager)
 		return E_FAIL;
@@ -588,7 +588,7 @@ HRESULT CGameInstance::Change_Camera_Inverse()
 	return m_pCamera_Manager->Change_Camera_Inverse();
 }
 
-const map<_uint, CGameObject*>* CGameInstance::Get_Cameras()
+const map<_uint, CGameObject*>* CEngineInstance::Get_Cameras()
 {
 	if (nullptr == m_pCamera_Manager)
 		return nullptr;
@@ -596,9 +596,9 @@ const map<_uint, CGameObject*>* CGameInstance::Get_Cameras()
 	return m_pCamera_Manager->Get_Cameras();
 }
 
-void CGameInstance::Release_Engine()
+void CEngineInstance::Release_Engine()
 {
-	CGameInstance::GetInstance()->DestroyInstance();
+	CEngineInstance::GetInstance()->DestroyInstance();
 	CCamera_Manager::GetInstance()->DestroyInstance();
 	CLevel_Manager::GetInstance()->DestroyInstance();
 	CObject_Manager::GetInstance()->DestroyInstance();
@@ -613,7 +613,7 @@ void CGameInstance::Release_Engine()
 	CSound_Manager::GetInstance()->DestroyInstance();
 }
 
-void CGameInstance::Free()
+void CEngineInstance::Free()
 {
 	Safe_Release(m_pCamera_Manager);
 	Safe_Release(m_pPipeLine);

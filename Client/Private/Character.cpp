@@ -1,6 +1,6 @@
 #include "..\Default\stdafx.h"
 #include "Character.h"
-#include "GameInstance.h"
+#include "EngineInstance.h"
 
 #ifdef _DEBUG
 #include "ImGui_Manager.h"
@@ -123,10 +123,10 @@ HRESULT CCharacter::Bind_ShaderResources()
 	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
 
-	if (FAILED(GAME_INSTNACE->Bind_TransformToShader(m_pShaderCom, "g_ViewMatrix", CPipeLine::STATE_VIEW)))
+	if (FAILED(ENGINE_INSTANCE->Bind_TransformToShader(m_pShaderCom, "g_ViewMatrix", CPipeLine::STATE_VIEW)))
 		return E_FAIL;
 
-	if (FAILED(GAME_INSTNACE->Bind_TransformToShader(m_pShaderCom, "g_ProjMatrix", CPipeLine::STATE_PROJ)))
+	if (FAILED(ENGINE_INSTANCE->Bind_TransformToShader(m_pShaderCom, "g_ProjMatrix", CPipeLine::STATE_PROJ)))
 		return E_FAIL;
 
 	return S_OK;

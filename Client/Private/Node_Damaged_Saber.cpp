@@ -1,6 +1,6 @@
 #include "..\Default\stdafx.h"
 
-#include "GameInstance.h"
+#include "EngineInstance.h"
 #include "Node_Damaged_Saber.h"
 
 CNode_Damaged_Saber::CNode_Damaged_Saber()

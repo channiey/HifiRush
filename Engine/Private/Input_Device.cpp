@@ -1,6 +1,6 @@
 #include "..\Public\Input_Device.h"
 
-#include "GameInstance.h"
+#include "EngineInstance.h"
 
 IMPLEMENT_SINGLETON(CInput_Device)
 
@@ -102,7 +102,7 @@ const _bool CInput_Device::Get_PickPos_Window(_Inout_ Vec2* vPickPos)
 
 	POINT tMousePos{};
 
-	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+	CEngineInstance* pGameInstance = GET_INSTANCE(CEngineInstance);
 	{
 		HWND hWnd = pGameInstance->Get_GraphicDesc().hWnd;
 
@@ -112,7 +112,7 @@ const _bool CInput_Device::Get_PickPos_Window(_Inout_ Vec2* vPickPos)
 		(*vPickPos).x = (_float)tMousePos.x;
 		(*vPickPos).y = (_float)tMousePos.y;
 	}
-	RELEASE_INSTANCE(CGameInstance);
+	RELEASE_INSTANCE(CEngineInstance);
 
 	return TRUE;
 }

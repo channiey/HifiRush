@@ -29,7 +29,7 @@ void CImGui_Window_Sub_Prefabs::Show_Window()
 				&& L"" != m_pImGui_Manager->m_strIndex_CurLayer
 				&& nullptr != m_pImGui_Manager->m_pPrefabObj)
 			{
-				m_pGameInstance->Add_GameObject(
+				m_pEngineInstance->Add_GameObject(
 					m_pImGui_Manager->m_iIndex_CurLevelID,
 					m_pImGui_Manager->m_strIndex_CurLayer,
 					m_pImGui_Manager->m_pPrefabObj->Get_Name());
@@ -48,7 +48,7 @@ void CImGui_Window_Sub_Prefabs::Show_Window()
 
 
 		/* 프로토 타입을 가져온다. */
-		map<const wstring, class CGameObject*>* pPrototypes = m_pGameInstance->Get_Prototypes();
+		map<const wstring, class CGameObject*>* pPrototypes = m_pEngineInstance->Get_Prototypes();
 
 		if (ImGui::BeginListBox("##listbox 734", ImVec2(-FLT_MIN, 15 * ImGui::GetTextLineHeightWithSpacing())))
 		{

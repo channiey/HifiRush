@@ -1,7 +1,7 @@
 #include "..\Default\stdafx.h"
 #include "..\Public\Camera_Follow.h"
 
-#include "GameInstance.h"
+#include "EngineInstance.h"
 #ifdef _DEBUG
 #include "ImGui_Manager.h"
 #endif // _DEBUG
@@ -30,7 +30,7 @@ HRESULT CCamera_Follow::Initialize(void * pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	if (FAILED(GAME_INSTNACE->Add_Camera(CAM_FOLLOW, this)))
+	if (FAILED(ENGINE_INSTANCE->Add_Camera(CAM_FOLLOW, this)))
 		return E_FAIL;
 
 	/* Set Camera */
@@ -98,7 +98,7 @@ HRESULT CCamera_Follow::Ready_Components()
 
 HRESULT CCamera_Follow::Find_Target()
 {
-	CGameObject* pObject = GAME_INSTNACE->Get_GameObject(GAME_INSTNACE->Get_CurLevelIndex(), LayerNames[LAYER_PLAYER], L"Player_Chai_000");
+	CGameObject* pObject = ENGINE_INSTANCE->Get_GameObject(ENGINE_INSTANCE->Get_CurLevelIndex(), LayerNames[LAYER_PLAYER], L"Player_Chai_000");
 
 	if (nullptr == pObject) return E_FAIL;
 
@@ -119,10 +119,10 @@ const Vec4 CCamera_Follow::Calculate_Position(const _float& fTimeDelta)
 {
 	_long	MouseMove = 0l;
 
-	if (MouseMove = GAME_INSTNACE->Get_DIMMoveState(CInput_Device::MMS_X))
+	if (MouseMove = ENGINE_INSTANCE->Get_DIMMoveState(CInput_Device::MMS_X))
 		m_vAngle.x += MouseMove * m_pCameraCom->Get_MouseSensitiveX() * fTimeDelta * -1.f;
 
-	if (MouseMove = GAME_INSTNACE->Get_DIMMoveState(CInput_Device::MMS_Y))
+	if (MouseMove = ENGINE_INSTANCE->Get_DIMMoveState(CInput_Device::MMS_Y))
 	{
 		m_vAngle.y += MouseMove * m_pCameraCom->Get_MouseSensitiveY() * fTimeDelta;
 

@@ -1,6 +1,6 @@
 #include "..\Default\stdafx.h"
 #include "..\Public\StaticDummy.h"
-#include "GameInstance.h"
+#include "EngineInstance.h"
 
 #include "Util_String.h"
 
@@ -79,7 +79,7 @@ HRESULT CStaticDummy::Render()
 	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
 
-	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+	CEngineInstance* pGameInstance = GET_INSTANCE(CEngineInstance);
 	Safe_AddRef(pGameInstance);
 	{
 		if (FAILED(pGameInstance->Bind_TransformToShader(m_pShaderCom, "g_ViewMatrix", CPipeLine::STATE_VIEW)))
@@ -88,7 +88,7 @@ HRESULT CStaticDummy::Render()
 		if (FAILED(pGameInstance->Bind_TransformToShader(m_pShaderCom, "g_ProjMatrix", CPipeLine::STATE_PROJ)))
 			return E_FAIL;
 	}
-	RELEASE_INSTANCE(CGameInstance);
+	RELEASE_INSTANCE(CEngineInstance);
 
 	_uint		iPicked = (_uint)m_bPicked;
 

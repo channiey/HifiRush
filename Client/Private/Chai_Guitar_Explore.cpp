@@ -1,6 +1,6 @@
 #include "..\Default\stdafx.h"
 #include "Chai_Guitar_Explore.h"
-#include "GameInstance.h"
+#include "EngineInstance.h"
 
 #include "Util_File.h"
 #include "Util_String.h"

@@ -18,17 +18,17 @@ private:
 	virtual ~CSound_Manager() = default;
 
 public:
-	HRESULT Initialize(const char* strFilePath);
+	HRESULT Initialize(string soundFilePath);
 
 public:
 	void	PlaySound(TCHAR* pSoundKey, _uint eChannelID, float fVolume);
-	HRESULT PlayBGM(TCHAR* pSoundKey, _uint eChannelID, float fVolume);
-	void	StopSound(_uint eChannelID);
-	void	StopAll();
-	void	SetChannelVolume(_uint eChannelID, float fVolume);
+	HRESULT Play_BGM(TCHAR* pSoundKey, _uint eChannelID, float fVolume);
+	void	Stop_Sound(_uint eChannelID);
+	void	Stop_All();
+	void	Set_Volume(_uint eChannelID, float fVolume);
 
 private:
-	void	LoadSoundFile(const char* strFilePath);
+	void	Load_SoundFile(string soundFilePath);
 
 private:
 	map<TCHAR*, FMOD_SOUND*>	m_mapSound;

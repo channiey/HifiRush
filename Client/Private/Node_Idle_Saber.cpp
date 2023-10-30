@@ -1,6 +1,6 @@
 #include "..\Default\stdafx.h"
 
-#include "GameInstance.h"
+#include "EngineInstance.h"
 #include "Node_Idle_Saber.h"
 
 CNode_Idle_Saber::CNode_Idle_Saber()

@@ -43,7 +43,7 @@ private:
 	list<class CGameObject*>	m_GameObjects;
 	wstring						m_strName;
 
-	class CGameInstance*		m_pGameInstance = { nullptr };
+	class CEngineInstance*		m_pEngineInstance = { nullptr };
 
 public:
 	static CLayer* Create(const wstring& strLayerTag);

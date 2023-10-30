@@ -1,13 +1,13 @@
 #include "..\Public\Layer.h"
 #include "GameObject.h"
 
-#include "GameInstance.h"
+#include "EngineInstance.h"
 #include "Util_String.h"
 
 CLayer::CLayer()
-	: m_pGameInstance(CGameInstance::GetInstance())
+	: m_pEngineInstance(CEngineInstance::GetInstance())
 {
-	m_pGameInstance->AddRef();
+	m_pEngineInstance->AddRef();
 }
 
 HRESULT CLayer::Initialize(const wstring& strLayerTag)
@@ -197,5 +197,5 @@ void CLayer::Free()
 		Safe_Release(pGameObject);
 
 	m_GameObjects.clear();
-	m_pGameInstance->Release();
+	m_pEngineInstance->Release();
 }

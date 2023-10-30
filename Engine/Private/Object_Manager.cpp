@@ -1,7 +1,7 @@
 #include "..\Public\Object_Manager.h"
 #include "Layer.h"
 
-#include "GameInstance.h"
+#include "EngineInstance.h"
 #include "Util_String.h"
 
 IMPLEMENT_SINGLETON(CObject_Manager)

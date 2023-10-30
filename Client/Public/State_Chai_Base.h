@@ -2,7 +2,7 @@
 
 #include "Client_Defines.h"
 
-#include "GameInstance.h"
+#include "EngineInstance.h"
 #include "State.h"
 
 #include "Chai.h"

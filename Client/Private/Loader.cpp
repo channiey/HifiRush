@@ -1,7 +1,7 @@
 #include "..\Default\stdafx.h"
 #include "..\Public\Loader.h"
 
-#include "GameInstance.h"
+#include "EngineInstance.h"
 
 #include "Util_File.h"
 #include "Util_String.h"
@@ -107,7 +107,7 @@ _int CLoader::Loading()
 
 HRESULT CLoader::Load_Prototype()
 {
-	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	CEngineInstance* pGameInstance = CEngineInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
 	/* For.Component */

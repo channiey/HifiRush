@@ -24,16 +24,16 @@
 #include "ImGui_Window_Mid_Cam.h"
 
 /* Other Class */
-#include "GameInstance.h"
+#include "EngineInstance.h"
 #include "GameObject.h"
 
 
 IMPLEMENT_SINGLETON(CImGui_Manager)
 
 CImGui_Manager::CImGui_Manager()
-	: m_pGameInstance(CGameInstance::GetInstance())
+	: m_pEngineInstance(CEngineInstance::GetInstance())
 {
-	Safe_AddRef(m_pGameInstance);
+	Safe_AddRef(m_pEngineInstance);
 }
 
 HRESULT CImGui_Manager::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -129,8 +129,8 @@ HRESULT CImGui_Manager::Render()
 const _bool CImGui_Manager::Is_ClickedWindow()
 {
 	if(ImGui::GetIO().WantCaptureMouse 
-		&& ((GAME_INSTNACE->Key_Down(VK_LBUTTON) || GAME_INSTNACE->Key_Pressing(VK_LBUTTON))
-		|| (GAME_INSTNACE->Key_Down(VK_RBUTTON) || GAME_INSTNACE->Key_Pressing(VK_RBUTTON))))
+		&& ((ENGINE_INSTANCE->Key_Down(VK_LBUTTON) || ENGINE_INSTANCE->Key_Pressing(VK_LBUTTON))
+		|| (ENGINE_INSTANCE->Key_Down(VK_RBUTTON) || ENGINE_INSTANCE->Key_Pressing(VK_RBUTTON))))
 	return TRUE;
 
 	return FALSE;
@@ -238,7 +238,7 @@ void CImGui_Manager::Free()
 
 	m_pMainWindows.clear();
 
-	Safe_Release(m_pGameInstance);
+	Safe_Release(m_pEngineInstance);
 
 	ImGui_ImplDX11_Shutdown();
 	ImGui_ImplWin32_Shutdown();

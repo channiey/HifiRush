@@ -183,7 +183,7 @@ void CState_Chai_Jump::Move(const _float& fTimeDelta)
 
 	if (Input::Up() && !Input::Left() && !Input::Right()) // Up
 	{
-		vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY().Normalized();
+		vDir = ENGINE_INSTANCE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY().Normalized();
 
 		if (3.f < acos(vDir.Dot((vLook))))
 			vRotDir = Vec4::Lerp(vLook, vDir, fRotConstMax);
@@ -195,7 +195,7 @@ void CState_Chai_Jump::Move(const _float& fTimeDelta)
 	}
 	else if (Input::Down() && !Input::Left() && !Input::Right()) // Down
 	{
-		vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY().Normalized().Inverse();
+		vDir = ENGINE_INSTANCE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY().Normalized().Inverse();
 
 		if (3.f < acos(vDir.Dot((vLook))))
 			vRotDir = Vec4::Lerp(vLook, vDir, fRotConstMax);
@@ -207,7 +207,7 @@ void CState_Chai_Jump::Move(const _float& fTimeDelta)
 	}
 	else if (Input::Left() && !Input::Up() && !Input::Down()) // Left 
 	{
-		vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY().Normalized().Inverse();
+		vDir = ENGINE_INSTANCE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY().Normalized().Inverse();
 
 		if (3.f < acos(vDir.Dot((vLook))))
 			vRotDir = Vec4::Lerp(vLook, vDir, fRotConstMax);
@@ -219,7 +219,7 @@ void CState_Chai_Jump::Move(const _float& fTimeDelta)
 	}
 	else if (Input::Right() && !Input::Up() && !Input::Down()) // Right 
 	{
-		vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY().Normalized();
+		vDir = ENGINE_INSTANCE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY().Normalized();
 
 		if (3.f < acos(vDir.Dot((vLook))))
 			vRotDir = Vec4::Lerp(vLook, vDir, fRotConstMax);
@@ -231,8 +231,8 @@ void CState_Chai_Jump::Move(const _float& fTimeDelta)
 	}
 	else if (Input::Up() && Input::Left() && !Input::Right()) // Up + Left
 	{
-		vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY()
-			+ GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY().Inverse();
+		vDir = ENGINE_INSTANCE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY()
+			+ ENGINE_INSTANCE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY().Inverse();
 
 		vDir.Normalize();
 		vRotDir = Vec4::Lerp(vLook, vDir, fTimeDelta * fRotConstNormal);
@@ -241,8 +241,8 @@ void CState_Chai_Jump::Move(const _float& fTimeDelta)
 	}
 	else if (Input::Up() && !Input::Left() && Input::Right()) // Up + Right
 	{
-		vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY()
-			+ GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY();
+		vDir = ENGINE_INSTANCE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY()
+			+ ENGINE_INSTANCE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY();
 
 		vDir.Normalize();
 
@@ -252,8 +252,8 @@ void CState_Chai_Jump::Move(const _float& fTimeDelta)
 	}
 	else if (Input::Down() && Input::Left() && !Input::Right()) // Down + Left
 	{
-		vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY().Inverse()
-			+ GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY().Inverse();
+		vDir = ENGINE_INSTANCE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY().Inverse()
+			+ ENGINE_INSTANCE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY().Inverse();
 
 		vDir.Normalize();
 		vRotDir = Vec4::Lerp(vLook, vDir, fTimeDelta * fRotConstNormal);
@@ -262,8 +262,8 @@ void CState_Chai_Jump::Move(const _float& fTimeDelta)
 	}
 	else if (Input::Down() && !Input::Left() && Input::Right()) // Down + Right
 	{
-		vDir = GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY().Inverse()
-			+ GAME_INSTNACE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY();
+		vDir = ENGINE_INSTANCE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY().Inverse()
+			+ ENGINE_INSTANCE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY();
 
 		vDir.Normalize();
 		vRotDir = Vec4::Lerp(vLook, vDir, fTimeDelta * fRotConstNormal);

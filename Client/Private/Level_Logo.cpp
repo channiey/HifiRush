@@ -1,7 +1,7 @@
 #include "..\Default\stdafx.h"
 #include "..\Public\Level_Logo.h"
 
-#include "GameInstance.h"
+#include "EngineInstance.h"
 #include "GameObject.h"
 #include "Level_Loading.h"
 
@@ -27,9 +27,9 @@ HRESULT CLevel_Logo::LateTick(_float fTimeDelta)
 {
 	SetWindowText(g_hWnd, LevelNames[LV_LOGO]);
 
-	if (CGameInstance::GetInstance()->Key_Down(VK_SPACE))
+	if (CEngineInstance::GetInstance()->Key_Down(VK_SPACE))
 	{
-		CGameInstance*	pGameInstance = CGameInstance::GetInstance();
+		CEngineInstance*	pGameInstance = CEngineInstance::GetInstance();
 		Safe_AddRef(pGameInstance);
 
 		if (FAILED(pGameInstance->Open_Level(LV_LOADING,  CLevel_Loading::Create(m_pDevice, m_pContext, LV_STAGE_01))))

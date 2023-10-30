@@ -1,6 +1,6 @@
 #include "..\Default\stdafx.h"
 #include "Saber_Sword.h"
-#include "GameInstance.h"
+#include "EngineInstance.h"
 
 #include "Util_File.h"
 #include "Util_String.h"

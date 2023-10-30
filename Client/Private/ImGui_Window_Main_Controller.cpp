@@ -23,7 +23,7 @@ void CImGui_Window_Main_Controller::Show_Window()
 		/* 프로파일러 데이터를 보여준다. */
 		ImGui::SeparatorText("Statistics");
 		{
-			PROFILER_DESC desc = m_pGameInstance->Get_ProfillingData();
+			PROFILER_DESC desc = m_pEngineInstance->Get_ProfillingData();
 
 			//ImGuiIO& io = ImGui::GetIO(); (void)io;
 			ImGui::Text("FPS : %d(%.3f s)", g_iFPS, 1.f / (_float)g_iFPS);

@@ -5,7 +5,7 @@
 #include "Base.h"
 
 BEGIN(Engine)
-class CGameInstance;
+class CEngineInstance;
 class CGameObject;
 END
 
@@ -98,7 +98,7 @@ private:
 	void			Reset_Index_PrefabObject();
 
 public:
-	CGameInstance*					m_pGameInstance = { nullptr };
+	CEngineInstance*					m_pEngineInstance = { nullptr };
 	_bool							m_bActive = TRUE;
 
 	vector<class CImGui_Window*>	m_pMainWindows;

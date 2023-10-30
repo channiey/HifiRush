@@ -1,7 +1,7 @@
 #include "..\Default\stdafx.h"
 #include "..\Public\Chai.h"
 
-#include "GameInstance.h"
+#include "EngineInstance.h"
 #include "Animation.h"
 
 #include "Weapon.h"
@@ -183,7 +183,7 @@ HRESULT CChai::Ready_Chilren()
 {
 	CWeapon* pChild = nullptr;
 	
-	pChild = dynamic_cast<CWeapon*>(GAME_INSTNACE->Add_GameObject(GAME_INSTNACE->Get_CurLevelIndex(), LayerNames[LAYER_WEAPON], L"Weapon_Chai_Guitar_Explore"));
+	pChild = dynamic_cast<CWeapon*>(ENGINE_INSTANCE->Add_GameObject(ENGINE_INSTANCE->Get_CurLevelIndex(), LayerNames[LAYER_WEAPON], L"Weapon_Chai_Guitar_Explore"));
 	{
 		if (FAILED(Add_Child(pChild)))
 			return E_FAIL;

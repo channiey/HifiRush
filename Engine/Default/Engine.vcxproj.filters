@@ -31,9 +31,6 @@
     <Filter Include="00.System\00.Timer\Manager">
       <UniqueIdentifier>{a30b1084-b34e-419d-bb1d-1f1f5c8d3fd7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utiltiy\00.GameInstance">
-      <UniqueIdentifier>{aa6f228e-028d-4efd-b2f3-39052d369412}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utiltiy\01.Level">
       <UniqueIdentifier>{d2acafff-f010-42f6-92f5-eb2ab8db46b9}</UniqueIdentifier>
     </Filter>
@@ -241,6 +238,9 @@
     <Filter Include="00.System\01.Device\Sound\Manager">
       <UniqueIdentifier>{83a0416c-1be0-4c7c-9fda-22999959f63f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utiltiy\00.EngineInstance">
+      <UniqueIdentifier>{aa6f228e-028d-4efd-b2f3-39052d369412}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -267,8 +267,8 @@
     <ClInclude Include="..\Public\Graphic_Device.h">
       <Filter>00.System\01.Device\Graphic</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\GameInstance.h">
-      <Filter>01.Utiltiy\00.GameInstance</Filter>
+    <ClInclude Include="..\public\EngineInstance.h">
+      <Filter>01.Utiltiy\00.EngineInstance</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Level.h">
       <Filter>01.Utiltiy\01.Level</Filter>
@@ -479,8 +479,8 @@
     <ClCompile Include="..\Private\Graphic_Device.cpp">
       <Filter>00.System\01.Device\Graphic</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\GameInstance.cpp">
-      <Filter>01.Utiltiy\00.GameInstance</Filter>
+    <ClCompile Include="..\private\EngineInstance.cpp">
+      <Filter>01.Utiltiy\00.EngineInstance</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Level.cpp">
       <Filter>01.Utiltiy\01.Level</Filter>

@@ -1,7 +1,7 @@
 #include "..\Default\stdafx.h"
 #include "Enemy.h"
 
-#include "GameInstance.h"
+#include "EngineInstance.h"
 #include "Animation.h"
 
 #include "Weapon.h"
@@ -79,7 +79,7 @@ void CEnemy::Set_State(const OBJ_STATE& eState)
 
 	if (OBJ_STATE::STATE_ACTIVE == eState)
 	{
-		CGameObject* pTarget = GAME_INSTNACE->Get_GameObject_InCurLevel_InLayerFirst(LayerNames[LAYER_PLAYER]);
+		CGameObject* pTarget = ENGINE_INSTANCE->Get_GameObject_InCurLevel_InLayerFirst(LayerNames[LAYER_PLAYER]);
 
 		if (nullptr != pTarget)
 			m_tFightDesc.pTarget = dynamic_cast<CCharacter*>(pTarget);

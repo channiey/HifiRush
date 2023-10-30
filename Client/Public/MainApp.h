@@ -6,7 +6,7 @@
 
 BEGIN(Engine)
 class CRenderer;
-class CGameInstance;
+class CEngineInstance;
 END
 
 BEGIN(Client)
@@ -24,7 +24,7 @@ public:
 	HRESULT FinishTick();
 
 private:
-	CGameInstance*			m_pGameInstance = { nullptr };
+	CEngineInstance*			m_pEngineInstance = { nullptr };
 
 	ID3D11Device*			m_pDevice = { nullptr };
 	ID3D11DeviceContext*	m_pContext = { nullptr };

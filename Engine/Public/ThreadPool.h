@@ -1,6 +1,6 @@
 #pragma once
 #include "Base.h"
-#include "GameInstance.h"
+#include "EngineInstance.h"
 #include "Component_Manager.h"
 #include "GameObject.h"
 #include "Component.h"

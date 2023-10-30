@@ -1,7 +1,7 @@
 #include "..\Default\stdafx.h"
 #include "..\Public\Level_Stage_01.h"
 
-#include "GameInstance.h"
+#include "EngineInstance.h"
 #include "Level_Loading.h"
 
 CLevel_Stage_01::CLevel_Stage_01(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
@@ -37,13 +37,13 @@ HRESULT CLevel_Stage_01::LateTick(_float fTimeDelta)
 
 HRESULT CLevel_Stage_01::Check_Collision()
 {
-	GAME_INSTNACE->Check_Collision_Layer(LayerNames[LAYER_ENEMY]
+	ENGINE_INSTANCE->Check_Collision_Layer(LayerNames[LAYER_ENEMY]
 		, LayerNames[LAYER_WEAPON]
 		, CCollider::SPHERE
 		, CCollider::SPHERE);
 
 
-	GAME_INSTNACE->Check_Collision_Layer(LayerNames[LAYER_PLAYER]
+	ENGINE_INSTANCE->Check_Collision_Layer(LayerNames[LAYER_PLAYER]
 		, LayerNames[LAYER_TRIGGER]
 		, CCollider::SPHERE
 		, CCollider::SPHERE);

@@ -1,7 +1,7 @@
 #include "..\Default\stdafx.h"
 #include "..\Public\Camera_Debug.h"
 
-#include "GameInstance.h"
+#include "EngineInstance.h"
 #include "Input.h"
 
 #ifdef _DEBUG
@@ -38,7 +38,7 @@ HRESULT CCamera_Debug::Initialize(void * pArg)
 
 	m_fSpeedPerSec = 30.f;
 
-	if (FAILED(GAME_INSTNACE->Add_Camera(CAM_DEBUG, this)))
+	if (FAILED(ENGINE_INSTANCE->Add_Camera(CAM_DEBUG, this)))
 		return E_FAIL;
 
 	return S_OK;
@@ -87,7 +87,7 @@ HRESULT CCamera_Debug::Ready_Components()
 
 void CCamera_Debug::Move(const _float& fTimeDelta)
 {
-	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+	CEngineInstance* pGameInstance = GET_INSTANCE(CEngineInstance);
 
 	/* Translation */
 	if (Input::Up())
@@ -124,7 +124,7 @@ void CCamera_Debug::Move(const _float& fTimeDelta)
 		}
 	}
 
-	RELEASE_INSTANCE(CGameInstance);
+	RELEASE_INSTANCE(CEngineInstance);
 }
 
 CCamera_Debug * CCamera_Debug::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)

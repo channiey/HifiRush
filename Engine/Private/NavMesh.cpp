@@ -1,6 +1,6 @@
 #include "..\Public\NavMesh.h"
 
-#include "GameInstance.h"
+#include "EngineInstance.h"
 #include "Collision_Manager.h"
 #include "Cell.h"
 
@@ -53,7 +53,7 @@ HRESULT CNavMesh::Render()
 		if (nullptr != pCell)
 		{
 			/* Check Range */
-			_float fDist = Vec3(pCell->Get_CenterPoint() - GAME_INSTNACE->Get_CamPosition().xyz()).Length();
+			_float fDist = Vec3(pCell->Get_CenterPoint() - ENGINE_INSTANCE->Get_CamPosition().xyz()).Length();
 
 			if (m_fRenderRange < fDist) continue;
 
@@ -87,7 +87,7 @@ HRESULT CNavMesh::Render_Cell(const _int& iInedx)
 	if (FAILED(m_pShader->Begin(0)))
 		return E_FAIL;
 
-	_float fDist = Vec3(m_Cells[iInedx]->Get_CenterPoint() - GAME_INSTNACE->Get_CamPosition().xyz()).Length();
+	_float fDist = Vec3(m_Cells[iInedx]->Get_CenterPoint() - ENGINE_INSTANCE->Get_CamPosition().xyz()).Length();
 
 	if (m_fRenderRange >= fDist)
 	{
@@ -124,7 +124,7 @@ HRESULT CNavMesh::Render_Picked()
 		if (nullptr != pCell && pCell->Is_Picked())
 		{
 			/* Check Range */
-			_float fDist = Vec3(pCell->Get_CenterPoint() - GAME_INSTNACE->Get_CamPosition().xyz()).Length();
+			_float fDist = Vec3(pCell->Get_CenterPoint() - ENGINE_INSTANCE->Get_CamPosition().xyz()).Length();
 
 			if (m_fRenderRange < fDist) continue;
 
@@ -280,7 +280,7 @@ HRESULT CNavMesh::Load_NavData(const wstring& strFilePath)
 		for (_int i = 0; i < CCell::POINT_END; i++)
 			vPoints[i] = file->Read<_float3>();
 
-		CCell* pCell = CCell::Create(GAME_INSTNACE->Get_Device(), GAME_INSTNACE->Get_Context(), vPoints, iIndex);
+		CCell* pCell = CCell::Create(ENGINE_INSTANCE->Get_Device(), ENGINE_INSTANCE->Get_Context(), vPoints, iIndex);
 		if (nullptr == pCell)
 			return E_FAIL;
 
@@ -344,8 +344,8 @@ HRESULT CNavMesh::Bind_ShaderResources()
 		if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", &matWorld)))
 			return E_FAIL;
 
-		_float4x4 matView = GAME_INSTNACE->Get_Transform(CPipeLine::STATE_VIEW);
-		_float4x4 matProj = GAME_INSTNACE->Get_Transform(CPipeLine::STATE_PROJ);
+		_float4x4 matView = ENGINE_INSTANCE->Get_Transform(CPipeLine::STATE_VIEW);
+		_float4x4 matProj = ENGINE_INSTANCE->Get_Transform(CPipeLine::STATE_PROJ);
 
 		if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrix", &matView)))
 			return E_FAIL;

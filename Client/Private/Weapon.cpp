@@ -1,6 +1,6 @@
 #include "..\Default\stdafx.h"
 #include "Weapon.h"
-#include "GameInstance.h"
+#include "EngineInstance.h"
 
 #include "Util_File.h"
 #include "Util_String.h"
@@ -128,14 +128,14 @@ HRESULT CWeapon::Ready_Components()
 
 HRESULT CWeapon::Bind_ShaderResources()
 {
-	if (FAILED(GAME_INSTNACE->Bind_TransformToShader(m_pShaderCom, "g_WorldMatrix", 
+	if (FAILED(ENGINE_INSTANCE->Bind_TransformToShader(m_pShaderCom, "g_WorldMatrix", 
 		m_pParent->Get_Model()->Get_SocketBoneMat(m_eSocketType) * m_pTransformCom->Get_FinalMat())))
 		return E_FAIL;
 
-	if (FAILED(GAME_INSTNACE->Bind_TransformToShader(m_pShaderCom, "g_ViewMatrix", CPipeLine::STATE_VIEW)))
+	if (FAILED(ENGINE_INSTANCE->Bind_TransformToShader(m_pShaderCom, "g_ViewMatrix", CPipeLine::STATE_VIEW)))
 		return E_FAIL;
 
-	if (FAILED(GAME_INSTNACE->Bind_TransformToShader(m_pShaderCom, "g_ProjMatrix", CPipeLine::STATE_PROJ)))
+	if (FAILED(ENGINE_INSTANCE->Bind_TransformToShader(m_pShaderCom, "g_ProjMatrix", CPipeLine::STATE_PROJ)))
 		return E_FAIL;
 
 	return S_OK;

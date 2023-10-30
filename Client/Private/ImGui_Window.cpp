@@ -4,10 +4,10 @@
 #include "ImGui_Window.h"
 
 CImGui_Window::CImGui_Window()
-	: m_pGameInstance(CGameInstance::GetInstance())
+	: m_pEngineInstance(CEngineInstance::GetInstance())
 	, m_pImGui_Manager(CImGui_Manager::GetInstance())
 {
-	/*Safe_AddRef(m_pGameInstance);
+	/*Safe_AddRef(m_pEngineInstance);
 	Safe_AddRef(m_pImGui_Manager);*/
 }
 
@@ -60,7 +60,7 @@ void CImGui_Window::Free()
 	}
 	m_pChildWindows.clear();
 
-	//Safe_Release(m_pGameInstance);
+	//Safe_Release(m_pEngineInstance);
 	//Safe_Release(m_pImGui_Manager);
 }
 
