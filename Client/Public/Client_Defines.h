@@ -13,7 +13,7 @@ namespace Client
 #define CONSOLE_LOG     0
 #define CURSOL_LOCK     0
 #define CURSOL_HIDE     0
-#define OPEN_IMGUI      1
+#define OPEN_IMGUI      0
 
 	/* Window */
 	const unsigned int		g_iWinSizeX = 1280;
