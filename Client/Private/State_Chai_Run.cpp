@@ -19,8 +19,13 @@ HRESULT CState_Chai_Run::Initialize(CStateMachine* pStateMachine, const wstring&
 
 HRESULT CState_Chai_Run::Enter()
 {
+	ANIM_CH			eAnimID = ANIM_CH::RUN;
+
+	CAnimation*		pAnimation = m_pChai->Get_Model()->Get_Animation(eAnimID);
+	const _float	fTimePerFrame = CBeatManager::GetInstance()->Get_AnimTimePerFrameSyncBeat(pAnimation);
+
+	m_pChai->Get_Model()->Set_Animation(eAnimID, fTimePerFrame * 0.3f, DF_TW_TIME);
 	m_pChai->Get_Model()->Set_RootAnimation(FALSE);
-	m_pChai->Get_Model()->Set_Animation(ANIM_CH::RUN, DF_PL_TIME, 0.15f);
 
 	return S_OK;
 }

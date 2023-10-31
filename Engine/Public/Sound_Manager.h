@@ -19,6 +19,7 @@ private:
 
 public:
 	HRESULT Initialize(string soundFilePath);
+	HRESULT Update(const _float& fTimedelta);
 
 public:
 	void	PlaySound(_uint eSoundID, _uint eChannelID, float fVolume);
@@ -31,6 +32,8 @@ public:
 	
 	void	Set_Volume(_uint eChannelID, float fVolume);
 
+	const _uint Get_BPM();
+
 private:
 	void	Load_SoundFile(string soundFilePath);
 	HRESULT	Load_SoundFileNames(string soundFilePath);
@@ -41,6 +44,14 @@ private:
 
 	FMOD_CHANNEL*				m_Channels[MAX_CHANNEL];
 	vector<TCHAR*>				m_SoundNames;
+
+
+	/* BGM */
+	_int						m_iCurBgmID = -1;
+	_int						m_iCurBgmChannel = -1;
+
+	LERP_FLOAT_DESC				m_tCurBgmVolume;
+
 
 public:
 	virtual void Free() override;

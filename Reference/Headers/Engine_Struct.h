@@ -194,36 +194,36 @@ namespace Engine
 	typedef struct tagLerpFloatDesc
 	{
 		/* Time */
-		_float		fStartTime	= 0.f;
-		_float		fEndTime	= 0.f;
-		_float		fCurTime	= 0.f;
+		_float		fStartTime = 0.f;
+		_float		fEndTime = 0.f;
+		_float		fCurTime = 0.f;
 
 		/* Value */
-		_float		fStartValue		= 0.f;
-		_float		fTargetValue	= 0.f;
-		_float		fCurValue		= 0.f;
+		_float		fStartValue = 0.f;
+		_float		fTargetValue = 0.f;
+		_float		fCurValue = 0.f;
 
-		_bool		bActive			= FALSE;
+		_bool		bActive = FALSE;
 
-		LERP_MODE	eMode			= LERP_MODE::DEFAULT; // https://chicounity3d.wordpress.com/2014/05/23/how-to-lerp-like-a-pro/
+		LERP_MODE	eMode = LERP_MODE::DEFAULT; // https://chicounity3d.wordpress.com/2014/05/23/how-to-lerp-like-a-pro/
 
-		void Start(const _float& _fTime, const _float _fStartValue, const _float& _fTargetValue, const LERP_MODE& _eMode = LERP_MODE::DEFAULT)
+		void Start(const _float _fStartValue, const _float& _fTargetValue, const _float& _fTime, const LERP_MODE& _eMode = LERP_MODE::DEFAULT)
 		{
-			bActive			= TRUE;
+			bActive = TRUE;
 
-			fCurTime		= 0.f;
-			fEndTime		= _fTime;
+			fCurTime = 0.f;
+			fEndTime = _fTime;
 
-			fStartValue		= fCurValue = _fStartValue;
-			fTargetValue	= _fTargetValue;
+			fStartValue = fCurValue = _fStartValue;
+			fTargetValue = _fTargetValue;
 
-			eMode			= _eMode;
+			eMode = _eMode;
 		}
 
 		// Mode
 		void Update(const _float& fTimeDelta)
 		{
-			if (!bActive) return;
+			if (!bActive || 0.02f < fTimeDelta) return;
 
 			fCurTime += fTimeDelta;
 
@@ -270,6 +270,7 @@ namespace Engine
 			default:
 				break;
 			}
+			
 			fCurValue = Lerp_Float(fStartValue, fTargetValue, t);
 
 		}
@@ -301,7 +302,7 @@ namespace Engine
 
 		LERP_MODE	eMode = LERP_MODE::DEFAULT;
 
-		void Start(const _float& _fTime, const Vec3 _fStartValue, const Vec3& _fTargetValue, const LERP_MODE& _eMode = LERP_MODE::DEFAULT)
+		void Start(const Vec3 _fStartValue, const Vec3& _fTargetValue, const _float& _fTime, const LERP_MODE& _eMode = LERP_MODE::DEFAULT)
 		{
 			bActive = TRUE;
 
@@ -322,8 +323,8 @@ namespace Engine
 
 			if (fCurTime >= fEndTime)
 			{
-				bActive = FALSE;
-				fCurTime = fEndTime;
+				Reset();
+				return;
 			}
 
 			_float t = fCurTime / fEndTime;

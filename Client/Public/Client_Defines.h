@@ -10,7 +10,7 @@ namespace Client
 
 #define FPS_LIMIT		66.f
 
-#define CONSOLE_LOG     0
+#define CONSOLE_LOG     1
 #define CURSOL_LOCK     0
 #define CURSOL_HIDE     0
 #define OPEN_IMGUI      0
@@ -163,6 +163,9 @@ namespace Client
 		SOUND_FILE_END
 	};
 	static const char* SoundFilePath_Engine = "../../Client/Bin/Resources/Sounds/";
+
+	static const _float BgmVolumeInBattle = 0.4f;
+	static const _float BgmVolumeInNotBattle = 0.2f;
 }
 
 extern HINSTANCE	g_hInst;

@@ -1,5 +1,7 @@
 #include "Sound_Manager.h"
+
 #include "Util_String.h"
+#include "Util_File.h"
 
 IMPLEMENT_SINGLETON(CSound_Manager)
 
@@ -17,6 +19,17 @@ HRESULT CSound_Manager::Initialize(string soundFilePath)
 
 	if (FAILED(Load_SoundFileNames(soundFilePath)))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CSound_Manager::Update(const _float& fTimedelta)
+{
+	m_tCurBgmVolume.Update(fTimedelta);
+	if (m_tCurBgmVolume.bActive)
+	{
+		Set_Volume(m_iCurBgmChannel, m_tCurBgmVolume.fCurValue);
+	}
 
 	return S_OK;
 }
@@ -51,6 +64,10 @@ void CSound_Manager::PlaySound(_uint eSoundID, _uint eChannelID, float fVolume)
 
 HRESULT CSound_Manager::Play_BGM(_uint eSoundID, _uint eChannelID, float fVolume)
 {
+	m_iCurBgmID = eSoundID;
+	m_iCurBgmChannel = eChannelID;
+
+	m_tCurBgmVolume.Start(0.f, fVolume, 1.f, LERP_MODE::SMOOTHSTEP);
 
 	map<TCHAR*, FMOD_SOUND*>::iterator iter;
 
@@ -64,7 +81,7 @@ HRESULT CSound_Manager::Play_BGM(_uint eSoundID, _uint eChannelID, float fVolume
 
 	FMOD_System_PlaySound(m_pSystem, FMOD_CHANNEL_FREE, iter->second, FALSE, &m_Channels[eChannelID]);
 	FMOD_Channel_SetMode(m_Channels[eChannelID], FMOD_LOOP_NORMAL);
-	FMOD_Channel_SetVolume(m_Channels[eChannelID], fVolume);
+	FMOD_Channel_SetVolume(m_Channels[eChannelID], m_tCurBgmVolume.fCurValue);
 	FMOD_System_Update(m_pSystem);
 
 	return S_OK;
@@ -92,6 +109,16 @@ void CSound_Manager::Set_Volume(_uint eChannelID, float fVolume)
 	FMOD_Channel_SetVolume(m_Channels[eChannelID], fVolume);
 
 	FMOD_System_Update(m_pSystem);
+}
+
+const _uint CSound_Manager::Get_BPM()
+{
+	if (m_iCurBgmID < 0)
+		return 0;
+
+	string name = Util_String::ToString(Util_String::RemoveFileExtension(m_SoundNames[m_iCurBgmID]));
+
+	return stoi(name.substr(name.length() - 3, 3));
 }
 
 void CSound_Manager::Load_SoundFile(string soundFilePath)

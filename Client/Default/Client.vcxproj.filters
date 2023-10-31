@@ -322,6 +322,12 @@
     <Filter Include="01.GameManager\02.BattleManager\01.BattleTriger">
       <UniqueIdentifier>{abecc13b-e35a-4bdc-9ada-3d527afa3287}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.GameObjects\10.UI\00.HUD">
+      <UniqueIdentifier>{0f11183d-2549-4008-8a4e-4c98b6e17b64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\10.UI\00.HUD\00.HealthBar">
+      <UniqueIdentifier>{077005cb-b824-4877-b6da-1bd0074bd810}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -528,6 +534,9 @@
     <ClInclude Include="..\Public\BattleManager.h">
       <Filter>01.GameManager\02.BattleManager\00.Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Ui.h">
+      <Filter>03.GameObjects\10.UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -721,6 +730,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\BattleManager.cpp">
       <Filter>01.GameManager\02.BattleManager\00.Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Ui.cpp">
+      <Filter>03.GameObjects\10.UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

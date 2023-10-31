@@ -99,6 +99,7 @@ void CEngineInstance::Tick(_float fTimeDelta)
 		return;
 
 	m_pInput_Device->Tick();
+	m_pSound_Manager->Update(fTimeDelta);
 
 	m_pObject_Manager->Tick(fTimeDelta);
 	m_pLevel_Manager->Tick(fTimeDelta);
@@ -610,6 +611,14 @@ HRESULT CEngineInstance::Play_BGM(_uint eSoundID, _uint eChannelID, float fVolum
 		return E_FAIL;
 
 	return m_pSound_Manager->Play_BGM(eSoundID, eChannelID, fVolume);
+}
+
+const _uint CEngineInstance::Get_BPM()
+{
+	if (nullptr == m_pSound_Manager)
+		return E_FAIL;
+
+	return m_pSound_Manager->Get_BPM();
 }
 
 void CEngineInstance::Release_Engine()

@@ -162,15 +162,15 @@ HRESULT CModel::Update_Anim(_float fTimeDelta)
 	if (m_bStopAnim)
 		return TRUE;
 
-	
 	m_TweenDesc.cur.fFrameAcc += fTimeDelta;
-	m_TweenDesc.cur.fAnimAcc += fTimeDelta;
 
 	CAnimation* pCurAnim = Get_Animation(m_TweenDesc.cur.iAnimIndex);
 	if (nullptr != pCurAnim)
 	{
-		_float timePerFrame = 1 / (pCurAnim->Get_TickPerSecond() * m_TweenDesc.cur.fSpeed);
-
+		/* 한 프레임 갱신에 걸리는 시간 */
+		//_float timePerFrame = 1 / (pCurAnim->Get_TickPerSecond() * m_TweenDesc.cur.fSpeed);
+		_float timePerFrame = m_TweenDesc.cur.fSpeed;
+		
 		/* 한 프레임 끝 */
 		if (m_TweenDesc.cur.fFrameAcc >= timePerFrame)
 		{

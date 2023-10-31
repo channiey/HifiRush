@@ -38,6 +38,12 @@ void CImGui_Window_Sub_Com_Model::Clear_Reference_Data()
 {
 	m_iCurAnimIndex = -1;
 	m_pImGui_Manager->m_bEdittingAnim = FALSE;
+
+	CNavMeshAgent* pAgent = m_pImGui_Manager->m_pCurObject->Get_NavMeshAgent();
+	if (nullptr != pAgent)
+	{
+		pAgent->Set_Active(TRUE);
+	}
 }
 
 void CImGui_Window_Sub_Com_Model::Show_Animations()
@@ -75,6 +81,12 @@ void CImGui_Window_Sub_Com_Model::Show_Animations()
 		{
 			if (0 <= m_iCurAnimIndex)
 			{
+				CNavMeshAgent* pNavMeshAgent = pObj->Get_NavMeshAgent();
+				if (nullptr != pNavMeshAgent)
+				{
+					pNavMeshAgent->Set_Active(FALSE);
+				}
+				pModel->Set_RootAnimation(TRUE);
 				pModel->Set_Animation(m_iCurAnimIndex);
 			}
 		}
@@ -90,6 +102,13 @@ void CImGui_Window_Sub_Com_Model::Show_Animations()
 		if (ImGui::DragFloat("Animation Speed", &fAnimSpeed, 0.01f))
 		{
 			pModel->Set_AnimationSpeed(fAnimSpeed);
+
+			CNavMeshAgent* pNavMeshAgent = pObj->Get_NavMeshAgent();
+			if (nullptr != pNavMeshAgent)
+			{
+				pNavMeshAgent->Set_Active(FALSE);
+			}
+			pModel->Set_RootAnimation(TRUE);
 		}
 	}
 }

@@ -23,8 +23,12 @@ HRESULT CState_Chai_Idle::Initialize(CStateMachine* pStateMachine, const wstring
 
 HRESULT CState_Chai_Idle::Enter()
 {
+	ANIM_CH			eAnimID = ANIM_CH::IDLE;
+	CAnimation*		pAnimation = m_pChai->Get_Model()->Get_Animation(eAnimID);
+	const _float	fTimePerFrame = CBeatManager::GetInstance()->Get_AnimTimePerFrameSyncBeat(pAnimation);
+
+	m_pChai->Get_Model()->Set_Animation(eAnimID, fTimePerFrame * 0.5f, DF_TW_TIME);
 	m_pChai->Get_Model()->Set_RootAnimation(FALSE);
-	m_pChai->Get_Model()->Set_Animation(ANIM_CH::IDLE, 1.5f, 0.15f);
 
 	return S_OK;
 }

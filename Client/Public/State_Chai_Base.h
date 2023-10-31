@@ -8,6 +8,9 @@
 #include "Chai.h"
 #include "Input.h"
 
+#include "BeatManager.h"
+#include "BattleManager.h"
+
 BEGIN(Engine)
 class CGameObjet;
 END

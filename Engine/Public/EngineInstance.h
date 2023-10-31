@@ -111,6 +111,8 @@ public: /* For.Camera_Manager */
 public: /* For.Sound_Manager */
 	void	Play_Sound(_uint eSoundID, _uint eChannelID, float fVolume);
 	HRESULT Play_BGM(_uint eSoundID, _uint eChannelID, float fVolume);
+	const _uint Get_BPM();
+
 
 private:
 	class CTimer_Manager*			m_pTimer_Manager		= { nullptr };

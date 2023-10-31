@@ -22,9 +22,9 @@ CAnimation::CAnimation(const CAnimation & rhs)
 HRESULT CAnimation::Initialize_Prototype(const _float& fDuration, const _float& fTickPerSecond, vector<class CChannel*>& Channels, const string& strName)
 {
 	m_strName = strName;
-	m_fDuration = fDuration;
+	m_fDuration = fDuration;// / 60.f;
 	m_fTickPerSecond = fTickPerSecond;
-
+	
 	/* 벡터에 사이즈도 안 채우고 멤카피 하면 큰일난다. */
 	//memcpy(&m_Channels, &Channels, sizeof(Channels)); 
 

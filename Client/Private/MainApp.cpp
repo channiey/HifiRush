@@ -4,6 +4,10 @@
 #include "EngineInstance.h"
 #include "Level_Loading.h"
 
+#include "GameManager.h"
+#include "BeatManager.h"
+#include "BattleManager.h"
+
 #ifdef _DEBUG
 #include "ImGui_Manager.h"
 #endif // _DEBUG
@@ -39,6 +43,18 @@ HRESULT CMainApp::Initialize()
 
 	if (FAILED(Open_Level(LV_LOGO)))
 		return E_FAIL;
+
+	/* Client */
+	{
+		if (FAILED(CGameManager::GetInstance()->Initialize()))
+			return E_FAIL;
+
+		if (FAILED(CBeatManager::GetInstance()->Initialize()))
+			return E_FAIL;
+
+		if (FAILED(CBattleManager::GetInstance()->Initialize()))
+			return E_FAIL;
+	}
 
 #ifdef _DEBUG
 	if(FAILED(m_pImGui_Manager->Initialize(m_pDevice, m_pContext)))

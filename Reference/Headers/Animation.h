@@ -28,12 +28,11 @@ public:
 	HRESULT Clear_Bones();
 
 private:
-
 	string						m_strName;
 
 	_float						m_fDuration = 0.f;		/* 전체 재생 시간 */
 	_float						m_fPlayTime = 0.f;		/* 현재 재생 시간 */
-	_float						m_fTickPerSecond = 0.f; /* 초당 재생 속도 */
+	_float						m_fTickPerSecond = 0.f; /* 초당 재생 속도 (초당 프레임수) */
 
 	_uint						m_iMaxFrameCount = 0;
 

@@ -108,14 +108,17 @@ PS_OUT PS_RIM(PS_IN In)
 
 	// 기존 라이팅 계산 코드 (vShade, fSpecular를 활용)
 
-	// 외곽선 라이팅 계산
-    float rimFactor = 1 - saturate(dot(normalize(In.vNormal), normalize(g_vLightDir)));
-    float3 rimColor = float3(1.0, 0.647, 0.0); // 주황색
-    float4 rimLight = float4(rimColor * rimFactor, 1.0); // 외곽선 라이팅을 float4로 변환
+	//// 외곽선 라이팅 계산
+ //   float rimFactor = 1 - saturate(dot(normalize(In.vNormal), normalize(g_vLightDir)));
+ //   float3 rimColor = float3(1.0, 0.647, 0.0); // 주황색
+ //   float4 rimLight = float4(rimColor * rimFactor, 1.0); // 외곽선 라이팅을 float4로 변환
 
-	// 최종 색상 계산 (라이팅과 외곽선을 더함)	
-    Out.vColor = ((g_vLightDiffuse * vMtrlDiffuse) * (ceil(vShade * 3) / 3) +
-	             (g_vLightSpecular * g_vMtrlSpecular) * fSpecular) +rimLight;
+	//// 최종 색상 계산 (라이팅과 외곽선을 더함)	
+ //   Out.vColor = ((g_vLightDiffuse * vMtrlDiffuse) * (ceil(vShade * 3) / 3) +
+	//             (g_vLightSpecular * g_vMtrlSpecular) * fSpecular) +rimLight;
+	
+    Out.vColor = (g_vLightDiffuse * vMtrlDiffuse) * saturate(vShade) +
+		(g_vLightSpecular * g_vMtrlSpecular) * fSpecular;
 
     return Out;
 }

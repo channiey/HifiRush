@@ -6,7 +6,7 @@ BEGIN(Engine)
 #define MAX_MODEL_TRANSFORMS	600 
 #define MAX_MODEL_KEYFRAMES		400 
 
-#define DF_PL_TIME				1.4f
+#define DF_PL_TIME				1.f
 #define DF_TW_TIME				0.2f
 
 class ENGINE_DLL CModel final : public CComponent
@@ -23,7 +23,7 @@ public:
 	_uint	iNextFrame	= 1;
 	_float	fRatio		= 0.f;
 	_float	fFrameAcc	= 0.f;	
-	_float	fAnimAcc	= 0.f;
+	_float	fAnimAcc	= 0.f; /* 미사용인듯 */
 	_float	fSpeed		= DF_PL_TIME;
 
 	_int	iPadding = 0;
