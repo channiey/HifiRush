@@ -190,7 +190,7 @@ namespace Engine
 
 	}GRAPHIC_DESC;
 
-	enum class LERP_MODE { DEFAULT, EASE_OUT, EASE_IN, EXPONENTIAL, SMOOTHSTEP, SMOOTHERSTEP, TYPEEND };
+	enum class LERP_MODE { DEFAULT, EASE_OUT, EASE_IN, EXPONENTIAL, SMOOTH_STEP, SMOOTHER_STEP, TYPEEND };
 	typedef struct tagLerpFloatDesc
 	{
 		/* Time */
@@ -229,7 +229,9 @@ namespace Engine
 
 			if (fCurTime >= fEndTime)
 			{
-				Reset();
+				fCurValue = fTargetValue;
+				bActive = FALSE;
+				//Reset();
 				return;
 			}
 
@@ -256,13 +258,13 @@ namespace Engine
 				t = t * t;
 			}
 			break;
-			case LERP_MODE::SMOOTHSTEP:
+			case LERP_MODE::SMOOTH_STEP:
 			{
 				t = t * t * (3.f - 2.f * t);
 
 			}
 			break;
-			case LERP_MODE::SMOOTHERSTEP:
+			case LERP_MODE::SMOOTHER_STEP:
 			{
 				t = t * t * t * (t * (6.f * t - 15.f) + 10.f);
 			}
@@ -277,13 +279,13 @@ namespace Engine
 
 		_float Lerp_Float(const _float& _f1, const _float& _f2, const _float _fTime) { return (1 - _fTime) * _f1 + (_fTime * _f2); }
 
-		void Reset()
+		/*void Reset()
 		{
 			bActive		= FALSE;
 
 			fStartTime = fEndTime = fCurTime	= 0.f;
 			fStartValue = fTargetValue = fCurValue	= 0.f;
-		}
+		}*/
 
 	}LERP_FLOAT_DESC;
 
@@ -317,7 +319,7 @@ namespace Engine
 
 		void Update_Lerp(const _float& fTimeDelta)
 		{
-			if (!bActive) return;
+			if (!bActive || 0.02f < fTimeDelta) return;
 
 			fCurTime += fTimeDelta;
 
@@ -350,12 +352,12 @@ namespace Engine
 				t = t * t;
 			}
 			break;
-			case LERP_MODE::SMOOTHSTEP:
+			case LERP_MODE::SMOOTH_STEP:
 			{
 				t = t * t * (3.f - 2.f * t);
 			}
 			break;
-			case LERP_MODE::SMOOTHERSTEP:
+			case LERP_MODE::SMOOTHER_STEP:
 			{
 				t = t * t * t * (t * (6.f * t - 15.f) + 10.f);
 			}

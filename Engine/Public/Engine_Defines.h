@@ -4,6 +4,7 @@
 #pragma warning (disable : 4251)
 #pragma warning (disable : 4038) /* warning STL4038: The contents of <filesystem> are available only with C++17 or later. */
 #pragma warning (disable : 4244) /* string utils */
+#pragma warning	(disable : 4819) /* 한글 주석 경고 */
 
 /* DX (순서 함부로 바꿨다가 충돌 일어난다.) */
 #include <DirectXTK/PrimitiveBatch.h>

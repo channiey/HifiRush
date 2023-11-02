@@ -18,7 +18,7 @@ HRESULT CNode_Parallel::Initialize_Node()
 	return S_OK;
 }
 
-const NODE_STATE CNode_Parallel::Evaluate(const _float& fTimeDelta)
+const NODE_STATE CNode_Parallel::Evaluate(const _double& fTimeDelta)
 {
 	/* Parallel은 반환되는 값에 상관없이 모든 자식 노드를 순차적으로 실행한다. */
 	/* 모든 자식노드가 성공할 경우 성공 반환, 하나라도 실패할 경우 실패 반환, 이외에는 running을 반환한다. */

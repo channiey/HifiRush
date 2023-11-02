@@ -39,13 +39,18 @@ void CImGui_Window_Mid_Cam::Show_Window()
 				const char* strCamName = Util_String::WC2C(CameraNames[Pair->first]);
 				if (ImGui::Button(strCamName))
 				{
+					string DebugCamName = Util_String::ToString(wstring(CameraNames[CAM_DEBUG]));
+					{
+						if (DebugCamName == string(strCamName))
+							m_pImGui_Manager->m_bDebugCam = TRUE;
+						else 
+							m_pImGui_Manager->m_bDebugCam = FALSE;
+					}
+					
 					if (FAILED(ENGINE_INSTANCE->Change_Camera(Pair->first)))
 						assert(FALSE);
 				}
 				delete strCamName;
-				
-				if (++Pair != Cameras->end())
-					ImGui::SameLine();
 			}
 		}
 

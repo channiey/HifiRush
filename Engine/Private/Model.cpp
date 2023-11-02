@@ -146,7 +146,7 @@ HRESULT CModel::Initialize(void* pArg)
 	return S_OK;
 }
 
-HRESULT CModel::Update(_float fTimeDelta)
+HRESULT CModel::Update(_double fTimeDelta)
 {
 	if (TYPE::TYPE_ANIM != m_eModelType) 
 		return S_OK;
@@ -157,28 +157,31 @@ HRESULT CModel::Update(_float fTimeDelta)
 	return S_OK;
 }
 
-HRESULT CModel::Update_Anim(_float fTimeDelta)
+static _double dAcc = 0.f;
+
+HRESULT CModel::Update_Anim(_double fTimeDelta)
 {
 	if (m_bStopAnim)
 		return TRUE;
 
-	m_TweenDesc.cur.fFrameAcc += fTimeDelta;
+	dAcc += (_double)fTimeDelta;
 
 	CAnimation* pCurAnim = Get_Animation(m_TweenDesc.cur.iAnimIndex);
 	if (nullptr != pCurAnim)
 	{
+		pCurAnim->Add_FrameAcc((_double)fTimeDelta);
+
 		/* 한 프레임 갱신에 걸리는 시간 */
-		//_float timePerFrame = 1 / (pCurAnim->Get_TickPerSecond() * m_TweenDesc.cur.fSpeed);
-		_float timePerFrame = m_TweenDesc.cur.fSpeed;
-		
+		const _double& dSecondPerFrame = pCurAnim->Get_SecondPerFrame();
+
 		/* 한 프레임 끝 */
-		if (m_TweenDesc.cur.fFrameAcc >= timePerFrame)
+		if (pCurAnim->Get_FrameAcc() >= dSecondPerFrame)
 		{
-			m_TweenDesc.cur.fFrameAcc = 0;
+			pCurAnim->Add_FrameAcc(-dSecondPerFrame);
 			m_TweenDesc.cur.iCurFrame = (m_TweenDesc.cur.iCurFrame + 1) % pCurAnim->Get_MaxFrameCount();
 			m_TweenDesc.cur.iNextFrame = (m_TweenDesc.cur.iCurFrame + 1) % pCurAnim->Get_MaxFrameCount();
 		}
-		m_TweenDesc.cur.fRatio = (m_TweenDesc.cur.fFrameAcc / timePerFrame);
+		m_TweenDesc.cur.fRatio = (pCurAnim->Get_FrameAcc() / dSecondPerFrame);
 
 		/* 현재 애니메이션 종료시 */
 		if (0 == m_TweenDesc.cur.iNextFrame)
@@ -194,8 +197,9 @@ HRESULT CModel::Update_Anim(_float fTimeDelta)
 			}
 
 			m_bFinishAnimation = TRUE;
+
+			pCurAnim->Set_FrameAcc((_double)0.f);
 			m_TweenDesc.cur.ClearAnim();
-			m_TweenDesc.cur.fFrameAcc = 1.f;
 		}
 		else
 		{
@@ -244,22 +248,53 @@ HRESULT CModel::Update_Anim(_float fTimeDelta)
 		else
 		{
 			CAnimation* pNextAnim = Get_Animation(m_TweenDesc.next.iAnimIndex);
+
+			const _double& dSecondPerFrame = pNextAnim->Get_SecondPerFrame();
+
+			/* 한 프레임 끝 */
+			if (pNextAnim->Get_FrameAcc() >= dSecondPerFrame)
+			{
+				pNextAnim->Add_FrameAcc(-dSecondPerFrame);
+				m_TweenDesc.next.iCurFrame = (m_TweenDesc.next.iCurFrame + 1) % pNextAnim->Get_MaxFrameCount();
+				m_TweenDesc.next.iNextFrame = (m_TweenDesc.next.iCurFrame + 1) % pNextAnim->Get_MaxFrameCount();
+			}
+			m_TweenDesc.next.fRatio = (pNextAnim->Get_FrameAcc() / dSecondPerFrame);
+
+			//if (nullptr != pNextAnim)
+			//{
+			//	m_TweenDesc.next.fFrameAcc += fTimeDelta;
+
+			//	_float timePerFrame = m_TweenDesc.next.fSpeed;
+
+			//	/* 한 프레임 끝 */
+			//	if (m_TweenDesc.next.fFrameAcc >= timePerFrame)
+			//	{
+			//		m_TweenDesc.next.fFrameAcc -= timePerFrame;
+			//		m_TweenDesc.next.iCurFrame = (m_TweenDesc.next.iCurFrame + 1) % pNextAnim->Get_MaxFrameCount();
+			//		m_TweenDesc.next.iNextFrame = (m_TweenDesc.next.iCurFrame + 1) % pNextAnim->Get_MaxFrameCount();
+			//	}
+			//	m_TweenDesc.next.fRatio = (m_TweenDesc.next.fFrameAcc / timePerFrame);
+			//}
+
+
+
+			/*CAnimation* pNextAnim = Get_Animation(m_TweenDesc.next.iAnimIndex);
 			if (nullptr != pNextAnim)
 			{
-				m_TweenDesc.next.fFrameAcc += fTimeDelta;
+				m_TweenDesc.next.dFrameAcc += (_double)fTimeDelta;
 
-				_float timePerFrame = 1.f / (pNextAnim->Get_TickPerSecond() * m_TweenDesc.next.fSpeed);
+				_float timePerFrame = 1.f / (pNextAnim->Get_TickPerSecond() * m_TweenDesc.next.dSpeed);
 
 				if (m_TweenDesc.next.fRatio >= 1.f)
 				{
-					m_TweenDesc.next.fFrameAcc = 0;
+					m_TweenDesc.next.dFrameAcc = 0;
 
 					m_TweenDesc.next.iCurFrame = (m_TweenDesc.next.iCurFrame + 1) % pNextAnim->Get_MaxFrameCount();
 					m_TweenDesc.next.iNextFrame = (m_TweenDesc.next.iCurFrame + 1) % pNextAnim->Get_MaxFrameCount();
 				}
 
-				m_TweenDesc.next.fRatio = m_TweenDesc.next.fFrameAcc / timePerFrame;
-			}
+				m_TweenDesc.next.fRatio = m_TweenDesc.next.dFrameAcc / timePerFrame;
+			}*/
 
 			/* 일반 루트 포지션 셋 */
 			Set_RootPosition_Tween();
@@ -304,24 +339,33 @@ HRESULT CModel::Bind_Material(CShader * pShader, _uint iMaterialIndex, aiTexture
 	return m_Materials[iMaterialIndex].pTexture[eTextureType]->Bind_ShaderResource(pShader, pConstantName, 0);
 }
 
-void CModel::Set_Animation(const _uint& iAnimIndex, const _float& fSpeed, const _float& fTweenDuration)
+void CModel::Set_Animation(const _uint& iAnimIndex, const _double& dSpeed, const _float& fTweenDuration)
 {
 	/*if (iAnimIndex == m_TweenDesc.cur.iAnimIndex && -1 != m_TweenDesc.next.iAnimIndex || iAnimIndex == m_TweenDesc.next.iAnimIndex)
 		return;*/
 
+	cout << "Set\n";
+	/* 최초 1회 실행  */
+	if (-1 == m_TweenDesc.cur.iAnimIndex)
+	{
+		m_TweenDesc.cur.iAnimIndex = iAnimIndex % Get_AnimationCount();
+		Get_Animation(m_TweenDesc.cur.iAnimIndex)->Set_SecondPerFrame(dSpeed);
+		
+		return;
+	}
 	m_TweenDesc.ClearNextAnim();
 
 	m_TweenDesc.next.iAnimIndex = iAnimIndex % Get_AnimationCount();
-	m_TweenDesc.next.fSpeed = fSpeed;
+	Get_Animation(m_TweenDesc.next.iAnimIndex)->Set_SecondPerFrame(dSpeed);
 	m_TweenDesc.fTweenDuration = fTweenDuration;
 
-	m_TweenDesc.cur.fSpeed = fSpeed;
+	Get_Animation(m_TweenDesc.cur.iAnimIndex)->Set_SecondPerFrame(dSpeed);
 }
 
-void CModel::Set_AnimationSpeed(const _float& fSpeed)
+void CModel::Set_AnimationSpeed(const _double& dSpeed)
 {
-	m_TweenDesc.cur.fSpeed = fSpeed;
-	m_TweenDesc.next.fSpeed = fSpeed;
+	Get_Animation(m_TweenDesc.cur.iAnimIndex)->Set_SecondPerFrame(dSpeed);
+	Get_Animation(m_TweenDesc.next.iAnimIndex)->Set_SecondPerFrame(dSpeed);
 }
 
 void CModel::Set_BoneIndex(const BONE_TYPE& eType, const _int iIndex)

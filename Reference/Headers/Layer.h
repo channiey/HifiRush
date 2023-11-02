@@ -15,8 +15,8 @@ private:
 
 public:
 	HRESULT Initialize(const wstring& strLayerTag);
-	void Tick(_float fTimeDelta);
-	void LateTick(_float fTimeDelta);
+	void Tick(_double fTimeDelta);
+	void LateTick(_double fTimeDelta);
 
 public:
 	list<class CGameObject*>* Get_Objects() { return &m_GameObjects; }

@@ -15,14 +15,14 @@ protected:
 
 public:
 	virtual HRESULT Initialize_Node();
-	virtual const NODE_STATE Evaluate(const _float& fTimeDelta) PURE;
+	virtual const NODE_STATE Evaluate(const _double& fTimeDelta) PURE;
 
 public:
 	HRESULT Add_ChildNode(CNode* pChildNode) override { return E_FAIL; }
 	virtual HRESULT Reset_Node() override;
 
 protected:
-	virtual const _bool Check_Condition(const _float& fTimeDelta) { return TRUE; }
+	virtual const _bool Check_Condition(const _double& fTimeDelta) { return TRUE; }
 
 public:
 	virtual void Free();

@@ -19,7 +19,7 @@ private:
 
 public:
 	virtual HRESULT Initialize_Node();
-	virtual const NODE_STATE Evaluate(const _float& fTimeDelta);
+	virtual const NODE_STATE Evaluate(const _double& fTimeDelta);
 
 public:
 	HRESULT Add_ChildNode(CNode* pChildNode) override;

@@ -24,9 +24,9 @@ protected:
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
-	virtual void PriorityTick(_float fTimeDelta);
-	virtual void Tick(_float fTimeDelta);
-	virtual void LateTick(_float fTimeDelta);
+	virtual void PriorityTick(_double fTimeDelta);
+	virtual void Tick(_double fTimeDelta);
+	virtual void LateTick(_double fTimeDelta);
 	virtual HRESULT Render();
 
 private:

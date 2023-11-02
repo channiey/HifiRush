@@ -55,7 +55,7 @@ HRESULT CLevel_Loading::LateTick(_float fTimeDelta)
 
 	SetWindowText(g_hWnd, strLoadingText.c_str());
 
-	if (CEngineInstance::GetInstance()->Key_Down(VK_SPACE))
+	//if (CEngineInstance::GetInstance()->Key_Down(VK_SPACE))
 	{
 		if (true == m_pLoader->Get_Finished())
 		{

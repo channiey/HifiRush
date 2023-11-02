@@ -8,7 +8,7 @@ CLevel_Manager::CLevel_Manager()
 {
 }
 
-void CLevel_Manager::Tick(_float fTimeDelta)
+void CLevel_Manager::Tick(_double fTimeDelta)
 {
 	if (nullptr == m_pCurrentLevel)
 		return;
@@ -16,7 +16,7 @@ void CLevel_Manager::Tick(_float fTimeDelta)
 	m_pCurrentLevel->Tick(fTimeDelta);
 }
 
-void CLevel_Manager::LateTick(_float fTimeDelta)
+void CLevel_Manager::LateTick(_double fTimeDelta)
 {
 	if (nullptr == m_pCurrentLevel)
 		return;

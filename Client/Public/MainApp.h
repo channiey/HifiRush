@@ -19,7 +19,7 @@ private:
 
 public:
 	HRESULT Initialize();
-	void	Tick(_float fTimeDelta);
+	void	Tick(_double fTimeDelta);
 	HRESULT Render();
 	HRESULT FinishTick();
 

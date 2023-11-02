@@ -20,7 +20,7 @@ HRESULT CNode_Idle_Saber::Initialize_Node(CBlackboard* pBlackboard)
 
 	return S_OK;
 }
-const NODE_STATE CNode_Idle_Saber::Evaluate(const _float& fTimeDelta)
+const NODE_STATE CNode_Idle_Saber::Evaluate(const _double& fTimeDelta)
 {
 	if (Check_Condition(fTimeDelta))
 	{
@@ -34,7 +34,7 @@ const NODE_STATE CNode_Idle_Saber::Evaluate(const _float& fTimeDelta)
 }
 
 
-const _bool CNode_Idle_Saber::Check_Condition(const _float& fTimeDelta)
+const _bool CNode_Idle_Saber::Check_Condition(const _double& fTimeDelta)
 {
 	if (m_pBlackboard_Saber->m_bResetIdle)
 		return TRUE;
@@ -51,7 +51,7 @@ const _bool CNode_Idle_Saber::Check_Condition(const _float& fTimeDelta)
 	return m_pBlackboard_Saber->m_bResetIdle;
 }
 
-void CNode_Idle_Saber::Wait(const _float& fTimeDelta)
+void CNode_Idle_Saber::Wait(const _double& fTimeDelta)
 {
 	/* Set Look */
 	Set_LookAtTarget(fTimeDelta);

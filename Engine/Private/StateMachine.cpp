@@ -30,7 +30,7 @@ HRESULT CStateMachine::Initialize(void * pArg)
 	return S_OK;
 }
 
-HRESULT CStateMachine::Tick(const _float& fTimeDelta)
+HRESULT CStateMachine::Tick(const _double& fTimeDelta)
 {
 	if (nullptr == m_pCurState || !m_bActive)
 		return E_FAIL;
@@ -43,7 +43,7 @@ HRESULT CStateMachine::Tick(const _float& fTimeDelta)
 	return S_OK;
 }
 
-HRESULT CStateMachine::LateTick(const _float& fTimeDelta)
+HRESULT CStateMachine::LateTick(const _double& fTimeDelta)
 {
 	if (nullptr == m_pCurState || !m_bActive)
 		return E_FAIL;

@@ -22,11 +22,6 @@ struct KeyframeDesc
     uint iCurFrame;
     uint iNextFrame;
     float fRatio;
-    float fFrameAcc;
-    float fAnimAcc;
-    float fSpeed;
-    
-    int iPadding;
 };
 
 struct TweenFrameDesc

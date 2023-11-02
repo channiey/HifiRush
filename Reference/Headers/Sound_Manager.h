@@ -24,8 +24,9 @@ public:
 public:
 	void	PlaySound(_uint eSoundID, _uint eChannelID, float fVolume);
 
-	HRESULT Play_BGM(_uint eSoundID, _uint eChannelID, float fVolume);
-	HRESULT Add_BGM(_uint eSoundID, _uint eChannelID, float fVolume);
+	HRESULT Register_BGM(_uint eSoundID, _uint eChannelID, float fVolume);
+	HRESULT Play_BGM();
+	const _bool& Is_PlayBGM() const { return m_bPlayBgm; }
 	
 	void	Stop_Sound(_uint eChannelID);
 	void	Stop_All();
@@ -49,8 +50,8 @@ private:
 	/* BGM */
 	_int						m_iCurBgmID = -1;
 	_int						m_iCurBgmChannel = -1;
-
 	LERP_FLOAT_DESC				m_tCurBgmVolume;
+	_bool						m_bPlayBgm = FALSE;
 
 
 public:

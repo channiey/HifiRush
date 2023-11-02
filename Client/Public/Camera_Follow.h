@@ -19,8 +19,8 @@ private:
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
-	virtual void	Tick(_float fTimeDelta) override;
-	virtual void	LateTick(_float fTimeDelta) override;
+	virtual void	Tick(_double fTimeDelta) override;
+	virtual void	LateTick(_double fTimeDelta) override;
 
 private:
 	HRESULT			Ready_Components();
@@ -29,9 +29,9 @@ private:
 	HRESULT			Find_Target();
 
 private:
-	void			Move(const _float& fTimeDelta);
-	const Vec4		Calculate_Position(const _float& fTimeDelta);
-	const Vec4		Calculate_Look(const _float& fTimeDelta);
+	void			Move(const _double& fTimeDelta);
+	const Vec4		Calculate_Position(const _double& fTimeDelta);
+	const Vec4		Calculate_Look(const _double& fTimeDelta);
 
 private:
 	CTransform*		m_pTransformCom = { nullptr };

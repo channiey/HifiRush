@@ -97,7 +97,7 @@ void CImGui_Window_Sub_Com_Model::Show_Animations()
 
 	/* Animation Speed */
 	{
-		_float fAnimSpeed = pModel->Get_TweenDesc().cur.fSpeed;
+		/*_float fAnimSpeed = pModel->Get_CurAnimation()->Get
 
 		if (ImGui::DragFloat("Animation Speed", &fAnimSpeed, 0.01f))
 		{
@@ -109,7 +109,7 @@ void CImGui_Window_Sub_Com_Model::Show_Animations()
 				pNavMeshAgent->Set_Active(FALSE);
 			}
 			pModel->Set_RootAnimation(TRUE);
-		}
+		}*/
 	}
 }
 

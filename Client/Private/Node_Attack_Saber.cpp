@@ -22,7 +22,7 @@ HRESULT CNode_Attack_Saber::Initialize_Node(CBlackboard* pBlackboard)
 	return S_OK;
 }
 
-const NODE_STATE CNode_Attack_Saber::Evaluate(const _float& fTimeDelta)
+const NODE_STATE CNode_Attack_Saber::Evaluate(const _double& fTimeDelta)
 {
 	if (nullptr == m_pBlackboard_Saber->m_pSaber->m_tFightDesc.pTarget)
 		return NODE_STATE::FAILURE;
@@ -43,7 +43,7 @@ const NODE_STATE CNode_Attack_Saber::Evaluate(const _float& fTimeDelta)
 	return NODE_STATE::RUNNING;
 }
 
-const _bool CNode_Attack_Saber::Check_Condition(const _float& fTimeDelta)
+const _bool CNode_Attack_Saber::Check_Condition(const _double& fTimeDelta)
 {
 
 	return TRUE;

@@ -18,7 +18,7 @@ HRESULT CNode_Sequence::Initialize_Node()
 	return S_OK;
 }
 
-const NODE_STATE CNode_Sequence::Evaluate(const _float& fTimeDelta)
+const NODE_STATE CNode_Sequence::Evaluate(const _double& fTimeDelta)
 {
 	if (!Is_ChildNode()) 
 		return NODE_STATE::FAILURE;

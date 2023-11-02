@@ -39,7 +39,7 @@ HRESULT CTriggerDummy::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CTriggerDummy::Tick(_float fTimeDelta)
+void CTriggerDummy::Tick(_double fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
@@ -48,7 +48,7 @@ void CTriggerDummy::Tick(_float fTimeDelta)
 		m_pCollider->Update(m_pTransformCom->Get_WorldMat());
 }
 
-void CTriggerDummy::LateTick(_float fTimeDelta)
+void CTriggerDummy::LateTick(_double fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 

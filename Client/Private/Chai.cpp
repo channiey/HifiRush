@@ -55,7 +55,7 @@ HRESULT CChai::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CChai::Tick(_float fTimeDelta)
+void CChai::Tick(_double fTimeDelta)
 {
 	if (!CImGui_Manager::GetInstance()->Is_DebugCam())
 	{
@@ -69,7 +69,7 @@ void CChai::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 }
 
-void CChai::LateTick(_float fTimeDelta)
+void CChai::LateTick(_double fTimeDelta)
 {
 	if (!CImGui_Manager::GetInstance()->Is_DebugCam())
 	{

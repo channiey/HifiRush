@@ -189,6 +189,7 @@
     <ClInclude Include="..\Public\Chai_Guitar_Explore.h" />
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\GameManager.h" />
+    <ClInclude Include="..\Public\HealthBar.h" />
     <ClInclude Include="..\Public\ImGui_Window_Mid_Cam.h" />
     <ClInclude Include="..\Public\SkySphere.h" />
     <ClInclude Include="..\Public\DebugDraw.h" />
@@ -280,6 +281,7 @@
     <ClCompile Include="..\Private\Chai_Guitar_Explore.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\GameManager.cpp" />
+    <ClCompile Include="..\Private\HealthBar.cpp" />
     <ClCompile Include="..\Private\ImGui_Window_Mid_Cam.cpp" />
     <ClCompile Include="..\Private\SkySphere.cpp" />
     <ClCompile Include="..\Private\DebugDraw.cpp" />

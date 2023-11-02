@@ -24,7 +24,7 @@ HRESULT CState_Chai_Damaged::Enter()
 	return S_OK;
 }
 
-const wstring& CState_Chai_Damaged::Tick(const _float& fTimeDelta)
+const wstring& CState_Chai_Damaged::Tick(const _double& fTimeDelta)
 {
 	return Check_Transition();
 }

@@ -14,7 +14,7 @@ public:
 
 public:
 	HRESULT Enter() override;
-	const wstring& Tick(const _float& fTimeDelta) override;
+	const wstring& Tick(const _double& fTimeDelta) override;
 	const wstring& LateTick() override;
 	void Exit() override;
 
@@ -23,7 +23,7 @@ public:
 
 
 private:
-	void Move(const _float& fTimeDelta);
+	void Move(const _double& fTimeDelta);
 
 private:
 	Vec3 m_vScale = {};

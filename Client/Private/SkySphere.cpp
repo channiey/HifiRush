@@ -28,17 +28,17 @@ HRESULT CSkySphere::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CSkySphere::PriorityTick(_float fTimeDelta)
+void CSkySphere::PriorityTick(_double fTimeDelta)
 {
 
 }
 
-void CSkySphere::Tick(_float fTimeDelta)
+void CSkySphere::Tick(_double fTimeDelta)
 {
 
 }
 
-void CSkySphere::LateTick(_float fTimeDelta)
+void CSkySphere::LateTick(_double fTimeDelta)
 {
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, ENGINE_INSTANCE->Get_CamPosition());
 

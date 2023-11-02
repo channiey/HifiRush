@@ -42,8 +42,8 @@ private:
 
 public:
 	HRESULT Reserve_Manager(_uint iNumLevels);
-	void	Tick(_float fTimeDelta);
-	void	LateTick(_float fTimeDelta);
+	void	Tick(_double fTimeDelta);
+	void	LateTick(_double fTimeDelta);
 	void	FinishTick(); 
 
 public: 

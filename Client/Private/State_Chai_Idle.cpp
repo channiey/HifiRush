@@ -25,15 +25,15 @@ HRESULT CState_Chai_Idle::Enter()
 {
 	ANIM_CH			eAnimID = ANIM_CH::IDLE;
 	CAnimation*		pAnimation = m_pChai->Get_Model()->Get_Animation(eAnimID);
-	const _float	fTimePerFrame = CBeatManager::GetInstance()->Get_AnimTimePerFrameSyncBeat(pAnimation);
+	const _double	fTimePerFrame = CBeatManager::GetInstance()->Get_AnimTimePerFrame(pAnimation);
 
-	m_pChai->Get_Model()->Set_Animation(eAnimID, fTimePerFrame * 0.5f, DF_TW_TIME);
+	m_pChai->Get_Model()->Set_Animation(eAnimID, fTimePerFrame * (_double)2.f, DF_TW_TIME);
 	m_pChai->Get_Model()->Set_RootAnimation(FALSE);
 
 	return S_OK;
 }
 
-const wstring& CState_Chai_Idle::Tick(const _float& fTimeDelta)
+const wstring& CState_Chai_Idle::Tick(const _double& fTimeDelta)
 {
 
 	return m_strName;
@@ -51,6 +51,9 @@ void CState_Chai_Idle::Exit()
 
 const wstring& CState_Chai_Idle::Check_Transition()
 {
+	if(!CBeatManager::GetInstance()->Is_Hit())
+		return m_strName;
+
 	if (m_pChai->Get_Model()->Is_Tween())
 		return m_strName;
 

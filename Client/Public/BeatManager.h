@@ -4,6 +4,7 @@
 #include "Base.h"
 
 BEGIN(Engine)
+class CModel;
 class CAnimation;
 END
 
@@ -23,20 +24,23 @@ public:
 
 public:
 	const _uint		Get_BPM();
-	const _double	Get_BPS();
-	const _float	Get_AnimTimePerFrameSyncBeat(class CAnimation* pAnim);
-
-
+	const _double	Get_BPS(); /* 초당 비트 수 */
+	const _double	Get_SPB(); /* 비트 당 초 */
+	const _double	Get_AnimTimePerFrame(class CAnimation* pAnim);
 
 public:
 	const _bool&	Is_Hit() const { return m_bHit; }
+
+public:
 	void			Reset();
 
 private:
-	_uint			m_iCurBpm	= 0;
-	_double			m_fCurTime	= 0;
-	_bool			m_bHit		= FALSE;
+	void			Update_Beat(const _float fTimedelta);
 
+private:
+	_uint			m_iCurBpm	= 0;
+	_double			m_dCurTime	= 0;
+	_bool			m_bHit		= FALSE;
 
 public:
 	virtual void	Free() override;

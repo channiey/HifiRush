@@ -84,32 +84,28 @@ HRESULT CEngineInstance::Initialize_Engine(_uint iNumLevels, HINSTANCE hInst, co
 	return S_OK;
 }
 
-void CEngineInstance::Tick(_float fTimeDelta)
+void CEngineInstance::Tick(_double fTimeDelta)
 {
-	if (nullptr == m_pLevel_Manager)
-		return;
+	/* I.O Update */
+	{
+		m_pInput_Device->Tick();
+		m_pSound_Manager->Update(fTimeDelta);
+	}
 
-	if (nullptr == m_pObject_Manager)
-		return;
-
-	if (nullptr == m_pInput_Device)
-		return;
-
-	if (nullptr == m_pPipeLine)
-		return;
-
-	m_pInput_Device->Tick();
-	m_pSound_Manager->Update(fTimeDelta);
-
-	m_pObject_Manager->Tick(fTimeDelta);
-	m_pLevel_Manager->Tick(fTimeDelta);
+	/* Level, Obj Update*/
+	{
+		m_pLevel_Manager->Tick(fTimeDelta);
+		m_pObject_Manager->Tick(fTimeDelta);
+	}
 
 	/* 카메라 오브젝트 월드행렬 갱신 -> 뷰행령 투영행렬 저장 -> 계산*/
-	m_pCamera_Manager->Tick();
-	m_pPipeLine->Tick();
+	{
+		m_pCamera_Manager->Tick();
+		m_pPipeLine->Tick();
+	}
 }
 
-void CEngineInstance::LateTick(_float fTimeDelta)
+void CEngineInstance::LateTick(_double fTimeDelta)
 {
 	m_pLevel_Manager->LateTick(fTimeDelta);
 	m_pObject_Manager->LateTick(fTimeDelta);
@@ -126,7 +122,7 @@ void CEngineInstance::Clear(_uint iLevelIndex)
 	m_pObject_Manager->Clear(iLevelIndex);
 }
 
-_float CEngineInstance::Compute_TimeDelta(const wstring & strTimerTag)
+_double CEngineInstance::Compute_TimeDelta(const wstring & strTimerTag)
 {
 	if (nullptr == m_pTimer_Manager)
 		return 0.f;
@@ -605,12 +601,20 @@ void CEngineInstance::Play_Sound(_uint eSoundID, _uint eChannelID, float fVolume
 	return m_pSound_Manager->PlaySound(eSoundID, eChannelID, fVolume);
 }
 
-HRESULT CEngineInstance::Play_BGM(_uint eSoundID, _uint eChannelID, float fVolume)
+HRESULT CEngineInstance::Register_BGM(_uint eSoundID, _uint eChannelID, float fVolume)
 {
 	if (nullptr == m_pSound_Manager)
 		return E_FAIL;
 
-	return m_pSound_Manager->Play_BGM(eSoundID, eChannelID, fVolume);
+	return m_pSound_Manager->Register_BGM(eSoundID, eChannelID, fVolume);
+}
+
+HRESULT CEngineInstance::Play_BGM()
+{
+	if(nullptr == m_pSound_Manager)
+		return E_FAIL;
+
+	return m_pSound_Manager->Play_BGM();
 }
 
 const _uint CEngineInstance::Get_BPM()
@@ -619,6 +623,14 @@ const _uint CEngineInstance::Get_BPM()
 		return E_FAIL;
 
 	return m_pSound_Manager->Get_BPM();
+}
+
+const _bool CEngineInstance::Is_PlayBGM()
+{
+	if (nullptr == m_pSound_Manager)
+		return FALSE;
+
+	return m_pSound_Manager->Is_PlayBGM();
 }
 
 void CEngineInstance::Release_Engine()

@@ -10,10 +10,12 @@ namespace Client
 
 #define FPS_LIMIT		66.f
 
-#define CONSOLE_LOG     1
+#define CONSOLE_LOG     0
 #define CURSOL_LOCK     0
 #define CURSOL_HIDE     0
 #define OPEN_IMGUI      0
+
+#define MAX_DELTA		0.02f
 
 	/* Window */
 	const unsigned int		g_iWinSizeX = 1280;
@@ -134,10 +136,12 @@ namespace Client
 		BGM_CUR,
 
 		/* Player */
-		PLAYER_CHAI_,
+		PLAYER_CHAI,
 		PLAYER_PEPPERMINT,
 
-		/* Enemy */
+
+		/* Etc */
+		ETC,
 		CHANNEL_ID_END = MAX_CHANNEL
 	};
 
@@ -160,9 +164,13 @@ namespace Client
 		BGM_MIDDLE_DOWNTIME,
 		BGM_MIDDLE_UNRESTRICTED,
 
+		/* EFT */
+		EFC_METRONOM,
+
 		SOUND_FILE_END
 	};
 	static const char* SoundFilePath_Engine = "../../Client/Bin/Resources/Sounds/";
+
 
 	static const _float BgmVolumeInBattle = 0.4f;
 	static const _float BgmVolumeInNotBattle = 0.2f;

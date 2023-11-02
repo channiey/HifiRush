@@ -14,7 +14,7 @@ public:
 
 public:
 	HRESULT Enter() override;
-	const wstring& Tick(const _float& fTimeDelta) override;
+	const wstring& Tick(const _double& fTimeDelta) override;
 	const wstring& LateTick() override;
 	void Exit() override;
 
@@ -27,7 +27,7 @@ private:
 	void Set_FallSpeed();
 
 private:
-	void Move(const _float& fTimeDelta);
+	void Move(const _double& fTimeDelta);
 	void Jump();
 
 private:

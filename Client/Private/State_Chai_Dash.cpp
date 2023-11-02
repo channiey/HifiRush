@@ -20,7 +20,7 @@ HRESULT CState_Chai_Dash::Initialize(CStateMachine* pStateMachine, const wstring
 HRESULT CState_Chai_Dash::Enter()
 {
 	m_pChai->Get_Model()->Set_RootAnimation(FALSE);
-	m_pChai->Get_Model()->Set_Animation(ANIM_CH::DASH_FRONT, 2.f, 0.1f);
+	m_pChai->Get_Model()->Set_Animation(ANIM_CH::DASH_FRONT, (_double)2.f, 0.1f);
 
 	m_pChai->Get_Rigidbody()->Add_Force(m_pChai->Get_Transform()->Get_Forward().xyz() * m_pChai->m_tPhysicsDesc.fDashPower, CRigidbody::FORCE_MODE::IMPULSE);
 
@@ -29,7 +29,7 @@ HRESULT CState_Chai_Dash::Enter()
 	return S_OK;
 }
 
-const wstring& CState_Chai_Dash::Tick(const _float& fTimeDelta)
+const wstring& CState_Chai_Dash::Tick(const _double& fTimeDelta)
 {
 	return m_strName;
 }

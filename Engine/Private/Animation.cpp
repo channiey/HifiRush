@@ -12,7 +12,8 @@ CAnimation::CAnimation(const CAnimation & rhs)
 	, m_fDuration(rhs.m_fDuration)
 	, m_Channels(rhs.m_Channels) /* 데이터 큼, 얕은 복사해도 상관 없으니 얕은복사로 진행 */
 	, m_fTickPerSecond(rhs.m_fTickPerSecond)
-	, m_fPlayTime(rhs.m_fPlayTime)
+	, m_dFrameAcc(rhs.m_dFrameAcc)
+	, m_dSecondPerFrame(rhs.m_dSecondPerFrame)
 	, m_iMaxFrameCount(rhs.m_iMaxFrameCount)
 {
 	for (auto& pChannel : m_Channels)

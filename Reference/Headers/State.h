@@ -18,7 +18,7 @@ public:
 
 public:
 	virtual HRESULT			Enter() PURE;
-	virtual const wstring&	Tick(const _float& fTimeDelta) PURE;
+	virtual const wstring&	Tick(const _double& fTimeDelta) PURE;
 	virtual const wstring&	LateTick() PURE;
 	virtual void			Exit() PURE;
 

@@ -103,7 +103,7 @@ HRESULT CLayer::Push_GameObject(CGameObject* pGameObject)
 	return S_OK;
 }
 
-void CLayer::Tick(_float fTimeDelta)
+void CLayer::Tick(_double fTimeDelta)
 {
 	/* 1차 자식에 대한 업데이트는 부모의 업데이트 이후 진행된다. (2차, 3차까지는 아직 미구현) */
 
@@ -129,7 +129,7 @@ void CLayer::Tick(_float fTimeDelta)
 	}
 }
 
-void CLayer::LateTick(_float fTimeDelta)
+void CLayer::LateTick(_double fTimeDelta)
 {
 	for (auto& pGameObject : m_GameObjects)
 	{

@@ -14,10 +14,10 @@ private:
 
 public:
 	HRESULT Initialize_Node(class CBlackboard* pBlackboard);
-	virtual const NODE_STATE Evaluate(const _float& fTimeDelta);
+	virtual const NODE_STATE Evaluate(const _double& fTimeDelta);
 
 private:
-	virtual const _bool Check_Condition(const _float& fTimeDelta) override;
+	virtual const _bool Check_Condition(const _double& fTimeDelta) override;
 
 private:
 	void Attack();

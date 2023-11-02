@@ -45,7 +45,7 @@ HRESULT CState_Chai_Attack::Enter()
 	return S_OK;
 }
 
-const wstring& CState_Chai_Attack::Tick(const _float& fTimeDelta)
+const wstring& CState_Chai_Attack::Tick(const _double& fTimeDelta)
 {
 	CModel* pModel = m_pChai->Get_Model();
 	

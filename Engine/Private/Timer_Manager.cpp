@@ -7,7 +7,7 @@ CTimer_Manager::CTimer_Manager()
 {
 }
 
-_float CTimer_Manager::Compute_TimeDelta(const wstring & strTimerTag)
+_double CTimer_Manager::Compute_TimeDelta(const wstring & strTimerTag)
 {
 	CTimer*		pTimer = Find_Timer(strTimerTag);
 

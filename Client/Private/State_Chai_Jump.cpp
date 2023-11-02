@@ -20,7 +20,7 @@ HRESULT CState_Chai_Jump::Initialize(CStateMachine* pStateMachine, const wstring
 HRESULT CState_Chai_Jump::Enter()
 {
 	m_pChai->Get_Model()->Set_RootAnimation(FALSE);
-	m_pChai->Get_Model()->Set_Animation(ANIM_CH::JUMP, 3.f, 0.1f);
+	m_pChai->Get_Model()->Set_Animation(ANIM_CH::JUMP, (_double)3.f, 0.1f);
 
 	m_pChai->m_tPhysicsDesc.bGround = FALSE;
 	m_pChai->m_tPhysicsDesc.bJump = TRUE;
@@ -32,7 +32,7 @@ HRESULT CState_Chai_Jump::Enter()
 	return S_OK;
 }
 
-const wstring& CState_Chai_Jump::Tick(const _float& fTimeDelta)
+const wstring& CState_Chai_Jump::Tick(const _double& fTimeDelta)
 {
 	Move(fTimeDelta);
 
@@ -171,7 +171,7 @@ void CState_Chai_Jump::Set_FallSpeed()
 	}
 }
 
-void CState_Chai_Jump::Move(const _float& fTimeDelta)
+void CState_Chai_Jump::Move(const _double& fTimeDelta)
 {
 	CTransform* pTranform = m_pChai->Get_Transform();
 

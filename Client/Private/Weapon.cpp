@@ -35,7 +35,7 @@ HRESULT CWeapon::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CWeapon::Tick(_float fTimeDelta)
+void CWeapon::Tick(_double fTimeDelta)
 {
 	if (nullptr == m_pParent)
 		return;
@@ -51,7 +51,7 @@ void CWeapon::Tick(_float fTimeDelta)
 	}
 }
 
-void CWeapon::LateTick(_float fTimeDelta)
+void CWeapon::LateTick(_double fTimeDelta)
 {
 	if (nullptr == m_pParent)
 		return;

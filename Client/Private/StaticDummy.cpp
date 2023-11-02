@@ -32,7 +32,7 @@ HRESULT CStaticDummy::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CStaticDummy::Tick(_float fTimeDelta)
+void CStaticDummy::Tick(_double fTimeDelta)
 {
 	/* Update Colliders */
 	for (auto& pCollider : m_pColliderComs)
@@ -42,7 +42,7 @@ void CStaticDummy::Tick(_float fTimeDelta)
 	}
 }
 
-void CStaticDummy::LateTick(_float fTimeDelta)
+void CStaticDummy::LateTick(_double fTimeDelta)
 {
 	if (nullptr == m_pRendererCom)
 		return;

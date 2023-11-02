@@ -165,7 +165,7 @@ HRESULT CObject_Manager::Return_Pool(_uint iLevelIndex, CGameObject* pObj)
 	return S_OK;
 }
 
-void CObject_Manager::Tick(_float fTimeDelta)
+void CObject_Manager::Tick(_double fTimeDelta)
 {
 	for (size_t i = 0; i < m_iNumLevels; i++)
 	{
@@ -177,7 +177,7 @@ void CObject_Manager::Tick(_float fTimeDelta)
 	}
 }
 
-void CObject_Manager::LateTick(_float fTimeDelta)
+void CObject_Manager::LateTick(_double fTimeDelta)
 {
 	for (size_t i = 0; i < m_iNumLevels; i++)
 	{

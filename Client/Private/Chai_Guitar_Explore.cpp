@@ -32,7 +32,7 @@ HRESULT CChai_Guitar_Explore::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CChai_Guitar_Explore::Tick(_float fTimeDelta)
+void CChai_Guitar_Explore::Tick(_double fTimeDelta)
 {
 	if (nullptr == m_pParent)
 		return;
@@ -40,7 +40,7 @@ void CChai_Guitar_Explore::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 }
 
-void CChai_Guitar_Explore::LateTick(_float fTimeDelta)
+void CChai_Guitar_Explore::LateTick(_double fTimeDelta)
 {
 	if (nullptr == m_pParent)
 		return;

@@ -34,6 +34,9 @@
 #include "Chai_Guitar_Explore.h"
 #include "Saber_Sword.h"
 
+/* UI */
+#include "HealthBar.h"
+
 CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: m_pDevice(pDevice)
 	, m_pContext(pContext)
@@ -107,59 +110,59 @@ _int CLoader::Loading()
 
 HRESULT CLoader::Load_Prototype()
 {
-	CEngineInstance* pGameInstance = CEngineInstance::GetInstance();
-	Safe_AddRef(pGameInstance);
+	CEngineInstance* pEngineInstance = CEngineInstance::GetInstance();
+	Safe_AddRef(pEngineInstance);
 
 	/* For.Component */
 	m_strLoading = TEXT("Loding... : CComponent");
 	{
 		/* For.Prototype_Component_VIBuffer_Terrain*/
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_VIBuffer_Terrain"),
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_VIBuffer_Terrain"),
 			CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Prototype/Terrain/Height1.bmp")))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_VIBuffer_Cube */
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"),
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"),
 			CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Camera */
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Camera"),
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Camera"),
 			CCamera::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Rigidbody */
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Rigidbody"),
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Rigidbody"),
 			CRigidbody::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 		
 		/* For.Prototype_Component_StateMachine */
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_StateMachine"),
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_StateMachine"),
 			CStateMachine::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_BehaviourTree */
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_BehaviourTree"),
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_BehaviourTree"),
 			CBehaviourTree::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_NavMeshAgent */
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_NavMeshAgent"),
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_NavMeshAgent"),
 			CNavMeshAgent::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Collider_AABB */
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Collider_AABB"),
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Collider_AABB"),
 			CCollider_AABB::Create(m_pDevice, m_pContext, CCollider::AABB))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Collider_OBB */
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Collider_OBB"),
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Collider_OBB"),
 			CCollider_OBB::Create(m_pDevice, m_pContext, CCollider::OBB))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Collider_Sphere */
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
 			CCollider_Sphere::Create(m_pDevice, m_pContext, CCollider::SPHERE))))
 			return E_FAIL;
 	}
@@ -168,28 +171,33 @@ HRESULT CLoader::Load_Prototype()
 	m_strLoading = TEXT("Loding... : Texture");
 	{
 		/* For.Prototype_Component_Texture_BackGround*/
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Texture_BackGround"),
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Texture_BackGround"),
 			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Prototype/Default%d.jpg"), 2))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Texture_Terrain*/
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Texture_Terrain"),
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Texture_Terrain"),
 			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Prototype/Terrain/Tile%d.dds"), 2))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Texture_Terrain_Mask */
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Texture_Terrain_Mask"),
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Texture_Terrain_Mask"),
 			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Prototype/Terrain/Mask.bmp"), 1))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Texture_Sky */
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Texture_Sky"),
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Texture_Sky"),
 			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Prototype/SkyBox/Sky_%d.dds"), 4))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Texture_SkySphere */
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Texture_SkySphere"),
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Texture_SkySphere"),
 			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Background/Sky/T_SkyBox_RoxanneBlueSkyAndCloud.png")))))
+			return E_FAIL;		
+
+		/* For.Prototype_Component_Texture_HealthBarBody */
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Texture_HealthBarBody"),
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Ui/Test/%d.png"), 2))))
 			return E_FAIL;
 	}
 
@@ -197,27 +205,27 @@ HRESULT CLoader::Load_Prototype()
 	m_strLoading = TEXT("Loding... : Shader");
 	{
 		/* For.Prototype_Component_Shader_VtxNorTex*/
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, ShaderNames[SHADER_NORMAL],
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, ShaderNames[SHADER_NORMAL],
 			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl"), VTXNORTEX::Elements, VTXNORTEX::iNumElements))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Shader_VtxMesh */
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, ShaderNames[SHADER_STATIC],
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, ShaderNames[SHADER_STATIC],
 			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxMesh.hlsl"), VTXMESH::Elements, VTXMESH::iNumElements))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Shader_VTF */
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, ShaderNames[SHADER_VTF],
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, ShaderNames[SHADER_VTF],
 			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VTF.hlsl"), VTXANIMMESH::Elements, VTXANIMMESH::iNumElements))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Shader_VtxCube */
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, ShaderNames[SHADER_CUBE],
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, ShaderNames[SHADER_CUBE],
 			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxCube.hlsl"), VTXCUBE::Elements, VTXCUBE::iNumElements))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Shader_VtxSkySphere */
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, ShaderNames[SHADER_SKY_SPHERE],
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, ShaderNames[SHADER_SKY_SPHERE],
 			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxSkySphere.hlsl"), VTXMESH::Elements, VTXMESH::iNumElements))))
 			return E_FAIL;
 
@@ -230,13 +238,13 @@ HRESULT CLoader::Load_Prototype()
 
 		/* For.Prototype_Component_Model_Chai */
 		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.015f);
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Chai"),
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Chai"),
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Chai", PivotMatrix))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Model_Saber */
 		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.015f);
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Saber"),
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Saber"),
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Saber", PivotMatrix))))
 			return E_FAIL;
 
@@ -250,7 +258,7 @@ HRESULT CLoader::Load_Prototype()
 				const string		tag = "Prototype_Component_Model_Weapon_Chai_Guitar_Explore";
 				const string		filePath = "../Bin/Resources/Models/Weapon/Chai_Guitar_Explore";
 
-				if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString(tag),
+				if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString(tag),
 					CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Weapon/Chai_Guitar_Explore", PivotMatrix))))
 					return E_FAIL;
 			}
@@ -260,7 +268,7 @@ HRESULT CLoader::Load_Prototype()
 				const string		tag = "Prototype_Component_Model_Weapon_Saber_Sword";
 				const string		filePath = "../Bin/Resources/Models/Weapon/Saber_Sword";
 
-				if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString(tag),
+				if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString(tag),
 					CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Weapon/Saber_Sword", PivotMatrix))))
 					return E_FAIL;
 			}
@@ -277,7 +285,7 @@ HRESULT CLoader::Load_Prototype()
 
 			for (string& name : fileNames)
 			{
-				if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString(tag + name),
+				if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString(tag + name),
 					CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/" + name, PivotMatrix))))
 					return E_FAIL;
 			}
@@ -286,31 +294,31 @@ HRESULT CLoader::Load_Prototype()
 
 		//PivotMatrix = Matrix::Identity * Matrix::CreateScale(0.006f);
 		
-		/*if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Bldg_Inside_Battle_A"),
+		/*if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Bldg_Inside_Battle_A"),
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/Bldg_Inside_Battle_A", PivotMatrix))))
 			return E_FAIL;
 
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Bldg_Inside_Battle_B"),
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Bldg_Inside_Battle_B"),
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/Bldg_Inside_Battle_B", PivotMatrix))))
 			return E_FAIL;
 
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Bldg_Outside_BK"),
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Bldg_Outside_BK"),
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/Bldg_Outside_BK", PivotMatrix))))
 			return E_FAIL;
 
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Bldg_Inside_Lobby_A"),
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Bldg_Inside_Lobby_A"),
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/Bldg_Inside_Lobby_A", PivotMatrix))))
 			return E_FAIL;
 
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Container_Closed_Blue"),
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Container_Closed_Blue"),
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/Container_Closed_Blue", PivotMatrix))))
 			return E_FAIL;
 
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Container_Closed_Green"),
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Container_Closed_Green"),
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/Container_Closed_Green", PivotMatrix))))
 			return E_FAIL;
 
-		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Container_Closed_Yellow"),
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Container_Closed_Yellow"),
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/Container_Closed_Yellow", PivotMatrix))))
 			return E_FAIL;*/
 
@@ -324,7 +332,7 @@ HRESULT CLoader::Load_Prototype()
 		/* For.Prototype_Component_Model_Geometry */
 		PivotMatrix = Matrix::Identity * Matrix::CreateScale(0.01f);
 
-  		if (FAILED(pGameInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Geometry_Sphere"),
+  		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Geometry_Sphere"),
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Geometry/Sphere", PivotMatrix))))
 			return E_FAIL;
 	}
@@ -333,32 +341,37 @@ HRESULT CLoader::Load_Prototype()
 	m_strLoading = TEXT("Loding... : Prototype Object");
 	{
 		/* For.Prototype_GameObject_BackGround */
-		if (FAILED(pGameInstance->Add_Prototype(TEXT("Ui_BackGround"), CBackGround::Create(m_pDevice, m_pContext))))
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Ui_BackGround"), CBackGround::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For.Prototype_GameObject_Camera_Debug */
-		if (FAILED(pGameInstance->Add_Prototype(TEXT("Camera_Debug"),
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Camera_Debug"),
 			CCamera_Debug::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For.Prototype_GameObject_Camera_Debug */
-		if (FAILED(pGameInstance->Add_Prototype(TEXT("Camera_Follow"),
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Camera_Follow"),
 			CCamera_Follow::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For.Prototype_GameObject_Player_Chai */
-		if (FAILED(pGameInstance->Add_Prototype(TEXT("Player_Chai"),
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Player_Chai"),
 			CChai::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For.Prototype_GameObject_Enemy_Saber */
-		if (FAILED(pGameInstance->Add_Prototype(TEXT("Enemy_Saber"),
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Enemy_Saber"),
 			CSaber::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For.Prototype_GameObject_Trigger_Dummy */
-		if (FAILED(pGameInstance->Add_Prototype(TEXT("Trigger_Dummy"),
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Trigger_Dummy"),
 			CTriggerDummy::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_UI_HealthBar */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("UI_HealthBar"),
+			CHealthBar::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 
@@ -369,7 +382,7 @@ HRESULT CLoader::Load_Prototype()
 				const string		tag = "Weapon_Chai_Guitar_Explore";
 				const string		filePath = "../Bin/Resources/Models/Weapon/Chai_Guitar_Explore";
 
-				if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString(tag), CChai_Guitar_Explore::Create(m_pDevice, m_pContext))))
+				if (FAILED(pEngineInstance->Add_Prototype(Util_String::ToWString(tag), CChai_Guitar_Explore::Create(m_pDevice, m_pContext))))
 					return E_FAIL;
 			}
 			/* For.Prototype_GameObject_Weapon_Saber_Sword */
@@ -377,7 +390,7 @@ HRESULT CLoader::Load_Prototype()
 				const string		tag = "Weapon_Saber_Sword";
 				const string		filePath = "../Bin/Resources/Models/Weapon/Saber_Sword";
 
-				if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString(tag), CSaber_Sword::Create(m_pDevice, m_pContext))))
+				if (FAILED(pEngineInstance->Add_Prototype(Util_String::ToWString(tag), CSaber_Sword::Create(m_pDevice, m_pContext))))
 					return E_FAIL;
 			}
 		}
@@ -391,47 +404,47 @@ HRESULT CLoader::Load_Prototype()
 
 			for (string& name : fileNames)
 			{
-				if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString(tag + name), CStaticDummy::Create(m_pDevice, m_pContext))))
+				if (FAILED(pEngineInstance->Add_Prototype(Util_String::ToWString(tag + name), CStaticDummy::Create(m_pDevice, m_pContext))))
 					return E_FAIL;
 			}
 		}
 
-		/*if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_Static_Bldg_Inside_Battle_A"), CStaticDummy::Create(m_pDevice, m_pContext))))
+		/*if (FAILED(pEngineInstance->Add_Prototype(Util_String::ToWString("Env_Static_Bldg_Inside_Battle_A"), CStaticDummy::Create(m_pDevice, m_pContext))))
 			return E_FAIL; 
-		//if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_Static_Bldg_Inside_Battle_B"), CStaticDummy::Create(m_pDevice, m_pContext))))
+		//if (FAILED(pEngineInstance->Add_Prototype(Util_String::ToWString("Env_Static_Bldg_Inside_Battle_B"), CStaticDummy::Create(m_pDevice, m_pContext))))
 		//	return E_FAIL;
-		if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_Static_Bldg_Outside_BK"), CStaticDummy::Create(m_pDevice, m_pContext))))
+		if (FAILED(pEngineInstance->Add_Prototype(Util_String::ToWString("Env_Static_Bldg_Outside_BK"), CStaticDummy::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
-		if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_Static_Bldg_Inside_Lobby_A"), CStaticDummy::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-
-		if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_Static_Container_Closed_Blue"), CStaticDummy::Create(m_pDevice, m_pContext))))
+		if (FAILED(pEngineInstance->Add_Prototype(Util_String::ToWString("Env_Static_Bldg_Inside_Lobby_A"), CStaticDummy::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_Static_Container_Closed_Green"), CStaticDummy::Create(m_pDevice, m_pContext))))
+		if (FAILED(pEngineInstance->Add_Prototype(Util_String::ToWString("Env_Static_Container_Closed_Blue"), CStaticDummy::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_Static_Container_Closed_Yellow"), CStaticDummy::Create(m_pDevice, m_pContext))))
+		if (FAILED(pEngineInstance->Add_Prototype(Util_String::ToWString("Env_Static_Container_Closed_Green"), CStaticDummy::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(pEngineInstance->Add_Prototype(Util_String::ToWString("Env_Static_Container_Closed_Yellow"), CStaticDummy::Create(m_pDevice, m_pContext))))
 			return E_FAIL;*/
 		
 		
 
-		if (FAILED(pGameInstance->Add_Prototype(TEXT("Env_Static_Terrain"),
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Env_Static_Terrain"),
 			CTerrain::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		if (FAILED(pGameInstance->Add_Prototype(TEXT("Env_SkyBox"),
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Env_SkyBox"),
 			CSkyBox::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		if (FAILED(pGameInstance->Add_Prototype(Util_String::ToWString("Env_SkySphere"),
+		if (FAILED(pEngineInstance->Add_Prototype(Util_String::ToWString("Env_SkySphere"),
 			CSkySphere::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 	}
 
 	m_strLoading = TEXT("Loading Finish");
 	m_isFinished = true;
-	Safe_Release(pGameInstance);
+	Safe_Release(pEngineInstance);
 
 	return S_OK;
 }

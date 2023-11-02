@@ -20,7 +20,7 @@ HRESULT CNode_Wait_Saber::Initialize_Node(CBlackboard* pBlackboard)
 	return S_OK;
 }
 
-const NODE_STATE CNode_Wait_Saber::Evaluate(const _float& fTimeDelta)
+const NODE_STATE CNode_Wait_Saber::Evaluate(const _double& fTimeDelta)
 {
 	if (nullptr == m_pBlackboard_Saber->m_pSaber->m_tFightDesc.pTarget)
 		return NODE_STATE::FAILURE;
@@ -36,7 +36,7 @@ const NODE_STATE CNode_Wait_Saber::Evaluate(const _float& fTimeDelta)
 	}
 }
 
-const _bool CNode_Wait_Saber::Check_Condition(const _float& fTimeDelta)
+const _bool CNode_Wait_Saber::Check_Condition(const _double& fTimeDelta)
 {
 	m_pBlackboard_Saber->m_fAttackAccTime += fTimeDelta;
 
@@ -50,7 +50,7 @@ const _bool CNode_Wait_Saber::Check_Condition(const _float& fTimeDelta)
 }
 
 
-void CNode_Wait_Saber::Wait(const _float& fTimeDelta)
+void CNode_Wait_Saber::Wait(const _double& fTimeDelta)
 {
 	/* Set Look */
 	Set_LookAtTarget(fTimeDelta);

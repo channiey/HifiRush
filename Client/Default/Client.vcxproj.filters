@@ -325,7 +325,7 @@
     <Filter Include="03.GameObjects\10.UI\00.HUD">
       <UniqueIdentifier>{0f11183d-2549-4008-8a4e-4c98b6e17b64}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.GameObjects\10.UI\00.HUD\00.HealthBar">
+    <Filter Include="03.GameObjects\10.UI\00.HUD\00.HealthBar%28Prototype%29">
       <UniqueIdentifier>{077005cb-b824-4877-b6da-1bd0074bd810}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -537,6 +537,9 @@
     <ClInclude Include="..\Public\Ui.h">
       <Filter>03.GameObjects\10.UI</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\HealthBar.h">
+      <Filter>03.GameObjects\10.UI\00.HUD\00.HealthBar%28Prototype%29</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -733,6 +736,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Ui.cpp">
       <Filter>03.GameObjects\10.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HealthBar.cpp">
+      <Filter>03.GameObjects\10.UI\00.HUD\00.HealthBar%28Prototype%29</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -40,7 +40,7 @@ HRESULT CState_Chai_Parry::Enter()
 	return S_OK;
 }
 
-const wstring& CState_Chai_Parry::Tick(const _float& fTimeDelta)
+const wstring& CState_Chai_Parry::Tick(const _double& fTimeDelta)
 {
 	return m_strName;
 }

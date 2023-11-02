@@ -15,8 +15,7 @@ HRESULT CLevel_Stage_01::Initialize()
 {
 	/* Sound */
 	{
-		ENGINE_INSTANCE->Play_BGM(BGM_FAST_RUSH, BGM_CUR, BgmVolumeInNotBattle);
-		CBeatManager::GetInstance()->Reset();
+		ENGINE_INSTANCE->Register_BGM(BGM_FAST_RUSH, BGM_CUR, BgmVolumeInNotBattle);
 	}
 
 	if (FAILED(CNavMesh::GetInstance()->Load_NavData(NavPaths[LV_STAGE_01])))
@@ -30,6 +29,13 @@ HRESULT CLevel_Stage_01::Initialize()
 
 HRESULT CLevel_Stage_01::Tick(_float fTimeDelta)
 {
+	/* Late Initialize ´À³¦ */
+	if (!ENGINE_INSTANCE->Is_PlayBGM())
+	{
+		ENGINE_INSTANCE->Play_BGM();
+		CBeatManager::GetInstance()->Reset();
+	}
+
 	return S_OK;
 }
 

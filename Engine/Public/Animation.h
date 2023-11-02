@@ -21,6 +21,13 @@ public:
 	_float	Get_TickPerSecond() const { return m_fTickPerSecond; }
 	_float	Get_Duration() const { return m_fDuration; }
 
+	const _double& Get_FrameAcc() const { return m_dFrameAcc; }
+	void Set_FrameAcc(const _double& dFrameAcc) { m_dFrameAcc = dFrameAcc; }
+	void Add_FrameAcc(const _double& dFrameAcc) { m_dFrameAcc += dFrameAcc; }
+
+	const _double& Get_SecondPerFrame() const { return m_dSecondPerFrame; }
+	void Set_SecondPerFrame(const _double& dSecondPerFrame) { m_dSecondPerFrame = dSecondPerFrame; }
+
 public:
 	HRESULT Calculate_Animation(_uint iFrame);
 
@@ -31,8 +38,10 @@ private:
 	string						m_strName;
 
 	_float						m_fDuration = 0.f;		/* 전체 재생 시간 */
-	_float						m_fPlayTime = 0.f;		/* 현재 재생 시간 */
+	_double						m_dFrameAcc = 0.f;		/* 현재 재생 시간 */
 	_float						m_fTickPerSecond = 0.f; /* 초당 재생 속도 (초당 프레임수) */
+
+	_double						m_dSecondPerFrame = 0.f;
 
 	_uint						m_iMaxFrameCount = 0;
 

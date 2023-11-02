@@ -32,7 +32,7 @@ HRESULT CSaber_Sword::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CSaber_Sword::Tick(_float fTimeDelta)
+void CSaber_Sword::Tick(_double fTimeDelta)
 {
 	if (nullptr == m_pParent)
 		return;
@@ -40,7 +40,7 @@ void CSaber_Sword::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 }
 
-void CSaber_Sword::LateTick(_float fTimeDelta)
+void CSaber_Sword::LateTick(_double fTimeDelta)
 {
 	if (nullptr == m_pParent)
 		return;

@@ -19,8 +19,8 @@ private:
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg) override;
-	virtual HRESULT Tick(const _float& fTimeDelta);
-	virtual HRESULT LateTick(const _float& fTimeDelta);	
+	virtual HRESULT Tick(const _double& fTimeDelta);
+	virtual HRESULT LateTick(const _double& fTimeDelta);
 
 public:
 	CState* Get_CurState() const { return m_pCurState; }

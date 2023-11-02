@@ -7,7 +7,7 @@ BEGIN(Engine)
 #define MAX_MODEL_KEYFRAMES		400 
 
 #define DF_PL_TIME				1.f
-#define DF_TW_TIME				0.2f
+#define DF_TW_TIME				0.1f
 
 class ENGINE_DLL CModel final : public CComponent
 {
@@ -17,54 +17,48 @@ public:
 	enum            ANIM_PROGRESS	{ ONE_THIRDS, HALF, TWO_THIRDS, FINISH, PROGRESS_END };
 
 	typedef struct	KeyframeDesc
-{
-	_int	iAnimIndex	= 0;	
-	_uint	iCurFrame	= 0;
-	_uint	iNextFrame	= 1;
-	_float	fRatio		= 0.f;
-	_float	fFrameAcc	= 0.f;	
-	_float	fAnimAcc	= 0.f; /* 미사용인듯 */
-	_float	fSpeed		= DF_PL_TIME;
-
-	_int	iPadding = 0;
-
-	void ClearAnim()
 	{
-		iCurFrame	= 0;
-		iNextFrame	= 1;
-		fRatio		= 0.f;
-		fFrameAcc	= 0.f;
-	}
+		_int	iAnimIndex	= -1;	
+		_uint	iCurFrame	= 0;
+		_uint	iNextFrame	= 1;
+		_float	fRatio		= 0.f;
 
-}KEYFRAME_DESC;
+		void ClearAnim()
+		{
+			iCurFrame	= 0;
+			iNextFrame	= 1;
+			fRatio		= 0.f;
+		}
+
+	}KEYFRAME_DESC;
+
 	typedef struct	TweenDesc
-{
-	KEYFRAME_DESC cur	= {};
-	KEYFRAME_DESC next	= {};
-
-	_float fTweenDuration = DF_TW_TIME;
-	_float fTweenRatio	 = 0.f;
-	_float fTweenAcc		 = 0.f;
-	_float fPadding		 = 0.f;
-
-	TweenDesc()
 	{
-		cur.iAnimIndex	= 0;
-		next.iAnimIndex = -1;
-	}
+		KEYFRAME_DESC cur	= {};
+		KEYFRAME_DESC next	= {};
 
-	void ClearNextAnim()
-	{
-		next.iAnimIndex = -1;
-		next.iCurFrame	= 0;
-		next.iNextFrame = 0;
-		next.fFrameAcc = 0.f;
-		fTweenAcc		= 0.f;
-		fTweenRatio		= 0.f;
-		fTweenDuration = DF_TW_TIME;
-	}
+		_float fTweenDuration = DF_TW_TIME;
+		_float fTweenRatio	 = 0.f;
+		_float fTweenAcc		 = 0.f;
+		_float fPadding		 = 0.f;
 
-}TWEEN_DESC;
+		TweenDesc()
+		{
+			cur.iAnimIndex	= -1;
+			next.iAnimIndex = -1;
+		}
+
+		void ClearNextAnim()
+		{
+			next.iAnimIndex = -1;
+			next.iCurFrame	= 0;
+			next.iNextFrame = 0;
+			fTweenAcc		= 0.f;
+			fTweenRatio		= 0.f;
+			fTweenDuration = DF_TW_TIME;
+		}
+
+	}TWEEN_DESC;
 
 private:
 	typedef struct	AnimTransformCache
@@ -88,7 +82,7 @@ private:
 public:
 	virtual HRESULT			Initialize_Prototype(const string& strPath, _fmatrix PivotMatrix);
 	virtual HRESULT			Initialize(void* pArg);
-	HRESULT					Update(_float fTimeDelta);
+	HRESULT					Update(_double fTimeDelta);
 	HRESULT					Render(class CShader* pShader, _uint iMeshIndex, _uint iPassIndex = 0);
 	
 public:
@@ -120,8 +114,8 @@ public:
 	const TYPE&				Get_Type() const { return m_eModelType; }
 
 public:
-	void					Set_Animation(const _uint& iAnimIndex, const _float& fSpeed = DF_PL_TIME, const _float& fTweenDuration = DF_TW_TIME);
-	void					Set_AnimationSpeed(const _float& fSpeed);
+	void					Set_Animation(const _uint& iAnimIndex, const _double& dSpeed = DF_PL_TIME, const _float& fTweenDuration = DF_TW_TIME);
+	void					Set_AnimationSpeed(const _double& dSpeed);
 	void					Set_BoneIndex(const BONE_TYPE& eType, const _int iIndex);
 	void					Set_RootAnimation(const _bool bRootAnim) { m_bPrevRootAnimation = m_bRootAnimation; m_bRootAnimation = bRootAnim; }
 
@@ -150,7 +144,7 @@ private:
 	void					Create_AnimationTransform(uint32 iAnimIndex, vector<ANIM_TRANSFORM>& pAnimTransform);
 	void					Create_AnimationTransformCache(uint32 iAnimIndex, vector<ANIM_TRANSFORM_CACHE>& pAnimTransformCache);
 
-	HRESULT					Update_Anim(_float fTimeDelta);
+	HRESULT					Update_Anim(_double fTimeDelta);
 
 	const Matrix			Get_AnimBoneLocal(const _uint& iAnimIndex, const _uint& iFrameIndex, const BONE_TYPE& eBoneType);
 	const Matrix			Get_CurAnimBonefinal(const BONE_TYPE& eBoneType);

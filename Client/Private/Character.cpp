@@ -36,7 +36,7 @@ HRESULT CCharacter::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CCharacter::Tick(_float fTimeDelta)
+void CCharacter::Tick(_double fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
@@ -47,7 +47,7 @@ void CCharacter::Tick(_float fTimeDelta)
 	}
 }
 
-void CCharacter::LateTick(_float fTimeDelta)
+void CCharacter::LateTick(_double fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 

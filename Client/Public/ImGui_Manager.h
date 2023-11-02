@@ -98,7 +98,7 @@ private:
 	void			Reset_Index_PrefabObject();
 
 public:
-	CEngineInstance*					m_pEngineInstance = { nullptr };
+	CEngineInstance*				m_pEngineInstance = { nullptr };
 	_bool							m_bActive = TRUE;
 
 	vector<class CImGui_Window*>	m_pMainWindows;

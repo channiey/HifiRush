@@ -42,7 +42,7 @@ HRESULT CEnemy::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CEnemy::Tick(_float fTimeDelta)
+void CEnemy::Tick(_double fTimeDelta)
 {
 	if (!CImGui_Manager::GetInstance()->Is_DebugCam())
 	{
@@ -52,7 +52,7 @@ void CEnemy::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 }
 
-void CEnemy::LateTick(_float fTimeDelta)
+void CEnemy::LateTick(_double fTimeDelta)
 {
 	if (!CImGui_Manager::GetInstance()->Is_DebugCam())
 	{

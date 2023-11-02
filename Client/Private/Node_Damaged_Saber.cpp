@@ -18,7 +18,7 @@ HRESULT CNode_Damaged_Saber::Initialize_Node(CBlackboard* pBlackboard)
 
 	return S_OK;
 }
-const NODE_STATE CNode_Damaged_Saber::Evaluate(const _float& fTimeDelta)
+const NODE_STATE CNode_Damaged_Saber::Evaluate(const _double& fTimeDelta)
 {
 	if (nullptr == m_pBlackboard_Saber->m_pSaber->m_tFightDesc.pAttacker)
 		return NODE_STATE::FAILURE;
@@ -43,7 +43,7 @@ const NODE_STATE CNode_Damaged_Saber::Evaluate(const _float& fTimeDelta)
 }
 
 
-const _bool CNode_Damaged_Saber::Check_Condition(const _float& fTimeDelta)
+const _bool CNode_Damaged_Saber::Check_Condition(const _double& fTimeDelta)
 {
 	if (m_pBlackboard_Saber->m_pSaber->Get_FightDesc().bDamaged)
 		return TRUE;

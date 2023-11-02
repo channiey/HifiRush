@@ -19,8 +19,8 @@ private:
 
 public: 
 	HRESULT Initialize_Engine(_uint iNumLevels, HINSTANCE hInst, const GRAPHIC_DESC& GraphicDesc, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext, const char* strSoundFilePath);
-	void	Tick(_float fTimeDelta);
-	void	LateTick(_float fTimeDelta);
+	void	Tick(_double fTimeDelta);
+	void	LateTick(_double fTimeDelta);
 	void	FinishTick();
 	void	Clear(_uint iLevelIndex);
 
@@ -29,7 +29,7 @@ public:
 	ID3D11DeviceContext* Get_Context() const { return m_pContext; }
 
 public: /* For.Timer_Manager */
-	_float	Compute_TimeDelta(const wstring& strTimerTag);
+	_double	Compute_TimeDelta(const wstring& strTimerTag);
 	HRESULT	Add_Timer(const wstring& strTimerTag);
 
 public: /* For.Graphic_Device */
@@ -109,10 +109,11 @@ public: /* For.Camera_Manager */
 	const map<_uint, CGameObject*>* Get_Cameras();
 
 public: /* For.Sound_Manager */
-	void	Play_Sound(_uint eSoundID, _uint eChannelID, float fVolume);
-	HRESULT Play_BGM(_uint eSoundID, _uint eChannelID, float fVolume);
+	void		Play_Sound(_uint eSoundID, _uint eChannelID, float fVolume);
+	HRESULT		Register_BGM(_uint eSoundID, _uint eChannelID, float fVolume);
+	HRESULT		Play_BGM();
 	const _uint Get_BPM();
-
+	const _bool Is_PlayBGM();
 
 private:
 	class CTimer_Manager*			m_pTimer_Manager		= { nullptr };

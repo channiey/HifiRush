@@ -20,7 +20,7 @@ protected:
 public:
 	virtual HRESULT Initialize_Node();
 	/* 자식 노드를 순차적으로 실행하고 결과를 반환한다. (행동 트리에서의 Tick 역할) */
-	virtual const NODE_STATE Evaluate(const _float& fTimeDelta) PURE;
+	virtual const NODE_STATE Evaluate(const _double& fTimeDelta) PURE;
 
 public:
 	CNode*				Get_ParentNode() const { return m_pParentNode; }

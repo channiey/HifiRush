@@ -33,7 +33,7 @@ const _bool CNode_Action_Saber::Is_Playing_Animation()
 
 }
 
-void CNode_Action_Saber::Set_LookAtTarget(const _float& fTimeDelta)
+void CNode_Action_Saber::Set_LookAtTarget(const _double& fTimeDelta)
 {
 	/* Set Look */
 	if (!m_pBlackboard_Saber->m_pSaber->Get_Model()->Is_Tween())

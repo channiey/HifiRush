@@ -1,7 +1,7 @@
 #include "Timer.h"
 
 CTimer::CTimer() 
-	: m_fTimeDelta(0.f)
+	: m_dTimeDelta(0.f)
 {
 	ZeroMemory(&m_FrameTime, sizeof(LARGE_INTEGER));
 	ZeroMemory(&m_FixTime, sizeof(LARGE_INTEGER));
@@ -20,7 +20,7 @@ HRESULT CTimer::Ready_Timer()
 	return S_OK;
 }
 
-_float CTimer::Compute_TimeDelta()
+_double CTimer::Compute_TimeDelta()
 {
 	QueryPerformanceCounter(&m_FrameTime);
 
@@ -30,11 +30,11 @@ _float CTimer::Compute_TimeDelta()
 		m_FixTime = m_FrameTime;
 	}
 
-	m_fTimeDelta = float(m_FrameTime.QuadPart - m_LastTime.QuadPart) / m_CpuTick.QuadPart;
+	m_dTimeDelta = _double(m_FrameTime.QuadPart - m_LastTime.QuadPart) / m_CpuTick.QuadPart;
 
 	m_LastTime = m_FrameTime;
 
-	return m_fTimeDelta;
+	return m_dTimeDelta;
 
 }
 

@@ -32,11 +32,11 @@ HRESULT CGameObject::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CGameObject::Tick(_float fTimeDelta)
+void CGameObject::Tick(_double fTimeDelta)
 {
 }
 
-void CGameObject::LateTick(_float fTimeDelta)
+void CGameObject::LateTick(_double fTimeDelta)
 {
 	//Compute_CamZ(Get_Transform()->Get_State(CTransform::STATE_POSITION));
 }

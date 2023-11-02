@@ -44,7 +44,7 @@ HRESULT CCamera_Follow::Initialize(void * pArg)
 	return S_OK;
 }
 
-void CCamera_Follow::Tick(_float fTimeDelta)
+void CCamera_Follow::Tick(_double fTimeDelta)
 {	
 	if (nullptr == m_pCameraCom->Get_TargetObj())
 	{
@@ -65,7 +65,7 @@ void CCamera_Follow::Tick(_float fTimeDelta)
 #endif // _DEBUG
 }
 
-void CCamera_Follow::LateTick(_float fTimeDelta)
+void CCamera_Follow::LateTick(_double fTimeDelta)
 {
 	if (!m_pCameraCom->Is_TargetObj() || !m_pCameraCom->Is_LookAtObj())
 		return;
@@ -109,13 +109,13 @@ HRESULT CCamera_Follow::Find_Target()
 	return S_OK;
 }
 
-void CCamera_Follow::Move(const _float& fTimeDelta)
+void CCamera_Follow::Move(const _double& fTimeDelta)
 {
 	m_pTransformCom->Set_Position(Calculate_Position(fTimeDelta));
 	m_pTransformCom->LookAt(Calculate_Look(fTimeDelta));
 }
 
-const Vec4 CCamera_Follow::Calculate_Position(const _float& fTimeDelta)
+const Vec4 CCamera_Follow::Calculate_Position(const _double& fTimeDelta)
 {
 	_long	MouseMove = 0l;
 
@@ -151,7 +151,7 @@ const Vec4 CCamera_Follow::Calculate_Position(const _float& fTimeDelta)
 	return vCamLocal + m_pCameraCom->Get_TargetObj()->Get_Transform()->Get_FinalPosition();
 }
 
-const Vec4 CCamera_Follow::Calculate_Look(const _float& fTimeDelta)
+const Vec4 CCamera_Follow::Calculate_Look(const _double& fTimeDelta)
 {
 	return Vec4(m_pCameraCom->Get_TargetObj()->Get_Transform()->Get_FinalPosition() + m_pCameraCom->Get_LookAtOffSet()).OneW();
 }

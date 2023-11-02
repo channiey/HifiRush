@@ -13,7 +13,7 @@ private:
 	
 public:
 	HRESULT	Ready_Timer();
-	_float	Compute_TimeDelta();
+	_double	Compute_TimeDelta();
 	
 private:
 	LARGE_INTEGER			m_FrameTime;
@@ -21,7 +21,7 @@ private:
 	LARGE_INTEGER			m_LastTime;
 	LARGE_INTEGER			m_CpuTick;
 
-	_float					m_fTimeDelta;
+	_double					m_dTimeDelta;
 
 public:
 	static CTimer*		Create(void);

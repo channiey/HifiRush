@@ -49,7 +49,7 @@ HRESULT CSaber::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CSaber::Tick(_float fTimeDelta)
+void CSaber::Tick(_double fTimeDelta)
 {
 	/* 임시 코드 */
 	if (nullptr == m_tFightDesc.pTarget)
@@ -63,7 +63,7 @@ void CSaber::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 }
 
-void CSaber::LateTick(_float fTimeDelta)
+void CSaber::LateTick(_double fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 }

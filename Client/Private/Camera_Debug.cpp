@@ -44,7 +44,7 @@ HRESULT CCamera_Debug::Initialize(void * pArg)
 	return S_OK;
 }
 
-void CCamera_Debug::Tick(_float fTimeDelta)
+void CCamera_Debug::Tick(_double fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
@@ -58,7 +58,7 @@ void CCamera_Debug::Tick(_float fTimeDelta)
 
 }
 
-void CCamera_Debug::LateTick(_float fTimeDelta)
+void CCamera_Debug::LateTick(_double fTimeDelta)
 {
 }
 
@@ -85,7 +85,7 @@ HRESULT CCamera_Debug::Ready_Components()
 	return S_OK;
 }
 
-void CCamera_Debug::Move(const _float& fTimeDelta)
+void CCamera_Debug::Move(const _double& fTimeDelta)
 {
 	CEngineInstance* pGameInstance = GET_INSTANCE(CEngineInstance);
 
@@ -115,12 +115,12 @@ void CCamera_Debug::Move(const _float& fTimeDelta)
 	{
 		if (MouseMove = pGameInstance->Get_DIMMoveState(CInput_Device::MMS_X))
 		{
-			m_pTransformCom->Rotate(Vec4{ 0, 1, 0, 0}, MouseMove * m_pCameraCom->Get_MouseSensitiveX() * fTimeDelta);
+			m_pTransformCom->Rotate(Vec4{ 0, 1, 0, 0}, _float(MouseMove * m_pCameraCom->Get_MouseSensitiveX() * fTimeDelta));
 		}
 
 		if (MouseMove = pGameInstance->Get_DIMMoveState(CInput_Device::MMS_Y))
 		{
-			m_pTransformCom->Rotate(m_pTransformCom->Get_Right(), MouseMove * m_pCameraCom->Get_MouseSensitiveY() * fTimeDelta);
+			m_pTransformCom->Rotate(m_pTransformCom->Get_Right(), _float(MouseMove * m_pCameraCom->Get_MouseSensitiveY() * fTimeDelta));
 		}
 	}
 

@@ -25,11 +25,11 @@ HRESULT CSound_Manager::Initialize(string soundFilePath)
 
 HRESULT CSound_Manager::Update(const _float& fTimedelta)
 {
-	m_tCurBgmVolume.Update(fTimedelta);
+	/*m_tCurBgmVolume.Update(fTimedelta);
 	if (m_tCurBgmVolume.bActive)
 	{
 		Set_Volume(m_iCurBgmChannel, m_tCurBgmVolume.fCurValue);
-	}
+	}*/
 
 	return S_OK;
 }
@@ -62,33 +62,38 @@ void CSound_Manager::PlaySound(_uint eSoundID, _uint eChannelID, float fVolume)
 
 }
 
-HRESULT CSound_Manager::Play_BGM(_uint eSoundID, _uint eChannelID, float fVolume)
+HRESULT CSound_Manager::Register_BGM(_uint eSoundID, _uint eChannelID, float fVolume)
 {
 	m_iCurBgmID = eSoundID;
 	m_iCurBgmChannel = eChannelID;
+	m_tCurBgmVolume.fCurValue = fVolume;
 
-	m_tCurBgmVolume.Start(0.f, fVolume, 1.f, LERP_MODE::SMOOTHSTEP);
+	m_bPlayBgm = FALSE;
 
+	return S_OK;
+}
+
+HRESULT CSound_Manager::Play_BGM()
+{
+	//m_tCurBgmVolume.Start(0.f, fVolume, 1.f, LERP_MODE::SMOOTH_STEP);
+	
+	m_bPlayBgm = TRUE;
+	
 	map<TCHAR*, FMOD_SOUND*>::iterator iter;
 
 	iter = find_if(m_mapSound.begin(), m_mapSound.end(), [&](auto& iter)->bool
 		{
-			return !lstrcmp(m_SoundNames[eSoundID], iter.first);
+			return !lstrcmp(m_SoundNames[m_iCurBgmID], iter.first);
 		});
 
 	if (iter == m_mapSound.end())
 		return E_FAIL;
 
-	FMOD_System_PlaySound(m_pSystem, FMOD_CHANNEL_FREE, iter->second, FALSE, &m_Channels[eChannelID]);
-	FMOD_Channel_SetMode(m_Channels[eChannelID], FMOD_LOOP_NORMAL);
-	FMOD_Channel_SetVolume(m_Channels[eChannelID], m_tCurBgmVolume.fCurValue);
+	FMOD_System_PlaySound(m_pSystem, FMOD_CHANNEL_FREE, iter->second, FALSE, &m_Channels[m_iCurBgmChannel]);
+	FMOD_Channel_SetMode(m_Channels[m_iCurBgmChannel], FMOD_LOOP_NORMAL);
+	FMOD_Channel_SetVolume(m_Channels[m_iCurBgmChannel], m_tCurBgmVolume.fCurValue);
 	FMOD_System_Update(m_pSystem);
 
-	return S_OK;
-}
-
-HRESULT CSound_Manager::Add_BGM(_uint eSoundID, _uint eChannelID, float fVolume)
-{
 	return S_OK;
 }
 

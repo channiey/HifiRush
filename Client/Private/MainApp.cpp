@@ -64,12 +64,13 @@ HRESULT CMainApp::Initialize()
 	return S_OK;
 }
 
-void CMainApp::Tick(_float fTimeDelta)
+void CMainApp::Tick(_double fTimeDelta)
 {
+	CBeatManager::GetInstance()->Update(fTimeDelta);
+
 	m_pEngineInstance->Tick(fTimeDelta);
 
 	m_pEngineInstance->LateTick(fTimeDelta);
-
 
 #ifdef _DEBUG
 	if (m_pEngineInstance->Key_Down(VK_F1))
