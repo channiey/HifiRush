@@ -16,7 +16,7 @@ HRESULT CBeatManager::Initialize()
 	return S_OK;
 }
 
-HRESULT CBeatManager::Update(const _float fTimedelta)
+HRESULT CBeatManager::Update(const _double fTimedelta)
 {
 	Update_Beat(fTimedelta);
 	
@@ -36,6 +36,11 @@ const _double CBeatManager::Get_BPS()
 const _double CBeatManager::Get_SPB()
 {
 	return (_double)60.f / (_double)ENGINE_INSTANCE->Get_BPM();
+}
+
+const _double CBeatManager::Get_SPB(_uint iNumBeat)
+{
+	return(_double)60.f / (_double)ENGINE_INSTANCE->Get_BPM() * (_double)iNumBeat;
 }
 
 const _double CBeatManager::Get_AnimTimePerFrame(CAnimation* pAnim)
@@ -65,27 +70,45 @@ const _double CBeatManager::Get_AnimTimePerFrame(CAnimation* pAnim)
 
 void CBeatManager::Reset()
 {
-	m_bHit		= FALSE;
-
 	m_iCurBpm	= ENGINE_INSTANCE->Get_BPM();
+	
+	m_bSteadyBeat = FALSE;
+	m_bHalfBeat = FALSE;
 
-	m_dCurTime = 0;
+	m_dCurTimeSteadyBeat = 0;
+	m_dCurTimeHalfBeat = 0;
 }
 
-void CBeatManager::Update_Beat(const _float fTimedelta)
+void CBeatManager::Update_Beat(const _double fTimedelta)
 {
-	m_dCurTime += (_double)fTimedelta; // 0.016
+	/* Cur Time Update */
+	m_dCurTimeSteadyBeat += fTimedelta;
+	m_dCurTimeHalfBeat += fTimedelta;
 
-	/* 비트 당 시간(초) */
-	const _double fTimePerBeat = (_double)60.f / (_double)m_iCurBpm; // 0.44
+	/* Down Beat */
+	const _double dSecondPerDownBeat = Get_SPB();
 
-	if (m_dCurTime >= fTimePerBeat)
+	if (m_dCurTimeSteadyBeat >= dSecondPerDownBeat)
 	{
-		m_dCurTime -= fTimePerBeat;
-		m_bHit = TRUE;
+		m_dCurTimeSteadyBeat -= dSecondPerDownBeat;
+		m_bSteadyBeat = TRUE;
+		m_bHalfBeat	= TRUE;
 	}
 	else
-		m_bHit = FALSE;
+		m_bSteadyBeat = FALSE;
+
+	/* Up Beat */
+	const _double dSecondPerUpBeat = Get_SPB() * 0.5f;
+
+	if (m_dCurTimeHalfBeat >= dSecondPerUpBeat)
+	{
+		m_dCurTimeHalfBeat -= dSecondPerUpBeat;
+		m_bHalfBeat	= TRUE;
+	}
+	else
+		m_bHalfBeat = FALSE;
+
+
 }
 
 void CBeatManager::Free()

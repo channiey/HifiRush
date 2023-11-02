@@ -19,26 +19,36 @@ HRESULT CState_Chai_Attack::Initialize(CStateMachine* pStateMachine, const wstri
 
 HRESULT CState_Chai_Attack::Enter()
 {
-	m_pChai->Get_Model()->Set_RootAnimation(TRUE);
+	ANIM_CH			eAnimID = ANIM_CH::ANIM_END;
+	_double			dAnimSpeed = 0.f;
 
 	if (Input::LBtn())
 	{
-		m_eAttackType = ATTACK_TYPE::LIGHT;
-		m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_00);
+		m_eAttackType			= ATTACK_TYPE::LIGHT;
+		eAnimID					= ANIM_CH::ATK_LIGHT_00;
+		CAnimation* pAnimation	= m_pChai->Get_Model()->Get_Animation(eAnimID);
+		dAnimSpeed = CBeatManager::GetInstance()->Get_SPB(4) / (_double)pAnimation->Get_MaxFrameCount();
 	}
 	else if (Input::RBtn())
 	{
-		m_eAttackType = ATTACK_TYPE::STRONG;
-		m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_SINGLE_00);
+		m_eAttackType			= ATTACK_TYPE::STRONG;
+		eAnimID					= ANIM_CH::ATK_SINGLE_00;
+		CAnimation* pAnimation	= m_pChai->Get_Model()->Get_Animation(eAnimID);
+		dAnimSpeed = CBeatManager::GetInstance()->Get_SPB(4) / (_double)pAnimation->Get_MaxFrameCount();
 
 	}
 	else if (Input::MBtn())
 	{
-		m_eAttackType = ATTACK_TYPE::THROW;
-		m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_SINGLE_02);
+		m_eAttackType			= ATTACK_TYPE::THROW;
+		eAnimID					= ANIM_CH::ATK_SINGLE_02;
+		CAnimation* pAnimation	= m_pChai->Get_Model()->Get_Animation(eAnimID);
+		dAnimSpeed = CBeatManager::GetInstance()->Get_SPB(4) / (_double)pAnimation->Get_MaxFrameCount();
 
 		m_pChai->Get_Transform()->Set_Look(ENGINE_INSTANCE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY().Normalized());
 	}
+
+	m_pChai->Get_Model()->Set_Animation(eAnimID, dAnimSpeed, DF_TW_TIME);
+	m_pChai->Get_Model()->Set_RootAnimation(TRUE);
 
 	m_pChai->Get_Child(CChai::CH_WEAPON_RIGHT)->Get_Collider_Sphere()->Set_Active(TRUE);
 
@@ -47,23 +57,34 @@ HRESULT CState_Chai_Attack::Enter()
 
 const wstring& CState_Chai_Attack::Tick(const _double& fTimeDelta)
 {
+	/*if (!CBeatManager::GetInstance()->Is_HalfBeat())
+		return m_strName;*/
+
 	CModel* pModel = m_pChai->Get_Model();
 	
 	if (Input::Attack() && pModel->Is_OneThirds_Animation())
 	{
 		++m_pChai->m_tFightDesc.iStep;
 		
+		ANIM_CH			eAnimID = ANIM_CH::ANIM_END;
+		_double			dAnimSpeed = 0.f;
+
 		switch (m_pChai->m_tFightDesc.iStep)
 		{
 		case 0: 
 		{
 			if (ATTACK_TYPE::LIGHT == m_eAttackType && Input::LBtn())
 			{
-				m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_01);
+				eAnimID					= ANIM_CH::ATK_LIGHT_01;
+				CAnimation* pAnimation	= m_pChai->Get_Model()->Get_Animation(eAnimID);
+				dAnimSpeed				= CBeatManager::GetInstance()->Get_SPB(4) / (_double)pAnimation->Get_MaxFrameCount();
+
 			}
 			else if (ATTACK_TYPE::STRONG == m_eAttackType && Input::RBtn())
 			{
-				m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_SINGLE_01);
+				eAnimID					= ANIM_CH::ATK_SINGLE_01;
+				CAnimation* pAnimation	= m_pChai->Get_Model()->Get_Animation(eAnimID);
+				dAnimSpeed				= CBeatManager::GetInstance()->Get_SPB(4) / (_double)pAnimation->Get_MaxFrameCount();
 			}
 		}
 			break;
@@ -71,12 +92,17 @@ const wstring& CState_Chai_Attack::Tick(const _double& fTimeDelta)
 		{
 			if (ATTACK_TYPE::LIGHT == m_eAttackType && Input::LBtn())
 			{
-				m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_02);
+				eAnimID					= ANIM_CH::ATK_LIGHT_02;
+				CAnimation* pAnimation	= m_pChai->Get_Model()->Get_Animation(eAnimID);
+				dAnimSpeed				= CBeatManager::GetInstance()->Get_SPB(4) / (_double)pAnimation->Get_MaxFrameCount();
 			}
 			else if (ATTACK_TYPE::STRONG == m_eAttackType && Input::RBtn())
 			{
+				eAnimID					= ANIM_CH::ATK_SPC_2;
+				CAnimation* pAnimation	= m_pChai->Get_Model()->Get_Animation(eAnimID);
+				dAnimSpeed				= CBeatManager::GetInstance()->Get_SPB(4) / (_double)pAnimation->Get_MaxFrameCount();
+
 				m_pChai->m_tFightDesc.iStep = -1;
-				m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_SPC_2);
 			}
 		}
 			break;
@@ -84,7 +110,10 @@ const wstring& CState_Chai_Attack::Tick(const _double& fTimeDelta)
 		{
 			if (ATTACK_TYPE::LIGHT == m_eAttackType && Input::LBtn())
 			{
-				m_pChai->Get_Model()->Set_Animation(ANIM_CH::ATK_LIGHT_03);
+				eAnimID					= ANIM_CH::ATK_LIGHT_03;
+				CAnimation* pAnimation	= m_pChai->Get_Model()->Get_Animation(eAnimID);
+				dAnimSpeed				= CBeatManager::GetInstance()->Get_SPB(4) / (_double)pAnimation->Get_MaxFrameCount();
+
 				m_pChai->m_tFightDesc.iStep = -1;
 			}
 		}
@@ -92,6 +121,8 @@ const wstring& CState_Chai_Attack::Tick(const _double& fTimeDelta)
 		default:
 			break;
 		}
+
+		m_pChai->Get_Model()->Set_Animation(eAnimID, dAnimSpeed, DF_TW_TIME);
 	}
 
 	return m_strName;
@@ -128,6 +159,9 @@ void CState_Chai_Attack::OnCollision_Exit(CGameObject* pGameObject)
 
 const wstring& CState_Chai_Attack::Check_Transition()
 {
+	if (!CBeatManager::GetInstance()->Is_HalfBeat())
+		return m_strName;
+
 	if (m_pChai->Get_Model()->Is_Tween())
 		return m_strName;
 

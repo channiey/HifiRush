@@ -19,24 +19,15 @@ HRESULT CState_Chai_Parry::Initialize(CStateMachine* pStateMachine, const wstrin
 
 HRESULT CState_Chai_Parry::Enter()
 {
+	ANIM_CH			eAnimID			= ANIM_CH::PARRY_02;
+	CAnimation*		pAnimation		= m_pChai->Get_Model()->Get_Animation(eAnimID);
+	const _double	fTimePerFrame	= CBeatManager::GetInstance()->Get_SPB(1) / (_double)pAnimation->Get_MaxFrameCount();
+
+	m_pChai->Get_Model()->Set_Animation(eAnimID, fTimePerFrame, DF_TW_TIME);
+	m_pChai->Get_Model()->Set_RootAnimation(FALSE);
+
 	m_pChai->m_tFightDesc.bParry = TRUE;
 
-	//switch (rand() % 3)
-	//{
-	//case 0:
-	//	m_pChai->Get_Model()->Set_Animation(ANIM_CH::PARRY_00, FALSE, 2.2f, DF_TW_TIME);
-	//	break;														  
-	//case 1 :														  
-	//	m_pChai->Get_Model()->Set_Animation(ANIM_CH::PARRY_01, FALSE, 2.2f, DF_TW_TIME);
-	//	break;														  
-	//case 2:															  
-	//	m_pChai->Get_Model()->Set_Animation(ANIM_CH::PARRY_02, FALSE, 2.2f, DF_TW_TIME);
-	//	break;														  
-	//default:														  
-	//	m_pChai->Get_Model()->Set_Animation(ANIM_CH::PARRY_02, FALSE, 2.2f, DF_TW_TIME);
-	//	break;
-	//}
-	m_pChai->Get_Model()->Set_Animation(ANIM_CH::PARRY_02, 2.2f, DF_TW_TIME);
 	return S_OK;
 }
 
@@ -57,6 +48,9 @@ void CState_Chai_Parry::Exit()
 
 const wstring& CState_Chai_Parry::Check_Transition()
 {
+	if (!CBeatManager::GetInstance()->Is_HalfBeat())
+		return m_strName;
+
 	if (m_pChai->Get_Model()->Is_Tween())
 		return m_strName;
 

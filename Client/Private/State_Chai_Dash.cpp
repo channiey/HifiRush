@@ -19,8 +19,12 @@ HRESULT CState_Chai_Dash::Initialize(CStateMachine* pStateMachine, const wstring
 
 HRESULT CState_Chai_Dash::Enter()
 {
+	ANIM_CH			eAnimID			= ANIM_CH::DASH_FRONT;
+	CAnimation*		pAnimation		= m_pChai->Get_Model()->Get_Animation(eAnimID);
+	const _double	fTimePerFrame	= CBeatManager::GetInstance()->Get_SPB(1) / (_double)pAnimation->Get_MaxFrameCount();
+
+	m_pChai->Get_Model()->Set_Animation(eAnimID, fTimePerFrame, DF_TW_TIME);
 	m_pChai->Get_Model()->Set_RootAnimation(FALSE);
-	m_pChai->Get_Model()->Set_Animation(ANIM_CH::DASH_FRONT, (_double)2.f, 0.1f);
 
 	m_pChai->Get_Rigidbody()->Add_Force(m_pChai->Get_Transform()->Get_Forward().xyz() * m_pChai->m_tPhysicsDesc.fDashPower, CRigidbody::FORCE_MODE::IMPULSE);
 
@@ -48,6 +52,9 @@ void CState_Chai_Dash::Exit()
 
 const wstring& CState_Chai_Dash::Check_Transition()
 {	
+	if (!CBeatManager::GetInstance()->Is_HalfBeat())
+		return m_strName;
+
 	if (m_pChai->Get_Model()->Is_Tween())
 		return m_strName;
 

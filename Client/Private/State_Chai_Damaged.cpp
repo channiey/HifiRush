@@ -41,6 +41,9 @@ void CState_Chai_Damaged::Exit()
 
 const wstring& CState_Chai_Damaged::Check_Transition()
 {
+	if (!CBeatManager::GetInstance()->Is_HalfBeat())
+		return m_strName;
+
 	return StateNames[STATE_IDLE];
 }
 

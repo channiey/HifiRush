@@ -2,6 +2,8 @@
 
 #include "Client_Defines.h"
 
+#include "Animation.h"
+
 #include "EngineInstance.h"
 #include "State.h"
 

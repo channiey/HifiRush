@@ -19,10 +19,9 @@ HRESULT CState_Chai_Run::Initialize(CStateMachine* pStateMachine, const wstring&
 
 HRESULT CState_Chai_Run::Enter()
 {
-	ANIM_CH			eAnimID = ANIM_CH::RUN;
-
-	CAnimation*		pAnimation = m_pChai->Get_Model()->Get_Animation(eAnimID);
-	const _double	fTimePerFrame = CBeatManager::GetInstance()->Get_AnimTimePerFrame(pAnimation);
+	ANIM_CH			eAnimID			= ANIM_CH::RUN;
+	CAnimation*		pAnimation		= m_pChai->Get_Model()->Get_Animation(eAnimID);
+	const _double	fTimePerFrame	= CBeatManager::GetInstance()->Get_AnimTimePerFrame(pAnimation);
 
 	m_pChai->Get_Model()->Set_Animation(eAnimID, (_double)fTimePerFrame * (_double)2.f, DF_TW_TIME);
 	m_pChai->Get_Model()->Set_RootAnimation(FALSE);
@@ -48,7 +47,7 @@ void CState_Chai_Run::Exit()
 
 const wstring& CState_Chai_Run::Check_Transition()
 {
-	if (!CBeatManager::GetInstance()->Is_Hit())
+	if (!CBeatManager::GetInstance()->Is_HalfBeat())
 		return m_strName;
 
 	if (m_pChai->m_tFightDesc.bDamaged)

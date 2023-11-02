@@ -157,14 +157,10 @@ HRESULT CModel::Update(_double fTimeDelta)
 	return S_OK;
 }
 
-static _double dAcc = 0.f;
-
 HRESULT CModel::Update_Anim(_double fTimeDelta)
 {
 	if (m_bStopAnim)
 		return TRUE;
-
-	dAcc += (_double)fTimeDelta;
 
 	CAnimation* pCurAnim = Get_Animation(m_TweenDesc.cur.iAnimIndex);
 	if (nullptr != pCurAnim)
@@ -182,6 +178,8 @@ HRESULT CModel::Update_Anim(_double fTimeDelta)
 			m_TweenDesc.cur.iNextFrame = (m_TweenDesc.cur.iCurFrame + 1) % pCurAnim->Get_MaxFrameCount();
 		}
 		m_TweenDesc.cur.fRatio = (pCurAnim->Get_FrameAcc() / dSecondPerFrame);
+		if (1.f < m_TweenDesc.cur.fRatio)
+			m_TweenDesc.cur.fRatio = 0.5f;
 
 		/* 현재 애니메이션 종료시 */
 		if (0 == m_TweenDesc.cur.iNextFrame)
@@ -217,6 +215,7 @@ HRESULT CModel::Update_Anim(_double fTimeDelta)
 		/* 트위닝이 끝났다면 */
 		if (m_TweenDesc.fTweenRatio >= 1.f)
 		{
+			cout << "\n\n트윈완료\n\n";
 			/* 특수 루트 포지션 셋 : 이전 애님 루트 포지션이 0이 아니라면 */
 			m_vPrevAnimRoot = Vec4(Get_AnimBoneLocal(m_TweenDesc.cur.iAnimIndex, m_TweenDesc.cur.iCurFrame, BONE_ROOT).m[3]);
 			if (Vec4::UnitW != m_vPrevAnimRoot && (m_bPrevRootAnimation || m_bRootAnimation))
@@ -247,36 +246,34 @@ HRESULT CModel::Update_Anim(_double fTimeDelta)
 		}
 		else
 		{
-			CAnimation* pNextAnim = Get_Animation(m_TweenDesc.next.iAnimIndex);
+			/*CAnimation*		pNextAnim		= Get_Animation(m_TweenDesc.next.iAnimIndex);
+			const _double&	dSecondPerFrame = pNextAnim->Get_SecondPerFrame();
 
-			const _double& dSecondPerFrame = pNextAnim->Get_SecondPerFrame();
-
-			/* 한 프레임 끝 */
 			if (pNextAnim->Get_FrameAcc() >= dSecondPerFrame)
 			{
 				pNextAnim->Add_FrameAcc(-dSecondPerFrame);
 				m_TweenDesc.next.iCurFrame = (m_TweenDesc.next.iCurFrame + 1) % pNextAnim->Get_MaxFrameCount();
 				m_TweenDesc.next.iNextFrame = (m_TweenDesc.next.iCurFrame + 1) % pNextAnim->Get_MaxFrameCount();
 			}
-			m_TweenDesc.next.fRatio = (pNextAnim->Get_FrameAcc() / dSecondPerFrame);
-
-			//if (nullptr != pNextAnim)
-			//{
-			//	m_TweenDesc.next.fFrameAcc += fTimeDelta;
-
-			//	_float timePerFrame = m_TweenDesc.next.fSpeed;
-
-			//	/* 한 프레임 끝 */
-			//	if (m_TweenDesc.next.fFrameAcc >= timePerFrame)
-			//	{
-			//		m_TweenDesc.next.fFrameAcc -= timePerFrame;
-			//		m_TweenDesc.next.iCurFrame = (m_TweenDesc.next.iCurFrame + 1) % pNextAnim->Get_MaxFrameCount();
-			//		m_TweenDesc.next.iNextFrame = (m_TweenDesc.next.iCurFrame + 1) % pNextAnim->Get_MaxFrameCount();
-			//	}
-			//	m_TweenDesc.next.fRatio = (m_TweenDesc.next.fFrameAcc / timePerFrame);
-			//}
+			m_TweenDesc.next.fRatio = (pNextAnim->Get_FrameAcc() / dSecondPerFrame);*/
 
 
+			CAnimation*		pNextAnim = Get_Animation(m_TweenDesc.next.iAnimIndex);
+
+			if (nullptr != pNextAnim)
+			{
+				if (m_TweenDesc.next.fRatio >= 1.f)
+				{
+					pNextAnim->Set_FrameAcc(0.f);
+
+					m_TweenDesc.next.iCurFrame = (m_TweenDesc.next.iCurFrame + 1) % pNextAnim->Get_MaxFrameCount();
+					m_TweenDesc.next.iNextFrame = (m_TweenDesc.next.iCurFrame + 1) % pNextAnim->Get_MaxFrameCount();
+				}
+
+				m_TweenDesc.next.fRatio = (pNextAnim->Get_FrameAcc() / pNextAnim->Get_SecondPerFrame());
+				if (1.f < m_TweenDesc.next.fRatio)
+					m_TweenDesc.next.fRatio = 0.5f;
+			}
 
 			/*CAnimation* pNextAnim = Get_Animation(m_TweenDesc.next.iAnimIndex);
 			if (nullptr != pNextAnim)
@@ -341,10 +338,8 @@ HRESULT CModel::Bind_Material(CShader * pShader, _uint iMaterialIndex, aiTexture
 
 void CModel::Set_Animation(const _uint& iAnimIndex, const _double& dSpeed, const _float& fTweenDuration)
 {
-	/*if (iAnimIndex == m_TweenDesc.cur.iAnimIndex && -1 != m_TweenDesc.next.iAnimIndex || iAnimIndex == m_TweenDesc.next.iAnimIndex)
-		return;*/
+	cout << "\n\n셋\n\n";
 
-	cout << "Set\n";
 	/* 최초 1회 실행  */
 	if (-1 == m_TweenDesc.cur.iAnimIndex)
 	{
@@ -356,10 +351,10 @@ void CModel::Set_Animation(const _uint& iAnimIndex, const _double& dSpeed, const
 	m_TweenDesc.ClearNextAnim();
 
 	m_TweenDesc.next.iAnimIndex = iAnimIndex % Get_AnimationCount();
-	Get_Animation(m_TweenDesc.next.iAnimIndex)->Set_SecondPerFrame(dSpeed);
 	m_TweenDesc.fTweenDuration = fTweenDuration;
 
-	Get_Animation(m_TweenDesc.cur.iAnimIndex)->Set_SecondPerFrame(dSpeed);
+	//Get_Animation(m_TweenDesc.cur.iAnimIndex)->Set_SecondPerFrame(dSpeed);
+	Get_Animation(m_TweenDesc.next.iAnimIndex)->Set_SecondPerFrame(dSpeed);
 }
 
 void CModel::Set_AnimationSpeed(const _double& dSpeed)
