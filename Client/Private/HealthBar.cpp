@@ -90,7 +90,7 @@ HRESULT CHealthBar::Render()
 
 	/* 1 */
 
-	Vec4 vPos{ m_vOriginPos.x + m_LerpDesc.fCurValue, m_vOriginPos.y, m_vOriginPos.z, 1.f };
+	Vec4 vPos{ m_vOriginPos.x + (_float)m_LerpDesc.fCurValue, m_vOriginPos.y, m_vOriginPos.z, 1.f };
 	m_pTransformCom->Set_Position(vPos);
 	if (FAILED(Bind_ShaderResources(1)))
 		return E_FAIL;

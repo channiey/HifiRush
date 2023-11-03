@@ -80,6 +80,9 @@ void CChai::LateTick(_double fTimeDelta)
 			return;
 	}
 
+	/*CModel::TweenDesc desc = m_pModelCom->Get_TweenDesc();
+	cout << desc.cur.iAnimIndex << "\t" << desc.next.iAnimIndex << endl;*/
+
 	__super::LateTick(fTimeDelta);
 }
 

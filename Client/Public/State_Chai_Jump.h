@@ -13,25 +13,26 @@ public:
 	virtual HRESULT Initialize(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);
 
 public:
-	HRESULT Enter() override;
-	const wstring& Tick(const _double& fTimeDelta) override;
-	const wstring& LateTick() override;
-	void Exit() override;
+	HRESULT			Enter() override;
+	const wstring&	Tick(const _double& fTimeDelta) override;
+	const wstring&	LateTick() override;
+	void			Exit() override;
 
 public:
 	const wstring& Check_Transition() override;
 
 private:
-	const _bool Check_Land();
-	const _bool	Check_Fall();
-	void Set_FallSpeed();
-
-private:
 	void Move(const _double& fTimeDelta);
 	void Jump();
+	void Land();
 
 private:
-	Vec3 m_vScale = {};
+	const _bool Check_Land();
+	const _bool	Check_Fall();
+	void		Set_FallSpeed();
+
+private:
+	Vec3	m_vScale = {};
 
 	_bool m_bSetFallSpeed_InJump = FALSE;
 	_bool m_bSetFallSpeed_InDoubleJump = FALSE;

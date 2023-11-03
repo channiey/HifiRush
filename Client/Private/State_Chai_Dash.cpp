@@ -51,10 +51,7 @@ void CState_Chai_Dash::Exit()
 }
 
 const wstring& CState_Chai_Dash::Check_Transition()
-{	
-	if (!CBeatManager::GetInstance()->Is_HalfBeat())
-		return m_strName;
-
+{			
 	if (m_pChai->Get_Model()->Is_Tween())
 		return m_strName;
 

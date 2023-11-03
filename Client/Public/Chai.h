@@ -62,7 +62,7 @@ enum ANIM_CH
 	JUMP_DASH_00,
 	JUMP_DASH_01,
 
-	LAND,
+	LAND, //39
 	
 	PARRY_00,
 	PARRY_01,

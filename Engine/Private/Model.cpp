@@ -215,7 +215,6 @@ HRESULT CModel::Update_Anim(_double fTimeDelta)
 		/* 트위닝이 끝났다면 */
 		if (m_TweenDesc.fTweenRatio >= 1.f)
 		{
-			cout << "\n\n트윈완료\n\n";
 			/* 특수 루트 포지션 셋 : 이전 애님 루트 포지션이 0이 아니라면 */
 			m_vPrevAnimRoot = Vec4(Get_AnimBoneLocal(m_TweenDesc.cur.iAnimIndex, m_TweenDesc.cur.iCurFrame, BONE_ROOT).m[3]);
 			if (Vec4::UnitW != m_vPrevAnimRoot && (m_bPrevRootAnimation || m_bRootAnimation))
@@ -246,7 +245,7 @@ HRESULT CModel::Update_Anim(_double fTimeDelta)
 		}
 		else
 		{
-			/*CAnimation*		pNextAnim		= Get_Animation(m_TweenDesc.next.iAnimIndex);
+			CAnimation*		pNextAnim		= Get_Animation(m_TweenDesc.next.iAnimIndex);
 			const _double&	dSecondPerFrame = pNextAnim->Get_SecondPerFrame();
 
 			if (pNextAnim->Get_FrameAcc() >= dSecondPerFrame)
@@ -255,10 +254,11 @@ HRESULT CModel::Update_Anim(_double fTimeDelta)
 				m_TweenDesc.next.iCurFrame = (m_TweenDesc.next.iCurFrame + 1) % pNextAnim->Get_MaxFrameCount();
 				m_TweenDesc.next.iNextFrame = (m_TweenDesc.next.iCurFrame + 1) % pNextAnim->Get_MaxFrameCount();
 			}
-			m_TweenDesc.next.fRatio = (pNextAnim->Get_FrameAcc() / dSecondPerFrame);*/
+			m_TweenDesc.next.fRatio = (pNextAnim->Get_FrameAcc() / dSecondPerFrame);
+			if (1.f < m_TweenDesc.cur.fRatio)
+				m_TweenDesc.cur.fRatio = 0.5f;
 
-
-			CAnimation*		pNextAnim = Get_Animation(m_TweenDesc.next.iAnimIndex);
+			/*CAnimation*		pNextAnim = Get_Animation(m_TweenDesc.next.iAnimIndex);
 
 			if (nullptr != pNextAnim)
 			{
@@ -273,7 +273,7 @@ HRESULT CModel::Update_Anim(_double fTimeDelta)
 				m_TweenDesc.next.fRatio = (pNextAnim->Get_FrameAcc() / pNextAnim->Get_SecondPerFrame());
 				if (1.f < m_TweenDesc.next.fRatio)
 					m_TweenDesc.next.fRatio = 0.5f;
-			}
+			}*/
 
 			/*CAnimation* pNextAnim = Get_Animation(m_TweenDesc.next.iAnimIndex);
 			if (nullptr != pNextAnim)
@@ -338,8 +338,6 @@ HRESULT CModel::Bind_Material(CShader * pShader, _uint iMaterialIndex, aiTexture
 
 void CModel::Set_Animation(const _uint& iAnimIndex, const _double& dSpeed, const _float& fTweenDuration)
 {
-	cout << "\n\n셋\n\n";
-
 	/* 최초 1회 실행  */
 	if (-1 == m_TweenDesc.cur.iAnimIndex)
 	{

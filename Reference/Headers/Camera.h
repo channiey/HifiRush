@@ -26,6 +26,7 @@ protected:
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
+	virtual HRESULT Update(const _double fDeltaTime);
 
 public:
 	CGameObject*		Get_TargetObj() const { return m_pTargetObj; }
@@ -63,6 +64,9 @@ public:
 	const _bool Is_LockY() const { return m_bLockY; }
 
 public:
+	void Lerp_Fov(const _float fStartValue, const _float& fTargetValue, const _float& fTime, const LERP_MODE& eMode = LERP_MODE::DEFAULT);
+
+public:
 	void Change_TargetObj(CGameObject* pObj);
 	void Change_LookAtObj(CGameObject* pObj);
 
@@ -83,6 +87,8 @@ private:
 	_float			m_fMouseSensitiveY = { 1.f };
 
 	_uint			m_iKey = { 99 };
+
+	LERP_FLOAT_DESC	m_tLerpFov;
 
 public:
 	static CCamera* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

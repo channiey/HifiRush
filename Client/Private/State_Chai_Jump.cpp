@@ -1,6 +1,7 @@
 #include "..\Default\stdafx.h"
 #include "State_Chai_Jump.h"
 #include "State_Chai_Run.h"
+
 CState_Chai_Jump::CState_Chai_Jump()
 {
 }
@@ -45,19 +46,38 @@ const wstring& CState_Chai_Jump::Tick(const _double& fTimeDelta)
 
 const wstring& CState_Chai_Jump::LateTick()
 {
-	/* Run에서 Fall 체크 필요 */
 	CModel* pModel = m_pChai->Get_Model();
 	CModel::TweenDesc desc = pModel->Get_TweenDesc();
+
+	cout << desc.cur.iAnimIndex << "\t" << desc.next.iAnimIndex << endl;
 
 	/* Fall Speed */
 	Set_FallSpeed();
 
 	/* Land */
 	{
-		if (!m_pChai->m_tPhysicsDesc.bLanding && Check_Land())
+		/* 착지 애니메이션 시작 (점프 상태에서 바로 착지되는 경우 처리 X)*/
+		if (m_pChai->m_tPhysicsDesc.bFall && !m_pChai->m_tPhysicsDesc.bLanding && Check_Land())
 		{
-			m_pChai->m_tPhysicsDesc.bLanding = TRUE;
-			return Check_Transition();
+			ANIM_CH			eAnimID			= ANIM_CH::LAND;
+			CAnimation*		pAnimation		= m_pChai->Get_Model()->Get_Animation(eAnimID);
+			const _double	fTimePerFrame	= CBeatManager::GetInstance()->Get_SPB(2) / (_double)pAnimation->Get_MaxFrameCount();
+
+			pModel->Set_Animation(eAnimID, fTimePerFrame * (_double)0.5f, 0.05f);
+			cout << "\nLANDING START! \n\n";
+			Land();
+		}
+
+		/* 착지 애니메이션 종료 (그라운드) */
+		if(m_pChai->m_tPhysicsDesc.bLanding)
+		{
+			if (!pModel->Is_Tween() && pModel->Is_Finish_Animation())
+			{
+				cout << "\nLANDING END! \n\n";
+				return Check_Transition();
+			}
+			else
+				return m_strName;
 		}
 	}
 	
@@ -80,8 +100,9 @@ const wstring& CState_Chai_Jump::LateTick()
 
 			pModel->Set_Animation(ANIM_CH::FALL_DOUBLE_JUMP, fTimePerFrame, DF_TW_TIME);
 		}
-
 		m_pChai->m_tPhysicsDesc.bFall = TRUE;
+
+		cout << "\nFALL! \n\n";
 	}
 
 	/* Double Jump */
@@ -98,6 +119,7 @@ const wstring& CState_Chai_Jump::LateTick()
 			const _double	fTimePerFrame = CBeatManager::GetInstance()->Get_SPB(1) / (_double)pAnimation->Get_MaxFrameCount();
 
 			pModel->Set_Animation(ANIM_CH::DOUBLE_JUMP, fTimePerFrame, DF_TW_TIME);
+			cout << "\nDOUBLE JUMP! \n\n";
 
 			Jump();
 		}
@@ -108,27 +130,12 @@ const wstring& CState_Chai_Jump::LateTick()
 
 void CState_Chai_Jump::Exit()
 {
-	m_pChai->Get_Rigidbody()->Clear_NetPower();
-	m_pChai->Get_Rigidbody()->Set_UseGravity(FALSE);
-
-	m_pChai->Get_NavMeshAgent()->Set_AirState(FALSE);
-
-	m_pChai->m_tPhysicsDesc.bJump		= FALSE;
-	m_pChai->m_tPhysicsDesc.bDoubleJump = FALSE;
-	m_pChai->m_tPhysicsDesc.bFall		= FALSE;
-	m_pChai->m_tPhysicsDesc.bLanding	= FALSE;
-
 	m_pChai->m_tPhysicsDesc.bGround		= TRUE;
-
-	m_bSetFallSpeed_InJump				= FALSE;
-	m_bSetFallSpeed_InDoubleJump		= FALSE;
+	m_pChai->m_tPhysicsDesc.bLanding	= FALSE;
 }
 
 const wstring& CState_Chai_Jump::Check_Transition()
 {
-	/*if(!CBeatManager::GetInstance()->Is_HalfBeat())
-		return m_strName;*/
-
 	CModel* pModel = m_pChai->Get_Model();
 
 	if (m_pChai->m_tPhysicsDesc.bLanding)
@@ -142,19 +149,44 @@ const wstring& CState_Chai_Jump::Check_Transition()
 	return m_strName;
 }
 
+static _float fPreGap = 0.f;
+static _float fPrePosY = 0.f;
+static _float fGravityYDelta = 0.f;
 
 const _bool CState_Chai_Jump::Check_Land()
 {
-	const Vec3	 vPos = m_pChai->Get_Transform()->Get_FinalPosition().xyz();
-
-	const _float fLandThreshold = 0.f;
-	const _float fGroundHeight	= m_pChai->Get_NavMeshAgent()->Get_Height(vPos);
-
-	if ((vPos.y - fGroundHeight) <= fLandThreshold)
+	const Vec3		vPos			= m_pChai->Get_Transform()->Get_FinalPosition().xyz();
+	const _float	fLandThreshold	= 0.f;
+	const _float	fGroundHeight	= m_pChai->Get_NavMeshAgent()->Get_Height(vPos);
+	const _float	fCurGap			= vPos.y - fGroundHeight;
+	
+	/* 중력으로 인해 떨어지는 y 델타 */
+	fGravityYDelta = fPrePosY - vPos.y;
+	
+	/* 그라운드보다 아래 */
+	if (fCurGap <= fLandThreshold)
 	{
+		cout << fixed;
+		cout.precision(3);
+		cout << endl << "Pre : " << fPreGap << endl;
+		cout << endl << "Cur : " << fCurGap << endl << endl;
+
 		m_pChai->Get_Transform()->Set_Position(Vec3(vPos.x, fGroundHeight, vPos.z));
+		cout << "@@\n";
+
+		//fPrePosY = 0.f;
 		return TRUE;
 	}
+	else if (fCurGap <= fGravityYDelta - 0.2f) /* 다음 프레임에 그라운드보다 아래 but -0.2f보다 더 작게되는 경우*/
+	{
+		m_pChai->Get_Transform()->Set_Position(Vec3(vPos.x, fGroundHeight, vPos.z));
+		cout << "##\n";
+		//fPrePosY = 0.f;
+		return TRUE;
+	}
+
+	fPreGap = fCurGap;
+	fPrePosY = m_pChai->Get_Transform()->Get_FinalPosition().y;
 
 	return FALSE;
 }
@@ -192,6 +224,22 @@ void CState_Chai_Jump::Set_FallSpeed()
 			m_bSetFallSpeed_InDoubleJump = TRUE;
 		}
 	}
+}
+
+void CState_Chai_Jump::Land()
+{
+	m_pChai->Get_Rigidbody()->Clear_NetPower();
+	m_pChai->Get_Rigidbody()->Set_UseGravity(FALSE);
+
+	m_pChai->Get_NavMeshAgent()->Set_AirState(FALSE);
+
+	m_pChai->m_tPhysicsDesc.bJump		= FALSE;
+	m_pChai->m_tPhysicsDesc.bDoubleJump = FALSE;
+	m_pChai->m_tPhysicsDesc.bFall		= FALSE;
+	m_pChai->m_tPhysicsDesc.bLanding	= TRUE;
+
+	m_bSetFallSpeed_InJump				= FALSE;
+	m_bSetFallSpeed_InDoubleJump		= FALSE;
 }
 
 void CState_Chai_Jump::Move(const _double& fTimeDelta)

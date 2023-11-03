@@ -48,15 +48,13 @@ void CState_Chai_Parry::Exit()
 
 const wstring& CState_Chai_Parry::Check_Transition()
 {
-	if (!CBeatManager::GetInstance()->Is_HalfBeat())
-		return m_strName;
-
 	if (m_pChai->Get_Model()->Is_Tween())
 		return m_strName;
 
 	if (m_pChai->Get_Model()->Is_TwoThirds_Animation())
 	{
-		return StateNames[STATE_IDLE];
+		if (CBeatManager::GetInstance()->Is_HalfBeat())
+			return StateNames[STATE_IDLE];
 	}
 
 	return m_strName;

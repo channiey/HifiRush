@@ -9,7 +9,7 @@ namespace Client
 {
 
 #define FPS_LIMIT		66.f
-
+	    
 #define CONSOLE_LOG     1
 #define CURSOL_LOCK     0
 #define CURSOL_HIDE     0

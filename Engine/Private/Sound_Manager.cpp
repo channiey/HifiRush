@@ -23,13 +23,13 @@ HRESULT CSound_Manager::Initialize(string soundFilePath)
 	return S_OK;
 }
 
-HRESULT CSound_Manager::Update(const _float& fTimedelta)
+HRESULT CSound_Manager::Update(const _double& fTimedelta)
 {
-	/*m_tCurBgmVolume.Update(fTimedelta);
+	m_tCurBgmVolume.Update(fTimedelta);
 	if (m_tCurBgmVolume.bActive)
 	{
 		Set_Volume(m_iCurBgmChannel, m_tCurBgmVolume.fCurValue);
-	}*/
+	}
 
 	return S_OK;
 }
@@ -75,7 +75,7 @@ HRESULT CSound_Manager::Register_BGM(_uint eSoundID, _uint eChannelID, float fVo
 
 HRESULT CSound_Manager::Play_BGM()
 {
-	//m_tCurBgmVolume.Start(0.f, fVolume, 1.f, LERP_MODE::SMOOTH_STEP);
+	m_tCurBgmVolume.Start(0.f, m_tCurBgmVolume.fCurValue, 1.f, LERP_MODE::SMOOTH_STEP);
 	
 	m_bPlayBgm = TRUE;
 	

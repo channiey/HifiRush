@@ -19,7 +19,7 @@ private:
 
 public:
 	HRESULT Initialize(string soundFilePath);
-	HRESULT Update(const _float& fTimedelta);
+	HRESULT Update(const _double& fTimedelta);
 
 public:
 	void	PlaySound(_uint eSoundID, _uint eChannelID, float fVolume);
@@ -31,7 +31,6 @@ public:
 	void	Stop_Sound(_uint eChannelID);
 	void	Stop_All();
 	
-	void	Set_Volume(_uint eChannelID, float fVolume);
 
 	const _uint Get_BPM();
 
@@ -39,6 +38,7 @@ private:
 	void	Load_SoundFile(string soundFilePath);
 	HRESULT	Load_SoundFileNames(string soundFilePath);
 
+	void	Set_Volume(_uint eChannelID, float fVolume);
 private:
 	map<TCHAR*, FMOD_SOUND*>	m_mapSound;
 	FMOD_SYSTEM*				m_pSystem = { nullptr };

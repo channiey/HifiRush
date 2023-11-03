@@ -194,20 +194,20 @@ namespace Engine
 	typedef struct tagLerpFloatDesc
 	{
 		/* Time */
-		_float		fStartTime = 0.f;
-		_float		fEndTime = 0.f;
-		_float		fCurTime = 0.f;
+		_double		fStartTime = 0.f;
+		_double		fEndTime = 0.f;
+		_double		fCurTime = 0.f;
 
 		/* Value */
-		_float		fStartValue = 0.f;
-		_float		fTargetValue = 0.f;
-		_float		fCurValue = 0.f;
+		_double		fStartValue = 0.f;
+		_double		fTargetValue = 0.f;
+		_double		fCurValue = 0.f;
 
 		_bool		bActive = FALSE;
 
 		LERP_MODE	eMode = LERP_MODE::DEFAULT; // https://chicounity3d.wordpress.com/2014/05/23/how-to-lerp-like-a-pro/
 
-		void Start(const _float _fStartValue, const _float& _fTargetValue, const _float& _fTime, const LERP_MODE& _eMode = LERP_MODE::DEFAULT)
+		void Start(const _double _fStartValue, const _double _fTargetValue, const _double _fTime, const LERP_MODE _eMode = LERP_MODE::DEFAULT)
 		{
 			bActive = TRUE;
 
@@ -221,7 +221,7 @@ namespace Engine
 		}
 
 		// Mode
-		void Update(const _float& fTimeDelta)
+		void Update(const _double& fTimeDelta)
 		{
 			if (!bActive || 0.02f < fTimeDelta) return;
 
@@ -235,7 +235,7 @@ namespace Engine
 				return;
 			}
 
-			_float t = fCurTime / fEndTime;
+			_double t = fCurTime / fEndTime;
 
 			switch (eMode)
 			{
@@ -277,7 +277,7 @@ namespace Engine
 
 		}
 
-		_float Lerp_Float(const _float& _f1, const _float& _f2, const _float _fTime) { return (1 - _fTime) * _f1 + (_fTime * _f2); }
+		_double Lerp_Float(const _double& _f1, const _double& _f2, const _double _fTime) { return (1 - _fTime) * _f1 + (_fTime * _f2); }
 
 		/*void Reset()
 		{
@@ -292,9 +292,9 @@ namespace Engine
 
 	typedef struct tagLerpVec3Desc
 	{
-		_float		fStartTime	= 0.f;
-		_float		fEndTime	= 0.f;
-		_float		fCurTime	= 0.f;
+		_double		fStartTime	= 0.f;
+		_double		fEndTime	= 0.f;
+		_double		fCurTime	= 0.f;
 
 		Vec3		vStartVec;
 		Vec3		vTargetVec;
@@ -304,7 +304,7 @@ namespace Engine
 
 		LERP_MODE	eMode = LERP_MODE::DEFAULT;
 
-		void Start(const Vec3 _fStartValue, const Vec3& _fTargetValue, const _float& _fTime, const LERP_MODE& _eMode = LERP_MODE::DEFAULT)
+		void Start(const Vec3 _fStartValue, const Vec3& _fTargetValue, const _double& _fTime, const LERP_MODE& _eMode = LERP_MODE::DEFAULT)
 		{
 			bActive = TRUE;
 
@@ -317,7 +317,7 @@ namespace Engine
 			eMode = _eMode;
 		}
 
-		void Update_Lerp(const _float& fTimeDelta)
+		void Update_Lerp(const _double& fTimeDelta)
 		{
 			if (!bActive || 0.02f < fTimeDelta) return;
 
@@ -329,7 +329,7 @@ namespace Engine
 				return;
 			}
 
-			_float t = fCurTime / fEndTime;
+			_double t = fCurTime / fEndTime;
 
 			switch (eMode)
 			{

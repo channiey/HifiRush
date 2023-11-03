@@ -234,7 +234,7 @@ HRESULT CImGui_Window_Mid_Nav::Bake()
 
 HRESULT CImGui_Window_Mid_Nav::Save_NavData()
 {
-	if (FAILED(CNavMesh::GetInstance()->Save_NavData(NavPaths[m_pImGui_Manager->m_iIndex_CurLevelID])))
+	if (FAILED(CNavMesh::GetInstance()->Save_NavData(NavPaths[m_pEngineInstance->Get_CurLevelIndex()])))
 		return E_FAIL;
 
 	return S_OK;
@@ -242,7 +242,7 @@ HRESULT CImGui_Window_Mid_Nav::Save_NavData()
 
 HRESULT CImGui_Window_Mid_Nav::Load_NavData()
 {
-	if (FAILED(CNavMesh::GetInstance()->Load_NavData(NavPaths[m_pImGui_Manager->m_iIndex_CurLevelID])))
+	if (FAILED(CNavMesh::GetInstance()->Load_NavData(NavPaths[m_pEngineInstance->Get_CurLevelIndex()])))
 		return E_FAIL;
 
 	return S_OK;
@@ -372,7 +372,7 @@ HRESULT CImGui_Window_Mid_Nav::Pick_Cell(CCell* pPickedCell)
 
 HRESULT CImGui_Window_Mid_Nav::Create_Cells(vector<CCell*>& Cells)
 {
-	list<class CGameObject*>* pGameObjects = m_pEngineInstance->Get_Layer(m_pImGui_Manager->m_iIndex_CurLevelID, LayerNames[LAYER_ENV_STATIC]);
+	list<class CGameObject*>* pGameObjects = m_pEngineInstance->Get_Layer(m_pEngineInstance->Get_CurLevelIndex(), LayerNames[LAYER_ENV_STATIC]);
 
 	if (nullptr == pGameObjects)
 		return E_FAIL;
@@ -460,9 +460,9 @@ HRESULT CImGui_Window_Mid_Nav::Set_Neighbors()
 	/* 네비이션을 사용하는 오브젝트들의 현재 위치한 셀의 인덱스를 리셋하여 다시 적용한다. */
 	list<CGameObject*>* pLayers[3];
 
-	pLayers[0] = ENGINE_INSTANCE->Get_Layer(m_pImGui_Manager->m_iIndex_CurLevelID, LayerNames[LAYER_PLAYER]);
-	pLayers[1] = ENGINE_INSTANCE->Get_Layer(m_pImGui_Manager->m_iIndex_CurLevelID, LayerNames[LAYER_ENEMY]);
-	pLayers[2] = ENGINE_INSTANCE->Get_Layer(m_pImGui_Manager->m_iIndex_CurLevelID, LayerNames[LAYER_NPC]);
+	pLayers[0] = ENGINE_INSTANCE->Get_Layer(m_pEngineInstance->Get_CurLevelIndex(), LayerNames[LAYER_PLAYER]);
+	pLayers[1] = ENGINE_INSTANCE->Get_Layer(m_pEngineInstance->Get_CurLevelIndex(), LayerNames[LAYER_ENEMY]);
+	pLayers[2] = ENGINE_INSTANCE->Get_Layer(m_pEngineInstance->Get_CurLevelIndex(), LayerNames[LAYER_NPC]);
 
 
 	for (size_t i = 0; i < 3; i++)

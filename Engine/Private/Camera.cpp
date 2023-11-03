@@ -26,6 +26,18 @@ HRESULT CCamera::Initialize(void * pArg)
 	return S_OK;
 }
 
+HRESULT CCamera::Update(const _double fDeltaTime)
+{
+	m_tLerpFov.Update(fDeltaTime);
+
+	return S_OK;
+}
+
+void CCamera::Lerp_Fov(const _float fStartValue, const _float& fTargetValue, const _float& fTime, const LERP_MODE& eMode)
+{
+	m_tLerpFov.Start(fStartValue, fTargetValue, fTime, eMode);
+}
+
 void CCamera::Change_TargetObj(CGameObject* pObj)
 {
 }

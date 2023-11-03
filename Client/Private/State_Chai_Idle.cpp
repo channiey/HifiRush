@@ -35,13 +35,11 @@ HRESULT CState_Chai_Idle::Enter()
 
 const wstring& CState_Chai_Idle::Tick(const _double& fTimeDelta)
 {
-
 	return m_strName;
 }
 
 const wstring& CState_Chai_Idle::LateTick()
 {
-
 	return Check_Transition();
 }
 
@@ -51,9 +49,6 @@ void CState_Chai_Idle::Exit()
 
 const wstring& CState_Chai_Idle::Check_Transition()
 {
-	if(!CBeatManager::GetInstance()->Is_HalfBeat())
-		return m_strName;
-
 	if (m_pChai->Get_Model()->Is_Tween())
 		return m_strName;
 
@@ -62,21 +57,21 @@ const wstring& CState_Chai_Idle::Check_Transition()
 		return StateNames[STATE_DAMAGED];
 	}
 
-	if (Input::Move())
+	if (Input::Move() && CBeatManager::GetInstance()->Is_HalfBeat())
 	{
 		if (m_pChai->m_tPhysicsDesc.bGround) 
 		{
 			return StateNames[STATE_RUN];
 		}
 	}
-	else if (Input::Shift())
+	else if (Input::Shift() && CBeatManager::GetInstance()->Is_HalfBeat())
 	{
 		if (!m_pChai->m_tPhysicsDesc.bDash)
 		{
 			return StateNames[STATE_DASH];
 		}
 	}
-	else if (Input::Attack()) 
+	else if (Input::Attack() && CBeatManager::GetInstance()->Is_HalfBeat())
 	{
 #ifdef _DEBUG
 if(!CImGui_Manager::GetInstance()->Is_ClickedWindow())
@@ -85,7 +80,7 @@ if(!CImGui_Manager::GetInstance()->Is_ClickedWindow())
 	return StateNames[STATE_ATTACK];
 #endif // _DEBUG
 	}
-	else if (Input::Parry())
+	else if (Input::Parry() && CBeatManager::GetInstance()->Is_HalfBeat())
 	{
 		return StateNames[STATE_PARRY];
 	}
