@@ -2,6 +2,8 @@
 
 #include "Graphic_Device.h"
 
+#include "EngineInstance.h"
+
 #include "Bone.h"
 #include "Mesh.h"
 #include "Texture.h"
@@ -205,6 +207,7 @@ HRESULT CModel::Update_Anim(_double fTimeDelta)
 		}
 	}
 
+	Check_SoundEvent();
 
 	/* 다음 애니메이션이 예약되어 있다면 */
 	if (m_TweenDesc.next.iAnimIndex >= 0)
@@ -353,6 +356,32 @@ void CModel::Set_Animation(const _uint& iAnimIndex, const _double& dSpeed, const
 
 	//Get_Animation(m_TweenDesc.cur.iAnimIndex)->Set_SecondPerFrame(dSpeed);
 	Get_Animation(m_TweenDesc.next.iAnimIndex)->Set_SecondPerFrame(dSpeed);
+}
+
+void CModel::Set_SoundEvent(_uint iFrame, _uint eSoundID, _uint eChannelID, float fVolume)
+{
+	/* 최초 1회 실행  */
+	if (-1 == m_TweenDesc.cur.iAnimIndex)
+	{
+		m_TweenDesc.cur.tSoundEventDesc.iFrame = iFrame;
+		m_TweenDesc.cur.tSoundEventDesc.eSoundID = eSoundID;
+		m_TweenDesc.cur.tSoundEventDesc.eChannelID = eChannelID;
+		m_TweenDesc.cur.tSoundEventDesc.fVolume = fVolume;
+		return;
+	}
+
+	m_TweenDesc.next.tSoundEventDesc.iFrame = iFrame;
+	m_TweenDesc.next.tSoundEventDesc.eSoundID = eSoundID;
+	m_TweenDesc.next.tSoundEventDesc.eChannelID = eChannelID;
+	m_TweenDesc.next.tSoundEventDesc.fVolume = fVolume;
+}
+
+void CModel::Set_SoundEvent(SOUND_EVENT_DESC desc)
+{
+	if (-1 == m_TweenDesc.cur.iAnimIndex)
+		memcpy(&m_TweenDesc.cur.tSoundEventDesc, &desc, sizeof(SOUND_EVENT_DESC));
+	else
+		memcpy(&m_TweenDesc.next.tSoundEventDesc, &desc, sizeof(SOUND_EVENT_DESC));
 }
 
 void CModel::Set_AnimationSpeed(const _double& dSpeed)
@@ -1081,6 +1110,22 @@ void CModel::Set_RootPosition()
 	if (!m_bRootAnimation) return;
 
 	m_pOwner->Get_Transform()->Set_RootPos(Get_AnimBonePos(BONE_ROOT));
+}
+
+void CModel::Check_SoundEvent()
+{
+	if (-1 != m_TweenDesc.cur.tSoundEventDesc.eSoundID)
+	{
+		if ((_uint)m_TweenDesc.cur.tSoundEventDesc.iFrame <= m_TweenDesc.cur.iCurFrame)
+		{
+			ENGINE_INSTANCE->Play_Sound(
+				(_uint)m_TweenDesc.cur.tSoundEventDesc.eSoundID, 
+				(_uint)m_TweenDesc.cur.tSoundEventDesc.eChannelID, 
+				m_TweenDesc.cur.tSoundEventDesc.fVolume);
+
+			m_TweenDesc.cur.tSoundEventDesc.Clear();
+		}
+	}
 }
 
 _uint CModel::Get_MaterialIndex(_uint iMeshIndex)

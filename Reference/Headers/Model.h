@@ -16,6 +16,23 @@ public:
 	enum			BONE_TYPE		{ BONE_ROOT, BONE_SOCKET_LEFT, BONE_SOCKET_RIGHT, BONE_END };
 	enum            ANIM_PROGRESS	{ QUATER, ONE_THIRDS, HALF, TWO_THIRDS, FINISH, PROGRESS_END };
 
+	typedef struct SoundEventDesc
+	{
+		_int	iFrame = -1;
+		_int	eSoundID = -1;
+		_int	eChannelID = -1;
+		_float	fVolume = 0;
+
+		void Clear()
+		{
+			iFrame = -1;
+			eSoundID = -1;
+			eChannelID = -1;
+			fVolume = 0;
+		}
+
+	}SOUND_EVENT_DESC;
+
 	typedef struct	KeyframeDesc
 	{
 		_int	iAnimIndex	= -1;	
@@ -23,11 +40,15 @@ public:
 		_uint	iNextFrame	= 1;
 		_float	fRatio		= 0.f;
 
+		SOUND_EVENT_DESC tSoundEventDesc = {};
+
 		void ClearAnim()
 		{
 			iCurFrame	= 0;
 			iNextFrame	= 1;
 			fRatio		= 0.f;
+
+			tSoundEventDesc.Clear();
 		}
 
 	}KEYFRAME_DESC;
@@ -52,7 +73,9 @@ public:
 		{
 			next.iAnimIndex = -1;
 			next.iCurFrame	= 0;
-			next.iNextFrame = 0;
+			next.iNextFrame = 1;
+			next.tSoundEventDesc.Clear();
+
 			fTweenAcc		= 0.f;
 			fTweenRatio		= 0.f;
 			fTweenDuration = DF_TW_TIME;
@@ -115,7 +138,11 @@ public:
 
 public:
 	void					Set_Animation(const _uint& iAnimIndex, const _double& dSpeed = DF_PL_TIME, const _float& fTweenDuration = DF_TW_TIME);
+	void					Set_SoundEvent(_uint iFrame, _uint eSoundID, _uint eChannelID, float fVolume);
+	void					Set_SoundEvent(SOUND_EVENT_DESC desc);
+
 	void					Set_AnimationSpeed(const _double& dSpeed);
+
 	void					Set_BoneIndex(const BONE_TYPE& eType, const _int iIndex);
 	void					Set_RootAnimation(const _bool bRootAnim) { m_bPrevRootAnimation = m_bRootAnimation; m_bRootAnimation = bRootAnim; }
 
@@ -154,6 +181,8 @@ private:
 
 	void					Set_RootPosition_Tween(); /* 트윈 중 */
 	void					Set_RootPosition(); /* 트윈 없는 싱글 애니메이션 */
+
+	void					Check_SoundEvent();
 
 private: 
 	TYPE						m_eModelType = TYPE_END;

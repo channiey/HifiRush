@@ -48,6 +48,7 @@ public:
 public:
 	const _bool&	Is_SteadyBeat() const { return m_bSteadyBeat; }
 	const _bool&	Is_HalfBeat() const { return m_bHalfBeat; }
+	const _bool&	Is_InverseBeat() const { return m_bInverseBeat; }
 
 public:
 	void			Reset();
@@ -61,11 +62,13 @@ private:
 
 private:
 	_uint						m_iCurBpm	= 0;
-	_double						m_dCurTimeSteadyBeat	= 0;
-	_double						m_dCurTimeHalfBeat = 0;
+	_double						m_dCurTimeSteadyBeat	= 0.f;
+	_double						m_dCurTimeHalfBeat		= 0.f;
+	_double						m_dCurTimeInverseBeat	= 0.f;
 
 	_bool						m_bSteadyBeat	= FALSE; /* 정박자 */
 	_bool						m_bHalfBeat		= FALSE; /* 반박자 */
+	_bool						m_bInverseBeat	= FALSE;
 
 	vector<STATE_EVENT_DESC>	m_StateEvents;
 public:

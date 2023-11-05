@@ -16,12 +16,22 @@ vector g_vCamPosition;
 
 Texture2D g_DiffuseTexture;
 
+struct SoundEventDesc
+{
+    int iFrame;
+    uint eSoundID;
+    uint eChannelID;
+    float fVolume;
+};
+
 struct KeyframeDesc
 {
     int iAnimIndex;
     uint iCurFrame;
     uint iNextFrame;
     float fRatio;
+    
+    SoundEventDesc tSoundEventDesc;
 };
 
 struct TweenFrameDesc

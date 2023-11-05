@@ -8,14 +8,16 @@ class CState_Chai_Attack final : public CState_Chai_Base
 
 	typedef struct tagAttackDesc
 	{
-		_bool		bFirstAttack	= FALSE;
-		_bool		bSet			= FALSE;
-		_int		iAnimIndex		= -1;
-		_double		dTimePerFrame	= 0.f;
-		_float		fTweenTime		= 0.f;
+		_bool		bFirstAttack = FALSE;
+		_bool		bSet = FALSE;
+		_int		iAnimIndex = -1;
+		_double		dTimePerFrame = 0.f;
+		_float		fTweenTime = 0.f;
 
-		ATTACK_TYPE				eAttackType		= ATTACK_TYPE::TYPEEND;
-		CModel::ANIM_PROGRESS	eAnimCheckType	= CModel::ANIM_PROGRESS::PROGRESS_END;
+		ATTACK_TYPE				eAttackType = ATTACK_TYPE::TYPEEND;
+		_double					dPrevAnimCheckFrame = -1.f;
+
+		CModel::SoundEventDesc tSoundEventDesc = {};
 
 		void Reset()
 		{
@@ -26,7 +28,9 @@ class CState_Chai_Attack final : public CState_Chai_Base
 			fTweenTime		= 0.f;
 		
 			eAttackType		= ATTACK_TYPE::TYPEEND;
-			eAnimCheckType	= CModel::ANIM_PROGRESS::PROGRESS_END;
+			dPrevAnimCheckFrame = -1.f;
+
+			tSoundEventDesc.Clear();
 		}
 
 	}ATTACK_DESC;

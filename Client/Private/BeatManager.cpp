@@ -75,8 +75,9 @@ void CBeatManager::Reset()
 	m_bSteadyBeat = FALSE;
 	m_bHalfBeat = FALSE;
 
-	m_dCurTimeSteadyBeat = 0;
-	m_dCurTimeHalfBeat = 0;
+	m_dCurTimeSteadyBeat	= 0.f;
+	m_dCurTimeHalfBeat		= 0.f;
+	m_dCurTimeInverseBeat	= -(Get_SPB() * 0.5f);
 }
 
 HRESULT CBeatManager::Add_StateEvent(const STATE_EVENT_DESC StateEvent)
@@ -108,6 +109,7 @@ void CBeatManager::Update_Beat(const _double fTimedelta)
 	/* Cur Time Update */
 	m_dCurTimeSteadyBeat += fTimedelta;
 	m_dCurTimeHalfBeat += fTimedelta;
+	m_dCurTimeInverseBeat += fTimedelta;
 
 	/* Down Beat */
 	const _double dSecondPerDownBeat = Get_SPB();
@@ -132,6 +134,14 @@ void CBeatManager::Update_Beat(const _double fTimedelta)
 	else
 		m_bHalfBeat = FALSE;
 
+	/* Inverse Beat */
+	if (m_dCurTimeInverseBeat >= dSecondPerUpBeat)
+	{
+		m_dCurTimeInverseBeat -= dSecondPerDownBeat;
+		m_bInverseBeat = TRUE;
+	}
+	else
+		m_bInverseBeat = FALSE;
 
 }
 

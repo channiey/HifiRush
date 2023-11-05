@@ -21,31 +21,38 @@ HRESULT CState_Chai_Attack::Enter()
 {
 	m_tAttackDesc.Reset();
 
+	CModel* pModel = m_pChai->Get_Model();
+	CModel::TweenDesc desc = pModel->Get_TweenDesc();
+
 	if (Input::LBtn())
 	{
 		m_tAttackDesc.iAnimIndex		= ANIM_CH::ATK_LIGHT_00;
 		m_tAttackDesc.fTweenTime		= DF_TW_TIME * 0.5f;
-		m_tAttackDesc.dTimePerFrame		= CBeatManager::GetInstance()->Get_SPB(4) 
-											/ (_double)m_pChai->Get_Model()->Get_Animation(m_tAttackDesc.iAnimIndex)->Get_MaxFrameCount();
+		m_tAttackDesc.dPrevAnimCheckFrame = (_double)15.f;
+		m_tAttackDesc.dTimePerFrame		= CBeatManager::GetInstance()->Get_SPB(1) / (_double)15.f;
 
 		m_tAttackDesc.eAttackType		= ATTACK_TYPE::LIGHT;
-		m_tAttackDesc.eAnimCheckType	= CModel::ANIM_PROGRESS::QUATER;
+
+		m_tAttackDesc.tSoundEventDesc.iFrame = 10;
+		m_tAttackDesc.tSoundEventDesc.eSoundID = EFC_CHAI_ATTACK_SWING_NONCOLLISION;
+		m_tAttackDesc.tSoundEventDesc.eChannelID = PLAYER_CHAI;
+		m_tAttackDesc.tSoundEventDesc.fVolume = EfcVolumeChai;
+
 	}
 	else if (Input::RBtn())
 	{
-		m_tAttackDesc.iAnimIndex		= ANIM_CH::ATK_SINGLE_00;
-		m_tAttackDesc.fTweenTime		= DF_TW_TIME * 0.5f;
-		m_tAttackDesc.dTimePerFrame		= CBeatManager::GetInstance()->Get_SPB(8)
-											/ (_double)m_pChai->Get_Model()->Get_Animation(m_tAttackDesc.iAnimIndex)->Get_MaxFrameCount();
+		//m_tAttackDesc.iAnimIndex		= ANIM_CH::ATK_SINGLE_00;
+		//m_tAttackDesc.fTweenTime		= DF_TW_TIME * 0.5f;
+		//m_tAttackDesc.dTimePerFrame		= CBeatManager::GetInstance()->Get_SPB(8)
+		//									/ (_double)m_pChai->Get_Model()->Get_Animation(m_tAttackDesc.iAnimIndex)->Get_MaxFrameCount();
 
-		m_tAttackDesc.eAttackType		= ATTACK_TYPE::STRONG;
-		m_tAttackDesc.eAnimCheckType	= CModel::ANIM_PROGRESS::HALF;
+		//m_tAttackDesc.eAttackType		= ATTACK_TYPE::STRONG;
+		//m_tAttackDesc.eAnimCheckType	= CModel::ANIM_PROGRESS::HALF;
 	}
 
 	m_pChai->m_tFightDesc.iStep++;
 	m_tAttackDesc.bSet = TRUE;
 
-	cout << "\n\nATTACK ENTER\n\n\n";
 	return S_OK;
 }
 
@@ -53,15 +60,18 @@ const wstring& CState_Chai_Attack::Tick(const _double& fTimeDelta)
 {
 	Set_AttackDesc();
 
+	CModel* pModel = m_pChai->Get_Model();
+	CModel::TweenDesc desc = pModel->Get_TweenDesc();
+	//cout << desc.cur.iAnimIndex << "\t" << desc.next.iAnimIndex << "\t" << desc.cur.iCurFrame << "\t" << desc.next.iCurFrame << "\t" << desc.cur.tSoundEventDesc.eSoundID << endl;
+
 	if (m_tAttackDesc.bSet)
 	{
-		CModel* pModel = m_pChai->Get_Model();
-
 		/* 첫 공격 */
-		if (0 == m_pChai->m_tFightDesc.iStep && CBeatManager::GetInstance()->Is_SteadyBeat())
+		if (0 == m_pChai->m_tFightDesc.iStep && CBeatManager::GetInstance()->Is_InverseBeat())
 		{
-			ENGINE_INSTANCE->Play_Sound(EFC_CHAI_ATTACK_SWING_NONCOLLISION, PLAYER_CHAI, EfcVolumeChai);
 			pModel->Set_Animation(m_tAttackDesc.iAnimIndex, m_tAttackDesc.dTimePerFrame, m_tAttackDesc.fTweenTime);
+			pModel->Set_SoundEvent(m_tAttackDesc.tSoundEventDesc);
+
 			m_tAttackDesc.bSet = FALSE;
 
 			m_tAttackDesc.bFirstAttack = TRUE;
@@ -69,50 +79,12 @@ const wstring& CState_Chai_Attack::Tick(const _double& fTimeDelta)
 		}/* 콤보 공격 */
 		else if(1 <= m_pChai->m_tFightDesc.iStep && !pModel->Is_Tween())
 		{
-			switch (m_tAttackDesc.eAnimCheckType)
+			if (m_tAttackDesc.dPrevAnimCheckFrame <= desc.cur.iCurFrame)
 			{
-			case Engine::CModel::QUATER:
-				if (pModel->Is_Quater_Animation())
-				{
-					ENGINE_INSTANCE->Play_Sound(EFC_CHAI_ATTACK_SWING_NONCOLLISION, PLAYER_CHAI, EfcVolumeChai);
-					pModel->Set_Animation(m_tAttackDesc.iAnimIndex, m_tAttackDesc.dTimePerFrame, m_tAttackDesc.fTweenTime);
-					m_tAttackDesc.bSet = FALSE;
-				}
-				break;
-			case Engine::CModel::ONE_THIRDS:
-				if (pModel->Is_OneThirds_Animation())
-				{
-					ENGINE_INSTANCE->Play_Sound(EFC_CHAI_ATTACK_SWING_NONCOLLISION, PLAYER_CHAI, EfcVolumeChai);
-					pModel->Set_Animation(m_tAttackDesc.iAnimIndex, m_tAttackDesc.dTimePerFrame, m_tAttackDesc.fTweenTime);
-					m_tAttackDesc.bSet = FALSE;
-				}
-				break;
-			case Engine::CModel::HALF:
-				if (pModel->Is_Half_Animation())
-				{
-					ENGINE_INSTANCE->Play_Sound(EFC_CHAI_ATTACK_SWING_NONCOLLISION, PLAYER_CHAI, EfcVolumeChai);
-					pModel->Set_Animation(m_tAttackDesc.iAnimIndex, m_tAttackDesc.dTimePerFrame, m_tAttackDesc.fTweenTime);
-					m_tAttackDesc.bSet = FALSE;
-				}
-				break;
-			case Engine::CModel::TWO_THIRDS:
-				if (pModel->Is_TwoThirds_Animation())
-				{
-					ENGINE_INSTANCE->Play_Sound(EFC_CHAI_ATTACK_SWING_NONCOLLISION, PLAYER_CHAI, EfcVolumeChai);
-					pModel->Set_Animation(m_tAttackDesc.iAnimIndex, m_tAttackDesc.dTimePerFrame, m_tAttackDesc.fTweenTime);
-					m_tAttackDesc.bSet = FALSE;
-				}
-				break;
-			case Engine::CModel::FINISH:
-				if (pModel->Is_Finish_Animation())
-				{
-					ENGINE_INSTANCE->Play_Sound(EFC_CHAI_ATTACK_SWING_NONCOLLISION, PLAYER_CHAI, EfcVolumeChai);
-					pModel->Set_Animation(m_tAttackDesc.iAnimIndex, m_tAttackDesc.dTimePerFrame, m_tAttackDesc.fTweenTime);
-					m_tAttackDesc.bSet = FALSE;
-				}
-				break;
-			default:
-				break;
+				pModel->Set_Animation(m_tAttackDesc.iAnimIndex, m_tAttackDesc.dTimePerFrame, m_tAttackDesc.fTweenTime);
+				pModel->Set_SoundEvent(m_tAttackDesc.tSoundEventDesc);
+				
+				m_tAttackDesc.bSet = FALSE;
 			}
 		}
 	}
@@ -126,8 +98,6 @@ const wstring& CState_Chai_Attack::LateTick()
 
 void CState_Chai_Attack::Exit()
 {
-	cout << "\n\nATTACK Exit\n\n\n";
-
 	m_tAttackDesc.Reset();
 
 	m_pChai->m_tFightDesc.iStep = -1;
@@ -186,21 +156,13 @@ void CState_Chai_Attack::Set_AttackDesc()
 
 	/* 현재 애니메이션에 해당하는 타이밍을 지났다면 리턴 */
 	CModel* pModel = m_pChai->Get_Model();
+	CModel::TweenDesc desc = pModel->Get_TweenDesc();
 
-	switch (m_tAttackDesc.eAnimCheckType)
+	if (m_tAttackDesc.dPrevAnimCheckFrame <= desc.cur.iCurFrame)
 	{
-	case CModel::QUATER:
-		if (pModel->Is_Quater_Animation()) return; break;
-	case CModel::ONE_THIRDS:
-		if (pModel->Is_OneThirds_Animation()) return; break;
-	case CModel::HALF:
-		if (pModel->Is_Half_Animation()) return; break;
-	case CModel::TWO_THIRDS:
-		if (pModel->Is_TwoThirds_Animation()) return; break;
-	case CModel::FINISH:
-		if (pModel->Is_Finish_Animation()) return; break;
-	default: return; break;
+		return;
 	}
+	
 
 	/* 다음 공격 세팅 */
 	if (Input::Attack() && Input::LBtn())
@@ -213,26 +175,37 @@ void CState_Chai_Attack::Set_AttackDesc()
 		if (0 == m_pChai->m_tFightDesc.iStep)
 		{
 			m_tAttackDesc.iAnimIndex = ANIM_CH::ATK_LIGHT_01;
-			m_tAttackDesc.dTimePerFrame = CBeatManager::GetInstance()->Get_SPB(4)
-				/ (_double)m_pChai->Get_Model()->Get_Animation(m_tAttackDesc.iAnimIndex)->Get_MaxFrameCount();
+			m_tAttackDesc.dPrevAnimCheckFrame = (_double)15.f;
+			m_tAttackDesc.dTimePerFrame = CBeatManager::GetInstance()->Get_SPB(1) / (_double)15.f;
+			
+			m_tAttackDesc.tSoundEventDesc.iFrame = 10;
+			m_tAttackDesc.tSoundEventDesc.eSoundID = EFC_CHAI_ATTACK_SWING_NONCOLLISION;
+			m_tAttackDesc.tSoundEventDesc.eChannelID = PLAYER_CHAI;
+			m_tAttackDesc.tSoundEventDesc.fVolume = EfcVolumeChai;
 
-			m_tAttackDesc.eAnimCheckType = CModel::ANIM_PROGRESS::QUATER;
+
 		}
 		else if (1 == m_pChai->m_tFightDesc.iStep)
 		{
 			m_tAttackDesc.iAnimIndex = ANIM_CH::ATK_LIGHT_02;
-			m_tAttackDesc.dTimePerFrame = CBeatManager::GetInstance()->Get_SPB(4)
-				/ (_double)m_pChai->Get_Model()->Get_Animation(m_tAttackDesc.iAnimIndex)->Get_MaxFrameCount();
+			m_tAttackDesc.dPrevAnimCheckFrame = (_double)15.f;
+			m_tAttackDesc.dTimePerFrame = CBeatManager::GetInstance()->Get_SPB(1) / (_double)15.f;
 
-			m_tAttackDesc.eAnimCheckType = CModel::ANIM_PROGRESS::QUATER;
+			m_tAttackDesc.tSoundEventDesc.iFrame = 10;
+			m_tAttackDesc.tSoundEventDesc.eSoundID = EFC_CHAI_ATTACK_SWING_NONCOLLISION;
+			m_tAttackDesc.tSoundEventDesc.eChannelID = PLAYER_CHAI;
+			m_tAttackDesc.tSoundEventDesc.fVolume = EfcVolumeChai;
 		}
 		else if (2 == m_pChai->m_tFightDesc.iStep)
 		{
 			m_tAttackDesc.iAnimIndex = ANIM_CH::ATK_LIGHT_03;
-			m_tAttackDesc.dTimePerFrame = CBeatManager::GetInstance()->Get_SPB(4)
-				/ (_double)m_pChai->Get_Model()->Get_Animation(m_tAttackDesc.iAnimIndex)->Get_MaxFrameCount();
-			
-			m_tAttackDesc.eAnimCheckType = CModel::ANIM_PROGRESS::QUATER;
+			m_tAttackDesc.dPrevAnimCheckFrame = (_double)15.f;
+			m_tAttackDesc.dTimePerFrame = CBeatManager::GetInstance()->Get_SPB(2) / (_double)30.f;
+
+			m_tAttackDesc.tSoundEventDesc.iFrame = 25;
+			m_tAttackDesc.tSoundEventDesc.eSoundID = EFC_CHAI_ATTACK_SWING_NONCOLLISION;
+			m_tAttackDesc.tSoundEventDesc.eChannelID = PLAYER_CHAI;
+			m_tAttackDesc.tSoundEventDesc.fVolume = EfcVolumeChai;
 		}
 		else if (3 <= m_pChai->m_tFightDesc.iStep)
 		{
