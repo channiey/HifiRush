@@ -81,7 +81,7 @@ void CChai::LateTick(_double fTimeDelta)
 	}
 
 	//CModel::TweenDesc desc = m_pModelCom->Get_TweenDesc();
-	//cout << desc.cur.iAnimIndex << "\t" << desc.next.iAnimIndex << endl;
+	//cout << desc.cur.iAnimIndex << "\t" << desc.next.iAnimIndex << "\t" << desc.cur.iCurFrame << "\t" << desc.next.iCurFrame << "\t" << desc.cur.tSoundEventDesc.eSoundID << endl;
 
 	__super::LateTick(fTimeDelta);
 }

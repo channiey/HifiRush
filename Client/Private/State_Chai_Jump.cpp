@@ -48,8 +48,7 @@ const wstring& CState_Chai_Jump::LateTick()
 {
 	CModel* pModel = m_pChai->Get_Model();
 	CModel::TweenDesc desc = pModel->Get_TweenDesc();
-
-	cout << desc.cur.iAnimIndex << "\t" << desc.next.iAnimIndex << "\t" << desc.cur.iCurFrame << "\t" << desc.next.iCurFrame << "\t" << desc.cur.tSoundEventDesc.eSoundID << endl;
+	//cout << desc.cur.iAnimIndex << "\t" << desc.next.iAnimIndex << "\t" << desc.cur.iCurFrame << "\t" << desc.next.iCurFrame << "\t" << desc.cur.tSoundEventDesc.eSoundID << endl;
 
 	/* Fall Speed */
 	Set_FallSpeed();
@@ -61,9 +60,9 @@ const wstring& CState_Chai_Jump::LateTick()
 		{
 			ANIM_CH			eAnimID			= ANIM_CH::LAND;
 			CAnimation*		pAnimation		= m_pChai->Get_Model()->Get_Animation(eAnimID);
-			const _double	fTimePerFrame	= CBeatManager::GetInstance()->Get_SPB(2) / (_double)pAnimation->Get_MaxFrameCount();
+			const _double	fTimePerFrame = (_double)1 / (_double)pAnimation->Get_TickPerSecond();
 
-			pModel->Set_Animation(eAnimID, fTimePerFrame * (_double)0.5f, 0.05f);
+			pModel->Set_Animation(eAnimID, fTimePerFrame * 0.5f , 0.05f);
 			//cout << "\nLANDING START! \n\n";
 			Land();
 		}
@@ -71,7 +70,7 @@ const wstring& CState_Chai_Jump::LateTick()
 		/* 착지 애니메이션 종료 (그라운드) */
 		if(m_pChai->m_tPhysicsDesc.bLanding)
 		{
-			if (!pModel->Is_Tween() && pModel->Is_Finish_Animation())
+			if (!pModel->Is_Tween() && desc.cur.iCurFrame <= 6)
 			{
 				//cout << "\nLANDING END! \n\n";
 				return Check_Transition();
