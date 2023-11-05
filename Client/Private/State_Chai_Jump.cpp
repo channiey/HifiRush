@@ -58,26 +58,29 @@ const wstring& CState_Chai_Jump::LateTick()
 		/* 착지 애니메이션 시작 (점프 상태에서 바로 착지되는 경우 처리 X)*/
 		if (m_pChai->m_tPhysicsDesc.bFall && !m_pChai->m_tPhysicsDesc.bLanding && Check_Land())
 		{
-			ANIM_CH			eAnimID			= ANIM_CH::LAND;
+		/*	ANIM_CH			eAnimID			= ANIM_CH::LAND;
 			CAnimation*		pAnimation		= m_pChai->Get_Model()->Get_Animation(eAnimID);
 			const _double	fTimePerFrame = (_double)1 / (_double)pAnimation->Get_TickPerSecond();
 
-			pModel->Set_Animation(eAnimID, fTimePerFrame * 0.5f , 0.05f);
-			//cout << "\nLANDING START! \n\n";
+			pModel->Set_Animation(eAnimID, fTimePerFrame * 0.5f, 0.05f);*/
 			Land();
+			cout << "LAND\n";
+			m_pChai->m_tPhysicsDesc.bLanding = TRUE;
+			return Check_Transition();
+
 		}
 
-		/* 착지 애니메이션 종료 (그라운드) */
-		if(m_pChai->m_tPhysicsDesc.bLanding)
-		{
-			if (!pModel->Is_Tween() && desc.cur.iCurFrame <= 6)
-			{
-				//cout << "\nLANDING END! \n\n";
-				return Check_Transition();
-			}
-			else
-				return m_strName;
-		}
+		///* 착지 애니메이션 종료 (그라운드) */
+		//if(m_pChai->m_tPhysicsDesc.bLanding)
+		//{
+		//	if (!pModel->Is_Tween() && 4 <= desc.cur.iCurFrame)
+		//	{
+		//		cout << "\nLANDING END! \n\n";
+		//		return Check_Transition();
+		//	}
+		//	else
+		//		return m_strName;
+		//}
 	}
 	
 	/* Fall */
