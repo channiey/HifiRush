@@ -199,7 +199,7 @@ private:
 
 	Vec4						m_vPrevAnimRoot = {};
 	_bool						m_bRootAnimation = TRUE;
-	_bool						m_bPrevRootAnimation = FALSE;
+	_bool						m_bPrevRootAnimation = TRUE;
 	_bool						m_bFinishAnimation = FALSE;
 	_bool						m_bFinishTween = FALSE;
 	_int						m_AnimBoneIndecies[BONE_END];

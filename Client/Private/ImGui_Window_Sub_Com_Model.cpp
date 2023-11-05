@@ -86,7 +86,7 @@ void CImGui_Window_Sub_Com_Model::Show_Animations()
 				{
 					pNavMeshAgent->Set_Active(FALSE);
 				}
-				pModel->Set_RootAnimation(TRUE);
+				//pModel->Set_RootAnimation(TRUE);
 				pModel->Set_Animation(m_iCurAnimIndex);
 			}
 		}

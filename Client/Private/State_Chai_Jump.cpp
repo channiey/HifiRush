@@ -25,7 +25,6 @@ HRESULT CState_Chai_Jump::Enter()
 	const _double	fTimePerFrame	= CBeatManager::GetInstance()->Get_SPB(1) / (_double)pAnimation->Get_MaxFrameCount();
 
 	m_pChai->Get_Model()->Set_Animation(eAnimID, fTimePerFrame, DF_TW_TIME);
-	m_pChai->Get_Model()->Set_RootAnimation(FALSE);
 
 	m_pChai->m_tPhysicsDesc.bGround = FALSE;
 	m_pChai->m_tPhysicsDesc.bJump = TRUE;
@@ -64,7 +63,7 @@ const wstring& CState_Chai_Jump::LateTick()
 
 			pModel->Set_Animation(eAnimID, fTimePerFrame * 0.5f, 0.05f);*/
 			Land();
-			cout << "LAND\n";
+			//cout << "LAND\n";
 			m_pChai->m_tPhysicsDesc.bLanding = TRUE;
 			return Check_Transition();
 

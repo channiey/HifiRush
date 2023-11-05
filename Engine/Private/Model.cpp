@@ -226,9 +226,15 @@ HRESULT CModel::Update_Anim(_double fTimeDelta)
 				Vec4 vRootPos, m_vNextAnimRoot;
 				m_vNextAnimRoot = Vec4(Get_AnimBoneLocal(m_TweenDesc.next.iAnimIndex, m_TweenDesc.next.iCurFrame, BONE_ROOT).m[3]);
 				if (Vec4::UnitW == m_vNextAnimRoot)
+				{
+					cout << "NONELERP\n";
 					vRootPos = Get_AnimBoneRootNoneLerp();
-				else
+				}
+				else 
+				{
+					cout << "LERP\n";
 					vRootPos = Get_AnimBonePos(BONE_ROOT);
+				}
 
 				m_pOwner->Get_Transform()->Set_RootPos(vRootPos);
 

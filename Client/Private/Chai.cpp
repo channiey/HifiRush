@@ -80,8 +80,10 @@ void CChai::LateTick(_double fTimeDelta)
 			return;
 	}
 
-	CModel::TweenDesc desc = m_pModelCom->Get_TweenDesc();
-	cout << desc.cur.iAnimIndex << "\t" << desc.next.iAnimIndex << "\t" << desc.cur.iCurFrame << "\t" << desc.next.iCurFrame << "\t" << desc.cur.tSoundEventDesc.eSoundID << endl;
+	//CModel::TweenDesc desc = m_pModelCom->Get_TweenDesc();
+	//cout << desc.cur.iAnimIndex << "\t" << desc.next.iAnimIndex << "\t" << desc.cur.iCurFrame << "\t" << desc.next.iCurFrame << "\t" << desc.cur.tSoundEventDesc.eSoundID << endl;
+
+	cout << m_pModelCom->Is_RootMotion() << endl;
 
 	__super::LateTick(fTimeDelta);
 }

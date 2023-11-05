@@ -23,7 +23,8 @@ HRESULT CState_Chai_Attack::Enter()
 
 	CModel* pModel = m_pChai->Get_Model();
 	CModel::TweenDesc desc = pModel->Get_TweenDesc();
-
+	
+	cout << "ATTACK START\n";
 	if (Input::LBtn())
 	{
 		m_tAttackDesc.iAnimIndex		= ANIM_CH::ATK_LIGHT_00;
@@ -98,6 +99,7 @@ const wstring& CState_Chai_Attack::LateTick()
 
 void CState_Chai_Attack::Exit()
 {
+	cout << "ATTACK OUT\n";
 	m_tAttackDesc.Reset();
 
 	m_pChai->m_tFightDesc.iStep = -1;

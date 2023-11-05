@@ -28,7 +28,6 @@ HRESULT CState_Chai_Idle::Enter()
 	const _double	fTimePerFrame	= CBeatManager::GetInstance()->Get_AnimTimePerFrame(pAnimation);
 
 	m_pChai->Get_Model()->Set_Animation(eAnimID, fTimePerFrame * (_double)2.f, DF_TW_TIME);
-	m_pChai->Get_Model()->Set_RootAnimation(FALSE);
 
 	return S_OK;
 }

@@ -24,7 +24,6 @@ HRESULT CState_Chai_Parry::Enter()
 	const _double	fTimePerFrame	= CBeatManager::GetInstance()->Get_SPB(1) / (_double)pAnimation->Get_MaxFrameCount();
 
 	m_pChai->Get_Model()->Set_Animation(eAnimID, fTimePerFrame, DF_TW_TIME);
-	m_pChai->Get_Model()->Set_RootAnimation(FALSE);
 
 	m_pChai->m_tFightDesc.bParry = TRUE;
 
