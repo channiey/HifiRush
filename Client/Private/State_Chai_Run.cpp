@@ -63,11 +63,11 @@ const wstring& CState_Chai_Run::Check_Transition()
 			return StateNames[STATE_DASH];
 		}
 	}
-	else if (Input::Attack() && CBeatManager::GetInstance()->Is_HalfBeat())
+	else if (Input::Attack())
 	{
 		return StateNames[STATE_ATTACK];
 	}
-	else if (Input::Parry() && CBeatManager::GetInstance()->Is_HalfBeat())
+	else if (Input::Parry())
 	{
 		if (m_pChai->m_tPhysicsDesc.bGround) 
 		{

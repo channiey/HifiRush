@@ -142,6 +142,7 @@ namespace Client
 
 		/* Etc */
 		ETC,
+
 		CHANNEL_ID_END = MAX_CHANNEL
 	};
 
@@ -164,16 +165,19 @@ namespace Client
 		BGM_MIDDLE_DOWNTIME,
 		BGM_MIDDLE_UNRESTRICTED,
 
-		/* EFT */
-		EFC_METRONOM,
+		/* EFC CHAI*/
+		EFC_CHAI_ATTACK_SWING_NONCOLLISION,
+
+
 
 		SOUND_FILE_END
 	};
 	static const char* SoundFilePath_Engine = "../../Client/Bin/Resources/Sounds/";
 
 
-	static const _float BgmVolumeInBattle = 0.4f;
-	static const _float BgmVolumeInNotBattle = 0.2f;
+	static const _float BgmVolumeInBattle		= 0.4f;
+	static const _float BgmVolumeInNotBattle	= 0.2f;
+	static const _float EfcVolumeChai			= 0.4f;
 }
 
 extern HINSTANCE	g_hInst;

@@ -6,6 +6,31 @@ class CState_Chai_Attack final : public CState_Chai_Base
 { 
 	enum class ATTACK_TYPE { LIGHT, STRONG, THROW, SPECIAL, TYPEEND };
 
+	typedef struct tagAttackDesc
+	{
+		_bool		bFirstAttack	= FALSE;
+		_bool		bSet			= FALSE;
+		_int		iAnimIndex		= -1;
+		_double		dTimePerFrame	= 0.f;
+		_float		fTweenTime		= 0.f;
+
+		ATTACK_TYPE				eAttackType		= ATTACK_TYPE::TYPEEND;
+		CModel::ANIM_PROGRESS	eAnimCheckType	= CModel::ANIM_PROGRESS::PROGRESS_END;
+
+		void Reset()
+		{
+			bFirstAttack	= FALSE;
+			bSet			= FALSE;
+			iAnimIndex		= -1;
+			dTimePerFrame	= 0.f;
+			fTweenTime		= 0.f;
+		
+			eAttackType		= ATTACK_TYPE::TYPEEND;
+			eAnimCheckType	= CModel::ANIM_PROGRESS::PROGRESS_END;
+		}
+
+	}ATTACK_DESC;
+
 private:
 	CState_Chai_Attack();
 	CState_Chai_Attack(const CState_Chai_Attack& rhs);
@@ -29,7 +54,11 @@ public:
 	const wstring&		Check_Transition() override;
 
 private:
-	ATTACK_TYPE			m_eAttackType = ATTACK_TYPE::TYPEEND;
+	void				Set_AttackDesc();
+
+private:
+	ATTACK_DESC			m_tAttackDesc	= {};
+
 
 public:
 	static CState_Chai_Attack* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);

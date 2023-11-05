@@ -49,7 +49,7 @@ const wstring& CState_Chai_Jump::LateTick()
 	CModel* pModel = m_pChai->Get_Model();
 	CModel::TweenDesc desc = pModel->Get_TweenDesc();
 
-	cout << desc.cur.iAnimIndex << "\t" << desc.next.iAnimIndex << endl;
+	//cout << desc.cur.iAnimIndex << "\t" << desc.next.iAnimIndex << endl;
 
 	/* Fall Speed */
 	Set_FallSpeed();
@@ -64,7 +64,7 @@ const wstring& CState_Chai_Jump::LateTick()
 			const _double	fTimePerFrame	= CBeatManager::GetInstance()->Get_SPB(2) / (_double)pAnimation->Get_MaxFrameCount();
 
 			pModel->Set_Animation(eAnimID, fTimePerFrame * (_double)0.5f, 0.05f);
-			cout << "\nLANDING START! \n\n";
+			//cout << "\nLANDING START! \n\n";
 			Land();
 		}
 
@@ -73,7 +73,7 @@ const wstring& CState_Chai_Jump::LateTick()
 		{
 			if (!pModel->Is_Tween() && pModel->Is_Finish_Animation())
 			{
-				cout << "\nLANDING END! \n\n";
+				//cout << "\nLANDING END! \n\n";
 				return Check_Transition();
 			}
 			else
@@ -102,7 +102,7 @@ const wstring& CState_Chai_Jump::LateTick()
 		}
 		m_pChai->m_tPhysicsDesc.bFall = TRUE;
 
-		cout << "\nFALL! \n\n";
+		//cout << "\nFALL! \n\n";
 	}
 
 	/* Double Jump */
@@ -119,7 +119,7 @@ const wstring& CState_Chai_Jump::LateTick()
 			const _double	fTimePerFrame = CBeatManager::GetInstance()->Get_SPB(1) / (_double)pAnimation->Get_MaxFrameCount();
 
 			pModel->Set_Animation(ANIM_CH::DOUBLE_JUMP, fTimePerFrame, DF_TW_TIME);
-			cout << "\nDOUBLE JUMP! \n\n";
+			//cout << "\nDOUBLE JUMP! \n\n";
 
 			Jump();
 		}
@@ -166,13 +166,13 @@ const _bool CState_Chai_Jump::Check_Land()
 	/* 그라운드보다 아래 */
 	if (fCurGap <= fLandThreshold)
 	{
-		cout << fixed;
-		cout.precision(3);
-		cout << endl << "Pre : " << fPreGap << endl;
-		cout << endl << "Cur : " << fCurGap << endl << endl;
+		//cout << fixed;
+		//cout.precision(3);
+		//cout << endl << "Pre : " << fPreGap << endl;
+		//cout << endl << "Cur : " << fCurGap << endl << endl;
 
 		m_pChai->Get_Transform()->Set_Position(Vec3(vPos.x, fGroundHeight, vPos.z));
-		cout << "@@\n";
+		//cout << "@@\n";
 
 		//fPrePosY = 0.f;
 		return TRUE;
@@ -180,7 +180,7 @@ const _bool CState_Chai_Jump::Check_Land()
 	else if (fCurGap <= fGravityYDelta - 0.2f) /* 다음 프레임에 그라운드보다 아래 but -0.2f보다 더 작게되는 경우*/
 	{
 		m_pChai->Get_Transform()->Set_Position(Vec3(vPos.x, fGroundHeight, vPos.z));
-		cout << "##\n";
+		//cout << "##\n";
 		//fPrePosY = 0.f;
 		return TRUE;
 	}

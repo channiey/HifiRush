@@ -255,8 +255,8 @@ HRESULT CModel::Update_Anim(_double fTimeDelta)
 				m_TweenDesc.next.iNextFrame = (m_TweenDesc.next.iCurFrame + 1) % pNextAnim->Get_MaxFrameCount();
 			}
 			m_TweenDesc.next.fRatio = (pNextAnim->Get_FrameAcc() / dSecondPerFrame);
-			if (1.f < m_TweenDesc.cur.fRatio)
-				m_TweenDesc.cur.fRatio = 0.5f;
+			if (1.f < m_TweenDesc.next.fRatio)
+				m_TweenDesc.next.fRatio = 0.5f;
 
 			/*CAnimation*		pNextAnim = Get_Animation(m_TweenDesc.next.iAnimIndex);
 
@@ -428,6 +428,18 @@ const _bool CModel::Is_Half_Animation()
 	if (nullptr != pCurAnim)
 	{
 		if (0.5f < (m_TweenDesc.cur.iCurFrame / (_float)pCurAnim->Get_MaxFrameCount()))
+			return TRUE;
+	}
+	return FALSE;
+}
+
+const _bool CModel::Is_Quater_Animation()
+{
+	CAnimation* pCurAnim = Get_Animation(m_TweenDesc.cur.iAnimIndex);
+
+	if (nullptr != pCurAnim)
+	{
+		if (0.25f <= (m_TweenDesc.cur.iCurFrame / (_float)pCurAnim->Get_MaxFrameCount()))
 			return TRUE;
 	}
 	return FALSE;

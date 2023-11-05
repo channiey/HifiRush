@@ -71,14 +71,10 @@ const wstring& CState_Chai_Idle::Check_Transition()
 			return StateNames[STATE_DASH];
 		}
 	}
-	else if (Input::Attack() && CBeatManager::GetInstance()->Is_HalfBeat())
+	else if (Input::Attack())
 	{
-#ifdef _DEBUG
-if(!CImGui_Manager::GetInstance()->Is_ClickedWindow())
-	return StateNames[STATE_ATTACK];	
-#else
-	return StateNames[STATE_ATTACK];
-#endif // _DEBUG
+		if(!CImGui_Manager::GetInstance()->Is_ClickedWindow())
+			return StateNames[STATE_ATTACK];
 	}
 	else if (Input::Parry() && CBeatManager::GetInstance()->Is_HalfBeat())
 	{

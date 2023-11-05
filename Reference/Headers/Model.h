@@ -14,7 +14,7 @@ class ENGINE_DLL CModel final : public CComponent
 public:
 	enum			TYPE			{ TYPE_NONANIM, TYPE_ANIM, TYPE_END };
 	enum			BONE_TYPE		{ BONE_ROOT, BONE_SOCKET_LEFT, BONE_SOCKET_RIGHT, BONE_END };
-	enum            ANIM_PROGRESS	{ ONE_THIRDS, HALF, TWO_THIRDS, FINISH, PROGRESS_END };
+	enum            ANIM_PROGRESS	{ QUATER, ONE_THIRDS, HALF, TWO_THIRDS, FINISH, PROGRESS_END };
 
 	typedef struct	KeyframeDesc
 	{
@@ -123,8 +123,9 @@ public:
 	const _bool&			Is_RootMotion() const { return m_bRootAnimation; }
 	const _bool&			Is_Finish_Tween() const {return m_bFinishTween; }
 
-	const _bool				Is_Half_Animation();
+	const _bool				Is_Quater_Animation();
 	const _bool				Is_OneThirds_Animation();
+	const _bool				Is_Half_Animation();
 	const _bool				Is_TwoThirds_Animation();
 	const _bool&			Is_Finish_Animation() { return m_bFinishAnimation; }
 	const _bool				Is_Tween();

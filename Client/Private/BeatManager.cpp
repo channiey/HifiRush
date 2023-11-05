@@ -79,6 +79,30 @@ void CBeatManager::Reset()
 	m_dCurTimeHalfBeat = 0;
 }
 
+HRESULT CBeatManager::Add_StateEvent(const STATE_EVENT_DESC StateEvent)
+{
+	if (Is_Reserve_StateEvent(StateEvent.pStateMachine))
+		return E_FAIL;
+
+	m_StateEvents.push_back(StateEvent);
+
+	return S_OK;
+}
+
+const _bool CBeatManager::Is_Reserve_StateEvent(CStateMachine* pStateMachine)
+{
+	if (nullptr == pStateMachine || m_StateEvents.empty())
+		return FALSE;
+
+	auto comp = [pStateMachine](STATE_EVENT_DESC StateEvent) { return (StateEvent.pStateMachine == pStateMachine) ? TRUE : FALSE; };
+	auto iter = find_if(m_StateEvents.begin(), m_StateEvents.end(), comp);
+
+	if (iter != m_StateEvents.end())
+		return TRUE;
+
+	return FALSE;
+}
+
 void CBeatManager::Update_Beat(const _double fTimedelta)
 {
 	/* Cur Time Update */

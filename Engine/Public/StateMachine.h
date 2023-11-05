@@ -23,14 +23,14 @@ public:
 	virtual HRESULT LateTick(const _double& fTimeDelta);
 
 public:
-	CState* Get_CurState() const { return m_pCurState; }
-	HRESULT Set_State(const wstring& strStateTag);
-	HRESULT Add_State(CState* pState);
+	CState*			Get_CurState() const { return m_pCurState; }
+	HRESULT			Set_State(const wstring& strStateTag);
+	HRESULT			Add_State(CState* pState);
 
 private:
-	const _bool Has_State(const wstring& strStateTag);
-	CState*		Find_State(const wstring& strStateTag);
-	HRESULT		Change_State(const wstring& strStateTag);
+	const _bool		Has_State(const wstring& strStateTag);
+	CState*			Find_State(const wstring& strStateTag);
+	HRESULT			Change_State(const wstring& strStateTag);
 
 private:
 	map<const wstring, class CState*>	m_pStates;
