@@ -29,7 +29,7 @@ HRESULT CCamera_Debug::Initialize(void * pArg)
 {
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
-
+	 
 	m_pCameraCom->Set_MouseSensitiveX(0.5f);
 	m_pCameraCom->Set_MouseSensitiveY(0.5f);
 
@@ -37,6 +37,8 @@ HRESULT CCamera_Debug::Initialize(void * pArg)
 	m_pTransformCom->LookAt(_float4(0.f, 0.f, 0.f, 1.f));
 
 	m_fSpeedPerSec = 30.f;
+
+	m_eState = CGameObject::STATE_UNACTIVE;
 
 	if (FAILED(ENGINE_INSTANCE->Add_Camera(CAM_DEBUG, this)))
 		return E_FAIL;

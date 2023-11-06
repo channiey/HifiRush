@@ -41,6 +41,8 @@ HRESULT CCamera_Follow::Initialize(void * pArg)
 		m_pCameraCom->Set_LookAtOffSet(Vec4{0.f, 2.2f, 0.f, 1.f });
 	}
 
+	m_eState = CGameObject::STATE_ACTIVE;
+
 	return S_OK;
 }
 

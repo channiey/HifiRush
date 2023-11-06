@@ -80,13 +80,14 @@ HRESULT CCamera_Manager::Add_Camera(const _uint& iKey, CGameObject* pCamera)
 
 	pCamera->Get_Camera()->Set_Key(iKey);
 
-	/* 이전에 추가되었던 카메라들은 비활성화 */
-	for(auto& Pair : m_Cameras)
-		Pair.second->Set_State(CGameObject::OBJ_STATE::STATE_UNACTIVE);
+	///* 이전에 추가되었던 카메라들은 비활성화 */
+	//for(auto& Pair : m_Cameras)
+	//	Pair.second->Set_State(CGameObject::OBJ_STATE::STATE_UNACTIVE);
 
 	m_Cameras.insert({ iKey, pCamera });
 
-	m_pCurCamera = pCamera;
+	if(pCamera->Is_Active())
+		m_pCurCamera = pCamera;
 
 	return S_OK;
 }

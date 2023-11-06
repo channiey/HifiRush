@@ -40,6 +40,9 @@ void CSkySphere::Tick(_double fTimeDelta)
 
 void CSkySphere::LateTick(_double fTimeDelta)
 {
+	if (nullptr == ENGINE_INSTANCE->Get_CurCamera())
+		return;
+
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, ENGINE_INSTANCE->Get_CamPosition());
 
 	m_pRendererCom->Add_RenderGroup(CRenderer::RG_PRIORITY, this);

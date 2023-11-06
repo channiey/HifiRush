@@ -440,6 +440,46 @@ void CImGui_Window_Main_Hierarachy::Save_LevelData()
 			}
 			else
 				file->Write<_bool>(FALSE);
+
+			
+			///* 자식 갯수*/
+			//vector<CGameObject*> Children = obj->Get_Children();
+			//file->Write<_int>(Children.size());
+
+			//if (!Children.empty())
+			//{
+
+			//	for (auto& pChild : Children)
+			//	{
+			//		/* 이름 */
+			//		wstring strName = Util_String::Remove_LastNumChar(obj->Get_Name(), CLONE_PIN_MAX_DIGIT);
+			//		file->Write<string>(Util_String::ToString(strName));
+
+			//		/* 레이어 */
+			//		file->Write<string>(Util_String::ToString(obj->Get_LayerTag()));
+
+			//		/* 액티브 여부 */
+			//		file->Write<_uint>(obj->Get_State());
+
+			//		/* 렌더 여부 */
+			//		file->Write<_bool>(obj->Is_Render());
+
+			//		/* 트랜스폼 */
+			//		file->Write<Matrix>(obj->Get_Transform()->Get_WorldMat());
+
+			//		/* 네비게이션 */
+			//		CNavMeshAgent* pCom = obj->Get_NavMeshAgent();
+			//		if (nullptr != pCom)
+			//		{
+			//			file->Write<_bool>(TRUE);
+			//			file->Write<_int>(pCom->Get_Index());
+			//		}
+			//		else
+			//			file->Write<_bool>(FALSE);
+			//	}
+			//}
+
+
 		}
 	}
 }
