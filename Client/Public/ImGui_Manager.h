@@ -51,6 +51,7 @@ public:
 
 
 		WINDOW_SUB_COM_MODEL,
+		WINDOW_SUB_COM_COL,
 		WINDOW_SUB_END
 	};
 	const char* str_SubWindowType[WINDOW_SUB_END] =
@@ -58,7 +59,8 @@ public:
 		"Prefabs",
 		"Layers Choice",
 
-		"Com_Model"
+		"Com_Model",
+		"Com_Collider_Sphere"
 	};
 
 

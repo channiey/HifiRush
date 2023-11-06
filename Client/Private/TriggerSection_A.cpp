@@ -17,6 +17,8 @@ CTriggerSection_A::CTriggerSection_A(ID3D11Device* pDevice, ID3D11DeviceContext*
 
 CTriggerSection_A::CTriggerSection_A(const CTriggerSection_A& rhs)
 	: CTriggerBattle(rhs)
+	, m_fOriginFov(rhs.m_fOriginFov)
+	, m_fBattleFov(rhs.m_fBattleFov)
 {
 }
 
@@ -27,12 +29,13 @@ HRESULT CTriggerSection_A::Initialize_Prototype()
 
 HRESULT CTriggerSection_A::Initialize(void* pArg)
 {
-	if (nullptr == pArg)
-		return E_FAIL;
-
 	CTriggerDummy::TRIGGER_DESC desc;
-
-	memmove(&desc, pArg, sizeof(CTriggerDummy::TRIGGER_DESC));
+	{
+		desc.eColType = CCollider::TYPE::SPHERE;
+		desc.iIndexAsChild = -1;
+		desc.tColDesc.vCenter = Vec3::Zero;
+		desc.tColDesc.vSize = Vec3{ 10.f, 10.f, 10.f };
+	}
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
@@ -129,7 +132,7 @@ HRESULT CTriggerSection_A::Ready_Chilren(CTriggerDummy::TRIGGER_DESC desc)
 {
 	CTriggerDummy* pTrigger = nullptr;
 	{
-		pTrigger = dynamic_cast<CTriggerDummy*>(ENGINE_INSTANCE->Add_GameObject(LV_PROTO, LayerNames[LAYER_TRIGGER], L"Trigger_Dummy", &desc));
+		pTrigger = dynamic_cast<CTriggerDummy*>(ENGINE_INSTANCE->Add_GameObject(ENGINE_INSTANCE->Get_CurLevelIndex(), LayerNames[LAYER_TRIGGER], L"Trigger_Dummy", &desc));
 
 		if (nullptr != pTrigger)
 		{

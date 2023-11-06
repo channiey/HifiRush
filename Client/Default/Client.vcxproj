@@ -190,6 +190,7 @@
     <ClInclude Include="..\Public\GameManager.h" />
     <ClInclude Include="..\Public\HealthBar.h" />
     <ClInclude Include="..\Public\ImGui_Window_Mid_Cam.h" />
+    <ClInclude Include="..\Public\ImGui_Window_Sub_Com_Col.h" />
     <ClInclude Include="..\Public\SkySphere.h" />
     <ClInclude Include="..\Public\DebugDraw.h" />
     <ClInclude Include="..\Public\Enemy.h" />
@@ -277,6 +278,7 @@
     <ClCompile Include="..\Private\GameManager.cpp" />
     <ClCompile Include="..\Private\HealthBar.cpp" />
     <ClCompile Include="..\Private\ImGui_Window_Mid_Cam.cpp" />
+    <ClCompile Include="..\Private\ImGui_Window_Sub_Com_Col.cpp" />
     <ClCompile Include="..\Private\SkySphere.cpp" />
     <ClCompile Include="..\Private\DebugDraw.cpp" />
     <ClCompile Include="..\Private\Enemy.cpp" />

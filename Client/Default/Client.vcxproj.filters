@@ -337,6 +337,9 @@
     <Filter Include="03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\03.Action\02.Dead">
       <UniqueIdentifier>{3e19ad7c-6a54-438a-bbc5-3f41c22495b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="97.ImGui\01.Windows\03.Sub\00.Object_Components\Collider">
+      <UniqueIdentifier>{d147c71e-b41f-435d-8255-9044678a2a45}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -534,6 +537,9 @@
     <ClInclude Include="..\Public\State_Chai_Idle.h">
       <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\01.Idle</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\ImGui_Window_Sub_Com_Col.h">
+      <Filter>97.ImGui\01.Windows\03.Sub\00.Object_Components\Collider</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -718,6 +724,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\State_Chai_Idle.cpp">
       <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\01.Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_Window_Sub_Com_Col.cpp">
+      <Filter>97.ImGui\01.Windows\03.Sub\00.Object_Components\Collider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

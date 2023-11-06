@@ -36,6 +36,9 @@
 /* UI */
 #include "HealthBar.h"
 
+/* Trigger */
+#include "TriggerSection_A.h"
+
 CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: m_pDevice(pDevice)
 	, m_pContext(pContext)
@@ -372,6 +375,12 @@ HRESULT CLoader::Load_Prototype()
 		if (FAILED(pEngineInstance->Add_Prototype(TEXT("UI_HealthBar"),
 			CHealthBar::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
+
+		/* For.Prototype_GameObject_UI_HealthBar */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Trigger_Section_A"),
+			CTriggerSection_A::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 
 
 		/* For.Prototype_GameObject_Weapon */

@@ -52,6 +52,7 @@ public:
 public:
 	TYPE				Get_Type() const							{ return m_eColliderType; }
 	const _uint&		Get_ID() const								{ return m_iID; }
+	const COLLIDERDESC& Get_Desc() const							{ return m_ColliderDesc; }
 
 public:
 	const _bool			Is_Collision() const						{return  (0 < m_iCollison) ? TRUE : FALSE; }

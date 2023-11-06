@@ -4,6 +4,7 @@
 #include "ImGui_Window_Main_Object.h"
 
 #include "ImGui_Window_Sub_Com_Model.h"
+#include "ImGui_Window_Sub_Com_Col.h"
 
 #include "GameObject.h"
 #include "Util_String.h"
@@ -15,14 +16,26 @@ CImGui_Window_Main_Object::CImGui_Window_Main_Object()
 
 HRESULT CImGui_Window_Main_Object::Initialize()
 {
+	CImGui_Window* pWindow = nullptr;
+
 	/* Component - Anim */
-	CImGui_Window* pWindow = CImGui_Window_Sub_Com_Model::Create();
+	pWindow = CImGui_Window_Sub_Com_Model::Create();
 	{
 		if (nullptr == pWindow)
 			return E_FAIL;
 
 		pWindow->Set_Active(FALSE);
 		m_pChildWindows.emplace(m_pImGui_Manager->str_SubWindowType[m_pImGui_Manager->WINDOW_SUB_COM_MODEL], pWindow);
+	}
+
+	/* Component - Col */
+	pWindow = CImGui_Window_Sub_Com_Col::Create();
+	{
+		if (nullptr == pWindow)
+			return E_FAIL;
+
+		pWindow->Set_Active(FALSE);
+		m_pChildWindows.emplace(m_pImGui_Manager->str_SubWindowType[m_pImGui_Manager->WINDOW_SUB_COM_COL], pWindow);
 	}
 
 	return S_OK;
