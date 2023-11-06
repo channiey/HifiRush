@@ -19,7 +19,7 @@ HRESULT CState_Chai_Dash::Initialize(CStateMachine* pStateMachine, const wstring
 
 HRESULT CState_Chai_Dash::Enter()
 {
-	ANIM_CH			eAnimID			= ANIM_CH::DASH_FRONT;
+	ANIM_CH			eAnimID			= ANIM_CH::DASH;
 	CAnimation*		pAnimation		= m_pChai->Get_Model()->Get_Animation(eAnimID);
 	const _double	fTimePerFrame	= CBeatManager::GetInstance()->Get_SPB(1) / (_double)pAnimation->Get_MaxFrameCount();
 

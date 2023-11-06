@@ -125,7 +125,7 @@ HRESULT CModel::Initialize(void* pArg)
 	/* Deep Copy - Animations */
 	if (TYPE_ANIM == m_eModelType)
 	{
-		vector<CAnimation*>		Animations;
+ 		vector<CAnimation*>		Animations;
 		Animations.reserve(m_Animations.size());
 
 		for (auto& pPrototype : m_Animations)
@@ -145,7 +145,7 @@ HRESULT CModel::Initialize(void* pArg)
 	if (FAILED(Create_Texture()))
 		return E_FAIL;
 
-	return S_OK;
+ 	return S_OK;
 }
 
 HRESULT CModel::Update(_double fTimeDelta)

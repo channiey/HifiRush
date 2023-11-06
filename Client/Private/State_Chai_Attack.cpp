@@ -42,13 +42,22 @@ HRESULT CState_Chai_Attack::Enter()
 	}
 	else if (Input::RBtn())
 	{
-		//m_tAttackDesc.iAnimIndex		= ANIM_CH::ATK_SINGLE_00;
-		//m_tAttackDesc.fTweenTime		= DF_TW_TIME * 0.5f;
-		//m_tAttackDesc.dTimePerFrame		= CBeatManager::GetInstance()->Get_SPB(8)
-		//									/ (_double)m_pChai->Get_Model()->Get_Animation(m_tAttackDesc.iAnimIndex)->Get_MaxFrameCount();
+		
+	}
+	else if (Input::MBtn())
+	{
+	/*	m_tAttackDesc.iAnimIndex = ANIM_CH::ATK_THROW_GUITAR_00;
+		m_tAttackDesc.fTweenTime = DF_TW_TIME * 0.5f;
+		m_tAttackDesc.dPrevAnimCheckFrame = (_double)15.f;
+		m_tAttackDesc.dTimePerFrame = CBeatManager::GetInstance()->Get_SPB(1) / (_double)15.f;
 
-		//m_tAttackDesc.eAttackType		= ATTACK_TYPE::STRONG;
-		//m_tAttackDesc.eAnimCheckType	= CModel::ANIM_PROGRESS::HALF;
+		m_tAttackDesc.eAttackType = ATTACK_TYPE::LIGHT;
+
+		m_tAttackDesc.tSoundEventDesc.iFrame = 10;
+		m_tAttackDesc.tSoundEventDesc.eSoundID = EFC_CHAI_ATTACK_SWING_NONCOLLISION;
+		m_tAttackDesc.tSoundEventDesc.eChannelID = PLAYER_CHAI;
+		m_tAttackDesc.tSoundEventDesc.fVolume = EfcVolumeChai;*/
+
 	}
 
 	m_pChai->m_tFightDesc.iStep++;

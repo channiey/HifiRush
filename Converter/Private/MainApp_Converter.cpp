@@ -26,11 +26,11 @@ HRESULT CMainApp_Converter::Start_Convert()
 		//if (FAILED(Convert_Weapon()))
 		//	return E_FAIL;
 		
-		if (FAILED(Convert_SelectiveModel()))
-			return E_FAIL;
-
-		//if (FAILED(Convert_Custom()))
+		//if (FAILED(Convert_SelectiveModel()))
 		//	return E_FAIL;
+
+		if (FAILED(Convert_Custom()))
+			return E_FAIL;
 
 	}
 	cout << "\n\n\nComplete Entire Binarization";

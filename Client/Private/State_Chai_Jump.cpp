@@ -20,7 +20,7 @@ HRESULT CState_Chai_Jump::Initialize(CStateMachine* pStateMachine, const wstring
 
 HRESULT CState_Chai_Jump::Enter()
 {
-	ANIM_CH			eAnimID			= ANIM_CH::JUMP;
+	ANIM_CH			eAnimID			= ANIM_CH::JUMP_NORMAL;
 	CAnimation*		pAnimation		= m_pChai->Get_Model()->Get_Animation(eAnimID);
 	const _double	fTimePerFrame	= CBeatManager::GetInstance()->Get_SPB(1) / (_double)pAnimation->Get_MaxFrameCount();
 
@@ -87,19 +87,19 @@ const wstring& CState_Chai_Jump::LateTick()
 	{
 		if (m_pChai->m_tPhysicsDesc.bJump)
 		{
-			ANIM_CH			eAnimID			= ANIM_CH::FALL_JUMP;
+			ANIM_CH			eAnimID			= ANIM_CH::FALL_NORMAL;
 			CAnimation*		pAnimation		= m_pChai->Get_Model()->Get_Animation(eAnimID);
 			const _double	fTimePerFrame	= CBeatManager::GetInstance()->Get_SPB(1) / (_double)pAnimation->Get_MaxFrameCount();
 
-			pModel->Set_Animation(ANIM_CH::FALL_JUMP, fTimePerFrame, DF_TW_TIME);
+			pModel->Set_Animation(eAnimID, fTimePerFrame, DF_TW_TIME);
 		}
 		else if (m_pChai->m_tPhysicsDesc.bDoubleJump)
 		{
-			ANIM_CH			eAnimID			= ANIM_CH::FALL_DOUBLE_JUMP;
+			ANIM_CH			eAnimID			= ANIM_CH::FALL_DOUBLE;
 			CAnimation*		pAnimation		= m_pChai->Get_Model()->Get_Animation(eAnimID);
 			const _double	fTimePerFrame	= CBeatManager::GetInstance()->Get_SPB(1) / (_double)pAnimation->Get_MaxFrameCount();
 
-			pModel->Set_Animation(ANIM_CH::FALL_DOUBLE_JUMP, fTimePerFrame, DF_TW_TIME);
+			pModel->Set_Animation(eAnimID, fTimePerFrame, DF_TW_TIME);
 		}
 		m_pChai->m_tPhysicsDesc.bFall = TRUE;
 
@@ -115,11 +115,11 @@ const wstring& CState_Chai_Jump::LateTick()
 			m_pChai->m_tPhysicsDesc.bDoubleJump = TRUE;
 			m_pChai->m_tPhysicsDesc.bFall = FALSE;
 
-			ANIM_CH			eAnimID = ANIM_CH::DOUBLE_JUMP;
+			ANIM_CH			eAnimID = ANIM_CH::JUMP_DOUBLE;
 			CAnimation*		pAnimation = m_pChai->Get_Model()->Get_Animation(eAnimID);
 			const _double	fTimePerFrame = CBeatManager::GetInstance()->Get_SPB(1) / (_double)pAnimation->Get_MaxFrameCount();
 
-			pModel->Set_Animation(ANIM_CH::DOUBLE_JUMP, fTimePerFrame, DF_TW_TIME);
+			pModel->Set_Animation(eAnimID, fTimePerFrame, DF_TW_TIME);
 			//cout << "\nDOUBLE JUMP! \n\n";
 
 			Jump();
@@ -196,9 +196,9 @@ const _bool CState_Chai_Jump::Check_Fall()
 {
 	CModel* pModel = m_pChai->Get_Model();
 
-	if (ANIM_CH::JUMP == pModel->Get_CurAnimationIndex() && -1 == pModel->Get_TweenDesc().next.iAnimIndex && pModel->Is_TwoThirds_Animation())
+	if (ANIM_CH::JUMP_NORMAL == pModel->Get_CurAnimationIndex() && -1 == pModel->Get_TweenDesc().next.iAnimIndex && pModel->Is_TwoThirds_Animation())
 		return TRUE;
-	else if (ANIM_CH::DOUBLE_JUMP == pModel->Get_CurAnimationIndex() && pModel->Is_TwoThirds_Animation())
+	else if (ANIM_CH::JUMP_DOUBLE == pModel->Get_CurAnimationIndex() && pModel->Is_TwoThirds_Animation())
 		return TRUE;
 
 	return FALSE;
@@ -210,7 +210,7 @@ void CState_Chai_Jump::Set_FallSpeed()
 
 	if (!m_bSetFallSpeed_InJump)
 	{
-		if (ANIM_CH::JUMP == desc.cur.iAnimIndex && ANIM_CH::DOUBLE_JUMP != desc.next.iAnimIndex && m_pChai->Get_Model()->Is_Half_Animation())
+		if (ANIM_CH::JUMP_NORMAL == desc.cur.iAnimIndex && ANIM_CH::JUMP_DOUBLE != desc.next.iAnimIndex && m_pChai->Get_Model()->Is_Half_Animation())
 		{
 			m_pChai->Get_Rigidbody()->Set_Gravity(m_pChai->m_tPhysicsDesc.fFallGravity * 1.5f);
 			m_bSetFallSpeed_InJump = TRUE;
@@ -219,7 +219,7 @@ void CState_Chai_Jump::Set_FallSpeed()
 
 	if (!m_bSetFallSpeed_InDoubleJump)
 	{
-		if (ANIM_CH::DOUBLE_JUMP == desc.cur.iAnimIndex && m_pChai->Get_Model()->Is_TwoThirds_Animation())
+		if (ANIM_CH::JUMP_DOUBLE == desc.cur.iAnimIndex && m_pChai->Get_Model()->Is_TwoThirds_Animation())
 		{
 			m_pChai->Get_Rigidbody()->Set_Gravity(m_pChai->m_tPhysicsDesc.fFallGravity * 2.f);
 			m_bSetFallSpeed_InDoubleJump = TRUE;
