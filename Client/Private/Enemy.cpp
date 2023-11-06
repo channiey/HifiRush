@@ -41,11 +41,17 @@ HRESULT CEnemy::Initialize(void* pArg)
 
 void CEnemy::Tick(_double fTimeDelta)
 {
+	if (nullptr == m_tFightDesc.pTarget)
+		return;
+
 	__super::Tick(fTimeDelta);
 }
 
 void CEnemy::LateTick(_double fTimeDelta)
 {
+	if (nullptr == m_tFightDesc.pTarget)
+		return;
+
 	__super::LateTick(fTimeDelta);
 }
 

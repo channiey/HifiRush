@@ -64,7 +64,7 @@ public:
 	const _bool Is_LockY() const { return m_bLockY; }
 
 public:
-	void Lerp_Fov(const _float fStartValue, const _float& fTargetValue, const _float& fTime, const LERP_MODE& eMode = LERP_MODE::DEFAULT);
+	void Lerp_Fov(const _float fStartValue, const _float& fTargetValue, const _double& fTime, const LERP_MODE& eMode = LERP_MODE::DEFAULT);
 
 public:
 	void Change_TargetObj(CGameObject* pObj);

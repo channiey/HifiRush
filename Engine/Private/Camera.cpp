@@ -29,11 +29,15 @@ HRESULT CCamera::Initialize(void * pArg)
 HRESULT CCamera::Update(const _double fDeltaTime)
 {
 	m_tLerpFov.Update(fDeltaTime);
+	if (m_tLerpFov.bActive)
+	{
+		m_tProjDesc.fFovy = m_tLerpFov.fCurValue;
+	}
 
 	return S_OK;
 }
 
-void CCamera::Lerp_Fov(const _float fStartValue, const _float& fTargetValue, const _float& fTime, const LERP_MODE& eMode)
+void CCamera::Lerp_Fov(const _float fStartValue, const _float& fTargetValue, const _double& fTime, const LERP_MODE& eMode)
 {
 	m_tLerpFov.Start(fStartValue, fTargetValue, fTime, eMode);
 }

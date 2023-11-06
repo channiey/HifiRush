@@ -120,35 +120,35 @@ HRESULT CChai::Ready_StateMachine()
 
 	/* General */
 	{
-		pState = CState_Chai_Idle::Create(m_pStateMachineCom, StateNames[STATE_IDLE], this);
+		pState = CState_Chai_Idle::Create(m_pStateMachineCom, StateNames_CH[STATE_IDLE_CH], this);
 		if (FAILED(m_pStateMachineCom->Add_State(pState)))
 			return E_FAIL;
 	}
 	/* Movement */
 	{
-		pState = CState_Chai_Run::Create(m_pStateMachineCom, StateNames[STATE_RUN], this);
+		pState = CState_Chai_Run::Create(m_pStateMachineCom, StateNames_CH[STATE_RUN_CH], this);
 		if (FAILED(m_pStateMachineCom->Add_State(pState)))
 			return E_FAIL;
 
-		pState = CState_Chai_Dash::Create(m_pStateMachineCom, StateNames[STATE_DASH], this);
+		pState = CState_Chai_Dash::Create(m_pStateMachineCom, StateNames_CH[STATE_DASH_CH], this);
 		if (FAILED(m_pStateMachineCom->Add_State(pState)))
 			return E_FAIL;
 
-		pState = CState_Chai_Jump::Create(m_pStateMachineCom, StateNames[STATE_JUMP], this);
+		pState = CState_Chai_Jump::Create(m_pStateMachineCom, StateNames_CH[STATE_JUMP_CH], this);
 		if (FAILED(m_pStateMachineCom->Add_State(pState)))
 			return E_FAIL;
 	}
 	/* Action */
 	{
-		pState = CState_Chai_Attack::Create(m_pStateMachineCom, StateNames[STATE_ATTACK], this);
+		pState = CState_Chai_Attack::Create(m_pStateMachineCom, StateNames_CH[STATE_ATTACK_CH], this);
 		if (FAILED(m_pStateMachineCom->Add_State(pState)))
 			return E_FAIL;
 
-		pState = CState_Chai_Damaged::Create(m_pStateMachineCom, StateNames[STATE_DAMAGED], this);
+		pState = CState_Chai_Damaged::Create(m_pStateMachineCom, StateNames_CH[STATE_DAMAGED_CH], this);
 		if (FAILED(m_pStateMachineCom->Add_State(pState)))
 			return E_FAIL;
 
-		pState = CState_Chai_Parry::Create(m_pStateMachineCom, StateNames[STATE_PARRY], this);
+		pState = CState_Chai_Parry::Create(m_pStateMachineCom, StateNames_CH[STATE_PARRY_CH], this);
 		if (FAILED(m_pStateMachineCom->Add_State(pState)))
 			return E_FAIL;
 	}

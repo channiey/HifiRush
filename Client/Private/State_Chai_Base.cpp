@@ -16,7 +16,8 @@ HRESULT CState_Chai_Base::Initialize(CStateMachine* pStateMachine, const wstring
 
 	m_pChai = dynamic_cast<CChai*>(pOwner);
 
-	if (nullptr == m_pChai) return E_FAIL;
+	if (nullptr == m_pChai) 
+		return E_FAIL;
 
 	return S_OK;
 }

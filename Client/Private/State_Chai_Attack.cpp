@@ -142,17 +142,17 @@ const wstring& CState_Chai_Attack::Check_Transition()
 		if (ANIM_CH::ATK_LIGHT_02 == m_tAttackDesc.iAnimIndex)
 		{
 			if (!pModel->Is_Tween() && 40 <= desc.cur.iCurFrame)
-				return StateNames[STATE_IDLE];
+				return StateNames_CH[STATE_IDLE_CH];
 		}
 		else if (ANIM_CH::ATK_LIGHT_03 == m_tAttackDesc.iAnimIndex)
 		{
 			if(!pModel->Is_Tween() && 70 <= desc.cur.iCurFrame )
-				return StateNames[STATE_IDLE];
+				return StateNames_CH[STATE_IDLE_CH];
 		}
 		else
 		{
 			if(!pModel->Is_Tween() && pModel->Is_TwoThirds_Animation())
-				return StateNames[STATE_IDLE];
+				return StateNames_CH[STATE_IDLE_CH];
 		}
 	}
 

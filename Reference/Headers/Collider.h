@@ -50,24 +50,24 @@ public:
 	//virtual _bool		Check_Collision(Ray& ray, OUT RAYHIT_DESC& pHitDesc) = 0;
 
 public:
-	TYPE				Get_Type() const { return m_eColliderType; }
-	const _uint&		Get_ID() const { return m_iID; }
+	TYPE				Get_Type() const							{ return m_eColliderType; }
+	const _uint&		Get_ID() const								{ return m_iID; }
 
 public:
-	const _bool			Is_Collision() const {return  (0 < m_iCollison) ? TRUE : FALSE; }
-	const _bool			Is_Trigger() const { return m_bTrigger; }
+	const _bool			Is_Collision() const						{return  (0 < m_iCollison) ? TRUE : FALSE; }
+	const _bool			Is_Trigger() const							{ return m_bTrigger; }
 
-	void				Set_Trigger(const _bool& bTrigger) { m_bTrigger = bTrigger; }
-	virtual void		Set_Collider_Offset(const Vec3 vCenter) { memcpy(&m_ColliderDesc.vCenter, &vCenter, sizeof(Vec3)); }
-	virtual void		Set_Collider_Size(const _float vSize) { memcpy(&m_ColliderDesc.vSize, &vSize, sizeof(Vec3)); }
-	virtual void		Set_ColliderDesc(const COLLIDERDESC tDesc) { memcpy(&m_ColliderDesc, &tDesc, sizeof(COLLIDERDESC)); }
+	void				Set_Trigger(const _bool& bTrigger)			{ m_bTrigger = bTrigger; }
+	virtual void		Set_Collider_Offset(const Vec3 vCenter)		{ memcpy(&m_ColliderDesc.vCenter, &vCenter, sizeof(Vec3)); }
+	virtual void		Set_Collider_Size(const _float vSize)		{ memcpy(&m_ColliderDesc.vSize, &vSize, sizeof(Vec3)); }
+	virtual void		Set_ColliderDesc(const COLLIDERDESC tDesc)	{ memcpy(&m_ColliderDesc, &tDesc, sizeof(COLLIDERDESC)); }
+
 protected:
 	_matrix				Remove_Rotation(_fmatrix Matrix);
 
 protected:
 	TYPE				m_eColliderType = TYPE_END;
 	COLLIDERDESC		m_ColliderDesc;
-	//_bool				m_bCollision = FALSE;
 
 	_uint				m_iCollison = 0; /* 현재 충돌중인 콜라이더 갯수 */
 	_uint				m_iID = 0;		 /* 콜라이더 고유 아이디 */

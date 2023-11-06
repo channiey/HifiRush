@@ -57,6 +57,8 @@ void CCamera_Follow::Tick(_double fTimeDelta)
 
 	__super::Tick(fTimeDelta);
 
+	m_pCameraCom->Update(fTimeDelta);
+
 #ifdef _DEBUG
 	if (!CImGui_Manager::GetInstance()->Is_ClickedWindow())
 		Move(fTimeDelta);

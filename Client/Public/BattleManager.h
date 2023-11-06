@@ -9,6 +9,8 @@ END
 
 BEGIN(Client)
 
+class CTriggerBattle;
+
 class CBattleManager final : public CBase
 {
 	DECLARE_SINGLETON(CBattleManager)
@@ -19,17 +21,29 @@ private:
 
 public:
 	HRESULT			Initialize();
+	HRESULT			Update(const _double fTimedelta);
+	HRESULT			LateUpdate(const _double fTimedelta);
 
 public:
+	const _bool&	Is_Battle() const { return m_bBattle; }
+	HRESULT			Add_Trigger(const wstring strTriggerTag, CTriggerBattle* pTrigger);
 
-
-
+public:
+	void			OnTrigger_Enter(const wstring strTriggerTag);
+	void			OnTrigger_Stay(const wstring strTriggerTag);
+	void			OnTrigger_Exit(const wstring strTriggerTag);
 
 private:
-	/* 배틀 트리거 별도 클래스 생성 */
-	/* 키와 배틀트리거를 페어로 하는 맵을 가지고 있는다. */
-	/* 현재 배틀 중인지, 배틀이라면 어떤 트리거가 작동하고 있는지 갖는다.*/
-	/* 배틀 트리거는 플레이어와 충돌시 여기로 메시지를 보낸다. */
+	CTriggerBattle* Find_Trigger(const wstring strTriggerTag);
+	HRESULT			Remove_Trigger(const wstring strTriggerTag);
+
+private:
+	HRESULT			Ready_Pool();
+
+private:
+	map<const wstring, CTriggerBattle*> m_BattelTriggers;
+	CTriggerBattle*						m_pCurBattleTriggers = nullptr;
+	_bool								m_bBattle = FALSE;
 
 public:
 	virtual void	Free() override;

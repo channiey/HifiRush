@@ -57,9 +57,9 @@ const wstring& CState_Chai_Dash::Check_Transition()
 	if (m_pChai->Get_Model()->Is_OneThirds_Animation())
 	{		
 		if (Input::Move())
-			return StateNames[STATE_RUN];
+			return StateNames_CH[STATE_RUN_CH];
 
-		return StateNames[STATE_IDLE];
+		return StateNames_CH[STATE_IDLE_CH];
 	}
 
 	return m_strName;

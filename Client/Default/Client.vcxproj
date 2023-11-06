@@ -225,8 +225,11 @@
     <ClInclude Include="..\Public\State_Chai_Jump.h" />
     <ClInclude Include="..\Public\State_Chai_Parry.h" />
     <ClInclude Include="..\Public\State_Chai_Run.h" />
+    <ClInclude Include="..\Public\State_Saber_Base.h" />
     <ClInclude Include="..\Public\StaticDummy.h" />
     <ClInclude Include="..\Public\Terrain.h" />
+    <ClInclude Include="..\Public\TriggerBattle.h" />
+    <ClInclude Include="..\Public\TriggerSection_A.h" />
     <ClInclude Include="..\Public\TriggerDummy.h" />
     <ClInclude Include="..\Public\Ui.h" />
     <ClInclude Include="..\Public\Weapon.h" />
@@ -311,8 +314,11 @@
     <ClCompile Include="..\Private\State_Chai_Jump.cpp" />
     <ClCompile Include="..\Private\State_Chai_Parry.cpp" />
     <ClCompile Include="..\Private\State_Chai_Run.cpp" />
+    <ClCompile Include="..\Private\State_Saber_Base.cpp" />
     <ClCompile Include="..\Private\StaticDummy.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
+    <ClCompile Include="..\Private\TriggerBattle.cpp" />
+    <ClCompile Include="..\Private\TriggerSection_A.cpp" />
     <ClCompile Include="..\Private\TriggerDummy.cpp" />
     <ClCompile Include="..\Private\Ui.cpp" />
     <ClCompile Include="..\Private\Weapon.cpp" />

@@ -53,7 +53,7 @@ const wstring& CState_Chai_Parry::Check_Transition()
 	if (m_pChai->Get_Model()->Is_TwoThirds_Animation())
 	{
 		if (CBeatManager::GetInstance()->Is_HalfBeat())
-			return StateNames[STATE_IDLE];
+			return StateNames_CH[STATE_IDLE_CH];
 	}
 
 	return m_strName;

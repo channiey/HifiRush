@@ -5,7 +5,8 @@
 #include "Animation.h"
 
 #include "Weapon.h"
-#include "TriggerDummy.h"
+
+#include "State_Saber_Base.h"
 
 CSaber::CSaber(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CEnemy(pDevice, pContext)
@@ -35,23 +36,11 @@ HRESULT CSaber::Initialize(void* pArg)
 	if (FAILED(Ready_StateMachine()))
 		return E_FAIL;
 
-	/* 임시 코드 */
-	m_pModelCom->Set_Animation(ANIM_SA::IDLE_ATTACK);
-
 	return S_OK;
 }
 
 void CSaber::Tick(_double fTimeDelta)
 {
-	/* 임시 코드 */
-	if (nullptr == m_tFightDesc.pTarget)
-	{
-		CGameObject* pTarget = ENGINE_INSTANCE->Get_GameObject_InCurLevel_InLayerFirst(LayerNames[LAYER_PLAYER]);
-
-		if (nullptr != pTarget)
-			m_tFightDesc.pTarget = dynamic_cast<CCharacter*>(pTarget);
-	}
-
 	__super::Tick(fTimeDelta);
 }
 
@@ -108,21 +97,21 @@ HRESULT CSaber::Ready_Chilren()
 		pWeapon->Set_IndexAsChild(CHILD_TYPE::SA_WEAPON_RIGHT);
 	}
 
-	/*CTriggerDummy* pTrigger = nullptr;
-	{
-		CCollider::COLLIDERDESC		ColliderDesc{ Vec3(0, 0, 0), 5.f };
-		CTriggerDummy::TRIGGER_DESC TriggerDesc(ColliderDesc, CCollider::SPHERE, CHILD_TYPE::SA_TRIGGER_TRACKED);
-		pTrigger = dynamic_cast<CTriggerDummy*>(ENGINE_INSTANCE->Add_GameObject(LV_PROTO, LayerNames[LAYER_TRIGGER], L"Trigger_Dummy", &TriggerDesc));
-		
-		if (FAILED(Add_Child(pTrigger)))
-			return E_FAIL;
-	}*/
 	return S_OK;
 }
 
 HRESULT CSaber::Ready_StateMachine()
 {
-	return E_NOTIMPL;
+	CState* pState = nullptr;
+
+	/* General */
+	{
+		/*pState = CState_Chai_Idle::Create(m_pStateMachineCom, StateNames_CH[STATE_IDLE], this);
+		if (FAILED(m_pStateMachineCom->Add_State(pState)))
+			return E_FAIL;*/
+	}
+
+	return S_OK;
 }
 
 void CSaber::OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild)

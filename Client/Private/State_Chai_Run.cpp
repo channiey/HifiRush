@@ -47,46 +47,46 @@ void CState_Chai_Run::Exit()
 const wstring& CState_Chai_Run::Check_Transition()
 {
 	if (m_pChai->m_tFightDesc.bDamaged)
-		return StateNames[STATE_IDLE];
+		return StateNames_CH[STATE_IDLE_CH];
 
 	/* Movement */
 	if (Input::Jump())
 	{
 		if (!m_pChai->m_tPhysicsDesc.bJump)
-			return StateNames[STATE_JUMP];
+			return StateNames_CH[STATE_JUMP_CH];
 	}
 	else if (Input::Shift() && CBeatManager::GetInstance()->Is_HalfBeat())
 	{
 		if (!m_pChai->m_tPhysicsDesc.bDash)
 		{
-			return StateNames[STATE_DASH];
+			return StateNames_CH[STATE_DASH_CH];
 		}
 	}
 	else if (Input::Attack())
 	{
-		return StateNames[STATE_ATTACK];
+		return StateNames_CH[STATE_ATTACK_CH];
 	}
 	else if (Input::Parry())
 	{
 		if (m_pChai->m_tPhysicsDesc.bGround) 
 		{
-			return StateNames[STATE_PARRY];
+			return StateNames_CH[STATE_PARRY_CH];
 		}
 	}
 	else if (Input::Move())
 	{
 		if (m_pChai->m_tPhysicsDesc.bGround)
 		{
-			return StateNames[STATE_RUN];
+			return StateNames_CH[STATE_RUN_CH];
 		}
 	}
 
 
 
 	if (CBeatManager::GetInstance()->Is_HalfBeat())
-		return StateNames[STATE_IDLE];
+		return StateNames_CH[STATE_IDLE_CH];
 	else
-		return StateNames[STATE_RUN];
+		return StateNames_CH[STATE_RUN_CH];
 }
 
 void CState_Chai_Run::Move(const _double& fTimeDelta)

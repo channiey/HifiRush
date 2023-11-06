@@ -142,9 +142,9 @@ const wstring& CState_Chai_Jump::Check_Transition()
 	if (m_pChai->m_tPhysicsDesc.bLanding)
 	{
 		if(Input::Move())
-			return StateNames[STATE_RUN];
+			return StateNames_CH[STATE_RUN_CH];
 		else
-			return StateNames[STATE_IDLE];
+			return StateNames_CH[STATE_IDLE_CH];
 	}
 
 	return m_strName;

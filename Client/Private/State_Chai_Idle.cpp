@@ -53,35 +53,35 @@ const wstring& CState_Chai_Idle::Check_Transition()
 
 	if (m_pChai->m_tFightDesc.bDamaged)
 	{
-		return StateNames[STATE_DAMAGED];
+		return StateNames_CH[STATE_DAMAGED_CH];
 	}
 
 	if (Input::Move() && CBeatManager::GetInstance()->Is_HalfBeat())
 	{
 		if (m_pChai->m_tPhysicsDesc.bGround) 
 		{
-			return StateNames[STATE_RUN];
+			return StateNames_CH[STATE_RUN_CH];
 		}
 	}
 	else if (Input::Shift() && CBeatManager::GetInstance()->Is_HalfBeat())
 	{
 		if (!m_pChai->m_tPhysicsDesc.bDash)
 		{
-			return StateNames[STATE_DASH];
+			return StateNames_CH[STATE_DASH_CH];
 		}
 	}
 	else if (Input::Attack())
 	{
 		if(!CImGui_Manager::GetInstance()->Is_ClickedWindow())
-			return StateNames[STATE_ATTACK];
+			return StateNames_CH[STATE_ATTACK_CH];
 	}
 	else if (Input::Parry() && CBeatManager::GetInstance()->Is_HalfBeat())
 	{
-		return StateNames[STATE_PARRY];
+		return StateNames_CH[STATE_PARRY_CH];
 	}
 	else if (Input::Jump())
 	{
-		return StateNames[STATE_JUMP];
+		return StateNames_CH[STATE_JUMP_CH];
 	}
 
 	return m_strName;

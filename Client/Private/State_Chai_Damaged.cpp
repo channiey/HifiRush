@@ -44,7 +44,7 @@ const wstring& CState_Chai_Damaged::Check_Transition()
 	if (!CBeatManager::GetInstance()->Is_HalfBeat())
 		return m_strName;
 
-	return StateNames[STATE_IDLE];
+	return StateNames_CH[STATE_IDLE_CH];
 }
 
 CState_Chai_Damaged* CState_Chai_Damaged::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)
