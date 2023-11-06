@@ -229,17 +229,13 @@ public:
 
 private:
 	HRESULT				Ready_Components();
-	HRESULT				Ready_Chilren();
-	HRESULT				Ready_StateMachine();
+	virtual HRESULT		Ready_Chilren() override;
+	virtual HRESULT		Ready_StateMachine() override;
 
 private:
 	virtual void		OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild = -1) override;
 	virtual void		OnCollision_Stay(CCollider* pCollider, const _int& iIndexAsChild = -1) override;
 	virtual void		OnCollision_Exit(CCollider* pCollider, const _int& iIndexAsChild = -1) override;
-
-private: 
-	CStateMachine*		m_pStateMachineCom = { nullptr };
-	CRigidbody*			m_pRigidbodyCom = { nullptr };
 
 public:
 	static CChai*		Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

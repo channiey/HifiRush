@@ -214,9 +214,6 @@
     <Filter Include="01.Utiltiy\03.Components\Component\13.NavmeshAgent">
       <UniqueIdentifier>{0542f6d8-dea3-4ad6-9afb-3cfdc8149822}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utiltiy\03.Components\Component\13.NavmeshAgent\Cell">
-      <UniqueIdentifier>{f5b33533-7839-43bc-9642-4e05a84a7aa5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utiltiy\03.Components\Component\13.NavmeshAgent\NavMeshAgent">
       <UniqueIdentifier>{1438fd8e-8921-4ecb-9bfe-3081bbd228ba}</UniqueIdentifier>
     </Filter>
@@ -231,6 +228,9 @@
     </Filter>
     <Filter Include="01.Utiltiy\00.EngineInstance">
       <UniqueIdentifier>{aa6f228e-028d-4efd-b2f3-39052d369412}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\03.Components\Component\13.NavmeshAgent\NavMesh\Cell">
+      <UniqueIdentifier>{f5b33533-7839-43bc-9642-4e05a84a7aa5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -421,7 +421,7 @@
       <Filter>01.Utiltiy\97.ShaderFiles</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Cell.h">
-      <Filter>01.Utiltiy\03.Components\Component\13.NavmeshAgent\Cell</Filter>
+      <Filter>01.Utiltiy\03.Components\Component\13.NavmeshAgent\NavMesh\Cell</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\VIBuffer_Cell.h">
       <Filter>01.Utiltiy\03.Components\Component\00.VIBuffer\Cell</Filter>
@@ -630,7 +630,7 @@
       <Filter>01.Utiltiy\03.Components\Component\07.RigidBody</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Cell.cpp">
-      <Filter>01.Utiltiy\03.Components\Component\13.NavmeshAgent\Cell</Filter>
+      <Filter>01.Utiltiy\03.Components\Component\13.NavmeshAgent\NavMesh\Cell</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_Cell.cpp">
       <Filter>01.Utiltiy\03.Components\Component\00.VIBuffer\Cell</Filter>

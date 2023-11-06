@@ -14,8 +14,8 @@ HRESULT CMainApp_Converter::Start_Convert()
 {
 	cout << "Start Binarization\n\n\n\n";
 	{
-		//if (FAILED(Convert_Character()))
-		//	return E_FAIL;
+		/*if (FAILED(Convert_Character()))
+			return E_FAIL;*/
 
 		/*if (FAILED(Convert_Env_Static()))
 			return E_FAIL;*/
@@ -26,11 +26,11 @@ HRESULT CMainApp_Converter::Start_Convert()
 		//if (FAILED(Convert_Weapon()))
 		//	return E_FAIL;
 		
-		//if (FAILED(Convert_SelectiveModel()))
-		//	return E_FAIL;
-
-		if (FAILED(Convert_Custom()))
+		if (FAILED(Convert_SelectiveModel()))
 			return E_FAIL;
+
+		/*if (FAILED(Convert_Custom()))
+			return E_FAIL;*/
 
 	}
 	cout << "\n\n\nComplete Entire Binarization";
@@ -110,63 +110,31 @@ HRESULT CMainApp_Converter::Convert_Weapon()
 
 HRESULT CMainApp_Converter::Convert_SelectiveModel()
 {
-	{
+
+	/*{
 		const MODEL_TYPE	type = MODEL_TYPE::STATIC;
 		const string		savePath = "Environment/Static/";
 		const string		fileName = "JumpBoard";
 		shared_ptr<CConverter> converter = make_shared<CConverter>();
 		if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
 			ASSERT_LOG();
-	}
+	}*/
 
 	{
-		const MODEL_TYPE	type = MODEL_TYPE::STATIC;
-		const string		savePath = "Environment/Static/";
-		const string		fileName = "Bridge";
+
+		const MODEL_TYPE	type = MODEL_TYPE::ANIM;
+
+		const string		filePath = "../Assets/Character";
+		const string		fileName = "Saber";
+		const string		savePath = "Character/";
+
 		shared_ptr<CConverter> converter = make_shared<CConverter>();
 		if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
 			ASSERT_LOG();
 	}
 
-	{
-		const MODEL_TYPE	type = MODEL_TYPE::STATIC;
-		const string		savePath = "Environment/Static/";
-		const string		fileName = "Container_Open_Green";
-		shared_ptr<CConverter> converter = make_shared<CConverter>();
-		if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
-			ASSERT_LOG();
-	}
+	
 
-	{
-		const MODEL_TYPE	type = MODEL_TYPE::STATIC;
-		const string		savePath = "Environment/Static/";
-		const string		fileName = "Container_Open_Red";
-		shared_ptr<CConverter> converter = make_shared<CConverter>();
-		if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
-			ASSERT_LOG();
-	}
-
-
-	{
-		const MODEL_TYPE	type = MODEL_TYPE::STATIC;
-		const string		savePath = "Environment/Static/";
-		const string		fileName = "Container_Open_Blue";
-		shared_ptr<CConverter> converter = make_shared<CConverter>();
-		if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
-			ASSERT_LOG();
-	}
-
-
-
-
-	//{
-	//	const MODEL_TYPE	type = MODEL_TYPE::STATIC;
-	//	const string		savePath = "Geometry/";
-	//	const string		fileName = "Sphere";
-	//	shared_ptr<CConverter> converter = make_shared<CConverter>();
-	//	if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
-	//		ASSERT_LOG();
-	//}
 
 	return S_OK;
 }

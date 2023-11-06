@@ -97,7 +97,8 @@ public:
 
 protected:
 	HRESULT					Ready_Components();
-	HRESULT					Ready_ChildObjects();
+	virtual HRESULT			Ready_Chilren() PURE;
+	virtual HRESULT			Ready_StateMachine() PURE;
 
 protected:
 	HRESULT					Bind_ShaderResources();
@@ -114,6 +115,9 @@ protected:
 	CTransform*				m_pTransformCom		= { nullptr };
 	CModel*					m_pModelCom			= { nullptr };
 	CNavMeshAgent*			m_pNavMeshAgentCom	= { nullptr };
+	CStateMachine*			m_pStateMachineCom	= { nullptr };
+	CRigidbody*				m_pRigidbodyCom		= { nullptr };
+
 	vector<CCollider*>		m_pColliderComs;
 
 protected:

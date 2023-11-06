@@ -7,14 +7,6 @@
 #include "Weapon.h"
 #include "TriggerDummy.h"
 
-#include "Blackboard_Saber.h"
-#include "Node_Action_Saber.h"
-#include "Node_Idle_Saber.h"
-#include "Node_Damaged_Saber.h"
-#include "Node_Move_Saber.h"
-#include "Node_Wait_Saber.h"
-#include "Node_Attack_Saber.h"
-
 CSaber::CSaber(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CEnemy(pDevice, pContext)
 {
@@ -40,7 +32,7 @@ HRESULT CSaber::Initialize(void* pArg)
 	if (FAILED(Ready_Chilren()))
 		return E_FAIL;
 
-	if (FAILED(Ready_BehavoiurTree()))
+	if (FAILED(Ready_StateMachine()))
 		return E_FAIL;
 
 	/* 임시 코드 */
@@ -103,107 +95,6 @@ HRESULT CSaber::Ready_Components()
 	return S_OK;
 }
 
-HRESULT CSaber::Ready_BehavoiurTree()
-{
-	CBlackboard_Saber* pBlackboard	= nullptr;
-	CNode* pRootNode			= nullptr;
-	CNode* pSequenceNode		= nullptr;
-	CNode* pSelectorNode		= nullptr;
-	CNode* pNode				= nullptr;
-
-
-	/* Blackboard */
-	pBlackboard = CBlackboard_Saber::Create(this);
-	{
-		if (nullptr == pBlackboard)
-			return E_FAIL;
-	}
-
-	/* 00.Root */
-	pRootNode = CNode_Root::Create();
-	{
-		if (nullptr == pRootNode)
-			return E_FAIL;
-
-		if (FAILED(m_pBehaviourTreeCom->Set_RootNode(pRootNode)))
-			return E_FAIL;
-	}
-
-	/* 01. Selector */
-	pSelectorNode = CNode_Selector::Create();
-	{
-		if (nullptr == pSelectorNode)
-			return E_FAIL;
-
-		if (FAILED(pRootNode->Add_ChildNode(pSelectorNode)))
-			return E_FAIL;
-	}
-
-	/* 01-00. Damaged */
-	pNode = CNode_Damaged_Saber::Create(pBlackboard);
-	{
-		if (nullptr == pNode)
-			return E_FAIL;
-
-		if (FAILED(pSelectorNode->Add_ChildNode(pNode)))
-			return E_FAIL;
-	}
-
-	/* 01-01. Sequence */
-	pSequenceNode = CNode_Sequence::Create();
-	{
-		if (nullptr == pNode)
-			return E_FAIL;
-
-		if (FAILED(pSelectorNode->Add_ChildNode(pSequenceNode)))
-			return E_FAIL;
-	}
-
-	/* 01-01-00 Idle */
-	pNode = CNode_Idle_Saber::Create(pBlackboard);
-	{
-		if (nullptr == pNode)
-			return E_FAIL;
-
-		if (FAILED(pSequenceNode->Add_ChildNode(pNode)))
-			return E_FAIL;
-	}
-
-	/* 01-01-01 Move */
-	pNode = CNode_Move_Saber::Create(pBlackboard);
-	{
-		if (nullptr == pNode)
-			return E_FAIL;
-
-		if (FAILED(pSequenceNode->Add_ChildNode(pNode)))
-			return E_FAIL;
-	}
-
-	/* 01-01-02 Wait */
-	pNode = CNode_Wait_Saber::Create(pBlackboard);
-	{
-		if (nullptr == pNode)
-			return E_FAIL;
-
-		if (FAILED(pSequenceNode->Add_ChildNode(pNode)))
-			return E_FAIL;
-	}
-
-	/* 01-01-03 Attack */
-	pNode = CNode_Attack_Saber::Create(pBlackboard);
-	{
-		if (nullptr == pNode)
-			return E_FAIL;
-
-		if (FAILED(pSequenceNode->Add_ChildNode(pNode)))
-			return E_FAIL;
-	}
-
-	
-	
-	return S_OK;
-}
-
 HRESULT CSaber::Ready_Chilren()
 {
 	CWeapon* pWeapon = nullptr;
@@ -227,6 +118,11 @@ HRESULT CSaber::Ready_Chilren()
 			return E_FAIL;
 	}*/
 	return S_OK;
+}
+
+HRESULT CSaber::Ready_StateMachine()
+{
+	return E_NOTIMPL;
 }
 
 void CSaber::OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild)

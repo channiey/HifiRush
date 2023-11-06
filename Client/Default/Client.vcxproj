@@ -183,7 +183,6 @@
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\Public\BattleManager.h" />
     <ClInclude Include="..\Public\BeatManager.h" />
-    <ClInclude Include="..\Public\Blackboard_Saber.h" />
     <ClInclude Include="..\Public\Camera_Debug.h" />
     <ClInclude Include="..\Public\Camera_Follow.h" />
     <ClInclude Include="..\Public\Chai_Guitar_Explore.h" />
@@ -215,13 +214,6 @@
     <ClInclude Include="..\public\Loader.h" />
     <ClInclude Include="..\public\MainApp.h" />
     <ClInclude Include="..\Public\Chai.h" />
-    <ClInclude Include="..\Public\Node_Action_Saber.h" />
-    <ClInclude Include="..\Public\Node_Attack_Saber.h" />
-    <ClInclude Include="..\Public\Node_Damaged_Saber.h" />
-    <ClInclude Include="..\Public\Node_Idle_Saber.h" />
-    <ClInclude Include="..\Public\Node_Move_Saber.h" />
-    <ClInclude Include="..\Public\Node_Wait_Saber.h" />
-    <ClInclude Include="..\Public\Peppermint.h" />
     <ClInclude Include="..\Public\Saber.h" />
     <ClInclude Include="..\Public\Saber_Sword.h" />
     <ClInclude Include="..\Public\SkyBox.h" />
@@ -275,7 +267,6 @@
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\Private\BattleManager.cpp" />
     <ClCompile Include="..\Private\BeatManager.cpp" />
-    <ClCompile Include="..\Private\Blackboard_Saber.cpp" />
     <ClCompile Include="..\Private\Camera_Debug.cpp" />
     <ClCompile Include="..\Private\Camera_Follow.cpp" />
     <ClCompile Include="..\Private\Chai_Guitar_Explore.cpp" />
@@ -309,13 +300,6 @@
     <ClCompile Include="..\private\Loader.cpp" />
     <ClCompile Include="..\private\MainApp.cpp" />
     <ClCompile Include="..\Private\Chai.cpp" />
-    <ClCompile Include="..\Private\Node_Action_Saber.cpp" />
-    <ClCompile Include="..\Private\Node_Attack_Saber.cpp" />
-    <ClCompile Include="..\Private\Node_Damaged_Saber.cpp" />
-    <ClCompile Include="..\Private\Node_Idle_Saber.cpp" />
-    <ClCompile Include="..\Private\Node_Move_Saber.cpp" />
-    <ClCompile Include="..\Private\Node_Wait_Saber.cpp" />
-    <ClCompile Include="..\Private\Peppermint.cpp" />
     <ClCompile Include="..\Private\Saber.cpp" />
     <ClCompile Include="..\Private\Saber_Sword.cpp" />
     <ClCompile Include="..\Private\SkyBox.cpp" />

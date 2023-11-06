@@ -27,8 +27,6 @@ public:
 
 protected:
 	HRESULT				Ready_Components();
-	virtual HRESULT		Ready_Chilren()			PURE;
-	virtual HRESULT		Ready_BehavoiurTree()	PURE;
 
 protected:
 	virtual void		OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild = -1) override;
@@ -36,7 +34,6 @@ protected:
 	virtual void		OnCollision_Exit(CCollider* pCollider, const _int& iIndexAsChild = -1) override;
 
 protected:
-	CBehaviourTree*		m_pBehaviourTreeCom = { nullptr };
 	CRigidbody*			m_pRigidbodyCom = { nullptr };
 
 public:

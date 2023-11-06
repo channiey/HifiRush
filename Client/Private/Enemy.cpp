@@ -36,32 +36,16 @@ HRESULT CEnemy::Initialize(void* pArg)
 	if (FAILED(Ready_Chilren()))
 		return E_FAIL;
 
-	if (FAILED(Ready_BehavoiurTree()))
-		return E_FAIL;
-
 	return S_OK;
 }
 
 void CEnemy::Tick(_double fTimeDelta)
 {
-	if (!CImGui_Manager::GetInstance()->Is_DebugCam())
-	{
-		if (nullptr != m_pRigidbodyCom)
-			m_pRigidbodyCom->Tick(fTimeDelta);
-	}
 	__super::Tick(fTimeDelta);
 }
 
 void CEnemy::LateTick(_double fTimeDelta)
 {
-	if (!CImGui_Manager::GetInstance()->Is_DebugCam())
-	{
-		if (FAILED(m_pModelCom->Update(fTimeDelta)))
-			return;
-
-		if (FAILED(m_pBehaviourTreeCom->LateTick(fTimeDelta)))
-			return;
-	}
 	__super::LateTick(fTimeDelta);
 }
 
@@ -90,11 +74,6 @@ void CEnemy::Set_State(const OBJ_STATE& eState)
 
 HRESULT CEnemy::Ready_Components()
 {
-	/* Com_BehaviourTree*/
-	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_BehaviourTree"),
-		ComponentNames[COM_BEHAVIOURTREE], (CComponent**)&m_pBehaviourTreeCom)))
-		return E_FAIL;
-
 	/* Com_Rigidbody*/
 	CRigidbody::RIGIDBODY_TYPE eType = CRigidbody::RIGIDBODY_TYPE::DYNAMIC;
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Rigidbody"),
@@ -143,6 +122,5 @@ void CEnemy::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pBehaviourTreeCom);
 	Safe_Release(m_pRigidbodyCom);
 }

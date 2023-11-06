@@ -134,8 +134,8 @@ public:
 
 private:
 	HRESULT				Ready_Components();
-	HRESULT				Ready_Chilren();
-	HRESULT				Ready_BehavoiurTree();
+	virtual HRESULT		Ready_Chilren() override;
+	virtual HRESULT		Ready_StateMachine() override;
 
 private:
 	virtual void		OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild = -1) override;
@@ -146,13 +146,5 @@ public:
 	static CSaber*		Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CSaber*		Clone(void* pArg) override;
 	virtual void		Free() override;
-
-private:
-	friend class CNode_Action_Saber;
-	friend class CNode_Damaged_Saber;
-	friend class CNode_Idle_Saber;
-	friend class CNode_Move_Saber;
-	friend class CNode_Wait_Saber;
-	friend class CNode_Attack_Saber;
 };
 END

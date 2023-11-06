@@ -40,6 +40,18 @@ void CCharacter::Tick(_double fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+	if (!CImGui_Manager::GetInstance()->Is_DebugCam())
+	{
+		if (nullptr != m_pStateMachineCom)
+		{
+			if (FAILED(m_pStateMachineCom->Tick(fTimeDelta)))
+				return;
+		}
+
+		if (nullptr != m_pRigidbodyCom)
+			m_pRigidbodyCom->Tick(fTimeDelta);
+	}
+
 	for (auto& pCollider : m_pColliderComs)
 	{
 		if (nullptr != pCollider && pCollider->Is_Active())
@@ -50,6 +62,18 @@ void CCharacter::Tick(_double fTimeDelta)
 void CCharacter::LateTick(_double fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
+	if (!CImGui_Manager::GetInstance()->Is_DebugCam())
+	{
+		if (FAILED(m_pModelCom->Update(fTimeDelta)))
+			return;
+
+		if (nullptr != m_pStateMachineCom)
+		{
+			if (FAILED(m_pStateMachineCom->LateTick(fTimeDelta)))
+				return;
+		}
+	}
 
 	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
 		return;
@@ -110,11 +134,11 @@ HRESULT CCharacter::Ready_Components()
 		ComponentNames[COM_TRANSFORM], (CComponent**)&m_pTransformCom)))
 		return E_FAIL;
 
-	return S_OK;
-}
+	/* Com_StateMachine */
+	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_StateMachine"),
+		ComponentNames[COM_STATEMACHINE], (CComponent**)&m_pStateMachineCom)))
+		return E_FAIL;
 
-HRESULT CCharacter::Ready_ChildObjects()
-{
 	return S_OK;
 }
 
@@ -162,6 +186,12 @@ void CCharacter::Free()
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pNavMeshAgentCom);
+
+	if(nullptr != m_pStateMachineCom)
+		Safe_Release(m_pStateMachineCom);
+
+	if (nullptr != m_pRigidbodyCom)
+		Safe_Release(m_pRigidbodyCom);
 
 	for (auto& pCollider : m_pColliderComs)
 		Safe_Release(pCollider);

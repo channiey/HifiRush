@@ -8,7 +8,6 @@
 
 /* Character*/
 #include "Chai.h"
-#include "Peppermint.h"
 #include "Saber.h"
 
 /* Weapon */

@@ -41,7 +41,7 @@ HRESULT CChai::Initialize_Prototype()
 
 HRESULT CChai::Initialize(void* pArg)
 {
-	__super::Initialize(pArg);
+  	__super::Initialize(pArg);
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
@@ -57,34 +57,11 @@ HRESULT CChai::Initialize(void* pArg)
 
 void CChai::Tick(_double fTimeDelta)
 {
-	if (!CImGui_Manager::GetInstance()->Is_DebugCam())
-	{
-		if (FAILED(m_pStateMachineCom->Tick(fTimeDelta)))
-			return;
-
-		if(nullptr != m_pRigidbodyCom)
-			m_pRigidbodyCom->Tick(fTimeDelta);
-	}
-
 	__super::Tick(fTimeDelta);
 }
 
 void CChai::LateTick(_double fTimeDelta)
 {
-	if (!CImGui_Manager::GetInstance()->Is_DebugCam())
-	{
-		if (FAILED(m_pModelCom->Update(fTimeDelta)))
-			return;
-
-		if (FAILED(m_pStateMachineCom->LateTick(fTimeDelta)))
-			return;
-	}
-
-	//CModel::TweenDesc desc = m_pModelCom->Get_TweenDesc();
-	//cout << desc.cur.iAnimIndex << "\t" << desc.next.iAnimIndex << "\t" << desc.cur.iCurFrame << "\t" << desc.next.iCurFrame << "\t" << desc.cur.tSoundEventDesc.eSoundID << endl;
-
-	cout << m_pModelCom->Is_RootMotion() << endl;
-
 	__super::LateTick(fTimeDelta);
 }
 
@@ -102,11 +79,6 @@ HRESULT CChai::Ready_Components()
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Model_Chai"),
 		ComponentNames[COM_MODEL], (CComponent**)&m_pModelCom)))
 		return E_FAIL;
-	
-	/* Com_StateMachine */
-	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_StateMachine"),
-		ComponentNames[COM_STATEMACHINE], (CComponent**)&m_pStateMachineCom)))
-		return E_FAIL;
 
 	/* Com_Rigidbody*/
 	CRigidbody::RIGIDBODY_TYPE eType = CRigidbody::RIGIDBODY_TYPE::DYNAMIC;
@@ -115,7 +87,7 @@ HRESULT CChai::Ready_Components()
 		return E_FAIL;
 
 	/* Com_NavMeshAgent*/
-	const _int iIndex = 0;// CNavMesh::GetInstance()->Find_Cell(m_pTransformCom->Get_FinalPosition().xyz());
+	const _int iIndex = 0;
 	{
 		if(iIndex < 0 ) 
 			return E_FAIL;
@@ -210,7 +182,6 @@ void CChai::OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild)
 
 		if (nullptr != pState)
 			pState->OnCollision_Enter(pGameObject);
-	
 	}
 }
 
@@ -251,7 +222,5 @@ CChai* CChai::Clone(void* pArg)
 void CChai::Free()
 {
 	__super::Free();
-
-	Safe_Release(m_pStateMachineCom);
 	Safe_Release(m_pRigidbodyCom);
 }
