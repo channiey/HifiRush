@@ -14,12 +14,15 @@ public:
 
 public:
 	HRESULT Enter() override;
-	const wstring& Tick(const _double& fTimeDelta) override;
-	const wstring& LateTick() override;
+	const wstring Tick(const _double& fTimeDelta) override;
+	const wstring LateTick() override;
 	void Exit() override;
 
 public:
-	const wstring& Check_Transition() override;
+	const wstring Check_Transition() override;
+
+private:
+	virtual void	Set_NextAnimation() override;
 
 public:
 	static CState_Saber_Idle* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);

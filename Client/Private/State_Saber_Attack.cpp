@@ -28,12 +28,12 @@ HRESULT CState_Saber_Attack::Enter()
 	return S_OK;
 }
 
-const wstring& CState_Saber_Attack::Tick(const _double& fTimeDelta)
+const wstring CState_Saber_Attack::Tick(const _double& fTimeDelta)
 {
 	return m_strName;
 }
 
-const wstring& CState_Saber_Attack::LateTick()
+const wstring CState_Saber_Attack::LateTick()
 {
 	return Check_Transition();
 }
@@ -42,7 +42,7 @@ void CState_Saber_Attack::Exit()
 {
 }
 
-const wstring& CState_Saber_Attack::Check_Transition()
+const wstring CState_Saber_Attack::Check_Transition()
 {
 	/*if (m_pChai->Get_Model()->Is_Tween())
 		return m_strName;

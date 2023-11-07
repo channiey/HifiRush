@@ -30,12 +30,12 @@ HRESULT CState_Chai_Parry::Enter()
 	return S_OK;
 }
 
-const wstring& CState_Chai_Parry::Tick(const _double& fTimeDelta)
+const wstring CState_Chai_Parry::Tick(const _double& fTimeDelta)
 {
 	return m_strName;
 }
 
-const wstring& CState_Chai_Parry::LateTick()
+const wstring CState_Chai_Parry::LateTick()
 {
 	return Check_Transition();
 }
@@ -45,7 +45,7 @@ void CState_Chai_Parry::Exit()
 	m_pChai->m_tFightDesc.bParry = FALSE;
 }
 
-const wstring& CState_Chai_Parry::Check_Transition()
+const wstring CState_Chai_Parry::Check_Transition()
 {
 	if (m_pChai->Get_Model()->Is_Tween())
 		return m_strName;

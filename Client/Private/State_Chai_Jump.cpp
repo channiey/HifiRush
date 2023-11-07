@@ -44,14 +44,14 @@ HRESULT CState_Chai_Jump::Enter()
 	return S_OK;
 }
 
-const wstring& CState_Chai_Jump::Tick(const _double& fTimeDelta)
+const wstring CState_Chai_Jump::Tick(const _double& fTimeDelta)
 {
 	Move(fTimeDelta);
 
 	return m_strName;
 }
 
-const wstring& CState_Chai_Jump::LateTick()
+const wstring CState_Chai_Jump::LateTick()
 {
 	CModel* pModel = m_pChai->Get_Model();
 	CModel::TweenDesc desc = pModel->Get_TweenDesc();
@@ -151,7 +151,7 @@ void CState_Chai_Jump::Exit()
 	}
 }
 
-const wstring& CState_Chai_Jump::Check_Transition()
+const wstring CState_Chai_Jump::Check_Transition()
 {
 	CModel* pModel = m_pChai->Get_Model();
 

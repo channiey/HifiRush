@@ -154,6 +154,7 @@ public:
 	const _bool				Is_OneThirds_Animation();
 	const _bool				Is_Half_Animation();
 	const _bool				Is_TwoThirds_Animation();
+	const _bool				Is_ThreeFourths_Animation();
 	const _bool&			Is_Finish_Animation() { return m_bFinishAnimation; }
 	const _bool				Is_Tween();
 	const _bool				Is_Contain_InTween(const _uint& iAnimIndex);

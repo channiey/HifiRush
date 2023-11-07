@@ -63,7 +63,7 @@ HRESULT CState_Chai_Attack::Enter()
 	return S_OK;
 }
 
-const wstring& CState_Chai_Attack::Tick(const _double& fTimeDelta)
+const wstring CState_Chai_Attack::Tick(const _double& fTimeDelta)
 {
 	Set_AttackDesc();
 
@@ -98,7 +98,7 @@ const wstring& CState_Chai_Attack::Tick(const _double& fTimeDelta)
 	return m_strName;
 }
 
-const wstring& CState_Chai_Attack::LateTick()
+const wstring CState_Chai_Attack::LateTick()
 {
 	return Check_Transition();
 }
@@ -125,7 +125,7 @@ void CState_Chai_Attack::OnCollision_Exit(CGameObject* pGameObject)
 {
 }
 
-const wstring& CState_Chai_Attack::Check_Transition()
+const wstring CState_Chai_Attack::Check_Transition()
 {
 	if (!m_tAttackDesc.bFirstAttack)
 		return m_strName;

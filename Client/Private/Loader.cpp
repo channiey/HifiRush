@@ -266,7 +266,7 @@ HRESULT CLoader::Load_Prototype()
 			}
 			/* For.Prototype_Component_Model_Saber_Sword */
 			{
-				PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f)) * Matrix::CreateRotationZ(DEG2RAD(90.f)) * Matrix::CreateRotationX(DEG2RAD(90.f)) * Matrix::CreateScale(1.5f);
+				PivotMatrix = Matrix::CreateRotationZ(DEG2RAD(90.f)) * Matrix::CreateRotationX(DEG2RAD(90.f));
 				const string		tag = "Prototype_Component_Model_Weapon_Saber_Sword";
 				const string		filePath = "../Bin/Resources/Models/Weapon/Saber_Sword";
 

@@ -24,12 +24,12 @@ HRESULT CState_Chai_Damaged::Enter()
 	return S_OK;
 }
 
-const wstring& CState_Chai_Damaged::Tick(const _double& fTimeDelta)
+const wstring CState_Chai_Damaged::Tick(const _double& fTimeDelta)
 {
 	return Check_Transition();
 }
 
-const wstring& CState_Chai_Damaged::LateTick()
+const wstring CState_Chai_Damaged::LateTick()
 {
 	return Check_Transition();
 }
@@ -39,7 +39,7 @@ void CState_Chai_Damaged::Exit()
 	m_pChai->m_tFightDesc.bDamaged = FALSE;
 }
 
-const wstring& CState_Chai_Damaged::Check_Transition()
+const wstring CState_Chai_Damaged::Check_Transition()
 {
 	if (!CBeatManager::GetInstance()->Is_HalfBeat())
 		return m_strName;

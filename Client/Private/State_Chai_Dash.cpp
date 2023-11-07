@@ -32,12 +32,12 @@ HRESULT CState_Chai_Dash::Enter()
 	return S_OK;
 }
 
-const wstring& CState_Chai_Dash::Tick(const _double& fTimeDelta)
+const wstring CState_Chai_Dash::Tick(const _double& fTimeDelta)
 {
 	return m_strName;
 }
 
-const wstring& CState_Chai_Dash::LateTick()
+const wstring CState_Chai_Dash::LateTick()
 {
 	return Check_Transition();
 }
@@ -49,7 +49,7 @@ void CState_Chai_Dash::Exit()
 	m_pChai->Get_Rigidbody()->Clear_NetPower();
 }
 
-const wstring& CState_Chai_Dash::Check_Transition()
+const wstring CState_Chai_Dash::Check_Transition()
 {			
 	if (m_pChai->Get_Model()->Is_Tween())
 		return m_strName;

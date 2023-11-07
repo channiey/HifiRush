@@ -23,68 +23,137 @@ HRESULT CState_Saber_Idle::Initialize(CStateMachine* pStateMachine, const wstrin
 
 HRESULT CState_Saber_Idle::Enter()
 {
-	ANIM_SA			eAnimID = ANIM_SA::IDLE_SA;
-	CAnimation*		pAnimation = m_pModel->Get_Animation(eAnimID);
-	const _double	fTimePerFrame = CBeatManager::GetInstance()->Get_AnimTimePerFrame(pAnimation);
+
+	if (StateNames_SA[STATE_APPEAR_SA] == m_pStateMachine->Get_PrevState()->Get_Name())
+	{
+		ANIM_SA			eAnimID = ANIM_SA::IDLE_SA;
+		CAnimation*		pAnimation = m_pModel->Get_Animation(eAnimID);
+		const _double	fTimePerFrame = CBeatManager::GetInstance()->Get_AnimTimePerFrame(pAnimation) * (_double)2.f;
+
+		m_fTimeLimit = rand() % 3 + 2;
+
+		m_pModel->Set_Animation(eAnimID, fTimePerFrame, DF_TW_TIME);
+	}
+	else
+	{
+		Set_NextAnimation();
+	}
 	
-	m_pModel->Set_Animation(eAnimID, fTimePerFrame * (_double)2.f, DF_TW_TIME);
 	
 	return S_OK;
 }
 
-const wstring& CState_Saber_Idle::Tick(const _double& fTimeDelta)
+const wstring CState_Saber_Idle::Tick(const _double& fTimeDelta)
 {
+	m_fTimeAcc += fTimeDelta;
+
 	return m_strName;
 }
 
-const wstring& CState_Saber_Idle::LateTick()
+const wstring CState_Saber_Idle::LateTick()
 {
-	return Check_Transition();
+	if(m_fTimeLimit <= m_fTimeAcc)
+		return Check_Transition();
+
+	return m_strName;
 }
 
 void CState_Saber_Idle::Exit()
 {
+	m_fTimeAcc = 0.f;
+	m_fTimeLimit = 0.f;
 }
 
-const wstring& CState_Saber_Idle::Check_Transition()
+const wstring CState_Saber_Idle::Check_Transition()
 {
-	/*if (m_pChai->Get_Model()->Is_Tween())
+	if (m_pModel->Is_Tween())
 		return m_strName;
 
-	if (m_pChai->m_tFightDesc.bDamaged)
+	if (m_pSaber->m_tFightDesc.bDamaged)
 	{
-		return StateNames_CH[STATE_DAMAGED_CH];
+		return StateNames_SA[STATE_DAMAGED_SA];
 	}
+	else
+	{
+		const wstring strNextState = StateNames_SA[STATE_IDLE_SA]; //Choice_NextState();
 
-	if (Input::Move() && CBeatManager::GetInstance()->Is_HalfBeat())
-	{
-		if (m_pChai->m_tPhysicsDesc.bGround)
+		if (strNextState == m_strName)
 		{
-			return StateNames_CH[STATE_RUN_CH];
+			Set_NextAnimation();
+
+			return m_strName;
 		}
+		else
+			return strNextState;
 	}
-	else if (Input::Shift() && CBeatManager::GetInstance()->Is_HalfBeat())
-	{
-		if (!m_pChai->m_tPhysicsDesc.bDash)
-		{
-			return StateNames_CH[STATE_DASH_CH];
-		}
-	}
-	else if (Input::Attack())
-	{
-		if (!CImGui_Manager::GetInstance()->Is_ClickedWindow())
-			return StateNames_CH[STATE_ATTACK_CH];
-	}
-	else if (Input::Parry() && CBeatManager::GetInstance()->Is_HalfBeat())
-	{
-		return StateNames_CH[STATE_PARRY_CH];
-	}
-	else if (Input::Jump())
-	{
-		return StateNames_CH[STATE_JUMP_CH];
-	}*/
 
 	return m_strName;
+}
+
+void CState_Saber_Idle::Set_NextAnimation()
+{
+	_int iNum = rand() % 4;
+
+	ANIM_SA			eAnimID = ANIM_SA::ANIM_SA_END;
+	CAnimation*		pAnimation = nullptr;
+	_double			fTimePerFrame;
+	_double			fDuration;
+
+	switch (iNum)
+	{
+		case 0 : 
+		{
+			eAnimID = ANIM_SA::IDLE_SA;
+			pAnimation = m_pModel->Get_Animation(eAnimID);
+			fTimePerFrame = CBeatManager::GetInstance()->Get_AnimTimePerFrame(pAnimation) * (_double)2.f;
+
+			m_fTimeLimit = rand() % 3 + 2;
+		}
+		break;
+		case 1:
+		{
+			eAnimID = ANIM_SA::ACCENT_00_SA;
+			pAnimation = m_pModel->Get_Animation(eAnimID);
+			fDuration = CBeatManager::GetInstance()->Get_SPB(4);
+			fTimePerFrame = fDuration / (_double)55.f;
+
+			m_fTimeLimit = fDuration;
+		}
+		break;
+		case 2:
+		{
+			eAnimID = ANIM_SA::ACCENT_01_SA;
+			pAnimation = m_pModel->Get_Animation(eAnimID);
+			fDuration = CBeatManager::GetInstance()->Get_SPB(4);
+			fTimePerFrame = fDuration / (_double)55.f;
+
+			m_fTimeLimit = fDuration;
+		}
+		break;
+		case 3:
+		{
+			eAnimID = ANIM_SA::ACCENT_02_SA;
+			pAnimation = m_pModel->Get_Animation(eAnimID);
+			fDuration = CBeatManager::GetInstance()->Get_SPB(4);
+			fTimePerFrame = fDuration / (_double)55.f;
+
+			m_fTimeLimit = fDuration;
+		}
+		break;
+		default:
+		{
+			eAnimID = ANIM_SA::IDLE_SA;
+			pAnimation = m_pModel->Get_Animation(eAnimID);
+			fTimePerFrame = CBeatManager::GetInstance()->Get_AnimTimePerFrame(pAnimation) * (_double)2.f;
+
+			m_fTimeLimit = rand() % 3 + 2;
+		}
+		break;
+	}
+	
+	m_fTimeAcc = 0.f;
+
+	m_pModel->Set_Animation(eAnimID, fTimePerFrame, DF_TW_TIME);
 }
 
 CState_Saber_Idle* CState_Saber_Idle::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

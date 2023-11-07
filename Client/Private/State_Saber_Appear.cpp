@@ -28,12 +28,12 @@ HRESULT CState_Saber_Appear::Enter()
 	return S_OK;
 }
 
-const wstring& CState_Saber_Appear::Tick(const _double& fTimeDelta)
+const wstring CState_Saber_Appear::Tick(const _double& fTimeDelta)
 {
 	return m_strName;
 }
 
-const wstring& CState_Saber_Appear::LateTick()
+const wstring CState_Saber_Appear::LateTick()
 {
 	return Check_Transition();
 }
@@ -42,7 +42,7 @@ void CState_Saber_Appear::Exit()
 {
 }
 
-const wstring& CState_Saber_Appear::Check_Transition()
+const wstring CState_Saber_Appear::Check_Transition()
 {
 	if (m_pModel->Is_Tween())
 		return m_strName;

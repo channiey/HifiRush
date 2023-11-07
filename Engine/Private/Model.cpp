@@ -426,6 +426,18 @@ const _bool CModel::Is_TwoThirds_Animation()
 	return FALSE;
 }
 
+const _bool CModel::Is_ThreeFourths_Animation()
+{
+	CAnimation* pCurAnim = Get_Animation(m_TweenDesc.cur.iAnimIndex);
+
+	if (nullptr != pCurAnim)
+	{
+		if (0.75f < (m_TweenDesc.cur.iCurFrame / (_float)pCurAnim->Get_MaxFrameCount()))
+			return TRUE;
+	}
+	return FALSE;
+}
+
 const _bool CModel::Is_Tween()
 {
 	if (0 <= m_TweenDesc.next.iAnimIndex && 1.f > m_TweenDesc.fTweenRatio)

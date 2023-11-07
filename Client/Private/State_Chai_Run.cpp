@@ -28,14 +28,14 @@ HRESULT CState_Chai_Run::Enter()
 	return S_OK;
 }
 
-const wstring& CState_Chai_Run::Tick(const _double& fTimeDelta)
+const wstring CState_Chai_Run::Tick(const _double& fTimeDelta)
 {
 	Move(fTimeDelta);
 
 	return m_strName;
 }
 
-const wstring& CState_Chai_Run::LateTick()
+const wstring CState_Chai_Run::LateTick()
 {
 	return Check_Transition();
 }
@@ -44,7 +44,7 @@ void CState_Chai_Run::Exit()
 {
 }
 
-const wstring& CState_Chai_Run::Check_Transition()
+const wstring CState_Chai_Run::Check_Transition()
 {
 	if (m_pChai->m_tFightDesc.bDamaged)
 		return StateNames_CH[STATE_IDLE_CH];

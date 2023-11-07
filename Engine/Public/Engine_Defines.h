@@ -41,6 +41,8 @@ using namespace DirectX;
 #include <algorithm>
 #include <functional>
 #include <string>
+#include <random>
+
 
 /* Thread */
 #include <thread>
