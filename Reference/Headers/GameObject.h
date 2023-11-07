@@ -81,10 +81,6 @@ public:
 	HRESULT			Add_Child(CGameObject* pChild) { if (nullptr == pChild) return E_FAIL;  m_Children.push_back(pChild); pChild->Set_Parent(this);  return S_OK; }
 	HRESULT			Remove_Child(const _uint& iIndex);
 
-public:
-	virtual HRESULT	Save() { return S_OK; }
-	virtual HRESULT	Load() { return S_OK; }
-
 protected:
 	ID3D11Device*			m_pDevice = { nullptr };
 	ID3D11DeviceContext*	m_pContext = { nullptr };

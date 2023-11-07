@@ -46,21 +46,22 @@ public:
 	const wstring&		Get_TriggerTag() const { return m_strTriggerTag; }
 	void				Set_TriggerTag(const wstring strTriggerTag) { m_strTriggerTag = strTriggerTag; }
 
+	const _bool&		Is_StartBattle() const { return m_bStartBattle; }
+
 public: /* 캐시 데이터 */
 	HRESULT				Add_Clone(const _uint iFlowLevel, CGameObject* pObject);
 	HRESULT				Clear_Clone();
 
 public: /* 정규 데이터 */
 	HRESULT				Set_TriggerData();
-	HRESULT				Clear_TriggerDara();
+	HRESULT				Clear_TriggerData();
 
 public:
-	HRESULT		Save();
-	HRESULT		Load();
+	HRESULT				Save();
+	HRESULT				Load();
 
 protected:
 	HRESULT				Ready_Components();
-	virtual HRESULT		Ready_Pool() PURE;
 
 private:
 	CGameObject*		Find_Object(CGameObject* pObject);
@@ -73,9 +74,12 @@ protected:
 protected:
 	wstring				m_strTriggerTag = {};
 	_bool				m_bBattle		= FALSE;
+	_bool				m_bStartBattle		= FALSE;
 
 	map <_uint, list<CGameObject*>>	m_CacheFlows;
 	map <_uint, list<CLONE_DESC>>	m_Flows;
+
+	vector<CGameObject*>	m_Clones;
 
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;

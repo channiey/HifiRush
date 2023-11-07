@@ -80,7 +80,7 @@ void CImGui_Window_Mid_Trigger::Show_BattleTrigger()
 
 	}
 
-	ImGui::SeparatorText("Clone");
+	ImGui::SeparatorText("Cache");
 	{
 		if (nullptr != m_pCurTrigger)
 		{
@@ -90,7 +90,7 @@ void CImGui_Window_Mid_Trigger::Show_BattleTrigger()
 
 			}
 
-			if (ImGui::Button("Add Clone"))
+			if (ImGui::Button("Add Cache"))
 			{
 				CGameObject* pObject = m_pImGui_Manager->m_pCurObject;
 
@@ -103,7 +103,7 @@ void CImGui_Window_Mid_Trigger::Show_BattleTrigger()
 			}
 			ImGui::SameLine();
 
-			if (ImGui::Button("Clear Clones"))
+			if (ImGui::Button("Clear Cache"))
 			{
 				if (FAILED(m_pCurTrigger->Clear_Clone()))
 					assert(FALSE);
@@ -114,13 +114,20 @@ void CImGui_Window_Mid_Trigger::Show_BattleTrigger()
 
 
 
-	ImGui::SeparatorText("Clones");
+	ImGui::SeparatorText("Data");
 	{
 		if (nullptr != m_pCurTrigger)
 		{
-			if (ImGui::Button("Save_TD"))
+			if (ImGui::Button("Save Data"))
 			{
 				if (FAILED(m_pCurTrigger->Save()))
+					assert(FALSE);
+			}
+			ImGui::SameLine();
+
+			if (ImGui::Button("Clear Data"))
+			{
+				if (FAILED(m_pCurTrigger->Clear_TriggerData()))
 					assert(FALSE);
 			}
 		}

@@ -4,6 +4,7 @@
 #include "EngineInstance.h"
 #include "Level_Loading.h"
 
+#include "BattleManager.h"
 #include "BeatManager.h"
 
 CLevel_Stage_01::CLevel_Stage_01(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
@@ -14,15 +15,19 @@ CLevel_Stage_01::CLevel_Stage_01(ID3D11Device * pDevice, ID3D11DeviceContext * p
 HRESULT CLevel_Stage_01::Initialize()
 {
 	/* Sound */
-	{
-		ENGINE_INSTANCE->Register_BGM(BGM_FAST_RUSH, BGM_CUR, BgmVolumeInNotBattle);
-	}
+	if (FAILED(ENGINE_INSTANCE->Register_BGM(BGM_FAST_RUSH, BGM_CUR, BgmVolumeInNotBattle)))
+		return E_FAIL;
+	
+	/* Battle */
+	if (FAILED(CBattleManager::GetInstance()->Initialize()))
+		return E_FAIL;
 
 	if (FAILED(CNavMesh::GetInstance()->Load_NavData(NavPaths[LV_STAGE_01])))
 		return E_FAIL;
 
 	if (FAILED(CLevel_Loading::Parse_LevelData(LV_STAGE_01)))
 		return E_FAIL;
+
 
 	return S_OK;
 }

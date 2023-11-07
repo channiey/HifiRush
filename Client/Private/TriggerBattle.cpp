@@ -111,12 +111,10 @@ HRESULT CTriggerBattle::Set_TriggerData()
 			m_Flows.emplace(Pair.first, list);
 	}
 
-	/* 정규 데이터?? */
-
 	return S_OK;
 }
 
-HRESULT CTriggerBattle::Clear_TriggerDara()
+HRESULT CTriggerBattle::Clear_TriggerData()
 {
 	m_Flows.clear();
 

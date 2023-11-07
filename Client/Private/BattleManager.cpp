@@ -34,6 +34,8 @@ HRESULT CBattleManager::Add_Trigger(const wstring strTriggerTag, CTriggerBattle*
 	if (nullptr == pTrigger)
 		return E_FAIL;
 
+	m_BattelTriggers.emplace(strTriggerTag, pTrigger);
+
 	return S_OK;
 }
 
@@ -41,7 +43,7 @@ void CBattleManager::OnTrigger_Enter(const wstring strTriggerTag)
 {
 	CTriggerBattle* pTriggerBattle = Find_Trigger(strTriggerTag);
 	
-	if (nullptr == pTriggerBattle)
+	if (nullptr == pTriggerBattle || pTriggerBattle->Is_StartBattle())
 		return;
 
 	m_pCurBattleTriggers = pTriggerBattle;
@@ -74,6 +76,9 @@ HRESULT CBattleManager::Remove_Trigger(const wstring strTriggerTag)
 
 HRESULT CBattleManager::Ready_Pool()
 {
+ 	if (FAILED(ENGINE_INSTANCE->Reserve_Pool(LEVEL_ID::LV_STAGE_01, LayerNames[LAYER_ENEMY], L"Enemy_Saber", 5)))
+		return E_FAIL;
+	
 	return S_OK;
 }
 

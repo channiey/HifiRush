@@ -31,7 +31,6 @@ private:
 
 protected:
 	HRESULT				Ready_Components();
-	virtual HRESULT		Ready_Pool() override;
 
 private:
 	_float				m_fOriginFov = 0.f;

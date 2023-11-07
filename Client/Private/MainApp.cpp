@@ -51,9 +51,6 @@ HRESULT CMainApp::Initialize()
 
 		if (FAILED(CBeatManager::GetInstance()->Initialize()))
 			return E_FAIL;
-
-		if (FAILED(CBattleManager::GetInstance()->Initialize()))
-			return E_FAIL;
 	}
 
 #ifdef _DEBUG

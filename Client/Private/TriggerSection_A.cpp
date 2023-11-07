@@ -36,9 +36,6 @@ HRESULT CTriggerSection_A::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	if (FAILED(Ready_Pool()))
-		return E_FAIL;
-
 	CBattleManager::GetInstance()->Add_Trigger(m_strTriggerTag, this);
 
 	return S_OK;
@@ -65,6 +62,8 @@ HRESULT CTriggerSection_A::Render()
 
 HRESULT CTriggerSection_A::Start_Battle()
 {
+	m_bStartBattle = TRUE;
+
 	/* Set Camera */
 	{
 		CCamera* pCameraCom = ENGINE_INSTANCE->Get_CurCamera()->Get_Camera();
@@ -76,6 +75,24 @@ HRESULT CTriggerSection_A::Start_Battle()
 	
 		pCameraCom->Lerp_Fov(m_fOriginFov, m_fBattleFov, 1.f, LERP_MODE::SMOOTHER_STEP);
 	}
+
+	/* Pop from Pool */
+	for (auto Pair : m_Flows)
+	{
+		for (auto desc : Pair.second)
+		{
+			CGameObject* pClone = ENGINE_INSTANCE->Pop_Pool(ENGINE_INSTANCE->Get_CurLevelIndex(), desc.strPrototypeTag);
+
+			if (nullptr != pClone)
+			{
+				pClone->Get_Transform()->Set_WorldMat(desc.matWorld);
+				pClone->Get_NavMeshAgent()->Set_CurIndex(desc.iCellIndex);
+
+				m_Clones.push_back(pClone);
+			}
+		}
+	}
+	
 	
 	return S_OK;
 }
@@ -114,11 +131,6 @@ void CTriggerSection_A::OnCollision_Exit(CCollider* pCollider, const _int& iInde
 }
 
 HRESULT CTriggerSection_A::Ready_Components()
-{
-	return S_OK;
-}
-
-HRESULT CTriggerSection_A::Ready_Pool()
 {
 	return S_OK;
 }

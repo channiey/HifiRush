@@ -54,6 +54,8 @@ void CSaber::LateTick(_double fTimeDelta)
 {
 	// << : Test 
 
+	m_pTransformCom->Translate(m_pTransformCom->Get_Forward() * m_tPhysicsDesc.fMaxForwardSpeed * 0.1f * fTimeDelta);
+
 	if (FAILED(m_pModelCom->Update(fTimeDelta)))
 		return;
 

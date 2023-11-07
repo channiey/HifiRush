@@ -247,16 +247,15 @@ void CObject_Manager::FinishTick()
 	{
 		CLayer* pLayer = Find_Layer(iter.iLevelIndex, iter.pObj->Get_LayerTag());
 
-		if (nullptr != pLayer)
+		if (nullptr == pLayer)
 		{
-			/* 클론 고유번호를 부여한다.*/
-			iter.pObj->Set_Name(pLayer->Get_CloneNameWithPin(iter.pObj->Get_Name()));
-
-			pLayer->Push_GameObject(iter.pObj);
+			pLayer = CLayer::Create(iter.pObj->Get_LayerTag());
+			m_pLayers[iter.iLevelIndex].emplace(iter.pObj->Get_LayerTag(), pLayer);
 		}
-
-		//iter.pObj->Set_Active(TRUE);
+		/* 클론 고유번호를 부여한다.*/
+		iter.pObj->Set_Name(pLayer->Get_CloneNameWithPin(iter.pObj->Get_Name()));
 		iter.pObj->Set_State(CGameObject::STATE_ACTIVE);
+		pLayer->Push_GameObject(iter.pObj);
 		
 		Safe_Release(iter.pObj);
 	}

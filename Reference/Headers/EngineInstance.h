@@ -64,7 +64,7 @@ public: /* For.Object_Manager */
 	class CGameObject* Add_GameObject(const _uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag, void* pArg = nullptr);
 	HRESULT Delete_GameObject(const _uint iLevelIndex, class CGameObject* pObj);
 
-	HRESULT Reserve_Pool(const _uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag, const _uint& iNumObj, void* pArg);
+	HRESULT Reserve_Pool(const _uint iLevelIndex, const wstring& strLayerTag, const wstring& strPrototypeTag, const _uint& iNumObj, void* pArg = nullptr);
 	class CGameObject* Pop_Pool(const _uint iLevelIndex, const wstring& strPrototypeTag);
 	HRESULT Return_Pool(const _uint iLevelIndex, class CGameObject* pObj);
 
