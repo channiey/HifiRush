@@ -39,8 +39,8 @@ private:
 
 private:
 	Vec2			m_vAngle		= { 0.f, 1.f };
-	_float			m_fMinAngleY = 0.7f;
-	_float			m_fMaxAngleY = 1.f;
+	_float			m_fMinAngleY	= 0.7f;
+	_float			m_fMaxAngleY	= 1.f;
 
 public:
 	static CCamera_Follow* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

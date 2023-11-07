@@ -17,8 +17,6 @@ CTriggerSection_A::CTriggerSection_A(ID3D11Device* pDevice, ID3D11DeviceContext*
 
 CTriggerSection_A::CTriggerSection_A(const CTriggerSection_A& rhs)
 	: CTriggerBattle(rhs)
-	, m_fOriginFov(rhs.m_fOriginFov)
-	, m_fBattleFov(rhs.m_fBattleFov)
 {
 }
 
@@ -65,20 +63,20 @@ HRESULT CTriggerSection_A::Start_Battle()
 	m_bStartBattle = TRUE;
 
 	/* Set Camera */
+	CCamera* pCameraCom = ENGINE_INSTANCE->Get_CurCamera()->Get_Camera();
+	if (nullptr != pCameraCom && CAMERA_ID::CAM_FOLLOW == (CAMERA_ID)pCameraCom->Get_Key())
 	{
-		CCamera* pCameraCom = ENGINE_INSTANCE->Get_CurCamera()->Get_Camera();
-
-		if (nullptr == pCameraCom)
-			return E_FAIL;
-
-		m_fOriginFov = pCameraCom->Get_ProjDesc().fFovy;
-	
-		pCameraCom->Lerp_Fov(m_fOriginFov, m_fBattleFov, 1.f, LERP_MODE::SMOOTHER_STEP);
+		pCameraCom->Lerp_Fov(CamFov_Follow_Battle, 1.5f, LERP_MODE::SMOOTHER_STEP);
+		pCameraCom->Lerp_Dist(CamDist_Follow_Battle, 1.5f, LERP_MODE::SMOOTHER_STEP);
 	}
+
+	/* Set Volume */
+	ENGINE_INSTANCE->Lerp_BGMSound(BgmVolumeInBattle, 2.f, LERP_MODE::SMOOTHER_STEP);
 
 	/* Pop from Pool */
 	for (auto Pair : m_Flows)
 	{
+		vector<CGameObject*> Clones;
 		for (auto desc : Pair.second)
 		{
 			CGameObject* pClone = ENGINE_INSTANCE->Pop_Pool(ENGINE_INSTANCE->Get_CurLevelIndex(), desc.strPrototypeTag);
@@ -87,9 +85,10 @@ HRESULT CTriggerSection_A::Start_Battle()
 			{
 				pClone->Get_Transform()->Set_WorldMat(desc.matWorld);
 				pClone->Get_NavMeshAgent()->Set_CurIndex(desc.iCellIndex);
-				m_Clones.push_back(pClone);
+				Clones.push_back(pClone);
 			}
 		}
+		m_Clones.push_back(Clones);
 	}
 	
 	
@@ -98,20 +97,15 @@ HRESULT CTriggerSection_A::Start_Battle()
 
 HRESULT CTriggerSection_A::Update_Battle(_double fTimeDelta)
 {
+	if (0 == m_iCurFlow)
+		Update_Battle_Flow_0(fTimeDelta);
+
 	return S_OK;
 }
 
 HRESULT CTriggerSection_A::Finish_Battle()
 {
-	/* Set Camera */
-	{
-		CCamera* pCameraCom = ENGINE_INSTANCE->Get_CurCamera()->Get_Camera();
-
-		if (nullptr == pCameraCom)
-			return E_FAIL;
-
-		pCameraCom->Lerp_Fov(pCameraCom->Get_ProjDesc().fFovy, m_fOriginFov, 1.f, LERP_MODE::SMOOTHER_STEP);
-	}
+	// Start ¿ø»óº¹±Í
 
 	return S_OK;
 }
@@ -132,6 +126,14 @@ void CTriggerSection_A::OnCollision_Exit(CCollider* pCollider, const _int& iInde
 HRESULT CTriggerSection_A::Ready_Components()
 {
 	return S_OK;
+}
+
+void CTriggerSection_A::Update_Battle_Flow_0(_double fTimeDelta)
+{
+	for (auto pClone : m_Clones[m_iCurFlow])
+	{
+		
+	}
 }
 
 CTriggerSection_A* CTriggerSection_A::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

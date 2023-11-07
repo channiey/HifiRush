@@ -102,7 +102,7 @@ HRESULT CChai::Ready_Components()
 	/* Com_Collider */
 	CCollider_Sphere* pCollider = nullptr;
 	{
-		CCollider::COLLIDERDESC	ColliderDesc(Vec3{ 0.f, 0.9f, 0.f }, 0.9f);
+		CCollider::COLLIDERDESC	ColliderDesc(Vec3{ 0.f, 1.2f, 0.f }, 1.2f);
 
 		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
 			ComponentNames[COM_COLLIDER_SPHERE], (CComponent**)&pCollider, &ColliderDesc)))

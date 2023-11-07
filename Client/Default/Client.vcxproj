@@ -227,7 +227,13 @@
     <ClInclude Include="..\Public\State_Chai_Jump.h" />
     <ClInclude Include="..\Public\State_Chai_Parry.h" />
     <ClInclude Include="..\Public\State_Chai_Run.h" />
+    <ClInclude Include="..\Public\State_Saber_Appear.h" />
+    <ClInclude Include="..\Public\State_Saber_Attack.h" />
     <ClInclude Include="..\Public\State_Saber_Base.h" />
+    <ClInclude Include="..\Public\State_Saber_Damaged.h" />
+    <ClInclude Include="..\Public\State_Saber_Dead.h" />
+    <ClInclude Include="..\Public\State_Saber_Idle.h" />
+    <ClInclude Include="..\Public\State_Saber_Move.h" />
     <ClInclude Include="..\Public\StaticDummy.h" />
     <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="..\Public\TriggerBattle.h" />
@@ -318,7 +324,13 @@
     <ClCompile Include="..\Private\State_Chai_Jump.cpp" />
     <ClCompile Include="..\Private\State_Chai_Parry.cpp" />
     <ClCompile Include="..\Private\State_Chai_Run.cpp" />
+    <ClCompile Include="..\Private\State_Saber_Appear.cpp" />
+    <ClCompile Include="..\Private\State_Saber_Attack.cpp" />
     <ClCompile Include="..\Private\State_Saber_Base.cpp" />
+    <ClCompile Include="..\Private\State_Saber_Damaged.cpp" />
+    <ClCompile Include="..\Private\State_Saber_Dead.cpp" />
+    <ClCompile Include="..\Private\State_Saber_Idle.cpp" />
+    <ClCompile Include="..\Private\State_Saber_Move.cpp" />
     <ClCompile Include="..\Private\StaticDummy.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\Private\TriggerBattle.cpp" />

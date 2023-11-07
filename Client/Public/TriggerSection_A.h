@@ -24,17 +24,16 @@ public:
 	virtual HRESULT		Update_Battle(_double fTimeDelta) override;
 	virtual HRESULT		Finish_Battle() override;
 
-private:
+public:
 	virtual void		OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild = -1) override;
 	virtual void		OnCollision_Stay(CCollider* pCollider, const _int& iIndexAsChild = -1) override;
 	virtual void		OnCollision_Exit(CCollider* pCollider, const _int& iIndexAsChild = -1) override;
 
-protected:
+private:
 	HRESULT				Ready_Components();
 
 private:
-	_float				m_fOriginFov = 0.f;
-	_float				m_fBattleFov = XMConvertToRadians(70.0f);
+	void				Update_Battle_Flow_0(_double fTimeDelta);
 
 public:
 	static CTriggerSection_A* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

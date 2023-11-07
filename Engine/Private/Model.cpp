@@ -1065,7 +1065,7 @@ const Matrix CModel::Get_CurAnimBonefinal(const BONE_TYPE& eBoneType)
 										, Get_AnimBoneLocal(m_TweenDesc.cur.iAnimIndex, m_TweenDesc.cur.iNextFrame, eBoneType)
 										, m_TweenDesc.cur.fRatio);
 
-	/* 다음 프레임이 예약되어 있다면 */
+	/* 다음 애님이 예약되어 있다면 */
 	if (0 <= m_TweenDesc.next.iAnimIndex)
 	{
 		Matrix matRootNextLerp = Matrix::Lerp(Get_AnimBoneLocal(m_TweenDesc.next.iAnimIndex, m_TweenDesc.next.iCurFrame, eBoneType)

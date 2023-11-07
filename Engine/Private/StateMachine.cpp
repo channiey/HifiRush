@@ -110,10 +110,21 @@ HRESULT CStateMachine::Change_State(const wstring& strStateTag)
 
 	NULL_CHECK_RETURN(pNextState, E_FAIL);
 
-	if (nullptr != m_pCurState)
+
+	if (nullptr == m_pCurState)
 	{
+		m_pPrevState = m_pCurState = pNextState;
+		Safe_AddRef(m_pCurState);
+	}
+	else
+	{
+		m_pPrevState = m_pCurState;
+		
 		m_pCurState->Exit();
 		Safe_Release(m_pCurState);
+
+		m_pCurState = pNextState;
+		Safe_AddRef(m_pCurState);
 	}
 
 	m_pCurState = pNextState;

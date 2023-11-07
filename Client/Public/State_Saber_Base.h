@@ -14,6 +14,7 @@
 
 BEGIN(Engine)
 class CGameObjet;
+class CModel;
 END
 
 BEGIN(Client)
@@ -35,11 +36,11 @@ public:
 
 protected:
 	CSaber*				m_pSaber = { nullptr };
+	CModel*				m_pModel = { nullptr };
 
 public:
 	virtual CState*		Clone(void* pArg) = 0;
 	virtual void		Free();
 };
-
 
 END

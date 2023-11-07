@@ -41,6 +41,8 @@ public:
 	const PROJ_DESC&	Get_ProjDesc() const { return m_tProjDesc; }
 	const _uint&		Get_Key() const { return m_iKey; }
 
+	const _float&		Get_Fov() const { return m_tProjDesc.fFovy; }
+
 public:
 	void Set_TargetObj(CGameObject* pObj)	{ m_pTargetObj = pObj; }
 	void Set_LookAtObj(CGameObject* pObj)	{ m_pLookAtObj = pObj; }
@@ -65,10 +67,16 @@ public:
 
 public:
 	void Lerp_Fov(const _float fStartValue, const _float& fTargetValue, const _double& fTime, const LERP_MODE& eMode = LERP_MODE::DEFAULT);
+	void Lerp_Fov(const _float& fTargetValue, const _double& fTime, const LERP_MODE& eMode = LERP_MODE::DEFAULT);
+	void Lerp_Dist(const _float fStartValue, const _float& fTargetValue, const _double& fTime, const LERP_MODE& eMode = LERP_MODE::DEFAULT);
+	void Lerp_Dist(const _float& fTargetValue, const _double& fTime, const LERP_MODE& eMode = LERP_MODE::DEFAULT);
 
 public:
 	void Change_TargetObj(CGameObject* pObj);
 	void Change_LookAtObj(CGameObject* pObj);
+
+private:
+	void Update_Lerp(const _double fDeltaTime);
 
 private:
 	PROJ_DESC		m_tProjDesc = {};
@@ -89,6 +97,7 @@ private:
 	_uint			m_iKey = { 99 };
 
 	LERP_FLOAT_DESC	m_tLerpFov;
+	LERP_FLOAT_DESC	m_tDistFov;
 
 public:
 	static CCamera* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

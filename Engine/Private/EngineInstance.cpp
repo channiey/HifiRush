@@ -649,6 +649,14 @@ const _bool CEngineInstance::Is_PlayBGM()
 	return m_pSound_Manager->Is_PlayBGM();
 }
 
+void CEngineInstance::Lerp_BGMSound(const _float& fTargetValue, const _double& fTime, const LERP_MODE& eMode)
+{
+	if (nullptr == m_pSound_Manager)
+		return;
+
+	return m_pSound_Manager->Lerp_BGMSound(fTargetValue, fTime, eMode);
+}
+
 void CEngineInstance::Release_Engine()
 {
 	CEngineInstance::GetInstance()->DestroyInstance();

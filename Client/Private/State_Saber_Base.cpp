@@ -19,6 +19,11 @@ HRESULT CState_Saber_Base::Initialize(CStateMachine* pStateMachine, const wstrin
 	if (nullptr == m_pSaber) 
 		return E_FAIL;
 
+	m_pModel = m_pSaber->Get_Model();
+
+	if (nullptr == m_pModel)
+		return E_FAIL;
+
 	return S_OK;
 }
 

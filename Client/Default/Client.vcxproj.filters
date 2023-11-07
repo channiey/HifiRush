@@ -286,47 +286,11 @@
     <Filter Include="03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\00.Base">
       <UniqueIdentifier>{44ed72b9-fa29-4bc7-a21f-49f4011978f8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\02.Movement">
-      <UniqueIdentifier>{c90ab2fc-34ad-4427-86e8-2909209c830a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\02.Movement\00.Run">
-      <UniqueIdentifier>{d1943755-03f3-41e1-9425-eea71f96d7b1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\02.Movement\02.Jump">
-      <UniqueIdentifier>{1014a25d-a863-4824-941d-84fc6963608d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\02.Movement\01.Dash">
-      <UniqueIdentifier>{a7d0508d-a5d2-4e21-a6ff-5b102c8dbd5e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\03.Action">
-      <UniqueIdentifier>{681f2993-99a3-4598-9c0e-83172478c05f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\03.Action\00.Attack">
-      <UniqueIdentifier>{1aadbd1d-86ba-4e87-9de5-bb9cf8180bcc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\03.Action\01.Damaged">
-      <UniqueIdentifier>{69807072-b6d2-4a54-880d-8f59fe5370aa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\03.Action\02.Parry">
-      <UniqueIdentifier>{c1d50e8d-522f-4538-ad33-edd44c747d04}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03.GameObjects\03.Character\01.Enemy\01.Saber\01.States">
       <UniqueIdentifier>{6042b582-95b8-4d12-9b1e-3d285931af9c}</UniqueIdentifier>
     </Filter>
     <Filter Include="03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\00.Base">
       <UniqueIdentifier>{c3e378f9-670d-4854-8f1b-9ef8b94b68ec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\02.Movement">
-      <UniqueIdentifier>{87ebfa13-ae0f-4497-9cab-22f0ddb3803a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\03.Action">
-      <UniqueIdentifier>{fa71fb38-c177-4fd4-9a33-c05310081a78}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\03.Action\01.Damaged">
-      <UniqueIdentifier>{96c18765-1b59-4afc-8a27-aee317a84535}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\03.Action\00.Appear">
-      <UniqueIdentifier>{4ca700a5-3150-44e7-bb29-0297f4623e23}</UniqueIdentifier>
     </Filter>
     <Filter Include="03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\01.Idle">
       <UniqueIdentifier>{7cfbb5b6-3ade-44f9-9a0f-bec6c5702b7e}</UniqueIdentifier>
@@ -334,14 +298,53 @@
     <Filter Include="03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\01.Idle">
       <UniqueIdentifier>{2b5c0adc-b9ae-4aa6-8043-d49679394a3e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\03.Action\02.Dead">
-      <UniqueIdentifier>{3e19ad7c-6a54-438a-bbc5-3f41c22495b1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="97.ImGui\01.Windows\03.Sub\00.Object_Components\Collider">
       <UniqueIdentifier>{d147c71e-b41f-435d-8255-9044678a2a45}</UniqueIdentifier>
     </Filter>
     <Filter Include="97.ImGui\01.Windows\01.Mid\02.Trigger">
       <UniqueIdentifier>{3c363926-f781-475d-ba2e-6a48c42ba3c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\02.Move">
+      <UniqueIdentifier>{c90ab2fc-34ad-4427-86e8-2909209c830a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\02.Move\00.Run">
+      <UniqueIdentifier>{d1943755-03f3-41e1-9425-eea71f96d7b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\02.Move\02.Jump">
+      <UniqueIdentifier>{1014a25d-a863-4824-941d-84fc6963608d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\02.Move\01.Dash">
+      <UniqueIdentifier>{a7d0508d-a5d2-4e21-a6ff-5b102c8dbd5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\03.Act">
+      <UniqueIdentifier>{681f2993-99a3-4598-9c0e-83172478c05f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\03.Act\00.Attack">
+      <UniqueIdentifier>{1aadbd1d-86ba-4e87-9de5-bb9cf8180bcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\03.Act\01.Damaged">
+      <UniqueIdentifier>{69807072-b6d2-4a54-880d-8f59fe5370aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\03.Act\02.Parry">
+      <UniqueIdentifier>{c1d50e8d-522f-4538-ad33-edd44c747d04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\02.Move">
+      <UniqueIdentifier>{87ebfa13-ae0f-4497-9cab-22f0ddb3803a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\03.Act">
+      <UniqueIdentifier>{fa71fb38-c177-4fd4-9a33-c05310081a78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\03.Act\01.Damaged">
+      <UniqueIdentifier>{96c18765-1b59-4afc-8a27-aee317a84535}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\03.Act\00.Appear">
+      <UniqueIdentifier>{4ca700a5-3150-44e7-bb29-0297f4623e23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\03.Act\02.Dead">
+      <UniqueIdentifier>{3e19ad7c-6a54-438a-bbc5-3f41c22495b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\03.Act\03.Attack">
+      <UniqueIdentifier>{2b798329-5bdb-4fad-860b-adad57f9b62e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -457,22 +460,22 @@
       <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\00.Base</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Chai_Damaged.h">
-      <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\03.Action\01.Damaged</Filter>
+      <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\03.Act\01.Damaged</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Chai_Dash.h">
-      <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\02.Movement\01.Dash</Filter>
+      <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\02.Move\01.Dash</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Chai_Run.h">
-      <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\02.Movement\00.Run</Filter>
+      <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\02.Move\00.Run</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Chai_Attack.h">
-      <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\03.Action\00.Attack</Filter>
+      <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\03.Act\00.Attack</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Chai_Jump.h">
-      <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\02.Movement\02.Jump</Filter>
+      <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\02.Move\02.Jump</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Chai_Parry.h">
-      <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\03.Action\02.Parry</Filter>
+      <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\03.Act\02.Parry</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ImGui_Window_Sub_Com_Model.h">
       <Filter>97.ImGui\01.Windows\03.Sub\00.Object_Components\Anim</Filter>
@@ -545,6 +548,24 @@
     </ClInclude>
     <ClInclude Include="..\Public\ImGui_Window_Mid_Trigger.h">
       <Filter>97.ImGui\01.Windows\01.Mid\02.Trigger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Saber_Move.h">
+      <Filter>03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\02.Move</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Saber_Idle.h">
+      <Filter>03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\01.Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Saber_Appear.h">
+      <Filter>03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\03.Act\00.Appear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Saber_Dead.h">
+      <Filter>03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\03.Act\02.Dead</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Saber_Damaged.h">
+      <Filter>03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\03.Act\01.Damaged</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Saber_Attack.h">
+      <Filter>03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\03.Act\03.Attack</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -648,22 +669,22 @@
       <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\00.Base</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Chai_Damaged.cpp">
-      <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\03.Action\01.Damaged</Filter>
+      <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\03.Act\01.Damaged</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Chai_Dash.cpp">
-      <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\02.Movement\01.Dash</Filter>
+      <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\02.Move\01.Dash</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Chai_Run.cpp">
-      <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\02.Movement\00.Run</Filter>
+      <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\02.Move\00.Run</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Chai_Attack.cpp">
-      <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\03.Action\00.Attack</Filter>
+      <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\03.Act\00.Attack</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Chai_Jump.cpp">
-      <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\02.Movement\02.Jump</Filter>
+      <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\02.Move\02.Jump</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Chai_Parry.cpp">
-      <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\03.Action\02.Parry</Filter>
+      <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\03.Act\02.Parry</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ImGui_Window_Sub_Com_Model.cpp">
       <Filter>97.ImGui\01.Windows\03.Sub\00.Object_Components\Anim</Filter>
@@ -736,6 +757,24 @@
     </ClCompile>
     <ClCompile Include="..\Private\ImGui_Window_Mid_Trigger.cpp">
       <Filter>97.ImGui\01.Windows\01.Mid\02.Trigger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Saber_Move.cpp">
+      <Filter>03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\02.Move</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Saber_Idle.cpp">
+      <Filter>03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\01.Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Saber_Appear.cpp">
+      <Filter>03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\03.Act\00.Appear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Saber_Dead.cpp">
+      <Filter>03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\03.Act\02.Dead</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Saber_Damaged.cpp">
+      <Filter>03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\03.Act\01.Damaged</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Saber_Attack.cpp">
+      <Filter>03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\03.Act\03.Attack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -35,10 +35,10 @@ HRESULT CCamera_Follow::Initialize(void * pArg)
 
 	/* Set Camera */
 	{
-		m_pCameraCom->Set_Distance(6.5f);
+		m_pCameraCom->Set_Distance(CamDist_Follow_Default);
 		m_pCameraCom->Set_MouseSensitiveX(0.3f);
 		m_pCameraCom->Set_MouseSensitiveY(0.1f);
-		m_pCameraCom->Set_LookAtOffSet(Vec4{0.f, 2.2f, 0.f, 1.f });
+		m_pCameraCom->Set_LookAtOffSet(Vec4{0.f, 1.8f, 0.f, 1.f });
 	}
 
 	m_eState = CGameObject::STATE_ACTIVE;
@@ -87,7 +87,7 @@ HRESULT CCamera_Follow::Ready_Components()
 	/* Com_Camera */
 	CCamera::PROJ_DESC desc;
 	{
-		desc.fFovy = XMConvertToRadians(60.0f);
+		desc.fFovy = CamFov_Follow_Default;
 		desc.fAspect = g_iWinSizeX / (_float)g_iWinSizeY;
 		desc.fNear = 0.2f;
 		desc.fFar = 1000.0f;

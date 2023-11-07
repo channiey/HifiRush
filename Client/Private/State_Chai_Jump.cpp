@@ -20,9 +20,9 @@ HRESULT CState_Chai_Jump::Initialize(CStateMachine* pStateMachine, const wstring
 
 HRESULT CState_Chai_Jump::Enter()
 {
-	ANIM_CH			eAnimID			= ANIM_CH::JUMP_NORMAL;
-	CAnimation*		pAnimation		= m_pChai->Get_Model()->Get_Animation(eAnimID);
-	const _double	fTimePerFrame	= CBeatManager::GetInstance()->Get_SPB(1) / (_double)pAnimation->Get_MaxFrameCount();
+	ANIM_CH			eAnimID = ANIM_CH::JUMP_NORMAL;
+	CAnimation* pAnimation = m_pChai->Get_Model()->Get_Animation(eAnimID);
+	const _double	fTimePerFrame = CBeatManager::GetInstance()->Get_SPB(1) / (_double)pAnimation->Get_MaxFrameCount();
 
 	m_pChai->Get_Model()->Set_Animation(eAnimID, fTimePerFrame, DF_TW_TIME);
 
@@ -32,6 +32,14 @@ HRESULT CState_Chai_Jump::Enter()
 	m_pChai->Get_NavMeshAgent()->Set_AirState(TRUE);
 
 	Jump();
+
+	/* Camera Set */
+	CCamera* pCameraCom = ENGINE_INSTANCE->Get_CurCamera()->Get_Camera();
+	if (nullptr != pCameraCom && CAMERA_ID::CAM_FOLLOW == (CAMERA_ID)pCameraCom->Get_Key())
+	{
+		pCameraCom->Lerp_Fov(CamFov_Follow_Jump, 0.5f, LERP_MODE::SMOOTHER_STEP);
+		//pCameraCom->Lerp_Dist(CamDist_Follow_Jump, 0.3f, LERP_MODE::SMOOTHER_STEP);
+	}
 
 	return S_OK;
 }
@@ -133,6 +141,14 @@ void CState_Chai_Jump::Exit()
 {
 	m_pChai->m_tPhysicsDesc.bGround		= TRUE;
 	m_pChai->m_tPhysicsDesc.bLanding	= FALSE;
+
+	/* Camera Set */
+	CCamera* pCameraCom = ENGINE_INSTANCE->Get_CurCamera()->Get_Camera();
+	if (nullptr != pCameraCom && CAMERA_ID::CAM_FOLLOW == (CAMERA_ID)pCameraCom->Get_Key())
+	{
+		pCameraCom->Lerp_Fov(CamFov_Follow_Default, 0.7f, LERP_MODE::SMOOTHER_STEP);
+		//pCameraCom->Lerp_Dist(CamDist_Follow_Default, 0.3f, LERP_MODE::SMOOTHER_STEP);
+	}
 }
 
 const wstring& CState_Chai_Jump::Check_Transition()

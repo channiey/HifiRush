@@ -7,7 +7,12 @@
 #include "Weapon.h"
 
 #include "State_Saber_Base.h"
-#include "ImGui_Manager.h"
+#include "State_Saber_Idle.h"
+#include "State_Saber_Move.h"
+#include "State_Saber_Attack.h"
+#include "State_Saber_Damaged.h"
+#include "State_Saber_Dead.h"
+#include "State_Saber_Appear.h"
 
 CSaber::CSaber(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CEnemy(pDevice, pContext)
@@ -53,23 +58,7 @@ void CSaber::Tick(_double fTimeDelta)
 
 void CSaber::LateTick(_double fTimeDelta)
 {
-	// << : Test 
-
-	if (!CImGui_Manager::GetInstance()->Is_DebugCam())
-	{
-		m_pTransformCom->Translate(m_pTransformCom->Get_Forward() * m_tPhysicsDesc.fMaxForwardSpeed * 0.1f * fTimeDelta);
-
-		if (FAILED(m_pModelCom->Update(fTimeDelta)))
-			return;
-
-	}
-
-	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
-		return;
-	// >> : 
-	// 
-	// 
-	//__super::LateTick(fTimeDelta);
+	__super::LateTick(fTimeDelta);
 }
 
 HRESULT CSaber::Render()
@@ -83,6 +72,12 @@ HRESULT CSaber::Render()
 void CSaber::Set_State(const OBJ_STATE& eState)
 {
 	__super::Set_State(eState);
+
+	if (OBJ_STATE::STATE_ACTIVE == eState)
+	{
+		cout << "Active\n";
+		m_pStateMachineCom->Set_State(StateNames_SA[STATE_APPEAR_SA]);
+	}
 }
 
 HRESULT CSaber::Ready_Components()
@@ -95,7 +90,7 @@ HRESULT CSaber::Ready_Components()
 	/* Com_Collider */
 	CCollider_Sphere* pCollider = nullptr;
 	{
-		CCollider::COLLIDERDESC	ColliderDesc(Vec3{ 0.f, 0.9f, 0.f }, 0.9f);
+		CCollider::COLLIDERDESC	ColliderDesc(Vec3{ 0.f, 1.2f, 0.f }, 1.2f);
 
 		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
 			ComponentNames[COM_COLLIDER_SPHERE], (CComponent**)&pCollider, &ColliderDesc)))
@@ -129,9 +124,33 @@ HRESULT CSaber::Ready_StateMachine()
 
 	/* General */
 	{
-		/*pState = CState_Chai_Idle::Create(m_pStateMachineCom, StateNames_CH[STATE_IDLE], this);
+		pState = CState_Saber_Idle::Create(m_pStateMachineCom, StateNames_SA[STATE_IDLE_SA], this);
 		if (FAILED(m_pStateMachineCom->Add_State(pState)))
-			return E_FAIL;*/
+			return E_FAIL;
+	}
+	/* Movement */
+	{
+		pState = CState_Saber_Move::Create(m_pStateMachineCom, StateNames_SA[STATE_MOVE_SA], this);
+		if (FAILED(m_pStateMachineCom->Add_State(pState)))
+			return E_FAIL;
+	}
+	/* Action */
+	{
+		pState = CState_Saber_Attack::Create(m_pStateMachineCom, StateNames_SA[STATE_ATTACK_SA], this);
+		if (FAILED(m_pStateMachineCom->Add_State(pState)))
+			return E_FAIL;
+
+		pState = CState_Saber_Damaged::Create(m_pStateMachineCom, StateNames_SA[STATE_DAMAGED_SA], this);
+		if (FAILED(m_pStateMachineCom->Add_State(pState)))
+			return E_FAIL;
+
+		pState = CState_Saber_Dead::Create(m_pStateMachineCom, StateNames_SA[STATE_DEAD_SA], this);
+		if (FAILED(m_pStateMachineCom->Add_State(pState)))
+			return E_FAIL;
+
+		pState = CState_Saber_Appear::Create(m_pStateMachineCom, StateNames_SA[STATE_APPEAR_SA], this);
+		if (FAILED(m_pStateMachineCom->Add_State(pState)))
+			return E_FAIL;
 	}
 
 	return S_OK;

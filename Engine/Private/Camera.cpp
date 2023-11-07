@@ -28,11 +28,7 @@ HRESULT CCamera::Initialize(void * pArg)
 
 HRESULT CCamera::Update(const _double fDeltaTime)
 {
-	m_tLerpFov.Update(fDeltaTime);
-	if (m_tLerpFov.bActive)
-	{
-		m_tProjDesc.fFovy = m_tLerpFov.fCurValue;
-	}
+	Update_Lerp(fDeltaTime);
 
 	return S_OK;
 }
@@ -42,12 +38,43 @@ void CCamera::Lerp_Fov(const _float fStartValue, const _float& fTargetValue, con
 	m_tLerpFov.Start(fStartValue, fTargetValue, fTime, eMode);
 }
 
+void CCamera::Lerp_Fov(const _float& fTargetValue, const _double& fTime, const LERP_MODE& eMode)
+{
+	m_tLerpFov.Start(m_tProjDesc.fFovy, fTargetValue, fTime, eMode);
+}
+
+void CCamera::Lerp_Dist(const _float fStartValue, const _float& fTargetValue, const _double& fTime, const LERP_MODE& eMode)
+{
+	m_tDistFov.Start(fStartValue, fTargetValue, fTime, eMode);
+}
+
+void CCamera::Lerp_Dist(const _float& fTargetValue, const _double& fTime, const LERP_MODE& eMode)
+{
+	m_tDistFov.Start(m_fDistance, fTargetValue, fTime, eMode);
+}
+
 void CCamera::Change_TargetObj(CGameObject* pObj)
 {
 }
 
 void CCamera::Change_LookAtObj(CGameObject* pObj)
 {
+}
+
+void CCamera::Update_Lerp(const _double fDeltaTime)
+{
+	m_tLerpFov.Update(fDeltaTime);
+	if (m_tLerpFov.bActive)
+	{
+		m_tProjDesc.fFovy = m_tLerpFov.fCurValue;
+	}
+
+
+	m_tDistFov.Update(fDeltaTime);
+	if (m_tDistFov.bActive)
+	{
+		m_fDistance = m_tDistFov.fCurValue;
+	}
 }
 
 CCamera* CCamera::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

@@ -118,6 +118,7 @@ public: /* For.Sound_Manager */
 	HRESULT		Play_BGM();
 	const _uint Get_BPM();
 	const _bool Is_PlayBGM();
+	void		Lerp_BGMSound(const _float& fTargetValue, const _double& fTime, const LERP_MODE& eMode = LERP_MODE::DEFAULT);
 
 private:
 	class CTimer_Manager*			m_pTimer_Manager		= { nullptr };

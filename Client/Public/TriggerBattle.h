@@ -76,10 +76,13 @@ protected:
 	_bool				m_bBattle		= FALSE;
 	_bool				m_bStartBattle		= FALSE;
 
-	map <_uint, list<CGameObject*>>	m_CacheFlows;
-	map <_uint, list<CLONE_DESC>>	m_Flows;
+	map<_uint, list<CGameObject*>>	m_CacheFlows;
+	map<_uint, list<CLONE_DESC>>	m_Flows;
 
-	vector<CGameObject*>	m_Clones;
+	vector<vector<CGameObject*>>	m_Clones;
+	_int							m_iCurFlow = 0;
+	
+	
 
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;

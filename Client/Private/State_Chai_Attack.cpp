@@ -24,7 +24,6 @@ HRESULT CState_Chai_Attack::Enter()
 	CModel* pModel = m_pChai->Get_Model();
 	CModel::TweenDesc desc = pModel->Get_TweenDesc();
 	
-	cout << "ATTACK START\n";
 	if (Input::LBtn())
 	{
 		m_tAttackDesc.iAnimIndex		= ANIM_CH::ATK_LIGHT_00;
@@ -35,30 +34,28 @@ HRESULT CState_Chai_Attack::Enter()
 		m_tAttackDesc.eAttackType		= ATTACK_TYPE::LIGHT;
 
 		m_tAttackDesc.tSoundEventDesc.iFrame = 10;
-		m_tAttackDesc.tSoundEventDesc.eSoundID = EFC_CHAI_ATTACK_SWING_NONCOLLISION;
-		m_tAttackDesc.tSoundEventDesc.eChannelID = PLAYER_CHAI;
-		m_tAttackDesc.tSoundEventDesc.fVolume = EfcVolumeChai;
+
 
 	}
 	else if (Input::RBtn())
 	{
-		
+		m_tAttackDesc.iAnimIndex = ANIM_CH::ATK_HEAVY_00;
+		m_tAttackDesc.fTweenTime = DF_TW_TIME * 0.5f;
+		m_tAttackDesc.dPrevAnimCheckFrame = (_double)27.f;
+		m_tAttackDesc.dTimePerFrame = CBeatManager::GetInstance()->Get_SPB(2) / (_double)30.f;
+
+		m_tAttackDesc.eAttackType = ATTACK_TYPE::HEAVY;
+
+		m_tAttackDesc.tSoundEventDesc.iFrame = 25;
 	}
 	else if (Input::MBtn())
 	{
-	/*	m_tAttackDesc.iAnimIndex = ANIM_CH::ATK_THROW_GUITAR_00;
-		m_tAttackDesc.fTweenTime = DF_TW_TIME * 0.5f;
-		m_tAttackDesc.dPrevAnimCheckFrame = (_double)15.f;
-		m_tAttackDesc.dTimePerFrame = CBeatManager::GetInstance()->Get_SPB(1) / (_double)15.f;
-
-		m_tAttackDesc.eAttackType = ATTACK_TYPE::LIGHT;
-
-		m_tAttackDesc.tSoundEventDesc.iFrame = 10;
-		m_tAttackDesc.tSoundEventDesc.eSoundID = EFC_CHAI_ATTACK_SWING_NONCOLLISION;
-		m_tAttackDesc.tSoundEventDesc.eChannelID = PLAYER_CHAI;
-		m_tAttackDesc.tSoundEventDesc.fVolume = EfcVolumeChai;*/
-
+		
 	}
+
+	m_tAttackDesc.tSoundEventDesc.eSoundID = EFC_CHAI_ATTACK_SWING_NONCOLLISION;
+	m_tAttackDesc.tSoundEventDesc.eChannelID = PLAYER_CHAI;
+	m_tAttackDesc.tSoundEventDesc.fVolume = EfcVolumeChai;
 
 	m_pChai->m_tFightDesc.iStep++;
 	m_tAttackDesc.bSet = TRUE;
@@ -108,7 +105,6 @@ const wstring& CState_Chai_Attack::LateTick()
 
 void CState_Chai_Attack::Exit()
 {
-	cout << "ATTACK OUT\n";
 	m_tAttackDesc.Reset();
 
 	m_pChai->m_tFightDesc.iStep = -1;
@@ -149,6 +145,21 @@ const wstring& CState_Chai_Attack::Check_Transition()
 			if(!pModel->Is_Tween() && 70 <= desc.cur.iCurFrame )
 				return StateNames_CH[STATE_IDLE_CH];
 		}
+		else if (ANIM_CH::ATK_HEAVY_00 == m_tAttackDesc.iAnimIndex)
+		{
+			if (!pModel->Is_Tween() && 70 <= desc.cur.iCurFrame)
+				return StateNames_CH[STATE_IDLE_CH];
+		}
+		else if (ANIM_CH::ATK_HEAVY_01 == m_tAttackDesc.iAnimIndex)
+		{
+			if (!pModel->Is_Tween() && 65 <= desc.cur.iCurFrame)
+				return StateNames_CH[STATE_IDLE_CH];
+		}
+		else if (ANIM_CH::ATK_HEAVY_02 == m_tAttackDesc.iAnimIndex)
+		{
+			if (!pModel->Is_Tween() && 70 <= desc.cur.iCurFrame)
+				return StateNames_CH[STATE_IDLE_CH];
+		}
 		else
 		{
 			if(!pModel->Is_Tween() && pModel->Is_TwoThirds_Animation())
@@ -170,19 +181,12 @@ void CState_Chai_Attack::Set_AttackDesc()
 	CModel::TweenDesc desc = pModel->Get_TweenDesc();
 
 	if (m_tAttackDesc.dPrevAnimCheckFrame <= desc.cur.iCurFrame)
-	{
 		return;
-	}
 	
-
 	/* 다음 공격 세팅 */
-	if (Input::Attack() && Input::LBtn())
+	Input::Attack();
+	if (Input::LBtn())
 	{
-		if (ATTACK_TYPE::STRONG == m_tAttackDesc.eAttackType)
-		{
-
-		}
-		
 		if (0 == m_pChai->m_tFightDesc.iStep)
 		{
 			m_tAttackDesc.iAnimIndex = ANIM_CH::ATK_LIGHT_01;
@@ -190,11 +194,6 @@ void CState_Chai_Attack::Set_AttackDesc()
 			m_tAttackDesc.dTimePerFrame = CBeatManager::GetInstance()->Get_SPB(1) / (_double)15.f;
 			
 			m_tAttackDesc.tSoundEventDesc.iFrame = 10;
-			m_tAttackDesc.tSoundEventDesc.eSoundID = EFC_CHAI_ATTACK_SWING_NONCOLLISION;
-			m_tAttackDesc.tSoundEventDesc.eChannelID = PLAYER_CHAI;
-			m_tAttackDesc.tSoundEventDesc.fVolume = EfcVolumeChai;
-
-
 		}
 		else if (1 == m_pChai->m_tFightDesc.iStep)
 		{
@@ -203,9 +202,6 @@ void CState_Chai_Attack::Set_AttackDesc()
 			m_tAttackDesc.dTimePerFrame = CBeatManager::GetInstance()->Get_SPB(1) / (_double)15.f;
 
 			m_tAttackDesc.tSoundEventDesc.iFrame = 10;
-			m_tAttackDesc.tSoundEventDesc.eSoundID = EFC_CHAI_ATTACK_SWING_NONCOLLISION;
-			m_tAttackDesc.tSoundEventDesc.eChannelID = PLAYER_CHAI;
-			m_tAttackDesc.tSoundEventDesc.fVolume = EfcVolumeChai;
 		}
 		else if (2 == m_pChai->m_tFightDesc.iStep)
 		{
@@ -214,15 +210,15 @@ void CState_Chai_Attack::Set_AttackDesc()
 			m_tAttackDesc.dTimePerFrame = CBeatManager::GetInstance()->Get_SPB(2) / (_double)30.f;
 
 			m_tAttackDesc.tSoundEventDesc.iFrame = 25;
-			m_tAttackDesc.tSoundEventDesc.eSoundID = EFC_CHAI_ATTACK_SWING_NONCOLLISION;
-			m_tAttackDesc.tSoundEventDesc.eChannelID = PLAYER_CHAI;
-			m_tAttackDesc.tSoundEventDesc.fVolume = EfcVolumeChai;
 		}
 		else if (3 <= m_pChai->m_tFightDesc.iStep)
 		{
 			return;
 		}
 
+		m_tAttackDesc.tSoundEventDesc.eSoundID = EFC_CHAI_ATTACK_SWING_NONCOLLISION;
+		m_tAttackDesc.tSoundEventDesc.eChannelID = PLAYER_CHAI;
+		m_tAttackDesc.tSoundEventDesc.fVolume = EfcVolumeChai;
 
 		m_tAttackDesc.eAttackType		= ATTACK_TYPE::LIGHT;
 		m_tAttackDesc.fTweenTime		= DF_TW_TIME * 0.5f;
@@ -230,24 +226,41 @@ void CState_Chai_Attack::Set_AttackDesc()
 
 		m_pChai->m_tFightDesc.iStep++;
 
-
-
 	}
-	else if (Input::Attack() && Input::RBtn())
+	else if (Input::RBtn())
 	{
-		if (ATTACK_TYPE::LIGHT == m_tAttackDesc.eAttackType)
+		if (0 == m_pChai->m_tFightDesc.iStep)
 		{
+			m_tAttackDesc.iAnimIndex = ANIM_CH::ATK_HEAVY_01;
+			m_tAttackDesc.fTweenTime		= DF_TW_TIME * 0.5f;
+			m_tAttackDesc.dPrevAnimCheckFrame = (_double)30.f;
+			m_tAttackDesc.dTimePerFrame = CBeatManager::GetInstance()->Get_SPB(2) / (_double)35.f;
 
+			m_tAttackDesc.tSoundEventDesc.iFrame = 30;
+		
+		}
+		else if (1 == m_pChai->m_tFightDesc.iStep)
+		{
+			m_tAttackDesc.iAnimIndex = ANIM_CH::ATK_HEAVY_02;
+			m_tAttackDesc.fTweenTime = DF_TW_TIME * 0.5;
+			m_tAttackDesc.dPrevAnimCheckFrame = (_double)35.f;
+			m_tAttackDesc.dTimePerFrame = CBeatManager::GetInstance()->Get_SPB(2) / (_double)38.f;
+
+			m_tAttackDesc.tSoundEventDesc.iFrame = 33;
+		}
+		else if (2 <= m_pChai->m_tFightDesc.iStep)
+		{
+			return;
 		}
 		
+		m_tAttackDesc.tSoundEventDesc.eSoundID = EFC_CHAI_ATTACK_SWING_NONCOLLISION;
+		m_tAttackDesc.tSoundEventDesc.eChannelID = PLAYER_CHAI;
+		m_tAttackDesc.tSoundEventDesc.fVolume = EfcVolumeChai;
 
-
-		m_tAttackDesc.eAttackType = ATTACK_TYPE::STRONG;
+		m_tAttackDesc.eAttackType = ATTACK_TYPE::HEAVY;
 		m_tAttackDesc.bSet = TRUE;
 
 		m_pChai->m_tFightDesc.iStep++;
-
-
 	}
 }
 

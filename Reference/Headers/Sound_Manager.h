@@ -27,6 +27,8 @@ public:
 	HRESULT Register_BGM(_uint eSoundID, _uint eChannelID, float fVolume);
 	HRESULT Play_BGM();
 	const _bool& Is_PlayBGM() const { return m_bPlayBgm; }
+
+	void	Lerp_BGMSound(const _float& fTargetValue, const _double& fTime, const LERP_MODE& eMode = LERP_MODE::DEFAULT);
 	
 	void	Stop_Sound(_uint eChannelID);
 	void	Stop_All();

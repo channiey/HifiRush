@@ -97,6 +97,11 @@ HRESULT CSound_Manager::Play_BGM()
 	return S_OK;
 }
 
+void CSound_Manager::Lerp_BGMSound(const _float& fTargetValue, const _double& fTime, const LERP_MODE& eMode)
+{
+	m_tCurBgmVolume.Start(m_tCurBgmVolume.fCurValue, fTargetValue, 1.f, LERP_MODE::SMOOTH_STEP);
+}
+
 void CSound_Manager::Stop_Sound(_uint eChannelID)
 {
 	FMOD_Channel_Stop(m_Channels[eChannelID]);

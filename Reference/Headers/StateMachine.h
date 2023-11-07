@@ -24,6 +24,7 @@ public:
 
 public:
 	CState*			Get_CurState() const { return m_pCurState; }
+	CState*			Get_PrevState() const { return m_pPrevState; }
 	HRESULT			Set_State(const wstring& strStateTag);
 	HRESULT			Add_State(CState* pState);
 
@@ -35,6 +36,7 @@ private:
 private:
 	map<const wstring, class CState*>	m_pStates;
 	CState*								m_pCurState = { nullptr };
+	CState*								m_pPrevState = { nullptr };
 
 public:
 	static CStateMachine* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

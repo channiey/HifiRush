@@ -128,6 +128,14 @@ namespace Client
 		L"Camera_Follow",
 	};
 
+	static const _float CamFov_Follow_Default	= XMConvertToRadians(60.0f);
+	static const _float CamFov_Follow_Battle	= XMConvertToRadians(70.0f);
+	static const _float CamFov_Follow_Jump		= XMConvertToRadians(65.0f);
+
+	static const _float CamDist_Follow_Default	= 6.5f;
+	static const _float CamDist_Follow_Battle	= 7.f;
+	static const _float CamDist_Follow_Jump		= 7.f;
+
 	/* Sound Channel */
 	enum CHANNEL_ID 
 	{
@@ -175,9 +183,9 @@ namespace Client
 	static const char* SoundFilePath_Engine = "../../Client/Bin/Resources/Sounds/";
 
 
-	static const _float BgmVolumeInBattle		= 0.4f;
+	static const _float BgmVolumeInBattle		= 0.35f;
 	static const _float BgmVolumeInNotBattle	= 0.2f;
-	static const _float EfcVolumeChai			= 0.4f;
+	static const _float EfcVolumeChai			= 0.3f;
 }
 
 extern HINSTANCE	g_hInst;

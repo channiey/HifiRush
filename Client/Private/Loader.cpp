@@ -239,13 +239,13 @@ HRESULT CLoader::Load_Prototype()
 		Matrix PivotMatrix;
 
 		/* For.Prototype_Component_Model_Chai */
-		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.015f);
+		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.0125f);
 		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Chai"),
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Chai", PivotMatrix))))
 			return E_FAIL;
 
 		/* For.Prototype_Component_Model_Saber */
-		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.015f);
+		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.0125f);
 		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Saber"),
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Saber", PivotMatrix))))
 			return E_FAIL;
