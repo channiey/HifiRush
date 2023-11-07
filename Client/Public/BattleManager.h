@@ -3,12 +3,21 @@
 #include "Client_Defines.h"
 #include "Base.h"
 
+
+enum BATTLE_TRIGGER_TYPE { SECTION_A, SECTION_B, SECTION_C, BTT_TYPEEND };
+
+static const wstring BattelTriggerNames[BATTLE_TRIGGER_TYPE::BTT_TYPEEND]
+{
+	L"Section_A",
+	L"Section_B",
+	L"Section_C",
+};
+
 BEGIN(Engine)
 class CGameObject;
 END
 
 BEGIN(Client)
-
 class CTriggerBattle;
 
 class CBattleManager final : public CBase

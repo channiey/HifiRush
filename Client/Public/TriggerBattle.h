@@ -3,14 +3,28 @@
 #include "Client_Defines.h"
 #include "GameObject.h"
 
-#include "Collider.h"
+BEGIN(Engine)
+class CCollider;
+class CRenderer;
+class CTransform;
+END
 
-#include "TriggerDummy.h"
+static const wstring TriggerFilePath = L"../Bin/Resources/Data/Trigger/";
 
 BEGIN(Client)
 
 class CTriggerBattle abstract : public CGameObject
 {
+public:
+	typedef struct  tagCloneDesc
+	{
+		_uint	iFlowLevel		= { 0 };
+		wstring strPrototypeTag = {};
+		_uint	iCellIndex		= { 0 };
+		Matrix	matWorld		= {};
+
+	}CLONE_DESC;
+
 protected:
 	CTriggerBattle(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CTriggerBattle(const CTriggerBattle& rhs);
@@ -30,20 +44,38 @@ public:
 
 public:
 	const wstring&		Get_TriggerTag() const { return m_strTriggerTag; }
-
 	void				Set_TriggerTag(const wstring strTriggerTag) { m_strTriggerTag = strTriggerTag; }
+
+public: /* 캐시 데이터 */
+	HRESULT				Add_Clone(const _uint iFlowLevel, CGameObject* pObject);
+	HRESULT				Clear_Clone();
+
+public: /* 정규 데이터 */
+	HRESULT				Set_TriggerData();
+	HRESULT				Clear_TriggerDara();
+
+public:
+	HRESULT		Save();
+	HRESULT		Load();
 
 protected:
 	HRESULT				Ready_Components();
-	HRESULT				Ready_Chilren(CTriggerDummy::TRIGGER_DESC desc);
 	virtual HRESULT		Ready_Pool() PURE;
 
+private:
+	CGameObject*		Find_Object(CGameObject* pObject);
+
 protected:
-	CTransform*			m_pTransformCom = { nullptr };
+	CTransform*			m_pTransformCom	= { nullptr };
+	CCollider_Sphere*	m_pCollider		= { nullptr };
+	CRenderer*			m_pRendererCom	= { nullptr };
 
 protected:
 	wstring				m_strTriggerTag = {};
 	_bool				m_bBattle		= FALSE;
+
+	map <_uint, list<CGameObject*>>	m_CacheFlows;
+	map <_uint, list<CLONE_DESC>>	m_Flows;
 
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;

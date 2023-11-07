@@ -29,22 +29,17 @@ HRESULT CTriggerSection_A::Initialize_Prototype()
 
 HRESULT CTriggerSection_A::Initialize(void* pArg)
 {
-	CTriggerDummy::TRIGGER_DESC desc;
-	{
-		desc.eColType = CCollider::TYPE::SPHERE;
-		desc.iIndexAsChild = -1;
-		desc.tColDesc.vCenter = Vec3::Zero;
-		desc.tColDesc.vSize = Vec3{ 10.f, 10.f, 10.f };
-	}
+	m_strTriggerTag = BattelTriggerNames[BATTLE_TRIGGER_TYPE::SECTION_A];
+
+	__super::Initialize(pArg);
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	if (FAILED(Ready_Chilren(desc)))
-		return E_FAIL;
-
 	if (FAILED(Ready_Pool()))
 		return E_FAIL;
+
+	CBattleManager::GetInstance()->Add_Trigger(m_strTriggerTag, this);
 
 	return S_OK;
 }
@@ -120,26 +115,6 @@ void CTriggerSection_A::OnCollision_Exit(CCollider* pCollider, const _int& iInde
 
 HRESULT CTriggerSection_A::Ready_Components()
 {
-	/* For.Com_Transform */
-	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Transform"),
-		ComponentNames[COM_TRANSFORM], (CComponent**)&m_pTransformCom)))
-		return E_FAIL;
-
-	return S_OK;
-}
-
-HRESULT CTriggerSection_A::Ready_Chilren(CTriggerDummy::TRIGGER_DESC desc)
-{
-	CTriggerDummy* pTrigger = nullptr;
-	{
-		pTrigger = dynamic_cast<CTriggerDummy*>(ENGINE_INSTANCE->Add_GameObject(ENGINE_INSTANCE->Get_CurLevelIndex(), LayerNames[LAYER_TRIGGER], L"Trigger_Dummy", &desc));
-
-		if (nullptr != pTrigger)
-		{
-			if (FAILED(Add_Child(pTrigger)))
-				return E_FAIL;
-		}
-	}
 	return S_OK;
 }
 
@@ -154,7 +129,7 @@ CTriggerSection_A* CTriggerSection_A::Create(ID3D11Device* pDevice, ID3D11Device
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created : CBackGround");
+		MSG_BOX("Failed to Created : CTriggerSection_A");
 		Safe_Release(pInstance);
 	}
 
@@ -176,7 +151,5 @@ CGameObject* CTriggerSection_A::Clone(void* pArg)
 void CTriggerSection_A::Free()
 {
 	__super::Free();
-
-	Safe_Release(m_pTransformCom);
 
 }

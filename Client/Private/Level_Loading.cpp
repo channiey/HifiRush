@@ -55,6 +55,8 @@ HRESULT CLevel_Loading::LateTick(_float fTimeDelta)
 
 	SetWindowText(g_hWnd, strLoadingText.c_str());
 
+	ENGINE_INSTANCE->Set_CurLoadingLevel(m_eNextLevel);
+
 	//if (CEngineInstance::GetInstance()->Key_Down(VK_SPACE))
 	{
 		if (true == m_pLoader->Get_Finished())
@@ -89,10 +91,8 @@ HRESULT CLevel_Loading::LateTick(_float fTimeDelta)
 			if (nullptr == pNewLevel)
 				return E_FAIL;
 
-			if (FAILED(pGameInstance->Open_Level(m_eNextLevel, pNewLevel)))
+			if (FAILED(ENGINE_INSTANCE->Open_Level(m_eNextLevel, pNewLevel)))
 				return E_FAIL;		
-
-			Safe_Release(pGameInstance);
 		}
 	}
 
@@ -121,7 +121,7 @@ HRESULT CLevel_Loading::Parse_LevelData(const _uint& iLevelID)
 		/* 현재 레이어의 전체 오브젝트 갯수 */
 		const size_t countObject = file->Read<size_t>();
 
-		for (size_t i = 0; i < countObject; i++)
+		for (size_t j = 0; j < countObject; j++)
 		{
 			/* 읽을 메인 데이터 */
 			wstring strName = Util_String::ToWString(file->Read<string>());
@@ -156,52 +156,6 @@ HRESULT CLevel_Loading::Parse_LevelData(const _uint& iLevelID)
 						pCom->Set_CurIndex(iNavIndex);
 				}
 			}
-
-			///* 자식 관련 작업 */
-			//if (strName == L"Player_Chai" || strName == L"Trigger_Section_A")
-			//{
-			//	return S_OK;
-			//	_int iNumChild = file->Read<_int>();
-			//	for (_int i = 0; i < iNumChild; ++i)
-			//	{
-			//		wstring strName = Util_String::ToWString(file->Read<string>());
-			//		wstring strLayer = Util_String::ToWString(file->Read<string>());
-			//		_uint	eStae = file->Read<_uint>();
-			//		_bool	bRender = file->Read<_bool>();
-			//		Matrix	tMatrix = file->Read<Matrix>();
-			//		_bool	bNav = file->Read <_bool>();
-
-			//		_int    iNavIndex;
-			//		if (bNav)
-			//			iNavIndex = file->Read<_int>();
-
-			//		///* 자식 오브젝트 생성 */
-			//		//{
-			//		//	CGameObject* pChild = ENGINE_INSTANCE->Add_GameObject(iLevelID, strLayer, strName);
-			//		//	if (nullptr == pChild) continue;
-
-			//		//	pChild->Set_State((CGameObject::OBJ_STATE)eStae);
-			//		//	pChild->Set_Render(bRender);
-
-			//		//	CTransform* pTransform = pChild->Get_Transform();
-			//		//	if (nullptr == pTransform) continue;
-
-			//		//	pTransform->Set_WorldMat(tMatrix);
-
-			//		//	if (bNav)
-			//		//	{
-			//		//		CNavMeshAgent* pCom = pChild->Get_NavMeshAgent();
-			//		//		if (nullptr != pCom)
-			//		//			pCom->Set_CurIndex(iNavIndex);
-			//		//	}
-			//		//	if (FAILED(pObj->Add_Child(pChild)))
-			//		//		return E_FAIL;
-			//		//}
-
-			//	}
-
-			//	
-			//}
 		}
 	}
 

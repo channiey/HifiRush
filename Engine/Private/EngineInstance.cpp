@@ -202,6 +202,22 @@ const _uint CEngineInstance::Get_CurLevelIndex()
 	return m_pLevel_Manager->Get_CurLevelIndex();
 }
 
+const _uint CEngineInstance::Get_CurLoadingLevel()
+{
+	if (nullptr == m_pLevel_Manager)
+		return E_FAIL;
+
+	return m_pLevel_Manager->Get_CurLoadingLevel();
+}
+
+void CEngineInstance::Set_CurLoadingLevel(const _uint iLevel)
+{
+	if (nullptr == m_pLevel_Manager)
+		return;
+
+	return m_pLevel_Manager->Set_CurLoadingLevel(iLevel);
+}
+
 HRESULT CEngineInstance::Add_Prototype(const wstring & strPrototypeTag, CGameObject * pPrototype)
 {
 	if (nullptr == m_pObject_Manager)

@@ -36,6 +36,12 @@ HRESULT CSaber::Initialize(void* pArg)
 	if (FAILED(Ready_StateMachine()))
 		return E_FAIL;
 
+	_uint			eAnimID = 0;
+	CAnimation*		pAnimation = m_pModelCom->Get_Animation(eAnimID);
+	const _double	fTimePerFrame = CBeatManager::GetInstance()->Get_AnimTimePerFrame(pAnimation);
+
+	m_pModelCom->Set_Animation(eAnimID, fTimePerFrame * (_double)2.f, DF_TW_TIME);
+
 	return S_OK;
 }
 
@@ -46,7 +52,17 @@ void CSaber::Tick(_double fTimeDelta)
 
 void CSaber::LateTick(_double fTimeDelta)
 {
-	__super::LateTick(fTimeDelta);
+	// << : Test 
+
+	if (FAILED(m_pModelCom->Update(fTimeDelta)))
+		return;
+
+	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
+		return;
+	// >> : 
+	// 
+	// 
+	//__super::LateTick(fTimeDelta);
 }
 
 HRESULT CSaber::Render()

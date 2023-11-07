@@ -340,6 +340,9 @@
     <Filter Include="97.ImGui\01.Windows\03.Sub\00.Object_Components\Collider">
       <UniqueIdentifier>{d147c71e-b41f-435d-8255-9044678a2a45}</UniqueIdentifier>
     </Filter>
+    <Filter Include="97.ImGui\01.Windows\01.Mid\02.Trigger">
+      <UniqueIdentifier>{3c363926-f781-475d-ba2e-6a48c42ba3c8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -540,6 +543,9 @@
     <ClInclude Include="..\Public\ImGui_Window_Sub_Com_Col.h">
       <Filter>97.ImGui\01.Windows\03.Sub\00.Object_Components\Collider</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\ImGui_Window_Mid_Trigger.h">
+      <Filter>97.ImGui\01.Windows\01.Mid\02.Trigger</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -727,6 +733,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\ImGui_Window_Sub_Com_Col.cpp">
       <Filter>97.ImGui\01.Windows\03.Sub\00.Object_Components\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_Window_Mid_Trigger.cpp">
+      <Filter>97.ImGui\01.Windows\01.Mid\02.Trigger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

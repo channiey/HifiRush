@@ -25,12 +25,15 @@ public:
 public:
 	const _uint& Get_CurLevelIndex() const { return m_iCurrentLevelIndex; }
 
+	const _uint& Get_CurLoadingLevel() const { return m_iCurrentLoadingLevelIndex; }
+	void Set_CurLoadingLevel(const _uint iLevel) { m_iCurrentLoadingLevelIndex = iLevel; }
 public:
 	HRESULT Open_Level(_uint iLevelIndex, class CLevel* pNewLevel);
 
 private:
 	_uint						m_iCurrentLevelIndex = { 0 };
 	class CLevel*				m_pCurrentLevel = { nullptr };
+	_uint						m_iCurrentLoadingLevelIndex = { 0 };
 
 public:
 	virtual void Free() override;

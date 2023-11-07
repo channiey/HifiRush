@@ -389,14 +389,19 @@ void CImGui_Window_Main_Hierarachy::Save_LevelData()
 	if (nullptr == pLayers)
 		return;
 
-	/* 무기 필터링 - 무기는 저장할 필요 없음 */
+	/* 레이어 필터링 1 */
 	{
-		auto iter = pLayers->find(LayerNames[LAYER_WEAPON]);
+		size_t iLayerSize = pLayers->size();
 
-		if(iter != pLayers->end())
-			file->Write<size_t>(pLayers->size() -1); 
-		else
-			file->Write<size_t>(pLayers->size());
+		auto iterWeapon = pLayers->find(LayerNames[LAYER_WEAPON]);
+		if (iterWeapon != pLayers->end())
+			--iLayerSize;
+
+		auto iterEnemy = pLayers->find(LayerNames[LAYER_ENEMY]);
+		if (iterEnemy != pLayers->end())
+			--iLayerSize;
+
+		file->Write<size_t>(iLayerSize);
 	}
 
 
@@ -405,9 +410,13 @@ void CImGui_Window_Main_Hierarachy::Save_LevelData()
 	{
 		if (nullptr == Pair.second) continue;
 
-		/* 무기는 어차피 소유 캐릭터 자체 생산이므로 건너 뛴다. */
+		/* 레이어 필터링 2 */
 		{
-			if (LayerNames[LAYER_WEAPON] == Pair.first) continue;
+			if (LayerNames[LAYER_WEAPON] == Pair.first) 
+				continue;
+
+			if(LayerNames[LAYER_ENEMY] == Pair.first) 
+				continue;
 		}
 
 		file->Write<size_t>(Pair.second->Get_Objects()->size());
@@ -440,46 +449,6 @@ void CImGui_Window_Main_Hierarachy::Save_LevelData()
 			}
 			else
 				file->Write<_bool>(FALSE);
-
-			
-			///* 자식 갯수*/
-			//vector<CGameObject*> Children = obj->Get_Children();
-			//file->Write<_int>(Children.size());
-
-			//if (!Children.empty())
-			//{
-
-			//	for (auto& pChild : Children)
-			//	{
-			//		/* 이름 */
-			//		wstring strName = Util_String::Remove_LastNumChar(obj->Get_Name(), CLONE_PIN_MAX_DIGIT);
-			//		file->Write<string>(Util_String::ToString(strName));
-
-			//		/* 레이어 */
-			//		file->Write<string>(Util_String::ToString(obj->Get_LayerTag()));
-
-			//		/* 액티브 여부 */
-			//		file->Write<_uint>(obj->Get_State());
-
-			//		/* 렌더 여부 */
-			//		file->Write<_bool>(obj->Is_Render());
-
-			//		/* 트랜스폼 */
-			//		file->Write<Matrix>(obj->Get_Transform()->Get_WorldMat());
-
-			//		/* 네비게이션 */
-			//		CNavMeshAgent* pCom = obj->Get_NavMeshAgent();
-			//		if (nullptr != pCom)
-			//		{
-			//			file->Write<_bool>(TRUE);
-			//			file->Write<_int>(pCom->Get_Index());
-			//		}
-			//		else
-			//			file->Write<_bool>(FALSE);
-			//	}
-			//}
-
-
 		}
 	}
 }

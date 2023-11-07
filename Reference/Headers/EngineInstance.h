@@ -43,6 +43,10 @@ public: /* For.Graphic_Device */
 public: /* For.Level_Manager */
 	HRESULT			Open_Level(_uint iLevelIndex, class CLevel* pNewLevel);
 	const _uint		Get_CurLevelIndex();
+	const _uint Get_CurLoadingLevel();
+	void Set_CurLoadingLevel(const _uint iLevel);
+
+
 
 public: /* For.Object_Manager */
 	map<const wstring, class CGameObject*>*	Get_Prototypes();

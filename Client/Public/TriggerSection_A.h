@@ -31,7 +31,6 @@ private:
 
 protected:
 	HRESULT				Ready_Components();
-	HRESULT				Ready_Chilren(CTriggerDummy::TRIGGER_DESC desc);
 	virtual HRESULT		Ready_Pool() override;
 
 private:

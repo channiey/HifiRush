@@ -376,31 +376,26 @@ HRESULT CLoader::Load_Prototype()
 			CHealthBar::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		/* For.Prototype_GameObject_UI_HealthBar */
+		/* For.Prototype_GameObject_Trigger_Section_A */
 		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Trigger_Section_A"),
 			CTriggerSection_A::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-
-
-		/* For.Prototype_GameObject_Weapon */
+		/* For.Prototype_GameObject_Weapon_Chai_Guitar_Explore */
 		{
-			/* For.Prototype_GameObject_Weapon_Chai_Guitar_Explore */
-			{
-				const string		tag = "Weapon_Chai_Guitar_Explore";
-				const string		filePath = "../Bin/Resources/Models/Weapon/Chai_Guitar_Explore";
+			const string		tag = "Weapon_Chai_Guitar_Explore";
+			const string		filePath = "../Bin/Resources/Models/Weapon/Chai_Guitar_Explore";
 
-				if (FAILED(pEngineInstance->Add_Prototype(Util_String::ToWString(tag), CChai_Guitar_Explore::Create(m_pDevice, m_pContext))))
-					return E_FAIL;
-			}
-			/* For.Prototype_GameObject_Weapon_Saber_Sword */
-			{
-				const string		tag = "Weapon_Saber_Sword";
-				const string		filePath = "../Bin/Resources/Models/Weapon/Saber_Sword";
+			if (FAILED(pEngineInstance->Add_Prototype(Util_String::ToWString(tag), CChai_Guitar_Explore::Create(m_pDevice, m_pContext))))
+				return E_FAIL;
+		}
+		/* For.Prototype_GameObject_Weapon_Saber_Sword */
+		{
+			const string		tag = "Weapon_Saber_Sword";
+			const string		filePath = "../Bin/Resources/Models/Weapon/Saber_Sword";
 
-				if (FAILED(pEngineInstance->Add_Prototype(Util_String::ToWString(tag), CSaber_Sword::Create(m_pDevice, m_pContext))))
-					return E_FAIL;
-			}
+			if (FAILED(pEngineInstance->Add_Prototype(Util_String::ToWString(tag), CSaber_Sword::Create(m_pDevice, m_pContext))))
+				return E_FAIL;
 		}
 
 		/* For.Prototype_GameObject_Proto_Static */

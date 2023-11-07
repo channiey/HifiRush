@@ -26,6 +26,7 @@ public:
 		// 사실상 미드 
 		WINDOW_MAIN_NAV,
 		WINDOW_MAIN_CAM,
+		WINDOW_MAIN_TRIGGER,
 
 		WINDOW_MAIN_DEMO,
 
@@ -40,6 +41,7 @@ public:
 		
 		"Nav",
 		"Cam",
+		"Trigger",
 
 		"Demo",
 	};
@@ -146,6 +148,7 @@ private: /* Friend Class */
 	/* Mid */
 	friend class CImGui_Window_Mid_Nav;
 	friend class CImGui_Window_Mid_Cam;
+	friend class CImGui_Window_Mid_Trigger;
 	
 	/* Sub*/
 	friend class CImGui_Window_Sub_Prefabs;
