@@ -7,6 +7,7 @@
 #include "Weapon.h"
 
 #include "State_Saber_Base.h"
+#include "ImGui_Manager.h"
 
 CSaber::CSaber(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CEnemy(pDevice, pContext)
@@ -54,10 +55,14 @@ void CSaber::LateTick(_double fTimeDelta)
 {
 	// << : Test 
 
-	m_pTransformCom->Translate(m_pTransformCom->Get_Forward() * m_tPhysicsDesc.fMaxForwardSpeed * 0.1f * fTimeDelta);
+	if (!CImGui_Manager::GetInstance()->Is_DebugCam())
+	{
+		m_pTransformCom->Translate(m_pTransformCom->Get_Forward() * m_tPhysicsDesc.fMaxForwardSpeed * 0.1f * fTimeDelta);
 
-	if (FAILED(m_pModelCom->Update(fTimeDelta)))
-		return;
+		if (FAILED(m_pModelCom->Update(fTimeDelta)))
+			return;
+
+	}
 
 	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
 		return;

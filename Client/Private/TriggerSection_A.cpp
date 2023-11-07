@@ -87,7 +87,6 @@ HRESULT CTriggerSection_A::Start_Battle()
 			{
 				pClone->Get_Transform()->Set_WorldMat(desc.matWorld);
 				pClone->Get_NavMeshAgent()->Set_CurIndex(desc.iCellIndex);
-
 				m_Clones.push_back(pClone);
 			}
 		}
