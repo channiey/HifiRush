@@ -29,7 +29,14 @@ HRESULT CState_Saber_Base::Initialize(CStateMachine* pStateMachine, const wstrin
 
 const wstring CState_Saber_Base::Choice_NextState()
 {
-	vector<_float> Probabilities = { 0.6f, 0.3f, 0.1f };
+	vector<_float> Probabilities = { 0.6f, 0.3f, 0.1f }; // move idle attack
+
+	if (Get_Distance() <= m_fTargetMinDist)
+	{
+		Probabilities[0] = 0.1f;
+		Probabilities[1] = 0.3f;
+		Probabilities[2] = 0.6f;
+	}
 
 	random_device			rd;
 	mt19937					gen(rd());
@@ -53,8 +60,10 @@ const wstring CState_Saber_Base::Choice_NextState()
 		break;
 	case 2:
 	{
-		if(StateNames_SA[STATE_ATTACK_SA] != m_pStateMachine->Get_CurState()->Get_Name())
-			eNextState = STATE_ATTACK_SA;
+		eNextState = STATE_IDLE_SA;
+
+		/*if(StateNames_SA[STATE_ATTACK_SA] != m_pStateMachine->Get_CurState()->Get_Name())
+			eNextState = STATE_ATTACK_SA;*/
 	}
 		break;
 	default:
@@ -63,6 +72,12 @@ const wstring CState_Saber_Base::Choice_NextState()
 	}
 
 	return StateNames_SA[eNextState];
+}
+
+const _float CState_Saber_Base::Get_Distance()
+{
+	return Vec4::Distance(m_pSaber->Get_Transform()->Get_FinalPosition(),
+		m_pSaber->m_tFightDesc.pTarget->Get_Transform()->Get_FinalPosition());
 }
 
 CState* CState_Saber_Base::Clone(void* pArg)

@@ -19,17 +19,23 @@ HRESULT CState_Saber_Move::Initialize(CStateMachine* pStateMachine, const wstrin
 
 HRESULT CState_Saber_Move::Enter()
 {
-	/*ANIM_CH			eAnimID = ANIM_CH::IDLE;
-	CAnimation* pAnimation = m_pChai->Get_Model()->Get_Animation(eAnimID);
-	const _double	fTimePerFrame = CBeatManager::GetInstance()->Get_AnimTimePerFrame(pAnimation);
-
-	m_pChai->Get_Model()->Set_Animation(eAnimID, fTimePerFrame * (_double)2.f, DF_TW_TIME);*/
+	Set_NextAnimation();
 
 	return S_OK;
 }
 
 const wstring CState_Saber_Move::Tick(const _double& fTimeDelta)
 {
+	if (m_bLookTarget)
+	{
+		const Vec4 vDir = m_pSaber->m_tFightDesc.pTarget->Get_Transform()->Get_FinalPosition()
+							- m_pSaber->Get_Transform()->Get_FinalPosition();
+
+		//m_pSaber->Get_Transform()->Set_Look(vDir);
+	}
+
+	m_fTimeAcc += fTimeDelta;
+
 	return m_strName;
 }
 
@@ -40,48 +46,195 @@ const wstring CState_Saber_Move::LateTick()
 
 void CState_Saber_Move::Exit()
 {
+	m_fTimeAcc = 0.f;
+	m_fTimeLimit = 0.f;
+
+	m_eDirType = DIR_TYPE::TYPEEND;
 }
 
 const wstring CState_Saber_Move::Check_Transition()
 {
-	/*if (m_pChai->Get_Model()->Is_Tween())
+	/* 최소 거리 필터링 먼저 */
+	if (Get_Distance() <= m_fTargetMinDist)
+	{
+		const wstring strNextState = Choice_NextState();
+
+		if (strNextState == m_strName)
+		{
+			Set_NextAnimation();
+
+			return m_strName;
+		}
+		else
+			return strNextState;
+	}
+
+	/* 일반 필터링 시작 */
+	if (m_pModel->Is_Tween())
 		return m_strName;
 
-	if (m_pChai->m_tFightDesc.bDamaged)
+	if (m_pSaber->m_tFightDesc.bDamaged)
 	{
-		return StateNames_CH[STATE_DAMAGED_CH];
+		return StateNames_SA[STATE_DAMAGED_SA];
 	}
-
-	if (Input::Move() && CBeatManager::GetInstance()->Is_HalfBeat())
+	else
 	{
-		if (m_pChai->m_tPhysicsDesc.bGround)
+		if(m_fTimeLimit <= m_fTimeAcc)
 		{
-			return StateNames_CH[STATE_RUN_CH];
+			return StateNames_SA[STATE_IDLE_SA];
 		}
 	}
-	else if (Input::Shift() && CBeatManager::GetInstance()->Is_HalfBeat())
-	{
-		if (!m_pChai->m_tPhysicsDesc.bDash)
-		{
-			return StateNames_CH[STATE_DASH_CH];
-		}
-	}
-	else if (Input::Attack())
-	{
-		if (!CImGui_Manager::GetInstance()->Is_ClickedWindow())
-			return StateNames_CH[STATE_ATTACK_CH];
-	}
-	else if (Input::Parry() && CBeatManager::GetInstance()->Is_HalfBeat())
-	{
-		return StateNames_CH[STATE_PARRY_CH];
-	}
-	else if (Input::Jump())
-	{
-		return StateNames_CH[STATE_JUMP_CH];
-	}*/
 
 	return m_strName;
 }
+
+void CState_Saber_Move::Set_Direction()
+{
+	const _float fTargetDistance = Get_Distance();
+
+	if (fTargetDistance <= m_fTargetMinDist)
+	{
+		if (0 == rand())
+			m_eDirType = DIR_TYPE::LEFT;
+		else
+			m_eDirType = DIR_TYPE::RIGHT;
+	}
+	else if (fTargetDistance >= m_fTargetMaxDist)
+	{
+		m_eDirType = DIR_TYPE::FORWARD;
+	}
+	else
+	{
+		_int iDir = rand() % 4;
+
+		switch (iDir)
+		{
+			case 0: m_eDirType = DIR_TYPE::FORWARD; break;
+			case 1: m_eDirType = DIR_TYPE::BACKWARD; break;
+			case 2: m_eDirType = DIR_TYPE::LEFT; break;
+			case 3: m_eDirType = DIR_TYPE::RIGHT; break;
+			default : m_eDirType = DIR_TYPE::FORWARD; break;
+		}
+	}
+}
+
+void CState_Saber_Move::Set_NextAnimation()
+{
+	Set_Direction();
+
+	ANIM_SA			eAnimID = ANIM_SA::ANIM_SA_END;
+	CAnimation*		pAnimation = nullptr;
+	_double			fDuration = 0.f;
+	_double			fTimePerFrame = 0.f;
+
+	switch (m_eDirType)
+	{
+	case DIR_TYPE::FORWARD:
+	{
+		if (m_fTargetMaxDist * 0.8f <= Get_Distance())
+		{
+			eAnimID = ANIM_SA::RUN_ING_SA;
+			pAnimation = m_pModel->Get_Animation(eAnimID);
+			fDuration = CBeatManager::GetInstance()->Get_SPB(2);
+			m_fTimeLimit = fDuration;
+			fTimePerFrame = fDuration / pAnimation->Get_MaxFrameCount();
+		}
+		else
+		{
+			if (0 == rand() % 2)
+			{
+				eAnimID = ANIM_SA::ESC_FORWARD_LOOK_FORWARD_00_SA;
+				fDuration = CBeatManager::GetInstance()->Get_SPB(2);
+				m_fTimeLimit = fDuration;
+			}
+			else
+			{
+				eAnimID = ANIM_SA::WALK_FORWARD_LOOK_FORWARD_SA;
+				fDuration = CBeatManager::GetInstance()->Get_SPB(2);
+				m_fTimeLimit = fDuration * (1 + (rand() % 10 * 0.1f));
+			}
+
+			pAnimation = m_pModel->Get_Animation(eAnimID);
+			fTimePerFrame = fDuration / pAnimation->Get_MaxFrameCount();
+		}
+
+		m_bLookTarget = FALSE;
+	}
+		break;
+	case DIR_TYPE::BACKWARD:
+	{
+		if (0 == rand() % 2)
+		{
+			eAnimID = ANIM_SA::ESC_BACKWARD_LOOK_FORWARD_00_SA;
+			fDuration = CBeatManager::GetInstance()->Get_SPB(2);
+			m_fTimeLimit = fDuration;
+		}
+		else
+		{
+			eAnimID = ANIM_SA::WALK_BACKWARD_LOOK_FORWARD_SA;
+			fDuration = CBeatManager::GetInstance()->Get_SPB(2);
+			m_fTimeLimit = fDuration * (1 + (rand() % 10 * 0.1f));
+		}
+
+		m_bLookTarget = FALSE;
+
+		pAnimation = m_pModel->Get_Animation(eAnimID);
+		
+		fTimePerFrame = fDuration / pAnimation->Get_MaxFrameCount();
+	}
+		break;
+	case DIR_TYPE::LEFT:
+	{
+		if (0 == rand() % 2)
+		{
+			eAnimID = ANIM_SA::ESC_LEFT_LOOK_FORWARD_00_SA;
+			fDuration = CBeatManager::GetInstance()->Get_SPB(2);
+			m_fTimeLimit = fDuration;
+			m_bLookTarget = FALSE;
+		}
+		else
+		{
+			eAnimID = ANIM_SA::WALK_LEFT_LOOK_FORWARD_SA;
+			fDuration = CBeatManager::GetInstance()->Get_SPB(2);
+			m_fTimeLimit = fDuration * (1 + (rand() % 10 * 0.1f));
+			m_bLookTarget = TRUE;
+		}
+
+		pAnimation = m_pModel->Get_Animation(eAnimID);
+		fTimePerFrame = fDuration / pAnimation->Get_MaxFrameCount();
+	}
+		break;
+	case DIR_TYPE::RIGHT:
+	{
+		if (0 == rand() % 2)
+		{
+			eAnimID = ANIM_SA::ESC_RIGHT_LOOK_FORWARD_00_SA;
+			fDuration = CBeatManager::GetInstance()->Get_SPB(2);
+			m_fTimeLimit = fDuration;
+			m_bLookTarget = FALSE;
+		}
+		else
+		{
+			eAnimID = ANIM_SA::WALK_RIGHT_LOOK_FORWARD_SA;
+			fDuration = CBeatManager::GetInstance()->Get_SPB(2);
+			m_fTimeLimit = fDuration * (1 + (rand() % 10 * 0.1f));
+			m_bLookTarget = TRUE;
+		}
+
+		pAnimation = m_pModel->Get_Animation(eAnimID);
+		fTimePerFrame = fDuration / pAnimation->Get_MaxFrameCount();
+	}
+		break;
+
+	default:
+		break;
+	}
+
+	m_fTimeAcc = 0.f;
+	
+	m_pModel->Set_Animation(eAnimID, fTimePerFrame, DF_TW_TIME);
+}
+
 
 CState_Saber_Move* CState_Saber_Move::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)
 {

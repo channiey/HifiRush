@@ -149,21 +149,25 @@ void CTransform::Set_State(STATE eState, Vec4 vState)
 	XMStoreFloat4x4(&m_WorldMatrix, StateMatrix);
 }
 
-void CTransform::Set_RootPos(const Vec4& vPos, _bool bNotAgent)
+void CTransform::Set_RootPos(Vec4 vPos, _bool bNotAgent)
 {
 	Vec4 vDir = Get_State(STATE_LOOK);
-	Vec4 vRootPos = vPos;
+
+	Vec4 vRootPos = vDir.Normalized() * vPos.ZeroW().Length();
 
 	/* Check NavMeshAgent */
 	if (nullptr != m_pNavMeshAgentCom && m_pNavMeshAgentCom->Is_Active())
 	{
-		Vec3 vTemp = (vDir.Normalized() * vRootPos.ZeroW().Length()) + Vec4(m_WorldMatrix.m[3]).xyz();
+		Vec3 vTemp = vRootPos + Vec4(m_WorldMatrix.m[3]).xyz();
 		if (!m_pNavMeshAgentCom->Can_Move(vTemp))
 			return;
 	}
 
-	/* Apply */
-	m_vRootPos = vDir.Normalized() * vRootPos.ZeroW().Length();
+	Matrix matWorld = m_WorldMatrix;
+	memcpy(matWorld.m[STATE_POSITION], &Vec4::Zero, sizeof(Vec3));
+
+	Vec3 vRoot = XMVector3TransformCoord(vPos.xyz(), matWorld);
+	memcpy(&m_vRootPos, &vRoot, sizeof(Vec3));
 }
 
 void CTransform::Set_Scale(const Vec3& vScale)

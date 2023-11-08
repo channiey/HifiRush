@@ -4,6 +4,8 @@
 BEGIN(Client)
 class CState_Saber_Move final : public CState_Saber_Base
 {
+	enum class DIR_TYPE { FORWARD, BACKWARD, LEFT, RIGHT, TYPEEND };
+
 private:
 	CState_Saber_Move();
 	CState_Saber_Move(const CState_Saber_Move& rhs);
@@ -20,6 +22,14 @@ public:
 
 public:
 	const wstring Check_Transition() override;
+
+private:
+	void					Set_Direction();
+	virtual void			Set_NextAnimation() override;
+
+private:
+	DIR_TYPE m_eDirType = DIR_TYPE::TYPEEND;
+	_bool	m_bLookTarget = FALSE;
 
 public:
 	static CState_Saber_Move* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);

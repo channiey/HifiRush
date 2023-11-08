@@ -59,7 +59,7 @@ public:
 	void	Set_Look(const Vec4& vLookDir);
 	void	Set_State(STATE eState, Vec4 vState);
 
-	void	Set_RootPos(const Vec4& vPos, _bool bNotAgent = FALSE);
+	void	Set_RootPos(Vec4 vPos, _bool bNotAgent = FALSE);
 
 public:
 	const Vec3	ToEulerAngles(Quaternion quat);
@@ -71,7 +71,7 @@ public:
 private:
 	Matrix		m_WorldMatrix	= {};
 	Matrix		m_RotMatrix		= {};
-	Vec4		m_vRootPos		= {};
+	Vec4		m_vRootPos		= Vec4{ 0.f, 0.f, 0.f, 1.f };
 
 private:
 	class CNavMeshAgent* m_pNavMeshAgentCom = { nullptr };

@@ -23,14 +23,13 @@ HRESULT CState_Saber_Idle::Initialize(CStateMachine* pStateMachine, const wstrin
 
 HRESULT CState_Saber_Idle::Enter()
 {
-
 	if (StateNames_SA[STATE_APPEAR_SA] == m_pStateMachine->Get_PrevState()->Get_Name())
 	{
 		ANIM_SA			eAnimID = ANIM_SA::IDLE_SA;
 		CAnimation*		pAnimation = m_pModel->Get_Animation(eAnimID);
 		const _double	fTimePerFrame = CBeatManager::GetInstance()->Get_AnimTimePerFrame(pAnimation) * (_double)2.f;
 
-		m_fTimeLimit = rand() % 3 + 2;
+		m_fTimeLimit = rand() % 2 + (rand() % 10) * 0.1f;
 
 		m_pModel->Set_Animation(eAnimID, fTimePerFrame, DF_TW_TIME);
 	}
@@ -39,13 +38,17 @@ HRESULT CState_Saber_Idle::Enter()
 		Set_NextAnimation();
 	}
 	
-	
 	return S_OK;
 }
 
 const wstring CState_Saber_Idle::Tick(const _double& fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
+
+	const Vec4 vDir = m_pSaber->m_tFightDesc.pTarget->Get_Transform()->Get_FinalPosition()
+						- m_pSaber->Get_Transform()->Get_FinalPosition();
+
+	//m_pSaber->Get_Transform()->Set_Look(vDir);
 
 	return m_strName;
 }
@@ -75,7 +78,7 @@ const wstring CState_Saber_Idle::Check_Transition()
 	}
 	else
 	{
-		const wstring strNextState = StateNames_SA[STATE_IDLE_SA]; //Choice_NextState();
+		const wstring strNextState = Choice_NextState();
 
 		if (strNextState == m_strName)
 		{
@@ -107,7 +110,7 @@ void CState_Saber_Idle::Set_NextAnimation()
 			pAnimation = m_pModel->Get_Animation(eAnimID);
 			fTimePerFrame = CBeatManager::GetInstance()->Get_AnimTimePerFrame(pAnimation) * (_double)2.f;
 
-			m_fTimeLimit = rand() % 3 + 2;
+			m_fTimeLimit = rand() % 3 + 1;
 		}
 		break;
 		case 1:
