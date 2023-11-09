@@ -166,15 +166,52 @@ HRESULT CCharacter::Update_RootMotion()
 	return S_OK;
 }
 
-void CCharacter::KnockBack(CGameObject* pGameObject)
-{
-	CRigidbody* pRigidbody = pGameObject->Get_Rigidbody();
 
-	if (nullptr == pRigidbody) 
+
+void CCharacter::Attack(CCharacter* pCharacter)
+{
+	
+}
+
+void CCharacter::Damaged(CCharacter* pCharacter)
+{
+	if (nullptr == pCharacter)
 		return;
 
-	pRigidbody->Add_Force(m_pTransformCom->Get_Forward().ZeroY().xyz() * m_tPhysicsDesc.fNockBackPower, CRigidbody::FORCE_MODE::IMPULSE);
+	m_tFightDesc.bDamaged = TRUE;
+	m_tFightDesc.pAttacker = pCharacter;
+
+	m_tStatDesc.fCurHp -= pCharacter->Get_StatDesc().fAd;
+	
+	if (m_tStatDesc.fCurHp <= 0)
+	{
+		m_tStatDesc.bDead = TRUE;
+	}
 }
+
+void CCharacter::Die()
+{
+}
+
+void CCharacter::KnockBack(CCharacter* pAttacker)
+{
+	if (nullptr == pAttacker)
+		return;
+
+	Vec3 vDir = m_pTransformCom->Get_FinalPosition().xyz() - pAttacker->Get_Transform()->Get_FinalPosition().xyz();
+	vDir.y = 0.f;
+
+	m_pRigidbodyCom->Add_Force(vDir.Normalized() * pAttacker->Get_PhysicsDesc().fKnockBackPower, CRigidbody::FORCE_MODE::IMPULSE);
+}
+
+void CCharacter::Reset_Desc()
+{
+	m_tStatDesc = STAT_DESC{};
+	m_tFightDesc = FIGHT_DESC{};
+	m_tPhysicsDesc = PHYSICS_DESC{};
+}
+
+
 
 void CCharacter::Free()
 {

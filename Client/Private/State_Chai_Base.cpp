@@ -19,6 +19,11 @@ HRESULT CState_Chai_Base::Initialize(CStateMachine* pStateMachine, const wstring
 	if (nullptr == m_pChai) 
 		return E_FAIL;
 
+	m_pModel = m_pChai->Get_Model();
+
+	if (nullptr == m_pModel)
+		return E_FAIL;
+
 	return S_OK;
 }
 

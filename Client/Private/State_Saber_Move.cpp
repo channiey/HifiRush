@@ -27,12 +27,7 @@ HRESULT CState_Saber_Move::Enter()
 const wstring CState_Saber_Move::Tick(const _double& fTimeDelta)
 {
 	if (m_bLookTarget)
-	{
-		const Vec4 vDir = m_pSaber->m_tFightDesc.pTarget->Get_Transform()->Get_FinalPosition()
-							- m_pSaber->Get_Transform()->Get_FinalPosition();
-
-		//m_pSaber->Get_Transform()->Set_Look(vDir);
-	}
+		Look_Target();
 
 	m_fTimeAcc += fTimeDelta;
 
@@ -54,6 +49,11 @@ void CState_Saber_Move::Exit()
 
 const wstring CState_Saber_Move::Check_Transition()
 {
+	if (m_pSaber->m_tFightDesc.bDamaged)
+	{
+		return StateNames_SA[STATE_DAMAGED_SA];
+	}
+
 	/* 최소 거리 필터링 먼저 */
 	if (Get_Distance() <= m_fTargetMinDist)
 	{
@@ -73,16 +73,9 @@ const wstring CState_Saber_Move::Check_Transition()
 	if (m_pModel->Is_Tween())
 		return m_strName;
 
-	if (m_pSaber->m_tFightDesc.bDamaged)
+	if (m_fTimeLimit <= m_fTimeAcc)
 	{
-		return StateNames_SA[STATE_DAMAGED_SA];
-	}
-	else
-	{
-		if(m_fTimeLimit <= m_fTimeAcc)
-		{
-			return StateNames_SA[STATE_IDLE_SA];
-		}
+		return StateNames_SA[STATE_IDLE_SA];
 	}
 
 	return m_strName;
@@ -131,7 +124,7 @@ void CState_Saber_Move::Set_NextAnimation()
 	{
 	case DIR_TYPE::FORWARD:
 	{
-		if (m_fTargetMaxDist * 0.8f <= Get_Distance())
+		/*if (m_fTargetMaxDist * 0.8f <= Get_Distance())
 		{
 			eAnimID = ANIM_SA::RUN_ING_SA;
 			pAnimation = m_pModel->Get_Animation(eAnimID);
@@ -139,20 +132,20 @@ void CState_Saber_Move::Set_NextAnimation()
 			m_fTimeLimit = fDuration;
 			fTimePerFrame = fDuration / pAnimation->Get_MaxFrameCount();
 		}
-		else
+		else*/
 		{
-			if (0 == rand() % 2)
+			//if (0 == rand() % 2)
 			{
 				eAnimID = ANIM_SA::ESC_FORWARD_LOOK_FORWARD_00_SA;
 				fDuration = CBeatManager::GetInstance()->Get_SPB(2);
 				m_fTimeLimit = fDuration;
 			}
-			else
+		/*	else
 			{
 				eAnimID = ANIM_SA::WALK_FORWARD_LOOK_FORWARD_SA;
 				fDuration = CBeatManager::GetInstance()->Get_SPB(2);
 				m_fTimeLimit = fDuration * (1 + (rand() % 10 * 0.1f));
-			}
+			}*/
 
 			pAnimation = m_pModel->Get_Animation(eAnimID);
 			fTimePerFrame = fDuration / pAnimation->Get_MaxFrameCount();
@@ -163,18 +156,18 @@ void CState_Saber_Move::Set_NextAnimation()
 		break;
 	case DIR_TYPE::BACKWARD:
 	{
-		if (0 == rand() % 2)
+		//if (0 == rand() % 2)
 		{
 			eAnimID = ANIM_SA::ESC_BACKWARD_LOOK_FORWARD_00_SA;
 			fDuration = CBeatManager::GetInstance()->Get_SPB(2);
 			m_fTimeLimit = fDuration;
 		}
-		else
+		/*else
 		{
 			eAnimID = ANIM_SA::WALK_BACKWARD_LOOK_FORWARD_SA;
 			fDuration = CBeatManager::GetInstance()->Get_SPB(2);
 			m_fTimeLimit = fDuration * (1 + (rand() % 10 * 0.1f));
-		}
+		}*/
 
 		m_bLookTarget = FALSE;
 
@@ -185,20 +178,20 @@ void CState_Saber_Move::Set_NextAnimation()
 		break;
 	case DIR_TYPE::LEFT:
 	{
-		if (0 == rand() % 2)
+		//if (0 == rand() % 2)
 		{
 			eAnimID = ANIM_SA::ESC_LEFT_LOOK_FORWARD_00_SA;
 			fDuration = CBeatManager::GetInstance()->Get_SPB(2);
 			m_fTimeLimit = fDuration;
 			m_bLookTarget = FALSE;
 		}
-		else
+		/*else
 		{
 			eAnimID = ANIM_SA::WALK_LEFT_LOOK_FORWARD_SA;
 			fDuration = CBeatManager::GetInstance()->Get_SPB(2);
 			m_fTimeLimit = fDuration * (1 + (rand() % 10 * 0.1f));
 			m_bLookTarget = TRUE;
-		}
+		}*/
 
 		pAnimation = m_pModel->Get_Animation(eAnimID);
 		fTimePerFrame = fDuration / pAnimation->Get_MaxFrameCount();
@@ -206,20 +199,20 @@ void CState_Saber_Move::Set_NextAnimation()
 		break;
 	case DIR_TYPE::RIGHT:
 	{
-		if (0 == rand() % 2)
+		//if (0 == rand() % 2)
 		{
 			eAnimID = ANIM_SA::ESC_RIGHT_LOOK_FORWARD_00_SA;
 			fDuration = CBeatManager::GetInstance()->Get_SPB(2);
 			m_fTimeLimit = fDuration;
 			m_bLookTarget = FALSE;
 		}
-		else
+		/*else
 		{
 			eAnimID = ANIM_SA::WALK_RIGHT_LOOK_FORWARD_SA;
 			fDuration = CBeatManager::GetInstance()->Get_SPB(2);
 			m_fTimeLimit = fDuration * (1 + (rand() % 10 * 0.1f));
 			m_bLookTarget = TRUE;
-		}
+		}*/
 
 		pAnimation = m_pModel->Get_Animation(eAnimID);
 		fTimePerFrame = fDuration / pAnimation->Get_MaxFrameCount();

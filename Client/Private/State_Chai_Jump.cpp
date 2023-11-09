@@ -257,6 +257,9 @@ void CState_Chai_Jump::Land()
 
 	m_bSetFallSpeed_InJump				= FALSE;
 	m_bSetFallSpeed_InDoubleJump		= FALSE;
+
+	ENGINE_INSTANCE->Play_Sound(EFC_CHAI_LAND, PLAYER_CHAI, EfcVolumeChai);
+
 }
 
 void CState_Chai_Jump::Move(const _double& fTimeDelta)
@@ -372,6 +375,9 @@ void CState_Chai_Jump::Jump()
 
 	m_pChai->Get_Rigidbody()->Set_Gravity(m_pChai->m_tPhysicsDesc.fJumpGravity);
 	m_pChai->Get_Rigidbody()->Add_Force(Vec3::Up * m_pChai->m_tPhysicsDesc.fJumpPower, CRigidbody::FORCE_MODE::IMPULSE);
+
+	ENGINE_INSTANCE->Play_Sound(EFC_CHAI_JUMP, PLAYER_CHAI, EfcVolumeChai);
+
 }
 
 CState_Chai_Jump* CState_Chai_Jump::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

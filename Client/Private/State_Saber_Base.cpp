@@ -60,10 +60,8 @@ const wstring CState_Saber_Base::Choice_NextState()
 		break;
 	case 2:
 	{
-		eNextState = STATE_IDLE_SA;
-
-		/*if(StateNames_SA[STATE_ATTACK_SA] != m_pStateMachine->Get_CurState()->Get_Name())
-			eNextState = STATE_ATTACK_SA;*/
+		if(StateNames_SA[STATE_ATTACK_SA] != m_pStateMachine->Get_CurState()->Get_Name())
+			eNextState = STATE_ATTACK_SA;
 	}
 		break;
 	default:
@@ -78,6 +76,39 @@ const _float CState_Saber_Base::Get_Distance()
 {
 	return Vec4::Distance(m_pSaber->Get_Transform()->Get_FinalPosition(),
 		m_pSaber->m_tFightDesc.pTarget->Get_Transform()->Get_FinalPosition());
+}
+
+void CState_Saber_Base::Look_Target()
+{
+	if (!m_pModel->Is_Tween())
+	{
+		const _float fRotConstMax = 66.f;
+		const _float fRotConstNormal = 50.f;
+
+		Vec4 vLook, vDir, vRotDir;
+
+		vLook	= m_pSaber->Get_Transform()->Get_Forward();
+		vDir	= m_pSaber->m_tFightDesc.pTarget->Get_Transform()->Get_FinalPosition()
+					- m_pSaber->Get_Transform()->Get_FinalPosition();
+
+		vLook.y = 0.f;
+		vLook.z = 0.f;
+
+		vDir.y	= 0.f;
+		vDir.w	= 0.f;
+
+		vLook.Normalize();
+		vDir.Normalize();
+
+
+		if (3.f < acos(vDir.Dot((vLook))))
+			vRotDir = Vec4::Lerp(vLook, vDir, fRotConstMax);
+		else
+			vRotDir = Vec4::Lerp(vLook, vDir, fRotConstNormal * 0.5f);
+
+
+		m_pSaber->Get_Transform()->Set_Look(vDir);
+	}
 }
 
 CState* CState_Saber_Base::Clone(void* pArg)

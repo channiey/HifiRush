@@ -38,13 +38,14 @@ protected:
 	const wstring			Choice_NextState();
 	const _float			Get_Distance(); 
 	virtual void			Set_NextAnimation() {};
+	void					Look_Target();
 
 protected:
 	CSaber*				m_pSaber = { nullptr };
 	CModel*				m_pModel = { nullptr };
 
 	_float				m_fTargetMinDist = 3.f;
-	_float				m_fTargetMaxDist = 13.f;
+	_float				m_fTargetMaxDist = 10.f;
 
 	_double				m_fTimeLimit = 0.f;
 	_double				m_fTimeAcc = 0.f;

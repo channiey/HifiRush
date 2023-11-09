@@ -19,17 +19,18 @@ HRESULT CState_Saber_Damaged::Initialize(CStateMachine* pStateMachine, const wst
 
 HRESULT CState_Saber_Damaged::Enter()
 {
-	/*ANIM_CH			eAnimID = ANIM_CH::IDLE;
-	CAnimation* pAnimation = m_pChai->Get_Model()->Get_Animation(eAnimID);
-	const _double	fTimePerFrame = CBeatManager::GetInstance()->Get_AnimTimePerFrame(pAnimation);
-
-	m_pChai->Get_Model()->Set_Animation(eAnimID, fTimePerFrame * (_double)2.f, DF_TW_TIME);*/
+	Damaged();
 
 	return S_OK;
 }
 
 const wstring CState_Saber_Damaged::Tick(const _double& fTimeDelta)
 {
+	if (m_pSaber->m_tFightDesc.bDamaged)
+	{
+		Damaged();
+	}
+
 	return m_strName;
 }
 
@@ -40,47 +41,100 @@ const wstring CState_Saber_Damaged::LateTick()
 
 void CState_Saber_Damaged::Exit()
 {
+	m_pSaber->m_tFightDesc.bDamaged = FALSE;
+	m_pSaber->m_tFightDesc.pAttacker = nullptr;
 }
 
 const wstring CState_Saber_Damaged::Check_Transition()
 {
-	/*if (m_pChai->Get_Model()->Is_Tween())
+	if(m_pModel->Is_Tween())	
 		return m_strName;
 
-	if (m_pChai->m_tFightDesc.bDamaged)
-	{
-		return StateNames_CH[STATE_DAMAGED_CH];
-	}
-
-	if (Input::Move() && CBeatManager::GetInstance()->Is_HalfBeat())
-	{
-		if (m_pChai->m_tPhysicsDesc.bGround)
-		{
-			return StateNames_CH[STATE_RUN_CH];
-		}
-	}
-	else if (Input::Shift() && CBeatManager::GetInstance()->Is_HalfBeat())
-	{
-		if (!m_pChai->m_tPhysicsDesc.bDash)
-		{
-			return StateNames_CH[STATE_DASH_CH];
-		}
-	}
-	else if (Input::Attack())
-	{
-		if (!CImGui_Manager::GetInstance()->Is_ClickedWindow())
-			return StateNames_CH[STATE_ATTACK_CH];
-	}
-	else if (Input::Parry() && CBeatManager::GetInstance()->Is_HalfBeat())
-	{
-		return StateNames_CH[STATE_PARRY_CH];
-	}
-	else if (Input::Jump())
-	{
-		return StateNames_CH[STATE_JUMP_CH];
-	}*/
+	if (m_pModel->Is_ThreeFourths_Animation())
+		return StateNames_SA[STATE_IDLE_SA];
 
 	return m_strName;
+}
+
+void CState_Saber_Damaged::Damaged()
+{
+	if (m_pSaber->m_tStatDesc.bDead)
+	{
+		m_pStateMachine->Set_State(StateNames_SA[STATE_DEAD_SA]);
+		return;
+	}
+
+	ANIM_SA		eAnimID = ANIM_SA_END;
+	CAnimation* pAnimation = nullptr;
+	_double		fTimePerFrame = 0.f;
+
+	const _int iRand = rand() % 3;
+
+	if (0 == iRand % 2)
+	{
+		switch (iRand)
+		{
+		case 0:
+		{
+			eAnimID = ANIM_SA::DAMAGED_LIGHT_00_SA;
+			pAnimation = m_pModel->Get_Animation(eAnimID);
+			fTimePerFrame = CBeatManager::CBeatManager::GetInstance()->Get_SPB(2) / (_double)35.f;
+		}
+		break;
+		case 1:
+		{
+			eAnimID = ANIM_SA::DAMAGED_LIGHT_03_SA;
+			pAnimation = m_pModel->Get_Animation(eAnimID);
+			fTimePerFrame = CBeatManager::CBeatManager::GetInstance()->Get_SPB(2) / (_double)35.f;
+		}
+		break;
+		default:
+		{
+			eAnimID = ANIM_SA::DAMAGED_LIGHT_04_SA;
+			pAnimation = m_pModel->Get_Animation(eAnimID);
+			fTimePerFrame = CBeatManager::CBeatManager::GetInstance()->Get_SPB(2) / (_double)30.f;
+		}
+		break;
+		}
+	}
+	else
+	{
+		switch (iRand)
+		{
+		case 0:
+		{
+			eAnimID = ANIM_SA::DAMAGED_MIDDLE_00_SA;
+			pAnimation = m_pModel->Get_Animation(eAnimID);
+			fTimePerFrame = CBeatManager::CBeatManager::GetInstance()->Get_SPB(2) / (_double)40.f;
+		}
+		break;
+		case 1:
+		{
+			eAnimID = ANIM_SA::DAMAGED_MIDDLE_01_SA;
+			pAnimation = m_pModel->Get_Animation(eAnimID);
+			fTimePerFrame = CBeatManager::CBeatManager::GetInstance()->Get_SPB(2) / (_double)40.f;
+		}
+		break;
+		default:
+		{
+			eAnimID = ANIM_SA::DAMAGED_MIDDLE_02_SA;
+			pAnimation = m_pModel->Get_Animation(eAnimID);
+			fTimePerFrame = CBeatManager::CBeatManager::GetInstance()->Get_SPB(2) / (_double)40.f;
+		}
+		break;
+		}
+	}
+
+	m_pModel->Set_Animation(eAnimID, fTimePerFrame, DF_TW_TIME);
+
+	//m_pSaber->KnockBack(m_pSaber->Get_FightDesc().pAttacker);
+
+
+	ENGINE_INSTANCE->Play_Sound(EFC_ENEMY_DAMAGED_00, ENEMY_SABER, 0.4f);
+
+
+	m_pSaber->m_tFightDesc.bDamaged = FALSE;
+	m_pSaber->m_tFightDesc.pAttacker = nullptr;
 }
 
 CState_Saber_Damaged* CState_Saber_Damaged::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

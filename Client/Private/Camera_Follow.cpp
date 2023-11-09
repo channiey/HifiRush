@@ -130,13 +130,13 @@ const Vec4 CCamera_Follow::Calculate_Position(const _double& fTimeDelta)
 	{
 		m_vAngle.y += MouseMove * m_pCameraCom->Get_MouseSensitiveY() * fTimeDelta;
 
-		if (m_vAngle.y <= m_fMinAngleY) // 0.01f
+		if (m_vAngle.y <= 0.01f)//m_fMinAngleY) // 0.01f
 		{
-			m_vAngle.y = m_fMinAngleY;
+			m_vAngle.y = 0.01f;// m_fMinAngleY;
 		}
-		else if (m_fMaxAngleY < m_vAngle.y) // 3.13f
+		else if (3.13f < m_vAngle.y)//m_vAngle.y) // 3.13f
 		{
-			m_vAngle.y = m_fMaxAngleY;
+			m_vAngle.y = 3.13f;// m_fMaxAngleY;
 		}
 
 		/* 임시 강제 고정 */

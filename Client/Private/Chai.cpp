@@ -175,15 +175,17 @@ HRESULT CChai::Ready_Chilren()
 void CChai::OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild)
 {
 	CGameObject* pGameObject = pCollider->Get_Owner();
-	
-	/* 플레이어 무기의 충돌처리(공격 관련)은 스테이트에서 처리한다. */
-	if (iIndexAsChild == CH_WEAPON_RIGHT)
-	{
-		CState_Chai_Base* pState = dynamic_cast<CState_Chai_Base*>(m_pStateMachineCom->Get_CurState());
 
-		if (nullptr != pState)
-			pState->OnCollision_Enter(pGameObject);
+	/* Enemy 무기 맞음 */
+	if (LayerNames[LAYER_WEAPON] == pGameObject->Get_LayerTag())
+	{
+		if (LayerNames[LAYER_ENEMY] == pGameObject->Get_Parent()->Get_LayerTag())
+		{
+			Damaged(dynamic_cast<CCharacter*>(pGameObject->Get_Parent()));
+			m_tStatDesc.fCurHp = 100.f;
+		}
 	}
+	
 }
 
 void CChai::OnCollision_Stay(CCollider* pCollider, const _int& iIndexAsChild)

@@ -60,7 +60,7 @@ public:
 		_float  fGroundedRayDistance = 5.f;
 
 
-		_float	fNockBackPower = 100.f;
+		_float	fKnockBackPower = 70.f;
 
 
 	}PHYSICS_DESC;
@@ -94,6 +94,7 @@ public:
 	const STAT_DESC&		Get_StatDesc() const { return m_tStatDesc; }
 	const FIGHT_DESC&		Get_FightDesc() const { return m_tFightDesc; }
 	const PHYSICS_DESC&		Get_PhysicsDesc() const { return m_tPhysicsDesc; }
+	
 
 protected:
 	HRESULT					Ready_Components();
@@ -106,8 +107,13 @@ protected:
 protected:
 	HRESULT					Update_RootMotion();
 
-protected:
-	void					KnockBack(CGameObject* pGameObject);
+public:
+	void					Attack(CCharacter* pCharacter);
+	void					Damaged(CCharacter* pCharacter);
+	void					Die();
+
+	void					KnockBack(CCharacter* pAttacker);
+	void					Reset_Desc();
 
 protected:
 	CShader*				m_pShaderCom		= { nullptr };

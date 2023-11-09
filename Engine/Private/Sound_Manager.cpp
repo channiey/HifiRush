@@ -66,7 +66,7 @@ HRESULT CSound_Manager::Register_BGM(_uint eSoundID, _uint eChannelID, float fVo
 {
 	m_iCurBgmID = eSoundID;
 	m_iCurBgmChannel = eChannelID;
-	m_tCurBgmVolume.fCurValue = fVolume;
+	m_tCurBgmVolume.fCurValue = 0.f;
 
 	m_bPlayBgm = FALSE;
 
@@ -75,7 +75,7 @@ HRESULT CSound_Manager::Register_BGM(_uint eSoundID, _uint eChannelID, float fVo
 
 HRESULT CSound_Manager::Play_BGM()
 {
-	m_tCurBgmVolume.Start(0.f, m_tCurBgmVolume.fCurValue, 1.f, LERP_MODE::SMOOTH_STEP);
+	m_tCurBgmVolume.Start(0.f, m_tCurBgmVolume.fCurValue, 3.f, LERP_MODE::SMOOTH_STEP);
 	
 	m_bPlayBgm = TRUE;
 	

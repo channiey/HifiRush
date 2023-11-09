@@ -151,9 +151,10 @@ void CTransform::Set_State(STATE eState, Vec4 vState)
 
 void CTransform::Set_RootPos(Vec4 vPos, _bool bNotAgent)
 {
-	Vec4 vDir = Get_State(STATE_LOOK);
+	Matrix matWorld = m_WorldMatrix;
+	memcpy(matWorld.m[STATE_POSITION], &Vec4::Zero, sizeof(Vec3));
 
-	Vec4 vRootPos = vDir.Normalized() * vPos.ZeroW().Length();
+	Vec3 vRootPos = XMVector3TransformCoord(vPos.xyz(), matWorld);
 
 	/* Check NavMeshAgent */
 	if (nullptr != m_pNavMeshAgentCom && m_pNavMeshAgentCom->Is_Active())
@@ -163,11 +164,7 @@ void CTransform::Set_RootPos(Vec4 vPos, _bool bNotAgent)
 			return;
 	}
 
-	Matrix matWorld = m_WorldMatrix;
-	memcpy(matWorld.m[STATE_POSITION], &Vec4::Zero, sizeof(Vec3));
-
-	Vec3 vRoot = XMVector3TransformCoord(vPos.xyz(), matWorld);
-	memcpy(&m_vRootPos, &vRoot, sizeof(Vec3));
+	memcpy(&m_vRootPos, &vRootPos, sizeof(Vec3));
 }
 
 void CTransform::Set_Scale(const Vec3& vScale)

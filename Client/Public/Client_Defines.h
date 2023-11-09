@@ -129,7 +129,7 @@ namespace Client
 	};
 
 	static const _float CamFov_Follow_Default	= XMConvertToRadians(60.0f);
-	static const _float CamFov_Follow_Battle	= XMConvertToRadians(70.0f);
+	static const _float CamFov_Follow_Battle	= XMConvertToRadians(65.0f);
 	static const _float CamFov_Follow_Jump		= XMConvertToRadians(65.0f);
 
 	static const _float CamDist_Follow_Default	= 6.5f;
@@ -147,8 +147,13 @@ namespace Client
 		PLAYER_CHAI,
 		PLAYER_PEPPERMINT,
 
+		/* Enemy */
+		ENEMY_SABER,
+
 
 		/* Etc */
+
+		ETC_NONE_00,
 		ETC,
 
 		CHANNEL_ID_END = MAX_CHANNEL
@@ -173,9 +178,23 @@ namespace Client
 		BGM_MIDDLE_DOWNTIME,
 		BGM_MIDDLE_UNRESTRICTED,
 
-		/* EFC CHAI*/
-		EFC_CHAI_ATTACK_SWING_NONCOLLISION,
+		/* EFC CHAI */
+		EFC_CHAI_ATTACK_00,
+		EFC_CHAI_ATTACK_COMBO_00,
+		EFC_CHAI_ATTACK_COMBO_01,
+		EFC_CHAI_ATTACK_COMBO_02,
+		EFC_CHAI_ATTACK_COMBO_03,
+		EFC_CHAI_BESTTIMMING,
+		EFC_CHAI_JUMP,
+		EFC_CHAI_LAND,
 
+		/* EFC ENEMY */
+		EFC_ENEMY_DAMAGED_00,
+		EFC_ENEMY_EXPLOSION,
+
+		/* EFC ENCMY SABER */
+		EFC_SABER_CHARGE,
+		EFC_SABER_SWING,
 
 
 		SOUND_FILE_END
@@ -183,9 +202,11 @@ namespace Client
 	static const char* SoundFilePath_Engine = "../../Client/Bin/Resources/Sounds/";
 
 
-	static const _float BgmVolumeInBattle		= 0.35f;
-	static const _float BgmVolumeInNotBattle	= 0.2f;
-	static const _float EfcVolumeChai			= 0.3f;
+	static const _float BgmVolumeInBattle		= 0.65f;
+	static const _float BgmVolumeInNotBattle	= 0.5f;
+	static const _float EfcVolumeChai			= 0.6f;
+	static const _float EfcVolumeSaber			= 0.3f;
+
 }
 
 extern HINSTANCE	g_hInst;

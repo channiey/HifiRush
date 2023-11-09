@@ -19,11 +19,14 @@ HRESULT CState_Saber_Dead::Initialize(CStateMachine* pStateMachine, const wstrin
 
 HRESULT CState_Saber_Dead::Enter()
 {
-	/*ANIM_CH			eAnimID = ANIM_CH::IDLE;
-	CAnimation* pAnimation = m_pChai->Get_Model()->Get_Animation(eAnimID);
-	const _double	fTimePerFrame = CBeatManager::GetInstance()->Get_AnimTimePerFrame(pAnimation);
+	ANIM_SA		eAnimID = ANIM_SA::DIE_HEAVY_01_SA;
+	CAnimation* pAnimation = m_pModel->Get_Animation(eAnimID);
+	_double		fTimePerFrame = 1 / pAnimation->Get_TickPerSecond();
 
-	m_pChai->Get_Model()->Set_Animation(eAnimID, fTimePerFrame * (_double)2.f, DF_TW_TIME);*/
+	m_pModel->Set_Animation(eAnimID, fTimePerFrame, DF_TW_TIME);
+
+	ENGINE_INSTANCE->Play_Sound(EFC_ENEMY_DAMAGED_00, ENEMY_SABER, 0.4f);
+
 
 	return S_OK;
 }
@@ -40,46 +43,19 @@ const wstring CState_Saber_Dead::LateTick()
 
 void CState_Saber_Dead::Exit()
 {
+
 }
 
 const wstring CState_Saber_Dead::Check_Transition()
 {
-	/*if (m_pChai->Get_Model()->Is_Tween())
-		return m_strName;
-
-	if (m_pChai->m_tFightDesc.bDamaged)
+	if (!m_pModel->Is_Tween() && m_pModel->Is_ThreeFourths_Animation())
 	{
-		return StateNames_CH[STATE_DAMAGED_CH];
-	}
-
-	if (Input::Move() && CBeatManager::GetInstance()->Is_HalfBeat())
-	{
-		if (m_pChai->m_tPhysicsDesc.bGround)
+		if (m_pSaber->Is_Active())
 		{
-			return StateNames_CH[STATE_RUN_CH];
+			ENGINE_INSTANCE->Play_Sound(EFC_ENEMY_EXPLOSION, ENEMY_SABER, 0.4f);
+			m_pSaber->Return_To_Pool();
 		}
 	}
-	else if (Input::Shift() && CBeatManager::GetInstance()->Is_HalfBeat())
-	{
-		if (!m_pChai->m_tPhysicsDesc.bDash)
-		{
-			return StateNames_CH[STATE_DASH_CH];
-		}
-	}
-	else if (Input::Attack())
-	{
-		if (!CImGui_Manager::GetInstance()->Is_ClickedWindow())
-			return StateNames_CH[STATE_ATTACK_CH];
-	}
-	else if (Input::Parry() && CBeatManager::GetInstance()->Is_HalfBeat())
-	{
-		return StateNames_CH[STATE_PARRY_CH];
-	}
-	else if (Input::Jump())
-	{
-		return StateNames_CH[STATE_JUMP_CH];
-	}*/
-
 	return m_strName;
 }
 

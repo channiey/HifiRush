@@ -121,7 +121,9 @@ void CBeatManager::Update_Beat(const _double fTimedelta)
 		m_bHalfBeat	= TRUE;
 	}
 	else
+	{
 		m_bSteadyBeat = FALSE;
+	}
 
 	/* Up Beat */
 	const _double dSecondPerUpBeat = Get_SPB() * 0.5f;
@@ -141,7 +143,9 @@ void CBeatManager::Update_Beat(const _double fTimedelta)
 		m_bInverseBeat = TRUE;
 	}
 	else
+	{
 		m_bInverseBeat = FALSE;
+	}
 
 }
 

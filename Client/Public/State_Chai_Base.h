@@ -36,6 +36,7 @@ public:
 
 protected:
 	CChai* m_pChai = { nullptr };
+	CModel* m_pModel = { nullptr };
 
 public:
 	virtual CState* Clone(void* pArg) = 0;

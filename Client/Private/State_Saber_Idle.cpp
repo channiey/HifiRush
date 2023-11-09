@@ -29,7 +29,7 @@ HRESULT CState_Saber_Idle::Enter()
 		CAnimation*		pAnimation = m_pModel->Get_Animation(eAnimID);
 		const _double	fTimePerFrame = CBeatManager::GetInstance()->Get_AnimTimePerFrame(pAnimation) * (_double)2.f;
 
-		m_fTimeLimit = rand() % 2 + (rand() % 10) * 0.1f;
+		m_fTimeLimit = rand() % 2 + (rand() % 10) * 0.1f + 2;
 
 		m_pModel->Set_Animation(eAnimID, fTimePerFrame, DF_TW_TIME);
 	}
@@ -45,20 +45,14 @@ const wstring CState_Saber_Idle::Tick(const _double& fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
 
-	const Vec4 vDir = m_pSaber->m_tFightDesc.pTarget->Get_Transform()->Get_FinalPosition()
-						- m_pSaber->Get_Transform()->Get_FinalPosition();
-
-	//m_pSaber->Get_Transform()->Set_Look(vDir);
+	Look_Target();
 
 	return m_strName;
 }
 
 const wstring CState_Saber_Idle::LateTick()
 {
-	if(m_fTimeLimit <= m_fTimeAcc)
-		return Check_Transition();
-
-	return m_strName;
+	return Check_Transition();
 }
 
 void CState_Saber_Idle::Exit()
@@ -69,26 +63,24 @@ void CState_Saber_Idle::Exit()
 
 const wstring CState_Saber_Idle::Check_Transition()
 {
-	if (m_pModel->Is_Tween())
-		return m_strName;
-
 	if (m_pSaber->m_tFightDesc.bDamaged)
 	{
 		return StateNames_SA[STATE_DAMAGED_SA];
 	}
-	else
+
+	if (m_pModel->Is_Tween() || m_fTimeLimit > m_fTimeAcc)
+		return m_strName;
+
+	const wstring strNextState = Choice_NextState();
+
+	if (strNextState == m_strName)
 	{
-		const wstring strNextState = Choice_NextState();
+		Set_NextAnimation();
 
-		if (strNextState == m_strName)
-		{
-			Set_NextAnimation();
-
-			return m_strName;
-		}
-		else
-			return strNextState;
+		return m_strName;
 	}
+	else
+		return strNextState;
 
 	return m_strName;
 }

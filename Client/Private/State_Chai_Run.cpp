@@ -55,7 +55,7 @@ const wstring CState_Chai_Run::Check_Transition()
 		if (!m_pChai->m_tPhysicsDesc.bJump)
 			return StateNames_CH[STATE_JUMP_CH];
 	}
-	else if (Input::Shift() && CBeatManager::GetInstance()->Is_HalfBeat())
+	else if (Input::Shift())
 	{
 		if (!m_pChai->m_tPhysicsDesc.bDash)
 		{

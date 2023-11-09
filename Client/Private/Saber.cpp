@@ -26,6 +26,8 @@ CSaber::CSaber(const CSaber& rhs)
 
 HRESULT CSaber::Initialize_Prototype()
 {
+	m_eEnemyType = ENEMY_TYPE::NORMAL;
+
 	return S_OK;
 }
 
@@ -42,12 +44,6 @@ HRESULT CSaber::Initialize(void* pArg)
 	if (FAILED(Ready_StateMachine()))
 		return E_FAIL;
 
-	_uint			eAnimID = 0;
-	CAnimation*		pAnimation = m_pModelCom->Get_Animation(eAnimID);
-	const _double	fTimePerFrame = CBeatManager::GetInstance()->Get_AnimTimePerFrame(pAnimation);
-
-	m_pModelCom->Set_Animation(eAnimID, fTimePerFrame * (_double)2.f, DF_TW_TIME);
-
 	return S_OK;
 }
 
@@ -59,6 +55,10 @@ void CSaber::Tick(_double fTimeDelta)
 void CSaber::LateTick(_double fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
+	/*CModel::TweenDesc desc = m_pModelCom->Get_TweenDesc();
+	cout << desc.cur.iAnimIndex << "\t" << desc.next.iAnimIndex << "\t"
+		<< desc.cur.iCurFrame << "\t" << desc.next.iCurFrame << endl;*/
 }
 
 HRESULT CSaber::Render()
@@ -75,7 +75,6 @@ void CSaber::Set_State(const OBJ_STATE& eState)
 
 	if (OBJ_STATE::STATE_ACTIVE == eState)
 	{
-		cout << "Active\n";
 		m_pStateMachineCom->Set_State(StateNames_SA[STATE_APPEAR_SA]);
 	}
 }
@@ -161,13 +160,6 @@ void CSaber::OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild)
 	__super::OnCollision_Enter(pCollider, iIndexAsChild);
 
 	CGameObject* pGameObject = pCollider->Get_Owner();
-
-	if (iIndexAsChild == SA_WEAPON_RIGHT)
-	{
-		if (LayerNames[LAYER_PLAYER] == pGameObject->Get_LayerTag())
-			KnockBack(pGameObject);
-	}
-
 }
 
 void CSaber::OnCollision_Stay(CCollider* pCollider, const _int& iIndexAsChild)

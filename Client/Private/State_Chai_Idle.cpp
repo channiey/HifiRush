@@ -63,7 +63,7 @@ const wstring CState_Chai_Idle::Check_Transition()
 			return StateNames_CH[STATE_RUN_CH];
 		}
 	}
-	else if (Input::Shift() && CBeatManager::GetInstance()->Is_HalfBeat())
+	else if (Input::Shift())
 	{
 		if (!m_pChai->m_tPhysicsDesc.bDash)
 		{

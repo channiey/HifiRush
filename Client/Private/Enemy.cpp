@@ -18,6 +18,7 @@ CEnemy::CEnemy(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 CEnemy::CEnemy(const CEnemy& rhs)
 	: CCharacter(rhs)
+	, m_eEnemyType(rhs.m_eEnemyType)
 {
 }
 
@@ -67,7 +68,9 @@ void CEnemy::Set_State(const OBJ_STATE& eState)
 {
 	__super::Set_State(eState);
 
-	if (OBJ_STATE::STATE_ACTIVE == eState)
+	switch (eState)
+	{
+	case OBJ_STATE::STATE_ACTIVE:
 	{
 		CGameObject* pTarget = ENGINE_INSTANCE->Get_GameObject_InCurLevel_InLayerFirst(LayerNames[LAYER_PLAYER]);
 
@@ -76,6 +79,33 @@ void CEnemy::Set_State(const OBJ_STATE& eState)
 		else
 			Set_State(OBJ_STATE::STATE_UNACTIVE);
 	}
+		break;
+	case OBJ_STATE::STATE_UNACTIVE:
+	{
+
+	}
+		break;
+	case OBJ_STATE::STATE_WILLREMOVED:
+	{
+
+	}
+		break;
+
+	default:
+		break;
+	}
+}
+
+HRESULT CEnemy::Return_To_Pool()
+{
+	Reset_Desc();
+	
+	for(auto pChild : m_Children)
+	{
+		pChild->Set_State(OBJ_STATE::STATE_UNACTIVE);
+	}
+
+	return ENGINE_INSTANCE->Return_Pool(ENGINE_INSTANCE->Get_CurLevelIndex(), this);
 }
 
 HRESULT CEnemy::Ready_Components()
@@ -106,14 +136,14 @@ void CEnemy::OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild)
 {
 	CGameObject*	pGameObject = pCollider->Get_Owner();
 
-	if (LayerNames[LAYER_WEAPON] == pGameObject->Get_LayerTag())
-	{
-		if (LayerNames[LAYER_PLAYER] == pGameObject->Get_Parent()->Get_LayerTag())
-		{
-			m_tFightDesc.bDamaged = TRUE;
-			m_tFightDesc.pAttacker = dynamic_cast<CCharacter*>(pGameObject->Get_Parent());
-		}
-	}
+	///* 플레이어 무기 맞음 */
+	//if (LayerNames[LAYER_WEAPON] == pGameObject->Get_LayerTag())
+	//{
+	//	if (LayerNames[LAYER_PLAYER] == pGameObject->Get_Parent()->Get_LayerTag())
+	//	{
+	//		Damaged(dynamic_cast<CCharacter*>(pGameObject->Get_Parent()));
+	//	}
+	//}
 }
 
 void CEnemy::OnCollision_Stay(CCollider* pCollider, const _int& iIndexAsChild)

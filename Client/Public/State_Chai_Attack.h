@@ -59,9 +59,11 @@ public:
 
 private:
 	void				Set_AttackDesc();
+	void				Detect_AttackCollision();
 
 private:
 	ATTACK_DESC			m_tAttackDesc	= {};
+	ATTACK_DESC			m_tAttackDescForCol = {};
 
 
 public:

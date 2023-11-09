@@ -46,19 +46,23 @@ HRESULT CState_Chai_Attack::Enter()
 
 		m_tAttackDesc.eAttackType = ATTACK_TYPE::HEAVY;
 
-		m_tAttackDesc.tSoundEventDesc.iFrame = 25;
+		m_tAttackDesc.tSoundEventDesc.iFrame = 15;
 	}
 	else if (Input::MBtn())
 	{
 		
 	}
 
-	m_tAttackDesc.tSoundEventDesc.eSoundID = EFC_CHAI_ATTACK_SWING_NONCOLLISION;
+	m_tAttackDesc.tSoundEventDesc.eSoundID = EFC_CHAI_ATTACK_COMBO_00;
 	m_tAttackDesc.tSoundEventDesc.eChannelID = PLAYER_CHAI;
 	m_tAttackDesc.tSoundEventDesc.fVolume = EfcVolumeChai;
 
 	m_pChai->m_tFightDesc.iStep++;
 	m_tAttackDesc.bSet = TRUE;
+
+	//m_pChai->Get_Child(CChai::CHILD_TYPE::CH_WEAPON_RIGHT)->Get_Collider_Sphere()->Set_Active(TRUE);
+
+	m_tAttackDescForCol = m_tAttackDesc;
 
 	return S_OK;
 }
@@ -66,6 +70,7 @@ HRESULT CState_Chai_Attack::Enter()
 const wstring CState_Chai_Attack::Tick(const _double& fTimeDelta)
 {
 	Set_AttackDesc();
+	Detect_AttackCollision();
 
 	CModel* pModel = m_pChai->Get_Model();
 	CModel::TweenDesc desc = pModel->Get_TweenDesc();
@@ -83,6 +88,8 @@ const wstring CState_Chai_Attack::Tick(const _double& fTimeDelta)
 
 			m_tAttackDesc.bFirstAttack = TRUE;
 
+			ENGINE_INSTANCE->Play_Sound(EFC_CHAI_BESTTIMMING, ETC_NONE_00, 0.8f);
+
 		}/* 콤보 공격 */
 		else if(1 <= m_pChai->m_tFightDesc.iStep && !pModel->Is_Tween())
 		{
@@ -91,9 +98,17 @@ const wstring CState_Chai_Attack::Tick(const _double& fTimeDelta)
 				pModel->Set_Animation(m_tAttackDesc.iAnimIndex, m_tAttackDesc.dTimePerFrame, m_tAttackDesc.fTweenTime);
 				pModel->Set_SoundEvent(m_tAttackDesc.tSoundEventDesc);
 				
+				m_tAttackDescForCol = m_tAttackDesc;
+
+				ENGINE_INSTANCE->Play_Sound(EFC_CHAI_BESTTIMMING, ETC_NONE_00, 0.8f);
+
 				m_tAttackDesc.bSet = FALSE;
 			}
 		}
+	}
+	else
+	{
+
 	}
 	return m_strName;
 }
@@ -107,9 +122,9 @@ void CState_Chai_Attack::Exit()
 {
 	m_tAttackDesc.Reset();
 
-	m_pChai->m_tFightDesc.iStep = -1;
+	//m_pChai->Get_Child(CChai::CHILD_TYPE::CH_WEAPON_RIGHT)->Get_Collider_Sphere()->Set_Active(FALSE);
 
-	m_pChai->Get_Child(CChai::CH_WEAPON_RIGHT)->Get_Collider_Sphere()->Set_Active(FALSE);
+	m_pChai->m_tFightDesc.iStep = -1;
 }
 
 void CState_Chai_Attack::OnCollision_Enter(CGameObject* pGameObject)
@@ -135,7 +150,12 @@ const wstring CState_Chai_Attack::Check_Transition()
 		CModel*	pModel = m_pChai->Get_Model();
 		CModel::TweenDesc desc = pModel->Get_TweenDesc();
 
-		if (ANIM_CH::ATK_LIGHT_02 == m_tAttackDesc.iAnimIndex)
+		if (ANIM_CH::ATK_LIGHT_00 == m_tAttackDesc.iAnimIndex)
+		{
+			if (!pModel->Is_Tween() && m_pModel->Is_Half_Animation())
+				return StateNames_CH[STATE_IDLE_CH];
+		}
+		else if (ANIM_CH::ATK_LIGHT_02 == m_tAttackDesc.iAnimIndex)
 		{
 			if (!pModel->Is_Tween() && 40 <= desc.cur.iCurFrame)
 				return StateNames_CH[STATE_IDLE_CH];
@@ -194,6 +214,8 @@ void CState_Chai_Attack::Set_AttackDesc()
 			m_tAttackDesc.dTimePerFrame = CBeatManager::GetInstance()->Get_SPB(1) / (_double)15.f;
 			
 			m_tAttackDesc.tSoundEventDesc.iFrame = 10;
+			m_tAttackDesc.tSoundEventDesc.eSoundID = EFC_CHAI_ATTACK_COMBO_01;
+
 		}
 		else if (1 == m_pChai->m_tFightDesc.iStep)
 		{
@@ -202,6 +224,8 @@ void CState_Chai_Attack::Set_AttackDesc()
 			m_tAttackDesc.dTimePerFrame = CBeatManager::GetInstance()->Get_SPB(1) / (_double)15.f;
 
 			m_tAttackDesc.tSoundEventDesc.iFrame = 10;
+			m_tAttackDesc.tSoundEventDesc.eSoundID = EFC_CHAI_ATTACK_COMBO_02;
+
 		}
 		else if (2 == m_pChai->m_tFightDesc.iStep)
 		{
@@ -210,13 +234,14 @@ void CState_Chai_Attack::Set_AttackDesc()
 			m_tAttackDesc.dTimePerFrame = CBeatManager::GetInstance()->Get_SPB(2) / (_double)30.f;
 
 			m_tAttackDesc.tSoundEventDesc.iFrame = 25;
+			m_tAttackDesc.tSoundEventDesc.eSoundID = EFC_CHAI_ATTACK_COMBO_03;
+
 		}
 		else if (3 <= m_pChai->m_tFightDesc.iStep)
 		{
 			return;
 		}
 
-		m_tAttackDesc.tSoundEventDesc.eSoundID = EFC_CHAI_ATTACK_SWING_NONCOLLISION;
 		m_tAttackDesc.tSoundEventDesc.eChannelID = PLAYER_CHAI;
 		m_tAttackDesc.tSoundEventDesc.fVolume = EfcVolumeChai;
 
@@ -225,7 +250,6 @@ void CState_Chai_Attack::Set_AttackDesc()
 		m_tAttackDesc.bSet = TRUE;
 
 		m_pChai->m_tFightDesc.iStep++;
-
 	}
 	else if (Input::RBtn())
 	{
@@ -237,7 +261,8 @@ void CState_Chai_Attack::Set_AttackDesc()
 			m_tAttackDesc.dTimePerFrame = CBeatManager::GetInstance()->Get_SPB(2) / (_double)35.f;
 
 			m_tAttackDesc.tSoundEventDesc.iFrame = 30;
-		
+			m_tAttackDesc.tSoundEventDesc.eSoundID = EFC_CHAI_ATTACK_COMBO_01;
+
 		}
 		else if (1 == m_pChai->m_tFightDesc.iStep)
 		{
@@ -247,13 +272,14 @@ void CState_Chai_Attack::Set_AttackDesc()
 			m_tAttackDesc.dTimePerFrame = CBeatManager::GetInstance()->Get_SPB(2) / (_double)38.f;
 
 			m_tAttackDesc.tSoundEventDesc.iFrame = 33;
+			m_tAttackDesc.tSoundEventDesc.eSoundID = EFC_CHAI_ATTACK_COMBO_02;
+
 		}
 		else if (2 <= m_pChai->m_tFightDesc.iStep)
 		{
 			return;
 		}
 		
-		m_tAttackDesc.tSoundEventDesc.eSoundID = EFC_CHAI_ATTACK_SWING_NONCOLLISION;
 		m_tAttackDesc.tSoundEventDesc.eChannelID = PLAYER_CHAI;
 		m_tAttackDesc.tSoundEventDesc.fVolume = EfcVolumeChai;
 
@@ -261,6 +287,46 @@ void CState_Chai_Attack::Set_AttackDesc()
 		m_tAttackDesc.bSet = TRUE;
 
 		m_pChai->m_tFightDesc.iStep++;
+	}
+}
+
+void CState_Chai_Attack::Detect_AttackCollision()
+{
+	CModel::KeyframeDesc KeyFrame = m_pModel->Get_TweenDesc().cur;
+
+	if (!m_tAttackDescForCol.bSet || KeyFrame.iAnimIndex != m_tAttackDescForCol.iAnimIndex ||
+		KeyFrame.iCurFrame != m_tAttackDescForCol.tSoundEventDesc.iFrame)
+		return;
+
+	m_tAttackDescForCol.bSet = FALSE;
+
+	const _float fMaxAngle	= 90.f;
+	const _float fMaxDist	= 5.f;
+
+	list<CGameObject*>* pEnemyList = ENGINE_INSTANCE->Get_Layer(ENGINE_INSTANCE->Get_CurLevelIndex(), LayerNames[LAYER_ENEMY]);
+
+	if (nullptr == pEnemyList)
+		return;
+
+	Vec3 vPlayerDir = m_pChai->Get_Transform()->Get_Forward().xyz().Normalized();
+	for (auto pEnemy : *pEnemyList)
+	{
+		if (pEnemy != nullptr && pEnemy->Is_Active())
+		{
+			Vec3 vDirToEnemy = pEnemy->Get_Transform()->Get_FinalPosition().xyz() -
+								m_pChai->Get_Transform()->Get_FinalPosition().xyz();
+
+			//  정규화된 벡터 사이의 각도를 계산, 반환된 라디안 값을 도 단위로 변환(180.0f / XM_PI)
+			_float fAngle = XMVectorGetX(XMVector3AngleBetweenNormals(vPlayerDir, XMVector3Normalize(vDirToEnemy))) * (180.0f / XM_PI);
+
+			_float fDist = XMVectorGetX(XMVector3Length(vDirToEnemy));
+
+			//  플레이어의 바라보는 방향으로부터 좌우로 떨어진 각도를 계산
+			if (fAngle <= fMaxAngle / 2 && fDist <= fMaxDist)
+			{
+				dynamic_cast<CCharacter*>(pEnemy)->Damaged(dynamic_cast<CCharacter*>(m_pChai));
+			}
+		}
 	}
 }
 
