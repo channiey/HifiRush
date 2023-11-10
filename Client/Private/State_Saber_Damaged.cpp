@@ -127,7 +127,7 @@ void CState_Saber_Damaged::Damaged()
 
 	m_pModel->Set_Animation(eAnimID, fTimePerFrame, DF_TW_TIME);
 
-	//m_pSaber->KnockBack(m_pSaber->Get_FightDesc().pAttacker);
+	m_pSaber->KnockBack(m_pSaber->Get_FightDesc().pAttacker);
 
 
 	ENGINE_INSTANCE->Play_Sound(EFC_ENEMY_DAMAGED_00, ENEMY_SABER, 0.4f);

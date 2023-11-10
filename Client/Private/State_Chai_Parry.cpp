@@ -21,11 +21,14 @@ HRESULT CState_Chai_Parry::Enter()
 {
 	ANIM_CH			eAnimID			= ANIM_CH::PARRY_02;
 	CAnimation*		pAnimation		= m_pChai->Get_Model()->Get_Animation(eAnimID);
-	const _double	fTimePerFrame	= CBeatManager::GetInstance()->Get_SPB(1) / (_double)pAnimation->Get_MaxFrameCount();
+	const _double	fTimePerFrame	= 1 / pAnimation->Get_TickPerSecond() * 0.5f;
 
 	m_pChai->Get_Model()->Set_Animation(eAnimID, fTimePerFrame, DF_TW_TIME);
 
 	m_pChai->m_tFightDesc.bParry = TRUE;
+
+	ENGINE_INSTANCE->Play_Sound(EFC_CHAI_PARRY, PLAYER_CHAI, EfcVolumeChai);
+
 
 	return S_OK;
 }
@@ -52,8 +55,7 @@ const wstring CState_Chai_Parry::Check_Transition()
 
 	if (m_pChai->Get_Model()->Is_TwoThirds_Animation())
 	{
-		if (CBeatManager::GetInstance()->Is_HalfBeat())
-			return StateNames_CH[STATE_IDLE_CH];
+		return StateNames_CH[STATE_IDLE_CH];		
 	}
 
 	return m_strName;

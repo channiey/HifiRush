@@ -105,7 +105,7 @@ HRESULT CSaber::Ready_Chilren()
 {
 	CWeapon* pWeapon = nullptr;
 	{
-		pWeapon = dynamic_cast<CWeapon*>(ENGINE_INSTANCE->Add_GameObject(LV_PROTO, LayerNames[LAYER_WEAPON], L"Weapon_Saber_Sword"));
+		pWeapon = dynamic_cast<CWeapon*>(ENGINE_INSTANCE->Add_GameObject(ENGINE_INSTANCE->Get_CurLoadingLevel(), LayerNames[LAYER_WEAPON], L"Weapon_Saber_Sword"));
 	
 		if (FAILED(Add_Child(pWeapon)))
 			return E_FAIL;

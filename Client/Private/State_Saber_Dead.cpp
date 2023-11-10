@@ -52,7 +52,7 @@ const wstring CState_Saber_Dead::Check_Transition()
 	{
 		if (m_pSaber->Is_Active())
 		{
-			ENGINE_INSTANCE->Play_Sound(EFC_ENEMY_EXPLOSION, ENEMY_SABER, 0.4f);
+			ENGINE_INSTANCE->Play_Sound(EFC_CHAI_KILL, ENEMY_SABER, 0.4f);
 			m_pSaber->Return_To_Pool();
 		}
 	}

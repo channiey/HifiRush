@@ -75,7 +75,7 @@ const wstring CState_Chai_Idle::Check_Transition()
 		if(!CImGui_Manager::GetInstance()->Is_ClickedWindow())
 			return StateNames_CH[STATE_ATTACK_CH];
 	}
-	else if (Input::Parry() && CBeatManager::GetInstance()->Is_HalfBeat())
+	else if (Input::Parry())
 	{
 		return StateNames_CH[STATE_PARRY_CH];
 	}

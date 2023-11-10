@@ -175,8 +175,14 @@ void CCharacter::Attack(CCharacter* pCharacter)
 
 void CCharacter::Damaged(CCharacter* pCharacter)
 {
-	if (nullptr == pCharacter)
+	if (nullptr == pCharacter || m_tStatDesc.bDead)
 		return;
+
+	if (m_tFightDesc.bParry)
+	{
+		pCharacter->Damaged(this);
+		return;
+	}
 
 	m_tFightDesc.bDamaged = TRUE;
 	m_tFightDesc.pAttacker = pCharacter;

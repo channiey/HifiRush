@@ -66,7 +66,7 @@ HRESULT CSaber_Sword::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Collider_Sphere */
-	CCollider::COLLIDERDESC		ColliderDesc{ Vec3(0, 0, 60), 30.f };
+	CCollider::COLLIDERDESC		ColliderDesc{ Vec3(0, 0, 90), 40.f };
 	{
 		CCollider_Sphere* pCollider = nullptr;
 		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),

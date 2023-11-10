@@ -29,7 +29,7 @@ HRESULT CState_Saber_Idle::Enter()
 		CAnimation*		pAnimation = m_pModel->Get_Animation(eAnimID);
 		const _double	fTimePerFrame = CBeatManager::GetInstance()->Get_AnimTimePerFrame(pAnimation) * (_double)2.f;
 
-		m_fTimeLimit = rand() % 2 + (rand() % 10) * 0.1f + 2;
+		m_fTimeLimit = (rand() % 10) * 0.1f + 2;
 
 		m_pModel->Set_Animation(eAnimID, fTimePerFrame, DF_TW_TIME);
 	}

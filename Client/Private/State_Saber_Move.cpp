@@ -226,6 +226,9 @@ void CState_Saber_Move::Set_NextAnimation()
 	m_fTimeAcc = 0.f;
 	
 	m_pModel->Set_Animation(eAnimID, fTimePerFrame, DF_TW_TIME);
+
+	ENGINE_INSTANCE->Play_Sound(EFC_SABER_ESCAPING, ENEMY_SABER, 0.4f);
+
 }
 
 

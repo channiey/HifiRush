@@ -21,11 +21,12 @@ HRESULT CState_Chai_Dash::Enter()
 {
 	ANIM_CH			eAnimID			= ANIM_CH::DASH;
 	CAnimation*		pAnimation		= m_pChai->Get_Model()->Get_Animation(eAnimID);
-	const _double	fTimePerFrame	= CBeatManager::GetInstance()->Get_SPB(1) / (_double)pAnimation->Get_MaxFrameCount();
+	const _double	fTimePerFrame = (1 / pAnimation->Get_TickPerSecond()) * 0.5f;
 
 	m_pChai->Get_Model()->Set_Animation(eAnimID, fTimePerFrame, DF_TW_TIME);
 
 	m_pChai->Get_Rigidbody()->Add_Force(m_pChai->Get_Transform()->Get_Forward().xyz() * m_pChai->m_tPhysicsDesc.fDashPower, CRigidbody::FORCE_MODE::IMPULSE);
+	ENGINE_INSTANCE->Play_Sound(EFC_CHAI_DASH, PLAYER_CHAI, EfcVolumeChai);
 
 	m_pChai->m_tPhysicsDesc.bDash = TRUE;
 
@@ -54,11 +55,8 @@ const wstring CState_Chai_Dash::Check_Transition()
 	if (m_pChai->Get_Model()->Is_Tween())
 		return m_strName;
 
-	if (m_pChai->Get_Model()->Is_OneThirds_Animation())
+	if (m_pModel->Is_Half_Animation())
 	{		
-		if (Input::Move())
-			return StateNames_CH[STATE_RUN_CH];
-
 		return StateNames_CH[STATE_IDLE_CH];
 	}
 

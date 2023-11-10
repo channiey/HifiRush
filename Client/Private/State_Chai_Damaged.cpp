@@ -40,7 +40,10 @@ HRESULT CState_Chai_Damaged::Enter()
 	{
 		eAnimID = ANIM_CH::DMG_LIGHT;
 		pAnimation = m_pChai->Get_Model()->Get_Animation(eAnimID);
-		fTimePerFrame = CBeatManager::CBeatManager::GetInstance()->Get_SPB(1) / (_double)18.f;
+		fTimePerFrame = 1 / pAnimation->Get_TickPerSecond() * 0.5f;
+
+		ENGINE_INSTANCE->Play_Sound(EFC_ENEMY_DAMAGED_00, PLAYER_CHAI, 0.4f);
+
 	}
 		break;
 	case CEnemy::ENEMY_TYPE::FLYING:
@@ -54,13 +57,13 @@ HRESULT CState_Chai_Damaged::Enter()
 		{
 			eAnimID = ANIM_CH::DMG_LIGHT;
 			pAnimation = m_pChai->Get_Model()->Get_Animation(eAnimID);
-			fTimePerFrame = CBeatManager::CBeatManager::GetInstance()->Get_SPB(1) / (_double)18.f;
+			fTimePerFrame = 1 / pAnimation->Get_TickPerSecond();
 		}
 		else
 		{
 			eAnimID = ANIM_CH::DMG_HEAVY;
 			pAnimation = m_pChai->Get_Model()->Get_Animation(eAnimID);
-			fTimePerFrame = CBeatManager::CBeatManager::GetInstance()->Get_SPB(1) / (_double)57.f;
+			fTimePerFrame = 1 / pAnimation->Get_TickPerSecond();
 		}
 	}
 		break;

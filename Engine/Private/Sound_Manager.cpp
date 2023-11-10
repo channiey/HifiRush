@@ -66,7 +66,7 @@ HRESULT CSound_Manager::Register_BGM(_uint eSoundID, _uint eChannelID, float fVo
 {
 	m_iCurBgmID = eSoundID;
 	m_iCurBgmChannel = eChannelID;
-	m_tCurBgmVolume.fCurValue = 0.f;
+	m_tCurBgmVolume.fCurValue = fVolume;
 
 	m_bPlayBgm = FALSE;
 

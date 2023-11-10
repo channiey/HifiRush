@@ -62,16 +62,28 @@ HRESULT CTriggerSection_A::Start_Battle()
 {
 	m_bStartBattle = TRUE;
 
+	/* 01. 카메라 변경 */
+
+	/* 02. 세이버 애니메이션 재생 */
+
+	/* 03. 카메라 복귀 */
+
+	/* 04. 플레이어 애니메이션 재생 */
+
+	/* 05. 아유 레디 ? */
+
+	/* 06. 파이트 */
+
 	/* Set Camera */
-	/*CCamera* pCameraCom = ENGINE_INSTANCE->Get_CurCamera()->Get_Camera();
+	CCamera* pCameraCom = ENGINE_INSTANCE->Get_CurCamera()->Get_Camera();
 	if (nullptr != pCameraCom && CAMERA_ID::CAM_FOLLOW == (CAMERA_ID)pCameraCom->Get_Key())
 	{
 		pCameraCom->Lerp_Fov(CamFov_Follow_Battle, 1.5f, LERP_MODE::SMOOTHER_STEP);
 		pCameraCom->Lerp_Dist(CamDist_Follow_Battle, 1.5f, LERP_MODE::SMOOTHER_STEP);
-	}*/
+	}
 
 	/* Set Volume */
-	//ENGINE_INSTANCE->Lerp_BGMSound(BgmVolumeInBattle, 2.f, LERP_MODE::SMOOTHER_STEP);
+	ENGINE_INSTANCE->Lerp_BGMSound(BgmVolumeInBattle, 2.f, LERP_MODE::SMOOTHER_STEP);
 
 	/* Pop from Pool */
 	for (auto Pair : m_Flows)
