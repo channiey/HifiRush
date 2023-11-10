@@ -1,6 +1,5 @@
 #pragma once
 
-/* ·»´õÅ¸°Ù ÇÏ³ª¸¦ ÀÇ¹ÌÇÏ³®. */
 #include "Base.h"
 
 BEGIN(Engine)
@@ -22,11 +21,11 @@ public:
 	HRESULT Render(class CShader* pShader, class CVIBuffer_Rect* pBuffer);
 
 public:
-	ID3D11RenderTargetView* Get_RTV() const { return m_pRTV; }
+	ID3D11RenderTargetView*		Get_RTV() const { return m_pRTV; }
 
 private:
-	ID3D11Device*			m_pDevice = { nullptr };
-	ID3D11DeviceContext*	m_pContext = { nullptr };
+	ID3D11Device*				m_pDevice = { nullptr };
+	ID3D11DeviceContext*		m_pContext = { nullptr };
 
 private:
 	ID3D11Texture2D*			m_pTexture2D = { nullptr };
@@ -35,8 +34,6 @@ private:
 
 private:
 	_float4						m_vColor;
-
-private:
 	_float4x4					m_WorldMatrix;
 
 public:

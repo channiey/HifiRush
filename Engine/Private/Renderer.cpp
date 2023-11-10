@@ -35,19 +35,37 @@ HRESULT CRenderer::Initialize_Prototype()
 			ViewportDesc.Width, ViewportDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
 			return E_FAIL;
 
+		/* For.Target_Depth */
+		if (FAILED(m_pTarget_Manager->Add_RenderTarget(m_pDevice, m_pContext, TEXT("Target_Depth"),
+			ViewportDesc.Width, ViewportDesc.Height, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(1.f, 1.f, 1.f, 1.f))))
+			return E_FAIL;
+
 		/* For.Target_Shade */
 		if (FAILED(m_pTarget_Manager->Add_RenderTarget(m_pDevice, m_pContext, TEXT("Target_Shade"),
-			ViewportDesc.Width, ViewportDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
+			ViewportDesc.Width, ViewportDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 1.f))))
+			return E_FAIL;
+
+		/* For.Target_Specular */
+		if (FAILED(m_pTarget_Manager->Add_RenderTarget(m_pDevice, m_pContext, TEXT("Target_Specular"),
+			ViewportDesc.Width, ViewportDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 			return E_FAIL;
 	}
 
 	/* 디버그용 미니 렌더 창 세팅 */
 	{
-		if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_Diffuse"), 150.0f, 150.f, 300.0f, 300.f)))
+		if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_Diffuse"), 100.0f, 100.f, 200.0f, 200.0f)))
 			return E_FAIL;
-		if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_Normal"), 150.0f, 450.f, 300.f, 300.f)))
+
+		if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_Normal"), 100.0f, 300.0f, 200.0f, 200.0f)))
 			return E_FAIL;
-		if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_Shade"), 450.0f, 150.f, 300.f, 300.f)))
+
+		if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_Depth"), 100.0f, 500.0f, 200.0f, 200.0f)))
+			return E_FAIL;
+
+		if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_Shade"), 300.0f, 100.f, 200.0f, 200.0f)))
+			return E_FAIL;
+
+		if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_Specular"), 300.0f, 300.0f, 200.0f, 200.0f)))
 			return E_FAIL;
 	}
 
@@ -55,13 +73,20 @@ HRESULT CRenderer::Initialize_Prototype()
 	{
 		if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_Diffuse"))))
 			return E_FAIL;
+
 		if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_Normal"))))
+			return E_FAIL;
+
+		if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_Depth"))))
 			return E_FAIL;
 	}
 	
 	/* For.MRT_Lights (이 렌더타겟들은 게임내에 존재하는 빛으로부터 연산한 결과를 저장받는다.) */
 	{
 		if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Lights"), TEXT("Target_Shade"))))
+			return E_FAIL;
+
+		if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Lights"), TEXT("Target_Specular"))))
 			return E_FAIL;
 	}
 
@@ -187,9 +212,10 @@ HRESULT CRenderer::Render_NonBlend()
 
 HRESULT CRenderer::Render_LightAcc()
 {
-	/* 빛연산의 결과를 그려놓을 Shade타겟을 장치에 바인딩 한다. */
+	/* 빛연산의 결과를 그려놓을 Shade + Specular 타겟을 장치에 바인딩 한다. */
 	if (FAILED(m_pTarget_Manager->Begin_MRT(m_pContext, TEXT("MRT_Lights"))))
 		return E_FAIL;
+
 
 	/* 사각형 버퍼를 직교투영으로 Shade타겟의 사이즈만큼 꽉 채워서 그릴꺼야. */
 	if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", &m_WorldMatrix)))
@@ -199,11 +225,27 @@ HRESULT CRenderer::Render_LightAcc()
 	if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
 		return E_FAIL;
 
+	CPipeLine* pPipeLine = GET_INSTANCE(CPipeLine);
+
+	Matrix matVI = pPipeLine->Get_Transform_Inverse(CPipeLine::STATE_VIEW);
+	Matrix matPI = pPipeLine->Get_Transform_Inverse(CPipeLine::STATE_PROJ);
+	Vec4 vCamPos = pPipeLine->Get_CamPosition();
+
+	if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrixInv", &matVI)))
+		return E_FAIL;
+	if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrixInv", &matPI)))
+		return E_FAIL;
+	if (FAILED(m_pShader->Bind_RawValue("g_vCamPosition", &vCamPos, sizeof(_float4))))
+		return E_FAIL;
+
+	RELEASE_INSTANCE(CPipeLine);
+
 	if (FAILED(m_pTarget_Manager->Bind_SRV(m_pShader, TEXT("Target_Normal"), "g_NormalTexture")))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Bind_SRV(m_pShader, TEXT("Target_Depth"), "g_DepthTexture")))
 		return E_FAIL;
 
 	m_pLight_Manager->Render(m_pShader, m_pVIBuffer);
-
 
 	/* 다시 장치의 0번째 소켓에 백 버퍼를 올린다. */
 	if (FAILED(m_pTarget_Manager->End_MRT(m_pContext)))
@@ -229,6 +271,9 @@ HRESULT CRenderer::Render_Deferred()
 		return E_FAIL;
 
 	if (FAILED(m_pTarget_Manager->Bind_SRV(m_pShader, TEXT("Target_Shade"), "g_ShadeTexture")))
+		return E_FAIL;
+
+	if (FAILED(m_pTarget_Manager->Bind_SRV(m_pShader, TEXT("Target_Specular"), "g_SpecularTexture")))
 		return E_FAIL;
 
 	if (FAILED(m_pShader->Begin(3)))
