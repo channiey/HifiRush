@@ -125,7 +125,7 @@ public: /* For.Light_Manager */
 	HRESULT				Add_Light(const LIGHT_DESC& LightDesc);
 
 public: /* For.Target_Manager */
-	const _bool& Is_DebugRTV() const;
+	const _bool Is_DebugRTV() const;
 	void Set_DebugRTV(const _bool& bSet);
 	void Set_DebugRTV();
 

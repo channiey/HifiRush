@@ -9,6 +9,7 @@
 /* Character*/
 #include "Chai.h"
 #include "Saber.h"
+#include "Blader.h"
 
 /* Weapon */
 #include "Weapon.h"
@@ -250,30 +251,33 @@ HRESULT CLoader::Load_Prototype()
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Saber", PivotMatrix))))
 			return E_FAIL;
 
+		/* For.Prototype_Component_Model_Blader */
+		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.0125f);
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Blader"),
+			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Blader", PivotMatrix))))
+			return E_FAIL;
 
-		/* For.Prototype_Component_Model_Weapon */
+
+		/* For.Prototype_Component_Model_Chai_Guitar_Explore */
 		{
-			/* For.Prototype_Component_Model_Chai_Guitar_Explore */
-			{
-				PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f)) * Matrix::CreateRotationZ(DEG2RAD(180.f)) * Matrix::CreateRotationX(DEG2RAD(90.f));
+			PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f)) * Matrix::CreateRotationZ(DEG2RAD(180.f)) * Matrix::CreateRotationX(DEG2RAD(90.f));
 
-				const string		tag = "Prototype_Component_Model_Weapon_Chai_Guitar_Explore";
-				const string		filePath = "../Bin/Resources/Models/Weapon/Chai_Guitar_Explore";
+			const string		tag = "Prototype_Component_Model_Weapon_Chai_Guitar_Explore";
+			const string		filePath = "../Bin/Resources/Models/Weapon/Chai_Guitar_Explore";
 
-				if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString(tag),
-					CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Weapon/Chai_Guitar_Explore", PivotMatrix))))
-					return E_FAIL;
-			}
-			/* For.Prototype_Component_Model_Saber_Sword */
-			{
-				PivotMatrix = Matrix::CreateRotationZ(DEG2RAD(90.f)) * Matrix::CreateRotationX(DEG2RAD(90.f));
-				const string		tag = "Prototype_Component_Model_Weapon_Saber_Sword";
-				const string		filePath = "../Bin/Resources/Models/Weapon/Saber_Sword";
+			if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString(tag),
+				CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Weapon/Chai_Guitar_Explore", PivotMatrix))))
+				return E_FAIL;
+		}
+		/* For.Prototype_Component_Model_Saber_Sword */
+		{
+			PivotMatrix = Matrix::CreateRotationZ(DEG2RAD(90.f)) * Matrix::CreateRotationX(DEG2RAD(90.f));
+			const string		tag = "Prototype_Component_Model_Weapon_Saber_Sword";
+			const string		filePath = "../Bin/Resources/Models/Weapon/Saber_Sword";
 
-				if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString(tag),
-					CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Weapon/Saber_Sword", PivotMatrix))))
-					return E_FAIL;
-			}
+			if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString(tag),
+				CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Weapon/Saber_Sword", PivotMatrix))))
+				return E_FAIL;
 		}
 
 		/* For.Prototype_Component_Model_Static */
@@ -292,44 +296,6 @@ HRESULT CLoader::Load_Prototype()
 					return E_FAIL;
 			}
 		}
-
-
-		//PivotMatrix = Matrix::Identity * Matrix::CreateScale(0.006f);
-		
-		/*if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Bldg_Inside_Battle_A"),
-			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/Bldg_Inside_Battle_A", PivotMatrix))))
-			return E_FAIL;
-
-		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Bldg_Inside_Battle_B"),
-			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/Bldg_Inside_Battle_B", PivotMatrix))))
-			return E_FAIL;
-
-		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Bldg_Outside_BK"),
-			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/Bldg_Outside_BK", PivotMatrix))))
-			return E_FAIL;
-
-		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Bldg_Inside_Lobby_A"),
-			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/Bldg_Inside_Lobby_A", PivotMatrix))))
-			return E_FAIL;
-
-		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Container_Closed_Blue"),
-			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/Container_Closed_Blue", PivotMatrix))))
-			return E_FAIL;
-
-		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Container_Closed_Green"),
-			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/Container_Closed_Green", PivotMatrix))))
-			return E_FAIL;
-
-		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Env_Static_Container_Closed_Yellow"),
-			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Static/Container_Closed_Yellow", PivotMatrix))))
-			return E_FAIL;*/
-
-
-
-
-		
-
-
 
 		/* For.Prototype_Component_Model_Geometry */
 		PivotMatrix = Matrix::Identity * Matrix::CreateScale(0.01f);
@@ -364,6 +330,11 @@ HRESULT CLoader::Load_Prototype()
 		/* For.Prototype_GameObject_Enemy_Saber */
 		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Enemy_Saber"),
 			CSaber::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Enemy_Blader */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Enemy_Blader"),
+			CBlader::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For.Prototype_GameObject_Trigger_Dummy */

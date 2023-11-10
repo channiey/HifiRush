@@ -346,6 +346,12 @@
     <Filter Include="03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\03.Act\03.Attack">
       <UniqueIdentifier>{2b798329-5bdb-4fad-860b-adad57f9b62e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.GameObjects\03.Character\01.Enemy\03.Mimosa">
+      <UniqueIdentifier>{978f5f05-3835-4f99-8450-2487260d9e26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\01.Enemy\02.Blader">
+      <UniqueIdentifier>{d52fc8f6-02bb-44f8-87e5-c7386b8db973}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -567,6 +573,9 @@
     <ClInclude Include="..\Public\State_Saber_Attack.h">
       <Filter>03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\03.Act\03.Attack</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Blader.h">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Blader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -775,6 +784,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\State_Saber_Attack.cpp">
       <Filter>03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\03.Act\03.Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Blader.cpp">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Blader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -125,7 +125,7 @@ HRESULT CMainApp_Converter::Convert_SelectiveModel()
 		const MODEL_TYPE	type = MODEL_TYPE::ANIM;
 
 		const string		filePath = "../Assets/Character";
-		const string		fileName = "Saber";
+		const string		fileName = "RedBlader";
 		const string		savePath = "Character/";
 
 		shared_ptr<CConverter> converter = make_shared<CConverter>();

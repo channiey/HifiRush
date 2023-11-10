@@ -75,9 +75,6 @@ void CCharacter::LateTick(_double fTimeDelta)
 		}
 	}
 
-	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
-		return;
-
 #ifdef _DEBUG
 	for (auto& pCollider : m_pColliderComs)
 	{
