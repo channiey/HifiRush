@@ -2,18 +2,6 @@
 
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
-vector g_vLightDir = vector(1.f, -1.f, 1.f, 0.f);
-vector g_vLightPos = vector(0.f, 0.f, 0.f, 1.f);
-float  g_fLightRange = 0.f;
-vector g_vLightDiffuse = vector(1.f, 1.f, 1.f, 1.f);
-vector g_vLightAmbient = vector(1.f, 1.f, 1.f, 1.f);
-vector g_vLightSpecular = vector(1.f, 1.f, 1.f, 1.f);
-
-vector g_vMtrlAmbient = vector(0.4f, 0.4f, 0.4f, 1.f);
-vector g_vMtrlSpecular = vector(1.f, 1.f, 1.f, 1.f);
-
-vector g_vCamPosition;
-
 Texture2D g_DiffuseTexture;
 
 struct SoundEventDesc
@@ -150,7 +138,7 @@ VS_OUT VS_MAIN(VS_IN In)
 
     Out.vPosition = mul(vPosition, matWVP);
     Out.vTexcoord = In.vTexcoord;
-    Out.vNormal = mul(float4(In.vNormal, 0.f), g_WorldMatrix);
+    Out.vNormal = normalize(mul(float4(In.vNormal, 0.f), g_WorldMatrix));
     Out.vWorldPos = mul(float4(In.vPosition, 1.f), g_WorldMatrix);
 
     return Out;
@@ -166,7 +154,8 @@ struct PS_IN
 
 struct PS_OUT
 {
-    float4 vColor : SV_TARGET0;
+    float4 vDiffuse : SV_TARGET0;
+    float4 vNormal : SV_TARGET1;
 };
 
 
@@ -179,17 +168,8 @@ PS_OUT PS_MAIN(PS_IN In)
     if (vMtrlDiffuse.a < 0.3f)
         discard;
 
-
-    vector vShade = max(dot(normalize(g_vLightDir) * -1.f, normalize(In.vNormal)), 0.f) +
-		                g_vLightAmbient * g_vMtrlAmbient;
-
-    vector vReflect = reflect(normalize(g_vLightDir), normalize(In.vNormal));
-    vector vLook = In.vWorldPos - g_vCamPosition;
-    
-    
-    float rim = saturate(dot(normalize(In.vNormal), normalize(vLook)));
-
-    Out.vColor = (g_vLightDiffuse * vMtrlDiffuse) * (ceil(vShade * 3) / 3); //
+    Out.vDiffuse = vMtrlDiffuse;
+    Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
     
     return Out;
 }

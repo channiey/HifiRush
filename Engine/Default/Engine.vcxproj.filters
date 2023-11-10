@@ -106,9 +106,6 @@
     <Filter Include="01.Utiltiy\03.Components\Component\09.Camera\Manager">
       <UniqueIdentifier>{02fb4a5e-a2ca-46bf-8156-e5f9ed1eb2f3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utiltiy\03.Components\Component\10.Light">
-      <UniqueIdentifier>{882d7394-68b4-4f4d-bf2e-f3d18fc82d10}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utiltiy\03.Components\Component\11.StateMachine">
       <UniqueIdentifier>{9d3e1fd1-7be8-4ae6-a653-7c608f8b8489}</UniqueIdentifier>
     </Filter>
@@ -169,9 +166,6 @@
     <Filter Include="01.Utiltiy\90.Optimization\01.ThreadPool">
       <UniqueIdentifier>{ec2fa25f-940a-45c1-af9e-55a040f3e642}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utiltiy\03.Components\Component\10.Light\Manager">
-      <UniqueIdentifier>{d774004d-3444-4a8f-9a0b-9227419132a9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utiltiy\03.Components\Component\14.MonoBehaviour">
       <UniqueIdentifier>{09aed11d-2cb8-4746-ac39-0391fe350fae}</UniqueIdentifier>
     </Filter>
@@ -231,6 +225,15 @@
     </Filter>
     <Filter Include="01.Utiltiy\03.Components\Component\13.NavmeshAgent\NavMesh\Cell">
       <UniqueIdentifier>{f5b33533-7839-43bc-9642-4e05a84a7aa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\06.RenderTargets\Manager">
+      <UniqueIdentifier>{ed42def2-bfe7-442e-a2ae-c46680fb8ac0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\07.Light">
+      <UniqueIdentifier>{882d7394-68b4-4f4d-bf2e-f3d18fc82d10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\07.Light\Manager">
+      <UniqueIdentifier>{d774004d-3444-4a8f-9a0b-9227419132a9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -456,6 +459,15 @@
     <ClInclude Include="..\Public\FMOD\fmod_output.h">
       <Filter>00.System\01.Device\Sound\Fmod</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Light_Manager.h">
+      <Filter>01.Utiltiy\07.Light\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Light.h">
+      <Filter>01.Utiltiy\07.Light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Target_Manager.h">
+      <Filter>01.Utiltiy\06.RenderTargets\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -644,6 +656,15 @@
     <ClCompile Include="..\Private\Sound_Manager.cpp">
       <Filter>00.System\01.Device\Sound\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Light_Manager.cpp">
+      <Filter>01.Utiltiy\07.Light\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Light.cpp">
+      <Filter>01.Utiltiy\07.Light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Target_Manager.cpp">
+      <Filter>01.Utiltiy\06.RenderTargets\Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Public\SimpleMath.inl">
@@ -652,6 +673,9 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Cell.hlsl">
+      <Filter>01.Utiltiy\97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Deferred.hlsl">
       <Filter>01.Utiltiy\97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

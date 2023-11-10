@@ -47,48 +47,26 @@ void CStaticDummy::LateTick(_double fTimeDelta)
 	if (nullptr == m_pRendererCom)
 		return;
 
-	m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this);
-
 	for (auto& pCollider : m_pColliderComs)
 	{
 		if (nullptr != pCollider)
-			m_pRendererCom->Add_DebugGroup(pCollider);
+			m_pRendererCom->Add_Debug(pCollider);
 	}
+
+	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
+		return;
 }
-
-
 
 HRESULT CStaticDummy::Render()
 {
-	/* Temp */
-	{
-		LIGHT_DESC			LightDesc;
-		ZeroMemory(&LightDesc, sizeof LightDesc);
-
-		LightDesc.eLightType = LIGHT_DESC::LIGHT_DIRECTIONAL;
-		LightDesc.vLightDir = _float4(1.f, -1.f, 1.f, 0.f);
-
-		LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-		LightDesc.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
-		LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
-
-		if (FAILED(m_pShaderCom->Bind_RawValue("g_vLightDir", &LightDesc.vLightDir, sizeof(_float4))))
-			return E_FAIL;
-	}
-
 	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
 
-	CEngineInstance* pGameInstance = GET_INSTANCE(CEngineInstance);
-	Safe_AddRef(pGameInstance);
-	{
-		if (FAILED(pGameInstance->Bind_TransformToShader(m_pShaderCom, "g_ViewMatrix", CPipeLine::STATE_VIEW)))
-			return E_FAIL;
+	if (FAILED(ENGINE_INSTANCE->Bind_TransformToShader(m_pShaderCom, "g_ViewMatrix", CPipeLine::STATE_VIEW)))
+		return E_FAIL;
 
-		if (FAILED(pGameInstance->Bind_TransformToShader(m_pShaderCom, "g_ProjMatrix", CPipeLine::STATE_PROJ)))
-			return E_FAIL;
-	}
-	RELEASE_INSTANCE(CEngineInstance);
+	if (FAILED(ENGINE_INSTANCE->Bind_TransformToShader(m_pShaderCom, "g_ProjMatrix", CPipeLine::STATE_PROJ)))
+		return E_FAIL;
 
 	_uint		iPicked = (_uint)m_bPicked;
 

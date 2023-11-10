@@ -14,6 +14,21 @@ CLevel_Stage_01::CLevel_Stage_01(ID3D11Device * pDevice, ID3D11DeviceContext * p
 
 HRESULT CLevel_Stage_01::Initialize()
 {
+	/* Light */
+	LIGHT_DESC LightDesc;
+	{
+		ZeroMemory(&LightDesc, sizeof LightDesc);
+
+		LightDesc.eLightType	= LIGHT_DESC::LIGHT_DIRECTIONAL;
+		LightDesc.vLightDir		= _float4(1.f, -1.f, 1.f, 0.f);
+
+		LightDesc.vDiffuse		= _float4(1.f, 1.f, 1.f, 1.f);
+		LightDesc.vAmbient		= _float4(1.f, 1.f, 1.f, 1.f);
+		LightDesc.vSpecular		= _float4(1.f, 1.f, 1.f, 1.f);
+	}
+	if (FAILED(ENGINE_INSTANCE->Add_Light(LightDesc)))
+		return E_FAIL;
+
 	/* Sound */
 	if (FAILED(ENGINE_INSTANCE->Register_BGM(BGM_FAST_RUSH, BGM_CUR, BgmVolumeInNotBattle)))
 		return E_FAIL;
@@ -22,9 +37,11 @@ HRESULT CLevel_Stage_01::Initialize()
 	if (FAILED(CBattleManager::GetInstance()->Initialize()))
 		return E_FAIL;
 
+	/* NavMesh */
 	if (FAILED(CNavMesh::GetInstance()->Load_NavData(NavPaths[LV_STAGE_01])))
 		return E_FAIL;
 
+	/* Level Data */
 	if (FAILED(CLevel_Loading::Parse_LevelData(LV_STAGE_01)))
 		return E_FAIL;
 

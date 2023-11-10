@@ -9,6 +9,8 @@
 #include "GameObject.h"
 #include "NavMesh.h"
 #include "Sound_Manager.h"
+#include "Light_Manager.h"
+#include "Target_Manager.h"
 
 IMPLEMENT_SINGLETON(CEngineInstance)
 
@@ -25,6 +27,8 @@ CEngineInstance::CEngineInstance()
 	, m_pCamera_Manager(CCamera_Manager::GetInstance())
 	, m_pNavMesh(CNavMesh::GetInstance())
 	, m_pSound_Manager(CSound_Manager::GetInstance())
+	, m_pLight_Manager(CLight_Manager::GetInstance())
+	, m_pTarget_Manager(CTarget_Manager::GetInstance())
 
 {
 	Safe_AddRef(m_pPipeLine);
@@ -39,6 +43,8 @@ CEngineInstance::CEngineInstance()
 	Safe_AddRef(m_pCamera_Manager);
 	Safe_AddRef(m_pNavMesh);
 	Safe_AddRef(m_pSound_Manager);
+	Safe_AddRef(m_pLight_Manager);
+	Safe_AddRef(m_pTarget_Manager);
 }
 
 HRESULT CEngineInstance::Initialize_Engine(_uint iNumLevels, HINSTANCE hInst, const GRAPHIC_DESC& GraphicDesc, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext, const char* strSoundFilePath)
@@ -657,6 +663,22 @@ void CEngineInstance::Lerp_BGMSound(const _float& fTargetValue, const _double& f
 	return m_pSound_Manager->Lerp_BGMSound(fTargetValue, fTime, eMode);
 }
 
+const LIGHT_DESC* CEngineInstance::Get_LightDesc(_uint iLightIndex)
+{
+	if (nullptr == m_pLight_Manager)
+		return nullptr ;
+
+	return m_pLight_Manager->Get_LightDesc(iLightIndex);
+}
+
+HRESULT CEngineInstance::Add_Light(const LIGHT_DESC& LightDesc)
+{
+	if (nullptr == m_pLight_Manager)
+		return E_FAIL;
+
+	return m_pLight_Manager->Add_Light(LightDesc);
+}
+
 void CEngineInstance::Release_Engine()
 {
 	CEngineInstance::GetInstance()->DestroyInstance();
@@ -672,6 +694,8 @@ void CEngineInstance::Release_Engine()
 	CCollision_Manager::GetInstance()->DestroyInstance();
 	CNavMesh::GetInstance()->DestroyInstance();
 	CSound_Manager::GetInstance()->DestroyInstance();
+	CLight_Manager::GetInstance()->DestroyInstance();
+	CTarget_Manager::GetInstance()->DestroyInstance();
 }
 
 void CEngineInstance::Free()
@@ -688,6 +712,8 @@ void CEngineInstance::Free()
 	Safe_Release(m_pCollision_Manager);
 	Safe_Release(m_pNavMesh);
 	Safe_Release(m_pSound_Manager);
+	Safe_Release(m_pLight_Manager);
+	Safe_Release(m_pTarget_Manager);
 
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);

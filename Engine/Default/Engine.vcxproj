@@ -213,6 +213,8 @@
     <ClInclude Include="..\Public\FMOD\fmod_output.h" />
     <ClInclude Include="..\Public\Frustum.h" />
     <ClInclude Include="..\Public\Collider_OBB.h" />
+    <ClInclude Include="..\Public\Light.h" />
+    <ClInclude Include="..\Public\Light_Manager.h" />
     <ClInclude Include="..\Public\NavMesh.h" />
     <ClInclude Include="..\Public\NavMeshAgent.h" />
     <ClInclude Include="..\Public\Node_Wait.h" />
@@ -221,6 +223,7 @@
     <ClInclude Include="..\Public\Collider_Sphere.h" />
     <ClInclude Include="..\Public\Rigidbody.h" />
     <ClInclude Include="..\Public\Sound_Manager.h" />
+    <ClInclude Include="..\Public\Target_Manager.h" />
     <ClInclude Include="..\Public\ThreadPool.h" />
     <ClInclude Include="..\Public\Util_File.h" />
     <ClInclude Include="..\public\EngineInstance.h" />
@@ -282,6 +285,8 @@
     <ClCompile Include="..\Private\DebugDraw.cpp" />
     <ClCompile Include="..\Private\Frustum.cpp" />
     <ClCompile Include="..\Private\Collider_OBB.cpp" />
+    <ClCompile Include="..\Private\Light.cpp" />
+    <ClCompile Include="..\Private\Light_Manager.cpp" />
     <ClCompile Include="..\Private\NavMesh.cpp" />
     <ClCompile Include="..\Private\NavMeshAgent.cpp" />
     <ClCompile Include="..\Private\Node_Wait.cpp" />
@@ -290,6 +295,7 @@
     <ClCompile Include="..\Private\Collider_Sphere.cpp" />
     <ClCompile Include="..\Private\Rigidbody.cpp" />
     <ClCompile Include="..\Private\Sound_Manager.cpp" />
+    <ClCompile Include="..\Private\Target_Manager.cpp" />
     <ClCompile Include="..\Private\ThreadPool.cpp" />
     <ClCompile Include="..\Private\Util_File.cpp" />
     <ClCompile Include="..\private\EngineInstance.cpp" />
@@ -347,6 +353,7 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Cell.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Deferred.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

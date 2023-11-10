@@ -54,13 +54,19 @@ void CTriggerDummy::LateTick(_double fTimeDelta)
 
 #ifdef _DEBUG
 	if (nullptr != m_pCollider && m_pCollider->Is_Active() && CImGui_Manager::GetInstance()->Is_Render_Collider())
-		m_pRendererCom->Add_DebugGroup(m_pCollider);
+		m_pRendererCom->Add_Debug(m_pCollider);
 #endif // _DEBUG
 }
 
 
 HRESULT CTriggerDummy::Render()
 {
+	/* Render Collider */
+	if (nullptr != m_pCollider && m_pCollider->Is_Active() && CImGui_Manager::GetInstance()->Is_Render_Collider())
+	{
+		m_pCollider->Render();
+	}
+
 	return S_OK;
 }
 

@@ -58,16 +58,16 @@ void CWeapon::LateTick(_double fTimeDelta)
 
 	__super::LateTick(fTimeDelta);
 
-	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
-		return;
-
 #ifdef _DEBUG
 	for (auto& pCollider : m_pColliderComs)
 	{
 		if (nullptr != pCollider && pCollider->Is_Active() && CImGui_Manager::GetInstance()->Is_Render_Collider())
-			m_pRendererCom->Add_DebugGroup(pCollider);
+			m_pRendererCom->Add_Debug(pCollider);
 	}
 #endif // _DEBUG
+
+	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
+		return;
 
 }
 
@@ -93,6 +93,15 @@ HRESULT CWeapon::Render()
 
 		if (FAILED(m_pModelCom->Render(m_pShaderCom, i)))
 			return E_FAIL;
+	}
+
+	/* Render Collider */
+	for (auto pCollider : m_pColliderComs)
+	{
+		if (nullptr != pCollider && pCollider->Is_Active() && CImGui_Manager::GetInstance()->Is_Render_Collider())
+		{
+			pCollider->Render();
+		}
 	}
 
 	return S_OK;

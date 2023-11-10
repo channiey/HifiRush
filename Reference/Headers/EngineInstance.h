@@ -113,26 +113,36 @@ public: /* For.Camera_Manager */
 	const map<_uint, CGameObject*>* Get_Cameras();
 
 public: /* For.Sound_Manager */
-	void		Play_Sound(_uint eSoundID, _uint eChannelID, float fVolume);
-	HRESULT		Register_BGM(_uint eSoundID, _uint eChannelID, float fVolume);
-	HRESULT		Play_BGM();
-	const _uint Get_BPM();
-	const _bool Is_PlayBGM();
-	void		Lerp_BGMSound(const _float& fTargetValue, const _double& fTime, const LERP_MODE& eMode = LERP_MODE::DEFAULT);
+	void			Play_Sound(_uint eSoundID, _uint eChannelID, float fVolume);
+	HRESULT			Register_BGM(_uint eSoundID, _uint eChannelID, float fVolume);
+	HRESULT			Play_BGM();
+	const _uint		Get_BPM();
+	const _bool		Is_PlayBGM();
+	void			Lerp_BGMSound(const _float& fTargetValue, const _double& fTime, const LERP_MODE& eMode = LERP_MODE::DEFAULT);
+
+public: /* For.Light_Manager */
+	const LIGHT_DESC*	Get_LightDesc(_uint iLightIndex);
+	HRESULT				Add_Light(const LIGHT_DESC& LightDesc);
 
 private:
 	class CTimer_Manager*			m_pTimer_Manager		= { nullptr };
+	class CInput_Device*			m_pInput_Device			= { nullptr };
+	class CSound_Manager*			m_pSound_Manager		= { nullptr };
+	
 	class CGraphic_Device*			m_pGraphic_Device		= { nullptr };
+	class CPipeLine*				m_pPipeLine				= { nullptr };
+	class CLight_Manager*			m_pLight_Manager		= { nullptr };
+	class CTarget_Manager*			m_pTarget_Manager		= { nullptr };
+
+
 	class CLevel_Manager*			m_pLevel_Manager		= { nullptr };
 	class CObject_Manager*			m_pObject_Manager		= { nullptr };
-	class CComponent_Manager*		m_pComponent_Manager	= { nullptr };
-	class CProfiler_Manager*		m_pProfiler_Manager		= { nullptr };
-	class CInput_Device*			m_pInput_Device			= { nullptr };
-	class CPipeLine*				m_pPipeLine				= { nullptr };
-	class CCollision_Manager*		m_pCollision_Manager	= { nullptr };
 	class CCamera_Manager*			m_pCamera_Manager		= { nullptr };
+	class CComponent_Manager*		m_pComponent_Manager	= { nullptr };
+
+	class CCollision_Manager*		m_pCollision_Manager	= { nullptr };
 	class CNavMesh*					m_pNavMesh				= { nullptr };
-	class CSound_Manager*			m_pSound_Manager		= { nullptr };
+	class CProfiler_Manager*		m_pProfiler_Manager		= { nullptr };
 
 private:
 	ID3D11Device* m_pDevice = { nullptr };
