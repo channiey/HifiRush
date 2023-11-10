@@ -28,6 +28,11 @@ public:
 	HRESULT Ready_Debug(const wstring& strTargetTag, _float fX, _float fY, _float fSizeX, _float fSizeY);
 	HRESULT Render(const wstring& strMRTTag, class CShader* pShader, class CVIBuffer_Rect* pVIBuffer);
 
+public:
+	const _bool& Is_DebugRTV() const { return m_bDebugRTV; }
+	void Set_DebugRTV(const _bool& bSet) { m_bDebugRTV = bSet; }
+	void Set_DebugRTV() { m_bDebugRTV = !m_bDebugRTV; }
+
 private:
 	class CRenderTarget*		Find_RenderTarget(const wstring& strTargetTag);
 	list<class CRenderTarget*>* Find_MRT(const wstring & strMRTTag);
@@ -37,6 +42,8 @@ private:
 
 	/* 장치에 동시에 바인딩되어야하는 타겟들을 미리 묶어두겠다. */
 	map<const wstring, list<class CRenderTarget*>>		m_MRTs;
+
+	_bool	m_bDebugRTV = FALSE;
 
 private:
 	ID3D11RenderTargetView*					m_pBackBufferRTV = { nullptr };

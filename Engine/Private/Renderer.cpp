@@ -154,9 +154,12 @@ HRESULT CRenderer::Draw_RenderObjects()
 		return S_OK; // E_FAIL;
 	if (FAILED(Render_UI()))
 		return S_OK; // E_FAIL;
-
-	if (FAILED(Render_Debug()))
-		return S_OK; // E_FAIL;
+	
+	if (ENGINE_INSTANCE->Is_DebugRTV())
+	{
+		if (FAILED(Render_Debug()))
+			return S_OK; // E_FAIL;
+	}
 
 	return S_OK;
 }

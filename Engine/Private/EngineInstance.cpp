@@ -679,6 +679,30 @@ HRESULT CEngineInstance::Add_Light(const LIGHT_DESC& LightDesc)
 	return m_pLight_Manager->Add_Light(LightDesc);
 }
 
+const _bool CEngineInstance::Is_DebugRTV() const
+{
+	if (nullptr == m_pTarget_Manager)
+		return FALSE;
+
+	return m_pTarget_Manager->Is_DebugRTV();
+}
+
+void CEngineInstance::Set_DebugRTV(const _bool& bSet)
+{
+	if (nullptr == m_pTarget_Manager)
+		return;
+
+	return m_pTarget_Manager->Set_DebugRTV(bSet);
+}
+
+void CEngineInstance::Set_DebugRTV()
+{
+	if (nullptr == m_pTarget_Manager)
+		return;
+
+	return m_pTarget_Manager->Set_DebugRTV();
+}
+
 void CEngineInstance::Release_Engine()
 {
 	CEngineInstance::GetInstance()->DestroyInstance();

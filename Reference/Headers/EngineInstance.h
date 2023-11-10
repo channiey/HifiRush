@@ -124,6 +124,12 @@ public: /* For.Light_Manager */
 	const LIGHT_DESC*	Get_LightDesc(_uint iLightIndex);
 	HRESULT				Add_Light(const LIGHT_DESC& LightDesc);
 
+public: /* For.Target_Manager */
+	const _bool& Is_DebugRTV() const;
+	void Set_DebugRTV(const _bool& bSet);
+	void Set_DebugRTV();
+
+
 private:
 	class CTimer_Manager*			m_pTimer_Manager		= { nullptr };
 	class CInput_Device*			m_pInput_Device			= { nullptr };

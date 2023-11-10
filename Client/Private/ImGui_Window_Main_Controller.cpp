@@ -44,7 +44,7 @@ void CImGui_Window_Main_Controller::Show_Window()
 			/* ·»´õ Å¸°Ù ºä */
 			if (ImGui::Button("RTV"))
 			{
-
+				ENGINE_INSTANCE->Set_DebugRTV();
 			}
 			ImGui::SameLine();
 

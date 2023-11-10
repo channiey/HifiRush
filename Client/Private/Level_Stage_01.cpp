@@ -92,42 +92,41 @@ HRESULT CLevel_Stage_01::Ready_Light()
 
 		LightDesc_Dir.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
 		LightDesc_Dir.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
-		LightDesc_Dir.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+		LightDesc_Dir.vSpecular = _float4(0.f, 0.f, 0.f, 0.f);  // _float4(1.f, 1.f, 1.f, 1.f);
 	}
 	if (FAILED(ENGINE_INSTANCE->Add_Light(LightDesc_Dir)))
 		return E_FAIL;
 
-	/* Á¡ ±¤¿ø */
-	LIGHT_DESC LightDesc_Point_00;
-	{
-		ZeroMemory(&LightDesc_Point_00, sizeof LightDesc_Point_00);
+	///* Á¡ ±¤¿ø */
+	//LIGHT_DESC LightDesc_Point_00;
+	//{
+	//	ZeroMemory(&LightDesc_Point_00, sizeof LightDesc_Point_00);
 
-		LightDesc_Point_00.eLightType = LIGHT_DESC::LIGHT_POINT;
-		LightDesc_Point_00.vLightPos = _float4(-15.f, 3.f, 25.f, 1.f);// _float4(-6.f, 3.f, 10.f, 1.f);
-		LightDesc_Point_00.fLightRange = 20.f;
+	//	LightDesc_Point_00.eLightType = LIGHT_DESC::LIGHT_POINT;
+	//	LightDesc_Point_00.vLightPos = _float4(-15.f, 3.f, 25.f, 1.f);// _float4(-6.f, 3.f, 10.f, 1.f);
+	//	LightDesc_Point_00.fLightRange = 20.f;
 
-		LightDesc_Point_00.vDiffuse = _float4(0.f, 1.f, 0.f, 1.f);
-		LightDesc_Point_00.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
-		LightDesc_Point_00.vSpecular = LightDesc_Point_00.vDiffuse;
-	}
-	if (FAILED(ENGINE_INSTANCE->Add_Light(LightDesc_Point_00)))
-		return E_FAIL;
+	//	LightDesc_Point_00.vDiffuse = _float4(0.f, 1.f, 0.f, 1.f);
+	//	LightDesc_Point_00.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
+	//	LightDesc_Point_00.vSpecular = LightDesc_Point_00.vDiffuse;
+	//}
+	//if (FAILED(ENGINE_INSTANCE->Add_Light(LightDesc_Point_00)))
+	//	return E_FAIL;
 
+	//LIGHT_DESC LightDesc_Point_01;
+	//{
+	//	ZeroMemory(&LightDesc_Point_01, sizeof LightDesc_Point_01);
 
-	LIGHT_DESC LightDesc_Point_01;
-	{
-		ZeroMemory(&LightDesc_Point_01, sizeof LightDesc_Point_01);
+	//	LightDesc_Point_01.eLightType = LIGHT_DESC::LIGHT_POINT;
+	//	LightDesc_Point_01.vLightPos = _float4(-6.f, 3.f, 10.f, 1.f);
+	//	LightDesc_Point_01.fLightRange = 20.f;
 
-		LightDesc_Point_01.eLightType = LIGHT_DESC::LIGHT_POINT;
-		LightDesc_Point_01.vLightPos = _float4(-6.f, 3.f, 10.f, 1.f);
-		LightDesc_Point_01.fLightRange = 20.f;
-
-		LightDesc_Point_01.vDiffuse = _float4(1.f, 0.f, 0.f, 1.f);
-		LightDesc_Point_01.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
-		LightDesc_Point_01.vSpecular = LightDesc_Point_01.vDiffuse;
-	}
-	if (FAILED(ENGINE_INSTANCE->Add_Light(LightDesc_Point_01)))
-		return E_FAIL;
+	//	LightDesc_Point_01.vDiffuse = _float4(1.f, 0.f, 0.f, 1.f);
+	//	LightDesc_Point_01.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
+	//	LightDesc_Point_01.vSpecular = LightDesc_Point_01.vDiffuse;
+	//}
+	//if (FAILED(ENGINE_INSTANCE->Add_Light(LightDesc_Point_01)))
+	//	return E_FAIL;
 
 
 	return S_OK;
