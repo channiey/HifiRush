@@ -6,6 +6,16 @@
 #include "EngineInstance.h"
 #include "Animation.h"
 
+#include "State_Blader_Idle.h"
+
+#include "State_Blader_Move.h"
+
+#include "State_Blader_Appear.h"
+#include "State_Blader_Attack.h"
+#include "State_Blader_Damaged.h"
+#include "State_Blader_ParryEvent.h"
+#include "State_Blader_Dead.h"
+
 CBlader::CBlader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CEnemy(pDevice, pContext)
 {
@@ -36,27 +46,22 @@ HRESULT CBlader::Initialize(void* pArg)
 	if (FAILED(Ready_StateMachine()))
 		return E_FAIL;
 
-	m_pModelCom->Set_Animation(5, (1.f / 24.f), DF_TW_TIME);
-
 	return S_OK;
 }
 
 void CBlader::Tick(_double fTimeDelta)
 {
-	//__super::Tick(fTimeDelta);
+	__super::Tick(fTimeDelta);
 }
 
 void CBlader::LateTick(_double fTimeDelta)
 {
-	if (!CImGui_Manager::GetInstance()->Is_DebugCam())
-	{
-		if (FAILED(m_pModelCom->Update(fTimeDelta)))
-			return;
-	}
-	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
-		return;
+	__super::LateTick(fTimeDelta);
 
-	//__super::LateTick(fTimeDelta);
+	CModel::TweenDesc desc = m_pModelCom->Get_TweenDesc();
+	cout << desc.cur.iAnimIndex << "\t" << desc.next.iAnimIndex << "\t"
+		<< desc.cur.iCurFrame << "\t" << desc.next.iCurFrame << endl;
+
 }
 
 HRESULT CBlader::Render()
@@ -73,7 +78,7 @@ void CBlader::Set_State(const OBJ_STATE& eState)
 
 	if (OBJ_STATE::STATE_ACTIVE == eState)
 	{
-		//m_pStateMachineCom->Set_State(StateNames_SA[STATE_APPEAR_SA]);
+		m_pStateMachineCom->Set_State(StateNames_BL[STATE_APPEAR_BL]);
 	}
 }
 
@@ -87,7 +92,7 @@ HRESULT CBlader::Ready_Components()
 	/* Com_Collider */
 	CCollider_Sphere* pCollider = nullptr;
 	{
-		CCollider::COLLIDERDESC	ColliderDesc(Vec3{ 0.f, 1.f, 0.f }, 1.f);
+		CCollider::COLLIDERDESC	ColliderDesc(Vec3{ 0.f, 2.f, 0.f }, 2.f);
 
 		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
 			ComponentNames[COM_COLLIDER_SPHERE], (CComponent**)&pCollider, &ColliderDesc)))
@@ -107,6 +112,43 @@ HRESULT CBlader::Ready_Chilren()
 HRESULT CBlader::Ready_StateMachine()
 {
 	CState* pState = nullptr;
+
+	/* Idle */
+	{
+		pState = CState_Blader_Idle::Create(m_pStateMachineCom, StateNames_BL[STATE_IDLE_BL], this);
+		if (FAILED(m_pStateMachineCom->Add_State(pState)))
+			return E_FAIL;
+	}
+
+	/* Move */
+	{
+		pState = CState_Blader_Move::Create(m_pStateMachineCom, StateNames_BL[STATE_MOVE_BL], this);
+		if (FAILED(m_pStateMachineCom->Add_State(pState)))
+			return E_FAIL;
+	}
+
+	/* Act */
+	{
+		pState = CState_Blader_Appear::Create(m_pStateMachineCom, StateNames_BL[STATE_APPEAR_BL], this);
+		if (FAILED(m_pStateMachineCom->Add_State(pState)))
+			return E_FAIL;
+
+		pState = CState_Blader_Attack::Create(m_pStateMachineCom, StateNames_BL[STATE_ATTACK_BL], this);
+		if (FAILED(m_pStateMachineCom->Add_State(pState)))
+			return E_FAIL;
+
+		pState = CState_Blader_Damaged::Create(m_pStateMachineCom, StateNames_BL[STATE_DAMAGED_BL], this);
+		if (FAILED(m_pStateMachineCom->Add_State(pState)))
+			return E_FAIL;
+
+		pState = CState_Blader_ParryEvent::Create(m_pStateMachineCom, StateNames_BL[STATE_PARRYEVENT_BL], this);
+		if (FAILED(m_pStateMachineCom->Add_State(pState)))
+			return E_FAIL;
+
+		pState = CState_Blader_Dead::Create(m_pStateMachineCom, StateNames_BL[STATE_DEAD_BL], this);
+		if (FAILED(m_pStateMachineCom->Add_State(pState)))
+			return E_FAIL;
+	}
 
 	return S_OK;
 }

@@ -78,6 +78,9 @@ HRESULT CBattleManager::Ready_Pool()
 {
  	if (FAILED(ENGINE_INSTANCE->Reserve_Pool(LEVEL_ID::LV_STAGE_01, LayerNames[LAYER_ENEMY], L"Enemy_Saber", 5)))
 		return E_FAIL;
+
+	if (FAILED(ENGINE_INSTANCE->Reserve_Pool(LEVEL_ID::LV_STAGE_01, LayerNames[LAYER_ENEMY], L"Enemy_Blader", 1)))
+		return E_FAIL;
 	
 	return S_OK;
 }

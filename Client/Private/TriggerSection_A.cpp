@@ -29,7 +29,8 @@ HRESULT CTriggerSection_A::Initialize(void* pArg)
 {
 	m_strTriggerTag = BattelTriggerNames[BATTLE_TRIGGER_TYPE::SECTION_A];
 
-	__super::Initialize(pArg);
+	if (FAILED(__super::Initialize(pArg)))
+		return E_FAIL;
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
@@ -55,6 +56,8 @@ void CTriggerSection_A::LateTick(_double fTimeDelta)
 
 HRESULT CTriggerSection_A::Render()
 {
+	__super::Render();
+
 	return S_OK;
 }
 
@@ -75,12 +78,12 @@ HRESULT CTriggerSection_A::Start_Battle()
 	/* 06. ÆÄÀÌÆ® */
 
 	/* Set Camera */
-	CCamera* pCameraCom = ENGINE_INSTANCE->Get_CurCamera()->Get_Camera();
+	/*CCamera* pCameraCom = ENGINE_INSTANCE->Get_CurCamera()->Get_Camera();
 	if (nullptr != pCameraCom && CAMERA_ID::CAM_FOLLOW == (CAMERA_ID)pCameraCom->Get_Key())
 	{
 		pCameraCom->Lerp_Fov(CamFov_Follow_Battle, 1.5f, LERP_MODE::SMOOTHER_STEP);
 		pCameraCom->Lerp_Dist(CamDist_Follow_Battle, 1.5f, LERP_MODE::SMOOTHER_STEP);
-	}
+	}*/
 
 	/* Set Volume */
 	ENGINE_INSTANCE->Lerp_BGMSound(BgmVolumeInBattle, 2.f, LERP_MODE::SMOOTHER_STEP);

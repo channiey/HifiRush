@@ -127,6 +127,7 @@ public:
 	_uint					Get_MaterialIndex(_uint iMeshIndex);
 
 	class CAnimation*		Get_Animation(const _uint& iIndex);
+	class CAnimation*		Get_Animation(const string& strName);
 	const vector<class CAnimation*>& Get_Animations() const { return m_Animations; }
 	const _uint				Get_AnimationCount() const { return (_uint)m_Animations.size(); }
 	const KEYFRAME_DESC		Get_CurAnimation() const { return m_TweenDesc.cur; }
@@ -138,6 +139,7 @@ public:
 
 public:
 	void					Set_Animation(const _uint& iAnimIndex, const _double& dSpeed = DF_PL_TIME, const _float& fTweenDuration = DF_TW_TIME);
+	void					Set_Animation(class CAnimation* pAnim, const _double& dSpeed = DF_PL_TIME, const _float& fTweenDuration = DF_TW_TIME);
 	void					Set_SoundEvent(_uint iFrame, _uint eSoundID, _uint eChannelID, float fVolume);
 	void					Set_SoundEvent(SOUND_EVENT_DESC desc);
 
@@ -184,6 +186,8 @@ private:
 	void					Set_RootPosition(); /* 트윈 없는 싱글 애니메이션 */
 
 	void					Check_SoundEvent();
+
+	class CAnimation* Find_Animation(const string& strName);
 
 private: 
 	TYPE						m_eModelType = TYPE_END;

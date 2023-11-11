@@ -39,6 +39,7 @@
 
 /* Trigger */
 #include "TriggerSection_A.h"
+#include "TriggerSection_B.h"
 
 CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: m_pDevice(pDevice)
@@ -352,6 +353,11 @@ HRESULT CLoader::Load_Prototype()
 			CTriggerSection_A::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+		/* For.Prototype_GameObject_Trigger_Section_B */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Trigger_Section_B"),
+			CTriggerSection_B::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 		/* For.Prototype_GameObject_Weapon_Chai_Guitar_Explore */
 		{
 			const string		tag = "Weapon_Chai_Guitar_Explore";
@@ -383,34 +389,7 @@ HRESULT CLoader::Load_Prototype()
 			}
 		}
 
-		/*if (FAILED(pEngineInstance->Add_Prototype(Util_String::ToWString("Env_Static_Bldg_Inside_Battle_A"), CStaticDummy::Create(m_pDevice, m_pContext))))
-			return E_FAIL; 
-		//if (FAILED(pEngineInstance->Add_Prototype(Util_String::ToWString("Env_Static_Bldg_Inside_Battle_B"), CStaticDummy::Create(m_pDevice, m_pContext))))
-		//	return E_FAIL;
-		if (FAILED(pEngineInstance->Add_Prototype(Util_String::ToWString("Env_Static_Bldg_Outside_BK"), CStaticDummy::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-		if (FAILED(pEngineInstance->Add_Prototype(Util_String::ToWString("Env_Static_Bldg_Inside_Lobby_A"), CStaticDummy::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-
-		if (FAILED(pEngineInstance->Add_Prototype(Util_String::ToWString("Env_Static_Container_Closed_Blue"), CStaticDummy::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-
-		if (FAILED(pEngineInstance->Add_Prototype(Util_String::ToWString("Env_Static_Container_Closed_Green"), CStaticDummy::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-
-		if (FAILED(pEngineInstance->Add_Prototype(Util_String::ToWString("Env_Static_Container_Closed_Yellow"), CStaticDummy::Create(m_pDevice, m_pContext))))
-			return E_FAIL;*/
-		
-		
-
-		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Env_Static_Terrain"),
-			CTerrain::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-
-		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Env_SkyBox"),
-			CSkyBox::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-
+		/* For.Prototype_GameObject_Proto_Sky_Sphere*/
 		if (FAILED(pEngineInstance->Add_Prototype(Util_String::ToWString("Env_SkySphere"),
 			CSkySphere::Create(m_pDevice, m_pContext))))
 			return E_FAIL;

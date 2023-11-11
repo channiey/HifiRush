@@ -352,6 +352,39 @@
     <Filter Include="03.GameObjects\03.Character\01.Enemy\02.Blader">
       <UniqueIdentifier>{d52fc8f6-02bb-44f8-87e5-c7386b8db973}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.GameObjects\03.Character\01.Enemy\02.Blader\00.Model">
+      <UniqueIdentifier>{f299087f-9e6e-480d-a4f9-3751aaba78f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\01.Enemy\02.Blader\01.States">
+      <UniqueIdentifier>{d3c32f2c-2996-42d2-8a44-f546235d823a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\01.Enemy\02.Blader\01.States\00.Base">
+      <UniqueIdentifier>{7e2ba9f0-9adf-48b7-a4f5-a7122292529a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\01.Enemy\02.Blader\01.States\01.Idle">
+      <UniqueIdentifier>{b0c8c809-3a70-48ad-85a4-00dddc38c25d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\01.Enemy\02.Blader\01.States\02.Move">
+      <UniqueIdentifier>{c263baf2-fb98-4a49-a57d-1c01c1cb70b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\01.Enemy\02.Blader\03.Atc">
+      <UniqueIdentifier>{a8cfb392-9a2b-4caf-981a-69c5a655423e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\01.Enemy\02.Blader\03.Atc\00.Appear">
+      <UniqueIdentifier>{b1fe3645-ed34-41aa-b4d1-7e78c153248f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\01.Enemy\02.Blader\03.Atc\02.Damaged">
+      <UniqueIdentifier>{c01bf046-917e-4b0c-b2e8-ff56071db4e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\01.Enemy\02.Blader\03.Atc\01.Attack">
+      <UniqueIdentifier>{450574a9-f6d6-46d1-87f4-1afa8493c476}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\01.Enemy\02.Blader\03.Atc\04.Dead">
+      <UniqueIdentifier>{21c833ba-6e5e-461e-8be5-0667db96d960}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\01.Enemy\02.Blader\03.Atc\03.ParryEvent">
+      <UniqueIdentifier>{fea555e7-02bc-49e6-a5ff-20266526bf75}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -573,8 +606,35 @@
     <ClInclude Include="..\Public\State_Saber_Attack.h">
       <Filter>03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\03.Act\03.Attack</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\TriggerSection_B.h">
+      <Filter>03.GameObjects\09.Trigger\Trigger_Battle\01.Section_B</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\Blader.h">
-      <Filter>03.GameObjects\03.Character\01.Enemy\02.Blader</Filter>
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Blader\00.Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Blader_Base.h">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Blader\01.States\00.Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Blader_Idle.h">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Blader\01.States\01.Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Blader_Move.h">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Blader\01.States\02.Move</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Blader_Attack.h">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Blader\03.Atc\01.Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Blader_Damaged.h">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Blader\03.Atc\02.Damaged</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Blader_ParryEvent.h">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Blader\03.Atc\03.ParryEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Blader_Dead.h">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Blader\03.Atc\04.Dead</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Blader_Appear.h">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Blader\03.Atc\00.Appear</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -785,8 +845,35 @@
     <ClCompile Include="..\Private\State_Saber_Attack.cpp">
       <Filter>03.GameObjects\03.Character\01.Enemy\01.Saber\01.States\03.Act\03.Attack</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\TriggerSection_B.cpp">
+      <Filter>03.GameObjects\09.Trigger\Trigger_Battle\01.Section_B</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\Blader.cpp">
-      <Filter>03.GameObjects\03.Character\01.Enemy\02.Blader</Filter>
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Blader\00.Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Blader_Base.cpp">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Blader\01.States\00.Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Blader_Idle.cpp">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Blader\01.States\01.Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Blader_Move.cpp">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Blader\01.States\02.Move</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Blader_Attack.cpp">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Blader\03.Atc\01.Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Blader_Damaged.cpp">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Blader\03.Atc\02.Damaged</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Blader_ParryEvent.cpp">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Blader\03.Atc\03.ParryEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Blader_Dead.cpp">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Blader\03.Atc\04.Dead</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Blader_Appear.cpp">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Blader\03.Atc\00.Appear</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

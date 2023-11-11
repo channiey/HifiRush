@@ -20,9 +20,11 @@ public:
 	_uint	Get_MaxFrameCount() const { return m_iMaxFrameCount; }
 	_float	Get_TickPerSecond() const { return m_fTickPerSecond; }
 	_float	Get_Duration() const { return m_fDuration; }
+	const _uint& 	Get_Index() const { return m_iIndex; }
 
 	const _double& Get_FrameAcc() const { return m_dFrameAcc; }
 	void Set_FrameAcc(const _double& dFrameAcc) { m_dFrameAcc = dFrameAcc; }
+	void Set_Index(const _uint& iIndex) { m_iIndex = iIndex; }
 	void Add_FrameAcc(const _double& dFrameAcc) { m_dFrameAcc += dFrameAcc; }
 
 	const _double& Get_SecondPerFrame() const { return m_dSecondPerFrame; }
@@ -44,6 +46,8 @@ private:
 	_double						m_dSecondPerFrame = 0.f;
 
 	_uint						m_iMaxFrameCount = 0;
+
+	_uint						m_iIndex = 0; /* 애니메이션 컨테이너에서 이 애니메이션의 인덱스*/
 
 	/* Cache */
 	vector<_uint>				m_ChannelKeyFrames;		/* 각 채널들의 현재 키프레임 */

@@ -188,6 +188,9 @@
     <ClInclude Include="..\Public\Camera_Follow.h" />
     <ClInclude Include="..\Public\Chai_Guitar_Explore.h" />
     <ClInclude Include="..\Public\Character.h" />
+    <ClInclude Include="..\Public\State_Blader_Appear.h" />
+    <ClInclude Include="..\Public\State_Blader_Attack.h" />
+    <ClInclude Include="..\Public\State_Blader_Base.h" />
     <ClInclude Include="..\Public\GameManager.h" />
     <ClInclude Include="..\Public\HealthBar.h" />
     <ClInclude Include="..\Public\ImGui_Window_Mid_Cam.h" />
@@ -220,6 +223,11 @@
     <ClInclude Include="..\Public\Saber.h" />
     <ClInclude Include="..\Public\Saber_Sword.h" />
     <ClInclude Include="..\Public\SkyBox.h" />
+    <ClInclude Include="..\Public\State_Blader_Damaged.h" />
+    <ClInclude Include="..\Public\State_Blader_Dead.h" />
+    <ClInclude Include="..\Public\State_Blader_Idle.h" />
+    <ClInclude Include="..\Public\State_Blader_Move.h" />
+    <ClInclude Include="..\Public\State_Blader_ParryEvent.h" />
     <ClInclude Include="..\Public\State_Chai_Attack.h" />
     <ClInclude Include="..\Public\State_Chai_Base.h" />
     <ClInclude Include="..\Public\State_Chai_Damaged.h" />
@@ -240,6 +248,7 @@
     <ClInclude Include="..\Public\TriggerBattle.h" />
     <ClInclude Include="..\Public\TriggerSection_A.h" />
     <ClInclude Include="..\Public\TriggerDummy.h" />
+    <ClInclude Include="..\Public\TriggerSection_B.h" />
     <ClInclude Include="..\Public\Ui.h" />
     <ClInclude Include="..\Public\Weapon.h" />
     <ClInclude Include="Client.h" />
@@ -284,6 +293,9 @@
     <ClCompile Include="..\Private\Camera_Follow.cpp" />
     <ClCompile Include="..\Private\Chai_Guitar_Explore.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
+    <ClCompile Include="..\Private\State_Blader_Appear.cpp" />
+    <ClCompile Include="..\Private\State_Blader_Attack.cpp" />
+    <ClCompile Include="..\Private\State_Blader_Base.cpp" />
     <ClCompile Include="..\Private\GameManager.cpp" />
     <ClCompile Include="..\Private\HealthBar.cpp" />
     <ClCompile Include="..\Private\ImGui_Window_Mid_Cam.cpp" />
@@ -318,6 +330,11 @@
     <ClCompile Include="..\Private\Saber.cpp" />
     <ClCompile Include="..\Private\Saber_Sword.cpp" />
     <ClCompile Include="..\Private\SkyBox.cpp" />
+    <ClCompile Include="..\Private\State_Blader_Damaged.cpp" />
+    <ClCompile Include="..\Private\State_Blader_Dead.cpp" />
+    <ClCompile Include="..\Private\State_Blader_Idle.cpp" />
+    <ClCompile Include="..\Private\State_Blader_Move.cpp" />
+    <ClCompile Include="..\Private\State_Blader_ParryEvent.cpp" />
     <ClCompile Include="..\Private\State_Chai_Attack.cpp" />
     <ClCompile Include="..\Private\State_Chai_Base.cpp" />
     <ClCompile Include="..\Private\State_Chai_Damaged.cpp" />
@@ -338,6 +355,7 @@
     <ClCompile Include="..\Private\TriggerBattle.cpp" />
     <ClCompile Include="..\Private\TriggerSection_A.cpp" />
     <ClCompile Include="..\Private\TriggerDummy.cpp" />
+    <ClCompile Include="..\Private\TriggerSection_B.cpp" />
     <ClCompile Include="..\Private\Ui.cpp" />
     <ClCompile Include="..\Private\Weapon.cpp" />
     <ClCompile Include="Client.cpp" />

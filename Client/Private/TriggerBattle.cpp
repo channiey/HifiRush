@@ -51,6 +51,9 @@ void CTriggerBattle::LateTick(_double fTimeDelta)
 	if (nullptr != m_pCollider && m_pCollider->Is_Active() && CImGui_Manager::GetInstance()->Is_Render_Collider())
 		m_pRendererCom->Add_Debug(m_pCollider);
 #endif // _DEBUG
+
+	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
+		return;
 }
 
 

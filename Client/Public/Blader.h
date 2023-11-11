@@ -5,19 +5,97 @@ BEGIN(Client)
 
 enum ANIM_BL
 {
-	ANIM_IDLE_BL,
-	ANIM_END_BL
+	APPEAR_BL,
+
+	ATK_BLADE_BL,
+	ATK_COMBO_BL,
+	ATK_JUMP_STRKIE_00_BL,
+	ATK_JUMP_STRKIE_01_BL,
+	ATK_JUMP_STRKIE_02_BL,
+
+	DIE_BL,
+
+	DMG_AIR_BL,
+	DMG_LIGHT_00_BL,
+	DMG_LIGHT_01_BL,
+	DMG_LIGHT_02_BL,
+
+	ESCAPE_BACK_BL,
+	ESCAPE_FRONT_BL,
+	ESCAPE_LEFT_BL,
+	ESCAPE_RIGHT_BL,
+
+	IDLE_BL,
+	IDLE_SHORT_00_BL,
+	IDLE_SHORT_01_BL,
+
+	PARRY_EVENT_START_BL,
+	PARRY_EVENT_ING_BL,
+
+	WALK_BACK_BL,
+	WALK_FRONT_BL,
+	WALK_LEFT_BL,
+	WALK_RIGHT_BL,
+
+	ANIM_BL_END
+};
+
+
+static const string AnimNames_BL[ANIM_BL::ANIM_BL_END]
+{
+	"APPEAR",
+
+	"ATK_BLADE",
+	"ATK_COMBO",
+	"ATK_JUMP_STRKIE_00",
+	"ATK_JUMP_STRKIE_01",
+	"ATK_JUMP_STRKIE_02",
+
+	"DIE",
+	"DMG_AIR_00",
+	"DMG_LIGHT_00",
+	"DMG_LIGHT_01",
+	"DMG_LIGHT_02",
+
+	"ESCAPE_BACK",
+	"ESCAPE_FRONT",
+	"ESCAPE_LEFT",
+	"ESCAPE_RIGHT",
+
+	"IDLE",
+	"IDLE_SHORT_00",
+	"IDLE_SHORT_01",
+
+	"PARRYEVENT_START",
+	"PARRYEVENT_ING",
+
+	"WALK_BACK",
+	"WALK_FRONT",
+	"WALK_LEFT",
+	"WALK_RIGHT"
 };
 
 enum STATE_BL
 {
+	STATE_APPEAR_BL,
 	STATE_IDLE_BL,
+	STATE_MOVE_BL,
+	STATE_ATTACK_BL,
+	STATE_DAMAGED_BL,
+	STATE_DEAD_BL,
+	STATE_PARRYEVENT_BL,
 	STATE_END_BL
 };
 
 static const wstring StateNames_BL[STATE_BL::STATE_END_BL]
 {
-	L"IDLE"
+	L"APPEAR",
+	L"IDLE",
+	L"MOVE",
+	L"ATTACK",
+	L"DAMAGED",
+	L"PATRRYEVENT"
+	L"DEAD",
 };
 
 class CBlader final : public CEnemy
@@ -53,5 +131,13 @@ public:
 	virtual void		Free() override;
 
 private:
+	friend class CState_Blader_Base;
+	friend class CState_Blader_Idle;
+	friend class CState_Blader_Move;
+	friend class CState_Blader_Appear;
+	friend class CState_Blader_Attack;
+	friend class CState_Blader_Damaged;
+	friend class CState_Blader_ParryEvent;
+	friend class CState_Blader_Dead;
 };
 END

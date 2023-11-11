@@ -139,6 +139,11 @@ HRESULT CModel::Initialize(void* pArg)
 		}
 		m_Animations.clear();
 		m_Animations = Animations;
+
+		for (size_t i = 0; i < m_Animations.size(); i++)
+		{
+			m_Animations[i]->Set_Index((_uint)i);
+		}
 	}
 
 	/* Create VTF */
@@ -351,6 +356,30 @@ void CModel::Set_Animation(const _uint& iAnimIndex, const _double& dSpeed, const
 		m_TweenDesc.cur.iAnimIndex = iAnimIndex % Get_AnimationCount();
 		Get_Animation(m_TweenDesc.cur.iAnimIndex)->Set_SecondPerFrame(dSpeed);
 		
+		return;
+	}
+	m_TweenDesc.ClearNextAnim();
+
+	m_TweenDesc.next.iAnimIndex = iAnimIndex % Get_AnimationCount();
+	m_TweenDesc.fTweenDuration = fTweenDuration;
+
+	//Get_Animation(m_TweenDesc.cur.iAnimIndex)->Set_SecondPerFrame(dSpeed);
+	Get_Animation(m_TweenDesc.next.iAnimIndex)->Set_SecondPerFrame(dSpeed);
+}
+
+void CModel::Set_Animation(CAnimation* pAnim, const _double& dSpeed, const _float& fTweenDuration)
+{
+	if (nullptr == pAnim) 
+		return;
+
+	_int iAnimIndex = pAnim->Get_Index();
+
+	/* 최초 1회 실행  */
+	if (-1 == m_TweenDesc.cur.iAnimIndex)
+	{
+		m_TweenDesc.cur.iAnimIndex = iAnimIndex % Get_AnimationCount();
+		Get_Animation(m_TweenDesc.cur.iAnimIndex)->Set_SecondPerFrame(dSpeed);
+
 		return;
 	}
 	m_TweenDesc.ClearNextAnim();
@@ -1144,6 +1173,17 @@ void CModel::Check_SoundEvent()
 	}
 }
 
+CAnimation* CModel::Find_Animation(const string& strName)
+{
+	for (auto pAnim : m_Animations)
+	{
+		if (nullptr != pAnim && pAnim->Get_Name() == strName)
+			return pAnim;
+	}
+
+	return nullptr;
+}
+
 _uint CModel::Get_MaterialIndex(_uint iMeshIndex)
 {
 	return m_Meshes[iMeshIndex]->Get_MaterialIndex();
@@ -1155,6 +1195,11 @@ CAnimation* CModel::Get_Animation(const _uint& iIndex)
 		return nullptr;
 
 	return m_Animations[iIndex];
+}
+
+CAnimation* CModel::Get_Animation(const string& strName)
+{
+	return Find_Animation(strName);
 }
 
 CModel * CModel::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, const string& strPath, _fmatrix PivotMatrix)

@@ -35,6 +35,20 @@ HRESULT CState_Chai_Dash::Enter()
 
 const wstring CState_Chai_Dash::Tick(const _double& fTimeDelta)
 {
+	if(!m_pModel->Is_Tween() && m_pModel->Is_OneThirds_Animation()  && Input::Shift())
+	{
+		ANIM_CH			eAnimID = ANIM_CH::DASH;
+		CAnimation* pAnimation = m_pChai->Get_Model()->Get_Animation(eAnimID);
+		const _double	fTimePerFrame = (1 / pAnimation->Get_TickPerSecond()) * 0.5f;
+
+		m_pChai->Get_Model()->Set_Animation(eAnimID, fTimePerFrame, DF_TW_TIME);
+
+		m_pChai->Get_Rigidbody()->Add_Force(m_pChai->Get_Transform()->Get_Forward().xyz() * m_pChai->m_tPhysicsDesc.fDashPower, CRigidbody::FORCE_MODE::IMPULSE);
+		ENGINE_INSTANCE->Play_Sound(EFC_CHAI_DASH, PLAYER_CHAI, EfcVolumeChai);
+
+		return m_strName;
+	}
+
 	return m_strName;
 }
 
