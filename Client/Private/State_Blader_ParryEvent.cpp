@@ -25,21 +25,23 @@ HRESULT CState_Blader_ParryEvent::Enter()
 {
 	CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::PARRY_EVENT_START_BL]);
 
-	if (nullptr == pAnimation)
-		return E_FAIL;
+	if (nullptr == pAnimation) return E_FAIL;
 
-	_double	fTimePerFrame = 1.f / pAnimation->Get_TickPerSecond();
+	m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME);
 
-	m_pModel->Set_Animation(pAnimation, fTimePerFrame, DF_TW_TIME);
+	/* Set Look */
+	{
+		Vec4 vDir = m_pBlader->m_tFightDesc.pTarget->Get_Transform()->Get_FinalPosition()
+					- m_pBlader->Get_Transform()->Get_FinalPosition();
+
+		m_pBlader->Get_Transform()->Set_Look(vDir.ZeroY().Normalized());
+	}
 
 	return S_OK;
 }
 
 const wstring CState_Blader_ParryEvent::Tick(const _double& fTimeDelta)
 {
-	m_fTimeAcc += fTimeDelta;
-
-	Look_Target();
 
 	return m_strName;
 }
@@ -57,24 +59,35 @@ void CState_Blader_ParryEvent::Exit()
 
 const wstring CState_Blader_ParryEvent::Check_Transition()
 {
-	/*if (m_pSaber->m_tFightDesc.bDamaged)
+	CAnimation* pAnimation = m_pModel->Get_CurAnimation();
+	CModel::TweenDesc desc = m_pModel->Get_TweenDesc();
+
+	const string strCurAnimName = pAnimation->Get_Name();
+
+	if (-1 == desc.next.iAnimIndex)
 	{
-		return StateNames_SA[STATE_DAMAGED_SA];
+		if (AnimNames_BL[ANIM_BL::PARRY_EVENT_START_BL] == strCurAnimName &&
+			55 == desc.cur.iCurFrame)
+		{
+			CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::PARRY_EVENT_ING_BL]);
+
+			if(nullptr != pAnimation)
+				m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME);
+		}
+		else if (AnimNames_BL[ANIM_BL::PARRY_EVENT_ING_BL] == strCurAnimName &&
+			185 == desc.cur.iCurFrame)
+		{
+			CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::PARRY_EVENT_FINISH_BL]);
+		
+			if (nullptr != pAnimation)
+				m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME);
+		}
+		else if (AnimNames_BL[ANIM_BL::PARRY_EVENT_FINISH_BL] == strCurAnimName &&
+			45 == desc.cur.iCurFrame)
+		{
+			return StateNames_BL[STATE_BL::STATE_IDLE_BL];
+		}
 	}
-
-	if (m_pModel->Is_Tween() || m_fTimeLimit > m_fTimeAcc)
-		return m_strName;
-
-	const wstring strNextState = Choice_NextState();
-
-	if (strNextState == m_strName)
-	{
-		Set_NextAnimation();
-
-		return m_strName;
-	}
-	else
-		return strNextState;*/
 
 	return m_strName;
 }

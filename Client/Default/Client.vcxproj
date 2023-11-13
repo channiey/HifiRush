@@ -186,6 +186,7 @@
     <ClInclude Include="..\Public\Blader.h" />
     <ClInclude Include="..\Public\Camera_Debug.h" />
     <ClInclude Include="..\Public\Camera_Follow.h" />
+    <ClInclude Include="..\Public\Camera_Parry.h" />
     <ClInclude Include="..\Public\Chai_Guitar_Explore.h" />
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\State_Blader_Appear.h" />
@@ -291,6 +292,7 @@
     <ClCompile Include="..\Private\Blader.cpp" />
     <ClCompile Include="..\Private\Camera_Debug.cpp" />
     <ClCompile Include="..\Private\Camera_Follow.cpp" />
+    <ClCompile Include="..\Private\Camera_Parry.cpp" />
     <ClCompile Include="..\Private\Chai_Guitar_Explore.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\State_Blader_Appear.cpp" />

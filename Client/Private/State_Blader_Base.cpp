@@ -42,7 +42,7 @@ void CState_Blader_Base::Look_Target()
 {
 	if (!m_pModel->Is_Tween())
 	{
-		const _float fRotConstNormal = 30.f * 0.016f;
+		const _float fRotConstNormal = 20.f * 0.016f;
 
 		Vec4 vLook, vDir, vLerpDir;
 

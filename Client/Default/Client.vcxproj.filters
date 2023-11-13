@@ -385,6 +385,12 @@
     <Filter Include="03.GameObjects\03.Character\01.Enemy\02.Blader\03.Atc\03.ParryEvent">
       <UniqueIdentifier>{fea555e7-02bc-49e6-a5ff-20266526bf75}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.GameObjects\00.Camera\02.Event">
+      <UniqueIdentifier>{320825ad-7d46-4b6f-85bf-fc892379ec7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\00.Camera\02.Event\00.Parry">
+      <UniqueIdentifier>{07057f94-9d57-406e-aa32-a0d372f0b703}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -636,6 +642,9 @@
     <ClInclude Include="..\Public\State_Blader_Appear.h">
       <Filter>03.GameObjects\03.Character\01.Enemy\02.Blader\03.Atc\00.Appear</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Camera_Parry.h">
+      <Filter>03.GameObjects\00.Camera\02.Event\00.Parry</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -874,6 +883,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\State_Blader_Appear.cpp">
       <Filter>03.GameObjects\03.Character\01.Enemy\02.Blader\03.Atc\00.Appear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Parry.cpp">
+      <Filter>03.GameObjects\00.Camera\02.Event\00.Parry</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

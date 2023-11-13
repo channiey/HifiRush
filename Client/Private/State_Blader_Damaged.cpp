@@ -62,11 +62,18 @@ const wstring CState_Blader_Damaged::Check_Transition()
 
 void CState_Blader_Damaged::Damaged()
 {
-	/*if (m_pBlader->m_tStatDesc.bDead)
+	/* Temp */
 	{
-		m_pStateMachine->Set_State(StateNames_BL[STATE_DEAD_BL]);
+		m_pStateMachine->Set_State(StateNames_BL[STATE_BL::STATE_PARRYEVENT_BL]);
 		return;
-	}*/
+	}
+
+
+	if (m_pBlader->m_tStatDesc.bDead)
+	{
+		m_pStateMachine->Set_State(StateNames_BL[STATE_BL::STATE_DEAD_BL]);
+		return;
+	}
 
 	CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::DMG_LIGHT_01_BL]);
 
