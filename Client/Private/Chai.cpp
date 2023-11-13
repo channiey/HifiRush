@@ -185,6 +185,29 @@ void CChai::OnCollision_Exit(CCollider* pCollider, const _int& iIndexAsChild)
 {
 }
 
+void CChai::Damaged(CCharacter* pCharacter)
+{
+	if (nullptr == pCharacter || m_tStatDesc.bDead)
+		return;
+
+	if (m_tFightDesc.bParry) // 패링 성공 
+	{
+		pCharacter->Damaged(this);
+		ENGINE_INSTANCE->Play_Sound(EFC_CHAI_PARRY, PLAYER_CHAI, EfcVolumeChai);
+		return;
+	}
+
+	m_tFightDesc.bDamaged = TRUE;
+	m_tFightDesc.pAttacker = pCharacter;
+
+	m_tStatDesc.fCurHp -= pCharacter->Get_StatDesc().fAd;
+
+	if (m_tStatDesc.fCurHp <= 0)
+	{
+		m_tStatDesc.bDead = TRUE;
+	}
+}
+
 CChai * CChai::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CChai*	pInstance = new CChai(pDevice, pContext);

@@ -26,9 +26,6 @@ HRESULT CState_Saber_Move::Enter()
 
 const wstring CState_Saber_Move::Tick(const _double& fTimeDelta)
 {
-	if (m_bLookTarget)
-		Look_Target();
-
 	m_fTimeAcc += fTimeDelta;
 
 	return m_strName;

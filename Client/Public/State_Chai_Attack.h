@@ -60,6 +60,7 @@ public:
 private:
 	void				Set_AttackDesc();
 	void				Detect_AttackCollision();
+	void				KnockBack(CCharacter* pTarget);
 
 private:
 	ATTACK_DESC			m_tAttackDesc	= {};

@@ -28,22 +28,21 @@ HRESULT CState_Blader_Appear::Enter()
 	if (nullptr == pAnimation)
 		return E_FAIL;
 
-	_double	fTimePerFrame = 1.f / pAnimation->Get_TickPerSecond();
-
-	m_pModel->Set_Animation(pAnimation, fTimePerFrame, DF_TW_TIME);
+	m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME);
 
 	return S_OK;
 }
 
 const wstring CState_Blader_Appear::Tick(const _double& fTimeDelta)
 {
-	Look_Target();
-
 	return m_strName;
 }
 
 const wstring CState_Blader_Appear::LateTick()
 {
+	/* 두번째 등장 애니메이션 재생 */
+	Play_SecondAnimation();
+
 	return Check_Transition();
 }
 
@@ -54,10 +53,23 @@ void CState_Blader_Appear::Exit()
 
 const wstring CState_Blader_Appear::Check_Transition()
 {
-	if (!m_pModel->Is_Tween() && 42 <= m_pModel->Get_TweenDesc().cur.iCurFrame)
-		return StateNames_BL[STATE_IDLE_BL];
+	if (!m_pModel->Is_Tween() && AnimNames_BL[ANIM_BL::PARRY_EVENT_START_BL] == m_pModel->Get_CurAnimation()->Get_Name() && m_pModel->Is_ThreeFourths_Animation())
+		return StateNames_BL[STATE_BL::STATE_IDLE_BL];
 
 	return m_strName;
+}
+
+void CState_Blader_Appear::Play_SecondAnimation()
+{
+	CAnimation* pCurAnimation = m_pModel->Get_CurAnimation();
+
+	if (!m_pModel->Is_Tween() && AnimNames_BL[ANIM_BL::APPEAR_BL] == pCurAnimation->Get_Name() && 36 <= m_pModel->Get_TweenDesc().cur.iCurFrame)
+	{
+		CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::PARRY_EVENT_START_BL]);
+
+		if (nullptr != pAnimation)
+			m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME);
+	}
 }
 
 CState_Blader_Appear* CState_Blader_Appear::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

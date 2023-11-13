@@ -82,32 +82,23 @@ void CState_Saber_Base::Look_Target()
 {
 	if (!m_pModel->Is_Tween())
 	{
-		const _float fRotConstMax = 66.f;
-		const _float fRotConstNormal = 50.f;
+		const _float fRotConstNormal = 20.f * 0.016f;
 
-		Vec4 vLook, vDir, vRotDir;
+		Vec4 vLook, vDir, vLerpDir;
 
-		vLook	= m_pSaber->Get_Transform()->Get_Forward();
-		vDir	= m_pSaber->m_tFightDesc.pTarget->Get_Transform()->Get_FinalPosition()
-					- m_pSaber->Get_Transform()->Get_FinalPosition();
+		vLook = m_pSaber->Get_Transform()->Get_State(CTransform::STATE_LOOK);
 
-		vLook.y = 0.f;
-		vLook.z = 0.f;
+		vDir = m_pSaber->m_tFightDesc.pTarget->Get_Transform()->Get_FinalPosition()
+						- m_pSaber->Get_Transform()->Get_FinalPosition();
 
-		vDir.y	= 0.f;
-		vDir.w	= 0.f;
+		vLook.y = vDir.y = 0.f;
 
 		vLook.Normalize();
 		vDir.Normalize();
 
+		vLerpDir = Vec4::Lerp(vLook, vDir, fRotConstNormal);
 
-		if (3.f < acos(vDir.Dot((vLook))))
-			vRotDir = Vec4::Lerp(vLook, vDir, fRotConstMax);
-		else
-			vRotDir = Vec4::Lerp(vLook, vDir, fRotConstNormal * 0.5f);
-
-
-		m_pSaber->Get_Transform()->Set_Look(vDir);
+		m_pSaber->Get_Transform()->Set_Look(vLerpDir);
 	}
 }
 

@@ -2,6 +2,8 @@
 #include "Character.h"
 #include "EngineInstance.h"
 
+#include "Animation.h"
+
 #ifdef _DEBUG
 #include "ImGui_Manager.h"
 #endif // _DEBUG
@@ -224,6 +226,30 @@ void CCharacter::Reset_Desc()
 	m_tStatDesc = STAT_DESC{};
 	m_tFightDesc = FIGHT_DESC{};
 	m_tPhysicsDesc = PHYSICS_DESC{};
+}
+
+void CCharacter::Debug_Animation()
+{
+	if (nullptr == m_pModelCom)
+		return;
+
+	CModel::TweenDesc desc = m_pModelCom->Get_TweenDesc();
+
+	CAnimation* pCurAnim = m_pModelCom->Get_Animation(desc.cur.iAnimIndex);
+	CAnimation* pNextAnim = m_pModelCom->Get_Animation(desc.next.iAnimIndex);
+
+	string strCur = "NONE", strNext = "NONE";
+
+	if (nullptr != pCurAnim)
+		strCur = pCurAnim->Get_Name();
+
+	if (nullptr != pNextAnim)
+		strNext = pNextAnim->Get_Name();
+
+	cout << strCur << "\t"
+		<< strNext << "\t"
+		<< desc.cur.iCurFrame << "\t"
+		<< desc.next.iCurFrame << endl;
 }
 
 

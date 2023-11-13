@@ -131,6 +131,7 @@ public:
 	const vector<class CAnimation*>& Get_Animations() const { return m_Animations; }
 	const _uint				Get_AnimationCount() const { return (_uint)m_Animations.size(); }
 	const KEYFRAME_DESC		Get_CurAnimation() const { return m_TweenDesc.cur; }
+	class CAnimation*		Get_CurAnimation() { return m_Animations[m_TweenDesc.cur.iAnimIndex]; }
 	const _uint				Get_CurAnimationIndex() const { return m_TweenDesc.cur.iAnimIndex; }
 	const TWEEN_DESC&		Get_TweenDesc() const { return m_TweenDesc; }
 

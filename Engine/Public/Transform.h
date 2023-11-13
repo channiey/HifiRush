@@ -57,6 +57,7 @@ public:
 
 	void	Set_WorldMat(const Matrix& matrix) { memcpy(&m_WorldMatrix, &matrix, sizeof(Matrix)); }
 	void	Set_Look(const Vec4& vLookDir);
+	void	Set_Look(const Vec3 vLookDir) { Set_Look(Vec4{ vLookDir.x ,vLookDir.y ,vLookDir.z, 0.f }); }
 	void	Set_State(STATE eState, Vec4 vState);
 
 	void	Set_RootPos(Vec4 vPos, _bool bNotAgent = FALSE);

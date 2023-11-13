@@ -183,10 +183,19 @@ void CImGui_Window_Main_Object::Show_Object_Transform()
 				/* Scale*/
 				vVec = pTransform->Get_Scale();
 				_float fSacle[3] = { vVec.x, vVec.y, vVec.z };
-				if (ImGui::DragFloat3("Scale", (_float*)&fSacle, 0.5f))
+				if (ImGui::DragFloat3("Scale", (_float*)&fSacle, 0.25f))
 					pTransform->Set_Scale(Vec3(fSacle[0], fSacle[1], fSacle[2]));	
 			}
 			Safe_Release(pTransform);
+		}
+
+		ImGui::SameLine();
+		if(ImGui::Button("Reset"))
+		{
+			Vec4 vPos = pTransform->Get_FinalPosition();
+			Matrix matWorld;
+			memcpy(&matWorld.m[3], &vPos, sizeof(Vec4));
+			pTransform->Set_WorldMat(matWorld);
 		}
 	}
 	else

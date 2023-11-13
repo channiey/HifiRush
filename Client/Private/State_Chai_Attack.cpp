@@ -260,7 +260,7 @@ void CState_Chai_Attack::Set_AttackDesc()
 			m_tAttackDesc.dPrevAnimCheckFrame = (_double)30.f;
 			m_tAttackDesc.dTimePerFrame = CBeatManager::GetInstance()->Get_SPB(2) / (_double)35.f;
 
-			m_tAttackDesc.tSoundEventDesc.iFrame = 30;
+			m_tAttackDesc.tSoundEventDesc.iFrame = 25;
 			m_tAttackDesc.tSoundEventDesc.eSoundID = EFC_CHAI_ATTACK_COMBO_01;
 
 		}
@@ -325,9 +325,24 @@ void CState_Chai_Attack::Detect_AttackCollision()
 			if (fAngle <= fMaxAngle / 2 && fDist <= fMaxDist)
 			{
 				dynamic_cast<CCharacter*>(pEnemy)->Damaged(dynamic_cast<CCharacter*>(m_pChai));
+
+				KnockBack(dynamic_cast<CCharacter*>(pEnemy));
 			}
 		}
 	}
+}
+
+void CState_Chai_Attack::KnockBack(CCharacter* pTarget)
+{
+	Vec3 vDir = pTarget->Get_Transform()->Get_FinalPosition().xyz() - m_pChai->Get_Transform()->Get_FinalPosition().xyz();
+	
+	vDir.y = 0.f;
+
+	Vec3 vForce = vDir.Normalized() * m_pChai->m_tPhysicsDesc.fKnockBackPower;
+	if (2 == m_pChai->m_tFightDesc.iStep)
+		vForce *= 10.f;
+
+	pTarget->Get_Rigidbody()->Add_Force(vForce, CRigidbody::FORCE_MODE::IMPULSE);
 }
 
 CState_Chai_Attack* CState_Chai_Attack::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

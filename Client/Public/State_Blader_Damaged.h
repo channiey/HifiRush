@@ -21,6 +21,8 @@ public:
 public:
 	const wstring Check_Transition() override;
 
+	void Damaged();
+
 public:
 	static CState_Blader_Damaged* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);
 	virtual CState* Clone(void* pArg) override;

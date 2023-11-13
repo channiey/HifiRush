@@ -25,6 +25,45 @@ HRESULT CState_Chai_Dash::Enter()
 
 	m_pChai->Get_Model()->Set_Animation(eAnimID, fTimePerFrame, DF_TW_TIME);
 
+	Vec4 vDir;
+	if (Input::Up() && !Input::Left() && !Input::Right()) // Up
+		vDir = ENGINE_INSTANCE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY().Normalized();
+	else if (Input::Down() && !Input::Left() && !Input::Right()) // Down
+		vDir = ENGINE_INSTANCE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY().Normalized() * -1.f;
+	else if (Input::Left() && !Input::Up() && !Input::Down()) // Left 
+		vDir = ENGINE_INSTANCE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY().Normalized() * -1.f;
+	else if (Input::Right() && !Input::Up() && !Input::Down()) // Right 
+		vDir = ENGINE_INSTANCE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY().Normalized();
+	else if (Input::Up() && Input::Left() && !Input::Right()) // Up + Left
+	{
+		vDir = ENGINE_INSTANCE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY()
+			+ ENGINE_INSTANCE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY() * -1.f;
+
+		vDir.Normalize();
+	}
+	else if (Input::Up() && !Input::Left() && Input::Right()) // Up + Right
+	{
+		vDir = ENGINE_INSTANCE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY()
+			+ ENGINE_INSTANCE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY();
+
+		vDir.Normalize();
+	}
+	else if (Input::Down() && Input::Left() && !Input::Right()) // Down + Left
+	{
+		vDir = ENGINE_INSTANCE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY() * -1.f
+			+ ENGINE_INSTANCE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY() * -1.f;
+
+		vDir.Normalize();
+	}
+	else if (Input::Down() && !Input::Left() && Input::Right()) // Down + Right
+	{
+		vDir = ENGINE_INSTANCE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY() * -1.f
+			+ ENGINE_INSTANCE->Get_CurCamera_State(CTransform::STATE_RIGHT).ZeroY();
+
+		vDir.Normalize();
+	}
+	
+	m_pChai->Get_Transform()->Set_Look(vDir);
 	m_pChai->Get_Rigidbody()->Add_Force(m_pChai->Get_Transform()->Get_Forward().xyz() * m_pChai->m_tPhysicsDesc.fDashPower, CRigidbody::FORCE_MODE::IMPULSE);
 	ENGINE_INSTANCE->Play_Sound(EFC_CHAI_DASH, PLAYER_CHAI, EfcVolumeChai);
 
@@ -71,6 +110,7 @@ const wstring CState_Chai_Dash::Check_Transition()
 
 	if (m_pModel->Is_Half_Animation())
 	{		
+		
 		return StateNames_CH[STATE_IDLE_CH];
 	}
 

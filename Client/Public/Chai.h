@@ -174,6 +174,10 @@ private:
 	virtual void		OnCollision_Exit(CCollider* pCollider, const _int& iIndexAsChild = -1) override;
 
 public:
+	virtual void		Damaged(CCharacter* pCharacter) override;
+
+
+public:
 	static CChai*		Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CChai*		Clone(void* pArg) override;
 	virtual void		Free() override;

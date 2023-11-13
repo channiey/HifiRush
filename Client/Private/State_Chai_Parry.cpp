@@ -27,7 +27,7 @@ HRESULT CState_Chai_Parry::Enter()
 
 	m_pChai->m_tFightDesc.bParry = TRUE;
 
-	ENGINE_INSTANCE->Play_Sound(EFC_CHAI_PARRY, PLAYER_CHAI, EfcVolumeChai);
+	//ENGINE_INSTANCE->Play_Sound(EFC_CHAI_PARRY, PLAYER_CHAI, EfcVolumeChai);
 
 
 	return S_OK;

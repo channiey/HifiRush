@@ -23,24 +23,38 @@ HRESULT CState_Blader_Attack::Initialize(CStateMachine* pStateMachine, const wst
 
 HRESULT CState_Blader_Attack::Enter()
 {
-	CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::IDLE_BL]);
+	CAnimation* pAnimation = nullptr;
 
+	const _int iRand = rand() % 3;
+	
+	switch (iRand)
+	{
+	case 0 :
+	{
+		pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::ATK_JUMP_STRKIE_01_BL]);
+	}
+	break;
+	case 1 :
+	{
+		pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::ATK_COMBO_BL]);
+	}
+	break;
+	default:
+	{
+		pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::ATK_BLADE_BL]);
+	}
+		break;
+	}
 	if (nullptr == pAnimation)
 		return E_FAIL;
 
-	_double	fTimePerFrame = 1.f / pAnimation->Get_TickPerSecond();
-
-	m_pModel->Set_Animation(pAnimation, fTimePerFrame, DF_TW_TIME);
+	m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame() * 0.75f, DF_TW_TIME);
 
 	return S_OK;
 }
 
 const wstring CState_Blader_Attack::Tick(const _double& fTimeDelta)
 {
-	m_fTimeAcc += fTimeDelta;
-
-	Look_Target();
-
 	return m_strName;
 }
 
@@ -57,26 +71,35 @@ void CState_Blader_Attack::Exit()
 
 const wstring CState_Blader_Attack::Check_Transition()
 {
-	/*if (m_pSaber->m_tFightDesc.bDamaged)
+	if (m_pBlader->m_tFightDesc.bDamaged)
+		return StateNames_BL[STATE_BL::STATE_DAMAGED_BL];
+
+	const string strCurAnimName = m_pModel->Get_CurAnimation()->Get_Name();
+	CModel::TweenDesc desc = m_pModel->Get_TweenDesc();
+
+	if (!m_pModel->Is_Tween())
 	{
-		return StateNames_SA[STATE_DAMAGED_SA];
+		if (AnimNames_BL[ANIM_BL::ATK_JUMP_STRKIE_01_BL] == strCurAnimName && 100 <= desc.cur.iCurFrame)
+			return StateNames_BL[STATE_BL::STATE_IDLE_BL];
+
+		if (AnimNames_BL[ANIM_BL::ATK_BLADE_BL] == strCurAnimName && 110 <= desc.cur.iCurFrame)
+			return StateNames_BL[STATE_BL::STATE_IDLE_BL];
+
+		if (AnimNames_BL[ANIM_BL::ATK_COMBO_BL] == strCurAnimName && 160 <= desc.cur.iCurFrame)
+			return StateNames_BL[STATE_BL::STATE_IDLE_BL];
 	}
-
-	if (m_pModel->Is_Tween() || m_fTimeLimit > m_fTimeAcc)
-		return m_strName;
-
-	const wstring strNextState = Choice_NextState();
-
-	if (strNextState == m_strName)
-	{
-		Set_NextAnimation();
-
-		return m_strName;
-	}
-	else
-		return strNextState;*/
 
 	return m_strName;
+}
+
+HRESULT CState_Blader_Attack::Set_Animation()
+{
+	return S_OK;
+}
+
+const wstring CState_Blader_Attack::Choose_NextState()
+{
+	return wstring();
 }
 
 CState_Blader_Attack* CState_Blader_Attack::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

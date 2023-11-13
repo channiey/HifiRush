@@ -107,11 +107,13 @@ HRESULT CTriggerBattle::Set_TriggerData()
 
 		for (auto pObejct : Pair.second)
 		{
+			const _int iIndex = CNavMesh::GetInstance()->Find_Cell(pObejct->Get_Transform()->Get_FinalPosition().xyz());
+
 			CLONE_DESC desc;
 			{
 				desc.iFlowLevel = Pair.first;
 				desc.strPrototypeTag = Util_String::Remove_LastNumChar(pObejct->Get_Name(), CLONE_PIN_MAX_DIGIT);
-				desc.iCellIndex = pObejct->Get_NavMeshAgent()->Get_Index();
+				desc.iCellIndex = iIndex;
 				desc.matWorld = pObejct->Get_Transform()->Get_WorldMat();
 			}
 			list.push_back(desc);  

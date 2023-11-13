@@ -156,6 +156,10 @@ void CTransform::Set_RootPos(Vec4 vPos, _bool bNotAgent)
 
 	Vec3 vRootPos = XMVector3TransformCoord(vPos.xyz(), matWorld);
 
+
+	/* y는 일단 넣어준다 */
+	m_vRootPos.y = vRootPos.y;
+
 	/* Check NavMeshAgent */
 	if (nullptr != m_pNavMeshAgentCom && m_pNavMeshAgentCom->Is_Active())
 	{

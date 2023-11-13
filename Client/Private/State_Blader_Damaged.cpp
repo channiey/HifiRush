@@ -23,23 +23,17 @@ HRESULT CState_Blader_Damaged::Initialize(CStateMachine* pStateMachine, const ws
 
 HRESULT CState_Blader_Damaged::Enter()
 {
-	CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::IDLE_BL]);
-
-	if (nullptr == pAnimation)
-		return E_FAIL;
-
-	_double	fTimePerFrame = 1.f / pAnimation->Get_TickPerSecond();
-
-	m_pModel->Set_Animation(pAnimation, fTimePerFrame, DF_TW_TIME);
+	Damaged();
 
 	return S_OK;
 }
 
 const wstring CState_Blader_Damaged::Tick(const _double& fTimeDelta)
 {
-	m_fTimeAcc += fTimeDelta;
-
-	Look_Target();
+	if (m_pBlader->m_tFightDesc.bDamaged)
+	{
+		Damaged();
+	}
 
 	return m_strName;
 }
@@ -51,32 +45,37 @@ const wstring CState_Blader_Damaged::LateTick()
 
 void CState_Blader_Damaged::Exit()
 {
-	m_fTimeAcc = 0.f;
-	m_fTimeLimit = 0.f;
+	m_pBlader->m_tFightDesc.bDamaged = FALSE;
+	m_pBlader->m_tFightDesc.pAttacker = nullptr;
 }
 
 const wstring CState_Blader_Damaged::Check_Transition()
 {
-	/*if (m_pSaber->m_tFightDesc.bDamaged)
-	{
-		return StateNames_SA[STATE_DAMAGED_SA];
-	}
+	if (m_pBlader->m_tFightDesc.bDamaged)
+		return StateNames_BL[STATE_BL::STATE_DAMAGED_BL];
 
-	if (m_pModel->Is_Tween() || m_fTimeLimit > m_fTimeAcc)
-		return m_strName;
-
-	const wstring strNextState = Choice_NextState();
-
-	if (strNextState == m_strName)
-	{
-		Set_NextAnimation();
-
-		return m_strName;
-	}
-	else
-		return strNextState;*/
+	if (!m_pModel->Is_Tween() && m_pModel->Is_ThreeFourths_Animation())
+		return StateNames_BL[STATE_BL::STATE_IDLE_BL];
 
 	return m_strName;
+}
+
+void CState_Blader_Damaged::Damaged()
+{
+	/*if (m_pBlader->m_tStatDesc.bDead)
+	{
+		m_pStateMachine->Set_State(StateNames_BL[STATE_DEAD_BL]);
+		return;
+	}*/
+
+	CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::DMG_LIGHT_01_BL]);
+
+	if (nullptr == pAnimation) return;
+
+	m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME);
+
+	m_pBlader->m_tFightDesc.bDamaged = FALSE;
+	m_pBlader->m_tFightDesc.pAttacker = nullptr;
 }
 
 CState_Blader_Damaged* CState_Blader_Damaged::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

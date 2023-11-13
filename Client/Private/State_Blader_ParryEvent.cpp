@@ -23,7 +23,7 @@ HRESULT CState_Blader_ParryEvent::Initialize(CStateMachine* pStateMachine, const
 
 HRESULT CState_Blader_ParryEvent::Enter()
 {
-	CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::IDLE_BL]);
+	CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::PARRY_EVENT_START_BL]);
 
 	if (nullptr == pAnimation)
 		return E_FAIL;

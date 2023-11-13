@@ -21,6 +21,10 @@ public:
 public:
 	const wstring Check_Transition() override;
 
+private:
+	virtual HRESULT			Set_Animation() override;
+	virtual const wstring	Choose_NextState() override;
+
 public:
 	static CState_Blader_Attack* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);
 	virtual CState* Clone(void* pArg) override;

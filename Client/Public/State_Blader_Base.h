@@ -36,14 +36,23 @@ public:
 
 protected:
 	const _float		Get_Distance();
+	void				Turn_ToTarget();
 	void				Look_Target();
+	const _bool			Is_On_Right(class CTransform* pTargetTransform);
+	const _bool			Is_On_Front(class CTransform* pTargetTransform);
+
+protected:
+	virtual HRESULT			Set_Animation() { return S_OK; }
+	virtual const wstring	Choose_NextState() { return wstring(); }
+
+
 
 protected:
 	CBlader*			m_pBlader = { nullptr };
 	CModel*				m_pModel = { nullptr };
 
-	_float				m_fTargetMinDist = 3.f;
-	_float				m_fTargetMaxDist = 10.f;
+	_float				m_fTargetMinDist = 10.f;
+	_float				m_fTargetMaxDist = 20.f;
 
 	_double				m_fTimeLimit = 0.f;
 	_double				m_fTimeAcc = 0.f;

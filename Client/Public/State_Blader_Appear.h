@@ -13,13 +13,15 @@ public:
 	virtual HRESULT Initialize(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);
 
 public:
-	HRESULT Enter() override;
-	const wstring Tick(const _double& fTimeDelta) override;
-	const wstring LateTick() override;
-	void Exit() override;
+	HRESULT			Enter() override;
+	const wstring	Tick(const _double& fTimeDelta) override;
+	const wstring	LateTick() override;
+	void			Exit() override;
 
 public:
 	const wstring Check_Transition() override;
+
+	void		Play_SecondAnimation();
 
 public:
 	static CState_Blader_Appear* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);

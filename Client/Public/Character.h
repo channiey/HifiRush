@@ -109,11 +109,13 @@ protected:
 
 public:
 	void					Attack(CCharacter* pCharacter);
-	void					Damaged(CCharacter* pCharacter);
+	virtual void			Damaged(CCharacter* pCharacter);
 	void					Die();
 
 	void					KnockBack(CCharacter* pAttacker);
 	void					Reset_Desc();
+
+	void					Debug_Animation();
 
 protected:
 	CShader*				m_pShaderCom		= { nullptr };

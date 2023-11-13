@@ -20,6 +20,7 @@ public:
 	_uint	Get_MaxFrameCount() const { return m_iMaxFrameCount; }
 	_float	Get_TickPerSecond() const { return m_fTickPerSecond; }
 	_float	Get_Duration() const { return m_fDuration; }
+	const _float Get_TickPerFrame() const { return 1.f / m_fTickPerSecond; }
 	const _uint& 	Get_Index() const { return m_iIndex; }
 
 	const _double& Get_FrameAcc() const { return m_dFrameAcc; }

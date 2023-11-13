@@ -21,7 +21,6 @@ HRESULT CState_Chai_Damaged::Initialize(CStateMachine* pStateMachine, const wstr
 
 HRESULT CState_Chai_Damaged::Enter()
 {
-	cout << " Chai Damaged\n";
 	CEnemy* pEnemy = dynamic_cast<CEnemy*>(m_pChai->m_tFightDesc.pAttacker);
 
 	if (nullptr == pEnemy)
