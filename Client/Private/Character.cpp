@@ -167,18 +167,6 @@ HRESULT CCharacter::Bind_ShaderResources()
 	return S_OK;
 }
 
-HRESULT CCharacter::Update_RootMotion()
-{
-	if (!m_pModelCom->Is_RootMotion())
-		return S_OK;
-
-	m_pTransformCom->Set_RootPos(m_pModelCom->Get_AnimBonePos(CModel::BONE_ROOT));
-
-	return S_OK;
-}
-
-
-
 void CCharacter::Attack(CCharacter* pCharacter)
 {
 	

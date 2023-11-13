@@ -191,9 +191,7 @@ HRESULT CModel::Update_Anim(_double fTimeDelta)
 		/* 현재 애니메이션 종료시 */
 		if (0 == m_TweenDesc.cur.iNextFrame)
 		{			
-			/* 특수 루트 포지션 셋 : 현재 애님 루트 포지션이 0이 아니라면 */
-			m_vPrevAnimRoot = Vec4(Get_AnimBoneLocal(m_TweenDesc.cur.iAnimIndex, m_TweenDesc.cur.iCurFrame, BONE_ROOT).m[3]);
-			if (Vec4::UnitW != m_vPrevAnimRoot && m_bRootAnimation)
+			if (m_bCurRootAnim)
 			{
 				CTransform* pTransform = m_pOwner->Get_Transform();
 				Vec4 vPos = pTransform->Get_FinalPosition();
@@ -223,35 +221,57 @@ HRESULT CModel::Update_Anim(_double fTimeDelta)
 		/* 트위닝이 끝났다면 */
 		if (m_TweenDesc.fTweenRatio >= 1.f)
 		{
-			/* 특수 루트 포지션 셋 : 이전 애님 루트 포지션이 0이 아니라면 */
-			m_vPrevAnimRoot = Vec4(Get_AnimBoneLocal(m_TweenDesc.cur.iAnimIndex, m_TweenDesc.cur.iCurFrame, BONE_ROOT).m[3]);
-			if (Vec4::UnitW != m_vPrevAnimRoot && (m_bPrevRootAnimation || m_bRootAnimation))
+			m_TweenDesc.fTweenRatio = 1.f;
+
+			Vec4 vRootPos;
+
+			Vec4 vCurAnimRoot = Vec4(Get_AnimBoneLocal(m_TweenDesc.cur.iAnimIndex, m_TweenDesc.cur.iCurFrame, BONE_ROOT).m[3]);
+			Vec4 vNextAnimRoot = Vec4(Get_AnimBoneLocal(m_TweenDesc.next.iAnimIndex, m_TweenDesc.next.iCurFrame, BONE_ROOT).m[3]);
+			CTransform* pTransform = m_pOwner->Get_Transform();
+
+			if (m_bCurRootAnim)
 			{
-				/* 다음 애니메이션 루트 포지션이 0 이라면, 현재 애니메이션의 루트 포지션만을 사용한다. */
-				Vec4 vRootPos, m_vNextAnimRoot;
-				m_vNextAnimRoot = Vec4(Get_AnimBoneLocal(m_TweenDesc.next.iAnimIndex, m_TweenDesc.next.iCurFrame, BONE_ROOT).m[3]);
-				if (Vec4::UnitW == m_vNextAnimRoot)
+				if (m_bNextRootAnim)
 				{
-					vRootPos = Get_AnimBoneRootNoneLerp();
+					if (Vec4::UnitW != vCurAnimRoot && Vec4::UnitW != vNextAnimRoot)
+						vRootPos = Get_AnimBonePos(BONE_ROOT);
+					else
+					{
+						if (Vec4::UnitW == vCurAnimRoot)
+							vRootPos = vNextAnimRoot;
+						else if (Vec4::UnitW == vNextAnimRoot)
+							vRootPos = vCurAnimRoot;
+					}
 				}
-				else 
+				else
 				{
-					vRootPos = Get_AnimBonePos(BONE_ROOT);
+					vRootPos = vCurAnimRoot;
 				}
-
-				m_pOwner->Get_Transform()->Set_RootPos(vRootPos);
-
-				CTransform* pTransform = m_pOwner->Get_Transform();
-				Vec4 vPos = pTransform->Get_FinalPosition();
-				pTransform->Set_Position(vPos, TRUE);
-				pTransform->Set_RootPos(Vec4::Zero);
 			}
+			else
+			{
+				if (m_bNextRootAnim)
+				{
+					vRootPos = vNextAnimRoot;
+
+				}
+				else
+				{
+					vRootPos;
+
+				}
+			}
+			pTransform->Set_RootPos(vRootPos);
+			Vec4 vPos = pTransform->Get_FinalPosition();
+			pTransform->Set_Position(vPos, TRUE);
+			pTransform->Set_RootPos(Vec4::Zero);
 
 			m_TweenDesc.cur.ClearAnim();
 			m_TweenDesc.cur = m_TweenDesc.next;
 			m_TweenDesc.ClearNextAnim();
 
 			m_bFinishTween = TRUE;
+			m_bCurRootAnim = m_bNextRootAnim;
 
 			return S_OK;
 		}
@@ -270,41 +290,7 @@ HRESULT CModel::Update_Anim(_double fTimeDelta)
 			if (1.f < m_TweenDesc.next.fRatio)
 				m_TweenDesc.next.fRatio = 0.5f;
 
-			/*CAnimation*		pNextAnim = Get_Animation(m_TweenDesc.next.iAnimIndex);
-
-			if (nullptr != pNextAnim)
-			{
-				if (m_TweenDesc.next.fRatio >= 1.f)
-				{
-					pNextAnim->Set_FrameAcc(0.f);
-
-					m_TweenDesc.next.iCurFrame = (m_TweenDesc.next.iCurFrame + 1) % pNextAnim->Get_MaxFrameCount();
-					m_TweenDesc.next.iNextFrame = (m_TweenDesc.next.iCurFrame + 1) % pNextAnim->Get_MaxFrameCount();
-				}
-
-				m_TweenDesc.next.fRatio = (pNextAnim->Get_FrameAcc() / pNextAnim->Get_SecondPerFrame());
-				if (1.f < m_TweenDesc.next.fRatio)
-					m_TweenDesc.next.fRatio = 0.5f;
-			}*/
-
-			/*CAnimation* pNextAnim = Get_Animation(m_TweenDesc.next.iAnimIndex);
-			if (nullptr != pNextAnim)
-			{
-				m_TweenDesc.next.dFrameAcc += (_double)fTimeDelta;
-
-				_float timePerFrame = 1.f / (pNextAnim->Get_TickPerSecond() * m_TweenDesc.next.dSpeed);
-
-				if (m_TweenDesc.next.fRatio >= 1.f)
-				{
-					m_TweenDesc.next.dFrameAcc = 0;
-
-					m_TweenDesc.next.iCurFrame = (m_TweenDesc.next.iCurFrame + 1) % pNextAnim->Get_MaxFrameCount();
-					m_TweenDesc.next.iNextFrame = (m_TweenDesc.next.iCurFrame + 1) % pNextAnim->Get_MaxFrameCount();
-				}
-
-				m_TweenDesc.next.fRatio = m_TweenDesc.next.dFrameAcc / timePerFrame;
-			}*/
-
+		
 			/* 일반 루트 포지션 셋 */
 			Set_RootPosition_Tween();
 		}
@@ -348,7 +334,7 @@ HRESULT CModel::Bind_Material(CShader * pShader, _uint iMaterialIndex, aiTexture
 	return m_Materials[iMaterialIndex].pTexture[eTextureType]->Bind_ShaderResource(pShader, pConstantName, 0);
 }
 
-void CModel::Set_Animation(const _uint& iAnimIndex, const _double& dSpeed, const _float& fTweenDuration)
+void CModel::Set_Animation(const _uint& iAnimIndex, const _double& dSpeed, const _float& fTweenDuration, const _bool bRootAnim)
 {
 	/* 최초 1회 실행  */
 	if (-1 == m_TweenDesc.cur.iAnimIndex)
@@ -356,18 +342,20 @@ void CModel::Set_Animation(const _uint& iAnimIndex, const _double& dSpeed, const
 		m_TweenDesc.cur.iAnimIndex = iAnimIndex % Get_AnimationCount();
 		Get_Animation(m_TweenDesc.cur.iAnimIndex)->Set_SecondPerFrame(dSpeed);
 		
+		m_bCurRootAnim = bRootAnim;
 		return;
 	}
 	m_TweenDesc.ClearNextAnim();
 
 	m_TweenDesc.next.iAnimIndex = iAnimIndex % Get_AnimationCount();
 	m_TweenDesc.fTweenDuration = fTweenDuration;
+	m_bNextRootAnim = bRootAnim;
 
 	//Get_Animation(m_TweenDesc.cur.iAnimIndex)->Set_SecondPerFrame(dSpeed);
 	Get_Animation(m_TweenDesc.next.iAnimIndex)->Set_SecondPerFrame(dSpeed);
 }
 
-void CModel::Set_Animation(CAnimation* pAnim, const _double& dSpeed, const _float& fTweenDuration)
+void CModel::Set_Animation(CAnimation* pAnim, const _double& dSpeed, const _float& fTweenDuration, const _bool bRootAnim)
 {
 	if (nullptr == pAnim) 
 		return;
@@ -379,6 +367,7 @@ void CModel::Set_Animation(CAnimation* pAnim, const _double& dSpeed, const _floa
 	{
 		m_TweenDesc.cur.iAnimIndex = iAnimIndex % Get_AnimationCount();
 		Get_Animation(m_TweenDesc.cur.iAnimIndex)->Set_SecondPerFrame(dSpeed);
+		m_bCurRootAnim = bRootAnim;
 
 		return;
 	}
@@ -386,6 +375,7 @@ void CModel::Set_Animation(CAnimation* pAnim, const _double& dSpeed, const _floa
 
 	m_TweenDesc.next.iAnimIndex = iAnimIndex % Get_AnimationCount();
 	m_TweenDesc.fTweenDuration = fTweenDuration;
+	m_bNextRootAnim = bRootAnim;
 
 	//Get_Animation(m_TweenDesc.cur.iAnimIndex)->Set_SecondPerFrame(dSpeed);
 	Get_Animation(m_TweenDesc.next.iAnimIndex)->Set_SecondPerFrame(dSpeed);
@@ -1136,23 +1126,52 @@ HRESULT CModel::Clear_Cache()
 
 void CModel::Set_RootPosition_Tween()
 {
-	if (!m_bRootAnimation) return;
+	Vec4 vRootPos;
 
-	Vec4 vRootPos, m_vNextAnimRoot;
+	Vec4 vCurAnimRoot = Vec4(Get_AnimBoneLocal(m_TweenDesc.cur.iAnimIndex, m_TweenDesc.cur.iCurFrame, BONE_ROOT).m[3]);
+	Vec4 vNextAnimRoot = Vec4(Get_AnimBoneLocal(m_TweenDesc.next.iAnimIndex, m_TweenDesc.next.iCurFrame, BONE_ROOT).m[3]);
 
-	m_vNextAnimRoot = Vec4(Get_AnimBoneLocal(m_TweenDesc.next.iAnimIndex, m_TweenDesc.next.iCurFrame, BONE_ROOT).m[3]);
+	if (m_bCurRootAnim)
+	{
+		if (m_bNextRootAnim)
+		{
+			if(Vec4::UnitW != vCurAnimRoot && Vec4::UnitW != vNextAnimRoot)
+				vRootPos = Get_AnimBonePos(BONE_ROOT);
+			else if(Vec4::UnitW == vCurAnimRoot)
+				vRootPos = vNextAnimRoot;
+			else if (Vec4::UnitW == vNextAnimRoot)
+				vRootPos = vCurAnimRoot;
+		}
+		else
+		{
+			vRootPos = vCurAnimRoot;
+		}
+	}
+	else
+	{
+		if (m_bNextRootAnim)
+		{
+			vRootPos = vNextAnimRoot;
+		}
+		else
+		{
+			vRootPos;
+		}
+	}
 
-	if (Vec4::UnitW == m_vNextAnimRoot)			/* 다음 애님이 제자리 애니메이션이라면 */
-		vRootPos = Get_AnimBoneRootNoneLerp();	/* 다음 애님 보간 없이 현재 애님 루트 포지션으로 셋 */
-	else										/* 아니라면 */
-		vRootPos = Get_AnimBonePos(BONE_ROOT);	/* 다음 애님과 현재 애님이 보간된 루트 포지션으로 셋 */
+
+	//if (Vec4::UnitW == m_vNextAnimRoot || !m_bNextRootAnim)			/* 다음 애님이 제자리 애니메이션이라면이거나 루트 없다면 */
+	//	vRootPos = Get_AnimBoneRootNoneLerp();	/* 다음 애님 보간 없이 현재 애님 루트 포지션으로 셋 */
+	//else										/* 아니라면 */
+	//	vRootPos = Get_AnimBonePos(BONE_ROOT);	/* 다음 애님과 현재 애님이 보간된 루트 포지션으로 셋 */
 
 	m_pOwner->Get_Transform()->Set_RootPos(vRootPos);
 }
 
 void CModel::Set_RootPosition()
 {
-	if (!m_bRootAnimation) return;
+	if (!m_bCurRootAnim)
+		return;
 
 	m_pOwner->Get_Transform()->Set_RootPos(Get_AnimBonePos(BONE_ROOT));
 }

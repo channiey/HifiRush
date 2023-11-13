@@ -139,18 +139,16 @@ public:
 	const TYPE&				Get_Type() const { return m_eModelType; }
 
 public:
-	void					Set_Animation(const _uint& iAnimIndex, const _double& dSpeed = DF_PL_TIME, const _float& fTweenDuration = DF_TW_TIME);
-	void					Set_Animation(class CAnimation* pAnim, const _double& dSpeed = DF_PL_TIME, const _float& fTweenDuration = DF_TW_TIME);
+	void					Set_Animation(const _uint& iAnimIndex, const _double& dSpeed = DF_PL_TIME, const _float& fTweenDuration = DF_TW_TIME, const _bool bRootAnim = TRUE);
+	void					Set_Animation(class CAnimation* pAnim, const _double& dSpeed = DF_PL_TIME, const _float& fTweenDuration = DF_TW_TIME, const _bool bRootAnim = TRUE);
 	void					Set_SoundEvent(_uint iFrame, _uint eSoundID, _uint eChannelID, float fVolume);
 	void					Set_SoundEvent(SOUND_EVENT_DESC desc);
 
 	void					Set_AnimationSpeed(const _double& dSpeed);
 
 	void					Set_BoneIndex(const BONE_TYPE& eType, const _int iIndex);
-	void					Set_RootAnimation(const _bool bRootAnim) { m_bPrevRootAnimation = m_bRootAnimation; m_bRootAnimation = bRootAnim; }
 
 public:
-	const _bool&			Is_RootMotion() const { return m_bRootAnimation; }
 	const _bool&			Is_Finish_Tween() const {return m_bFinishTween; }
 
 	const _bool				Is_Quater_Animation();
@@ -203,9 +201,11 @@ private:
 	vector<ANIM_TRANSFORM>		m_AnimTransforms;		/* 루트랑 소켓 매트릭스만 저장 (루트는 루트 적용됨, 소켓은 루트 적용안됨) */
 	TWEEN_DESC					m_TweenDesc = {};
 
-	Vec4						m_vPrevAnimRoot = {};
 	_bool						m_bRootAnimation = TRUE;
-	_bool						m_bPrevRootAnimation = TRUE;
+
+	_bool						m_bCurRootAnim = TRUE;
+	_bool						m_bNextRootAnim = TRUE;
+
 	_bool						m_bFinishAnimation = FALSE;
 	_bool						m_bFinishTween = FALSE;
 	_int						m_AnimBoneIndecies[BONE_END];

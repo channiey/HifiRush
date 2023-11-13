@@ -104,9 +104,6 @@ protected:
 protected:
 	HRESULT					Bind_ShaderResources();
 
-protected:
-	HRESULT					Update_RootMotion();
-
 public:
 	void					Attack(CCharacter* pCharacter);
 	virtual void			Damaged(CCharacter* pCharacter);

@@ -80,7 +80,7 @@ const wstring CState_Blader_ParryEvent::Check_Transition()
 			CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::PARRY_EVENT_FINISH_BL]);
 		
 			if (nullptr != pAnimation)
-				m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME);
+				m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME, FALSE);
 		}
 		else if (AnimNames_BL[ANIM_BL::PARRY_EVENT_FINISH_BL] == strCurAnimName &&
 			45 == desc.cur.iCurFrame)

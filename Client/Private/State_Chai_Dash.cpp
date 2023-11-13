@@ -19,6 +19,9 @@ HRESULT CState_Chai_Dash::Initialize(CStateMachine* pStateMachine, const wstring
 
 HRESULT CState_Chai_Dash::Enter()
 {
+	CTransform* pTransform = m_pChai->Get_Transform();
+	Vec3 vScale = pTransform->Get_Scale();
+
 	ANIM_CH			eAnimID			= ANIM_CH::DASH;
 	CAnimation*		pAnimation		= m_pChai->Get_Model()->Get_Animation(eAnimID);
 	const _double	fTimePerFrame = (1 / pAnimation->Get_TickPerSecond()) * 0.5f;
@@ -68,6 +71,9 @@ HRESULT CState_Chai_Dash::Enter()
 	ENGINE_INSTANCE->Play_Sound(EFC_CHAI_DASH, PLAYER_CHAI, EfcVolumeChai);
 
 	m_pChai->m_tPhysicsDesc.bDash = TRUE;
+
+	if (Vec3::Zero == pTransform->Get_Scale())
+		pTransform->Set_Scale(vScale);
 
 	return S_OK;
 }

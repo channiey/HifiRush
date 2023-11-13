@@ -405,13 +405,7 @@ const Matrix CTransform::Get_WorldMat()
 
 const Matrix CTransform::Get_FinalMat()
 {
-	Vec3 vRootPos;
-
-	CModel* pModel = m_pOwner->Get_Model();
-	if (nullptr != pModel && pModel->Is_RootMotion())
-		vRootPos = m_vRootPos.xyz();
-
-	Vec3	vfinalPos = vRootPos + Vec4(m_WorldMatrix.m[3]).xyz();
+	Vec3	vfinalPos = m_vRootPos.xyz() + Vec4(m_WorldMatrix.m[3]).xyz();
 
 	Matrix	matFinal = m_WorldMatrix;
 
