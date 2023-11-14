@@ -136,6 +136,9 @@ namespace Client
 	static const _float CamDist_Follow_Default	= 6.5f;
 	static const _float CamDist_Follow_Battle	= 7.f;
 	static const _float CamDist_Follow_Jump		= 7.f;
+	
+	static const _float CamDist_Parry_Default	= 20.f;
+
 
 	/* Sound Channel */
 	enum CHANNEL_ID 

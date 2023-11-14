@@ -45,12 +45,12 @@ void CCamera::Lerp_Fov(const _float& fTargetValue, const _double& fTime, const L
 
 void CCamera::Lerp_Dist(const _float fStartValue, const _float& fTargetValue, const _double& fTime, const LERP_MODE& eMode)
 {
-	m_tDistFov.Start(fStartValue, fTargetValue, fTime, eMode);
+	m_tLerpDist.Start(fStartValue, fTargetValue, fTime, eMode);
 }
 
 void CCamera::Lerp_Dist(const _float& fTargetValue, const _double& fTime, const LERP_MODE& eMode)
 {
-	m_tDistFov.Start(m_fDistance, fTargetValue, fTime, eMode);
+	m_tLerpDist.Start(m_fDistance, fTargetValue, fTime, eMode);
 }
 
 void CCamera::Change_TargetObj(CGameObject* pObj)
@@ -63,17 +63,19 @@ void CCamera::Change_LookAtObj(CGameObject* pObj)
 
 void CCamera::Update_Lerp(const _double fDeltaTime)
 {
-	m_tLerpFov.Update(fDeltaTime);
 	if (m_tLerpFov.bActive)
 	{
+		m_tLerpFov.Update(fDeltaTime);
 		m_tProjDesc.fFovy = m_tLerpFov.fCurValue;
+		cout << "FOV : " << m_tLerpFov.fCurValue << endl;
 	}
 
-
-	m_tDistFov.Update(fDeltaTime);
-	if (m_tDistFov.bActive)
+	if (m_tLerpDist.bActive)
 	{
-		m_fDistance = m_tDistFov.fCurValue;
+		m_tLerpDist.Update(fDeltaTime);
+		m_fDistance = m_tLerpDist.fCurValue;
+
+		cout << "DIST : " << m_tLerpDist.fCurValue << endl;
 	}
 }
 

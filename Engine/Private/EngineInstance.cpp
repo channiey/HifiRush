@@ -607,7 +607,7 @@ const map<_uint, CGameObject*>* CEngineInstance::Get_Cameras()
 	return m_pCamera_Manager->Get_Cameras();
 }
 
-const _bool& CEngineInstance::Is_LerpCam()
+const _bool CEngineInstance::Is_LerpCam()
 {
 	if (nullptr == m_pCamera_Manager)
 		return FALSE;

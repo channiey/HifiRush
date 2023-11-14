@@ -33,6 +33,12 @@ HRESULT CCamera_Parry::Initialize(void* pArg)
 	if (FAILED(ENGINE_INSTANCE->Add_Camera(CAM_PARRY, this)))
 		return E_FAIL;
 
+	/* Set Camera */
+	{
+		m_fMaxDistance = 12.f;
+		m_pCameraCom->Set_Distance(10.f);
+	}
+
 	m_eState = CGameObject::STATE_UNACTIVE;
 
 	return S_OK;
@@ -41,6 +47,21 @@ HRESULT CCamera_Parry::Initialize(void* pArg)
 void CCamera_Parry::Tick(_double fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	m_pCameraCom->Update(fTimeDelta);
+
+	if (m_pCameraCom->Is_Lerp_Dist())
+	{
+		Vec4 vCamPos = m_vPlayerStartPos + m_vRelativePos.ZeroW() + m_pCameraCom->Get_TargetOffSet().ZeroW();
+		Vec4 vLook = m_pTargetTransformCom->Get_FinalPosition() - vCamPos;
+
+		vCamPos += vLook.Normalized() * m_pCameraCom->Get_Distance();
+
+		Vec4 vLookAtPos = m_pTargetTransformCom->Get_FinalPosition() + m_pCameraCom->Get_LookAtOffSet();
+
+		m_pTransformCom->Set_Position(vCamPos);
+		m_pTransformCom->LookAt(vLookAtPos);
+	}
 }
 
 void CCamera_Parry::LateTick(_double fTimeDelta)
@@ -48,25 +69,50 @@ void CCamera_Parry::LateTick(_double fTimeDelta)
 	__super::LateTick(fTimeDelta);
 }
 
-void CCamera_Parry::Set_CamTransform(CTransform* pTargetTransform)
+void CCamera_Parry::Set_CamTransform(CTransform* pTargetTransform, CTransform* pPlayerTransform, Vec4 vPlayerNewPos)
 {
-	/* 카메라의 포지션, 룩, 회전 설정 */
-	Vec4 vCamPos = pTargetTransform->Get_Position() 
-		+ pTargetTransform->Get_State(CTransform::STATE_LOOK).ZeroY().Normalized() * 10.f;
+	m_pTargetTransformCom = pTargetTransform;
 
-	Vec4 fDir = pTargetTransform->Get_FinalPosition() - vCamPos;
+	/* Set Origin Position */
+	{
+		m_vPlayerStartPos = vPlayerNewPos;
 
-	m_pTransformCom->Set_Position(vCamPos);
-	m_pTransformCom->Set_Look(fDir.ZeroY().Normalized());
-	m_pTransformCom->Rotate(Vec4{ 0.f, 0.f, 1.f, 0.f }, DEG2RAD(20.f));
+		Matrix matWorld = pPlayerTransform->Get_WorldMat();
+		memcpy(matWorld.m[3], &Vec4::Zero, sizeof(Vec3));
+
+		m_vRelativePos		= XMVector3TransformCoord(Vec3{2.f, 0.f ,-4.f}, matWorld);
+	}
+
+	/* Set Camera Component Data */
+	{
+		m_pCameraCom->Set_LookAtObj(m_pTargetTransformCom->Get_Owner());
+		m_pCameraCom->Set_TargetObj(m_pTargetTransformCom->Get_Owner());
+		m_pCameraCom->Set_LookAtOffSet(Vec4{ 0.f, 4.f, 0.f, 0.f });
+		m_pCameraCom->Set_TargetOffSet(Vec4{ 0.f, 2.f, 0.f, 0.f });
+	}
+
+	/* Set Transform */
+	{
+		Vec4 vCamPos	= m_vPlayerStartPos + m_vRelativePos.ZeroW() + m_pCameraCom->Get_TargetOffSet().ZeroW();
+		Vec4 vLook		= m_pTargetTransformCom->Get_FinalPosition() - vCamPos;
+
+		vCamPos += vLook.Normalized() * m_pCameraCom->Get_Distance();
+
+		Vec4 vLookAtPos = m_pTargetTransformCom->Get_FinalPosition() + m_pCameraCom->Get_LookAtOffSet();
+
+		m_pTransformCom->Set_Position(vCamPos);
+		m_pTransformCom->LookAt(vLookAtPos);
+	}
 }
 
 void CCamera_Parry::Zoom_In()
 {
+	m_pCameraCom->Lerp_Dist(m_fMaxDistance, 0.5f, LERP_MODE::SMOOTHER_STEP);
 }
 
 void CCamera_Parry::Zoom_Out()
 {
+	m_pCameraCom->Lerp_Dist(0.f, 0.5f, LERP_MODE::SMOOTHER_STEP);
 }
 
 HRESULT CCamera_Parry::Ready_Components()

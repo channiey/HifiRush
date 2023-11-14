@@ -287,6 +287,7 @@ namespace Engine
 		_double		fStartTime = 0.f;
 		_double		fEndTime = 0.f;
 		_double		fCurTime = 0.f;
+		_double		fLerpTime = 0.f;
 
 		_bool		bActive = FALSE;
 
@@ -313,6 +314,7 @@ namespace Engine
 			{
 				fCurTime = fEndTime;
 				bActive = FALSE;
+				fLerpTime = 1.f;
 				return;
 			}
 
@@ -353,6 +355,8 @@ namespace Engine
 			default:
 				break;
 			}
+
+			fLerpTime = t;
 		}
 	}LERP_TIME_DESC;
 

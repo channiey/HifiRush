@@ -28,10 +28,13 @@ public:
 public:
 	HRESULT			Set_CurCamera(const _uint& iKey);
 
+public:
+	const _bool&	Is_Lerp() const { return m_bCameraChange; }
+
+public:
 	HRESULT			Add_Camera(const _uint& iKey, CGameObject* pCamera);
 	HRESULT			Change_Camera(const _uint& iKey, const _float& fLerpTime, const LERP_MODE& eLerpMode);
 
-	const _bool&	Is_Lerp() const { return m_bCameraChange; }
 private:
 	CGameObject*	Find_Camera(const _uint& iKey);
 	void			Lerp_Camera(_double fTimeDelta);

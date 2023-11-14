@@ -31,8 +31,8 @@ public:
 public:
 	CGameObject*		Get_TargetObj() const { return m_pTargetObj; }
 	CGameObject*		Get_LookAtObj() const { return m_pLookAtObj; }
-	const Vec4&			Get_TargetOffSet() const { return m_vTargetOffset; }
-	const Vec4&			Get_LookAtOffSet() const { return m_vLookAtOffset; }
+	Vec4			Get_TargetOffSet() const { return m_vTargetOffset; }
+	Vec4			Get_LookAtOffSet() const { return m_vLookAtOffset; }
 	
 	const _float&		Get_Distance() const { return m_fDistance; }
 	const _float&		Get_MouseSensitiveX() const { return m_fMouseSensitiveX; }
@@ -46,8 +46,8 @@ public:
 public:
 	void Set_TargetObj(CGameObject* pObj)	{ m_pTargetObj = pObj; }
 	void Set_LookAtObj(CGameObject* pObj)	{ m_pLookAtObj = pObj; }
-	void Set_TargetOffSet(const Vec4& vOffset)	{ m_vTargetOffset = vOffset; }
-	void Set_LookAtOffSet(const Vec4& vOffset) { m_vLookAtOffset = vOffset; }
+	void Set_TargetOffSet(const Vec4 vOffset)	{ m_vTargetOffset = vOffset; }
+	void Set_LookAtOffSet(const Vec4 vOffset) { m_vLookAtOffset = vOffset; }
 	
 	void Set_Distance(const _float& fDist) { m_fDistance = fDist; }
 	void Set_MouseSensitiveX(const _float& fValue) { m_fMouseSensitiveX = fValue; }
@@ -64,6 +64,8 @@ public:
 	const _bool Is_LookAtObj() const { return nullptr != m_pLookAtObj ? TRUE : FALSE; }
 	const _bool Is_LockX() const { return m_bLockX; }
 	const _bool Is_LockY() const { return m_bLockY; }
+	const _bool& Is_Lerp_Fov() const { return m_tLerpFov.bActive; }
+	const _bool& Is_Lerp_Dist() const { return m_tLerpDist.bActive; }
 
 public:
 	void Lerp_Fov(const _float fStartValue, const _float& fTargetValue, const _double& fTime, const LERP_MODE& eMode = LERP_MODE::DEFAULT);
@@ -97,7 +99,7 @@ private:
 	_uint			m_iKey = { 99 };
 
 	LERP_FLOAT_DESC	m_tLerpFov;
-	LERP_FLOAT_DESC	m_tDistFov;
+	LERP_FLOAT_DESC	m_tLerpDist;
 
 public:
 	static CCamera* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

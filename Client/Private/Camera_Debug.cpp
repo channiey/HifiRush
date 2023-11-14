@@ -50,6 +50,8 @@ void CCamera_Debug::Tick(_double fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+	m_pCameraCom->Update(fTimeDelta);
+
 	/* Move */
 #ifdef _DEBUG
 	if (!CImGui_Manager::GetInstance()->Is_ClickedWindow() && !ENGINE_INSTANCE->Is_LerpCam())

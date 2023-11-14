@@ -23,7 +23,7 @@ public:
 	virtual void	LateTick(_double fTimeDelta) override;
 
 public:
-	void			Set_CamTransform(CTransform* pTargetTransform);
+	void			Set_CamTransform(CTransform* pTargetTransform, CTransform* pPlayerTransform, Vec4 vPlayerNewPos);
 	void			Zoom_In();
 	void			Zoom_Out();
 
@@ -34,7 +34,11 @@ private:
 	CTransform*		m_pTransformCom = { nullptr };
 	CCamera*		m_pCameraCom = { nullptr };
 
+	_float			m_fMaxDistance = 8.f;
 
+	Vec4			m_vPlayerStartPos;
+	Vec4			m_vRelativePos;
+	CTransform*		m_pTargetTransformCom = { nullptr };
 public:
 	static CCamera_Parry* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;

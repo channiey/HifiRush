@@ -58,7 +58,7 @@ void CBlader::LateTick(_double fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	Debug_Animation();
+	//Debug_Animation();
 }
 
 HRESULT CBlader::Render()

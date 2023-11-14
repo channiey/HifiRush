@@ -57,6 +57,15 @@ HRESULT CChai::Initialize(void* pArg)
 
 void CChai::Tick(_double fTimeDelta)
 {
+	if (ENGINE_INSTANCE->Key_Down('Q'))
+	{
+		m_pTransformCom->Set_Position(Vec3{ 96.f, -4.5f, 116.f }, TRUE);
+
+		_int iIndex = CNavMesh::GetInstance()->Find_Cell(m_pTransformCom->Get_FinalPosition().xyz());
+
+		m_pNavMeshAgentCom->Set_CurIndex(iIndex);
+	}
+
 	__super::Tick(fTimeDelta);
 }
 

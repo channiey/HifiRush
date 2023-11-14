@@ -21,9 +21,9 @@ HRESULT CState_Chai_Parry::Enter()
 {
 	ANIM_CH			eAnimID			= ANIM_CH::PARRY_02;
 	CAnimation*		pAnimation		= m_pChai->Get_Model()->Get_Animation(eAnimID);
-	const _double	fTimePerFrame	= 1 / pAnimation->Get_TickPerSecond() * 0.5f;
+	const _double	fTimePerFrame	= 1 / pAnimation->Get_TickPerSecond() * 0.3f;
 
-	m_pChai->Get_Model()->Set_Animation(eAnimID, fTimePerFrame, DF_TW_TIME);
+	m_pChai->Get_Model()->Set_Animation(eAnimID, fTimePerFrame, 0.05f);
 
 	m_pChai->m_tFightDesc.bParry = TRUE;
 

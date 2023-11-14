@@ -124,6 +124,17 @@ HRESULT CImGui_Window_Mid_Cam::Show_Property_FollowCam()
 	{
 		CCamera* pCameraCom = pCam->Get_Camera();
 
+
+		/* Fov */
+		{
+			_float fFov = pCameraCom->Get_Fov();
+
+			ImGui::DragFloat("FOV", &fFov, 0.05f);
+			{
+				pCameraCom->Set_Fovy(fFov);
+			}
+		}
+
 		/* Distance */
 		{
 			_float fDistance = pCameraCom->Get_Distance();

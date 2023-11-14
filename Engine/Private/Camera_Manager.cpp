@@ -127,6 +127,8 @@ HRESULT CCamera_Manager::Change_Camera(const _uint& iKey, const _float& fLerpTim
 	m_tLerpTimeDesc.Start(fLerpTime, eLerpMode);
 	m_tLerpFovDesc.Start(m_pCurCamera->Get_Camera()->Get_ProjDesc().fFovy, m_pNextCamera->Get_Camera()->Get_ProjDesc().fFovy, fLerpTime, eLerpMode);
 
+	m_pNextCamera->Set_State(CGameObject::STATE_ACTIVE);
+
 	return S_OK;
 }
 
@@ -144,11 +146,15 @@ void CCamera_Manager::Lerp_Camera(_double fTimeDelta)
 {
 	m_matWILerp = Matrix::Lerp(m_pCurCamera->Get_Transform()->Get_WorldMat().Invert(), 
 								 m_pNextCamera->Get_Transform()->Get_WorldMat().Invert(), 
-								 m_tLerpTimeDesc.fCurTime);
+								 m_tLerpTimeDesc.fLerpTime);
 
 	if (!m_tLerpTimeDesc.bActive)
 	{
+		m_matWILerp = m_pNextCamera->Get_Transform()->Get_WorldMat().Invert();
+
 		m_bCameraChange = FALSE;
+
+		m_pCurCamera->Set_State(CGameObject::STATE_UNACTIVE);
 
 		m_pCurCamera = m_pNextCamera;
 		m_pNextCamera = nullptr;
