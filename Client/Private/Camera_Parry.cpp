@@ -30,33 +30,43 @@ HRESULT CCamera_Parry::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	if (FAILED(ENGINE_INSTANCE->Add_Camera(CAM_FOLLOW, this)))
+	if (FAILED(ENGINE_INSTANCE->Add_Camera(CAM_PARRY, this)))
 		return E_FAIL;
 
-	/* Set Camera */
-	{
-		m_pCameraCom->Set_Distance(CamDist_Follow_Default);
-		m_pCameraCom->Set_MouseSensitiveX(0.3f);
-		m_pCameraCom->Set_MouseSensitiveY(0.1f);
-		m_pCameraCom->Set_LookAtOffSet(Vec4{ 0.f, 1.8f, 0.f, 1.f });
-	}
-
-	m_eState = CGameObject::STATE_ACTIVE;
+	m_eState = CGameObject::STATE_UNACTIVE;
 
 	return S_OK;
 }
 
 void CCamera_Parry::Tick(_double fTimeDelta)
 {
-
+	__super::Tick(fTimeDelta);
 }
 
 void CCamera_Parry::LateTick(_double fTimeDelta)
 {
-	if (!m_pCameraCom->Is_TargetObj() || !m_pCameraCom->Is_LookAtObj())
-		return;
-
 	__super::LateTick(fTimeDelta);
+}
+
+void CCamera_Parry::Set_CamTransform(CTransform* pTargetTransform)
+{
+	/* 카메라의 포지션, 룩, 회전 설정 */
+	Vec4 vCamPos = pTargetTransform->Get_Position() 
+		+ pTargetTransform->Get_State(CTransform::STATE_LOOK).ZeroY().Normalized() * 10.f;
+
+	Vec4 fDir = pTargetTransform->Get_FinalPosition() - vCamPos;
+
+	m_pTransformCom->Set_Position(vCamPos);
+	m_pTransformCom->Set_Look(fDir.ZeroY().Normalized());
+	m_pTransformCom->Rotate(Vec4{ 0.f, 0.f, 1.f, 0.f }, DEG2RAD(20.f));
+}
+
+void CCamera_Parry::Zoom_In()
+{
+}
+
+void CCamera_Parry::Zoom_Out()
+{
 }
 
 HRESULT CCamera_Parry::Ready_Components()

@@ -34,6 +34,9 @@ HRESULT CLevel_Stage_01::Initialize()
 	if (FAILED(CLevel_Loading::Parse_LevelData(LV_STAGE_01)))
 		return E_FAIL;
 
+	/* Camera */
+	if (FAILED(ENGINE_INSTANCE->Set_CurCamera(CAMERA_ID::CAM_FOLLOW)))
+		return E_FAIL;
 
 	return S_OK;
 }

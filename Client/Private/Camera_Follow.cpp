@@ -62,7 +62,7 @@ void CCamera_Follow::Tick(_double fTimeDelta)
 	m_pCameraCom->Update(fTimeDelta);
 
 #ifdef _DEBUG
-	if (!CImGui_Manager::GetInstance()->Is_ClickedWindow())
+	if (!CImGui_Manager::GetInstance()->Is_ClickedWindow() && !ENGINE_INSTANCE->Is_LerpCam())
 		Move(fTimeDelta);
 #else
 	Move(fTimeDelta);

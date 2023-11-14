@@ -106,7 +106,7 @@ void CEngineInstance::Tick(_double fTimeDelta)
 
 	/* 카메라 오브젝트 월드행렬 갱신 -> 뷰행령 투영행렬 저장 -> 계산*/
 	{
-		m_pCamera_Manager->Tick();
+		m_pCamera_Manager->Tick(fTimeDelta);
 		m_pPipeLine->Tick();
 	}
 }
@@ -591,20 +591,12 @@ Vec4 CEngineInstance::Get_CurCamera_State(const _uint iState)
 	return m_pCamera_Manager->Get_CurCamera_State(iState);
 }
 
-HRESULT CEngineInstance::Change_Camera(const _uint& iKey)
+HRESULT CEngineInstance::Change_Camera(const _uint& iKey, const _float& fLerpTime, const LERP_MODE& eLerpMode)
 {
 	if (nullptr == m_pCamera_Manager)
 		return E_FAIL;
 
-	return m_pCamera_Manager->Change_Camera(iKey);
-}
-
-HRESULT CEngineInstance::Change_Camera_Inverse()
-{
-	if (nullptr == m_pCamera_Manager)
-		return E_FAIL;
-
-	return m_pCamera_Manager->Change_Camera_Inverse();
+	return m_pCamera_Manager->Change_Camera(iKey, fLerpTime, eLerpMode);
 }
 
 const map<_uint, CGameObject*>* CEngineInstance::Get_Cameras()
@@ -613,6 +605,14 @@ const map<_uint, CGameObject*>* CEngineInstance::Get_Cameras()
 		return nullptr;
 
 	return m_pCamera_Manager->Get_Cameras();
+}
+
+const _bool& CEngineInstance::Is_LerpCam()
+{
+	if (nullptr == m_pCamera_Manager)
+		return FALSE;
+
+	return m_pCamera_Manager->Is_Lerp();
 }
 
 void CEngineInstance::Play_Sound(_uint eSoundID, _uint eChannelID, float fVolume)

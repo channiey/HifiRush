@@ -17,6 +17,7 @@
 /* Camera */
 #include "Camera_Debug.h"
 #include "Camera_Follow.h"
+#include "Camera_Parry.h"
 
 /* UI */
 #include "BackGround.h"
@@ -318,9 +319,14 @@ HRESULT CLoader::Load_Prototype()
 			CCamera_Debug::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		/* For.Prototype_GameObject_Camera_Debug */
+		/* For.Prototype_GameObject_Camera_Follow */
 		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Camera_Follow"),
 			CCamera_Follow::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Camera_Parry */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Camera_Parry"),
+			CCamera_Parry::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For.Prototype_GameObject_Player_Chai */

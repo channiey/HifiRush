@@ -16,7 +16,7 @@ private:
 
 public:
 	HRESULT Initialize();
-	void Tick();
+	void Tick(_double fTimeDelta);
 
 public:
 	CGameObject*	Get_Camera(const _uint& iKey);
@@ -29,22 +29,25 @@ public:
 	HRESULT			Set_CurCamera(const _uint& iKey);
 
 	HRESULT			Add_Camera(const _uint& iKey, CGameObject* pCamera);
-	HRESULT			Change_Camera(const _uint& iKey);
-	HRESULT			Change_Camera_Inverse();
+	HRESULT			Change_Camera(const _uint& iKey, const _float& fLerpTime, const LERP_MODE& eLerpMode);
 
-
+	const _bool&	Is_Lerp() const { return m_bCameraChange; }
 private:
 	CGameObject*	Find_Camera(const _uint& iKey);
+	void			Lerp_Camera(_double fTimeDelta);
 
 private:
-	CGameObject*				m_pPreCamera = { nullptr };
+	map<_uint, CGameObject*>	m_Cameras;
 	CGameObject*				m_pCurCamera = { nullptr };
+	CGameObject*				m_pNextCamera = { nullptr };
 	
 	CPipeLine*					m_pPipeLine = { nullptr };
 
-	map<_uint, CGameObject*>	m_Cameras;
-
+	/* Lerp */
 	_bool						m_bCameraChange = FALSE;
+	LERP_TIME_DESC				m_tLerpTimeDesc;
+	Matrix						m_matWILerp;
+	LERP_FLOAT_DESC				m_tLerpFovDesc;
 
 public:
 	virtual void Free() override;

@@ -44,6 +44,7 @@ public:
 
 public:
 	const wstring&		Get_TriggerTag() const { return m_strTriggerTag; }
+
 	void				Set_TriggerTag(const wstring strTriggerTag) { m_strTriggerTag = strTriggerTag; }
 
 	const _bool&		Is_StartBattle() const { return m_bStartBattle; }
@@ -74,7 +75,7 @@ protected:
 protected:
 	wstring				m_strTriggerTag = {};
 	_bool				m_bBattle		= FALSE;
-	_bool				m_bStartBattle		= FALSE;
+	_bool				m_bStartBattle	= FALSE;
 
 	map<_uint, list<CGameObject*>>	m_CacheFlows;
 	map<_uint, list<CLONE_DESC>>	m_Flows;
@@ -82,8 +83,6 @@ protected:
 	vector<vector<CGameObject*>>	m_Clones;
 	_int							m_iCurFlow = 0;
 	
-	
-
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual void Free() override;

@@ -8,6 +8,8 @@ END
 
 BEGIN(Client)
 
+class CTriggerBattle;
+
 class CEnemy abstract : public CCharacter
 {
 
@@ -28,9 +30,11 @@ public:
 
 public:
 	virtual void		Set_State(const OBJ_STATE& eState) override;
+	void				Set_BattleTrigger(CTriggerBattle* pBattleTrigger) { m_pBattleTrigger = pBattleTrigger; }
 
 	const ENEMY_TYPE&	Get_EnemyType() const { return m_eEnemyType; }
-
+	CTriggerBattle*		Get_BattleTrigger() const { return m_pBattleTrigger; }
+	
 	HRESULT				Return_To_Pool();
 
 protected:
@@ -43,6 +47,7 @@ protected:
 
 protected:
 	ENEMY_TYPE			m_eEnemyType = ENEMY_TYPE::TYPEEND;
+	CTriggerBattle*		m_pBattleTrigger = nullptr;
 
 public:
 	virtual CEnemy*		Clone(void* pArg) PURE;

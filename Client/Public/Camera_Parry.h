@@ -22,12 +22,18 @@ public:
 	virtual void	Tick(_double fTimeDelta) override;
 	virtual void	LateTick(_double fTimeDelta) override;
 
+public:
+	void			Set_CamTransform(CTransform* pTargetTransform);
+	void			Zoom_In();
+	void			Zoom_Out();
+
 private:
 	HRESULT			Ready_Components();
 
 private:
 	CTransform*		m_pTransformCom = { nullptr };
 	CCamera*		m_pCameraCom = { nullptr };
+
 
 public:
 	static CCamera_Parry* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

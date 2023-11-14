@@ -47,7 +47,7 @@ void CImGui_Window_Mid_Cam::Show_Window()
 							m_pImGui_Manager->m_bDebugCam = FALSE;
 					}
 					
-					if (FAILED(ENGINE_INSTANCE->Change_Camera(Pair->first)))
+					if (FAILED(ENGINE_INSTANCE->Change_Camera(Pair->first, 1.f, LERP_MODE::SMOOTHER_STEP)))
 						assert(FALSE);
 				}
 				delete strCamName;

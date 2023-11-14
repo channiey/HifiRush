@@ -21,10 +21,6 @@ public:
 public:
 	const wstring	Check_Transition() override;
 
-private:
-	void		WakeUp();
-	void		Create_Note();
-	void		Attack();
 
 public:
 	static CState_Blader_ParryEvent* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);

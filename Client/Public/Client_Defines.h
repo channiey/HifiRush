@@ -121,11 +121,12 @@ namespace Client
 	};
 
 	/* Camera */
-	enum CAMERA_ID { CAM_DEBUG, CAM_FOLLOW, CAM_END };
+	enum CAMERA_ID { CAM_DEBUG, CAM_FOLLOW, CAM_PARRY, CAM_END };
 	static const wchar_t* CameraNames[CAM_END]
 	{
 		L"Camera_Debug",
 		L"Camera_Follow",
+		L"Camera_Parry"
 	};
 
 	static const _float CamFov_Follow_Default	= XMConvertToRadians(60.0f);

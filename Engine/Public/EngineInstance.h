@@ -108,9 +108,9 @@ public: /* For.Camera_Manager */
 	HRESULT			Set_CurCamera(const _uint& iKey);
 	HRESULT			Add_Camera(const _uint& iKey, CGameObject* pCamera);
 	Vec4			Get_CurCamera_State(const _uint iState);
-	HRESULT			Change_Camera(const _uint& iKey);
-	HRESULT			Change_Camera_Inverse();
+	HRESULT			Change_Camera(const _uint& iKey, const _float& fLerpTime, const LERP_MODE& eLerpMode);
 	const map<_uint, CGameObject*>* Get_Cameras();
+	const _bool&	Is_LerpCam();
 
 public: /* For.Sound_Manager */
 	void			Play_Sound(_uint eSoundID, _uint eChannelID, float fVolume);
