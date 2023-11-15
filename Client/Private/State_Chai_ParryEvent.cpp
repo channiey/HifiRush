@@ -57,11 +57,13 @@ void CState_Chai_ParryEvent::OnCollision_Enter(CCollider* pCollider, const _int&
 		if (m_bParried)
 		{
 			cout << "패링 성공!\n";
+			ENGINE_INSTANCE->Shake_Camera(0.3f, 10);
 		}
 		else
 		{
 			cout << "패링 실패!\n";
 			Damaged();
+			ENGINE_INSTANCE->Shake_Camera(0.3f, 10);
 		}
 	}
 }

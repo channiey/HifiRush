@@ -111,7 +111,7 @@ public: /* For.Camera_Manager */
 	HRESULT			Change_Camera(const _uint& iKey, const _float& fLerpTime = 0.5f, const LERP_MODE& eLerpMode = LERP_MODE::SMOOTHER_STEP);
 	const map<_uint, CGameObject*>* Get_Cameras();
 	const _bool		Is_LerpCam();
-	void			Shake_Camera(const _float& fShakeTime, const _float& fIntensity);
+	void			Shake_Camera(const _float& fShakeTime, const _int& iIntensity);
 
 public: /* For.Sound_Manager */
 	void			Play_Sound(_uint eSoundID, _uint eChannelID, float fVolume);

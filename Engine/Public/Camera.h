@@ -29,13 +29,15 @@ public:
 		_float	fAcc		= 0.f;
 		_float	fShakeTime	= 0.f;
 
-		_float	fIntensity	= 0.f;
+		_int	iIntensity	= 0.f;
 
+		Vec4 vOriginPos;
 
 		void Reset()
 		{
 			bActive = FALSE;
-			fAcc = fShakeTime = fIntensity = 0.f;
+			fAcc = fShakeTime = 0.f;
+			iIntensity = 0;
 		}
 
 	}SHAKE_DESC;
@@ -100,7 +102,7 @@ public:
 	void				Change_TargetObj(CGameObject* pObj);
 	void				Change_LookAtObj(CGameObject* pObj);
 
-	void				Shake_Camera(const _float& fShakeTime, const _float& fIntensity);
+	void				Shake_Camera(const _float& fShakeTime, const _int& iIntensity);
 
 private:
 	void				Update_Lerp(const _double fDeltaTime);

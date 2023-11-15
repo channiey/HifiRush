@@ -35,7 +35,7 @@ public:
 public:
 	HRESULT			Add_Camera(const _uint& iKey, CGameObject* pCamera);
 	HRESULT			Change_Camera(const _uint& iKey, const _float& fLerpTime, const LERP_MODE& eLerpMode);
-	void			Shake_Camera(const _float& fShakeTime, const _float& fIntensity);
+	void			Shake_Camera(const _float& fShakeTime, const _int& iIntensity);
 
 private:
 	CGameObject*	Find_Camera(const _uint& iKey);

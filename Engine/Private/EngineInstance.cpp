@@ -615,12 +615,12 @@ const _bool CEngineInstance::Is_LerpCam()
 	return m_pCamera_Manager->Is_Lerp();
 }
 
-void CEngineInstance::Shake_Camera(const _float& fShakeTime, const _float& fIntensity)
+void CEngineInstance::Shake_Camera(const _float& fShakeTime, const _int& iIntensity)
 {
 	if (nullptr == m_pCamera_Manager)
 		return;
 
-	return m_pCamera_Manager->Shake_Camera(fShakeTime, fIntensity);
+	return m_pCamera_Manager->Shake_Camera(fShakeTime, iIntensity);
 }
 
 void CEngineInstance::Play_Sound(_uint eSoundID, _uint eChannelID, float fVolume)

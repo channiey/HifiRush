@@ -65,12 +65,15 @@ void CCamera::Change_LookAtObj(CGameObject* pObj)
 {
 }
 
-void CCamera::Shake_Camera(const _float& fShakeTime, const _float& fIntensity)
+void CCamera::Shake_Camera(const _float& fShakeTime, const _int& iIntensity)
 {
 	m_tShakeDesc.bActive	= TRUE;
 	m_tShakeDesc.fAcc		= 0.f;
 	m_tShakeDesc.fShakeTime = fShakeTime;
-	m_tShakeDesc.fIntensity = fIntensity;
+	m_tShakeDesc.iIntensity = iIntensity;
+
+
+	m_tShakeDesc.vOriginPos = m_pOwner->Get_Transform()->Get_Position();
 }
 
 void CCamera::Update_Lerp(const _double fDeltaTime)
@@ -94,10 +97,21 @@ void CCamera::Update_Shake(const _double fDeltaTime)
 
 	m_tShakeDesc.fAcc += fDeltaTime;
 
+	Vec4 vShakePos;
 	
+	vShakePos.x = rand() % m_tShakeDesc.iIntensity * 0.01f;
+	vShakePos.y = rand() % m_tShakeDesc.iIntensity * 0.01f;
+	vShakePos.z = rand() % m_tShakeDesc.iIntensity * 0.01f;
 
+	vShakePos += m_tShakeDesc.vOriginPos;
+
+	m_pOwner->Get_Transform()->Set_Position(vShakePos);
+	
 	if (m_tShakeDesc.fShakeTime <= m_tShakeDesc.fAcc)
+	{
 		m_tShakeDesc.Reset();
+		m_pOwner->Get_Transform()->Set_Position(m_tShakeDesc.vOriginPos);
+	}
 }
 
 CCamera* CCamera::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
