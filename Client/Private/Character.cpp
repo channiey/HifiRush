@@ -172,26 +172,29 @@ void CCharacter::Attack(CCharacter* pCharacter)
 	
 }
 
-void CCharacter::Damaged(CCharacter* pCharacter)
+void CCharacter::Damaged(CCharacter* pCharacter, const ATK_TYPE& eAtkType)
 {
 	if (nullptr == pCharacter || m_tStatDesc.bDead)
 		return;
 
+	/* 패링 여부 검사 */
 	if (m_tFightDesc.bParry)
 	{
 		pCharacter->Damaged(this);
 		return;
 	}
 
-	m_tFightDesc.bDamaged = TRUE;
+	/* 상대방 및 공격 타입 검사*/
 	m_tFightDesc.pAttacker = pCharacter;
+	m_tFightDesc.eAtkType = eAtkType;
+
+	/* 체력 및 사망 여부 검사 */
+	m_tFightDesc.bDamaged = TRUE;
 
 	m_tStatDesc.fCurHp -= pCharacter->Get_StatDesc().fAd;
 	
 	if (m_tStatDesc.fCurHp <= 0)
-	{
 		m_tStatDesc.bDead = TRUE;
-	}
 }
 
 void CCharacter::Die()

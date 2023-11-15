@@ -18,7 +18,6 @@ CEnemy::CEnemy(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 CEnemy::CEnemy(const CEnemy& rhs)
 	: CCharacter(rhs)
-	, m_eEnemyType(rhs.m_eEnemyType)
 {
 }
 

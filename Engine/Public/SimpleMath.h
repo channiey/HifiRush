@@ -333,6 +333,11 @@ namespace DirectX
 
             Vector3 Normalized() noexcept;
 
+            Vector3 ZeroX() noexcept;
+            Vector3 ZeroY() noexcept;
+            Vector3 ZeroZ() noexcept;
+            Vector3 Inverse() noexcept;
+
             ///* User */
             //Vector4 ToVec4Nor() const  noexcept { return Vector4(x, y, z, 0); }
             //Vector4 ToVec4Coord() const  noexcept { return Vector4(x, y, z, 1); }
@@ -2267,6 +2272,38 @@ namespace DirectX
             XMVECTOR v1 = XMLoadFloat3(this);
             XMVECTOR X = XMVector3Normalize(v1);
             return   X;
+        }
+
+        inline Vector3 Vector3::ZeroX() noexcept
+        {
+            using namespace DirectX;
+            Vector3 v1 = XMLoadFloat3(this);
+            v1.x = 0.f;
+            return v1;
+        }
+
+        inline Vector3 Vector3::ZeroY() noexcept
+        {
+            using namespace DirectX;
+            Vector3 v1 = XMLoadFloat3(this);
+            v1.y = 0.f;
+            return v1;
+        }
+
+        inline Vector3 Vector3::ZeroZ() noexcept
+        {
+            using namespace DirectX;
+            Vector3 v1 = XMLoadFloat3(this);
+            v1.z = 0.f;
+            return v1;
+        }
+
+        inline Vector3 Vector3::Inverse() noexcept
+        {
+            using namespace DirectX;
+            Vector3 v1 = XMLoadFloat3(this);
+            v1 *= -1.f;
+            return v1;
         }
 
 

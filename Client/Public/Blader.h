@@ -12,6 +12,7 @@ enum ANIM_BL
 	ATK_JUMP_STRKIE_00_BL,
 	ATK_JUMP_STRKIE_01_BL,
 	ATK_JUMP_STRKIE_02_BL,
+	ATK_SIMPLE,
 
 	DIE_BL,
 
@@ -67,6 +68,7 @@ static const string AnimNames_BL[ANIM_BL::ANIM_BL_END]
 	"ATK_JUMP_STRIKE_00",
 	"ATK_JUMP_STRIKE_01",
 	"ATK_JUMP_STRIKE_02",
+	"em0500_atk_040",
 
 	"DIE",
 
@@ -133,6 +135,8 @@ static const wstring StateNames_BL[STATE_BL::STATE_END_BL]
 
 class CBlader final : public CEnemy
 {
+	enum CHILD_TYPE { ARM_LEFT_BL, ARM_RIGHT_BL, BL_END };
+
 private:
 	CBlader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CBlader(const CBlader& rhs);

@@ -6,6 +6,8 @@
 #endif // _DEBUG
 #include "Camera_Parry.h"
 
+#include "Chai.h"
+
 CState_Blader_ParryEvent::CState_Blader_ParryEvent()
 {
 }
@@ -43,6 +45,9 @@ HRESULT CState_Blader_ParryEvent::Enter()
 		m_pBlader->Get_Transform()->Set_Look(vDir.ZeroY().Normalized());
 	}
 
+	m_pBlader->Get_Child(CBlader::CHILD_TYPE::ARM_LEFT_BL)->Get_Collider_Sphere()->Set_Active(TRUE);
+	m_pBlader->Get_Child(CBlader::CHILD_TYPE::ARM_RIGHT_BL)->Get_Collider_Sphere()->Set_Active(TRUE);
+
 	return S_OK;
 }
 
@@ -65,11 +70,9 @@ const wstring CState_Blader_ParryEvent::Tick(const _double& fTimeDelta)
 
 			/* 패링 카메라 트랜스폼 설정 */
 			Set_Camera_Transform();
-			cout << "패링 카메라 트랜스폼 설정\n";
 
 			/* 카메라 변경 (팔로우 -> 패링) */
 			ENGINE_INSTANCE->Change_Camera(CAMERA_ID::CAM_PARRY, 0.3f, LERP_MODE::SMOOTHER_STEP);
-			cout << "카메라 변경 보간 시작 \n";
 			m_eProgressID = PR_SET_CAM;
 		}
 
@@ -79,10 +82,13 @@ const wstring CState_Blader_ParryEvent::Tick(const _double& fTimeDelta)
 	{
 		if (!ENGINE_INSTANCE->Is_LerpCam())
 		{
-			cout << "카메라 변경 보간 종료 \n";
 			/* 줌인 */
 			Zoom_In();
-			cout << "줌인 시작 \n";
+
+			/* 플레이어 상태 변경 */
+			if (FAILED(m_pBlader->m_tFightDesc.pTarget->Get_StateMachine()->Set_State(StateNames_CH[STATE_CH::STATE_PARRYEVENT_CH])))
+				return m_strName;
+			
 			m_eProgressID = PROGRESS_ID::PR_ZOOM_IN;
 		}
 	}
@@ -91,26 +97,22 @@ const wstring CState_Blader_ParryEvent::Tick(const _double& fTimeDelta)
 	{
 		if (!pCurCameraCom->Is_Lerp_Dist())
 		{
-			cout << "줌인 종료 \n";
-
 			m_fTimeAcc += fTimeDelta;
 			if (0.3f <= m_fTimeAcc)
 			{
-				/* 플레이어 포지션 설정 */
-				Set_Player_Transform();
-				m_eProgressID = PR_SET_PLAYER;
-
-				cout << "플레이어 포지션 설정 \n";
+				m_eProgressID = PR_ZOOM_FIX;
 			}
 		}
 	}
 
-	if (PROGRESS_ID::PR_SET_PLAYER == m_eProgressID)
+	if (PROGRESS_ID::PR_ZOOM_FIX == m_eProgressID)
 	{
 		if (45 == desc.cur.iCurFrame)
 		{
 			Zoom_Out();
-			m_eProgressID = PROGRESS_ID::PR_SET_PLAYER;
+			/* 플레이어 포지션 설정 */
+			Set_Player_Transform();
+			m_eProgressID = PROGRESS_ID::PR_ZOOM_OUT;
 		}
 	}
 
@@ -129,6 +131,15 @@ void CState_Blader_ParryEvent::Exit()
 	m_fTimeLimit = 0.f;
 
 	m_eProgressID = PR_ZERO;
+
+	m_pBlader->Get_Child(CBlader::CHILD_TYPE::ARM_LEFT_BL)->Get_Collider_Sphere()->Set_Active(FALSE);
+	m_pBlader->Get_Child(CBlader::CHILD_TYPE::ARM_RIGHT_BL)->Get_Collider_Sphere()->Set_Active(FALSE);
+
+	/* 플레이어 상태 변경 */
+	if (FAILED(m_pBlader->m_tFightDesc.pTarget->Get_StateMachine()->Set_State(StateNames_CH[STATE_CH::STATE_IDLE_CH])))
+		return;
+
+	ENGINE_INSTANCE->Change_Camera(CAMERA_ID::CAM_FOLLOW);
 }
 
 const wstring CState_Blader_ParryEvent::Check_Transition()
@@ -156,7 +167,6 @@ const wstring CState_Blader_ParryEvent::Check_Transition()
 		}
 		else if (AnimNames_BL[ANIM_BL::PARRY_EVENT_FINISH_BL] == strCurAnimName && 45 == desc.cur.iCurFrame)
 		{
-			ENGINE_INSTANCE->Change_Camera(CAMERA_ID::CAM_FOLLOW);
 			return StateNames_BL[STATE_BL::STATE_IDLE_BL];
 		}
 	}
@@ -168,7 +178,7 @@ void CState_Blader_ParryEvent::Calculate_Player_Transform()
 {
 	Vec4 vLook = m_pBlader->Get_Transform()->Get_State(CTransform::STATE_LOOK);
 
-	m_vPlayerNewPos = m_pBlader->Get_Transform()->Get_FinalPosition() + (vLook.Normalized() * m_fDistance);
+	m_vPlayerNewPos = m_pBlader->Get_Transform()->Get_FinalPosition() + (vLook.ZeroY().Normalized() * m_fDistance);
 }
 
 void CState_Blader_ParryEvent::Set_Camera_Transform()

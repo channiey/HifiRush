@@ -127,19 +127,6 @@ void CState_Chai_Attack::Exit()
 	m_pChai->m_tFightDesc.iStep = -1;
 }
 
-void CState_Chai_Attack::OnCollision_Enter(CGameObject* pGameObject)
-{
-	if (nullptr == pGameObject) return;
-}
-
-void CState_Chai_Attack::OnCollision_Stay(CGameObject* pGameObject)
-{
-}
-
-void CState_Chai_Attack::OnCollision_Exit(CGameObject* pGameObject)
-{
-}
-
 const wstring CState_Chai_Attack::Check_Transition()
 {
 	if (!m_tAttackDesc.bFirstAttack)
@@ -300,32 +287,29 @@ void CState_Chai_Attack::Detect_AttackCollision()
 
 	m_tAttackDescForCol.bSet = FALSE;
 
+	Vec4 vPlayerPos = m_pChai->Get_Transform()->Get_FinalPosition();
+	Vec3 vPlayerLook = m_pChai->Get_Transform()->Get_Forward().xyz().Normalized();
 	const _float fMaxAngle	= 90.f;
 	const _float fMaxDist	= 5.f;
 
 	list<CGameObject*>* pEnemyList = ENGINE_INSTANCE->Get_Layer(ENGINE_INSTANCE->Get_CurLevelIndex(), LayerNames[LAYER_ENEMY]);
 
-	if (nullptr == pEnemyList)
-		return;
+	if (nullptr == pEnemyList) return;
 
-	Vec3 vPlayerDir = m_pChai->Get_Transform()->Get_Forward().xyz().Normalized();
 	for (auto pEnemy : *pEnemyList)
 	{
 		if (pEnemy != nullptr && pEnemy->Is_Active())
 		{
-			Vec3 vDirToEnemy = pEnemy->Get_Transform()->Get_FinalPosition().xyz() -
-								m_pChai->Get_Transform()->Get_FinalPosition().xyz();
+			Vec3 vDirToEnemy = pEnemy->Get_Transform()->Get_FinalPosition().xyz() - vPlayerPos.xyz();
 
-			//  정규화된 벡터 사이의 각도를 계산, 반환된 라디안 값을 도 단위로 변환(180.0f / XM_PI)
-			_float fAngle = XMVectorGetX(XMVector3AngleBetweenNormals(vPlayerDir, XMVector3Normalize(vDirToEnemy))) * (180.0f / XM_PI);
+			const _float fAngle = XMVectorGetX(XMVector3AngleBetweenNormals(vPlayerLook, XMVector3Normalize(vDirToEnemy))) * (180.0f / XM_PI);
+			const _float fDist = XMVectorGetX(XMVector3Length(vDirToEnemy));
 
-			_float fDist = XMVectorGetX(XMVector3Length(vDirToEnemy));
-
-			//  플레이어의 바라보는 방향으로부터 좌우로 떨어진 각도를 계산
 			if (fAngle <= fMaxAngle / 2 && fDist <= fMaxDist)
 			{
 				dynamic_cast<CCharacter*>(pEnemy)->Damaged(dynamic_cast<CCharacter*>(m_pChai));
 
+				/* 넉백 */
 				KnockBack(dynamic_cast<CCharacter*>(pEnemy));
 			}
 		}
@@ -334,11 +318,14 @@ void CState_Chai_Attack::Detect_AttackCollision()
 
 void CState_Chai_Attack::KnockBack(CCharacter* pTarget)
 {
-	Vec3 vDir = pTarget->Get_Transform()->Get_FinalPosition().xyz() - m_pChai->Get_Transform()->Get_FinalPosition().xyz();
-	
-	vDir.y = 0.f;
+	/* 플레이어 바라보게 */
+	Vec4 vLook = m_pChai->Get_Transform()->Get_FinalPosition() - pTarget->Get_Transform()->Get_FinalPosition();
+	pTarget->Get_Transform()->Set_Look(vLook.ZeroY().Normalized());
 
-	Vec3 vForce = vDir.Normalized() * m_pChai->m_tPhysicsDesc.fKnockBackPower;
+	/* 넉백 힘 적용 */
+	Vec3 vDir = pTarget->Get_Transform()->Get_FinalPosition().xyz() - m_pChai->Get_Transform()->Get_FinalPosition().xyz();
+
+	Vec3 vForce = vDir.ZeroY().Normalized() * m_pChai->m_tPhysicsDesc.fKnockBackPower;
 	if (2 == m_pChai->m_tFightDesc.iStep)
 		vForce *= 10.f;
 

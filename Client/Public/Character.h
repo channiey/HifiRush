@@ -17,12 +17,14 @@ BEGIN(Client)
 class CCharacter abstract  : public CGameObject
 {
 public:
+	enum class ATK_TYPE { LIGHT, HEAVY, FLY, DOWN, STUN, ATK_TYPE_END };
 
 	typedef struct tagFightDesc
 	{
 		_bool   bAttack = FALSE;
 		_bool   bCombo = FALSE;
 		_bool	bDamaged = FALSE;
+		ATK_TYPE eAtkType = ATK_TYPE::ATK_TYPE_END;
 
 		_bool   bInvulneralbe = FALSE;
 
@@ -106,7 +108,7 @@ protected:
 
 public:
 	void					Attack(CCharacter* pCharacter);
-	virtual void			Damaged(CCharacter* pCharacter);
+	virtual void			Damaged(CCharacter* pCharacter, const ATK_TYPE& eAtkType = ATK_TYPE::LIGHT);
 	void					Die();
 
 	void					KnockBack(CCharacter* pAttacker);

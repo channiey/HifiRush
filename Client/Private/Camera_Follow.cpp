@@ -108,7 +108,6 @@ HRESULT CCamera_Follow::Find_Target()
 
 	m_pCameraCom->Set_TargetObj(pObject);
 	m_pCameraCom->Set_LookAtObj(pObject);
-	//m_pTransformCom->Set_Position(pObject->Get_Transform()->Get_FinalPosition());
 
 	return S_OK;
 }

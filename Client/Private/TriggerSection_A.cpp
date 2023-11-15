@@ -86,7 +86,7 @@ HRESULT CTriggerSection_A::Start_Battle()
 	}*/
 
 	/* Set Volume */
-	ENGINE_INSTANCE->Lerp_BGMSound(BgmVolumeInBattle, 2.f, LERP_MODE::SMOOTHER_STEP);
+	//ENGINE_INSTANCE->Lerp_BGMSound(BgmVolumeInBattle, 2.f, LERP_MODE::SMOOTHER_STEP);
 
 	/* Pop from Pool */
 	for (auto Pair : m_Flows)

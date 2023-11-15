@@ -34,7 +34,7 @@ private:
 	CTransform*		m_pTransformCom = { nullptr };
 	CCamera*		m_pCameraCom = { nullptr };
 
-	_float			m_fMaxDistance = 8.f;
+	_float			m_fMaxDistance;
 
 	Vec4			m_vPlayerStartPos;
 	Vec4			m_vRelativePos;

@@ -34,6 +34,7 @@
 /* Weapon */
 #include "Chai_Guitar_Explore.h"
 #include "Saber_Sword.h"
+#include "Blader_Arm.h"
 
 /* UI */
 #include "HealthBar.h"
@@ -364,6 +365,11 @@ HRESULT CLoader::Load_Prototype()
 			CTriggerSection_B::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+		/* For.Prototype_GameObject_Weapon_Blader_Arm */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Weapon_Blader_Arm"),
+			CBlader_Arm::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 		/* For.Prototype_GameObject_Weapon_Chai_Guitar_Explore */
 		{
 			const string		tag = "Weapon_Chai_Guitar_Explore";
@@ -372,6 +378,7 @@ HRESULT CLoader::Load_Prototype()
 			if (FAILED(pEngineInstance->Add_Prototype(Util_String::ToWString(tag), CChai_Guitar_Explore::Create(m_pDevice, m_pContext))))
 				return E_FAIL;
 		}
+
 		/* For.Prototype_GameObject_Weapon_Saber_Sword */
 		{
 			const string		tag = "Weapon_Saber_Sword";

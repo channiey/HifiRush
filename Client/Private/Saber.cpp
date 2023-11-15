@@ -26,8 +26,6 @@ CSaber::CSaber(const CSaber& rhs)
 
 HRESULT CSaber::Initialize_Prototype()
 {
-	m_eEnemyType = ENEMY_TYPE::NORMAL;
-
 	return S_OK;
 }
 

@@ -27,7 +27,7 @@ HRESULT CTransform::Initialize(void* pArg)
 	return S_OK;
 }
 
-const Vec3 CTransform::Get_Scale()
+Vec3 CTransform::Get_Scale()
 {
 	Vec3 vScale, vTemp;
 	Quaternion quatTemp;
@@ -37,7 +37,7 @@ const Vec3 CTransform::Get_Scale()
 	return vScale;
 }
 
-const Vec3 CTransform::Get_Rotation()
+Vec3 CTransform::Get_Rotation()
 {
 	XMMATRIX   rotationMatrix = m_RotMatrix;
 	float pitch, yaw, roll;
@@ -88,7 +88,7 @@ const Vec3 CTransform::Get_Rotation()
 	return ToEulerAngles(quatTemp);
 }
 
-const Vec4 CTransform::Get_FinalPosition()
+Vec4 CTransform::Get_FinalPosition()
 {
 	const Matrix matFinal = Get_FinalMat();
 

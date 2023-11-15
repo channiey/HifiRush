@@ -63,12 +63,12 @@ HRESULT CTriggerSection_B::Render()
 
 HRESULT CTriggerSection_B::Start_Battle()
 {
-	CCamera* pCameraCom = ENGINE_INSTANCE->Get_CurCamera()->Get_Camera();
+	/*CCamera* pCameraCom = ENGINE_INSTANCE->Get_CurCamera()->Get_Camera();
 	if (nullptr != pCameraCom && CAMERA_ID::CAM_FOLLOW == (CAMERA_ID)pCameraCom->Get_Key())
 	{
 		pCameraCom->Lerp_Fov(CamFov_Follow_Battle, 1.5f, LERP_MODE::SMOOTHER_STEP);
 		pCameraCom->Lerp_Dist(CamDist_Follow_Battle + 1.f, 1.5f, LERP_MODE::SMOOTHER_STEP);
-	}
+	}*/
 
 	/* Pop from Pool */
 	for (auto Pair : m_Flows)

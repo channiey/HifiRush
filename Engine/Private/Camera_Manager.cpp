@@ -132,6 +132,13 @@ HRESULT CCamera_Manager::Change_Camera(const _uint& iKey, const _float& fLerpTim
 	return S_OK;
 }
 
+void CCamera_Manager::Shake_Camera(const _float& fShakeTime, const _float& fIntensity)
+{
+	if (nullptr == m_pCurCamera || m_pCurCamera->Get_Camera()->Is_Shake()) return;
+
+	m_pCurCamera->Get_Camera()->Shake_Camera(fShakeTime, fIntensity);
+}
+
 CGameObject* CCamera_Manager::Find_Camera(const _uint& iKey)
 {
 	auto iter = m_Cameras.find(iKey);

@@ -51,7 +51,7 @@ protected:
 	CBlader*			m_pBlader = { nullptr };
 	CModel*				m_pModel = { nullptr };
 
-	_float				m_fTargetMinDist = 10.f;
+	_float				m_fTargetMinDist = 5.f;
 	_float				m_fTargetMaxDist = 20.f;
 
 	_double				m_fTimeLimit = 0.f;

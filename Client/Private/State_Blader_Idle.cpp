@@ -123,6 +123,10 @@ const wstring CState_Blader_Idle::Choose_NextState()
 	if (StateNames_BL[STATE_BL::STATE_APPEAR_BL] == m_pStateMachine->Get_PrevState()->Get_Name())
 		return StateNames_BL[STATE_BL::STATE_ATTACK_BL];
 
+	/* 가깝다면 바로 공격 */
+	if (Get_Distance() <= m_fTargetMinDist) 
+		return StateNames_BL[STATE_BL::STATE_ATTACK_BL];
+
 	const _int iRand = rand() % 2;
 
 	if (0 == iRand)

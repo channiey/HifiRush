@@ -16,6 +16,8 @@
 #include "State_Blader_ParryEvent.h"
 #include "State_Blader_Dead.h"
 
+#include "Blader_Arm.h"
+
 CBlader::CBlader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CEnemy(pDevice, pContext)
 {
@@ -28,8 +30,6 @@ CBlader::CBlader(const CBlader& rhs)
 
 HRESULT CBlader::Initialize_Prototype()
 {
-	m_eEnemyType = ENEMY_TYPE::NORMAL;
-
 	return S_OK;
 }
 
@@ -89,7 +89,7 @@ HRESULT CBlader::Ready_Components()
 	/* Com_Collider */
 	CCollider_Sphere* pCollider = nullptr;
 	{
-		CCollider::COLLIDERDESC	ColliderDesc(Vec3{ 0.f, 2.f, 0.f }, 2.f);
+		CCollider::COLLIDERDESC	ColliderDesc(Vec3{ 0.f, 2.3f, 0.f }, 2.3f);
 
 		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
 			ComponentNames[COM_COLLIDER_SPHERE], (CComponent**)&pCollider, &ColliderDesc)))
@@ -103,6 +103,26 @@ HRESULT CBlader::Ready_Components()
 
 HRESULT CBlader::Ready_Chilren()
 {
+	CWeapon* pChild = nullptr;
+
+	pChild = dynamic_cast<CWeapon*>(ENGINE_INSTANCE->Add_GameObject(ENGINE_INSTANCE->Get_CurLoadingLevel(), LayerNames[LAYER_WEAPON], L"Weapon_Blader_Arm"));
+	{
+		if (FAILED(Add_Child(pChild)))
+			return E_FAIL;
+
+		pChild->Set_Socket(CModel::BONE_SOCKET_LEFT);
+		pChild->Set_IndexAsChild(CHILD_TYPE::ARM_LEFT_BL);
+	}
+
+	pChild = dynamic_cast<CWeapon*>(ENGINE_INSTANCE->Add_GameObject(ENGINE_INSTANCE->Get_CurLoadingLevel(), LayerNames[LAYER_WEAPON], L"Weapon_Blader_Arm"));
+	{
+		if (FAILED(Add_Child(pChild)))
+			return E_FAIL;
+
+		pChild->Set_Socket(CModel::BONE_SOCKET_RIGHT);
+		pChild->Set_IndexAsChild(CHILD_TYPE::ARM_RIGHT_BL);
+	}
+
 	return S_OK;
 }
 
@@ -152,17 +172,17 @@ HRESULT CBlader::Ready_StateMachine()
 
 void CBlader::OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild)
 {
-	__super::OnCollision_Enter(pCollider, iIndexAsChild);
+	m_pStateMachineCom->Get_CurState()->OnCollision_Enter(pCollider, iIndexAsChild);
 }
 
 void CBlader::OnCollision_Stay(CCollider* pCollider, const _int& iIndexAsChild)
 {
-	__super::OnCollision_Stay(pCollider, iIndexAsChild);
+	m_pStateMachineCom->Get_CurState()->OnCollision_Stay(pCollider, iIndexAsChild);
 }
 
 void CBlader::OnCollision_Exit(CCollider* pCollider, const _int& iIndexAsChild)
 {
-	__super::OnCollision_Exit(pCollider, iIndexAsChild);
+	m_pStateMachineCom->Get_CurState()->OnCollision_Exit(pCollider, iIndexAsChild);
 }
 
 CBlader* CBlader::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

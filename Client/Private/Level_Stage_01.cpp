@@ -65,15 +65,15 @@ HRESULT CLevel_Stage_01::LateTick(_float fTimeDelta)
 
 HRESULT CLevel_Stage_01::Check_Collision()
 {
-	//ENGINE_INSTANCE->Check_Collision_Layer(LayerNames[LAYER_PLAYER]
-	//	, LayerNames[LAYER_WEAPON]
-	//	, CCollider::SPHERE
-	//	, CCollider::SPHERE);
-
-	/*ENGINE_INSTANCE->Check_Collision_Layer(LayerNames[LAYER_ENEMY]
+	ENGINE_INSTANCE->Check_Collision_Layer(LayerNames[LAYER_PLAYER]
 		, LayerNames[LAYER_WEAPON]
 		, CCollider::SPHERE
-		, CCollider::SPHERE);*/
+		, CCollider::SPHERE);
+
+	ENGINE_INSTANCE->Check_Collision_Layer(LayerNames[LAYER_PLAYER]
+		, LayerNames[LAYER_ENEMY]
+		, CCollider::SPHERE
+		, CCollider::SPHERE);
 
 	ENGINE_INSTANCE->Check_Collision_Layer(LayerNames[LAYER_PLAYER]
 		, LayerNames[LAYER_TRIGGER]

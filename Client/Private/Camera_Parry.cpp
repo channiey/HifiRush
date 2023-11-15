@@ -80,14 +80,14 @@ void CCamera_Parry::Set_CamTransform(CTransform* pTargetTransform, CTransform* p
 		Matrix matWorld = pPlayerTransform->Get_WorldMat();
 		memcpy(matWorld.m[3], &Vec4::Zero, sizeof(Vec3));
 
-		m_vRelativePos		= XMVector3TransformCoord(Vec3{2.f, 0.f ,-4.f}, matWorld);
+		m_vRelativePos		= XMVector3TransformCoord(Vec3{1.5f, 0.f ,-5.f}, matWorld);
 	}
 
 	/* Set Camera Component Data */
 	{
 		m_pCameraCom->Set_LookAtObj(m_pTargetTransformCom->Get_Owner());
 		m_pCameraCom->Set_TargetObj(m_pTargetTransformCom->Get_Owner());
-		m_pCameraCom->Set_LookAtOffSet(Vec4{ 0.f, 4.f, 0.f, 0.f });
+		m_pCameraCom->Set_LookAtOffSet(Vec4{ 0.f, 3.f, 0.f, 0.f });
 		m_pCameraCom->Set_TargetOffSet(Vec4{ 0.f, 2.f, 0.f, 0.f });
 	}
 

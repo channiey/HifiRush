@@ -21,10 +21,10 @@ public:
 	virtual HRESULT Initialize(void* pArg) override;
 
 public: 
-	const Vec3		Get_Scale();
-	const Vec3		Get_Rotation(); /* Euler */
-	const Vec4		Get_Position()  const { return  static_cast<Vec4>(m_WorldMatrix.m[STATE_POSITION]); }
-	const Vec4		Get_FinalPosition();
+	Vec3		Get_Scale();
+	Vec3		Get_Rotation(); /* Euler */
+	Vec4		Get_Position()  const { return  static_cast<Vec4>(m_WorldMatrix.m[STATE_POSITION]); }
+	Vec4		Get_FinalPosition();
 
 	Vec4		Get_Right()		const { return  static_cast<Vec4>(m_WorldMatrix.m[STATE_RIGHT]); }
 	Vec4		Get_Left()		const { return -(static_cast<Vec4>(m_WorldMatrix.m[STATE_RIGHT])); }

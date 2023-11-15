@@ -1,6 +1,9 @@
 #include "..\Public\Camera.h"
 #include "PipeLine.h"
 
+#include "GameObject.h"
+#include "Transform.h"
+
 CCamera::CCamera(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CComponent(pDevice, pContext)
 {
@@ -29,6 +32,7 @@ HRESULT CCamera::Initialize(void * pArg)
 HRESULT CCamera::Update(const _double fDeltaTime)
 {
 	Update_Lerp(fDeltaTime);
+	Update_Shake(fDeltaTime);
 
 	return S_OK;
 }
@@ -61,22 +65,39 @@ void CCamera::Change_LookAtObj(CGameObject* pObj)
 {
 }
 
+void CCamera::Shake_Camera(const _float& fShakeTime, const _float& fIntensity)
+{
+	m_tShakeDesc.bActive	= TRUE;
+	m_tShakeDesc.fAcc		= 0.f;
+	m_tShakeDesc.fShakeTime = fShakeTime;
+	m_tShakeDesc.fIntensity = fIntensity;
+}
+
 void CCamera::Update_Lerp(const _double fDeltaTime)
 {
 	if (m_tLerpFov.bActive)
 	{
 		m_tLerpFov.Update(fDeltaTime);
 		m_tProjDesc.fFovy = m_tLerpFov.fCurValue;
-		cout << "FOV : " << m_tLerpFov.fCurValue << endl;
 	}
 
 	if (m_tLerpDist.bActive)
 	{
 		m_tLerpDist.Update(fDeltaTime);
 		m_fDistance = m_tLerpDist.fCurValue;
-
-		cout << "DIST : " << m_tLerpDist.fCurValue << endl;
 	}
+}
+
+void CCamera::Update_Shake(const _double fDeltaTime)
+{
+	if (!m_tShakeDesc.bActive) return;
+
+	m_tShakeDesc.fAcc += fDeltaTime;
+
+	
+
+	if (m_tShakeDesc.fShakeTime <= m_tShakeDesc.fAcc)
+		m_tShakeDesc.Reset();
 }
 
 CCamera* CCamera::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

@@ -12,10 +12,6 @@ class CTriggerBattle;
 
 class CEnemy abstract : public CCharacter
 {
-
-public:
-	enum class ENEMY_TYPE {NORMAL, FLYING, BOSS, TYPEEND };
-
 protected:
 	CEnemy(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CEnemy(const CEnemy& rhs);
@@ -32,7 +28,6 @@ public:
 	virtual void		Set_State(const OBJ_STATE& eState) override;
 	void				Set_BattleTrigger(CTriggerBattle* pBattleTrigger) { m_pBattleTrigger = pBattleTrigger; }
 
-	const ENEMY_TYPE&	Get_EnemyType() const { return m_eEnemyType; }
 	CTriggerBattle*		Get_BattleTrigger() const { return m_pBattleTrigger; }
 	
 	HRESULT				Return_To_Pool();
@@ -46,7 +41,6 @@ protected:
 	virtual void		OnCollision_Exit(CCollider* pCollider, const _int& iIndexAsChild = -1) override;
 
 protected:
-	ENEMY_TYPE			m_eEnemyType = ENEMY_TYPE::TYPEEND;
 	CTriggerBattle*		m_pBattleTrigger = nullptr;
 
 public:

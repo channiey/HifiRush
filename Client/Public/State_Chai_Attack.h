@@ -49,11 +49,6 @@ public:
 	const wstring LateTick() override;
 	void				Exit() override;
 
-private:
-	virtual void		OnCollision_Enter(CGameObject* pGameObject) override;
-	virtual void		OnCollision_Stay(CGameObject* pGameObject) override;
-	virtual void		OnCollision_Exit(CGameObject* pGameObject) override;
-
 public:
 	const wstring		Check_Transition() override;
 

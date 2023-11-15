@@ -18,6 +18,7 @@
 #include "State_Chai_Attack.h"
 #include "State_Chai_Damaged.h"
 #include "State_Chai_Parry.h"
+#include "State_Chai_ParryEvent.h"
 
 #ifdef _DEBUG
 #include "ImGui_Manager.h"
@@ -57,13 +58,27 @@ HRESULT CChai::Initialize(void* pArg)
 
 void CChai::Tick(_double fTimeDelta)
 {
-	if (ENGINE_INSTANCE->Key_Down('Q'))
+	if (ENGINE_INSTANCE->Key_Down('I'))
 	{
-		m_pTransformCom->Set_Position(Vec3{ 96.f, -4.5f, 116.f }, TRUE);
+		const Vec3 vPos		= { 96.f, -4.5f, 116.f };
+		const _int iIndex	= CNavMesh::GetInstance()->Find_Cell(vPos);
 
-		_int iIndex = CNavMesh::GetInstance()->Find_Cell(m_pTransformCom->Get_FinalPosition().xyz());
+		if (-1 != iIndex)
+		{
+			m_pTransformCom->Set_Position(vPos, TRUE);
+			m_pNavMeshAgentCom->Set_CurIndex(iIndex);
+		}
+	}
+	else if (ENGINE_INSTANCE->Key_Down('O'))
+	{
+		const Vec3 vPos		= { 16.f, -3.5f, 58.f };
+		const _int iIndex	= CNavMesh::GetInstance()->Find_Cell(vPos);
 
-		m_pNavMeshAgentCom->Set_CurIndex(iIndex);
+		if (-1 != iIndex)
+		{
+			m_pTransformCom->Set_Position(vPos, TRUE);
+			m_pNavMeshAgentCom->Set_CurIndex(iIndex);
+		}
 	}
 
 	__super::Tick(fTimeDelta);
@@ -160,6 +175,10 @@ HRESULT CChai::Ready_StateMachine()
 		pState = CState_Chai_Parry::Create(m_pStateMachineCom, StateNames_CH[STATE_PARRY_CH], this);
 		if (FAILED(m_pStateMachineCom->Add_State(pState)))
 			return E_FAIL;
+
+		pState = CState_Chai_ParryEvent::Create(m_pStateMachineCom, StateNames_CH[STATE_PARRYEVENT_CH], this);
+		if (FAILED(m_pStateMachineCom->Add_State(pState)))
+			return E_FAIL;
 	}
 
 	return S_OK;
@@ -169,7 +188,6 @@ HRESULT CChai::Ready_Chilren()
 {
 	CWeapon* pChild = nullptr;
 	
-	/* 이거 레벨 관련 새로 추가 */
 	pChild = dynamic_cast<CWeapon*>(ENGINE_INSTANCE->Add_GameObject(ENGINE_INSTANCE->Get_CurLoadingLevel(), LayerNames[LAYER_WEAPON], L"Weapon_Chai_Guitar_Explore"));
 	{
 		if (FAILED(Add_Child(pChild)))
@@ -178,43 +196,49 @@ HRESULT CChai::Ready_Chilren()
 		pChild->Set_Socket(CModel::BONE_SOCKET_RIGHT); 
 		pChild->Set_IndexAsChild(CHILD_TYPE::CH_WEAPON_RIGHT);
 	}
+
 	return S_OK;
 }
 
 void CChai::OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild)
 {
-	CGameObject* pGameObject = pCollider->Get_Owner();
+	m_pStateMachineCom->Get_CurState()->OnCollision_Enter(pCollider, iIndexAsChild);
 }
 
 void CChai::OnCollision_Stay(CCollider* pCollider, const _int& iIndexAsChild)
 {
+	m_pStateMachineCom->Get_CurState()->OnCollision_Stay(pCollider, iIndexAsChild);
 }
 
 void CChai::OnCollision_Exit(CCollider* pCollider, const _int& iIndexAsChild)
 {
+	m_pStateMachineCom->Get_CurState()->OnCollision_Exit(pCollider, iIndexAsChild);
 }
 
-void CChai::Damaged(CCharacter* pCharacter)
+void CChai::Damaged(CCharacter* pCharacter, const ATK_TYPE& eAtkType)
 {
 	if (nullptr == pCharacter || m_tStatDesc.bDead)
 		return;
 
-	if (m_tFightDesc.bParry) // 패링 성공 
+	/* 패링 여부 검사 */
+	if (m_tFightDesc.bParry) 
 	{
 		pCharacter->Damaged(this);
 		ENGINE_INSTANCE->Play_Sound(EFC_CHAI_PARRY, PLAYER_CHAI, EfcVolumeChai);
 		return;
 	}
 
-	m_tFightDesc.bDamaged = TRUE;
+	/* 상대방 및 공격 타입 검사*/
 	m_tFightDesc.pAttacker = pCharacter;
+	m_tFightDesc.eAtkType = eAtkType;
+
+	/* 체력 및 사망 여부 검사 */
+	m_tFightDesc.bDamaged = TRUE;
 
 	m_tStatDesc.fCurHp -= pCharacter->Get_StatDesc().fAd;
 
 	if (m_tStatDesc.fCurHp <= 0)
-	{
 		m_tStatDesc.bDead = TRUE;
-	}
 }
 
 CChai * CChai::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)

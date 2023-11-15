@@ -62,24 +62,58 @@ const wstring CState_Blader_Damaged::Check_Transition()
 
 void CState_Blader_Damaged::Damaged()
 {
-	/* Temp */
+	CCharacter*				pCharacter = dynamic_cast<CCharacter*>(m_pBlader->m_tFightDesc.pAttacker);
+	CCharacter::ATK_TYPE	eAtkType = m_pBlader->m_tFightDesc.eAtkType;
+	
+	if (nullptr == pCharacter) 
+		return;
+
+	/* 패링 이벤트 판별 */
+	if (m_pBlader->m_tStatDesc.fCurHp <= 10)
 	{
 		m_pStateMachine->Set_State(StateNames_BL[STATE_BL::STATE_PARRYEVENT_BL]);
 		return;
 	}
 
-
+	/* 사망 판별 */
 	if (m_pBlader->m_tStatDesc.bDead)
 	{
 		m_pStateMachine->Set_State(StateNames_BL[STATE_BL::STATE_DEAD_BL]);
 		return;
 	}
 
-	CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::DMG_LIGHT_01_BL]);
+	/* Animation Data */
+	CAnimation* pAnimation = nullptr;
+	_double		fTimePerFrame = 0.f;
+	_float		fTweenTime = DF_TW_TIME;
+
+	switch (eAtkType)
+	{
+	case CCharacter::ATK_TYPE::LIGHT:
+	{
+		pAnimation		= m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::DMG_LIGHT_01_BL]);
+		fTimePerFrame	= pAnimation->Get_TickPerFrame();
+	}
+		break;
+	case CCharacter::ATK_TYPE::HEAVY:
+	{
+		pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::DMG_LIGHT_01_BL]);
+		fTimePerFrame = pAnimation->Get_TickPerFrame();
+	}
+		break;
+	case CCharacter::ATK_TYPE::FLY:
+		break;
+	case CCharacter::ATK_TYPE::DOWN:
+		break;
+	case CCharacter::ATK_TYPE::ATK_TYPE_END:
+		break;
+	default:
+		break;
+	}
 
 	if (nullptr == pAnimation) return;
 
-	m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME);
+	m_pModel->Set_Animation(pAnimation, fTimePerFrame, DF_TW_TIME);
 
 	m_pBlader->m_tFightDesc.bDamaged = FALSE;
 	m_pBlader->m_tFightDesc.pAttacker = nullptr;

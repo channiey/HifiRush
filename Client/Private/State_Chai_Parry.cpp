@@ -19,16 +19,28 @@ HRESULT CState_Chai_Parry::Initialize(CStateMachine* pStateMachine, const wstrin
 
 HRESULT CState_Chai_Parry::Enter()
 {
-	ANIM_CH			eAnimID			= ANIM_CH::PARRY_02;
+	ANIM_CH	eAnimID	= ANIM_CH::ANIM_CH_END;
+
+	const _int iRand = rand() % 3;
+
+	switch (iRand)
+	{
+	case 0 :
+		eAnimID = ANIM_CH::PARRY_00;
+		break;
+	case 2:
+		eAnimID = ANIM_CH::PARRY_01;
+		break;
+	default:
+		eAnimID = ANIM_CH::PARRY_02;
+		break;
+	}
 	CAnimation*		pAnimation		= m_pChai->Get_Model()->Get_Animation(eAnimID);
 	const _double	fTimePerFrame	= 1 / pAnimation->Get_TickPerSecond() * 0.3f;
 
 	m_pChai->Get_Model()->Set_Animation(eAnimID, fTimePerFrame, 0.05f);
 
 	m_pChai->m_tFightDesc.bParry = TRUE;
-
-	//ENGINE_INSTANCE->Play_Sound(EFC_CHAI_PARRY, PLAYER_CHAI, EfcVolumeChai);
-
 
 	return S_OK;
 }

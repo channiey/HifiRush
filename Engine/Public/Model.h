@@ -160,6 +160,7 @@ public:
 	const _bool				Is_Tween();
 	const _bool				Is_Contain_InTween(const _uint& iAnimIndex);
 	const _bool				Is_Playing_Animation(const _uint& iAnimIndex);
+	const _bool				Is_RootAnimation() const { return (m_bCurRootAnim || m_bNextRootAnim) ? TRUE : FALSE; }
 
 	const _bool&			Is_StopAnimation() const { return m_bStopAnim; }
 	void					Stop_Animation(const _bool& bStop) { m_bStopAnim = bStop; }

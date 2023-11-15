@@ -50,10 +50,10 @@ enum ANIM_CH
 	ATK_HIGHJUMP,
 	ATK_SPECIAL_00,
 	ATK_BACKSPIN_00,
-	ATK_SPECIAL_01_00,
-	ATK_SPECIAL_01_01,
+	ATK_WAIT,
+	ATK_NONE_00,
 	ATK_TOPBLADE_00,
-	ATK_SPECIAL_02,
+	ATK_FINAL,
 	ATK_SPECIAL_03,
 
 	
@@ -133,6 +133,7 @@ enum STATE_CH
 	STATE_ATTACK_CH,
 	STATE_DAMAGED_CH,
 	STATE_PARRY_CH,
+	STATE_PARRYEVENT_CH,
 	STATE_END_CH
 };
 
@@ -144,7 +145,8 @@ static const wstring StateNames_CH[STATE_CH::STATE_END_CH]
 	L"JUMP",
 	L"ATTACK",
 	L"DAMAGED",
-	L"PARRY"
+	L"PARRY",
+	L"PARRYEVENT"
 };
 
 class CChai final : public CCharacter
@@ -174,7 +176,7 @@ private:
 	virtual void		OnCollision_Exit(CCollider* pCollider, const _int& iIndexAsChild = -1) override;
 
 public:
-	virtual void		Damaged(CCharacter* pCharacter) override;
+	virtual void		Damaged(CCharacter* pCharacter, const ATK_TYPE& eAtkType) override;
 
 
 public:
@@ -194,6 +196,7 @@ private:
 	friend class CState_Chai_Attack;
 	friend class CState_Chai_Damaged;
 	friend class CState_Chai_Parry;
+	friend class CState_Chai_ParryEvent;
 };
 
 END

@@ -231,7 +231,6 @@ namespace Engine
 			{
 				fCurValue = fTargetValue;
 				bActive = FALSE;
-				//Reset();
 				return;
 			}
 
@@ -395,7 +394,7 @@ namespace Engine
 
 			if (fCurTime >= fEndTime)
 			{
-				Reset();
+				vCurVec = vTargetVec;
 				return;
 			}
 
