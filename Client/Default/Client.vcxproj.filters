@@ -256,12 +256,6 @@
     <Filter Include="01.GameManager\02.BattleManager\01.BattleTriger">
       <UniqueIdentifier>{abecc13b-e35a-4bdc-9ada-3d527afa3287}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.GameObjects\10.UI\00.HUD">
-      <UniqueIdentifier>{0f11183d-2549-4008-8a4e-4c98b6e17b64}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.GameObjects\10.UI\00.HUD\00.HealthBar%28Prototype%29">
-      <UniqueIdentifier>{077005cb-b824-4877-b6da-1bd0074bd810}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03.GameObjects\09.Trigger\Trigger_Dummy">
       <UniqueIdentifier>{00ec5131-27e1-4bae-9b5d-a856cac4572c}</UniqueIdentifier>
     </Filter>
@@ -396,6 +390,18 @@
     </Filter>
     <Filter Include="03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\03.Act\03.ParryEvent">
       <UniqueIdentifier>{b0407006-423d-4f5a-b77d-e68b0d7098ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\10.UI\00.HUD">
+      <UniqueIdentifier>{7c8aa04a-058b-4de6-abd6-0ad240fd31c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\10.UI\01.Event">
+      <UniqueIdentifier>{abc609a8-dc2a-4c58-ad86-d8b8713c4705}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\10.UI\02.Action">
+      <UniqueIdentifier>{77f0dfb2-051b-4aff-984c-b0ebeaccf269}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\01.Windows\01.Mid\03.UI">
+      <UniqueIdentifier>{bdd2e3f3-4fd5-42c8-8500-b173b0d5e325}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -576,9 +582,6 @@
     <ClInclude Include="..\Public\Ui.h">
       <Filter>03.GameObjects\10.UI</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\HealthBar.h">
-      <Filter>03.GameObjects\10.UI\00.HUD\00.HealthBar%28Prototype%29</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\TriggerDummy.h">
       <Filter>03.GameObjects\09.Trigger\Trigger_Dummy</Filter>
     </ClInclude>
@@ -656,6 +659,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\State_Chai_ParryEvent.h">
       <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\03.Act\03.ParryEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Hud.h">
+      <Filter>03.GameObjects\10.UI\00.HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui_Window_Mid_Ui.h">
+      <Filter>97.ImGui\01.Windows\01.Mid\03.UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -824,9 +833,6 @@
     <ClCompile Include="..\Private\Ui.cpp">
       <Filter>03.GameObjects\10.UI</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\HealthBar.cpp">
-      <Filter>03.GameObjects\10.UI\00.HUD\00.HealthBar%28Prototype%29</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\TriggerDummy.cpp">
       <Filter>03.GameObjects\09.Trigger\Trigger_Dummy</Filter>
     </ClCompile>
@@ -904,6 +910,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\State_Chai_ParryEvent.cpp">
       <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\03.Act\03.ParryEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Hud.cpp">
+      <Filter>03.GameObjects\10.UI\00.HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_Window_Mid_Ui.cpp">
+      <Filter>97.ImGui\01.Windows\01.Mid\03.UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

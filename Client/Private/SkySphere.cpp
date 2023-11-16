@@ -72,7 +72,7 @@ HRESULT CSkySphere::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Texture*/
-	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Texture_SkySphere"),
+	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("T_SkyBox_RoxanneBlueSkyAndCloud"),
 		ComponentNames[COM_TEXTURE], (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
 

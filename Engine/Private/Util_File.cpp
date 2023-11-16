@@ -168,3 +168,48 @@ vector<wstring> Util_File::GetAllFolderNames(const wstring& path)
 
 	return folderNames;
 }
+
+vector<string> Util_File::GetAllFileNames(const string& path)
+{
+	vector<std::string> fileNames;
+	try
+	{
+		for (const auto& entry : filesystem::directory_iterator(path))
+		{
+			if (filesystem::is_regular_file(entry))
+			{
+				string fileName = Util_String::RemoveFileExtension(entry.path().filename().string());
+				fileNames.push_back(fileName);
+			}
+		}
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << "Error: " << e.what() << std::endl;
+	}
+
+	return fileNames;
+}
+
+vector<wstring> Util_File::GetAllFileNames(const wstring& path)
+{
+	vector<wstring> fileNames;
+	try
+	{
+		for (const auto& entry : filesystem::directory_iterator(path))
+		{
+			if (filesystem::is_regular_file(entry))
+			{
+				string fileName = Util_String::RemoveFileExtension(entry.path().filename().string());
+				fileNames.push_back(Util_String::ToWString(fileName));
+			}
+		}
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << "Error: " << e.what() << std::endl;
+	}
+
+	return fileNames;
+}
+

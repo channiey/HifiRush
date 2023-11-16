@@ -75,6 +75,9 @@ public:
 	static vector<string> GetAllFolderNames(const string& path);
 	static vector<wstring> GetAllFolderNames(const wstring& path);
 
+	static vector<string> GetAllFileNames(const string& path);
+	static vector<wstring> GetAllFileNames(const wstring& path);
+
 private:
 	HANDLE _handle = INVALID_HANDLE_VALUE;
 };

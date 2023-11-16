@@ -25,20 +25,7 @@ HRESULT CBackGround::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	/* 직교 투영을 위한 변수 세팅 */
-
-	/* 윈도우 좌표 (크기) */
-	m_fSizeX = g_iWinSizeX * 0.5f;
-	m_fSizeY = g_iWinSizeY * 0.5f;
-	/* 윈도우 좌표 (중점) */
-	m_fX = g_iWinSizeX * 0.5f;
-	m_fY = g_iWinSizeY * 0.5f;
-
-	m_pTransformCom->Set_Scale(Vec3(m_fSizeX, m_fSizeY, 1.f));
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, Vec4(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
-
 	/* UI는 별도의 뷰 행렬과 투영행렬로 그린다. */
-
 	m_ViewMatrix = Matrix::Identity;
 
 	m_ProjMatrix = Matrix::CreateOrthographic(g_iWinSizeX, g_iWinSizeY, 0.f, 1.f);

@@ -20,7 +20,7 @@
 #include "Camera_Parry.h"
 
 /* UI */
-#include "BackGround.h"
+#include "Hud.h"
 
 /* Env */
 #include "SkyBox.h"
@@ -37,7 +37,6 @@
 #include "Blader_Arm.h"
 
 /* UI */
-#include "HealthBar.h"
 
 /* Trigger */
 #include "TriggerSection_A.h"
@@ -176,35 +175,17 @@ HRESULT CLoader::Load_Prototype()
 	/* For.Texture */
 	m_strLoading = TEXT("Loding... : Texture");
 	{
-		/* For.Prototype_Component_Texture_BackGround*/
-		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Texture_BackGround"),
-			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Prototype/Default%d.jpg"), 2))))
-			return E_FAIL;
+		/* 사용하는 모든 텍스처 일괄 로드 */
+		string				fileRootPath	=	"../Bin/Resources/Textures/Using";
+		vector<string>		fileNames		=	Util_File::GetAllFileNames(fileRootPath);
 
-		/* For.Prototype_Component_Texture_Terrain*/
-		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Texture_Terrain"),
-			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Prototype/Terrain/Tile%d.dds"), 2))))
-			return E_FAIL;
+		for (string& name : fileNames)
+		{
+			const wstring fileFinalPath = Util_String::ToWString(fileRootPath) + L"/" + Util_String::ToWString(name + ".png");
 
-		/* For.Prototype_Component_Texture_Terrain_Mask */
-		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Texture_Terrain_Mask"),
-			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Prototype/Terrain/Mask.bmp"), 1))))
-			return E_FAIL;
-
-		/* For.Prototype_Component_Texture_Sky */
-		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Texture_Sky"),
-			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Prototype/SkyBox/Sky_%d.dds"), 4))))
-			return E_FAIL;
-
-		/* For.Prototype_Component_Texture_SkySphere */
-		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Texture_SkySphere"),
-			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Background/Sky/T_SkyBox_RoxanneBlueSkyAndCloud.png")))))
-			return E_FAIL;		
-
-		/* For.Prototype_Component_Texture_HealthBarBody */
-		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Texture_HealthBarBody"),
-			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Ui/Test/%d.png"), 2))))
-			return E_FAIL;
+			if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString(name), CTexture::Create(m_pDevice, m_pContext, fileFinalPath))))
+				return E_FAIL;		
+		}
 	}
 
 	/* For.Shader */
@@ -311,8 +292,9 @@ HRESULT CLoader::Load_Prototype()
 	/* For.Prototype GameObject */
 	m_strLoading = TEXT("Loding... : Prototype Object");
 	{
-		/* For.Prototype_GameObject_BackGround */
-		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Ui_BackGround"), CBackGround::Create(m_pDevice, m_pContext))))
+		/* For.Prototype_GameObject_Hud */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Ui_Hud"), 
+			CHud::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For.Prototype_GameObject_Camera_Debug */
@@ -348,11 +330,6 @@ HRESULT CLoader::Load_Prototype()
 		/* For.Prototype_GameObject_Trigger_Dummy */
 		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Trigger_Dummy"),
 			CTriggerDummy::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-
-		/* For.Prototype_GameObject_UI_HealthBar */
-		if (FAILED(pEngineInstance->Add_Prototype(TEXT("UI_HealthBar"),
-			CHealthBar::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For.Prototype_GameObject_Trigger_Section_A */

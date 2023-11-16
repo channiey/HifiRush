@@ -27,6 +27,7 @@ public:
 		WINDOW_MAIN_NAV,
 		WINDOW_MAIN_CAM,
 		WINDOW_MAIN_TRIGGER,
+		WINDOW_MAIN_UI,
 
 		WINDOW_MAIN_DEMO,
 
@@ -42,6 +43,7 @@ public:
 		"Nav",
 		"Cam",
 		"Trigger",
+		"UI",
 
 		"Demo",
 	};

@@ -126,7 +126,7 @@ const wstring CState_Blader_ParryEvent::Tick(const _double& fTimeDelta)
 			m_eProgressID = PROGRESS_ID::PR_ATK_FINISH;
 
 			/* 패링 이벤트 성공 */
-			if (TRUE)//Is_Success())
+			if (Is_Success())
 			{
 				Set_FinalAttack();
 			}
@@ -137,6 +137,8 @@ const wstring CState_Blader_ParryEvent::Tick(const _double& fTimeDelta)
 
 				if (nullptr != pAnimation)
 					m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME, FALSE);
+
+				ENGINE_INSTANCE->Change_Camera(CAMERA_ID::CAM_FOLLOW, 0.5f, LERP_MODE::SMOOTHER_STEP);
 			}
 		}
 	}
@@ -161,8 +163,6 @@ void CState_Blader_ParryEvent::Exit()
 	/* 플레이어 상태 변경 */
 	if (FAILED(m_pBlader->m_tFightDesc.pTarget->Get_StateMachine()->Set_State(StateNames_CH[STATE_CH::STATE_IDLE_CH])))
 		return;
-
-	ENGINE_INSTANCE->Get_Camera(CAMERA_ID::CAM_FOLLOW)->Get_Camera()->Lerp_Dist(CamDist_Follow_Default, 0.5f, LERP_MODE::SMOOTHER_STEP);
 }
 
 const wstring CState_Blader_ParryEvent::Check_Transition()
@@ -194,7 +194,10 @@ const wstring CState_Blader_ParryEvent::Check_Transition()
 		}
 		else if (AnimNames_BL[ANIM_BL::STUN_TO_DEAD_BL] == strCurAnimName && 70 == desc.cur.iCurFrame)
 		{
+			ENGINE_INSTANCE->Get_Camera(CAMERA_ID::CAM_FOLLOW)->Get_Camera()->Lerp_Dist(CamDist_Follow_Default, 0.5f, LERP_MODE::SMOOTHER_STEP);
+			
 			Exit();
+			
 			m_pBlader->Return_To_Pool();
 		}
 	}

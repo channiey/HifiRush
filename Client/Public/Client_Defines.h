@@ -215,6 +215,10 @@ namespace Client
 	static const _float EfcVolumeChai			= 0.6f;
 	static const _float EfcVolumeSaber			= 0.3f;
 
+
+	/* Etc Path */
+	static const wstring TriggerFilePath = L"../Bin/Resources/Data/Trigger/";
+	static const wstring UiFilePath = L"../Bin/Resources/Data/Ui/";
 }
 
 extern HINSTANCE	g_hInst;

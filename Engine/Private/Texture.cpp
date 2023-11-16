@@ -1,6 +1,9 @@
 #include "..\Public\Texture.h"
 #include "Shader.h"
 
+#include "Util_File.h"
+#include "Util_String.h"
+
 CTexture::CTexture(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CComponent(pDevice, pContext)
 {
@@ -10,6 +13,7 @@ CTexture::CTexture(const CTexture & rhs)
 	: CComponent(rhs)
 	, m_iNumTextures(rhs.m_iNumTextures)
 	, m_ppSRVs(rhs.m_ppSRVs)
+	, m_strTextureName(rhs.m_strTextureName)
 {
 	for (size_t i = 0; i < m_iNumTextures; i++)	
 		Safe_AddRef(m_ppSRVs[i]);
@@ -22,6 +26,8 @@ HRESULT CTexture::Initialize_Prototype(const wstring & strTextureFilePath, _uint
 	m_iNumTextures = iNumTextures;
 
 	m_ppSRVs = new ID3D11ShaderResourceView*[iNumTextures];
+
+	m_strTextureName = Util_String::GetFinalFolderName(Util_String::ToString(strTextureFilePath));
 
 	for (size_t i = 0; i < iNumTextures; i++)
 	{

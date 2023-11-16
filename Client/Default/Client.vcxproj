@@ -190,11 +190,12 @@
     <ClInclude Include="..\Public\Camera_Parry.h" />
     <ClInclude Include="..\Public\Chai_Guitar_Explore.h" />
     <ClInclude Include="..\Public\Character.h" />
+    <ClInclude Include="..\Public\Hud.h" />
+    <ClInclude Include="..\Public\ImGui_Window_Mid_Ui.h" />
     <ClInclude Include="..\Public\State_Blader_Appear.h" />
     <ClInclude Include="..\Public\State_Blader_Attack.h" />
     <ClInclude Include="..\Public\State_Blader_Base.h" />
     <ClInclude Include="..\Public\GameManager.h" />
-    <ClInclude Include="..\Public\HealthBar.h" />
     <ClInclude Include="..\Public\ImGui_Window_Mid_Cam.h" />
     <ClInclude Include="..\Public\ImGui_Window_Mid_Trigger.h" />
     <ClInclude Include="..\Public\ImGui_Window_Sub_Com_Col.h" />
@@ -298,11 +299,12 @@
     <ClCompile Include="..\Private\Camera_Parry.cpp" />
     <ClCompile Include="..\Private\Chai_Guitar_Explore.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
+    <ClCompile Include="..\Private\Hud.cpp" />
+    <ClCompile Include="..\Private\ImGui_Window_Mid_Ui.cpp" />
     <ClCompile Include="..\Private\State_Blader_Appear.cpp" />
     <ClCompile Include="..\Private\State_Blader_Attack.cpp" />
     <ClCompile Include="..\Private\State_Blader_Base.cpp" />
     <ClCompile Include="..\Private\GameManager.cpp" />
-    <ClCompile Include="..\Private\HealthBar.cpp" />
     <ClCompile Include="..\Private\ImGui_Window_Mid_Cam.cpp" />
     <ClCompile Include="..\Private\ImGui_Window_Mid_Trigger.cpp" />
     <ClCompile Include="..\Private\ImGui_Window_Sub_Com_Col.cpp" />

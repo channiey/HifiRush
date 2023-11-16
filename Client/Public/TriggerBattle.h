@@ -9,8 +9,6 @@ class CRenderer;
 class CTransform;
 END
 
-static const wstring TriggerFilePath = L"../Bin/Resources/Data/Trigger/";
-
 BEGIN(Client)
 
 class CTriggerBattle abstract : public CGameObject
