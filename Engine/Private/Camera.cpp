@@ -72,7 +72,6 @@ void CCamera::Shake_Camera(const _float& fShakeTime, const _int& iIntensity)
 	m_tShakeDesc.fShakeTime = fShakeTime;
 	m_tShakeDesc.iIntensity = iIntensity;
 
-
 	m_tShakeDesc.vOriginPos = m_pOwner->Get_Transform()->Get_Position();
 }
 

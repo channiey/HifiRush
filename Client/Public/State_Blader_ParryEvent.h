@@ -10,7 +10,7 @@ class CCamera_Parry;
 
 class CState_Blader_ParryEvent final : public CState_Blader_Base
 {
-	enum PROGRESS_ID { PR_ZERO, PR_SET_CAM, PR_ZOOM_IN, PR_ZOOM_FIX, PR_ZOOM_OUT, PROGRESS_ID_END };
+	enum PROGRESS_ID { PR_ZERO, PR_SET_CAM, PR_ZOOM_IN, PR_ZOOM_FIX, PR_ZOOM_OUT, PR_ATK_FINISH, PR_STUN, PROGRESS_ID_END };
 
 private:
 	CState_Blader_ParryEvent();
@@ -36,6 +36,9 @@ private:
 	void Zoom_In();
 	void Set_Player_Transform();
 	void Zoom_Out();
+	const _bool Is_Success();
+	void Set_FinalAttack();
+	void Set_FinalCamera();
 
 private:
 	CCamera_Parry* m_pParryCam = nullptr;
@@ -43,6 +46,8 @@ private:
 	PROGRESS_ID		m_eProgressID = PR_ZERO;
 	Vec4			m_vPlayerNewPos;
 	const _float	m_fDistance = 14.f; // 패링 이벤트시 플레이어와 에너미 간격 
+
+	_uint			m_iCount = 0; // 패링 이벤트 진행 횟수
 
 public:
 	static CState_Blader_ParryEvent* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);

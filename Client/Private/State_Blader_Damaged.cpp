@@ -69,9 +69,11 @@ void CState_Blader_Damaged::Damaged()
 		return;
 
 	/* 패링 이벤트 판별 */
-	if (m_pBlader->m_tStatDesc.fCurHp <= 10)
+	if (m_pBlader->m_tStatDesc.fCurHp <= 50)
 	{
 		m_pStateMachine->Set_State(StateNames_BL[STATE_BL::STATE_PARRYEVENT_BL]);
+		m_pBlader->m_tFightDesc.bDamaged = FALSE;
+		m_pBlader->m_tFightDesc.pAttacker = nullptr;
 		return;
 	}
 

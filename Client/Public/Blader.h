@@ -54,6 +54,9 @@ enum ANIM_BL
 	TURN_RIGHT_BL,
 	TURN_RUGHT_FORWARD_BL,
 
+	STUN_ING_BL,
+	STUN_TO_IDLE,
+	STUN_TO_DEAD_BL,
 
 	ANIM_BL_END
 };
@@ -100,14 +103,18 @@ static const string AnimNames_BL[ANIM_BL::ANIM_BL_END]
 	"WALK_BACK",
 	"WALK_FRONT",
 	"WALK_LEFT",
-	"WALK_RIGHT"
+	"WALK_RIGHT",
 
 	"TURN_BACK_TOLEFT",
 	"TURN_BACK_TORIGHT",
 	"TURN_LEFT",
 	"TURN_LEFT_FORWARD",
 	"TURN_RIGHT",
-	"TURN_RUGHT_FORWARD"
+	"TURN_RIGHT_FORWARD",
+
+	"em0500_atk-rp-cp_003",
+	"em0500_atk-rp-cp_004",
+	"em0500_atk-rp-cp_005",
 };
 
 enum STATE_BL

@@ -148,13 +148,14 @@ HRESULT CObject_Manager::Return_Pool(_uint iLevelIndex, CGameObject* pObj)
 {
 	NULL_CHECK_RETURN(pObj, E_FAIL);
 
+	pObj->Set_Name(Util_String::Remove_LastNumChar(pObj->Get_Name(), CLONE_PIN_MAX_DIGIT));
+
 	POOL* pPool = Find_Pool(iLevelIndex, pObj->Get_Name());
 
 	if (nullptr == pPool)
 		return E_FAIL;
 
 	pObj->Set_State(CGameObject::STATE_UNACTIVE);
-	//pObj->Set_Active(FALSE);
 
 	pPool->push(pObj);
 
@@ -235,7 +236,7 @@ void CObject_Manager::FinishTick()
 			pLayer->Erase_GameObject(iter.pObj);
 
 		/* 클론 고유 번호를 지운다. (이름만 남겨둔다) */
-		iter.pObj->Set_Name(Util_String::Remove_LastNumChar(iter.pObj->Get_Name(), CLONE_PIN_MAX_DIGIT));
+		//iter.pObj->Set_Name(Util_String::Remove_LastNumChar(iter.pObj->Get_Name(), CLONE_PIN_MAX_DIGIT));
 
 		Safe_Release(iter.pObj);
 	}

@@ -33,8 +33,8 @@ HRESULT CEnemy::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	if (FAILED(Ready_Chilren()))
-		return E_FAIL;
+	/*if (FAILED(Ready_Chilren()))
+		return E_FAIL;*/
 
 	return S_OK;
 }

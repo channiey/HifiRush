@@ -23,15 +23,21 @@ public:
 
 public:
 	const wstring	Check_Transition() override;
+	const _bool&	Is_Success() const { return m_bSuccess; }
+	void			Set_CanFinalAttack(const _bool& bCan) { m_bCanFinalAttack = bCan; }
 
 private:
 	void			Parry();
 	void			Damaged();
+	void			FinalAttack();
 	void			Check_Animation();
 
 private:
 	_bool			m_bParried = FALSE;
 	_bool			m_bDamaged = FALSE;
+	_bool			m_bSuccess = TRUE;
+	_bool			m_bCanFinalAttack = FALSE;
+	_bool			m_bFinalAttack = FALSE;
 
 public:
 	static CState_Chai_ParryEvent* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);

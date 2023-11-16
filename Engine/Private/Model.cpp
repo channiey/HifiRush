@@ -272,7 +272,7 @@ HRESULT CModel::Update_Anim(_double fTimeDelta)
 
 			m_bFinishTween = TRUE;
 			m_bCurRootAnim = m_bNextRootAnim;
-
+			m_bNextRootAnim = TRUE;
 			return S_OK;
 		}
 		else
@@ -1158,20 +1158,16 @@ void CModel::Set_RootPosition_Tween()
 			vRootPos;
 		}
 	}
-
-
-	//if (Vec4::UnitW == m_vNextAnimRoot || !m_bNextRootAnim)			/* 다음 애님이 제자리 애니메이션이라면이거나 루트 없다면 */
-	//	vRootPos = Get_AnimBoneRootNoneLerp();	/* 다음 애님 보간 없이 현재 애님 루트 포지션으로 셋 */
-	//else										/* 아니라면 */
-	//	vRootPos = Get_AnimBonePos(BONE_ROOT);	/* 다음 애님과 현재 애님이 보간된 루트 포지션으로 셋 */
-
 	m_pOwner->Get_Transform()->Set_RootPos(vRootPos);
 }
 
 void CModel::Set_RootPosition()
 {
 	if (!m_bCurRootAnim)
+	{
+		m_pOwner->Get_Transform()->Set_RootPos(Vec4::Zero);
 		return;
+	}
 
 	m_pOwner->Get_Transform()->Set_RootPos(Get_AnimBonePos(BONE_ROOT));
 }

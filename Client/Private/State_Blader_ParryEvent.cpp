@@ -7,6 +7,7 @@
 #include "Camera_Parry.h"
 
 #include "Chai.h"
+#include "State_Chai_ParryEvent.h"
 
 CState_Blader_ParryEvent::CState_Blader_ParryEvent()
 {
@@ -26,6 +27,8 @@ HRESULT CState_Blader_ParryEvent::Initialize(CStateMachine* pStateMachine, const
 
 HRESULT CState_Blader_ParryEvent::Enter()
 {
+	++m_iCount;
+
 	m_pParryCam = dynamic_cast<CCamera_Parry*>(ENGINE_INSTANCE->Get_Camera(CAMERA_ID::CAM_PARRY));
 
 	if (nullptr == m_pParryCam)
@@ -82,7 +85,6 @@ const wstring CState_Blader_ParryEvent::Tick(const _double& fTimeDelta)
 	{
 		if (!ENGINE_INSTANCE->Is_LerpCam())
 		{
-			/* 줌인 */
 			Zoom_In();
 
 			/* 플레이어 상태 변경 */
@@ -110,13 +112,34 @@ const wstring CState_Blader_ParryEvent::Tick(const _double& fTimeDelta)
 		if (45 == desc.cur.iCurFrame)
 		{
 			Zoom_Out();
-			/* 플레이어 포지션 설정 */
 			Set_Player_Transform();
+
 			m_eProgressID = PROGRESS_ID::PR_ZOOM_OUT;
 		}
 	}
 
+	/* 공격 종료 */
+	if (PROGRESS_ID::PR_ZOOM_OUT == m_eProgressID)
+	{
+		if (AnimNames_BL[ANIM_BL::PARRY_EVENT_ING_BL] == strCurAnimName && 185 == desc.cur.iCurFrame)
+		{
+			m_eProgressID = PROGRESS_ID::PR_ATK_FINISH;
 
+			/* 패링 이벤트 성공 */
+			if (TRUE)//Is_Success())
+			{
+				Set_FinalAttack();
+			}
+			else
+			{
+				// 체력 회복 + 아이돌 복귀 
+				CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::PARRY_EVENT_FINISH_BL]);
+
+				if (nullptr != pAnimation)
+					m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME, FALSE);
+			}
+		}
+	}
 	return m_strName;
 }
 
@@ -139,7 +162,7 @@ void CState_Blader_ParryEvent::Exit()
 	if (FAILED(m_pBlader->m_tFightDesc.pTarget->Get_StateMachine()->Set_State(StateNames_CH[STATE_CH::STATE_IDLE_CH])))
 		return;
 
-	ENGINE_INSTANCE->Change_Camera(CAMERA_ID::CAM_FOLLOW);
+	ENGINE_INSTANCE->Get_Camera(CAMERA_ID::CAM_FOLLOW)->Get_Camera()->Lerp_Dist(CamDist_Follow_Default, 0.5f, LERP_MODE::SMOOTHER_STEP);
 }
 
 const wstring CState_Blader_ParryEvent::Check_Transition()
@@ -158,16 +181,21 @@ const wstring CState_Blader_ParryEvent::Check_Transition()
 			if(nullptr != pAnimation)
 				m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME);
 		}
-		else if (AnimNames_BL[ANIM_BL::PARRY_EVENT_ING_BL] == strCurAnimName && 185 == desc.cur.iCurFrame)
+		/*else if (AnimNames_BL[ANIM_BL::PARRY_EVENT_ING_BL] == strCurAnimName && 185 == desc.cur.iCurFrame)
 		{
 			CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::PARRY_EVENT_FINISH_BL]);
 		
 			if (nullptr != pAnimation)
 				m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME, FALSE);
-		}
+		}*/
 		else if (AnimNames_BL[ANIM_BL::PARRY_EVENT_FINISH_BL] == strCurAnimName && 45 == desc.cur.iCurFrame)
 		{
 			return StateNames_BL[STATE_BL::STATE_IDLE_BL];
+		}
+		else if (AnimNames_BL[ANIM_BL::STUN_TO_DEAD_BL] == strCurAnimName && 70 == desc.cur.iCurFrame)
+		{
+			Exit();
+			m_pBlader->Return_To_Pool();
 		}
 	}
 
@@ -206,6 +234,41 @@ void CState_Blader_ParryEvent::Set_Player_Transform()
 void CState_Blader_ParryEvent::Zoom_Out()
 {
 	m_pParryCam->Zoom_Out();
+}
+
+const _bool CState_Blader_ParryEvent::Is_Success()
+{
+	CState_Chai_ParryEvent* pState = dynamic_cast<CState_Chai_ParryEvent*>(m_pBlader->m_tFightDesc.pTarget->Get_StateMachine()->Get_CurState());
+
+	if (nullptr != pState)
+	{
+		return pState->Is_Success();
+	}
+
+	return FALSE;
+}
+
+void CState_Blader_ParryEvent::Set_FinalAttack()
+{
+	/* 몬스터 */
+	CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::STUN_TO_DEAD_BL]);
+	if (nullptr != pAnimation)
+		m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME, FALSE);
+
+	/* 플레이어 */
+	CState_Chai_ParryEvent* pState = dynamic_cast<CState_Chai_ParryEvent*>(m_pBlader->m_tFightDesc.pTarget->Get_StateMachine()->Get_CurState());
+	if (nullptr != pState)
+		pState->Set_CanFinalAttack(TRUE);
+
+	/* 카메라 세팅 */
+	Set_FinalCamera();
+}
+
+void CState_Blader_ParryEvent::Set_FinalCamera()
+{
+	ENGINE_INSTANCE->Change_Camera(CAMERA_ID::CAM_FOLLOW, 0.5f, LERP_MODE::SMOOTHER_STEP);
+
+	ENGINE_INSTANCE->Get_Camera(CAMERA_ID::CAM_FOLLOW)->Get_Camera()->Lerp_Dist(CamDist_Follow_Final, 0.5f, LERP_MODE::SMOOTHER_STEP);
 }
 
 CState_Blader_ParryEvent* CState_Blader_ParryEvent::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

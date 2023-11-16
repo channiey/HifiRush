@@ -29,8 +29,11 @@ HRESULT CState_Chai_ParryEvent::Enter()
 
 const wstring CState_Chai_ParryEvent::Tick(const _double& fTimeDelta)
 {
-	if (!m_bParried && !m_bDamaged && Input::Parry())
+	if (!m_bFinalAttack && !m_bParried && !m_bDamaged && Input::Parry())
 		Parry();
+
+	if (m_bCanFinalAttack)
+		FinalAttack();
 
 	return m_strName;
 }
@@ -39,13 +42,19 @@ const wstring CState_Chai_ParryEvent::LateTick()
 {
 	Check_Animation();
 
-	m_pChai->Get_Transform()->Set_RootPos(Vec4::Zero);
+	if(!m_bFinalAttack)
+		m_pChai->Get_Transform()->Set_RootPos(Vec4::Zero);
+
 	return Check_Transition();
 }
 
 void CState_Chai_ParryEvent::Exit()
 {
 	m_bParried = FALSE;
+	m_bDamaged = FALSE;
+	m_bSuccess = TRUE;
+	m_bCanFinalAttack = FALSE;
+	m_bFinalAttack = FALSE;
 }
 
 void CState_Chai_ParryEvent::OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild)
@@ -56,20 +65,22 @@ void CState_Chai_ParryEvent::OnCollision_Enter(CCollider* pCollider, const _int&
 	{
 		if (m_bParried)
 		{
-			cout << "패링 성공!\n";
 			ENGINE_INSTANCE->Shake_Camera(0.3f, 10);
 		}
 		else
 		{
-			cout << "패링 실패!\n";
 			Damaged();
 			ENGINE_INSTANCE->Shake_Camera(0.3f, 10);
+			m_bSuccess = FALSE;
 		}
 	}
 }
 
 const wstring CState_Chai_ParryEvent::Check_Transition()
 {
+	if (ANIM_CH::ATK_FINAL == m_pModel->Get_CurAnimationIndex() && 70 <= m_pModel->Get_TweenDesc().cur.iCurFrame)
+		return StateNames_CH[STATE_CH::STATE_IDLE_CH];
+
 	return m_strName;
 }
 
@@ -95,6 +106,18 @@ void CState_Chai_ParryEvent::Damaged()
 	m_bDamaged = TRUE;
 }
 
+void CState_Chai_ParryEvent::FinalAttack()
+{
+	CAnimation* pAnimation = m_pChai->Get_Model()->Get_Animation(ANIM_CH::ATK_FINAL);
+
+	if (nullptr == pAnimation) return;
+
+	m_pChai->Get_Model()->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), 0.05f);
+
+	m_bCanFinalAttack = FALSE;
+	m_bFinalAttack = TRUE;
+}
+
 void CState_Chai_ParryEvent::Check_Animation()
 {
 	if (m_bParried || m_bDamaged)
@@ -103,7 +126,7 @@ void CState_Chai_ParryEvent::Check_Animation()
 		{
 			CAnimation* pAnimation = m_pChai->Get_Model()->Get_Animation(ANIM_CH::ATK_WAIT);
 
-			m_pChai->Get_Model()->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), 0.05f, FALSE);
+			m_pChai->Get_Model()->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME, FALSE);
 
 			m_bParried = FALSE;
 			m_bDamaged = FALSE;

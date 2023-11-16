@@ -80,14 +80,14 @@ void CCamera_Parry::Set_CamTransform(CTransform* pTargetTransform, CTransform* p
 		Matrix matWorld = pPlayerTransform->Get_WorldMat();
 		memcpy(matWorld.m[3], &Vec4::Zero, sizeof(Vec3));
 
-		m_vRelativePos		= XMVector3TransformCoord(Vec3{1.5f, 0.f ,-5.f}, matWorld);
+		m_vRelativePos		= XMVector3TransformCoord(Vec3{1.5f, 0.f, -4.f}, matWorld);
 	}
 
 	/* Set Camera Component Data */
 	{
 		m_pCameraCom->Set_LookAtObj(m_pTargetTransformCom->Get_Owner());
 		m_pCameraCom->Set_TargetObj(m_pTargetTransformCom->Get_Owner());
-		m_pCameraCom->Set_LookAtOffSet(Vec4{ 0.f, 3.f, 0.f, 0.f });
+		m_pCameraCom->Set_LookAtOffSet(Vec4{ 0.f, 2.5f, 0.f, 0.f });
 		m_pCameraCom->Set_TargetOffSet(Vec4{ 0.f, 2.f, 0.f, 0.f });
 	}
 
@@ -96,7 +96,7 @@ void CCamera_Parry::Set_CamTransform(CTransform* pTargetTransform, CTransform* p
 		Vec4 vCamPos	= m_vPlayerStartPos + m_vRelativePos.ZeroW() + m_pCameraCom->Get_TargetOffSet().ZeroW();
 		Vec4 vLook		= m_pTargetTransformCom->Get_FinalPosition() - vCamPos;
 
-		vCamPos += vLook.Normalized() * m_pCameraCom->Get_Distance();
+		vCamPos			+= vLook.Normalized() * m_pCameraCom->Get_Distance();
 
 		Vec4 vLookAtPos = m_pTargetTransformCom->Get_FinalPosition() + m_pCameraCom->Get_LookAtOffSet();
 

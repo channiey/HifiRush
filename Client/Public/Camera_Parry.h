@@ -31,14 +31,15 @@ private:
 	HRESULT			Ready_Components();
 
 private:
-	CTransform*		m_pTransformCom = { nullptr };
 	CCamera*		m_pCameraCom = { nullptr };
+	CTransform*		m_pTransformCom = { nullptr };
+	CTransform*		m_pTargetTransformCom = { nullptr };
 
 	_float			m_fMaxDistance;
 
 	Vec4			m_vPlayerStartPos;
 	Vec4			m_vRelativePos;
-	CTransform*		m_pTargetTransformCom = { nullptr };
+
 public:
 	static CCamera_Parry* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
