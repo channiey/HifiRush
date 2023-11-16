@@ -80,7 +80,7 @@ void CChai::Tick(_double fTimeDelta)
 			m_pNavMeshAgentCom->Set_CurIndex(iIndex);
 		}
 	}
-
+	
 	__super::Tick(fTimeDelta);
 }
 

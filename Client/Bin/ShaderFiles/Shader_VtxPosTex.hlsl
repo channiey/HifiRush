@@ -4,6 +4,8 @@ matrix		g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 Texture2D	g_Texture;
 Texture2D	g_Textures[2];
 
+float		g_HpPercent = 1.f;
+
 struct VS_IN
 {
 	float3		vPosition : POSITION;
@@ -47,17 +49,28 @@ PS_OUT PS_MAIN(PS_IN In)
 {
 	PS_OUT			Out = (PS_OUT)0;
 
-    //vector vSourColor = g_Textures[0].Sample(LinearSampler, In.vTexcoord);
-    //vector vDestColor = g_Textures[1].Sample(LinearSampler, In.vTexcoord);
-	
-    //Out.vColor = vSourColor + vDestColor;
-
     Out.vColor = g_Texture.Sample(PointSampler, In.vTexcoord);
 
     if (Out.vColor.a < 0.1f)
         discard;
 	
 	return Out;
+}
+
+PS_OUT PS_UI_HP(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    Out.vColor = g_Texture.Sample(PointSampler, In.vTexcoord);
+
+    if (Out.vColor.a < 0.1f)
+        discard;
+	
+	/* 체력 자르기 */
+    if (g_HpPercent * 0.01f < In.vTexcoord.x)
+        discard;
+	
+    return Out;
 }
 
 technique11 DefaultTechnique
@@ -69,11 +82,24 @@ technique11 DefaultTechnique
         SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
 
 		VertexShader	= compile vs_5_0 VS_MAIN();
-		GeometryShader	= NULL; /* 사용하지 않는다면 NULL 필수 */
+		GeometryShader	= NULL; 
 		HullShader		= NULL;
 		DomainShader	= NULL;
 		PixelShader		= compile ps_5_0 PS_MAIN();
 	}
+	
+    pass UI_HP
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_UI_HP();
+    }
 }
 
 

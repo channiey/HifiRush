@@ -4,6 +4,8 @@
 
 BEGIN(Client)
 
+class CCharacter;
+
 class CHud final : public CUi
 {
 	enum TEX_TYPE { DROP_LOGO, DROP_HEALTH, LOGO, EMPTY_HEALTH, FULL_HEALTH, TYPEEND };
@@ -26,10 +28,13 @@ private:
 
 private:
 	void			Drop(_double fTimeDelta);
+	void			Set_Player();
 
 private:
 	LERP_FLOAT_DESC	m_tLerpDesc;
 	_bool			m_bMax = FALSE;
+
+	CCharacter*		m_pPlayer = nullptr;
 
 
 public:

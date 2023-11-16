@@ -4,7 +4,7 @@
 #include "EngineInstance.h"
 #include "ImGui_Manager.h"
 #include "BeatManager.h"
-
+#include "Character.h"
 CHud::CHud(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUi(pDevice, pContext)
 {
@@ -43,6 +43,9 @@ HRESULT CHud::Initialize(void* pArg)
 
 void CHud::Tick(_double fTimeDelta)
 {
+	if (nullptr == m_pPlayer)
+		Set_Player();
+
 	__super::Tick(fTimeDelta);
 
 	Drop(fTimeDelta);
@@ -57,6 +60,9 @@ HRESULT CHud::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL;
+
+	if(nullptr != m_pPlayer)
+		m_pShaderCom->Bind_RawValue("g_HpPercent", &m_pPlayer->Get_StatDesc().fCurHp, sizeof(_float));
 
 	Matrix matWorldOrigin = m_pTransformCom->Get_WorldMat();
 
@@ -80,7 +86,10 @@ HRESULT CHud::Render()
 		if (FAILED(m_pTextureComs[i]->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
 			return E_FAIL;
 
-		m_pShaderCom->Begin(0);
+		if (i == FULL_HEALTH)
+			m_pShaderCom->Begin(1);
+		else
+			m_pShaderCom->Begin(0);
 
 		m_pVIBufferCom->Render();
 	}
@@ -143,7 +152,15 @@ void CHud::Drop(_double fTimeDelta)
 
 	m_TextureLocalDesc[TEX_TYPE::DROP_HEALTH].vPos.x = m_TextureLocalDescOrigin[TEX_TYPE::DROP_HEALTH].vPos.x + m_tLerpDesc.fCurValue;
 	m_TextureLocalDesc[TEX_TYPE::DROP_HEALTH].vPos.y = m_TextureLocalDescOrigin[TEX_TYPE::DROP_HEALTH].vPos.y - m_tLerpDesc.fCurValue;
+}
 
+void CHud::Set_Player()
+{
+	CGameObject* pObj = ENGINE_INSTANCE->Get_GameObject_InCurLevel_InLayerFirst(LayerNames[LAYER_PLAYER]);
+	if (nullptr != pObj)
+	{
+		m_pPlayer = dynamic_cast<CCharacter*>(pObj);
+	}
 }
 
 CHud* CHud::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
