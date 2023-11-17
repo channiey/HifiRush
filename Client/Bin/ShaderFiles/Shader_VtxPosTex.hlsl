@@ -5,6 +5,7 @@ Texture2D	g_Texture;
 Texture2D	g_Textures[2];
 
 float		g_HpPercent = 1.f;
+float		g_Alpha = 1.f;
 
 struct VS_IN
 {
@@ -73,6 +74,21 @@ PS_OUT PS_UI_HP(PS_IN In)
     return Out;
 }
 
+PS_OUT PS_UI_ALPHA(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    Out.vColor = g_Texture.Sample(PointSampler, In.vTexcoord);
+
+    if(0.1f <= Out.vColor.a)
+        Out.vColor.a = g_Alpha;
+    
+    if (Out.vColor.a < 0.1f)
+        discard;
+	
+    return Out;
+}
+
 technique11 DefaultTechnique
 {
 	pass UI_AlphaBlend
@@ -99,6 +115,19 @@ technique11 DefaultTechnique
         HullShader = NULL;
         DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_UI_HP();
+    }
+
+    pass UI_ALPHA
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_UI_ALPHA();
     }
 }
 

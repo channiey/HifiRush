@@ -10,7 +10,7 @@ namespace Client
 
 #define FPS_LIMIT		66.f
 	    
-#define CONSOLE_LOG     1
+#define CONSOLE_LOG     0
 #define CURSOL_LOCK     0
 #define CURSOL_HIDE     0
 #define OPEN_IMGUI      0
@@ -107,7 +107,7 @@ namespace Client
 	/* Shader */
 	enum SHADER_ID
 	{
-		SHADER_UI, SHADER_NORMAL, SHADER_STATIC, SHADER_VTF, SHADER_CUBE, SHADER_SKY_SPHERE, SHADER_END
+		SHADER_POS, SHADER_NORMAL, SHADER_STATIC, SHADER_VTF, SHADER_CUBE, SHADER_SKY_SPHERE, SHADER_UI_HUD, SHADER_END
 	};
 	static const wchar_t* ShaderNames[SHADER_END] /* 업데이트 순서에 따른 정렬 */
 	{
@@ -116,7 +116,8 @@ namespace Client
 		L"Prototype_Component_Shader_VtxMesh",
 		L"Prototype_Component_Shader_VTF",
 		L"Prototype_Component_Shader_VtxCube",
-		L"Prototype_Component_Shader_VtxSkySphere"
+		L"Prototype_Component_Shader_VtxSkySphere",
+		L"Prototype_Component_Shader_Ui_Hud"
 
 	};
 
@@ -154,7 +155,7 @@ namespace Client
 
 		/* Enemy */
 		ENEMY_SABER,
-
+		ENEMY_BLADER,
 
 		/* Etc */
 
@@ -183,6 +184,10 @@ namespace Client
 		BGM_MIDDLE_DOWNTIME,
 		BGM_MIDDLE_UNRESTRICTED,
 
+		/* EFC BLADER */
+		EFC_BLADER_PARRYEVENT_BEAT,
+		EFC_BLADER_PARRYEVENT_BEAT_2,
+
 		/* EFC CHAI */
 		EFC_CHAI_ATTACK_00,
 		EFC_CHAI_ATTACK_COMBO_00,
@@ -199,9 +204,13 @@ namespace Client
 		/* EFC ENEMY */
 		EFC_ENEMY_DAMAGED_00,
 
+		/* EFC ETC */
+		EFC_ETC_FIGHT,
+
 		/* EFC ENCMY SABER */
 		EFC_SABER_CHARGE,
 		EFC_SABER_ESCAPING,
+		EFC_SABER_LAND,
 		EFC_SABER_SWING,
 
 
@@ -214,6 +223,21 @@ namespace Client
 	static const _float BgmVolumeInNotBattle	= 0.5f;
 	static const _float EfcVolumeChai			= 0.6f;
 	static const _float EfcVolumeSaber			= 0.3f;
+
+	/* UI */
+	enum UI_ID
+	{
+		UI_HUD,
+		UI_PARRY_RHYTHM,
+		UI_FIGHT,
+		UI_END
+	};
+	static const wchar_t* UINames[UI_ID::UI_END]
+	{
+		L"Ui_Hud",
+		L"Ui_Parry_Rhythm",
+		L"Ui_Fight"
+	};
 
 
 	/* Etc Path */

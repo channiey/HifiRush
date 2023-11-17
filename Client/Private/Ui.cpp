@@ -27,9 +27,6 @@ HRESULT CUi::Initialize(void* pArg)
 
 	/* 직교 투영을 위한 변수 세팅 (윈도우 좌표 기준 크기, 중점) */
 	{
-		_float fSizeX = g_iWinSizeX * 0.5f;
-		_float fSizeY = g_iWinSizeY * 0.5f;
-
 		_float fPosX = g_iWinSizeX * 0.5f;
 		_float fPosY = g_iWinSizeY * 0.5f;
 
@@ -69,11 +66,6 @@ HRESULT CUi::Ready_Components()
 	/* Com_Renderer */
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Renderer"),
 		TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
-		return E_FAIL;
-
-	/* Com_Shader */
-	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
-		TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 
 	/* Com_VIBuffer */
@@ -122,8 +114,6 @@ HRESULT CUi::Load()
 	file->Open(strLoadFilePath, FileMode::Read);
 
 	const size_t iSize = file->Read<size_t>();
-	m_TextureLocalDesc.resize(iSize);
-
 	for (size_t i = 0; i < iSize; i++)
 	{
 		m_TextureLocalDesc[i].vPos = file->Read<Vec2>();

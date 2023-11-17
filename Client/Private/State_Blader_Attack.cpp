@@ -109,9 +109,9 @@ void CState_Blader_Attack::OnCollision_Enter(CCollider* pCollider, const _int& i
 			if (strCurAnimName == AnimNames_BL[ANIM_BL::ATK_SIMPLE])
 				eAtkType = CCharacter::ATK_TYPE::LIGHT;
 			else if (strCurAnimName == AnimNames_BL[ANIM_BL::ATK_JUMP_STRKIE_01_BL])
-				eAtkType = CCharacter::ATK_TYPE::LIGHT;
+				eAtkType = CCharacter::ATK_TYPE::HEAVY;
 			else if (strCurAnimName == AnimNames_BL[ANIM_BL::ATK_COMBO_BL])
-				eAtkType = CCharacter::ATK_TYPE::LIGHT;
+				eAtkType = CCharacter::ATK_TYPE::HEAVY;
 		}
 		
 		if (-1 == iIndexAsChild) /* 블레이더 몸 충돌 */

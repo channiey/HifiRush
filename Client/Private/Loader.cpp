@@ -21,6 +21,8 @@
 
 /* UI */
 #include "Hud.h"
+#include "Parry_Rhythm.h"
+#include "Fight_Logo.h"
 
 /* Env */
 #include "SkyBox.h"
@@ -36,7 +38,6 @@
 #include "Saber_Sword.h"
 #include "Blader_Arm.h"
 
-/* UI */
 
 /* Trigger */
 #include "TriggerSection_A.h"
@@ -215,7 +216,6 @@ HRESULT CLoader::Load_Prototype()
 		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, ShaderNames[SHADER_SKY_SPHERE],
 			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxSkySphere.hlsl"), VTXMESH::Elements, VTXMESH::iNumElements))))
 			return E_FAIL;
-
 	}
 
 	/* For.Model */
@@ -292,9 +292,19 @@ HRESULT CLoader::Load_Prototype()
 	/* For.Prototype GameObject */
 	m_strLoading = TEXT("Loding... : Prototype Object");
 	{
-		/* For.Prototype_GameObject_Hud */
-		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Ui_Hud"), 
+		/* For.Prototype_GameObject_Ui_Hud */
+		if (FAILED(pEngineInstance->Add_Prototype(UINames[UI_ID::UI_HUD],
 			CHud::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Ui_Parry_Rhythm */
+		if (FAILED(pEngineInstance->Add_Prototype(UINames[UI_ID::UI_PARRY_RHYTHM],
+			CParry_Rhythm::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Ui_Parry_Rhythm */
+		if (FAILED(pEngineInstance->Add_Prototype(UINames[UI_ID::UI_FIGHT],
+			CFight_Logo::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For.Prototype_GameObject_Camera_Debug */

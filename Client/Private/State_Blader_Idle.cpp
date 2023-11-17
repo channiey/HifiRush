@@ -37,7 +37,7 @@ HRESULT CState_Blader_Idle::Enter()
 		
 		fTimePerFrame = pAnimation->Get_TickPerFrame();
 
-		m_fTimeLimit = 1.f + ((rand() % 5) * 0.1f);
+		m_fTimeLimit = 2.f + ((rand() % 5) * 0.1f);
 	}
 	else
 	{
@@ -127,13 +127,23 @@ const wstring CState_Blader_Idle::Choose_NextState()
 	if (Get_Distance() <= m_fTargetMinDist) 
 		return StateNames_BL[STATE_BL::STATE_ATTACK_BL];
 
-	const _int iRand = rand() % 2;
+	vector<_float> Probabilities = { 0.7f, 0.3f }; // move idle attack
 
-	if (0 == iRand)
+	random_device			rd;
+	mt19937					gen(rd());
+	discrete_distribution<> distribution(Probabilities.begin(), Probabilities.end());
+
+	const _int iChoiceIndex = distribution(gen);
+	
+	switch (iChoiceIndex)
+	{
+	case 0 : 
 		return StateNames_BL[STATE_BL::STATE_ATTACK_BL];
-	else
+		break;
+	default :
 		return StateNames_BL[STATE_BL::STATE_MOVE_BL];
-
+		break;
+	}
 	// Parry 
 
 	return m_strName;

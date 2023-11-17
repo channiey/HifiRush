@@ -123,7 +123,14 @@ void CState_Saber_Attack::Detect_AttackCollision()
 	//  플레이어의 바라보는 방향으로부터 좌우로 떨어진 각도를 계산
 	if (fAngle <= fMaxAngle / 2 && fDist <= fMaxDist)
 	{
-		m_pSaber->m_tFightDesc.pTarget->Damaged(dynamic_cast<CCharacter*>(m_pSaber));
+		CCharacter::ATK_TYPE eAtkType;
+
+		if (0 == rand() % 2)
+			eAtkType = CCharacter::ATK_TYPE::LIGHT;
+		else
+			eAtkType = CCharacter::ATK_TYPE::HEAVY;
+
+		m_pSaber->m_tFightDesc.pTarget->Damaged(dynamic_cast<CCharacter*>(m_pSaber), eAtkType);
 
 		m_AttackDesc.bSet = FALSE;
 	}

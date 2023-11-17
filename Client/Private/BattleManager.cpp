@@ -4,6 +4,8 @@
 #include "EngineInstance.h"
 
 #include "TriggerBattle.h"
+#include "UiManager.h"
+#include "Ui.h"
 
 IMPLEMENT_SINGLETON(CBattleManager)
 
@@ -46,8 +48,11 @@ void CBattleManager::OnTrigger_Enter(const wstring strTriggerTag)
 	if (nullptr == pTriggerBattle || pTriggerBattle->Is_StartBattle())
 		return;
 
+	CUiManager::GetInstance()->Get_UI(UI_ID::UI_FIGHT)->Set_State(CGameObject::OBJ_STATE::STATE_ACTIVE);
+
 	m_pCurBattleTriggers = pTriggerBattle;
 	m_pCurBattleTriggers->Start_Battle();
+	m_pCurBattleTriggers->Get_Collider_Sphere()->Set_Active(FALSE);
 	m_bBattle = TRUE;
 }
 

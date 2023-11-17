@@ -7,6 +7,7 @@ END
 
 BEGIN(Client)
 class CCamera_Parry;
+class CParry_Rhythm;
 
 class CState_Blader_ParryEvent final : public CState_Blader_Base
 {
@@ -48,6 +49,10 @@ private:
 	const _float	m_fDistance = 14.f; // 패링 이벤트시 플레이어와 에너미 간격 
 
 	_uint			m_iCount = 0; // 패링 이벤트 진행 횟수
+
+	CParry_Rhythm*	m_pRhythmUI = nullptr;
+
+	_int			m_iFrmae = 0;
 
 public:
 	static CState_Blader_ParryEvent* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);

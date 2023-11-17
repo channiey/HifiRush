@@ -40,12 +40,19 @@ const wstring CState_Saber_Appear::LateTick()
 
 void CState_Saber_Appear::Exit()
 {
+	m_bLand = FALSE;
 }
 
 const wstring CState_Saber_Appear::Check_Transition()
 {
 	if (m_pModel->Is_Tween())
 		return m_strName;
+
+	if (!m_bLand && 30 == m_pModel->Get_TweenDesc().cur.iCurFrame)
+	{
+		m_bLand = TRUE;
+		ENGINE_INSTANCE->Play_Sound(EFC_SABER_LAND, ENEMY_SABER, 0.4f);
+	}
 
 	if (55 <= m_pModel->Get_TweenDesc().cur.iCurFrame)
 		return StateNames_SA[STATE_IDLE_SA];

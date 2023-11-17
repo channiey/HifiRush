@@ -188,10 +188,15 @@
     <ClInclude Include="..\Public\Camera_Debug.h" />
     <ClInclude Include="..\Public\Camera_Follow.h" />
     <ClInclude Include="..\Public\Camera_Parry.h" />
+    <ClInclude Include="..\Public\Camera_Saber_Appear.h" />
     <ClInclude Include="..\Public\Chai_Guitar_Explore.h" />
     <ClInclude Include="..\Public\Character.h" />
+    <ClInclude Include="..\Public\Dialouge.h" />
+    <ClInclude Include="..\Public\Fight_Logo.h" />
     <ClInclude Include="..\Public\Hud.h" />
     <ClInclude Include="..\Public\ImGui_Window_Mid_Ui.h" />
+    <ClInclude Include="..\Public\Parry_Result.h" />
+    <ClInclude Include="..\Public\Parry_Rhythm.h" />
     <ClInclude Include="..\Public\State_Blader_Appear.h" />
     <ClInclude Include="..\Public\State_Blader_Attack.h" />
     <ClInclude Include="..\Public\State_Blader_Base.h" />
@@ -254,6 +259,7 @@
     <ClInclude Include="..\Public\TriggerDummy.h" />
     <ClInclude Include="..\Public\TriggerSection_B.h" />
     <ClInclude Include="..\Public\Ui.h" />
+    <ClInclude Include="..\Public\UiManager.h" />
     <ClInclude Include="..\Public\Weapon.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
@@ -297,10 +303,15 @@
     <ClCompile Include="..\Private\Camera_Debug.cpp" />
     <ClCompile Include="..\Private\Camera_Follow.cpp" />
     <ClCompile Include="..\Private\Camera_Parry.cpp" />
+    <ClCompile Include="..\Private\Camera_Saber_Appear.cpp" />
     <ClCompile Include="..\Private\Chai_Guitar_Explore.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
+    <ClCompile Include="..\Private\Dialouge.cpp" />
+    <ClCompile Include="..\Private\Fight_Logo.cpp" />
     <ClCompile Include="..\Private\Hud.cpp" />
     <ClCompile Include="..\Private\ImGui_Window_Mid_Ui.cpp" />
+    <ClCompile Include="..\Private\Parry_Result.cpp" />
+    <ClCompile Include="..\Private\Parry_Rhythm.cpp" />
     <ClCompile Include="..\Private\State_Blader_Appear.cpp" />
     <ClCompile Include="..\Private\State_Blader_Attack.cpp" />
     <ClCompile Include="..\Private\State_Blader_Base.cpp" />
@@ -365,6 +376,7 @@
     <ClCompile Include="..\Private\TriggerDummy.cpp" />
     <ClCompile Include="..\Private\TriggerSection_B.cpp" />
     <ClCompile Include="..\Private\Ui.cpp" />
+    <ClCompile Include="..\Private\UiManager.cpp" />
     <ClCompile Include="..\Private\Weapon.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -382,6 +394,7 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Ui_Hud.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VTF.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </ExcludedFromBuild>

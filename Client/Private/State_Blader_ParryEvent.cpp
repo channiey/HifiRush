@@ -8,6 +8,8 @@
 
 #include "Chai.h"
 #include "State_Chai_ParryEvent.h"
+#include "Parry_Rhythm.h"
+#include "UiManager.h"
 
 CState_Blader_ParryEvent::CState_Blader_ParryEvent()
 {
@@ -27,6 +29,17 @@ HRESULT CState_Blader_ParryEvent::Initialize(CStateMachine* pStateMachine, const
 
 HRESULT CState_Blader_ParryEvent::Enter()
 {
+	if (nullptr == m_pRhythmUI)
+	{
+		CUi* pUI = CUiManager::GetInstance()->Get_UI(UI_ID::UI_PARRY_RHYTHM);
+		m_pRhythmUI = dynamic_cast<CParry_Rhythm*>(pUI);
+		if (nullptr == m_pRhythmUI)
+			return E_FAIL;
+	}
+	m_pRhythmUI->Set_Beat(5);
+
+		
+
 	++m_iCount;
 
 	m_pParryCam = dynamic_cast<CCamera_Parry*>(ENGINE_INSTANCE->Get_Camera(CAMERA_ID::CAM_PARRY));
@@ -159,10 +172,6 @@ void CState_Blader_ParryEvent::Exit()
 
 	m_pBlader->Get_Child(CBlader::CHILD_TYPE::ARM_LEFT_BL)->Get_Collider_Sphere()->Set_Active(FALSE);
 	m_pBlader->Get_Child(CBlader::CHILD_TYPE::ARM_RIGHT_BL)->Get_Collider_Sphere()->Set_Active(FALSE);
-
-	/* 플레이어 상태 변경 */
-	if (FAILED(m_pBlader->m_tFightDesc.pTarget->Get_StateMachine()->Set_State(StateNames_CH[STATE_CH::STATE_IDLE_CH])))
-		return;
 }
 
 const wstring CState_Blader_ParryEvent::Check_Transition()
@@ -181,21 +190,41 @@ const wstring CState_Blader_ParryEvent::Check_Transition()
 			if(nullptr != pAnimation)
 				m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME);
 		}
-		/*else if (AnimNames_BL[ANIM_BL::PARRY_EVENT_ING_BL] == strCurAnimName && 185 == desc.cur.iCurFrame)
+		else if (AnimNames_BL[ANIM_BL::PARRY_EVENT_ING_BL] == strCurAnimName)
 		{
-			CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::PARRY_EVENT_FINISH_BL]);
-		
-			if (nullptr != pAnimation)
-				m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME, FALSE);
-		}*/
-		else if (AnimNames_BL[ANIM_BL::PARRY_EVENT_FINISH_BL] == strCurAnimName && 45 == desc.cur.iCurFrame)
+			if (45 == desc.cur.iCurFrame)
+			{
+				m_pRhythmUI->Set_State(CGameObject::OBJ_STATE::STATE_ACTIVE);
+			}
+			else if (55 == desc.cur.iCurFrame	|| 
+					 70 == desc.cur.iCurFrame	|| 
+					 85 == desc.cur.iCurFrame	|| 
+					 95 == desc.cur.iCurFrame	|| 
+					 105 == desc.cur.iCurFrame)
+			{
+				if (m_iFrmae != desc.cur.iCurFrame) 
+				{
+					m_pRhythmUI->On_Beat();
+					ENGINE_INSTANCE->Play_Sound(EFC_BLADER_PARRYEVENT_BEAT_2, CHANNEL_ID::ENEMY_BLADER, 0.6f);
+
+					m_iFrmae = desc.cur.iCurFrame;
+				}
+			}
+			else if (120 == desc.cur.iCurFrame)
+				m_pRhythmUI->Set_State(CGameObject::OBJ_STATE::STATE_UNACTIVE);
+		}
+		else if (AnimNames_BL[ANIM_BL::PARRY_EVENT_FINISH_BL] == strCurAnimName)
 		{
-			return StateNames_BL[STATE_BL::STATE_IDLE_BL];
+			if (10 == desc.cur.iCurFrame)
+				m_pBlader->m_tFightDesc.pTarget->Get_StateMachine()->Set_State(StateNames_CH[STATE_CH::STATE_IDLE_CH]);
+
+			if(45 == desc.cur.iCurFrame)
+				return StateNames_BL[STATE_BL::STATE_IDLE_BL];
 		}
 		else if (AnimNames_BL[ANIM_BL::STUN_TO_DEAD_BL] == strCurAnimName && 70 == desc.cur.iCurFrame)
 		{
 			ENGINE_INSTANCE->Get_Camera(CAMERA_ID::CAM_FOLLOW)->Get_Camera()->Lerp_Dist(CamDist_Follow_Default, 0.5f, LERP_MODE::SMOOTHER_STEP);
-			
+			m_pBlader->m_tFightDesc.pTarget->Get_StateMachine()->Set_State(StateNames_CH[STATE_CH::STATE_IDLE_CH]);
 			Exit();
 			
 			m_pBlader->Return_To_Pool();

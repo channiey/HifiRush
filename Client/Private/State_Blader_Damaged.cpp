@@ -47,6 +47,8 @@ void CState_Blader_Damaged::Exit()
 {
 	m_pBlader->m_tFightDesc.bDamaged = FALSE;
 	m_pBlader->m_tFightDesc.pAttacker = nullptr;
+
+	m_bParriedEvent = FALSE;
 }
 
 const wstring CState_Blader_Damaged::Check_Transition()
@@ -69,11 +71,12 @@ void CState_Blader_Damaged::Damaged()
 		return;
 
 	/* 패링 이벤트 판별 */
-	if (m_pBlader->m_tStatDesc.fCurHp == 50)
+	if (!m_bParriedEvent && m_pBlader->m_tStatDesc.fCurHp <= 20)
 	{
 		m_pStateMachine->Set_State(StateNames_BL[STATE_BL::STATE_PARRYEVENT_BL]);
 		m_pBlader->m_tFightDesc.bDamaged = FALSE;
 		m_pBlader->m_tFightDesc.pAttacker = nullptr;
+		m_bParriedEvent = TRUE;
 		return;
 	}
 

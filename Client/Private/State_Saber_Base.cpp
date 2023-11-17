@@ -29,7 +29,7 @@ HRESULT CState_Saber_Base::Initialize(CStateMachine* pStateMachine, const wstrin
 
 const wstring CState_Saber_Base::Choice_NextState()
 {
-	vector<_float> Probabilities = { 0.6f, 0.3f, 0.1f }; // move idle attack
+	vector<_float> Probabilities = { 0.4f, 0.2f, 0.4f }; // move idle attack
 
 	if (Get_Distance() <= m_fTargetMinDist)
 	{

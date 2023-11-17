@@ -7,6 +7,7 @@
 #include "GameManager.h"
 #include "BeatManager.h"
 #include "BattleManager.h"
+#include "UiManager.h"
 
 #ifdef _DEBUG
 #include "ImGui_Manager.h"
@@ -51,6 +52,9 @@ HRESULT CMainApp::Initialize()
 			return E_FAIL;
 
 		if (FAILED(CBeatManager::GetInstance()->Initialize()))
+			return E_FAIL;
+
+		if (FAILED(CUiManager::GetInstance()->Initialize()))
 			return E_FAIL;
 	}
 
@@ -151,14 +155,20 @@ HRESULT CMainApp::Ready_Prototype_Components()
 		return E_FAIL;
 
 	/* For.Prototype_Component_Shader_VtxPosTex */
-	if (FAILED(m_pEngineInstance->Add_PrototypeCom(LV_STATIC, ShaderNames[SHADER_UI],
+	if (FAILED(m_pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPosTex.hlsl"), VTXPOSTEX::Elements, VTXPOSTEX::iNumElements))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Shader_Ui_Hud */
+	if (FAILED(m_pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Shader_Ui_Hud"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Ui_Hud.hlsl"), VTXPOSTEX::Elements, VTXPOSTEX::iNumElements))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_VIBuffer_Rect */
 	if (FAILED(m_pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
 		CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
 
 	Safe_AddRef(m_pRenderer);
 	

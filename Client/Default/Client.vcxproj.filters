@@ -394,14 +394,29 @@
     <Filter Include="03.GameObjects\10.UI\00.HUD">
       <UniqueIdentifier>{7c8aa04a-058b-4de6-abd6-0ad240fd31c4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.GameObjects\10.UI\01.Event">
-      <UniqueIdentifier>{abc609a8-dc2a-4c58-ad86-d8b8713c4705}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.GameObjects\10.UI\02.Action">
-      <UniqueIdentifier>{77f0dfb2-051b-4aff-984c-b0ebeaccf269}</UniqueIdentifier>
-    </Filter>
     <Filter Include="97.ImGui\01.Windows\01.Mid\03.UI">
       <UniqueIdentifier>{bdd2e3f3-4fd5-42c8-8500-b173b0d5e325}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\10.UI\02.Parry">
+      <UniqueIdentifier>{9871f97f-c210-4188-ae23-46080697ca5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\10.UI\02.Parry\00.Result">
+      <UniqueIdentifier>{1e76db1f-b972-4e01-9d82-f5f655158130}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\10.UI\02.Parry\01.Rhythm">
+      <UniqueIdentifier>{52b20b88-46d3-4dd3-ac12-9faed0e3b523}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameManager\03.UiManager">
+      <UniqueIdentifier>{7cea92e8-2401-4a83-ad87-f8714f472a5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\00.Camera\02.Event\01.Saber_Appear">
+      <UniqueIdentifier>{841cfffb-7132-4952-a087-facfd5a2a8b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\10.UI\03.Fight">
+      <UniqueIdentifier>{ddf0d603-34fa-4331-af1b-69cc48bbd66c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\10.UI\04.Dialouge">
+      <UniqueIdentifier>{91f8493e-0224-4629-91ab-69b8b519d0d6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -666,6 +681,24 @@
     <ClInclude Include="..\Public\ImGui_Window_Mid_Ui.h">
       <Filter>97.ImGui\01.Windows\01.Mid\03.UI</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Parry_Result.h">
+      <Filter>03.GameObjects\10.UI\02.Parry\00.Result</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Parry_Rhythm.h">
+      <Filter>03.GameObjects\10.UI\02.Parry\01.Rhythm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UiManager.h">
+      <Filter>01.GameManager\03.UiManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera_Saber_Appear.h">
+      <Filter>03.GameObjects\00.Camera\02.Event\01.Saber_Appear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Fight_Logo.h">
+      <Filter>03.GameObjects\10.UI\03.Fight</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Dialouge.h">
+      <Filter>03.GameObjects\10.UI\04.Dialouge</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -917,6 +950,24 @@
     <ClCompile Include="..\Private\ImGui_Window_Mid_Ui.cpp">
       <Filter>97.ImGui\01.Windows\01.Mid\03.UI</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Parry_Result.cpp">
+      <Filter>03.GameObjects\10.UI\02.Parry\00.Result</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Parry_Rhythm.cpp">
+      <Filter>03.GameObjects\10.UI\02.Parry\01.Rhythm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UiManager.cpp">
+      <Filter>01.GameManager\03.UiManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Saber_Appear.cpp">
+      <Filter>03.GameObjects\00.Camera\02.Event\01.Saber_Appear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Fight_Logo.cpp">
+      <Filter>03.GameObjects\10.UI\03.Fight</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Dialouge.cpp">
+      <Filter>03.GameObjects\10.UI\04.Dialouge</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -943,6 +994,9 @@
       <Filter>96.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxSkySphere.hlsl">
+      <Filter>96.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Ui_Hud.hlsl">
       <Filter>96.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

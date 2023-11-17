@@ -34,8 +34,6 @@ HRESULT CState_Chai_Attack::Enter()
 		m_tAttackDesc.eAttackType		= ATTACK_TYPE::LIGHT;
 
 		m_tAttackDesc.tSoundEventDesc.iFrame = 10;
-
-
 	}
 	else if (Input::RBtn())
 	{

@@ -69,8 +69,8 @@ protected:
 	Matrix				m_ProjMatrix;
 
 	vector<CTexture*>	m_pTextureComs;
-	vector<UI_DESC>		m_TextureLocalDesc; /* 텍스처 각각의 로컬 포지션 */
-	vector<UI_DESC>		m_TextureLocalDescOrigin; /* 텍스처 각각의 로컬 포지션 원본 (보간으로 움직이는 애들이 주로 사용) */
+	vector<UI_DESC>		m_TextureLocalDesc;			/* 텍스처 각각의 로컬 포지션 */
+	vector<UI_DESC>		m_TextureLocalDescOrigin;	/* 텍스처 각각의 로컬 포지션 원본 (보간으로 움직이는 애들이 주로 사용) */
 
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;
