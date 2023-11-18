@@ -301,6 +301,7 @@ void CUi_Hud_Boss::Drop(_double fTimeDelta)
 
 	m_tLerpDesc.Update(fTimeDelta);
 
+	m_TextureLocalDesc[TEX_TYPE::DROP_HEALTH].vPos.x = m_TextureLocalDescOrigin[TEX_TYPE::DROP_HEALTH].vPos.x + m_tLerpDesc.fCurValue;
 	m_TextureLocalDesc[TEX_TYPE::DROP_HEALTH].vPos.y = m_TextureLocalDescOrigin[TEX_TYPE::DROP_HEALTH].vPos.y - m_tLerpDesc.fCurValue - 7.f;
 }
 

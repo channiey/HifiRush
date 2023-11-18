@@ -120,7 +120,7 @@ HRESULT CUi_Fight_Logo::Render()
 		if (FAILED(m_pTextureComs[i]->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
 			return E_FAIL;
 
-		m_pShaderCom->Begin(2);
+		m_pShaderCom->Begin(1);
 
 		m_pVIBufferCom->Render();
 	}

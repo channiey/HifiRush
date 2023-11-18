@@ -61,7 +61,6 @@ enum ANIM_BL
 	ANIM_BL_END
 };
 
-
 static const string AnimNames_BL[ANIM_BL::ANIM_BL_END]
 {
 	"APPEAR",
