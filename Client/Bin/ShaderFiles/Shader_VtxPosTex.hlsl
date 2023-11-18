@@ -4,7 +4,6 @@ matrix		g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 Texture2D	g_Texture;
 Texture2D	g_Textures[2];
 
-float		g_HpPercent = 1.f;
 float		g_Alpha = 1.f;
 
 struct VS_IN
@@ -58,32 +57,16 @@ PS_OUT PS_MAIN(PS_IN In)
 	return Out;
 }
 
-PS_OUT PS_UI_HP(PS_IN In)
-{
-    PS_OUT Out = (PS_OUT) 0;
-
-    Out.vColor = g_Texture.Sample(PointSampler, In.vTexcoord);
-
-    if (Out.vColor.a < 0.1f)
-        discard;
-	
-	/* 체력 자르기 */
-    if (g_HpPercent * 0.01f < In.vTexcoord.x)
-        discard;
-	
-    return Out;
-}
-
 PS_OUT PS_UI_ALPHA(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
 
     Out.vColor = g_Texture.Sample(PointSampler, In.vTexcoord);
 
-    if(0.1f <= Out.vColor.a)
+    if (0.05f <= Out.vColor.a)
         Out.vColor.a = g_Alpha;
     
-    if (Out.vColor.a < 0.1f)
+    if (Out.vColor.a < 0.05f)
         discard;
 	
     return Out;
@@ -103,19 +86,6 @@ technique11 DefaultTechnique
 		DomainShader	= NULL;
 		PixelShader		= compile ps_5_0 PS_MAIN();
 	}
-	
-    pass UI_HP
-    {
-        SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        HullShader = NULL;
-        DomainShader = NULL;
-        PixelShader = compile ps_5_0 PS_UI_HP();
-    }
 
     pass UI_ALPHA
     {

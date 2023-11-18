@@ -6,6 +6,10 @@
 
 #include "Weapon.h"
 
+/* UI */
+#include "UiManager.h"
+#include "Ui_Dialouge.h"
+
 /* Genral */
 #include "State_Chai_Idle.h"
 
@@ -80,7 +84,14 @@ void CChai::Tick(_double fTimeDelta)
 			m_pNavMeshAgentCom->Set_CurIndex(iIndex);
 		}
 	}
-	
+	else if (ENGINE_INSTANCE->Key_Down('Y'))
+	{
+		CUiManager::GetInstance()->On_Dialouge(0, L"다들 준비 됐어?");
+	}
+	else if (ENGINE_INSTANCE->Key_Down('U'))
+	{
+		CUiManager::GetInstance()->On_Dialouge(4, L"음료수를 마시면 체력을 회복할 수 있습니다.");
+	}
 	__super::Tick(fTimeDelta);
 }
 

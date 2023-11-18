@@ -4,14 +4,14 @@
 
 BEGIN(Client)
 
-class CParry_Rhythm final : public CUi
+class CUi_Parry_Rhythm final : public CUi
 {
 	enum TEX_TYPE { WORD_READY, DIALOGUE, BEAT, TYPEEND };
 
 private:
-	CParry_Rhythm(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CParry_Rhythm(const CGameObject& rhs);
-	virtual ~CParry_Rhythm() = default;
+	CUi_Parry_Rhythm(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CUi_Parry_Rhythm(const CGameObject& rhs);
+	virtual ~CUi_Parry_Rhythm() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -36,8 +36,8 @@ private:
 	vector<pair<_bool, Vec2>> m_Beats;
 
 public:
-	static CParry_Rhythm* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CParry_Rhythm* Clone(void* pArg) override;
+	static CUi_Parry_Rhythm* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual CUi_Parry_Rhythm* Clone(void* pArg) override;
 	virtual void	Free() override;
 };
 

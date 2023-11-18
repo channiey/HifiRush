@@ -198,6 +198,7 @@
     <ClInclude Include="..\Public\Collision_Manager.h" />
     <ClInclude Include="..\public\Component.h" />
     <ClInclude Include="..\public\Component_Manager.h" />
+    <ClInclude Include="..\Public\CustomFont.h" />
     <ClInclude Include="..\Public\DebugDraw.h" />
     <ClInclude Include="..\Public\Engine_Defines.h" />
     <ClInclude Include="..\Public\Engine_Function.h" />
@@ -211,6 +212,7 @@
     <ClInclude Include="..\Public\FMOD\fmod_errors.h" />
     <ClInclude Include="..\Public\FMOD\fmod_memoryinfo.h" />
     <ClInclude Include="..\Public\FMOD\fmod_output.h" />
+    <ClInclude Include="..\Public\Font_Manager.h" />
     <ClInclude Include="..\Public\Frustum.h" />
     <ClInclude Include="..\Public\Collider_OBB.h" />
     <ClInclude Include="..\Public\Light.h" />
@@ -282,7 +284,9 @@
     <ClCompile Include="..\Private\Collision_Manager.cpp" />
     <ClCompile Include="..\private\Component.cpp" />
     <ClCompile Include="..\private\Component_Manager.cpp" />
+    <ClCompile Include="..\Private\CustomFont.cpp" />
     <ClCompile Include="..\Private\DebugDraw.cpp" />
+    <ClCompile Include="..\Private\Font_Manager.cpp" />
     <ClCompile Include="..\Private\Frustum.cpp" />
     <ClCompile Include="..\Private\Collider_OBB.cpp" />
     <ClCompile Include="..\Private\Light.cpp" />

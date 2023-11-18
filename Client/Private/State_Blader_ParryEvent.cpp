@@ -8,7 +8,7 @@
 
 #include "Chai.h"
 #include "State_Chai_ParryEvent.h"
-#include "Parry_Rhythm.h"
+#include "Ui_Parry_Rhythm.h"
 #include "UiManager.h"
 
 CState_Blader_ParryEvent::CState_Blader_ParryEvent()
@@ -32,7 +32,7 @@ HRESULT CState_Blader_ParryEvent::Enter()
 	if (nullptr == m_pRhythmUI)
 	{
 		CUi* pUI = CUiManager::GetInstance()->Get_UI(UI_ID::UI_PARRY_RHYTHM);
-		m_pRhythmUI = dynamic_cast<CParry_Rhythm*>(pUI);
+		m_pRhythmUI = dynamic_cast<CUi_Parry_Rhythm*>(pUI);
 		if (nullptr == m_pRhythmUI)
 			return E_FAIL;
 	}
@@ -211,7 +211,12 @@ const wstring CState_Blader_ParryEvent::Check_Transition()
 				}
 			}
 			else if (120 == desc.cur.iCurFrame)
+			{
 				m_pRhythmUI->Set_State(CGameObject::OBJ_STATE::STATE_UNACTIVE);
+				CUi* pUI = CUiManager::GetInstance()->Get_UI(UI_ID::UI_HUD_BOSS);
+				if(nullptr == pUI)
+					pUI->Set_State(CGameObject::OBJ_STATE::STATE_UNACTIVE);
+			}
 		}
 		else if (AnimNames_BL[ANIM_BL::PARRY_EVENT_FINISH_BL] == strCurAnimName)
 		{

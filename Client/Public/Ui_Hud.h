@@ -6,7 +6,7 @@ BEGIN(Client)
 
 class CCharacter;
 
-class CHud final : public CUi
+class CUi_Hud final : public CUi
 {
 	enum TEX_TYPE 
 	{ 
@@ -41,9 +41,9 @@ class CHud final : public CUi
 	};
 
 private:
-	CHud(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CHud(const CGameObject& rhs);
-	virtual ~CHud() = default;
+	CUi_Hud(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CUi_Hud(const CGameObject& rhs);
+	virtual ~CUi_Hud() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -68,8 +68,8 @@ private:
 
 
 public:
-	static CHud*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CHud*	Clone(void* pArg) override;
+	static CUi_Hud*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual CUi_Hud*Clone(void* pArg) override;
 	virtual void	Free() override;
 };
 

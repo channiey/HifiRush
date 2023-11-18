@@ -219,6 +219,16 @@ namespace Engine
 
 			eMode = _eMode;
 		}
+		void Clear()
+		{
+			bActive = FALSE;
+
+			fStartTime = fCurTime =  fEndTime = 0.f;
+
+			fStartValue = fCurValue =  fTargetValue = 0.f;
+
+			eMode = LERP_MODE::DEFAULT;
+		}
 
 		// Mode
 		void Update(const _double& fTimeDelta)

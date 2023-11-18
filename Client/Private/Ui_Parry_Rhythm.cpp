@@ -1,28 +1,28 @@
 #include "..\Default\stdafx.h"
-#include "..\Public\Parry_Rhythm.h"
+#include "..\Public\Ui_Parry_Rhythm.h"
 
 #include "EngineInstance.h"
 #include "ImGui_Manager.h"
 #include "UiManager.h"
 
-CParry_Rhythm::CParry_Rhythm(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CUi_Parry_Rhythm::CUi_Parry_Rhythm(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUi(pDevice, pContext)
 {
 
 }
 
-CParry_Rhythm::CParry_Rhythm(const CGameObject& rhs)
+CUi_Parry_Rhythm::CUi_Parry_Rhythm(const CGameObject& rhs)
 	: CUi(rhs)
 {
 
 }
 
-HRESULT CParry_Rhythm::Initialize_Prototype()
+HRESULT CUi_Parry_Rhythm::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CParry_Rhythm::Initialize(void* pArg)
+HRESULT CUi_Parry_Rhythm::Initialize(void* pArg)
 {
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -41,17 +41,17 @@ HRESULT CParry_Rhythm::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CParry_Rhythm::Tick(_double fTimeDelta)
+void CUi_Parry_Rhythm::Tick(_double fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 }
 
-void CParry_Rhythm::LateTick(_double fTimeDelta)
+void CUi_Parry_Rhythm::LateTick(_double fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 }
 
-HRESULT CParry_Rhythm::Render()
+HRESULT CUi_Parry_Rhythm::Render()
 {
 	if (m_TextureLocalDesc.empty()) return E_FAIL;
 
@@ -115,12 +115,12 @@ HRESULT CParry_Rhythm::Render()
 	return S_OK;
 }
 
-void CParry_Rhythm::Set_State(const OBJ_STATE& eState)
+void CUi_Parry_Rhythm::Set_State(const OBJ_STATE& eState)
 {
 	__super::Set_State(eState);
 }
 
-void CParry_Rhythm::Set_Beat(const _uint& iBeatCount)
+void CUi_Parry_Rhythm::Set_Beat(const _uint& iBeatCount)
 {
 	m_Beats.clear();
 	m_Beats.shrink_to_fit();
@@ -130,7 +130,7 @@ void CParry_Rhythm::Set_Beat(const _uint& iBeatCount)
 	Calculate_BeatsPos();
 }
 
-void CParry_Rhythm::On_Beat()
+void CUi_Parry_Rhythm::On_Beat()
 {
 	for (auto& Pair : m_Beats)
 	{
@@ -142,7 +142,7 @@ void CParry_Rhythm::On_Beat()
 	}
 }
 
-HRESULT CParry_Rhythm::Ready_Components()
+HRESULT CUi_Parry_Rhythm::Ready_Components()
 {
 	/* Com_Shader */
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
@@ -169,12 +169,12 @@ HRESULT CParry_Rhythm::Ready_Components()
 	return S_OK;
 }
 
-HRESULT CParry_Rhythm::Bind_ShaderResources()
+HRESULT CUi_Parry_Rhythm::Bind_ShaderResources()
 {
 	return S_OK;
 }
 
-void CParry_Rhythm::Calculate_BeatsPos()
+void CUi_Parry_Rhythm::Calculate_BeatsPos()
 {
 	const _float	fWidth = m_TextureLocalDesc[TEX_TYPE::DIALOGUE].vSize.x;
 	const Vec2		vRootPos = { m_TextureLocalDesc[TEX_TYPE::DIALOGUE].vPos.x - (fWidth * 0.5f), m_TextureLocalDesc[TEX_TYPE::DIALOGUE].vPos.y };
@@ -184,33 +184,33 @@ void CParry_Rhythm::Calculate_BeatsPos()
 		m_Beats[i - 1].second = Vec2{ vRootPos.x + (fInterval * i), vRootPos.y };
 }
 
-CParry_Rhythm* CParry_Rhythm::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CUi_Parry_Rhythm* CUi_Parry_Rhythm::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CParry_Rhythm* pInstance = new CParry_Rhythm(pDevice, pContext);
+	CUi_Parry_Rhythm* pInstance = new CUi_Parry_Rhythm(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created : CParry_Rhythm");
+		MSG_BOX("Failed to Created : CUi_Parry_Rhythm");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-CParry_Rhythm* CParry_Rhythm::Clone(void* pArg)
+CUi_Parry_Rhythm* CUi_Parry_Rhythm::Clone(void* pArg)
 {
-	CParry_Rhythm* pInstance = new CParry_Rhythm(*this);
+	CUi_Parry_Rhythm* pInstance = new CUi_Parry_Rhythm(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned : CParry_Rhythm");
+		MSG_BOX("Failed to Cloned : CUi_Parry_Rhythm");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CParry_Rhythm::Free()
+void CUi_Parry_Rhythm::Free()
 {
 	__super::Free();
 }

@@ -106,7 +106,7 @@ HRESULT CUi::Load()
 
 	if (!Util_File::IsExistFile(Util_String::ToString(strLoadFilePath)))
 	{
-		MSG_BOX("Nothing Trigger File");
+		MSG_BOX("Nothing UI File");
 		return E_FAIL;
 	}
 

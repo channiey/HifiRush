@@ -58,6 +58,9 @@ HRESULT CMainApp::Initialize()
 			return E_FAIL;
 	}
 
+	if (FAILED(Ready_CustomFont()))
+		return E_FAIL;
+
 #ifdef _DEBUG
 	if(FAILED(m_pImGui_Manager->Initialize(m_pDevice, m_pContext)))
 		return E_FAIL;
@@ -172,6 +175,14 @@ HRESULT CMainApp::Ready_Prototype_Components()
 
 	Safe_AddRef(m_pRenderer);
 	
+	return S_OK;
+}
+
+HRESULT CMainApp::Ready_CustomFont()
+{
+	if (FAILED(m_pEngineInstance->Add_Font(m_pDevice, m_pContext, TEXT("Font_Default"), TEXT("../Bin/Resources/Fonts/137ex.spriteFont"))))
+		return E_FAIL;
+
 	return S_OK;
 }
 

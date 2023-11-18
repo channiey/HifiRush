@@ -130,6 +130,11 @@ public: /* For.Target_Manager */
 	void Set_DebugRTV(const _bool& bSet);
 	void Set_DebugRTV();
 
+public: /* For.Font_Manager */
+	HRESULT Add_Font(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const wstring& strFontTag, const wstring& strFontFilePath);
+	HRESULT Render_Font(const wstring& strFontTag, const wstring& strText, const _float2& vPos, FXMVECTOR color = XMVectorZero(), 
+		float rotation = 0.f, XMFLOAT2 const& origin = _float2(0.f, 0.f), float scale = 1.f);
+
 
 private:
 	class CTimer_Manager*			m_pTimer_Manager		= { nullptr };
@@ -146,6 +151,9 @@ private:
 	class CObject_Manager*			m_pObject_Manager		= { nullptr };
 	class CCamera_Manager*			m_pCamera_Manager		= { nullptr };
 	class CComponent_Manager*		m_pComponent_Manager	= { nullptr };
+
+	class CFont_Manager*			m_pFont_Manager = { nullptr };
+
 
 	class CCollision_Manager*		m_pCollision_Manager	= { nullptr };
 	class CNavMesh*					m_pNavMesh				= { nullptr };

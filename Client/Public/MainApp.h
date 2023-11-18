@@ -44,6 +44,7 @@ private:
 
 	/* 모든 레벨에서 사용되는 컴포넌트 원형을 생성한다. */
 	HRESULT Ready_Prototype_Components(); 
+	HRESULT Ready_CustomFont();
 
 public:
 	static CMainApp* Create();

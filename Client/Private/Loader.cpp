@@ -20,9 +20,11 @@
 #include "Camera_Parry.h"
 
 /* UI */
-#include "Hud.h"
-#include "Parry_Rhythm.h"
-#include "Fight_Logo.h"
+#include "Ui_Hud.h"
+#include "Ui_Parry_Rhythm.h"
+#include "Ui_Fight_Logo.h"
+#include "Ui_Dialouge.h"
+#include "Ui_Hud_Boss.h"
 
 /* Env */
 #include "SkyBox.h"
@@ -176,7 +178,6 @@ HRESULT CLoader::Load_Prototype()
 	/* For.Texture */
 	m_strLoading = TEXT("Loding... : Texture");
 	{
-		/* 사용하는 모든 텍스처 일괄 로드 */
 		string				fileRootPath	=	"../Bin/Resources/Textures/Using";
 		vector<string>		fileNames		=	Util_File::GetAllFileNames(fileRootPath);
 
@@ -294,17 +295,27 @@ HRESULT CLoader::Load_Prototype()
 	{
 		/* For.Prototype_GameObject_Ui_Hud */
 		if (FAILED(pEngineInstance->Add_Prototype(UINames[UI_ID::UI_HUD],
-			CHud::Create(m_pDevice, m_pContext))))
+			CUi_Hud::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For.Prototype_GameObject_Ui_Parry_Rhythm */
 		if (FAILED(pEngineInstance->Add_Prototype(UINames[UI_ID::UI_PARRY_RHYTHM],
-			CParry_Rhythm::Create(m_pDevice, m_pContext))))
+			CUi_Parry_Rhythm::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		/* For.Prototype_GameObject_Ui_Parry_Rhythm */
+		/* For.Prototype_GameObject_Ui_Parry_Fight */
 		if (FAILED(pEngineInstance->Add_Prototype(UINames[UI_ID::UI_FIGHT],
-			CFight_Logo::Create(m_pDevice, m_pContext))))
+			CUi_Fight_Logo::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Ui_Parry_Dialouge */
+		if (FAILED(pEngineInstance->Add_Prototype(UINames[UI_ID::UI_DIALOUGE],
+			CUi_Dialouge::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Ui_Hud_Boss */
+		if (FAILED(pEngineInstance->Add_Prototype(UINames[UI_ID::UI_HUD_BOSS],
+			CUi_Hud_Boss::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For.Prototype_GameObject_Camera_Debug */

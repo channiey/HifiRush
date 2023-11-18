@@ -418,6 +418,9 @@
     <Filter Include="03.GameObjects\10.UI\04.Dialouge">
       <UniqueIdentifier>{91f8493e-0224-4629-91ab-69b8b519d0d6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.GameObjects\10.UI\05.Hud_Boss">
+      <UniqueIdentifier>{fad2e16a-24b4-4dac-9f90-4a05162ab4b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -675,16 +678,16 @@
     <ClInclude Include="..\Public\State_Chai_ParryEvent.h">
       <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\03.Act\03.ParryEvent</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Hud.h">
+    <ClInclude Include="..\Public\Ui_Hud.h">
       <Filter>03.GameObjects\10.UI\00.HUD</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ImGui_Window_Mid_Ui.h">
       <Filter>97.ImGui\01.Windows\01.Mid\03.UI</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Parry_Result.h">
+    <ClInclude Include="..\Public\Ui_Parry_Result.h">
       <Filter>03.GameObjects\10.UI\02.Parry\00.Result</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Parry_Rhythm.h">
+    <ClInclude Include="..\Public\Ui_Parry_Rhythm.h">
       <Filter>03.GameObjects\10.UI\02.Parry\01.Rhythm</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UiManager.h">
@@ -693,11 +696,14 @@
     <ClInclude Include="..\Public\Camera_Saber_Appear.h">
       <Filter>03.GameObjects\00.Camera\02.Event\01.Saber_Appear</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Fight_Logo.h">
+    <ClInclude Include="..\Public\Ui_Fight_Logo.h">
       <Filter>03.GameObjects\10.UI\03.Fight</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Dialouge.h">
+    <ClInclude Include="..\Public\Ui_Dialouge.h">
       <Filter>03.GameObjects\10.UI\04.Dialouge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Ui_Hud_Boss.h">
+      <Filter>03.GameObjects\10.UI\05.Hud_Boss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -944,16 +950,16 @@
     <ClCompile Include="..\Private\State_Chai_ParryEvent.cpp">
       <Filter>03.GameObjects\03.Character\00.Player\00.Models\00.Chai\01.States\03.Act\03.ParryEvent</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Hud.cpp">
+    <ClCompile Include="..\Private\Ui_Hud.cpp">
       <Filter>03.GameObjects\10.UI\00.HUD</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ImGui_Window_Mid_Ui.cpp">
       <Filter>97.ImGui\01.Windows\01.Mid\03.UI</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Parry_Result.cpp">
+    <ClCompile Include="..\Private\Ui_Parry_Result.cpp">
       <Filter>03.GameObjects\10.UI\02.Parry\00.Result</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Parry_Rhythm.cpp">
+    <ClCompile Include="..\Private\Ui_Parry_Rhythm.cpp">
       <Filter>03.GameObjects\10.UI\02.Parry\01.Rhythm</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UiManager.cpp">
@@ -962,11 +968,14 @@
     <ClCompile Include="..\Private\Camera_Saber_Appear.cpp">
       <Filter>03.GameObjects\00.Camera\02.Event\01.Saber_Appear</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Fight_Logo.cpp">
+    <ClCompile Include="..\Private\Ui_Fight_Logo.cpp">
       <Filter>03.GameObjects\10.UI\03.Fight</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Dialouge.cpp">
+    <ClCompile Include="..\Private\Ui_Dialouge.cpp">
       <Filter>03.GameObjects\10.UI\04.Dialouge</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Ui_Hud_Boss.cpp">
+      <Filter>03.GameObjects\10.UI\05.Hud_Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

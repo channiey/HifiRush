@@ -10,7 +10,7 @@ namespace Client
 
 #define FPS_LIMIT		66.f
 	    
-#define CONSOLE_LOG     0
+#define CONSOLE_LOG     1
 #define CURSOL_LOCK     0
 #define CURSOL_HIDE     0
 #define OPEN_IMGUI      0
@@ -230,13 +230,17 @@ namespace Client
 		UI_HUD,
 		UI_PARRY_RHYTHM,
 		UI_FIGHT,
+		UI_DIALOUGE,
+		UI_HUD_BOSS,
 		UI_END
 	};
 	static const wchar_t* UINames[UI_ID::UI_END]
 	{
 		L"Ui_Hud",
 		L"Ui_Parry_Rhythm",
-		L"Ui_Fight"
+		L"Ui_Fight",
+		L"Ui_Dialouge",
+		L"Ui_Hud_Boss"
 	};
 
 

@@ -235,6 +235,12 @@
     <Filter Include="01.Utiltiy\07.Light\Manager">
       <UniqueIdentifier>{d774004d-3444-4a8f-9a0b-9227419132a9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utiltiy\08.Font">
+      <UniqueIdentifier>{df7fed40-8ebb-4848-9f3d-dce0c470402b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utiltiy\08.Font\Manager">
+      <UniqueIdentifier>{f0042222-37b5-42b5-83d0-528ceb99f4a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -468,6 +474,12 @@
     <ClInclude Include="..\Public\Target_Manager.h">
       <Filter>01.Utiltiy\06.RenderTargets\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CustomFont.h">
+      <Filter>01.Utiltiy\08.Font\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Font_Manager.h">
+      <Filter>01.Utiltiy\08.Font\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -664,6 +676,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Target_Manager.cpp">
       <Filter>01.Utiltiy\06.RenderTargets\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CustomFont.cpp">
+      <Filter>01.Utiltiy\08.Font\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Font_Manager.cpp">
+      <Filter>01.Utiltiy\08.Font\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

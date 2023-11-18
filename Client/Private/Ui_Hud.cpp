@@ -1,29 +1,29 @@
 #include "..\Default\stdafx.h"
-#include "..\Public\Hud.h"
+#include "..\Public\Ui_Hud.h"
 
 #include "EngineInstance.h"
 #include "ImGui_Manager.h"
 #include "BeatManager.h"
 #include "Character.h"
 #include "UiManager.h"
-CHud::CHud(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CUi_Hud::CUi_Hud(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUi(pDevice, pContext)
 {
 
 }
 
-CHud::CHud(const CGameObject& rhs)
+CUi_Hud::CUi_Hud(const CGameObject& rhs)
 	: CUi(rhs)
 {
 
 }
 
-HRESULT CHud::Initialize_Prototype()
+HRESULT CUi_Hud::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CHud::Initialize(void* pArg)
+HRESULT CUi_Hud::Initialize(void* pArg)
 {
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -44,7 +44,7 @@ HRESULT CHud::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CHud::Tick(_double fTimeDelta)
+void CUi_Hud::Tick(_double fTimeDelta)
 {
 	if (nullptr == m_pPlayer)
 		Set_Player();
@@ -54,12 +54,12 @@ void CHud::Tick(_double fTimeDelta)
 	Drop(fTimeDelta);
 }
 
-void CHud::LateTick(_double fTimeDelta)
+void CUi_Hud::LateTick(_double fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 }
 
-HRESULT CHud::Render()
+HRESULT CUi_Hud::Render()
 {
 	if (m_TextureLocalDesc.empty()) return E_FAIL;
 
@@ -97,7 +97,10 @@ HRESULT CHud::Render()
 			if (HEALTH_DAMAGED == i)
 				continue;
 
-			m_pShaderCom->Begin(1);
+			if (HEALTH_FULL == i)
+				m_pShaderCom->Begin(1);
+			else
+				m_pShaderCom->Begin(0);
 		}
 		else if (SPECIAL_EMPTY_0 <= i && SPECIAL_FULL_2 >= i)
 		{
@@ -123,7 +126,7 @@ HRESULT CHud::Render()
 	return S_OK;
 }
 
-HRESULT CHud::Ready_Components()
+HRESULT CUi_Hud::Ready_Components()
 {
 	/* Com_Shader */
 	if (FAILED(__super::Add_Component(LV_STATIC, ShaderNames[SHADER_ID::SHADER_UI_HUD],
@@ -232,15 +235,17 @@ HRESULT CHud::Ready_Components()
 	return S_OK;
 }
 
-HRESULT CHud::Bind_ShaderResources()
+HRESULT CUi_Hud::Bind_ShaderResources()
 {
+	const _float fHpPercent = m_pPlayer->Get_StatDesc().fCurHp / m_pPlayer->Get_StatDesc().fMaxHp;
+
 	if (nullptr != m_pPlayer)
-		m_pShaderCom->Bind_RawValue("g_HpPercent", &m_pPlayer->Get_StatDesc().fCurHp, sizeof(_float));
+		m_pShaderCom->Bind_RawValue("g_HpPercent", &fHpPercent, sizeof(_float));
 
 	return S_OK;
 }
 
-void CHud::Drop(_double fTimeDelta)
+void CUi_Hud::Drop(_double fTimeDelta)
 {
 	if (!m_tLerpDesc.bActive)
 	{
@@ -261,7 +266,7 @@ void CHud::Drop(_double fTimeDelta)
 	m_TextureLocalDesc[TEX_TYPE::DROP_HEALTH].vPos.y = m_TextureLocalDescOrigin[TEX_TYPE::DROP_HEALTH].vPos.y - m_tLerpDesc.fCurValue;
 }
 
-void CHud::Set_Player()
+void CUi_Hud::Set_Player()
 {
 	CGameObject* pObj = ENGINE_INSTANCE->Get_GameObject_InCurLevel_InLayerFirst(LayerNames[LAYER_PLAYER]);
 	if (nullptr != pObj)
@@ -270,33 +275,33 @@ void CHud::Set_Player()
 	}
 }
 
-CHud* CHud::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CUi_Hud* CUi_Hud::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CHud* pInstance = new CHud(pDevice, pContext);
+	CUi_Hud* pInstance = new CUi_Hud(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created : CHud");
+		MSG_BOX("Failed to Created : CUi_Hud");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-CHud* CHud::Clone(void* pArg)
+CUi_Hud* CUi_Hud::Clone(void* pArg)
 {
-	CHud* pInstance = new CHud(*this);
+	CUi_Hud* pInstance = new CUi_Hud(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned : CHud");
+		MSG_BOX("Failed to Cloned : CUi_Hud");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CHud::Free()
+void CUi_Hud::Free()
 {
 	__super::Free();
 }

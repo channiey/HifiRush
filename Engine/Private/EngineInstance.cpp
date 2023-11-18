@@ -11,6 +11,7 @@
 #include "Sound_Manager.h"
 #include "Light_Manager.h"
 #include "Target_Manager.h"
+#include "Font_Manager.h"
 
 IMPLEMENT_SINGLETON(CEngineInstance)
 
@@ -29,8 +30,10 @@ CEngineInstance::CEngineInstance()
 	, m_pSound_Manager(CSound_Manager::GetInstance())
 	, m_pLight_Manager(CLight_Manager::GetInstance())
 	, m_pTarget_Manager(CTarget_Manager::GetInstance())
+	, m_pFont_Manager(CFont_Manager::GetInstance())
 
 {
+	Safe_AddRef(m_pFont_Manager);
 	Safe_AddRef(m_pPipeLine);
 	Safe_AddRef(m_pComponent_Manager);
 	Safe_AddRef(m_pObject_Manager);
@@ -711,9 +714,27 @@ void CEngineInstance::Set_DebugRTV()
 	return m_pTarget_Manager->Set_DebugRTV();
 }
 
+HRESULT CEngineInstance::Add_Font(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const wstring& strFontTag, const wstring& strFontFilePath)
+{
+	if (nullptr == m_pFont_Manager)
+		return E_FAIL;
+
+	return m_pFont_Manager->Add_Font(pDevice, pContext, strFontTag, strFontFilePath);
+}
+
+HRESULT CEngineInstance::Render_Font(const wstring& strFontTag, const wstring& strText, const _float2& vPos, FXMVECTOR color, float rotation, XMFLOAT2 const& origin, float scale)
+{
+	if (nullptr == m_pFont_Manager)
+		return E_FAIL;
+
+	return m_pFont_Manager->Render(strFontTag, strText, vPos, color, rotation, origin, scale);
+}
+
 void CEngineInstance::Release_Engine()
 {
 	CEngineInstance::GetInstance()->DestroyInstance();
+
+	CFont_Manager::GetInstance()->DestroyInstance();
 	CCamera_Manager::GetInstance()->DestroyInstance();
 	CLevel_Manager::GetInstance()->DestroyInstance();
 	CObject_Manager::GetInstance()->DestroyInstance();
@@ -732,6 +753,7 @@ void CEngineInstance::Release_Engine()
 
 void CEngineInstance::Free()
 {
+	Safe_Release(m_pFont_Manager);
 	Safe_Release(m_pCamera_Manager);
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pComponent_Manager);

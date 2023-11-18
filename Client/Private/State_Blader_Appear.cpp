@@ -1,6 +1,9 @@
 #include "..\Default\stdafx.h"
 #include "State_Blader_Appear.h"
 
+#include "UiManager.h"
+#include "UI.h"
+
 #ifdef _DEBUG
 #include "ImGui_Manager.h"
 #endif // _DEBUG
@@ -23,6 +26,13 @@ HRESULT CState_Blader_Appear::Initialize(CStateMachine* pStateMachine, const wst
 
 HRESULT CState_Blader_Appear::Enter()
 {
+	CUi* pUi = CUiManager::GetInstance()->Get_UI(UI_ID::UI_HUD_BOSS);
+	if (nullptr == pUi)
+		return E_FAIL;
+
+	pUi->Set_Target(m_pBlader);
+	pUi->Set_State(CGameObject::STATE_ACTIVE);
+
 	CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::APPEAR_BL]);
 
 	if (nullptr == pAnimation)

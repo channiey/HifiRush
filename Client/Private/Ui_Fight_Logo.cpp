@@ -1,28 +1,28 @@
 #include "..\Default\stdafx.h"
-#include "..\Public\Dialouge.h"
+#include "..\Public\Ui_Fight_Logo.h"
 
 #include "EngineInstance.h"
 #include "ImGui_Manager.h"
 #include "UiManager.h"
 
-CDialouge::CDialouge(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CUi_Fight_Logo::CUi_Fight_Logo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUi(pDevice, pContext)
 {
 
 }
 
-CDialouge::CDialouge(const CGameObject& rhs)
+CUi_Fight_Logo::CUi_Fight_Logo(const CGameObject& rhs)
 	: CUi(rhs)
 {
 
 }
 
-HRESULT CDialouge::Initialize_Prototype()
+HRESULT CUi_Fight_Logo::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CDialouge::Initialize(void* pArg)
+HRESULT CUi_Fight_Logo::Initialize(void* pArg)
 {
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -39,8 +39,8 @@ HRESULT CDialouge::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CDialouge::Tick(_double fTimeDelta)
-{
+void CUi_Fight_Logo::Tick(_double fTimeDelta)
+{	
 	__super::Tick(fTimeDelta);
 
 	/* 처음 보간 */
@@ -79,22 +79,24 @@ void CDialouge::Tick(_double fTimeDelta)
 			m_tLerpDescHeight.Start(m_fAlpha, 0.f, 0.5f, LERP_MODE::SMOOTHER_STEP);
 		}
 	}
+
+	cout << "alpha : " << m_tLerpDescHeight.fCurValue << "\t height : " << m_tLerpDescHeight.fCurValue << endl;
 }
 
-void CDialouge::LateTick(_double fTimeDelta)
+void CUi_Fight_Logo::LateTick(_double fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 }
 
-HRESULT CDialouge::Render()
+HRESULT CUi_Fight_Logo::Render()
 {
 	if (m_TextureLocalDesc.empty()) return E_FAIL;
 
 	if (FAILED(__super::Render()))
 		return E_FAIL;
 
-	m_pShaderCom->Bind_RawValue("g_Alpha", &m_fAlpha, sizeof(_float));
-
+	if (FAILED(Bind_ShaderResources()))
+		return E_FAIL;
 
 	Matrix matWorldOrigin = m_pTransformCom->Get_WorldMat();
 
@@ -128,7 +130,7 @@ HRESULT CDialouge::Render()
 	return S_OK;
 }
 
-void CDialouge::Set_State(const OBJ_STATE& eState)
+void CUi_Fight_Logo::Set_State(const OBJ_STATE& eState)
 {
 	__super::Set_State(eState);
 
@@ -148,7 +150,7 @@ void CDialouge::Set_State(const OBJ_STATE& eState)
 	}
 }
 
-HRESULT CDialouge::Ready_Components()
+HRESULT CUi_Fight_Logo::Ready_Components()
 {
 	/* Com_Shader */
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
@@ -167,38 +169,40 @@ HRESULT CDialouge::Ready_Components()
 	return S_OK;
 }
 
-HRESULT CDialouge::Bind_ShaderResources()
+HRESULT CUi_Fight_Logo::Bind_ShaderResources()
 {
+	m_pShaderCom->Bind_RawValue("g_Alpha", &m_fAlpha, sizeof(_float));
+
 	return S_OK;
 }
 
-CDialouge* CDialouge::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CUi_Fight_Logo* CUi_Fight_Logo::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CDialouge* pInstance = new CDialouge(pDevice, pContext);
+	CUi_Fight_Logo* pInstance = new CUi_Fight_Logo(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created : CDialouge");
+		MSG_BOX("Failed to Created : CUi_Fight_Logo");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-CDialouge* CDialouge::Clone(void* pArg)
+CUi_Fight_Logo* CUi_Fight_Logo::Clone(void* pArg)
 {
-	CDialouge* pInstance = new CDialouge(*this);
+	CUi_Fight_Logo* pInstance = new CUi_Fight_Logo(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned : CDialouge");
+		MSG_BOX("Failed to Cloned : CUi_Fight_Logo");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CDialouge::Free()
+void CUi_Fight_Logo::Free()
 {
 	__super::Free();
 }

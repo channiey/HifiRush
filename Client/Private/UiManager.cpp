@@ -3,6 +3,8 @@
 #include "UiManager.h"
 #include "EngineInstance.h"
 
+#include "Ui_Dialouge.h"
+
 IMPLEMENT_SINGLETON(CUiManager)
 
 CUiManager::CUiManager()
@@ -27,6 +29,23 @@ HRESULT CUiManager::Add_UI(const UI_ID& eID, CUi* pUi)
 	m_UIs.emplace(eID, pUi);
 
 	return S_OK;
+}
+
+HRESULT CUiManager::On_Dialouge(_uint eCharacterType, const wstring& strText)
+{
+	if (nullptr == m_pDialouge)
+	{
+		CUi* pUi = Find_UI(UI_ID::UI_DIALOUGE);
+		if (nullptr == pUi)
+			return E_FAIL;
+		else
+		{
+			m_pDialouge = dynamic_cast<CUi_Dialouge*>(pUi);
+			if (nullptr == m_pDialouge) 
+				return E_FAIL;
+		}
+	}
+	return m_pDialouge->On_Dialouge(eCharacterType, strText);
 }
 
 CUi* CUiManager::Find_UI(const UI_ID& eID)
