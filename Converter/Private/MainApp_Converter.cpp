@@ -23,8 +23,8 @@ HRESULT CMainApp_Converter::Start_Convert()
 		//if (FAILED(Convert_Env_Anim()))
 		//	return E_FAIL;
 
-		//if (FAILED(Convert_Weapon()))
-		//	return E_FAIL;
+		if (FAILED(Convert_Weapon()))
+			return E_FAIL;
 		
 		if (FAILED(Convert_SelectiveModel()))
 			return E_FAIL;
@@ -120,12 +120,51 @@ HRESULT CMainApp_Converter::Convert_SelectiveModel()
 			ASSERT_LOG();
 	}*/
 
-	{
+	/*{
 
 		const MODEL_TYPE	type = MODEL_TYPE::ANIM;
 
 		const string		filePath = "../Assets/Character";
 		const string		fileName = "Blader";
+		const string		savePath = "Character/";
+
+		shared_ptr<CConverter> converter = make_shared<CConverter>();
+		if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
+			ASSERT_LOG();
+	}*/
+
+	{
+
+		const MODEL_TYPE	type = MODEL_TYPE::ANIM;
+
+		const string		filePath = "../Assets/Character";
+		const string		fileName = "Peppermint";
+		const string		savePath = "Character/";
+
+		shared_ptr<CConverter> converter = make_shared<CConverter>();
+		if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
+			ASSERT_LOG();
+	}
+
+	{
+
+		const MODEL_TYPE	type = MODEL_TYPE::ANIM;
+
+		const string		filePath = "../Assets/Character";
+		const string		fileName = "Korsica";
+		const string		savePath = "Character/";
+
+		shared_ptr<CConverter> converter = make_shared<CConverter>();
+		if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
+			ASSERT_LOG();
+	}
+
+	{
+
+		const MODEL_TYPE	type = MODEL_TYPE::ANIM;
+
+		const string		filePath = "../Assets/Character";
+		const string		fileName = "Macaron";
 		const string		savePath = "Character/";
 
 		shared_ptr<CConverter> converter = make_shared<CConverter>();

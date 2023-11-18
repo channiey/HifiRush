@@ -14,9 +14,9 @@ enum ANIM_MA
 	ANIM_MA_END,
 };
 
-static const string AnimNames_NA[ANIM_MA::ANIM_MA_END]
+static const string AnimNames_MA[ANIM_MA::ANIM_MA_END]
 {
-	"IDLE"
+	"ch2000_talk-idle_000"
 };
 
 enum STATE_MA

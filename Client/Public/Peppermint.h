@@ -16,7 +16,7 @@ enum ANIM_PE
 
 static const string AnimNames_PE[ANIM_PE::ANIM_PE_END]
 {
-	"IDLE"
+	"ch1000_talk-idle_000"
 };
 
 enum STATE_PE
@@ -32,7 +32,7 @@ static const wstring StateNames_PE[STATE_PE::STATE_END_PE]
 
 class CPeppermint final : public CCharacter
 {
-	enum CHILD_TYPE { CH_WEAPON_RIGHT, CH_END };
+	enum CHILD_TYPE { WP_LEFT, WP_RIGHT, CH_END };
 
 private:
 	CPeppermint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

@@ -79,8 +79,6 @@ void CUi_Fight_Logo::Tick(_double fTimeDelta)
 			m_tLerpDescHeight.Start(m_fAlpha, 0.f, 0.5f, LERP_MODE::SMOOTHER_STEP);
 		}
 	}
-
-	cout << "alpha : " << m_tLerpDescHeight.fCurValue << "\t height : " << m_tLerpDescHeight.fCurValue << endl;
 }
 
 void CUi_Fight_Logo::LateTick(_double fTimeDelta)

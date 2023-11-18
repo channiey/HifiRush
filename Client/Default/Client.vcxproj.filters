@@ -430,6 +430,12 @@
     <Filter Include="03.GameObjects\03.Character\00.Player\03.Korsica\States\00.Base">
       <UniqueIdentifier>{48e4bac1-061e-4ce5-83db-d5fbf4697fd8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.GameObjects\04.Weapon\00.Player\01.Peppermint_Gun">
+      <UniqueIdentifier>{0e06fd5a-b21d-4cf9-85e6-7fd0267d70d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\04.Weapon\00.Player\02.Korsica_Stick">
+      <UniqueIdentifier>{cbd57f35-e067-4900-89f9-d41a747c040e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -723,6 +729,12 @@
     <ClInclude Include="..\Public\Macaron.h">
       <Filter>03.GameObjects\03.Character\00.Player\02.Macaron</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Korsica_Stick.h">
+      <Filter>03.GameObjects\04.Weapon\00.Player\02.Korsica_Stick</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Peppermint_Gun.h">
+      <Filter>03.GameObjects\04.Weapon\00.Player\01.Peppermint_Gun</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -1003,6 +1015,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Macaron.cpp">
       <Filter>03.GameObjects\03.Character\00.Player\02.Macaron</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Korsica_Stick.cpp">
+      <Filter>03.GameObjects\04.Weapon\00.Player\02.Korsica_Stick</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Peppermint_Gun.cpp">
+      <Filter>03.GameObjects\04.Weapon\00.Player\01.Peppermint_Gun</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

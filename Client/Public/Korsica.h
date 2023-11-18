@@ -16,7 +16,7 @@ enum ANIM_KO
 
 static const string AnimNames_KO[ANIM_KO::ANIM_KO_END]
 {
-	"IDLE"
+	"ch4000_talk-idle_000"
 };
 
 enum STATE_KO
@@ -32,7 +32,7 @@ static const wstring StateNames_KO[STATE_KO::STATE_END_KO]
 
 class CKorsica final : public CCharacter
 {
-	enum CHILD_TYPE { CH_WEAPON_RIGHT, CH_END };
+	enum CHILD_TYPE { WP_RIGHT, CH_END };
 
 private:
 	CKorsica(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

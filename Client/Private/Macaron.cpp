@@ -4,9 +4,6 @@
 #include "EngineInstance.h"
 #include "Animation.h"
 
-#include "Weapon.h"
-
-/* UI */
 #include "UiManager.h"
 
 CMacaron::CMacaron(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -37,17 +34,30 @@ HRESULT CMacaron::Initialize(void* pArg)
 	if (FAILED(Ready_StateMachine()))
 		return E_FAIL;
 
+	CAnimation* pAnim = m_pModelCom->Get_Animation(AnimNames_MA[ANIM_MA::IDLE_MA]);
+	if (nullptr == pAnim)
+		return E_FAIL;
+
+	m_pModelCom->Set_Animation(pAnim, pAnim->Get_TickPerFrame(), 0.1f);
+
+
 	return S_OK;
 }
 
 void CMacaron::Tick(_double fTimeDelta)
 {
-	__super::Tick(fTimeDelta);
+	//__super::Tick(fTimeDelta);
 }
 
 void CMacaron::LateTick(_double fTimeDelta)
 {
-	__super::LateTick(fTimeDelta);
+	if (FAILED(m_pModelCom->Update(fTimeDelta)))
+		return;
+
+	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
+		return;
+
+	//__super::LateTick(fTimeDelta);
 }
 
 HRESULT CMacaron::Render()

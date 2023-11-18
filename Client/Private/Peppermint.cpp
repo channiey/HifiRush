@@ -4,10 +4,10 @@
 #include "EngineInstance.h"
 #include "Animation.h"
 
-#include "Weapon.h"
-
-/* UI */
 #include "UiManager.h"
+
+#include "Weapon.h"
+#include "Peppermint_Gun.h"
 
 CPeppermint::CPeppermint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCharacter(pDevice, pContext)
@@ -37,17 +37,29 @@ HRESULT CPeppermint::Initialize(void* pArg)
 	if (FAILED(Ready_StateMachine()))
 		return E_FAIL;
 
+	CAnimation* pAnim = m_pModelCom->Get_Animation(AnimNames_PE[ANIM_PE::IDLE_PE]);
+	if (nullptr == pAnim) 
+		return E_FAIL;
+
+	m_pModelCom->Set_Animation(pAnim, pAnim->Get_TickPerFrame(), 0.1f);
+
 	return S_OK;
 }
 
 void CPeppermint::Tick(_double fTimeDelta)
 {
-	__super::Tick(fTimeDelta);
+	//__super::Tick(fTimeDelta);
 }
 
 void CPeppermint::LateTick(_double fTimeDelta)
 {
-	__super::LateTick(fTimeDelta);
+	if (FAILED(m_pModelCom->Update(fTimeDelta)))
+		return;
+
+	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
+		return;
+
+	//__super::LateTick(fTimeDelta);
 }
 
 HRESULT CPeppermint::Render()
@@ -115,16 +127,25 @@ HRESULT CPeppermint::Ready_StateMachine()
 
 HRESULT CPeppermint::Ready_Chilren()
 {
-	/*CWeapon* pChild = nullptr;
+	CWeapon* pChild = nullptr;
 
-	pChild = dynamic_cast<CWeapon*>(ENGINE_INSTANCE->Add_GameObject(ENGINE_INSTANCE->Get_CurLoadingLevel(), LayerNames[LAYER_WEAPON], L"Weapon_Chai_Guitar_Explore"));
+	pChild = dynamic_cast<CWeapon*>(ENGINE_INSTANCE->Add_GameObject(ENGINE_INSTANCE->Get_CurLoadingLevel(), LayerNames[LAYER_WEAPON], L"Weapon_Peppermint_Gun"));
+	{
+		if (FAILED(Add_Child(pChild)))
+			return E_FAIL;
+
+		pChild->Set_Socket(CModel::BONE_SOCKET_LEFT);
+		pChild->Set_IndexAsChild(CHILD_TYPE::WP_LEFT);
+	}
+
+	pChild = dynamic_cast<CWeapon*>(ENGINE_INSTANCE->Add_GameObject(ENGINE_INSTANCE->Get_CurLoadingLevel(), LayerNames[LAYER_WEAPON], L"Weapon_Peppermint_Gun"));
 	{
 		if (FAILED(Add_Child(pChild)))
 			return E_FAIL;
 
 		pChild->Set_Socket(CModel::BONE_SOCKET_RIGHT);
-		pChild->Set_IndexAsChild(CHILD_TYPE::CH_WEAPON_RIGHT);
-	}*/
+		pChild->Set_IndexAsChild(CHILD_TYPE::WP_RIGHT);
+	}
 
 	return S_OK;
 }

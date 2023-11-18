@@ -192,8 +192,10 @@
     <ClInclude Include="..\Public\Chai_Guitar_Explore.h" />
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\Korsica.h" />
+    <ClInclude Include="..\Public\Korsica_Stick.h" />
     <ClInclude Include="..\Public\Macaron.h" />
     <ClInclude Include="..\Public\Peppermint.h" />
+    <ClInclude Include="..\Public\Peppermint_Gun.h" />
     <ClInclude Include="..\Public\Ui_Dialouge.h" />
     <ClInclude Include="..\Public\Ui_Fight_Logo.h" />
     <ClInclude Include="..\Public\Ui_Hud.h" />
@@ -311,8 +313,10 @@
     <ClCompile Include="..\Private\Chai_Guitar_Explore.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\Korsica.cpp" />
+    <ClCompile Include="..\Private\Korsica_Stick.cpp" />
     <ClCompile Include="..\Private\Macaron.cpp" />
     <ClCompile Include="..\Private\Peppermint.cpp" />
+    <ClCompile Include="..\Private\Peppermint_Gun.cpp" />
     <ClCompile Include="..\Private\Ui_Dialouge.cpp" />
     <ClCompile Include="..\Private\Ui_Fight_Logo.cpp" />
     <ClCompile Include="..\Private\Ui_Hud.cpp" />

@@ -139,7 +139,8 @@ HRESULT CLevel_Loading::Parse_LevelData(const _uint& iLevelID)
 			CGameObject* pObj = nullptr;
 			{
 				pObj = ENGINE_INSTANCE->Add_GameObject(iLevelID, strLayer, strName);
-				if (nullptr == pObj) continue;
+				if (nullptr == pObj) 
+					return E_FAIL;
 
 				pObj->Set_State((CGameObject::OBJ_STATE)eStae);
 				pObj->Set_Render(bRender);

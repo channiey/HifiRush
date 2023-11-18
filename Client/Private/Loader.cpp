@@ -8,6 +8,10 @@
 
 /* Character*/
 #include "Chai.h"
+#include "Peppermint.h"
+#include "Macaron.h"
+#include "Korsica.h"
+
 #include "Saber.h"
 #include "Blader.h"
 
@@ -37,6 +41,9 @@
 
 /* Weapon */
 #include "Chai_Guitar_Explore.h"
+#include "Peppermint_Gun.h"
+#include "Korsica_Stick.h"
+
 #include "Saber_Sword.h"
 #include "Blader_Arm.h"
 
@@ -230,6 +237,24 @@ HRESULT CLoader::Load_Prototype()
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Chai", PivotMatrix))))
 			return E_FAIL;
 
+		/* For.Prototype_Component_Model_Peppermint */
+		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.0125f);
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Peppermint"),
+			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Peppermint", PivotMatrix))))
+			return E_FAIL;
+
+		/* For.Prototype_Component_Model_Macaron */
+		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.0125f);
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Macaron"),
+			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Macaron", PivotMatrix))))
+			return E_FAIL;
+
+		/* For.Prototype_Component_Model_Korsica */
+		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.0125f);
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Korsica"),
+			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Korsica", PivotMatrix))))
+			return E_FAIL;
+
 		/* For.Prototype_Component_Model_Saber */
 		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.0125f);
 		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Saber"),
@@ -254,6 +279,32 @@ HRESULT CLoader::Load_Prototype()
 				CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Weapon/Chai_Guitar_Explore", PivotMatrix))))
 				return E_FAIL;
 		}
+
+		/* For.Prototype_Component_Model_Peppermint_Gun */
+		{
+			PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f)) * Matrix::CreateRotationZ(DEG2RAD(180.f)) * Matrix::CreateRotationX(DEG2RAD(90.f));
+
+			const string		tag = "Prototype_Component_Model_Weapon_Peppermint_Gun";
+			const string		filePath = "../Bin/Resources/Models/Weapon/Peppermint_Gun";
+
+			if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString(tag),
+				CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Weapon/Peppermint_Gun", PivotMatrix))))
+				return E_FAIL;
+		}
+
+		/* For.Prototype_Component_Model_Korsica_Stick */
+		{
+			PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f)) * Matrix::CreateRotationZ(DEG2RAD(180.f)) * Matrix::CreateRotationX(DEG2RAD(90.f));
+
+			const string		tag = "Prototype_Component_Model_Weapon_Korsica_Stick";
+			const string		filePath = "../Bin/Resources/Models/Weapon/Korsica_Stick";
+
+			if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString(tag),
+				CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Weapon/Korsica_Stick", PivotMatrix))))
+				return E_FAIL;
+		}
+
+
 		/* For.Prototype_Component_Model_Saber_Sword */
 		{
 			PivotMatrix = Matrix::CreateRotationZ(DEG2RAD(90.f)) * Matrix::CreateRotationX(DEG2RAD(90.f));
@@ -338,6 +389,21 @@ HRESULT CLoader::Load_Prototype()
 			CChai::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+		/* For.Prototype_GameObject_Player_Peppermint */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Player_Peppermint"),
+			CPeppermint::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Player_Macaron */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Player_Macaron"),
+			CMacaron::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Player_Korsica */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Player_Korsica"),
+			CKorsica::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 		/* For.Prototype_GameObject_Enemy_Saber */
 		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Enemy_Saber"),
 			CSaber::Create(m_pDevice, m_pContext))))
@@ -369,22 +435,20 @@ HRESULT CLoader::Load_Prototype()
 			return E_FAIL;
 
 		/* For.Prototype_GameObject_Weapon_Chai_Guitar_Explore */
-		{
-			const string		tag = "Weapon_Chai_Guitar_Explore";
-			const string		filePath = "../Bin/Resources/Models/Weapon/Chai_Guitar_Explore";
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Weapon_Chai_Guitar_Explore"), CChai_Guitar_Explore::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 
-			if (FAILED(pEngineInstance->Add_Prototype(Util_String::ToWString(tag), CChai_Guitar_Explore::Create(m_pDevice, m_pContext))))
-				return E_FAIL;
-		}
+		/* For.Prototype_GameObject_Weapon_Peppermint_Gun */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Weapon_Peppermint_Gun"), CPeppermint_Gun::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Weapon_Korsica_Stick */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Weapon_Korsica_Stick"), CKorsica_Stick::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 
 		/* For.Prototype_GameObject_Weapon_Saber_Sword */
-		{
-			const string		tag = "Weapon_Saber_Sword";
-			const string		filePath = "../Bin/Resources/Models/Weapon/Saber_Sword";
-
-			if (FAILED(pEngineInstance->Add_Prototype(Util_String::ToWString(tag), CSaber_Sword::Create(m_pDevice, m_pContext))))
-				return E_FAIL;
-		}
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Weapon_Saber_Sword"), CSaber_Sword::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 
 		/* For.Prototype_GameObject_Proto_Static */
 		{
