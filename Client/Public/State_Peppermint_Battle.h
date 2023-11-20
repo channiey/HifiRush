@@ -20,7 +20,7 @@ public:
 	const wstring	LateTick() override;
 	void			Exit() override;
 
-public:
+protected:
 	const wstring	Check_Transition() override;
 
 protected:

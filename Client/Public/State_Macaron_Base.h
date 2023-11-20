@@ -25,6 +25,11 @@ protected:
 	virtual HRESULT Initialize(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);
 
 protected:
+	virtual void	Check_Progress(const _double& fTimeDelta) {};
+	virtual void	Set_Transform() {};
+	virtual void	Play_Sound() {};
+
+protected:
 	CMacaron*	m_pMacaron = { nullptr };
 	CModel*		m_pModel = { nullptr };
 

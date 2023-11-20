@@ -10,15 +10,27 @@ BEGIN(Client)
 enum ANIM_MA
 {
 	BATTLE_APPEAR_MA,
-	//BATTLE_
-	//IDLE_MA,
+	BATTLE_ATTACK_MA,
+	BATTLE_DISAPPEAR_MA,
+
+	GIMMICK_APPEAR_MA,
+	GIMMICK_IDLE_MA,
+	GIMMICK_ATTACK_DISAPPEAR_MA,
+	GIMMICK_FAILURE_DISAPPEAR_MA,
 
 	ANIM_MA_END,
 };
 
 static const string AnimNames_MA[ANIM_MA::ANIM_MA_END]
 {
-	"ch2000_talk-idle_000"
+	"ch2000_atk_100",
+	"ch2000_atk_101",
+	"ch2000_atk_102",
+
+	"ch2000_action_020",
+	"ch2000_action_021",
+	"ch2000_action_022",
+	"ch2000_action_040"
 };
 
 enum STATE_MA
@@ -36,7 +48,6 @@ static const wstring StateNames_MA[STATE_MA::STATE_END_MA]
 
 class CMacaron final : public CCharacter
 {
-	enum CHILD_TYPE { CH_WEAPON_RIGHT, CH_END };
 
 private:
 	CMacaron(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -52,7 +63,7 @@ public:
 
 public:
 	virtual void		Set_State(const OBJ_STATE& eState) override;
-	virtual void		Damaged(CCharacter* pCharacter, const ATK_TYPE& eAtkType = ATK_TYPE::LIGHT) override;
+	virtual void		Damaged(CCharacter* pCharacter, const ATK_TYPE& eAtkType = ATK_TYPE::LIGHT) override {};
 
 private:
 	HRESULT				Ready_Components();
@@ -65,9 +76,9 @@ private:
 	virtual void		OnCollision_Exit(CCollider* pCollider, const _int& iIndexAsChild = -1) override;
 
 public:
-	static CMacaron* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CMacaron* Clone(void* pArg) override;
-	virtual void			Free() override;
+	static CMacaron*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual CMacaron*	Clone(void* pArg) override;
+	virtual void		Free() override;
 
 private:
 	friend class CState_Peppermint_Base;

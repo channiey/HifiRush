@@ -23,7 +23,7 @@ HRESULT CState_Peppermint_Battle::Enter()
 {
 	Set_Transform();
 
-	CAnimation* pAnim = m_pModel->Get_Animation(AnimNames_PE[ANIM_PE::BATTLE_APPEAR]);
+	CAnimation* pAnim = m_pModel->Get_Animation(AnimNames_PE[ANIM_PE::BATTLE_APPEAR_PE]);
 	
 	if (nullptr == pAnim) return E_FAIL;
 
@@ -66,10 +66,9 @@ void CState_Peppermint_Battle::Check_Progress(const _double& fTimeDelta)
 	{
 	case APPEAR:
 	{
-		/* 다음 단계 */
 		if (!m_pModel->Is_Tween() && m_pModel->Is_Quater_Animation())
 		{
-			CAnimation* pAnim = m_pModel->Get_Animation(AnimNames_PE[ANIM_PE::BATTLE_SHOOT]);
+			CAnimation* pAnim = m_pModel->Get_Animation(AnimNames_PE[ANIM_PE::BATTLE_SHOOT_PE]);
 			if (nullptr != pAnim)
 			{
 				Play_Sound();
@@ -105,7 +104,7 @@ void CState_Peppermint_Battle::Check_Progress(const _double& fTimeDelta)
 		/* 다음 단계 */
 		if (!m_pModel->Is_Tween() && m_pModel->Is_TwoThirds_Animation())
 		{
-			CAnimation* pAnim = m_pModel->Get_Animation(AnimNames_PE[ANIM_PE::BATTLE_DISAPPEAR]);
+			CAnimation* pAnim = m_pModel->Get_Animation(AnimNames_PE[ANIM_PE::BATTLE_DISAPPEAR_PE]);
 			if (nullptr != pAnim)
 			{
 				m_pModel->Set_Animation(pAnim, pAnim->Get_TickPerFrame() * 1.5f, DF_TW_TIME);
@@ -118,8 +117,7 @@ void CState_Peppermint_Battle::Check_Progress(const _double& fTimeDelta)
 		break;
 	case DISAPPEAR:
 	{
-		/* 다음 단계 */
-		if (!m_pModel->Is_Tween() && m_pModel->Is_Quater_Animation())
+		if (!m_pModel->Is_Tween() && m_pModel->Is_TwoThirds_Animation())
 		{
 			Exit();
 		}

@@ -9,13 +9,13 @@ END
 BEGIN(Client)
 enum ANIM_PE
 {
-	BATTLE_APPEAR,
-	BATTLE_SHOOT,
-	BATTLE_DISAPPEAR,
+	BATTLE_APPEAR_PE,
+	BATTLE_SHOOT_PE,
+	BATTLE_DISAPPEAR_PE,
 
-	GIMMICK_IDLE,
-	GIMMICK_SHOOT,
-	GIMMICK_DISAPPEAR,
+	GIMMICK_IDLE_PE,
+	GIMMICK_SHOOT_PE,
+	GIMMICK_DISAPPEAR_PE,
 
 	ANIM_PE_END,
 };
@@ -63,7 +63,7 @@ public:
 
 public:
 	virtual void		Set_State(const OBJ_STATE& eState) override;
-	virtual void		Damaged(CCharacter* pCharacter, const ATK_TYPE& eAtkType = ATK_TYPE::LIGHT) override;
+	virtual void		Damaged(CCharacter* pCharacter, const ATK_TYPE& eAtkType = ATK_TYPE::LIGHT) override {};
 
 private:
 	HRESULT				Ready_Components();

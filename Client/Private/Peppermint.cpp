@@ -82,10 +82,6 @@ void CPeppermint::Set_State(const OBJ_STATE& eState)
 	}
 }
 
-void CPeppermint::Damaged(CCharacter* pCharacter, const ATK_TYPE& eAtkType)
-{
-}
-
 HRESULT CPeppermint::Ready_Components()
 {
 	/* Com_Model */
@@ -184,12 +180,8 @@ void CPeppermint::OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsCh
 		if (LayerNames[LAYER_ID::LAYER_ENEMY] == pCharacter->Get_LayerTag())
 		{
 			pCharacter->Damaged(this);
-
-			cout << "Èý!\n";
 		}
 	}
-
-	//m_pStateMachineCom->Get_CurState()->OnCollision_Enter(pCollider, iIndexAsChild);
 }
 
 void CPeppermint::OnCollision_Stay(CCollider* pCollider, const _int& iIndexAsChild)

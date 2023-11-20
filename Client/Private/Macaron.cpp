@@ -75,10 +75,6 @@ void CMacaron::Set_State(const OBJ_STATE& eState)
 	}
 }
 
-void CMacaron::Damaged(CCharacter* pCharacter, const ATK_TYPE& eAtkType)
-{
-}
-
 HRESULT CMacaron::Ready_Components()
 {
 	/* Com_Model */

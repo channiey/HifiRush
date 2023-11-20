@@ -19,6 +19,8 @@ HRESULT CState_Korsica_Gimmick::Initialize(CStateMachine* pStateMachine, const w
 
 HRESULT CState_Korsica_Gimmick::Enter()
 {
+	m_pStateMachine->Set_State(StateNames_KO[STATE_KO::STATE_BATTLE_KO]);
+
 
 	return S_OK;
 }

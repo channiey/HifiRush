@@ -19,6 +19,7 @@ HRESULT CState_Macaron_Gimmick::Initialize(CStateMachine* pStateMachine, const w
 
 HRESULT CState_Macaron_Gimmick::Enter()
 {
+	m_pStateMachine->Set_State(StateNames_MA[STATE_MA::STATE_BATTLE_MA]);
 
 	return S_OK;
 }
