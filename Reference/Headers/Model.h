@@ -147,6 +147,7 @@ public:
 	void					Set_AnimationSpeed(const _double& dSpeed);
 
 	void					Set_BoneIndex(const BONE_TYPE& eType, const _int iIndex);
+	void					Clear_Animation();
 
 public:
 	const _bool&			Is_Finish_Tween() const {return m_bFinishTween; }

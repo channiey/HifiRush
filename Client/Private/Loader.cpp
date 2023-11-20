@@ -39,6 +39,9 @@
 /* Trigger */
 #include "TriggerDummy.h"
 
+/* Projectile */
+#include "Peppermint_Bullet.h"
+
 /* Weapon */
 #include "Chai_Guitar_Explore.h"
 #include "Peppermint_Gun.h"
@@ -238,7 +241,7 @@ HRESULT CLoader::Load_Prototype()
 			return E_FAIL;
 
 		/* For.Prototype_Component_Model_Peppermint */
-		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.0125f);
+		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.015f);
 		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Peppermint"),
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Peppermint", PivotMatrix))))
 			return E_FAIL;
@@ -250,7 +253,7 @@ HRESULT CLoader::Load_Prototype()
 			return E_FAIL;
 
 		/* For.Prototype_Component_Model_Korsica */
-		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.0125f);
+		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.015f);
 		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Korsica"),
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Korsica", PivotMatrix))))
 			return E_FAIL;
@@ -282,7 +285,7 @@ HRESULT CLoader::Load_Prototype()
 
 		/* For.Prototype_Component_Model_Peppermint_Gun */
 		{
-			PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f)) * Matrix::CreateRotationZ(DEG2RAD(180.f)) * Matrix::CreateRotationX(DEG2RAD(90.f));
+			PivotMatrix =  Matrix::CreateRotationZ(DEG2RAD(180.f)) * Matrix::CreateRotationX(DEG2RAD(180.f));
 
 			const string		tag = "Prototype_Component_Model_Weapon_Peppermint_Gun";
 			const string		filePath = "../Bin/Resources/Models/Weapon/Peppermint_Gun";
@@ -344,6 +347,11 @@ HRESULT CLoader::Load_Prototype()
 	/* For.Prototype GameObject */
 	m_strLoading = TEXT("Loding... : Prototype Object");
 	{
+		/* For.Prototype_GameObject_Proto_Sky_Sphere*/
+		if (FAILED(pEngineInstance->Add_Prototype(Util_String::ToWString("Env_SkySphere"),
+			CSkySphere::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 		/* For.Prototype_GameObject_Ui_Hud */
 		if (FAILED(pEngineInstance->Add_Prototype(UINames[UI_ID::UI_HUD],
 			CUi_Hud::Create(m_pDevice, m_pContext))))
@@ -450,6 +458,10 @@ HRESULT CLoader::Load_Prototype()
 		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Weapon_Saber_Sword"), CSaber_Sword::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+		/* For.Prototype_GameObject_Projectile_Peppermint_Bullet */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Projectile_Peppermint_Bullet"), CPeppermint_Bullet::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 		/* For.Prototype_GameObject_Proto_Static */
 		{
 			/* 해당 경로 내의 모든 폴더명을 읽어 폴더명으로 오브젝트를 생성한다. */
@@ -463,11 +475,6 @@ HRESULT CLoader::Load_Prototype()
 					return E_FAIL;
 			}
 		}
-
-		/* For.Prototype_GameObject_Proto_Sky_Sphere*/
-		if (FAILED(pEngineInstance->Add_Prototype(Util_String::ToWString("Env_SkySphere"),
-			CSkySphere::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
 	}
 
 	m_strLoading = TEXT("Loading Finish");

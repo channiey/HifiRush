@@ -5,6 +5,7 @@
 #include "Animation.h"
 
 #include "Weapon.h"
+#include "PlayerController.h"
 
 /* UI */
 #include "UiManager.h"
@@ -57,41 +58,18 @@ HRESULT CChai::Initialize(void* pArg)
 	if (FAILED(Ready_StateMachine()))
 		return E_FAIL;
 
+	if (FAILED(CPlayerController::GetInstance()->Add_Player(this, PLAYER_TYPE::CHAI)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
 void CChai::Tick(_double fTimeDelta)
 {
-	if (ENGINE_INSTANCE->Key_Down('I'))
-	{
-		const Vec3 vPos		= { 96.f, -4.5f, 116.f };
-		const _int iIndex	= CNavMesh::GetInstance()->Find_Cell(vPos);
+	Quick_Test();
 
-		if (-1 != iIndex)
-		{
-			m_pTransformCom->Set_Position(vPos, TRUE);
-			m_pNavMeshAgentCom->Set_CurIndex(iIndex);
-		}
-	}
-	else if (ENGINE_INSTANCE->Key_Down('O'))
-	{
-		const Vec3 vPos		= { 16.f, -3.5f, 58.f };
-		const _int iIndex	= CNavMesh::GetInstance()->Find_Cell(vPos);
+	Set_OtherPlayer();
 
-		if (-1 != iIndex)
-		{
-			m_pTransformCom->Set_Position(vPos, TRUE);
-			m_pNavMeshAgentCom->Set_CurIndex(iIndex);
-		}
-	}
-	else if (ENGINE_INSTANCE->Key_Down('Y'))
-	{
-		CUiManager::GetInstance()->On_Dialouge(0, L"다들 준비 됐어?");
-	}
-	else if (ENGINE_INSTANCE->Key_Down('U'))
-	{
-		CUiManager::GetInstance()->On_Dialouge(4, L"음료수를 마시면 체력을 회복할 수 있습니다.");
-	}
 	__super::Tick(fTimeDelta);
 }
 
@@ -283,3 +261,50 @@ void CChai::Free()
 	__super::Free();
 	Safe_Release(m_pRigidbodyCom);
 }
+
+HRESULT CChai::Set_OtherPlayer()
+{
+	if (ENGINE_INSTANCE->Key_Down(0x31))
+		CPlayerController::GetInstance()->SetOn_Player(PLAYER_TYPE::PEPPERMINT);
+	else if (ENGINE_INSTANCE->Key_Down(0x32))
+		CPlayerController::GetInstance()->SetOn_Player(PLAYER_TYPE::MACARON);
+	else if (ENGINE_INSTANCE->Key_Down(0x33))
+		CPlayerController::GetInstance()->SetOn_Player(PLAYER_TYPE::KORSICA);
+
+	return S_OK;
+}
+
+void CChai::Quick_Test()
+{
+	if (ENGINE_INSTANCE->Key_Down('I'))
+	{
+		const Vec3 vPos = { 96.f, -4.5f, 116.f };
+		const _int iIndex = CNavMesh::GetInstance()->Find_Cell(vPos);
+
+		if (-1 != iIndex)
+		{
+			m_pTransformCom->Set_Position(vPos, TRUE);
+			m_pNavMeshAgentCom->Set_CurIndex(iIndex);
+		}
+	}
+	else if (ENGINE_INSTANCE->Key_Down('O'))
+	{
+		const Vec3 vPos = { 16.f, -3.5f, 58.f };
+		const _int iIndex = CNavMesh::GetInstance()->Find_Cell(vPos);
+
+		if (-1 != iIndex)
+		{
+			m_pTransformCom->Set_Position(vPos, TRUE);
+			m_pNavMeshAgentCom->Set_CurIndex(iIndex);
+		}
+	}
+	else if (ENGINE_INSTANCE->Key_Down('Y'))
+	{
+		CUiManager::GetInstance()->On_Dialouge(0, L"다들 준비 됐어?");
+	}
+	else if (ENGINE_INSTANCE->Key_Down('U'))
+	{
+		CUiManager::GetInstance()->On_Dialouge(4, L"음료수를 마시면 체력을 회복할 수 있습니다.");
+	}
+}
+

@@ -178,11 +178,15 @@ private:
 public:
 	virtual void		Damaged(CCharacter* pCharacter, const ATK_TYPE& eAtkType) override;
 
-
 public:
 	static CChai*		Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CChai*		Clone(void* pArg) override;
 	virtual void		Free() override;
+
+private:
+	HRESULT				Set_OtherPlayer();
+
+	void				Quick_Test();
 
 private:
 	friend class CState_Chai_Base;

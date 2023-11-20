@@ -88,9 +88,19 @@ Vec3 CTransform::Get_Rotation()
 	return ToEulerAngles(quatTemp);
 }
 
+Vec4 CTransform::Get_RelativePosition(Vec4 vPos)
+{
+	Matrix matWorld = m_WorldMatrix;
+	memcpy(matWorld.m[STATE_POSITION], &Vec4::Zero, sizeof(Vec3));
+
+	Vec3 vRelativePos = XMVector3TransformCoord(vPos.xyz(), matWorld);
+
+	return Vec4{ vRelativePos.x, vRelativePos.y, vRelativePos.z, 1.f};
+}
+
 Vec4 CTransform::Get_FinalPosition()
 {
-	const Matrix matFinal = Get_FinalMat();
+	Matrix matFinal = Get_FinalMat();
 
 	return Vec4(matFinal.m[3]);
 }

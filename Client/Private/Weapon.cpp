@@ -16,6 +16,12 @@ CWeapon::CWeapon(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 CWeapon::CWeapon(const CWeapon& rhs)
 	: CGameObject(rhs)
+	/*, m_pShaderCom(rhs.m_pShaderCom)
+	, m_pRendererCom(rhs.m_pRendererCom)
+	, m_pTransformCom(rhs.m_pTransformCom)
+	, m_pModelCom(rhs.m_pModelCom)
+	, m_pColliderComs(rhs.m_pColliderComs)
+	, m_eSocketType(rhs.m_eSocketType)*/
 {
 }
 
@@ -90,9 +96,6 @@ HRESULT CWeapon::Render()
 			if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, m_pModelCom->Get_MaterialIndex(i), aiTextureType_DIFFUSE, "g_DiffuseTexture")))
 				return E_FAIL;
 
-			/*if (FAILED(m_pModelCom->SetUp_OnShader(m_pShaderCom, m_pModelCom->Get_MaterialIndex(i), aiTextureType_NORMALS, "g_NormalTexture")))
-				return E_FAIL;*/
-
 			if (FAILED(m_pModelCom->Render(m_pShaderCom, i)))
 				return E_FAIL;
 		}
@@ -122,7 +125,7 @@ HRESULT CWeapon::Ready_Components()
 {
 	/* For.Com_Transform */
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Transform"), 
-		ComponentNames[COM_VIBUFFER], (CComponent**)&m_pTransformCom)))
+		ComponentNames[COM_TRANSFORM], (CComponent**)&m_pTransformCom)))
 		return E_FAIL;
 
 	/* For.Com_Renderer */

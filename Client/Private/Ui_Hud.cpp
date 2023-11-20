@@ -2,10 +2,15 @@
 #include "..\Public\Ui_Hud.h"
 
 #include "EngineInstance.h"
+
 #include "ImGui_Manager.h"
 #include "BeatManager.h"
-#include "Character.h"
 #include "UiManager.h"
+
+#include "PlayerController.h"
+#include "Character.h"
+
+
 CUi_Hud::CUi_Hud(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUi(pDevice, pContext)
 {
@@ -111,7 +116,117 @@ HRESULT CUi_Hud::Render()
 		}
 		else if (PARTNER_MACARON_ON <= i && PARTNER_PEPPERMINT_OFF >= i)
 		{
-			m_pShaderCom->Begin(0);
+			if (PARTNER_MACARON_ON <= i && PARTNER_MACARON_OFF >= i)
+			{
+				PLAYER_STATE eState = CPlayerController::GetInstance()->Get_PlayerState(PLAYER_TYPE::MACARON);
+				switch (eState)
+				{
+				case WAIT:
+				{
+					if (PARTNER_MACARON_ON == i)
+						m_pShaderCom->Begin(0);
+				}
+					break;
+				case APPEAR:
+				{
+					if (PARTNER_MACARON_OFF == i)
+						m_pShaderCom->Begin(0);
+				}
+					break;
+				case COOLTIME:
+				{
+					if (PARTNER_MACARON_ON == i)
+						m_pShaderCom->Begin(0);
+
+					if (PARTNER_MACARON_OFF == i)
+					{
+						const PLAYER_DESC	tDesc = CPlayerController::GetInstance()->Get_PlayerDesc(PLAYER_TYPE::MACARON);
+						const _float		fCoolTimePercent = tDesc.fCoolTimeAcc / tDesc.fCoolTimeLimit;
+
+						m_pShaderCom->Bind_RawValue("g_CoolTime", &fCoolTimePercent, sizeof(_float));
+						m_pShaderCom->Begin(3);
+					}
+				}
+					break;
+				default:
+					break;
+				}
+			}
+			else if (PARTNER_KORSICA_ON <= i && PARTNER_KORSICA_OFF >= i)
+			{
+				PLAYER_STATE eState = CPlayerController::GetInstance()->Get_PlayerState(PLAYER_TYPE::KORSICA);
+				switch (eState)
+				{
+				case WAIT:
+				{
+					if (PARTNER_KORSICA_ON == i)
+						m_pShaderCom->Begin(0);
+				}
+				break;
+				case APPEAR:
+				{
+					if (PARTNER_KORSICA_OFF == i)
+						m_pShaderCom->Begin(0);
+				}
+				break;
+				case COOLTIME:
+				{
+					if (PARTNER_KORSICA_ON == i)
+						m_pShaderCom->Begin(0);
+
+					if (PARTNER_KORSICA_OFF == i)
+					{
+						const PLAYER_DESC	tDesc = CPlayerController::GetInstance()->Get_PlayerDesc(PLAYER_TYPE::KORSICA);
+						const _float		fCoolTimePercent = tDesc.fCoolTimeAcc / tDesc.fCoolTimeLimit;
+
+						m_pShaderCom->Bind_RawValue("g_CoolTime", &fCoolTimePercent, sizeof(_float));
+						m_pShaderCom->Begin(3);
+					}
+				}
+				break;
+				default:
+					break;
+				}
+			}
+			else if (PARTNER_PEPPERMINT_ON <= i && PARTNER_PEPPERMINT_OFF >= i)
+			{
+				PLAYER_STATE eState = CPlayerController::GetInstance()->Get_PlayerState(PLAYER_TYPE::PEPPERMINT);
+				switch (eState)
+				{
+				case WAIT:
+				{
+					if (PARTNER_PEPPERMINT_ON == i)
+						m_pShaderCom->Begin(0);
+				}
+				break;
+				case APPEAR:
+				{
+					if (PARTNER_PEPPERMINT_OFF == i)
+						m_pShaderCom->Begin(0);
+				}
+				break;
+				case COOLTIME:
+				{
+					if (PARTNER_PEPPERMINT_ON == i)
+						m_pShaderCom->Begin(0);
+
+					if (PARTNER_PEPPERMINT_OFF == i)
+					{
+						const PLAYER_DESC	tDesc = CPlayerController::GetInstance()->Get_PlayerDesc(PLAYER_TYPE::PEPPERMINT);
+						const _float		fCoolTimePercent = tDesc.fCoolTimeAcc / tDesc.fCoolTimeLimit;
+
+						m_pShaderCom->Bind_RawValue("g_CoolTime", &fCoolTimePercent, sizeof(_float));
+						m_pShaderCom->Begin(3);
+					}
+				}
+				break;
+				default:
+					break;
+				}
+			}
+
+			
+
 		}
 		else
 		{

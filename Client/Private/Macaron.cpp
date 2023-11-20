@@ -5,6 +5,10 @@
 #include "Animation.h"
 
 #include "UiManager.h"
+#include "PlayerController.h"
+
+#include "State_Macaron_Battle.h"
+#include "State_Macaron_Gimmick.h"
 
 CMacaron::CMacaron(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCharacter(pDevice, pContext)
@@ -34,30 +38,20 @@ HRESULT CMacaron::Initialize(void* pArg)
 	if (FAILED(Ready_StateMachine()))
 		return E_FAIL;
 
-	CAnimation* pAnim = m_pModelCom->Get_Animation(AnimNames_MA[ANIM_MA::IDLE_MA]);
-	if (nullptr == pAnim)
+	if (FAILED(CPlayerController::GetInstance()->Add_Player(this, PLAYER_TYPE::MACARON)))
 		return E_FAIL;
-
-	m_pModelCom->Set_Animation(pAnim, pAnim->Get_TickPerFrame(), 0.1f);
-
 
 	return S_OK;
 }
 
 void CMacaron::Tick(_double fTimeDelta)
 {
-	//__super::Tick(fTimeDelta);
+	__super::Tick(fTimeDelta);
 }
 
 void CMacaron::LateTick(_double fTimeDelta)
 {
-	if (FAILED(m_pModelCom->Update(fTimeDelta)))
-		return;
-
-	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
-		return;
-
-	//__super::LateTick(fTimeDelta);
+	__super::LateTick(fTimeDelta);
 }
 
 HRESULT CMacaron::Render()
@@ -66,6 +60,23 @@ HRESULT CMacaron::Render()
 		return E_FAIL;
 
 	return S_OK;
+}
+
+void CMacaron::Set_State(const OBJ_STATE& eState)
+{
+	__super::Set_State(eState);
+
+	if (OBJ_STATE::STATE_ACTIVE == eState)
+	{
+		if (nullptr == ENGINE_INSTANCE->Get_GameObject_InCurLevel_InLayerFirst(LayerNames[LAYER_ID::LAYER_ENEMY]))
+			m_pStateMachineCom->Set_State(StateNames_MA[STATE_MA::STATE_GIMMICK_MA]);
+		else
+			m_pStateMachineCom->Set_State(StateNames_MA[STATE_MA::STATE_BATTLE_MA]);
+	}
+}
+
+void CMacaron::Damaged(CCharacter* pCharacter, const ATK_TYPE& eAtkType)
+{
 }
 
 HRESULT CMacaron::Ready_Components()
@@ -113,29 +124,19 @@ HRESULT CMacaron::Ready_StateMachine()
 {
 	CState* pState = nullptr;
 
-	/* General */
-	{
-		/*pState = CState_Chai_Idle::Create(m_pStateMachineCom, StateNames_CH[STATE_IDLE_CH], this);
-		if (FAILED(m_pStateMachineCom->Add_State(pState)))
-			return E_FAIL;*/
-	}
+	pState = CState_Macaron_Battle::Create(m_pStateMachineCom, StateNames_MA[STATE_BATTLE_MA], this);
+	if (FAILED(m_pStateMachineCom->Add_State(pState)))
+		return E_FAIL;
+
+	pState = CState_Macaron_Gimmick::Create(m_pStateMachineCom, StateNames_MA[STATE_GIMMICK_MA], this);
+	if (FAILED(m_pStateMachineCom->Add_State(pState)))
+		return E_FAIL;
 
 	return S_OK;
 }
 
 HRESULT CMacaron::Ready_Chilren()
 {
-	/*CWeapon* pChild = nullptr;
-
-	pChild = dynamic_cast<CWeapon*>(ENGINE_INSTANCE->Add_GameObject(ENGINE_INSTANCE->Get_CurLoadingLevel(), LayerNames[LAYER_WEAPON], L"Weapon_Chai_Guitar_Explore"));
-	{
-		if (FAILED(Add_Child(pChild)))
-			return E_FAIL;
-
-		pChild->Set_Socket(CModel::BONE_SOCKET_RIGHT);
-		pChild->Set_IndexAsChild(CHILD_TYPE::CH_WEAPON_RIGHT);
-	}*/
-
 	return S_OK;
 }
 

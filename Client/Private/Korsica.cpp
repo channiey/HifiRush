@@ -5,9 +5,13 @@
 #include "Animation.h"
 
 #include "UiManager.h"
+#include "PlayerController.h"
 
 #include "Weapon.h"
 #include "Korsica_Stick.h"
+
+#include "State_Korsica_Battle.h"
+#include "State_Korsica_Gimmick.h"
 
 CKorsica::CKorsica(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCharacter(pDevice, pContext)
@@ -37,29 +41,20 @@ HRESULT CKorsica::Initialize(void* pArg)
 	if (FAILED(Ready_StateMachine()))
 		return E_FAIL;
 
-	CAnimation* pAnim = m_pModelCom->Get_Animation(AnimNames_KO[ANIM_KO::IDLE_KO]);
-	if (nullptr == pAnim)
+	if (FAILED(CPlayerController::GetInstance()->Add_Player(this, PLAYER_TYPE::KORSICA)))
 		return E_FAIL;
-
-	m_pModelCom->Set_Animation(pAnim, pAnim->Get_TickPerFrame(), 0.1f);
 
 	return S_OK;
 }
 
 void CKorsica::Tick(_double fTimeDelta)
 {
-	//__super::Tick(fTimeDelta);
+	__super::Tick(fTimeDelta);
 }
 
 void CKorsica::LateTick(_double fTimeDelta)
 {
-	//__super::LateTick(fTimeDelta);
-
-	if (FAILED(m_pModelCom->Update(fTimeDelta)))
-		return;
-
-	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
-		return;
+	__super::LateTick(fTimeDelta);
 }
 
 HRESULT CKorsica::Render()
@@ -68,6 +63,23 @@ HRESULT CKorsica::Render()
 		return E_FAIL;
 
 	return S_OK;
+}
+
+void CKorsica::Set_State(const OBJ_STATE& eState)
+{
+	__super::Set_State(eState);
+
+	if (OBJ_STATE::STATE_ACTIVE == eState)
+	{
+		if (nullptr == ENGINE_INSTANCE->Get_GameObject_InCurLevel_InLayerFirst(LayerNames[LAYER_ID::LAYER_ENEMY]))
+			m_pStateMachineCom->Set_State(StateNames_KO[STATE_KO::STATE_GIMMICK_KO]);
+		else
+			m_pStateMachineCom->Set_State(StateNames_KO[STATE_KO::STATE_BATTLE_KO]);
+	}
+}
+
+void CKorsica::Damaged(CCharacter* pCharacter, const ATK_TYPE& eAtkType)
+{
 }
 
 HRESULT CKorsica::Ready_Components()
@@ -115,12 +127,13 @@ HRESULT CKorsica::Ready_StateMachine()
 {
 	CState* pState = nullptr;
 
-	/* General */
-	{
-		/*pState = CState_Chai_Idle::Create(m_pStateMachineCom, StateNames_CH[STATE_IDLE_CH], this);
-		if (FAILED(m_pStateMachineCom->Add_State(pState)))
-			return E_FAIL;*/
-	}
+	pState = CState_Korsica_Battle::Create(m_pStateMachineCom, StateNames_KO[STATE_BATTLE_KO], this);
+	if (FAILED(m_pStateMachineCom->Add_State(pState)))
+		return E_FAIL;
+
+	pState = CState_Korsica_Gimmick::Create(m_pStateMachineCom, StateNames_KO[STATE_GIMMICK_KO], this);
+	if (FAILED(m_pStateMachineCom->Add_State(pState)))
+		return E_FAIL;
 
 	return S_OK;
 }

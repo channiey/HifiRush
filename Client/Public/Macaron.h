@@ -9,7 +9,9 @@ END
 BEGIN(Client)
 enum ANIM_MA
 {
-	IDLE_MA,
+	BATTLE_APPEAR_MA,
+	//BATTLE_
+	//IDLE_MA,
 
 	ANIM_MA_END,
 };
@@ -21,13 +23,15 @@ static const string AnimNames_MA[ANIM_MA::ANIM_MA_END]
 
 enum STATE_MA
 {
-	STATE_IDLE_MA,
+	STATE_BATTLE_MA,
+	STATE_GIMMICK_MA,
 	STATE_END_MA
 };
 
 static const wstring StateNames_MA[STATE_MA::STATE_END_MA]
 {
-	L"IDLE"
+	L"BATTLE",
+	L"GIMMICK"
 };
 
 class CMacaron final : public CCharacter
@@ -46,6 +50,10 @@ public:
 	virtual void		LateTick(_double fTimeDelta);
 	virtual HRESULT		Render();
 
+public:
+	virtual void		Set_State(const OBJ_STATE& eState) override;
+	virtual void		Damaged(CCharacter* pCharacter, const ATK_TYPE& eAtkType = ATK_TYPE::LIGHT) override;
+
 private:
 	HRESULT				Ready_Components();
 	virtual HRESULT		Ready_Chilren() override;
@@ -62,7 +70,9 @@ public:
 	virtual void			Free() override;
 
 private:
-
+	friend class CState_Peppermint_Base;
+	friend class CState_Peppermint_Battle;
+	friend class CState_Peppermint_Gimmick;
 };
 
 END

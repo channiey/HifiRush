@@ -401,6 +401,10 @@ void CImGui_Window_Main_Hierarachy::Save_LevelData()
 		if (iterEnemy != pLayers->end())
 			--iLayerSize;
 
+		auto iterProj = pLayers->find(LayerNames[LAYER_PROJECTILE]);
+		if (iterProj != pLayers->end())
+			--iLayerSize;
+
 		file->Write<size_t>(iLayerSize);
 	}
 
@@ -416,6 +420,9 @@ void CImGui_Window_Main_Hierarachy::Save_LevelData()
 				continue;
 
 			if(LayerNames[LAYER_ENEMY] == Pair.first) 
+				continue;
+
+			if (LayerNames[LAYER_PROJECTILE] == Pair.first)
 				continue;
 		}
 

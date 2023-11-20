@@ -6,6 +6,7 @@
 
 #include "BattleManager.h"
 #include "BeatManager.h"
+#include "PlayerController.h"
 
 CLevel_Stage_01::CLevel_Stage_01(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CLevel(pDevice, pContext)
@@ -38,6 +39,10 @@ HRESULT CLevel_Stage_01::Initialize()
 	if (FAILED(ENGINE_INSTANCE->Set_CurCamera(CAMERA_ID::CAM_FOLLOW)))
 		return E_FAIL;
 
+	/* Player Controller */
+	if (FAILED(CPlayerController::GetInstance()->Initialize()))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -49,6 +54,8 @@ HRESULT CLevel_Stage_01::Tick(_float fTimeDelta)
 		ENGINE_INSTANCE->Play_BGM();
 		CBeatManager::GetInstance()->Reset();
 	}
+
+	CPlayerController::GetInstance()->Tick(fTimeDelta);
 
 	return S_OK;
 }
@@ -77,6 +84,11 @@ HRESULT CLevel_Stage_01::Check_Collision()
 
 	ENGINE_INSTANCE->Check_Collision_Layer(LayerNames[LAYER_PLAYER]
 		, LayerNames[LAYER_TRIGGER]
+		, CCollider::SPHERE
+		, CCollider::SPHERE);
+
+	ENGINE_INSTANCE->Check_Collision_Layer(LayerNames[LAYER_ENEMY]
+		, LayerNames[LAYER_PROJECTILE]
 		, CCollider::SPHERE
 		, CCollider::SPHERE);
 

@@ -431,6 +431,13 @@ void CModel::Set_BoneIndex(const BONE_TYPE& eType, const _int iIndex)
 	}
 }
 
+void CModel::Clear_Animation()
+{
+	m_TweenDesc.cur.ClearAnim();
+	m_TweenDesc.next.ClearAnim();
+	m_TweenDesc.ClearNextAnim();
+}
+
 const _bool CModel::Is_TwoThirds_Animation()
 {
 	CAnimation* pCurAnim = Get_Animation(m_TweenDesc.cur.iAnimIndex);

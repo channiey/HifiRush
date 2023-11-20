@@ -65,19 +65,6 @@ HRESULT CPeppermint_Gun::Ready_Components()
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Model_Weapon_Peppermint_Gun"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 
-	///* Com_Collider_Sphere */
-	//CCollider::COLLIDERDESC		ColliderDesc{ Vec3(0, 0, -75), 30.f };
-	//{
-	//	CCollider_Sphere* pCollider = nullptr;
-	//	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
-	//		TEXT("Com_Collider_Sphere"), (CComponent**)&pCollider, &ColliderDesc)))
-	//		return E_FAIL;
-
-	//	m_pColliderComs.push_back(pCollider);
-
-	//	pCollider->Set_Active(FALSE);
-	//}
-
 	return S_OK;
 }
 

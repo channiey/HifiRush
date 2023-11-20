@@ -24,6 +24,7 @@ public:
 	Vec3		Get_Scale();
 	Vec3		Get_Rotation(); /* Euler */
 	Vec4		Get_Position()  const { return  static_cast<Vec4>(m_WorldMatrix.m[STATE_POSITION]); }
+	Vec4		Get_RelativePosition(Vec4 vPos);
 	Vec4		Get_FinalPosition();
 
 	Vec4		Get_Right()		const { return  static_cast<Vec4>(m_WorldMatrix.m[STATE_RIGHT]); }

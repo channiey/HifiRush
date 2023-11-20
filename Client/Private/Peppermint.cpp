@@ -5,9 +5,14 @@
 #include "Animation.h"
 
 #include "UiManager.h"
+#include "PlayerController.h"
 
 #include "Weapon.h"
 #include "Peppermint_Gun.h"
+#include "Peppermint_Bullet.h"
+
+#include "State_Peppermint_Battle.h"
+#include "State_Peppermint_Gimmick.h"
 
 CPeppermint::CPeppermint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCharacter(pDevice, pContext)
@@ -37,29 +42,23 @@ HRESULT CPeppermint::Initialize(void* pArg)
 	if (FAILED(Ready_StateMachine()))
 		return E_FAIL;
 
-	CAnimation* pAnim = m_pModelCom->Get_Animation(AnimNames_PE[ANIM_PE::IDLE_PE]);
-	if (nullptr == pAnim) 
+	if (FAILED(Ready_Pool()))
 		return E_FAIL;
 
-	m_pModelCom->Set_Animation(pAnim, pAnim->Get_TickPerFrame(), 0.1f);
+	if (FAILED(CPlayerController::GetInstance()->Add_Player(this, PLAYER_TYPE::PEPPERMINT)))
+		return E_FAIL;
 
 	return S_OK;
 }
 
 void CPeppermint::Tick(_double fTimeDelta)
 {
-	//__super::Tick(fTimeDelta);
+	__super::Tick(fTimeDelta);
 }
 
 void CPeppermint::LateTick(_double fTimeDelta)
 {
-	if (FAILED(m_pModelCom->Update(fTimeDelta)))
-		return;
-
-	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
-		return;
-
-	//__super::LateTick(fTimeDelta);
+	__super::LateTick(fTimeDelta);
 }
 
 HRESULT CPeppermint::Render()
@@ -68,6 +67,23 @@ HRESULT CPeppermint::Render()
 		return E_FAIL;
 
 	return S_OK;
+}
+
+void CPeppermint::Set_State(const OBJ_STATE& eState)
+{
+	__super::Set_State(eState);
+
+	if (OBJ_STATE::STATE_ACTIVE == eState)
+	{
+		if (nullptr == ENGINE_INSTANCE->Get_GameObject_InCurLevel_InLayerFirst(LayerNames[LAYER_ID::LAYER_ENEMY]))
+			m_pStateMachineCom->Set_State(StateNames_PE[STATE_PE::STATE_GIMMICK_PE]);
+		else
+			m_pStateMachineCom->Set_State(StateNames_PE[STATE_PE::STATE_BATTLE_PE]);
+	}
+}
+
+void CPeppermint::Damaged(CCharacter* pCharacter, const ATK_TYPE& eAtkType)
+{
 }
 
 HRESULT CPeppermint::Ready_Components()
@@ -115,12 +131,21 @@ HRESULT CPeppermint::Ready_StateMachine()
 {
 	CState* pState = nullptr;
 
-	/* General */
-	{
-		/*pState = CState_Chai_Idle::Create(m_pStateMachineCom, StateNames_CH[STATE_IDLE_CH], this);
-		if (FAILED(m_pStateMachineCom->Add_State(pState)))
-			return E_FAIL;*/
-	}
+	pState = CState_Peppermint_Battle::Create(m_pStateMachineCom, StateNames_PE[STATE_BATTLE_PE], this);
+	if (FAILED(m_pStateMachineCom->Add_State(pState)))
+		return E_FAIL;
+
+	pState = CState_Peppermint_Gimmick::Create(m_pStateMachineCom, StateNames_PE[STATE_GIMMICK_PE], this);
+	if (FAILED(m_pStateMachineCom->Add_State(pState)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CPeppermint::Ready_Pool()
+{
+	if (FAILED(ENGINE_INSTANCE->Reserve_Pool(LEVEL_ID::LV_STAGE_01, LayerNames[LAYER_PROJECTILE], L"Projectile_Peppermint_Bullet", 10)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -152,7 +177,19 @@ HRESULT CPeppermint::Ready_Chilren()
 
 void CPeppermint::OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild)
 {
-	m_pStateMachineCom->Get_CurState()->OnCollision_Enter(pCollider, iIndexAsChild);
+	CCharacter* pCharacter = dynamic_cast<CCharacter*>(pCollider->Get_Owner());
+
+	if (CHILD_TYPE::PROJECTILE == iIndexAsChild && nullptr != pCharacter)
+	{
+		if (LayerNames[LAYER_ID::LAYER_ENEMY] == pCharacter->Get_LayerTag())
+		{
+			pCharacter->Damaged(this);
+
+			cout << "Èý!\n";
+		}
+	}
+
+	//m_pStateMachineCom->Get_CurState()->OnCollision_Enter(pCollider, iIndexAsChild);
 }
 
 void CPeppermint::OnCollision_Stay(CCollider* pCollider, const _int& iIndexAsChild)
@@ -196,3 +233,4 @@ void CPeppermint::Free()
 	__super::Free();
 	Safe_Release(m_pRigidbodyCom);
 }
+
