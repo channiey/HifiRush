@@ -57,9 +57,12 @@ void CPeppermint_Bullet::OnCollision_Enter(CCollider* pCollider, const _int& iIn
 {
 	if (nullptr == m_tDesc.pOwner) return;
 
-	m_tDesc.pOwner->OnCollision_Enter(pCollider, CPeppermint::CHILD_TYPE::PROJECTILE);
+	if (LayerNames[LAYER_ID::LAYER_ENEMY] == pCollider->Get_Owner()->Get_LayerTag())
+	{
+		m_tDesc.pOwner->OnCollision_Enter(pCollider, CPeppermint::CHILD_TYPE::PROJECTILE);
 
-	Return_To_Pool();
+		Return_To_Pool();
+	}
 }
 
 void CPeppermint_Bullet::OnCollision_Stay(CCollider* pCollider, const _int& iIndexAsChild)
@@ -74,6 +77,20 @@ void CPeppermint_Bullet::OnCollision_Exit(CCollider* pCollider, const _int& iInd
 	if (nullptr == m_tDesc.pOwner) return;
 
 	m_tDesc.pOwner->OnCollision_Exit(pCollider, CPeppermint::CHILD_TYPE::PROJECTILE);
+}
+
+HRESULT CPeppermint_Bullet::Shoot(PROJECTILE_DESC tDesc)
+{
+	memcpy(&m_tDesc, &tDesc, sizeof(PROJECTILE_DESC));
+
+	if (nullptr == m_tDesc.pOwner)
+		return E_FAIL;
+
+	m_pTransformCom->Set_Position(m_tDesc.vOrigin);
+
+	m_pTransformCom->Set_Scale(Vec3{ 0.05f, 0.05f, 0.05f });
+
+	m_pCollider->Set_Active(TRUE);
 }
 
 HRESULT CPeppermint_Bullet::Ready_Components()

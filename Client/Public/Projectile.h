@@ -50,7 +50,7 @@ public:
 	CCharacter*				Get_Owner() { return m_tDesc.pOwner; }
 
 public:
-	HRESULT					Shoot(PROJECTILE_DESC tDesc);
+	virtual HRESULT			Shoot(PROJECTILE_DESC tDesc) PURE;
 	HRESULT					Return_To_Pool();
 
 protected:
@@ -73,8 +73,8 @@ protected:
 protected:
 	PROJECTILE_DESC			m_tDesc			= {};
 
-private:
-	const _float			m_fLimit		= 5.f;
+protected:
+	_float					m_fLimit		= 1.f;
 	_float					m_fAcc			= 0.f;
 
 public:

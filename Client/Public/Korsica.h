@@ -9,14 +9,18 @@ END
 BEGIN(Client)
 enum ANIM_KO
 {
-	IDLE_KO,
+	BATTLE_APPEAR_KO,
+	BATTLE_ATTACK_KO,
+	BATTLE_DISAPPEAR_KO,
 
 	ANIM_KO_END,
 };
 
 static const string AnimNames_KO[ANIM_KO::ANIM_KO_END]
 {
-	"ch4000_talk-idle_000"
+	"ch4000_atk_000",
+	"ch4000_atk_002",
+	"ch4000_atk_003"
 };
 
 enum STATE_KO
@@ -34,7 +38,8 @@ static const wstring StateNames_KO[STATE_KO::STATE_END_KO]
 
 class CKorsica final : public CCharacter
 {
-	enum CHILD_TYPE { WP_RIGHT, CH_END };
+public:
+	enum CHILD_TYPE { WP_RIGHT, PROJECTILE, CH_END };
 
 private:
 	CKorsica(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -50,7 +55,8 @@ public:
 
 public:
 	virtual void		Set_State(const OBJ_STATE& eState) override;
-	virtual void		Damaged(CCharacter* pCharacter, const ATK_TYPE& eAtkType = ATK_TYPE::LIGHT) override;
+	virtual void		Damaged(CCharacter* pCharacter, const ATK_TYPE& eAtkType = ATK_TYPE::LIGHT) override {};
+	virtual HRESULT		Ready_Pool();
 
 private:
 	HRESULT				Ready_Components();

@@ -193,6 +193,7 @@
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\Korsica.h" />
     <ClInclude Include="..\Public\Korsica_Stick.h" />
+    <ClInclude Include="..\Public\Korsica_Wind.h" />
     <ClInclude Include="..\Public\Macaron.h" />
     <ClInclude Include="..\Public\Peppermint.h" />
     <ClInclude Include="..\Public\Peppermint_Bullet.h" />
@@ -326,6 +327,7 @@
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\Korsica.cpp" />
     <ClCompile Include="..\Private\Korsica_Stick.cpp" />
+    <ClCompile Include="..\Private\Korsica_Wind.cpp" />
     <ClCompile Include="..\Private\Macaron.cpp" />
     <ClCompile Include="..\Private\Peppermint.cpp" />
     <ClCompile Include="..\Private\Peppermint_Bullet.cpp" />

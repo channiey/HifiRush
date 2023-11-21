@@ -74,6 +74,8 @@ void CSaber::Set_State(const OBJ_STATE& eState)
 	if (OBJ_STATE::STATE_ACTIVE == eState)
 	{
 		m_pStateMachineCom->Set_State(StateNames_SA[STATE_APPEAR_SA]);
+
+		m_tStatDesc.fCurHp = m_tStatDesc.fMaxHp = 150.f;
 	}
 }
 

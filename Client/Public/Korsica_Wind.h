@@ -3,12 +3,12 @@
 #include "Projectile.h"
 
 BEGIN(Client)
-class CPeppermint_Bullet final : public CProjectile
+class CKorsica_Wind final : public CProjectile
 {
 private:
-	CPeppermint_Bullet(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CPeppermint_Bullet(const CPeppermint_Bullet& rhs);
-	virtual ~CPeppermint_Bullet() = default;
+	CKorsica_Wind(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CKorsica_Wind(const CKorsica_Wind& rhs);
+	virtual ~CKorsica_Wind() = default;
 
 public:
 	virtual HRESULT			Initialize_Prototype();
@@ -32,8 +32,8 @@ private:
 	HRESULT					Bind_ShaderResources();
 
 public:
-	static CPeppermint_Bullet*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CPeppermint_Bullet* Clone(void* pArg) override;
-	virtual void				Free() override;
+	static CKorsica_Wind*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual CKorsica_Wind*	Clone(void* pArg) override;
+	virtual void			Free() override;
 };
 END

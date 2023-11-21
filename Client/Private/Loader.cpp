@@ -41,6 +41,7 @@
 
 /* Projectile */
 #include "Peppermint_Bullet.h"
+#include "Korsica_Wind.h"
 
 /* Weapon */
 #include "Chai_Guitar_Explore.h"
@@ -285,7 +286,7 @@ HRESULT CLoader::Load_Prototype()
 
 		/* For.Prototype_Component_Model_Peppermint_Gun */
 		{
-			PivotMatrix = Matrix::CreateRotationY(DEG2RAD(90.f)) * Matrix::CreateRotationZ(DEG2RAD(180.f)) * Matrix::CreateRotationX(DEG2RAD(180.f));
+			PivotMatrix = Matrix::CreateRotationX(DEG2RAD(270.f));
 
 			const string		tag = "Prototype_Component_Model_Weapon_Peppermint_Gun";
 			const string		filePath = "../Bin/Resources/Models/Weapon/Peppermint_Gun";
@@ -297,7 +298,9 @@ HRESULT CLoader::Load_Prototype()
 
 		/* For.Prototype_Component_Model_Korsica_Stick */
 		{
-			PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f)) * Matrix::CreateRotationZ(DEG2RAD(180.f)) * Matrix::CreateRotationX(DEG2RAD(90.f));
+			PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f)) * Matrix::CreateRotationZ(DEG2RAD(180.f)) * Matrix::CreateRotationX(DEG2RAD(90.f))
+				* Matrix::CreateTranslation(Vec3{ -85.f, 0.f, 0.f });
+				
 
 			const string		tag = "Prototype_Component_Model_Weapon_Korsica_Stick";
 			const string		filePath = "../Bin/Resources/Models/Weapon/Korsica_Stick";
@@ -460,6 +463,10 @@ HRESULT CLoader::Load_Prototype()
 
 		/* For.Prototype_GameObject_Projectile_Peppermint_Bullet */
 		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Projectile_Peppermint_Bullet"), CPeppermint_Bullet::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Projectile_Korsica_Wind */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Projectile_Korsica_Wind"), CKorsica_Wind::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For.Prototype_GameObject_Proto_Static */

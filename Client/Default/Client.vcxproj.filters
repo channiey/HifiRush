@@ -466,6 +466,9 @@
     <Filter Include="03.GameObjects\05.Projectile\00.Peppermint_Bullet">
       <UniqueIdentifier>{b4d93f1d-f292-4ce5-b088-f244a87057db}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.GameObjects\05.Projectile\01.Korsica_Wind">
+      <UniqueIdentifier>{f826e3f5-39cb-4aa7-95c5-b7090062515e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -801,6 +804,9 @@
     <ClInclude Include="..\Public\Projectile.h">
       <Filter>03.GameObjects\05.Projectile</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Korsica_Wind.h">
+      <Filter>03.GameObjects\05.Projectile\01.Korsica_Wind</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -1123,6 +1129,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Projectile.cpp">
       <Filter>03.GameObjects\05.Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Korsica_Wind.cpp">
+      <Filter>03.GameObjects\05.Projectile\01.Korsica_Wind</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -153,7 +153,7 @@ void CState_Peppermint_Battle::Set_Transform()
 		for (auto& pEnemy : *pEnemies)
 		{
 			Vec4 vDir = pEnemy->Get_Transform()->Get_FinalPosition() -
-				m_pPeppermint->Get_Transform()->Get_FinalPosition();
+				pTransform_Peppermint->Get_FinalPosition();
 
 			if (vDir.Length() <= vLook.Length())
 				vLook = vDir;
@@ -226,7 +226,7 @@ void CState_Peppermint_Battle::Play_Sound()
 		break;
 	}
 
-	ENGINE_INSTANCE->Play_Sound(eSoundID, eChannelID, 0.6f);
+	ENGINE_INSTANCE->Play_Sound(eSoundID, eChannelID, 0.8f);
 }
 
 HRESULT CState_Peppermint_Battle::Shoot(const _uint& iCurFrame)

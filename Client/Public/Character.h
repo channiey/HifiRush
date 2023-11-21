@@ -72,7 +72,7 @@ public:
 		_float fMaxHp = 100.f;
 		_float fCurHp = 100.f;
 
-		_float fAd = 10.f;
+		_float fAd = 5.f;
 
 		_int iGold = 100;
 		

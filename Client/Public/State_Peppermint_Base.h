@@ -29,7 +29,6 @@ protected:
 	virtual void	Set_Transform() {};
 	virtual void	Play_Sound() {};
 
-
 protected:
 	CPeppermint*	m_pPeppermint = { nullptr };
 	CModel*			m_pModel = { nullptr };

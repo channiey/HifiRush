@@ -25,8 +25,13 @@ protected:
 	virtual HRESULT Initialize(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);
 
 protected:
-	CKorsica* m_pKorsica = { nullptr };
-	CModel* m_pModel = { nullptr };
+	virtual void	Check_Progress(const _double& fTimeDelta) {};
+	virtual void	Set_Transform() {};
+	virtual void	Play_Sound() {};
+
+protected:
+	CKorsica*	m_pKorsica = { nullptr };
+	CModel*		m_pModel = { nullptr };
 
 public:
 	virtual CState* Clone(void* pArg) = 0;

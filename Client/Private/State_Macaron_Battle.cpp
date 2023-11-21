@@ -242,7 +242,7 @@ void CState_Macaron_Battle::Play_Sound()
 		break;
 	}
 
-	ENGINE_INSTANCE->Play_Sound(eSoundID, eChannelID, 0.6f);
+	ENGINE_INSTANCE->Play_Sound(eSoundID, eChannelID, 0.8f);
 }
 
 

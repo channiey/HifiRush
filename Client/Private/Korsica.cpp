@@ -9,6 +9,7 @@
 
 #include "Weapon.h"
 #include "Korsica_Stick.h"
+#include "Korsica_Wind.h"
 
 #include "State_Korsica_Battle.h"
 #include "State_Korsica_Gimmick.h"
@@ -39,6 +40,9 @@ HRESULT CKorsica::Initialize(void* pArg)
 		return E_FAIL;
 
 	if (FAILED(Ready_StateMachine()))
+		return E_FAIL;
+
+	if (FAILED(Ready_Pool()))
 		return E_FAIL;
 
 	if (FAILED(CPlayerController::GetInstance()->Add_Player(this, PLAYER_TYPE::KORSICA)))
@@ -78,8 +82,12 @@ void CKorsica::Set_State(const OBJ_STATE& eState)
 	}
 }
 
-void CKorsica::Damaged(CCharacter* pCharacter, const ATK_TYPE& eAtkType)
+HRESULT CKorsica::Ready_Pool()
 {
+	if (FAILED(ENGINE_INSTANCE->Reserve_Pool(LEVEL_ID::LV_STAGE_01, LayerNames[LAYER_PROJECTILE], L"Projectile_Korsica_Wind", 4)))
+		return E_FAIL;
+
+	return S_OK;
 }
 
 HRESULT CKorsica::Ready_Components()
@@ -156,7 +164,15 @@ HRESULT CKorsica::Ready_Chilren()
 
 void CKorsica::OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild)
 {
-	m_pStateMachineCom->Get_CurState()->OnCollision_Enter(pCollider, iIndexAsChild);
+	CCharacter* pCharacter = dynamic_cast<CCharacter*>(pCollider->Get_Owner());
+
+	if (CHILD_TYPE::PROJECTILE == iIndexAsChild && nullptr != pCharacter)
+	{
+		if (LayerNames[LAYER_ID::LAYER_ENEMY] == pCharacter->Get_LayerTag())
+		{
+			pCharacter->Damaged(this);
+		}
+	}
 }
 
 void CKorsica::OnCollision_Stay(CCollider* pCollider, const _int& iIndexAsChild)

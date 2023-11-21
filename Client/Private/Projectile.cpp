@@ -85,22 +85,6 @@ HRESULT CProjectile::Render()
 	return S_OK;
 }
 
-HRESULT CProjectile::Shoot(PROJECTILE_DESC tDesc)
-{
-	memcpy(&m_tDesc, &tDesc, sizeof(PROJECTILE_DESC));
-
-	if (nullptr == m_tDesc.pOwner)
-		return E_FAIL;
-
-	m_pTransformCom->Set_Position(m_tDesc.vOrigin);
-
-	m_pTransformCom->Set_Scale(Vec3{ 0.05f, 0.05f, 0.05f });
-
-	m_pCollider->Set_Active(TRUE);
-
-	return S_OK;
-}
-
 HRESULT CProjectile::Return_To_Pool()
 {
 	m_fAcc = 0.f;
@@ -108,6 +92,7 @@ HRESULT CProjectile::Return_To_Pool()
 	ENGINE_INSTANCE->Return_Pool(ENGINE_INSTANCE->Get_CurLevelIndex(), this);
 
 	m_pCollider->Set_Active(FALSE);
+
 	return S_OK;
 }
 
