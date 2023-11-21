@@ -188,6 +188,7 @@
     <ClInclude Include="..\Public\Camera_Debug.h" />
     <ClInclude Include="..\Public\Camera_Follow.h" />
     <ClInclude Include="..\Public\Camera_Parry.h" />
+    <ClInclude Include="..\Public\Camera_Peppermint_Gimmick.h" />
     <ClInclude Include="..\Public\Camera_Saber_Appear.h" />
     <ClInclude Include="..\Public\Chai_Guitar_Explore.h" />
     <ClInclude Include="..\Public\Character.h" />
@@ -211,6 +212,7 @@
     <ClInclude Include="..\Public\State_Peppermint_Gimmick.h" />
     <ClInclude Include="..\Public\Ui_Dialouge.h" />
     <ClInclude Include="..\Public\Ui_Fight_Logo.h" />
+    <ClInclude Include="..\Public\Ui_Gimmick_Peppermint_Aim.h" />
     <ClInclude Include="..\Public\Ui_Hud.h" />
     <ClInclude Include="..\Public\ImGui_Window_Mid_Ui.h" />
     <ClInclude Include="..\Public\Ui_Hud_Boss.h" />
@@ -322,6 +324,7 @@
     <ClCompile Include="..\Private\Camera_Debug.cpp" />
     <ClCompile Include="..\Private\Camera_Follow.cpp" />
     <ClCompile Include="..\Private\Camera_Parry.cpp" />
+    <ClCompile Include="..\Private\Camera_Peppermint_Gimmick.cpp" />
     <ClCompile Include="..\Private\Camera_Saber_Appear.cpp" />
     <ClCompile Include="..\Private\Chai_Guitar_Explore.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
@@ -345,6 +348,7 @@
     <ClCompile Include="..\Private\State_Peppermint_Gimmick.cpp" />
     <ClCompile Include="..\Private\Ui_Dialouge.cpp" />
     <ClCompile Include="..\Private\Ui_Fight_Logo.cpp" />
+    <ClCompile Include="..\Private\Ui_Gimmick_Peppermint_Aim.cpp" />
     <ClCompile Include="..\Private\Ui_Hud.cpp" />
     <ClCompile Include="..\Private\ImGui_Window_Mid_Ui.cpp" />
     <ClCompile Include="..\Private\Ui_Hud_Boss.cpp" />

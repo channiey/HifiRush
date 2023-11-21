@@ -67,6 +67,9 @@ HRESULT CState_Chai_Attack::Enter()
 
 const wstring CState_Chai_Attack::Tick(const _double& fTimeDelta)
 {
+	if (!CPlayerController::GetInstance()->Is_Controll(PLAYER_TYPE::CHAI))
+		return StateNames_CH[STATE_IDLE_CH];
+
 	Set_AttackDesc();
 	Detect_AttackCollision();
 
@@ -113,6 +116,9 @@ const wstring CState_Chai_Attack::Tick(const _double& fTimeDelta)
 
 const wstring CState_Chai_Attack::LateTick()
 {
+	if (!CPlayerController::GetInstance()->Is_Controll(PLAYER_TYPE::CHAI))
+		return StateNames_CH[STATE_IDLE_CH];
+
 	return Check_Transition();
 }
 

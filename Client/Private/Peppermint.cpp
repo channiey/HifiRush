@@ -76,7 +76,12 @@ void CPeppermint::Set_State(const OBJ_STATE& eState)
 	if (OBJ_STATE::STATE_ACTIVE == eState)
 	{
 		if (nullptr == ENGINE_INSTANCE->Get_GameObject_InCurLevel_InLayerFirst(LayerNames[LAYER_ID::LAYER_ENEMY]))
+		{
+			if (FAILED(CPlayerController::GetInstance()->Change_ControlPlayer(PLAYER_TYPE::PEPPERMINT)))
+				return;
+
 			m_pStateMachineCom->Set_State(StateNames_PE[STATE_PE::STATE_GIMMICK_PE]);
+		}
 		else
 			m_pStateMachineCom->Set_State(StateNames_PE[STATE_PE::STATE_BATTLE_PE]);
 	}

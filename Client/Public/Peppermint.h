@@ -13,7 +13,7 @@ enum ANIM_PE
 	BATTLE_SHOOT_PE,
 	BATTLE_DISAPPEAR_PE,
 
-	GIMMICK_IDLE_PE,
+	GIMMICK_AIM_PE,
 	GIMMICK_SHOOT_PE,
 	GIMMICK_DISAPPEAR_PE,
 
@@ -43,6 +43,8 @@ static const wstring StateNames_PE[STATE_PE::STATE_END_PE]
 	L"BATTLE",
 	L"GIMMICK",
 };
+
+static const Vec4 vPeppermint_Gimmick_Relative_Pos{ -2.f, 0.f, 0.f, 1.f };
 
 class CPeppermint final : public CCharacter
 {

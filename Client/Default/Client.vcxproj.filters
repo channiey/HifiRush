@@ -316,29 +316,11 @@
     <Filter Include="97.ImGui\01.Windows\01.Mid\03.UI">
       <UniqueIdentifier>{bdd2e3f3-4fd5-42c8-8500-b173b0d5e325}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.GameObjects\10.UI\02.Parry">
-      <UniqueIdentifier>{9871f97f-c210-4188-ae23-46080697ca5d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.GameObjects\10.UI\02.Parry\00.Result">
-      <UniqueIdentifier>{1e76db1f-b972-4e01-9d82-f5f655158130}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.GameObjects\10.UI\02.Parry\01.Rhythm">
-      <UniqueIdentifier>{52b20b88-46d3-4dd3-ac12-9faed0e3b523}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.GameManager\03.UiManager">
       <UniqueIdentifier>{7cea92e8-2401-4a83-ad87-f8714f472a5c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.GameObjects\00.Camera\02.Event\01.Saber_Appear">
-      <UniqueIdentifier>{841cfffb-7132-4952-a087-facfd5a2a8b8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03.GameObjects\10.UI\03.Fight">
       <UniqueIdentifier>{ddf0d603-34fa-4331-af1b-69cc48bbd66c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.GameObjects\10.UI\04.Dialouge">
-      <UniqueIdentifier>{91f8493e-0224-4629-91ab-69b8b519d0d6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.GameObjects\10.UI\05.Hud_Boss">
-      <UniqueIdentifier>{fad2e16a-24b4-4dac-9f90-4a05162ab4b1}</UniqueIdentifier>
     </Filter>
     <Filter Include="03.GameObjects\03.Character\01.Enemy\02.Blader\01.States\03.Atc">
       <UniqueIdentifier>{a8cfb392-9a2b-4caf-981a-69c5a655423e}</UniqueIdentifier>
@@ -468,6 +450,39 @@
     </Filter>
     <Filter Include="03.GameObjects\05.Projectile\01.Korsica_Wind">
       <UniqueIdentifier>{f826e3f5-39cb-4aa7-95c5-b7090062515e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\00.Camera\02.Event\99.01.Saber_Appear">
+      <UniqueIdentifier>{841cfffb-7132-4952-a087-facfd5a2a8b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\00.Camera\02.Event\02.Peppermint_Gimmick">
+      <UniqueIdentifier>{7d18dd86-190e-4250-99e0-de0d5ae67df8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\10.UI\00.HUD\00.Player">
+      <UniqueIdentifier>{7ad75233-2540-4df6-93b5-615b4897d8ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\10.UI\00.HUD\01.Hud_Boss">
+      <UniqueIdentifier>{fad2e16a-24b4-4dac-9f90-4a05162ab4b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\10.UI\01.Gimmick">
+      <UniqueIdentifier>{33941627-0139-4c70-9efd-214a8844a938}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\10.UI\01.Gimmick\00.Parry">
+      <UniqueIdentifier>{9871f97f-c210-4188-ae23-46080697ca5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\10.UI\01.Gimmick\00.Parry\00.Result">
+      <UniqueIdentifier>{1e76db1f-b972-4e01-9d82-f5f655158130}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\10.UI\01.Gimmick\00.Parry\01.Rhythm">
+      <UniqueIdentifier>{52b20b88-46d3-4dd3-ac12-9faed0e3b523}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\10.UI\02.Dialouge">
+      <UniqueIdentifier>{91f8493e-0224-4629-91ab-69b8b519d0d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\10.UI\01.Gimmick\00.Peppermint">
+      <UniqueIdentifier>{1d9637d6-78c1-47ed-a648-2929df90f5b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\10.UI\01.Gimmick\00.Peppermint\00.Aim">
+      <UniqueIdentifier>{4fdc5aec-dd14-4390-8b09-4bfbd192fed2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -723,32 +738,29 @@
     <ClInclude Include="..\Public\State_Chai_ParryEvent.h">
       <Filter>03.GameObjects\03.Character\00.Player\02.Models\00.Chai\States\03.Act\03.ParryEvent</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Ui_Hud.h">
-      <Filter>03.GameObjects\10.UI\00.HUD</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\ImGui_Window_Mid_Ui.h">
       <Filter>97.ImGui\01.Windows\01.Mid\03.UI</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Ui_Parry_Result.h">
-      <Filter>03.GameObjects\10.UI\02.Parry\00.Result</Filter>
+      <Filter>03.GameObjects\10.UI\01.Gimmick\00.Parry\00.Result</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Ui_Parry_Rhythm.h">
-      <Filter>03.GameObjects\10.UI\02.Parry\01.Rhythm</Filter>
+      <Filter>03.GameObjects\10.UI\01.Gimmick\00.Parry\01.Rhythm</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UiManager.h">
       <Filter>01.GameManager\03.UiManager</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Camera_Saber_Appear.h">
-      <Filter>03.GameObjects\00.Camera\02.Event\01.Saber_Appear</Filter>
+      <Filter>03.GameObjects\00.Camera\02.Event\99.01.Saber_Appear</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Ui_Fight_Logo.h">
       <Filter>03.GameObjects\10.UI\03.Fight</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Ui_Dialouge.h">
-      <Filter>03.GameObjects\10.UI\04.Dialouge</Filter>
+      <Filter>03.GameObjects\10.UI\02.Dialouge</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Ui_Hud_Boss.h">
-      <Filter>03.GameObjects\10.UI\05.Hud_Boss</Filter>
+      <Filter>03.GameObjects\10.UI\00.HUD\01.Hud_Boss</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Chai.h">
       <Filter>03.GameObjects\03.Character\00.Player\02.Models\00.Chai</Filter>
@@ -806,6 +818,15 @@
     </ClInclude>
     <ClInclude Include="..\Public\Korsica_Wind.h">
       <Filter>03.GameObjects\05.Projectile\01.Korsica_Wind</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera_Peppermint_Gimmick.h">
+      <Filter>03.GameObjects\00.Camera\02.Event\02.Peppermint_Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Ui_Hud.h">
+      <Filter>03.GameObjects\10.UI\00.HUD\00.Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Ui_Gimmick_Peppermint_Aim.h">
+      <Filter>03.GameObjects\10.UI\01.Gimmick\00.Peppermint\00.Aim</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1049,32 +1070,29 @@
     <ClCompile Include="..\Private\State_Chai_ParryEvent.cpp">
       <Filter>03.GameObjects\03.Character\00.Player\02.Models\00.Chai\States\03.Act\03.ParryEvent</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Ui_Hud.cpp">
-      <Filter>03.GameObjects\10.UI\00.HUD</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\ImGui_Window_Mid_Ui.cpp">
       <Filter>97.ImGui\01.Windows\01.Mid\03.UI</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Ui_Parry_Result.cpp">
-      <Filter>03.GameObjects\10.UI\02.Parry\00.Result</Filter>
+      <Filter>03.GameObjects\10.UI\01.Gimmick\00.Parry\00.Result</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Ui_Parry_Rhythm.cpp">
-      <Filter>03.GameObjects\10.UI\02.Parry\01.Rhythm</Filter>
+      <Filter>03.GameObjects\10.UI\01.Gimmick\00.Parry\01.Rhythm</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UiManager.cpp">
       <Filter>01.GameManager\03.UiManager</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Camera_Saber_Appear.cpp">
-      <Filter>03.GameObjects\00.Camera\02.Event\01.Saber_Appear</Filter>
+      <Filter>03.GameObjects\00.Camera\02.Event\99.01.Saber_Appear</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Ui_Fight_Logo.cpp">
       <Filter>03.GameObjects\10.UI\03.Fight</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Ui_Dialouge.cpp">
-      <Filter>03.GameObjects\10.UI\04.Dialouge</Filter>
+      <Filter>03.GameObjects\10.UI\02.Dialouge</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Ui_Hud_Boss.cpp">
-      <Filter>03.GameObjects\10.UI\05.Hud_Boss</Filter>
+      <Filter>03.GameObjects\10.UI\00.HUD\01.Hud_Boss</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Chai.cpp">
       <Filter>03.GameObjects\03.Character\00.Player\02.Models\00.Chai</Filter>
@@ -1132,6 +1150,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\Korsica_Wind.cpp">
       <Filter>03.GameObjects\05.Projectile\01.Korsica_Wind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Peppermint_Gimmick.cpp">
+      <Filter>03.GameObjects\00.Camera\02.Event\02.Peppermint_Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Ui_Hud.cpp">
+      <Filter>03.GameObjects\10.UI\00.HUD\00.Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Ui_Gimmick_Peppermint_Aim.cpp">
+      <Filter>03.GameObjects\10.UI\01.Gimmick\00.Peppermint\00.Aim</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

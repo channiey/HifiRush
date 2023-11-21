@@ -46,6 +46,9 @@ HRESULT CState_Chai_Jump::Enter()
 
 const wstring CState_Chai_Jump::Tick(const _double& fTimeDelta)
 {
+	if (!CPlayerController::GetInstance()->Is_Controll(PLAYER_TYPE::CHAI))
+		return StateNames_CH[STATE_IDLE_CH];
+
 	Move(fTimeDelta);
 
 	return m_strName;
@@ -53,6 +56,9 @@ const wstring CState_Chai_Jump::Tick(const _double& fTimeDelta)
 
 const wstring CState_Chai_Jump::LateTick()
 {
+	if (!CPlayerController::GetInstance()->Is_Controll(PLAYER_TYPE::CHAI))
+		return StateNames_CH[STATE_IDLE_CH];
+
 	CModel* pModel = m_pChai->Get_Model();
 	CModel::TweenDesc desc = pModel->Get_TweenDesc();
 	//cout << desc.cur.iAnimIndex << "\t" << desc.next.iAnimIndex << "\t" << desc.cur.iCurFrame << "\t" << desc.next.iCurFrame << "\t" << desc.cur.tSoundEventDesc.eSoundID << endl;

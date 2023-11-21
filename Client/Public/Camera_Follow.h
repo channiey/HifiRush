@@ -22,6 +22,9 @@ public:
 	virtual void	Tick(_double fTimeDelta) override;
 	virtual void	LateTick(_double fTimeDelta) override;
 
+public:
+	void			Reset();
+
 private:
 	HRESULT			Ready_Components();
 
@@ -31,7 +34,7 @@ private:
 private:
 	void			Move(const _double& fTimeDelta);
 	const Vec4		Calculate_Position(const _double& fTimeDelta);
-	const Vec4		Calculate_Look(const _double& fTimeDelta);
+	const Vec4		Calculate_Look();
 
 private:
 	CTransform*		m_pTransformCom = { nullptr };

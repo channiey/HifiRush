@@ -34,11 +34,17 @@ HRESULT CState_Chai_Idle::Enter()
 
 const wstring CState_Chai_Idle::Tick(const _double& fTimeDelta)
 {
+	if(!CPlayerController::GetInstance()->Is_Controll(PLAYER_TYPE::CHAI))
+		return m_strName;
+
 	return m_strName;
 }
 
 const wstring CState_Chai_Idle::LateTick()
 {
+	if (!CPlayerController::GetInstance()->Is_Controll(PLAYER_TYPE::CHAI))
+		return m_strName;
+
 	return Check_Transition();
 }
 

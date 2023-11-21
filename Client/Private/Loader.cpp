@@ -22,6 +22,7 @@
 #include "Camera_Debug.h"
 #include "Camera_Follow.h"
 #include "Camera_Parry.h"
+#include "Camera_Peppermint_Gimmick.h"
 
 /* UI */
 #include "Ui_Hud.h"
@@ -29,6 +30,7 @@
 #include "Ui_Fight_Logo.h"
 #include "Ui_Dialouge.h"
 #include "Ui_Hud_Boss.h"
+#include "Ui_Gimmick_Peppermint_Aim.h"
 
 /* Env */
 #include "SkyBox.h"
@@ -50,7 +52,6 @@
 
 #include "Saber_Sword.h"
 #include "Blader_Arm.h"
-
 
 /* Trigger */
 #include "TriggerSection_A.h"
@@ -375,6 +376,11 @@ HRESULT CLoader::Load_Prototype()
 			CUi_Dialouge::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+		/* For.Prototype_GameObject_Ui_Peppermint_Aim */
+		if (FAILED(pEngineInstance->Add_Prototype(UINames[UI_ID::UI_PEPPERMINT_AIM],
+			CUi_Peppermint_Aim::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 		/* For.Prototype_GameObject_Ui_Hud_Boss */
 		if (FAILED(pEngineInstance->Add_Prototype(UINames[UI_ID::UI_HUD_BOSS],
 			CUi_Hud_Boss::Create(m_pDevice, m_pContext))))
@@ -393,6 +399,11 @@ HRESULT CLoader::Load_Prototype()
 		/* For.Prototype_GameObject_Camera_Parry */
 		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Camera_Parry"),
 			CCamera_Parry::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Camera_Parry */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Camera_Peppermint_Gimmick"),
+			CCamera_Peppermint_Gimmick::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For.Prototype_GameObject_Player_Chai */

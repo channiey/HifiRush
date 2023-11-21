@@ -16,11 +16,15 @@ CPlayerController::CPlayerController()
 
 HRESULT CPlayerController::Initialize()
 {
+	m_eCurControlPlayerType = PLAYER_TYPE::CHAI;
+
 	return S_OK;
 }
 
 void CPlayerController::Tick(_double fTimeDelta)
 {
+	m_eCurControlPlayerType;
+
 	Update_Player(fTimeDelta);
 }
 
@@ -28,7 +32,7 @@ void CPlayerController::LateTick(_double fTimeDelta)
 {
 }
 
-HRESULT CPlayerController::SetOn_Player(const PLAYER_TYPE& eType, const _bool bChangeControlPlayer)
+HRESULT CPlayerController::SetOn_Player(const PLAYER_TYPE& eType)
 {
 	if (PLAYER_TYPE::TYPEEND <= eType || nullptr == m_tPlayerDesc[eType].pPlayer ||
 		PLAYER_STATE::WAIT != m_tPlayerDesc[eType].eState)
@@ -37,10 +41,6 @@ HRESULT CPlayerController::SetOn_Player(const PLAYER_TYPE& eType, const _bool bC
 	m_tPlayerDesc[eType].pPlayer->Set_State(CGameObject::STATE_ACTIVE);
 
 	m_tPlayerDesc[eType].eState = PLAYER_STATE::APPEAR;
-
-	/* 현재 컨트롤러 플레이어 대상 설정 */
-	if(bChangeControlPlayer)
-		m_eCurControlPlayerType = eType;
 
 	/* 사운드 재생 */
 	Play_Sound(eType);
@@ -65,6 +65,16 @@ HRESULT CPlayerController::SetOff_Player(const PLAYER_TYPE& eType)
 	return S_OK;
 }
 
+HRESULT CPlayerController::Change_ControlPlayer(const PLAYER_TYPE& eType)
+{
+	if (PLAYER_TYPE::TYPEEND <= eType || nullptr == m_tPlayerDesc[eType].pPlayer)
+		return E_FAIL;
+
+	m_eCurControlPlayerType = eType;
+
+	return S_OK;
+}
+
 const PLAYER_STATE CPlayerController::Get_PlayerState(const PLAYER_TYPE& eType)
 {
 	if (PLAYER_TYPE::TYPEEND <= eType || nullptr == m_tPlayerDesc[eType].pPlayer)
@@ -79,6 +89,14 @@ const PLAYER_DESC CPlayerController::Get_PlayerDesc(const PLAYER_TYPE& eType)
 		return PLAYER_DESC{};
 
 	return m_tPlayerDesc[eType];
+}
+
+const _bool CPlayerController::Is_Controll(const PLAYER_TYPE eType)
+{
+	if (eType == m_eCurControlPlayerType)
+		return TRUE;
+
+	return FALSE;
 }
 
 CCharacter* CPlayerController::Get_Player(const PLAYER_TYPE& eType)

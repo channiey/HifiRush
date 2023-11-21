@@ -13,6 +13,8 @@
 #include "BeatManager.h"
 #include "BattleManager.h"
 
+#include "PlayerController.h"
+
 BEGIN(Engine)
 class CGameObjet;
 END

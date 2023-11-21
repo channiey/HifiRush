@@ -35,9 +35,9 @@ HRESULT CCamera_Follow::Initialize(void * pArg)
 
 	/* Set Camera */
 	{
-		m_pCameraCom->Set_Distance(CamDist_Follow_Default);
 		m_pCameraCom->Set_MouseSensitiveX(0.3f);
 		m_pCameraCom->Set_MouseSensitiveY(0.1f);
+		m_pCameraCom->Set_Distance(CamDist_Follow_Default);
 		m_pCameraCom->Set_LookAtOffSet(Vec4{0.f, 1.8f, 0.f, 1.f });
 	}
 
@@ -75,6 +75,22 @@ void CCamera_Follow::LateTick(_double fTimeDelta)
 		return;
 
 	__super::LateTick(fTimeDelta);
+}
+
+void CCamera_Follow::Reset()
+{
+	CTransform* pTargetTransform = m_pCameraCom->Get_TargetObj()->Get_Transform();
+
+	if (nullptr == pTargetTransform) return;
+
+	Vec4 vTargetPos = pTargetTransform->Get_FinalPosition();
+	Vec4 vRelativePos = pTargetTransform->Get_RelativePosition(Vec4{ -0.f, 0.f, -m_pCameraCom->Get_Distance(), 0.f });
+
+	/* 포지션 세팅 */
+	m_pTransformCom->Set_Position(vTargetPos + vRelativePos);
+
+	/* 룩 세팅 */
+	m_pTransformCom->LookAt(Calculate_Look());
 }
 
 HRESULT CCamera_Follow::Ready_Components()
@@ -115,7 +131,7 @@ HRESULT CCamera_Follow::Find_Target()
 void CCamera_Follow::Move(const _double& fTimeDelta)
 {
 	m_pTransformCom->Set_Position(Calculate_Position(fTimeDelta));
-	m_pTransformCom->LookAt(Calculate_Look(fTimeDelta));
+	m_pTransformCom->LookAt(Calculate_Look());
 }
 
 const Vec4 CCamera_Follow::Calculate_Position(const _double& fTimeDelta)
@@ -154,7 +170,7 @@ const Vec4 CCamera_Follow::Calculate_Position(const _double& fTimeDelta)
 	return vCamLocal + m_pCameraCom->Get_TargetObj()->Get_Transform()->Get_FinalPosition();
 }
 
-const Vec4 CCamera_Follow::Calculate_Look(const _double& fTimeDelta)
+const Vec4 CCamera_Follow::Calculate_Look()
 {
 	return Vec4(m_pCameraCom->Get_TargetObj()->Get_Transform()->Get_FinalPosition() + m_pCameraCom->Get_LookAtOffSet()).OneW();
 }

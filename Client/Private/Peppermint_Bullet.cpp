@@ -91,6 +91,8 @@ HRESULT CPeppermint_Bullet::Shoot(PROJECTILE_DESC tDesc)
 	m_pTransformCom->Set_Scale(Vec3{ 0.05f, 0.05f, 0.05f });
 
 	m_pCollider->Set_Active(TRUE);
+
+	return TRUE;
 }
 
 HRESULT CPeppermint_Bullet::Ready_Components()

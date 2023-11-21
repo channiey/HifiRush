@@ -122,22 +122,25 @@ namespace Client
 	};
 
 	/* Camera */
-	enum CAMERA_ID { CAM_DEBUG, CAM_FOLLOW, CAM_PARRY, CAM_END };
+	enum CAMERA_ID { CAM_DEBUG, CAM_FOLLOW, CAM_PARRY, CAM_PEPPERMINT_GIMMICK, CAM_END };
 	static const wchar_t* CameraNames[CAM_END]
 	{
 		L"Camera_Debug",
 		L"Camera_Follow",
-		L"Camera_Parry"
+		L"Camera_Parry",
+		L"Camera_Peppermint_Gimmick"
 	};
 
 	static const _float CamFov_Follow_Default	= XMConvertToRadians(60.0f);
 	static const _float CamFov_Follow_Battle	= XMConvertToRadians(65.0f);
 	static const _float CamFov_Follow_Jump		= XMConvertToRadians(65.0f);
+	static const _float CamFov_Follow_PeppermintGimmick = XMConvertToRadians(40.0f);
 
 	static const _float CamDist_Follow_Default	= 6.5f;
 	static const _float CamDist_Follow_Battle	= 7.f;
 	static const _float CamDist_Follow_Jump		= 7.f;
 	static const _float CamDist_Follow_Final	= 12.f;
+	static const _float CamDist_Follow_PeppermintGimmick = 5.f;
 
 	static const _float CamDist_Parry_Default	= 20.f;
 
@@ -288,6 +291,7 @@ namespace Client
 		UI_FIGHT,
 		UI_DIALOUGE,
 		UI_HUD_BOSS,
+		UI_PEPPERMINT_AIM,
 		UI_END
 	};
 	static const wchar_t* UINames[UI_ID::UI_END]
@@ -296,7 +300,8 @@ namespace Client
 		L"Ui_Parry_Rhythm",
 		L"Ui_Fight",
 		L"Ui_Dialouge",
-		L"Ui_Hud_Boss"
+		L"Ui_Hud_Boss",
+		L"Ui_Peppermint_Aim",
 	};
 
 

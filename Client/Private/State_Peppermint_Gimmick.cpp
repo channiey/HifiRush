@@ -1,6 +1,13 @@
 #include "..\Default\stdafx.h"
 #include "State_Peppermint_Gimmick.h"
 
+#include "Camera_Follow.h"
+
+#include "Peppermint_Bullet.h"
+
+#include "UiManager.h"
+#include "Ui.h"
+
 CState_Peppermint_Gimmick::CState_Peppermint_Gimmick()
 {
 }
@@ -19,25 +26,74 @@ HRESULT CState_Peppermint_Gimmick::Initialize(CStateMachine* pStateMachine, cons
 
 HRESULT CState_Peppermint_Gimmick::Enter()
 {
-	m_pStateMachine->Set_State(StateNames_PE[STATE_PE::STATE_BATTLE_PE]);
+	/* 페퍼민트 트랜스폼 설정 */
+	Set_Transform();
+
+	/* 카메라 보간 시작 */
+	ENGINE_INSTANCE->Change_Camera(CAMERA_ID::CAM_PEPPERMINT_GIMMICK, 0.2f);
+
+	/* UI */
+	Set_UI(TRUE);
+
+	/* Sound */
+	Play_Sound();
+
+	CAnimation* pAnim = m_pModel->Get_Animation(AnimNames_PE[ANIM_PE::GIMMICK_AIM_PE]);
+
+	if (nullptr == pAnim) return E_FAIL;
+
+	m_pModel->Clear_Animation();
+
+	m_pModel->Set_Animation(pAnim, pAnim->Get_TickPerFrame() * 0.75f, DF_TW_TIME);
+
+	m_eProgressID = PROGRESS_ID::AIM;
 
 	return S_OK;
 }
 
 const wstring CState_Peppermint_Gimmick::Tick(const _double& fTimeDelta)
 {
+	if (!CPlayerController::GetInstance()->Is_Controll(PLAYER_TYPE::PEPPERMINT))
+		Exit();
+
+	if (!ENGINE_INSTANCE->Is_LerpCam())
+	{
+		m_pPeppermint->Get_Transform()->Set_Look(ENGINE_INSTANCE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY().Normalized());
+	}
+
+	Check_Progress(fTimeDelta);
 
 	return m_strName;
 }
 
 const wstring CState_Peppermint_Gimmick::LateTick()
 {
+	if (!CPlayerController::GetInstance()->Is_Controll(PLAYER_TYPE::PEPPERMINT))
+		Exit();
+
 	return Check_Transition();
 }
 
 void CState_Peppermint_Gimmick::Exit()
 {
 
+	m_eProgressID = PROGRESS_ID::PROGRESS_END;
+	
+	m_fAcc = 0.f;
+
+	CPlayerController::GetInstance()->SetOff_Player(PLAYER_TYPE::PEPPERMINT);
+
+	/* 카메라 보간 시작 */
+	ENGINE_INSTANCE->Change_Camera(CAMERA_ID::CAM_FOLLOW, 0.2f);
+
+	CCamera_Follow* pCam = dynamic_cast<CCamera_Follow*>(ENGINE_INSTANCE->Get_Camera(CAMERA_ID::CAM_FOLLOW));
+	if (nullptr != pCam)
+	{
+		pCam->Reset();
+	}
+
+	/* UI */
+	Set_UI(FALSE);
 }
 
 const wstring CState_Peppermint_Gimmick::Check_Transition()
@@ -47,11 +103,155 @@ const wstring CState_Peppermint_Gimmick::Check_Transition()
 
 void CState_Peppermint_Gimmick::Check_Progress(const _double& fTimeDelta)
 {
+	switch (m_eProgressID)
+	{
+	case AIM:
+	{
+		m_fAcc += fTimeDelta;
+		if (m_fTimeLimit <= m_fAcc)
+		{
+			m_eProgressID = PROGRESS_ID::DISAPPEAR;
+
+			CAnimation* pAnim = m_pModel->Get_Animation(AnimNames_PE[ANIM_PE::GIMMICK_DISAPPEAR_PE]);
+
+			if (nullptr == pAnim) return;
+
+			m_pModel->Set_Animation(pAnim, pAnim->Get_TickPerFrame() * 0.75f, DF_TW_TIME);
+			
+			/* UI */
+			Set_UI(FALSE);
+		}
+
+		if (ENGINE_INSTANCE->Key_Down(VK_LBUTTON))
+		{
+			Shoot();
+
+			/* UI */
+			Set_UI(FALSE);
+
+			m_eProgressID = PROGRESS_ID::SHOOT;
+		}
+	}
+	break;
+	case SHOOT:
+	{
+		if (!m_pModel->Is_Tween())
+		{
+			CModel::TweenDesc tDesc = m_pModel->Get_TweenDesc();
+			if (20 == tDesc.cur.iCurFrame)
+			{
+				m_eProgressID = PROGRESS_ID::DISAPPEAR;
+
+				CAnimation* pAnim = m_pModel->Get_Animation(AnimNames_PE[ANIM_PE::GIMMICK_DISAPPEAR_PE]);
+
+				if (nullptr == pAnim) return;
+
+				m_pModel->Set_Animation(pAnim, pAnim->Get_TickPerFrame() * 0.75f, DF_TW_TIME);
+			}
+		}
+	}
+		break;
+	case DISAPPEAR:
+	{
+		if (!m_pModel->Is_Tween() && m_pModel->Is_TwoThirds_Animation())
+		{
+			Exit();
+		}
+	}
+		break;
+	default:
+		break;
+	}
 }
 
 void CState_Peppermint_Gimmick::Set_Transform()
 {
+	CTransform* pTransform_Peppermint = m_pPeppermint->Get_Transform();
+	CTransform* pTrnasform_Chai = CPlayerController::GetInstance()->Get_Player(PLAYER_TYPE::CHAI)->Get_Transform();
+
+	/* 네비 인덱스 설정 */
+	m_pPeppermint->Get_NavMeshAgent()->Set_CurIndex(CPlayerController::GetInstance()->Get_Player(PLAYER_TYPE::CHAI)->Get_NavMeshAgent()->Get_Index());
+
+	/* 루트 포지션 초기화  */
+	pTransform_Peppermint->Set_RootPos(Vec4::Zero, TRUE);
+
+	/* 포지션 설정 (플레이어 기준 x축 -2떨어진 위치) */
+	Vec4 vPlayerPos = pTrnasform_Chai->Get_FinalPosition();
+	Vec4 vRelativePos = pTrnasform_Chai->Get_RelativePosition(vPeppermint_Gimmick_Relative_Pos).ZeroW();
+	pTransform_Peppermint->Set_Position(vRelativePos + vPlayerPos, TRUE);
+
+	/* 룩 설정 (카메라 포워드)*/
+	Vec4 vCamDir = ENGINE_INSTANCE->Get_CurCamera_State(CTransform::STATE_LOOK).ZeroY().Normalized();
+
+	pTransform_Peppermint->Set_Look(vCamDir);
+}
+
+void CState_Peppermint_Gimmick::Play_Sound()
+{
+	const _int iRand = rand() % 8;
+
+	SOUND_FILE_ID eSoundID = SOUND_FILE_END;
+	CHANNEL_ID	  eChannelID = CHANNEL_ID::ETC_PLAYER_CALL;
+
+	switch (iRand)
+	{
+	case 0:
+		eSoundID = SOUND_FILE_ID::EFC_PEPPERMINT_RESPAWN_00;
+		break;
+	case 1:
+		eSoundID = SOUND_FILE_ID::EFC_PEPPERMINT_RESPAWN_01;
+		break;
+	case 2:
+		eSoundID = SOUND_FILE_ID::EFC_PEPPERMINT_RESPAWN_02;
+		break;
+	case 3:
+		eSoundID = SOUND_FILE_ID::EFC_PEPPERMINT_RESPAWN_03;
+		break;
+	case 4:
+		eSoundID = SOUND_FILE_ID::EFC_PEPPERMINT_RESPAWN_04;
+		break;
+	case 5:
+		eSoundID = SOUND_FILE_ID::EFC_PEPPERMINT_RESPAWN_05;
+		break;
+	case 6:
+		eSoundID = SOUND_FILE_ID::EFC_PEPPERMINT_RESPAWN_06;
+		break;
+	case 7:
+		eSoundID = SOUND_FILE_ID::EFC_PEPPERMINT_RESPAWN_07;
+		break;
+	default:
+		break;
+	}
 	
+	ENGINE_INSTANCE->Play_Sound(eSoundID, eChannelID, 0.8f);
+}
+
+HRESULT CState_Peppermint_Gimmick::Shoot()
+{
+	CAnimation* pAnim = m_pModel->Get_Animation(AnimNames_PE[ANIM_PE::GIMMICK_SHOOT_PE]);
+
+	if (nullptr == pAnim) return E_FAIL;
+
+	m_pModel->Set_Animation(pAnim, pAnim->Get_TickPerFrame() * 0.5f, 0.2f);
+
+	// 사운드 재생 
+	ENGINE_INSTANCE->Play_Sound(EFC_PEPPERMINT_SHOOT, PLAYER_PEPPERMINT, 0.8f);
+
+	// 총알 발사
+
+	return S_OK;
+}
+
+void CState_Peppermint_Gimmick::Set_UI(const _bool& bActive)
+{
+	CUi* pUi = CUiManager::GetInstance()->Get_UI(UI_ID::UI_PEPPERMINT_AIM);
+
+	if (nullptr == pUi) return;
+
+	if(bActive)
+		pUi->Set_State(CGameObject::OBJ_STATE::STATE_ACTIVE);
+	else
+		pUi->Set_State(CGameObject::OBJ_STATE::STATE_UNACTIVE);
 }
 
 
