@@ -38,14 +38,17 @@ HRESULT CState_Peppermint_Gimmick::Enter()
 	/* Sound */
 	Play_Sound();
 
+	/* Animaion */
 	CAnimation* pAnim = m_pModel->Get_Animation(AnimNames_PE[ANIM_PE::GIMMICK_AIM_PE]);
+	{
+		if (nullptr == pAnim) return E_FAIL;
 
-	if (nullptr == pAnim) return E_FAIL;
+		m_pModel->Clear_Animation();
 
-	m_pModel->Clear_Animation();
+		m_pModel->Set_Animation(pAnim, pAnim->Get_TickPerFrame() * 0.75f, DF_TW_TIME);
+	}
 
-	m_pModel->Set_Animation(pAnim, pAnim->Get_TickPerFrame() * 0.75f, DF_TW_TIME);
-
+	/* Progress */
 	m_eProgressID = PROGRESS_ID::AIM;
 
 	return S_OK;
@@ -120,6 +123,8 @@ void CState_Peppermint_Gimmick::Check_Progress(const _double& fTimeDelta)
 			
 			/* UI */
 			Set_UI(FALSE);
+
+			ENGINE_INSTANCE->Play_Sound(EFC_PEPPERMINT_FAILED, CHANNEL_ID::PLAYER_PEPPERMINT, 0.8f);
 		}
 
 		if (ENGINE_INSTANCE->Key_Down(VK_LBUTTON))
@@ -147,6 +152,8 @@ void CState_Peppermint_Gimmick::Check_Progress(const _double& fTimeDelta)
 				if (nullptr == pAnim) return;
 
 				m_pModel->Set_Animation(pAnim, pAnim->Get_TickPerFrame() * 0.75f, DF_TW_TIME);
+
+				ENGINE_INSTANCE->Play_Sound(EFC_CHAI_JUMP, PLAYER_CHAI, EfcVolumeChai);
 			}
 		}
 	}
@@ -238,22 +245,57 @@ HRESULT CState_Peppermint_Gimmick::Shoot()
 	ENGINE_INSTANCE->Play_Sound(EFC_PEPPERMINT_SHOOT, PLAYER_PEPPERMINT, 0.8f);
 
 	// ÃÑ¾Ë ¹ß»ç
+	CGameObject* pClone = ENGINE_INSTANCE->Pop_Pool(ENGINE_INSTANCE->Get_CurLevelIndex(), L"Projectile_Peppermint_Bullet");
 
-	return S_OK;
+	if (nullptr == pClone) return E_FAIL;
+
+	CProjectile* pProjectile = dynamic_cast<CProjectile*>(pClone);
+
+	if (nullptr == pProjectile) return E_FAIL;
+
+	CProjectile::PROJECTILE_DESC tDesc;
+	{
+		tDesc.pOwner = m_pPeppermint;
+
+		tDesc.fSpeedPerSec = 60.f;
+
+		CModel::BONE_TYPE		eBoneType = CModel::BONE_SOCKET_RIGHT;
+		CPeppermint::CHILD_TYPE eChildType = CPeppermint::CHILD_TYPE::WP_RIGHT;
+
+		Matrix matWorld = m_pPeppermint->Get_Model()->Get_SocketBoneMat(eBoneType) * m_pPeppermint->Get_Child((_uint)eChildType)->Get_Transform()->Get_FinalMat();
+
+		tDesc.vDir = Vec4(matWorld.m[0]).Normalized();
+
+		memcpy(&tDesc.vOrigin, matWorld.m[3], sizeof(Vec4));
+	}
+
+	return pProjectile->Shoot(tDesc);
 }
 
 void CState_Peppermint_Gimmick::Set_UI(const _bool& bActive)
 {
-	CUi* pUi = CUiManager::GetInstance()->Get_UI(UI_ID::UI_PEPPERMINT_AIM);
+	/* Aim */
+	CUi* pAimUi = CUiManager::GetInstance()->Get_UI(UI_ID::UI_PEPPERMINT_AIM);
 
-	if (nullptr == pUi) return;
+	if (nullptr == pAimUi) return;
 
 	if(bActive)
-		pUi->Set_State(CGameObject::OBJ_STATE::STATE_ACTIVE);
+		pAimUi->Set_State(CGameObject::OBJ_STATE::STATE_ACTIVE);
 	else
-		pUi->Set_State(CGameObject::OBJ_STATE::STATE_UNACTIVE);
-}
+		pAimUi->Set_State(CGameObject::OBJ_STATE::STATE_UNACTIVE);
 
+
+	/* Target */
+	//CUi* pTargetUi = CUiManager::GetInstance()->Get_UI(UI_ID::UI_PEPPERMINT_TARGET);
+
+	//if (nullptr == pTargetUi) return;
+
+	//if (bActive)
+	//	pTargetUi->Set_State(CGameObject::OBJ_STATE::STATE_ACTIVE);
+	//else
+	//	pTargetUi->Set_State(CGameObject::OBJ_STATE::STATE_UNACTIVE);
+
+}
 
 CState_Peppermint_Gimmick* CState_Peppermint_Gimmick::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)
 {

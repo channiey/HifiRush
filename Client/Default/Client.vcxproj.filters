@@ -118,18 +118,6 @@
     <Filter Include="03.GameObjects\01.Environment\01.Static">
       <UniqueIdentifier>{e151be76-84ac-4349-93d8-75c7d1b50d66}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.GameObjects\01.Environment\01.Static\StaticDummy">
-      <UniqueIdentifier>{740c7b71-1c0a-4ebc-9619-28a0fc0626b5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.GameObjects\01.Environment\02.Anim">
-      <UniqueIdentifier>{8fb0483e-5266-43dc-92e3-d568cc733951}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.GameObjects\01.Environment\02.Anim\Trigger">
-      <UniqueIdentifier>{355ae19c-b78b-4b4a-b4e9-5fa4e6cf8f34}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.GameObjects\01.Environment\02.Anim\Moveable">
-      <UniqueIdentifier>{c826dd7b-e31c-4f41-80f9-bfda419f6dd5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03.GameObjects\01.Environment\00.Sky">
       <UniqueIdentifier>{583c4a7b-e367-4cfc-8a6e-f1fd6a21792b}</UniqueIdentifier>
     </Filter>
@@ -153,9 +141,6 @@
     </Filter>
     <Filter Include="03.GameObjects\03.Character">
       <UniqueIdentifier>{61401bf3-d2cc-46e0-9502-ab143843e14a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.GameObjects\03.Character\99.Proto">
-      <UniqueIdentifier>{a574bb1d-749c-4fb5-bf19-b9a30b09a18d}</UniqueIdentifier>
     </Filter>
     <Filter Include="03.GameObjects\03.Character\02.NPC">
       <UniqueIdentifier>{400c1cb4-75ac-4a99-bc55-470322a4b2a8}</UniqueIdentifier>
@@ -481,8 +466,35 @@
     <Filter Include="03.GameObjects\10.UI\01.Gimmick\00.Peppermint">
       <UniqueIdentifier>{1d9637d6-78c1-47ed-a648-2929df90f5b9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.GameObjects\10.UI\01.Gimmick\00.Peppermint\00.Aim">
+    <Filter Include="03.GameObjects\10.UI\01.Gimmick\00.Peppermint\01.Aim">
       <UniqueIdentifier>{4fdc5aec-dd14-4390-8b09-4bfbd192fed2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\10.UI\01.Gimmick\00.Peppermint\00.Mark">
+      <UniqueIdentifier>{9c6be630-e721-4c3e-bd8a-cbd110183f6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\01.Environment\02.Dynamic">
+      <UniqueIdentifier>{8fb0483e-5266-43dc-92e3-d568cc733951}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\01.Environment\01.Static\00.StaticDummy">
+      <UniqueIdentifier>{740c7b71-1c0a-4ebc-9619-28a0fc0626b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\01.Environment\02.Dynamic\00.Dynamic">
+      <UniqueIdentifier>{d73bec3b-31bf-4838-b139-c5401f21d788}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\01.Environment\02.Dynamic\01.Crane">
+      <UniqueIdentifier>{44eabd7c-57bb-471d-a536-510cd8bfab45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\01.Environment\02.Dynamic\02.Switch">
+      <UniqueIdentifier>{16b73a20-cae7-428c-b7db-bb0e8795f3e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\01.Environment\02.Dynamic\03.Macaron_Wall">
+      <UniqueIdentifier>{2287f3a8-e178-4fcd-89d7-2d1265fec3c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ImGui\01.Windows\01.Mid\04.Dynamic">
+      <UniqueIdentifier>{e4b7b9d8-adb5-4fa0-9d61-6d284e1cde99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\10.UI\01.Gimmick\00.Peppermint\02.Target %28Not Used%29">
+      <UniqueIdentifier>{ad5733e2-2219-48d3-9b05-2f0b73ac0aa4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -580,7 +592,7 @@
       <Filter>02.Levels\02.Ending</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\StaticDummy.h">
-      <Filter>03.GameObjects\01.Environment\01.Static\StaticDummy</Filter>
+      <Filter>03.GameObjects\01.Environment\01.Static\00.StaticDummy</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Character.h">
       <Filter>03.GameObjects\03.Character</Filter>
@@ -826,7 +838,28 @@
       <Filter>03.GameObjects\10.UI\00.HUD\00.Player</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Ui_Gimmick_Peppermint_Aim.h">
-      <Filter>03.GameObjects\10.UI\01.Gimmick\00.Peppermint\00.Aim</Filter>
+      <Filter>03.GameObjects\10.UI\01.Gimmick\00.Peppermint\01.Aim</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Ui_Gimmick_Peppermint_Mark.h">
+      <Filter>03.GameObjects\10.UI\01.Gimmick\00.Peppermint\00.Mark</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Ui_Gimmick_Peppermint_Target.h">
+      <Filter>03.GameObjects\10.UI\01.Gimmick\00.Peppermint\02.Target %28Not Used%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Dynamic.h">
+      <Filter>03.GameObjects\01.Environment\02.Dynamic\00.Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Dynamic_Crane.h">
+      <Filter>03.GameObjects\01.Environment\02.Dynamic\01.Crane</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Dynamic_Switch.h">
+      <Filter>03.GameObjects\01.Environment\02.Dynamic\02.Switch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Dynamic_Macaron_Wall.h">
+      <Filter>03.GameObjects\01.Environment\02.Dynamic\03.Macaron_Wall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui_Window_Mid_Dynamic.h">
+      <Filter>97.ImGui\01.Windows\01.Mid\04.Dynamic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -912,7 +945,7 @@
       <Filter>02.Levels\98.Proto</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\StaticDummy.cpp">
-      <Filter>03.GameObjects\01.Environment\01.Static\StaticDummy</Filter>
+      <Filter>03.GameObjects\01.Environment\01.Static\00.StaticDummy</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Character.cpp">
       <Filter>03.GameObjects\03.Character</Filter>
@@ -1158,7 +1191,28 @@
       <Filter>03.GameObjects\10.UI\00.HUD\00.Player</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Ui_Gimmick_Peppermint_Aim.cpp">
-      <Filter>03.GameObjects\10.UI\01.Gimmick\00.Peppermint\00.Aim</Filter>
+      <Filter>03.GameObjects\10.UI\01.Gimmick\00.Peppermint\01.Aim</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Ui_Gimmick_Peppermint_Mark.cpp">
+      <Filter>03.GameObjects\10.UI\01.Gimmick\00.Peppermint\00.Mark</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Ui_Gimmick_Peppermint_Target.cpp">
+      <Filter>03.GameObjects\10.UI\01.Gimmick\00.Peppermint\02.Target %28Not Used%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Dynamic.cpp">
+      <Filter>03.GameObjects\01.Environment\02.Dynamic\00.Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Dynamic_Crane.cpp">
+      <Filter>03.GameObjects\01.Environment\02.Dynamic\01.Crane</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Dynamic_Switch.cpp">
+      <Filter>03.GameObjects\01.Environment\02.Dynamic\02.Switch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Dynamic_Macaron_Wall.cpp">
+      <Filter>03.GameObjects\01.Environment\02.Dynamic\03.Macaron_Wall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_Window_Mid_Dynamic.cpp">
+      <Filter>97.ImGui\01.Windows\01.Mid\04.Dynamic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

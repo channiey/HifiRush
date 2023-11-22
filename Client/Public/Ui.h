@@ -16,6 +16,9 @@ BEGIN(Client)
 class CUi abstract : public CGameObject
 {
 public:
+
+	enum BILLBOARD_TYPE { BILL_X, BILL_Y, BILL_XY, BILL_END };
+
 	typedef struct tagUiDesc
 	{
 		Vec2 vPos = Vec2::Zero;
@@ -55,6 +58,9 @@ public:
 	HRESULT				Save();
 	HRESULT				Load();
 	virtual HRESULT		Set_Target(CGameObject* pTarget) { m_pTarget = pTarget; return S_OK; }
+
+protected:
+	Matrix				Get_Billboard(const BILLBOARD_TYPE& eType);
 
 private:
 	HRESULT				Ready_Components();

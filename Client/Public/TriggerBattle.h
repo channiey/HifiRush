@@ -61,6 +61,7 @@ public:
 
 protected:
 	HRESULT				Ready_Components();
+	const _bool			Is_Finish_Battle();
 
 private:
 	CGameObject*		Find_Object(CGameObject* pObject);

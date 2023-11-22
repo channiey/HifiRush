@@ -93,8 +93,6 @@ HRESULT CTriggerSection_B::Start_Battle()
 
 HRESULT CTriggerSection_B::Update_Battle(_double fTimeDelta)
 {
-	if (0 == m_iCurFlow)
-		Update_Battle_Flow_0(fTimeDelta);
 
 	return S_OK;
 }
@@ -122,14 +120,6 @@ void CTriggerSection_B::OnCollision_Exit(CCollider* pCollider, const _int& iInde
 HRESULT CTriggerSection_B::Ready_Components()
 {
 	return S_OK;
-}
-
-void CTriggerSection_B::Update_Battle_Flow_0(_double fTimeDelta)
-{
-	for (auto pClone : m_Clones[m_iCurFlow])
-	{
-
-	}
 }
 
 CTriggerSection_B* CTriggerSection_B::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

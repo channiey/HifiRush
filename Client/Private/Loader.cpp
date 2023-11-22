@@ -31,12 +31,19 @@
 #include "Ui_Dialouge.h"
 #include "Ui_Hud_Boss.h"
 #include "Ui_Gimmick_Peppermint_Aim.h"
+#include "Ui_Gimmick_Peppermint_Target.h"
+#include "Ui_Gimmick_Peppermint_Mark.h"
 
-/* Env */
+/* Env Static */
 #include "SkyBox.h"
 #include "SkySphere.h"
 #include "StaticDummy.h"
 #include "Terrain.h"
+
+/* Env Dynamic */
+#include "Dynamic_Crane.h"
+#include "Dynamic_Switch.h"
+#include "Dynamic_Macaron_Wall.h"
 
 /* Trigger */
 #include "TriggerDummy.h"
@@ -272,6 +279,29 @@ HRESULT CLoader::Load_Prototype()
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Blader", PivotMatrix))))
 			return E_FAIL;
 
+		/* For.Prototype_Component_Model_Dynamaic_Crane */
+		PivotMatrix = Matrix::CreateScale(0.01f);
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Crane"),
+			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Dynamic/Crane", PivotMatrix))))
+			return E_FAIL;
+
+		/* For.Prototype_Component_Model_Dynamaic_Switch */
+		PivotMatrix = Matrix::CreateScale(0.01f);
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Switch"),
+			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Dynamic/Switch", PivotMatrix))))
+			return E_FAIL;
+
+		/* For.Prototype_Component_Model_Dynamaic_AutoDoor */
+		PivotMatrix = Matrix::CreateScale(0.01f);
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_AutoDoor"),
+			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Dynamic/AutoDoor", PivotMatrix))))
+			return E_FAIL;
+
+		/* For.Prototype_Component_Model_Dynamaic_DoorDebris */
+		PivotMatrix = Matrix::CreateScale(0.01f);
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_DoorDebris"),
+			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Dynamic/DoorDebris", PivotMatrix))))
+			return E_FAIL;
 
 		/* For.Prototype_Component_Model_Chai_Guitar_Explore */
 		{
@@ -342,7 +372,6 @@ HRESULT CLoader::Load_Prototype()
 
 		/* For.Prototype_Component_Model_Geometry */
 		PivotMatrix = Matrix::Identity * Matrix::CreateScale(0.01f);
-
   		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString("Prototype_Component_Model_Static_Geometry_Sphere"),
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Geometry/Sphere", PivotMatrix))))
 			return E_FAIL;
@@ -379,6 +408,11 @@ HRESULT CLoader::Load_Prototype()
 		/* For.Prototype_GameObject_Ui_Peppermint_Aim */
 		if (FAILED(pEngineInstance->Add_Prototype(UINames[UI_ID::UI_PEPPERMINT_AIM],
 			CUi_Peppermint_Aim::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Ui_Peppermint_Target */
+		if (FAILED(pEngineInstance->Add_Prototype(UINames[UI_ID::UI_PEPPERMINT_TARGET],
+			CUi_Peppermint_Target::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For.Prototype_GameObject_Ui_Hud_Boss */
@@ -478,6 +512,18 @@ HRESULT CLoader::Load_Prototype()
 
 		/* For.Prototype_GameObject_Projectile_Korsica_Wind */
 		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Projectile_Korsica_Wind"), CKorsica_Wind::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Env_Dynamic_Crane */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Env_Dynamic_Crane"), CDynamic_Crane::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Env_Dynamic_Switch */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Env_Dynamic_Switch"), CDynamic_Switch::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Env_Dynamic_Macaron_Wall */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Env_Dynamic_Macaron_Wall"), CDynamic_Macaron_Wall::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For.Prototype_GameObject_Proto_Static */

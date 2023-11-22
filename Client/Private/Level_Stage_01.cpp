@@ -92,6 +92,11 @@ HRESULT CLevel_Stage_01::Check_Collision()
 		, CCollider::SPHERE
 		, CCollider::SPHERE);
 
+	ENGINE_INSTANCE->Check_Collision_Layer(LayerNames[LAYER_ENV_INTERACTALBE]
+		, LayerNames[LAYER_PROJECTILE]
+		, CCollider::SPHERE
+		, CCollider::SPHERE);
+
 	return S_OK;
 }
 

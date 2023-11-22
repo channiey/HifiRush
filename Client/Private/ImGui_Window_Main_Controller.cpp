@@ -120,6 +120,16 @@ void CImGui_Window_Main_Controller::Show_Window()
 			}
 			ImGui::SameLine();
 
+			/* 메인 윈도우 Dynamic 버튼 */
+			if (ImGui::Button(m_pImGui_Manager->str_MainWindowType[m_pImGui_Manager->WINDOW_MAIN_DYNAMIC]))
+			{
+				m_pImGui_Manager->Set_Active_Main_Window(
+					m_pImGui_Manager->WINDOW_MAIN_DYNAMIC,
+					!m_pImGui_Manager->m_pMainWindows[m_pImGui_Manager->WINDOW_MAIN_DYNAMIC]->Is_Active());
+
+			}
+			ImGui::SameLine();
+
 
 			/* 메인 윈도우 데모 버튼 */
 			if (ImGui::Button(m_pImGui_Manager->str_MainWindowType[m_pImGui_Manager->WINDOW_MAIN_DEMO]))

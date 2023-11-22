@@ -1,0 +1,164 @@
+#include "..\Default\stdafx.h"
+#include "Dynamic_Crane.h"
+
+#include "EngineInstance.h"
+#include "Animation.h"
+
+#ifdef _DEBUG
+#include "ImGui_Manager.h"
+#endif // _DEBUG
+ 
+CDynamic_Crane::CDynamic_Crane(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	: CDynamic(pDevice, pContext)
+{
+}
+
+CDynamic_Crane::CDynamic_Crane(const CDynamic_Crane& rhs)
+	: CDynamic(rhs)
+{
+}
+
+HRESULT CDynamic_Crane::Initialize_Prototype()
+{
+	return S_OK;
+}
+
+HRESULT CDynamic_Crane::Initialize(void* pArg)
+{
+	if (FAILED(__super::Initialize(pArg)))
+		return E_FAIL;
+
+	if (FAILED(Ready_Components()))
+		return E_FAIL;
+
+	CAnimation* pAnim = m_pModelCom->Get_Animation(m_AnimNames[PROGRESS_TYPE::IDLE]);
+
+	if (nullptr == pAnim) return E_FAIL;
+
+	m_pModelCom->Set_Animation(pAnim, pAnim->Get_TickPerFrame(), DF_TW_TIME);
+
+	m_eProgress = CDynamic_Crane::PROGRESS_TYPE::IDLE;
+
+	return S_OK;
+}
+
+void CDynamic_Crane::Tick(_double fTimeDelta)
+{
+	Check_Progress();
+
+	__super::Tick(fTimeDelta);
+}
+
+void CDynamic_Crane::LateTick(_double fTimeDelta)
+{
+	__super::LateTick(fTimeDelta);
+}
+
+HRESULT CDynamic_Crane::Render()
+{
+	if (FAILED(__super::Render()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CDynamic_Crane::Set_On()
+{
+	if (CDynamic_Crane::PROGRESS_TYPE::ACTIVE == m_eProgress) 
+		return E_FAIL;
+
+	CAnimation* pAnim = m_pModelCom->Get_Animation(m_AnimNames[PROGRESS_TYPE::ACTIVE]);
+
+	if (nullptr == pAnim) return E_FAIL;
+
+	m_pModelCom->Set_Animation(pAnim, pAnim->Get_TickPerFrame(), DF_TW_TIME);
+
+	m_eProgress = CDynamic_Crane::PROGRESS_TYPE::ACTIVE;
+
+	return S_OK;
+}
+
+HRESULT CDynamic_Crane::Set_Off()
+{
+	CAnimation* pAnim = m_pModelCom->Get_Animation(m_AnimNames[PROGRESS_TYPE::IDLE]);
+
+	if (nullptr == pAnim) return E_FAIL;
+
+	m_pModelCom->Set_Animation(pAnim, pAnim->Get_TickPerFrame(), DF_TW_TIME);
+
+	m_eProgress = CDynamic_Crane::PROGRESS_TYPE::IDLE;
+
+	return S_OK;
+}
+
+void CDynamic_Crane::Check_Progress()
+{
+	if (CDynamic_Crane::PROGRESS_TYPE::ACTIVE == m_eProgress)
+	{
+		if (!m_pModelCom->Is_Tween() && 135 == m_pModelCom->Get_TweenDesc().cur.iCurFrame)
+		{
+			CAnimation* pAnim = m_pModelCom->Get_Animation(m_AnimNames[PROGRESS_TYPE::ACTIVATED_IDLE]);
+
+			if (nullptr == pAnim) return;
+
+			m_pModelCom->Set_Animation(pAnim, pAnim->Get_TickPerFrame(), DF_TW_TIME);
+
+			m_eProgress = CDynamic_Crane::PROGRESS_TYPE::ACTIVATED_IDLE;
+		}
+	}
+}
+
+HRESULT CDynamic_Crane::Ready_Components()
+{
+	/* For.Com_Model */
+	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Model_Crane"),
+		ComponentNames[COM_MODEL], (CComponent**)&m_pModelCom)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CDynamic_Crane::Bind_ShaderResources()
+{
+	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_WorldMatrix")))
+		return E_FAIL;
+
+	if (FAILED(ENGINE_INSTANCE->Bind_TransformToShader(m_pShaderCom, "g_ViewMatrix", CPipeLine::STATE_VIEW)))
+		return E_FAIL;
+
+	if (FAILED(ENGINE_INSTANCE->Bind_TransformToShader(m_pShaderCom, "g_ProjMatrix", CPipeLine::STATE_PROJ)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+CDynamic_Crane* CDynamic_Crane::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+{
+	CDynamic_Crane* pInstance = new CDynamic_Crane(pDevice, pContext);
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		MSG_BOX("Failed to Created : CDynamic_Crane");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
+CDynamic_Crane* CDynamic_Crane::Clone(void* pArg)
+{
+	CDynamic_Crane* pInstance = new CDynamic_Crane(*this);
+
+	if (FAILED(pInstance->Initialize(pArg)))
+	{
+		MSG_BOX("Failed to Cloned : CDynamic_Crane");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
+void CDynamic_Crane::Free()
+{
+	__super::Free();
+}

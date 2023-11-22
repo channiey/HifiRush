@@ -223,6 +223,14 @@ HRESULT CTriggerBattle::Ready_Components()
 	return S_OK;
 }
 
+const _bool CTriggerBattle::Is_Finish_Battle()
+{
+	if (nullptr == ENGINE_INSTANCE->Get_GameObject_InCurLevel_InLayerFirst(LayerNames[LAYER_ID::LAYER_ENEMY]))
+		return TRUE;
+	
+	return FALSE;
+}
+
 CGameObject* CTriggerBattle::Find_Object(CGameObject* pObject)
 {
 

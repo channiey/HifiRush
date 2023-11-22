@@ -192,6 +192,11 @@
     <ClInclude Include="..\Public\Camera_Saber_Appear.h" />
     <ClInclude Include="..\Public\Chai_Guitar_Explore.h" />
     <ClInclude Include="..\Public\Character.h" />
+    <ClInclude Include="..\Public\Dynamic.h" />
+    <ClInclude Include="..\Public\Dynamic_Crane.h" />
+    <ClInclude Include="..\Public\Dynamic_Macaron_Wall.h" />
+    <ClInclude Include="..\Public\Dynamic_Switch.h" />
+    <ClInclude Include="..\Public\ImGui_Window_Mid_Dynamic.h" />
     <ClInclude Include="..\Public\Korsica.h" />
     <ClInclude Include="..\Public\Korsica_Stick.h" />
     <ClInclude Include="..\Public\Korsica_Wind.h" />
@@ -213,6 +218,7 @@
     <ClInclude Include="..\Public\Ui_Dialouge.h" />
     <ClInclude Include="..\Public\Ui_Fight_Logo.h" />
     <ClInclude Include="..\Public\Ui_Gimmick_Peppermint_Aim.h" />
+    <ClInclude Include="..\Public\Ui_Gimmick_Peppermint_Target.h" />
     <ClInclude Include="..\Public\Ui_Hud.h" />
     <ClInclude Include="..\Public\ImGui_Window_Mid_Ui.h" />
     <ClInclude Include="..\Public\Ui_Hud_Boss.h" />
@@ -281,6 +287,7 @@
     <ClInclude Include="..\Public\TriggerSection_B.h" />
     <ClInclude Include="..\Public\Ui.h" />
     <ClInclude Include="..\Public\UiManager.h" />
+    <ClInclude Include="..\Public\Ui_Gimmick_Peppermint_Mark.h" />
     <ClInclude Include="..\Public\Weapon.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
@@ -328,6 +335,11 @@
     <ClCompile Include="..\Private\Camera_Saber_Appear.cpp" />
     <ClCompile Include="..\Private\Chai_Guitar_Explore.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
+    <ClCompile Include="..\Private\Dynamic.cpp" />
+    <ClCompile Include="..\Private\Dynamic_Crane.cpp" />
+    <ClCompile Include="..\Private\Dynamic_Macaron_Wall.cpp" />
+    <ClCompile Include="..\Private\Dynamic_Switch.cpp" />
+    <ClCompile Include="..\Private\ImGui_Window_Mid_Dynamic.cpp" />
     <ClCompile Include="..\Private\Korsica.cpp" />
     <ClCompile Include="..\Private\Korsica_Stick.cpp" />
     <ClCompile Include="..\Private\Korsica_Wind.cpp" />
@@ -349,6 +361,7 @@
     <ClCompile Include="..\Private\Ui_Dialouge.cpp" />
     <ClCompile Include="..\Private\Ui_Fight_Logo.cpp" />
     <ClCompile Include="..\Private\Ui_Gimmick_Peppermint_Aim.cpp" />
+    <ClCompile Include="..\Private\Ui_Gimmick_Peppermint_Target.cpp" />
     <ClCompile Include="..\Private\Ui_Hud.cpp" />
     <ClCompile Include="..\Private\ImGui_Window_Mid_Ui.cpp" />
     <ClCompile Include="..\Private\Ui_Hud_Boss.cpp" />
@@ -419,6 +432,7 @@
     <ClCompile Include="..\Private\TriggerSection_B.cpp" />
     <ClCompile Include="..\Private\Ui.cpp" />
     <ClCompile Include="..\Private\UiManager.cpp" />
+    <ClCompile Include="..\Private\Ui_Gimmick_Peppermint_Mark.cpp" />
     <ClCompile Include="..\Private\Weapon.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">

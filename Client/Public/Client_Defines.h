@@ -10,7 +10,7 @@ namespace Client
 
 #define FPS_LIMIT		66.f
 	    
-#define CONSOLE_LOG     1
+#define CONSOLE_LOG     0
 #define CURSOL_LOCK     0
 #define CURSOL_HIDE     0
 #define OPEN_IMGUI      0
@@ -256,6 +256,7 @@ namespace Client
 		EFC_MACARON_SHOT,
 
 		/* EFC PEPPERMINT */
+		EFC_PEPPERMINT_FAILED,
 		EFC_PEPPERMINT_RESPAWN_00,
 		EFC_PEPPERMINT_RESPAWN_01,
 		EFC_PEPPERMINT_RESPAWN_02,
@@ -291,7 +292,11 @@ namespace Client
 		UI_FIGHT,
 		UI_DIALOUGE,
 		UI_HUD_BOSS,
+
 		UI_PEPPERMINT_AIM,
+		UI_PEPPERMINT_TARGET,
+		UI_PEPPERMINT_MARK,
+
 		UI_END
 	};
 	static const wchar_t* UINames[UI_ID::UI_END]
@@ -301,7 +306,10 @@ namespace Client
 		L"Ui_Fight",
 		L"Ui_Dialouge",
 		L"Ui_Hud_Boss",
+
 		L"Ui_Peppermint_Aim",
+		L"Ui_Peppermint_Target",
+		L"Ui_Peppermint_Mark"
 	};
 
 

@@ -28,6 +28,7 @@ public:
 		WINDOW_MAIN_CAM,
 		WINDOW_MAIN_TRIGGER,
 		WINDOW_MAIN_UI,
+		WINDOW_MAIN_DYNAMIC,
 
 		WINDOW_MAIN_DEMO,
 
@@ -39,11 +40,11 @@ public:
 		"Object Info",
 		"Hierarachy",
 		
-		
 		"Nav",
 		"Cam",
 		"Trigger",
 		"UI",
+		"Dynamic",
 
 		"Demo",
 	};
@@ -151,7 +152,9 @@ private: /* Friend Class */
 	friend class CImGui_Window_Mid_Nav;
 	friend class CImGui_Window_Mid_Cam;
 	friend class CImGui_Window_Mid_Trigger;
-	
+	friend class CImGui_Window_Mid_Ui;
+	friend class CImGui_Window_Mid_Dynamic;
+
 	/* Sub*/
 	friend class CImGui_Window_Sub_Prefabs;
 	friend class CImGui_Window_Sub_Com_Model;

@@ -32,9 +32,6 @@ public:
 private:
 	HRESULT				Ready_Components();
 
-private:
-	void				Update_Battle_Flow_0(_double fTimeDelta);
-
 public:
 	static CTriggerSection_A* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject*	Clone(void* pArg) override;

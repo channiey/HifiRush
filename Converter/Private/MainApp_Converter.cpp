@@ -23,8 +23,8 @@ HRESULT CMainApp_Converter::Start_Convert()
 		//if (FAILED(Convert_Env_Anim()))
 		//	return E_FAIL;
 
-		if (FAILED(Convert_Weapon()))
-			return E_FAIL;
+		/*if (FAILED(Convert_Weapon()))
+			return E_FAIL;*/
 		
 		if (FAILED(Convert_SelectiveModel()))
 			return E_FAIL;
@@ -112,6 +112,40 @@ HRESULT CMainApp_Converter::Convert_SelectiveModel()
 {
 
 	/*{
+		const MODEL_TYPE	type = MODEL_TYPE::ANIM;
+		const string		savePath = "Environment/Dynamic/";
+		const string		fileName = "AutoDoor";
+		shared_ptr<CConverter> converter = make_shared<CConverter>();
+		if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
+			ASSERT_LOG();
+	}*/
+
+
+	{
+		const MODEL_TYPE	type = MODEL_TYPE::STATIC;
+		const string		savePath = "Environment/Custom/";
+		const string		fileName = "Wall_Macaron_Broken";
+		shared_ptr<CConverter> converter = make_shared<CConverter>();
+		if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
+			ASSERT_LOG();
+	}
+
+
+	{
+		const MODEL_TYPE	type = MODEL_TYPE::STATIC;
+		const string		savePath = "Environment/Custom/";
+		const string		fileName = "Wall_Macaron_UnBroken";
+		shared_ptr<CConverter> converter = make_shared<CConverter>();
+		if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
+			ASSERT_LOG();
+	}
+
+
+
+
+
+
+	/*{
 		const MODEL_TYPE	type = MODEL_TYPE::STATIC;
 		const string		savePath = "Environment/Static/";
 		const string		fileName = "JumpBoard";
@@ -133,7 +167,7 @@ HRESULT CMainApp_Converter::Convert_SelectiveModel()
 			ASSERT_LOG();
 	}*/
 
-	{
+	/*{
 
 		const MODEL_TYPE	type = MODEL_TYPE::ANIM;
 
@@ -170,7 +204,7 @@ HRESULT CMainApp_Converter::Convert_SelectiveModel()
 		shared_ptr<CConverter> converter = make_shared<CConverter>();
 		if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
 			ASSERT_LOG();
-	}
+	}*/
 
 	
 

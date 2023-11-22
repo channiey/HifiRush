@@ -61,6 +61,62 @@ HRESULT CUi::Render()
 	return S_OK;
 }
 
+Matrix CUi::Get_Billboard(const BILLBOARD_TYPE& eType)
+{
+	Matrix matBill;
+
+	Matrix matView = ENGINE_INSTANCE->Get_Transform(CPipeLine::STATE_VIEW);
+	
+	switch (eType)
+	{
+	case CUi::BILLBOARD_TYPE::BILL_X :
+	{
+		matBill.m[2][2] = matView.m[2][2];
+		matBill.m[2][3] = matView.m[2][3];
+		matBill.m[3][2] = matView.m[3][2];
+		matBill.m[3][3] = matView.m[3][3];
+
+		matBill.Invert();
+
+	}
+	break;
+	case CUi::BILLBOARD_TYPE::BILL_Y:
+	{
+		matBill.m[1][1] = matView.m[1][1];
+		matBill.m[1][3] = matView.m[1][3];
+		matBill.m[3][1] = matView.m[3][1];
+		matBill.m[3][3] = matView.m[3][3];
+
+		matBill.Invert();
+	}
+	break;
+	case CUi::BILLBOARD_TYPE::BILL_XY:
+	{
+		matBill.m[2][2] = matView.m[2][2];
+		matBill.m[2][3] = matView.m[2][3];
+		matBill.m[3][2] = matView.m[3][2];
+		matBill.m[3][3] = matView.m[3][3];
+
+		matBill.Invert();
+
+		Matrix matBillY;
+		{
+			matBillY.m[1][1] = matView.m[1][1];
+			matBillY.m[1][3] = matView.m[1][3];
+			matBillY.m[3][1] = matView.m[3][1];
+			matBillY.m[3][3] = matView.m[3][3];
+
+			matBill.Invert();
+		}
+		matBill *= matBillY;
+	}
+	break;
+	default:
+		break;
+	}
+	return matBill;
+}
+
 HRESULT CUi::Ready_Components()
 {
 	/* Com_Renderer */
