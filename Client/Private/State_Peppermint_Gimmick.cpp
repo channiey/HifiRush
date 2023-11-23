@@ -98,7 +98,7 @@ void CState_Peppermint_Gimmick::Exit()
 
 		if (nullptr == pCrane)
 		{
-			ENGINE_INSTANCE->Change_Camera(CAMERA_ID::CAM_FOLLOW, 0.2f);
+			ENGINE_INSTANCE->Change_Camera(CAMERA_ID::CAM_FOLLOW, 0.4f);
 	
 			CCamera_Follow* pCam = dynamic_cast<CCamera_Follow*>(ENGINE_INSTANCE->Get_Camera(CAMERA_ID::CAM_FOLLOW));
 			if (nullptr != pCam)
@@ -109,7 +109,7 @@ void CState_Peppermint_Gimmick::Exit()
 			if (CDynamic_Crane::PROGRESS_TYPE::WAIT_CRANE != pCrane->Get_Progress()
 				&& CDynamic_Crane::PROGRESS_TYPE::ACTIVE_CRANE != pCrane->Get_Progress())
 			{
-				ENGINE_INSTANCE->Change_Camera(CAMERA_ID::CAM_FOLLOW, 0.2f);
+				ENGINE_INSTANCE->Change_Camera(CAMERA_ID::CAM_FOLLOW, 0.4f);
 
 				CCamera_Follow* pCam = dynamic_cast<CCamera_Follow*>(ENGINE_INSTANCE->Get_Camera(CAMERA_ID::CAM_FOLLOW));
 				if (nullptr != pCam)
@@ -198,7 +198,7 @@ void CState_Peppermint_Gimmick::Set_Transform()
 	CTransform* pTrnasform_Chai = CPlayerController::GetInstance()->Get_Player(PLAYER_TYPE::CHAI)->Get_Transform();
 
 	/* 네비 인덱스 설정 */
-	m_pPeppermint->Get_NavMeshAgent()->Set_CurIndex(CPlayerController::GetInstance()->Get_Player(PLAYER_TYPE::CHAI)->Get_NavMeshAgent()->Get_Index());
+	//m_pPeppermint->Get_NavMeshAgent()->Set_CurIndex(CPlayerController::GetInstance()->Get_Player(PLAYER_TYPE::CHAI)->Get_NavMeshAgent()->Get_Index());
 
 	/* 루트 포지션 초기화  */
 	pTransform_Peppermint->Set_RootPos(Vec4::Zero, TRUE);
@@ -264,6 +264,9 @@ HRESULT CState_Peppermint_Gimmick::Shoot()
 
 	// 사운드 재생 
 	ENGINE_INSTANCE->Play_Sound(EFC_PEPPERMINT_SHOOT, PLAYER_PEPPERMINT, 0.8f);
+
+	// 카메라 쉐이크 
+	ENGINE_INSTANCE->Shake_Camera(0.1f, 10);
 
 	// 총알 발사
 	CGameObject* pClone = ENGINE_INSTANCE->Pop_Pool(ENGINE_INSTANCE->Get_CurLevelIndex(), L"Projectile_Peppermint_Bullet");

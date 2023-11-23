@@ -185,6 +185,7 @@
     <ClInclude Include="..\Public\BeatManager.h" />
     <ClInclude Include="..\Public\Blader.h" />
     <ClInclude Include="..\Public\Blader_Arm.h" />
+    <ClInclude Include="..\Public\Camera_Macaron_Gimmick_Wall.h" />
     <ClInclude Include="..\Public\Camera_Peppermint_Gimmick_Crane.h" />
     <ClInclude Include="..\Public\Camera_Debug.h" />
     <ClInclude Include="..\Public\Camera_Follow.h" />
@@ -329,6 +330,7 @@
     <ClCompile Include="..\Private\BeatManager.cpp" />
     <ClCompile Include="..\Private\Blader.cpp" />
     <ClCompile Include="..\Private\Blader_Arm.cpp" />
+    <ClCompile Include="..\Private\Camera_Macaron_Gimmick_Wall.cpp" />
     <ClCompile Include="..\Private\Camera_Peppermint_Gimmick_Crane.cpp" />
     <ClCompile Include="..\Private\Camera_Debug.cpp" />
     <ClCompile Include="..\Private\Camera_Follow.cpp" />

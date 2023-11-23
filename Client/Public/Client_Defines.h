@@ -131,6 +131,8 @@ namespace Client
 		
 		CAM_PEPPERMINT_GIMMICK_AIM, 
 		CAM_PEPPERMINT_GIMMICK_CRANE, 
+
+		CAM_MACARON_GIMMICK_WALL,
 		
 		CAM_END 
 	};
@@ -141,19 +143,22 @@ namespace Client
 		L"Camera_Follow",
 		L"Camera_Parry",
 		L"Camera_Peppermint_Gimmick_Aim",
-		L"Camera_Peppermint_Gimmick_Crane"
+		L"Camera_Peppermint_Gimmick_Crane",
+		L"Camera_Macaron_Gimmick_Wall"
 	};
 
 	static const _float CamFov_Follow_Default	= XMConvertToRadians(60.0f);
 	static const _float CamFov_Follow_Battle	= XMConvertToRadians(65.0f);
 	static const _float CamFov_Follow_Jump		= XMConvertToRadians(65.0f);
 	static const _float CamFov_Follow_PeppermintGimmick = XMConvertToRadians(40.0f);
+	static const _float CamFov_Follow_MacaronGimmick = XMConvertToRadians(45.0f);
 
-	static const _float CamDist_Follow_Default	= 6.5f;
-	static const _float CamDist_Follow_Battle	= 7.f;
-	static const _float CamDist_Follow_Jump		= 7.f;
-	static const _float CamDist_Follow_Final	= 12.f;
-	static const _float CamDist_Follow_PeppermintGimmick = 5.f;
+	static const _float CamDist_Follow_Default				= 6.5f;
+	static const _float CamDist_Follow_Battle				= 7.f;
+	static const _float CamDist_Follow_Jump					= 7.f;
+	static const _float CamDist_Follow_Final				= 12.f;
+	static const _float CamDist_Follow_PeppermintGimmick	= 5.f;
+	static const _float CamDist_Follow_MacaronGimmick		= 6.f;
 
 	static const _float CamDist_Parry_Default	= 20.f;
 

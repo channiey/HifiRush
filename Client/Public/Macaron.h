@@ -14,8 +14,8 @@ enum ANIM_MA
 	BATTLE_DISAPPEAR_MA,
 
 	GIMMICK_APPEAR_MA,
-	GIMMICK_IDLE_MA,
-	GIMMICK_ATTACK_DISAPPEAR_MA,
+	GIMMICK_TIMMING_MA,
+	GIMMICK_SUCCESS_DISAPPEAR_MA,
 	GIMMICK_FAILURE_DISAPPEAR_MA,
 
 	ANIM_MA_END,
@@ -45,6 +45,8 @@ static const wstring StateNames_MA[STATE_MA::STATE_END_MA]
 	L"BATTLE",
 	L"GIMMICK"
 };
+
+static const Vec4 vMacaron_Gimmick_Relative_Pos{ -4.f, 0.f, 1.f, 1.f };
 
 class CMacaron final : public CCharacter
 {

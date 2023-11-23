@@ -63,6 +63,8 @@ public:
 
 	void	Set_RootPos(Vec4 vPos, _bool bNotAgent = FALSE);
 
+	void	Clear() { m_WorldMatrix = Matrix::Identity;  m_vRootPos = Vec4::UnitW; }
+
 public:
 	const Vec3	ToEulerAngles(Quaternion quat);
 	void		LookAt(Vec4 vPoint);

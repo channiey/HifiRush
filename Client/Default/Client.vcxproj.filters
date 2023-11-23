@@ -502,6 +502,12 @@
     <Filter Include="03.GameObjects\00.Camera\02.Event\01.Peppermint_Gimmick\01.Crane">
       <UniqueIdentifier>{338dd800-8591-42f0-9fd2-646b9c6818bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.GameObjects\00.Camera\02.Event\02.Macaron_Gimmick">
+      <UniqueIdentifier>{5fe9fdd9-bb58-4116-9581-30c41174fd67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\00.Camera\02.Event\02.Macaron_Gimmick\00.Wall">
+      <UniqueIdentifier>{3ed0956f-6f65-4cbe-b761-5044c22fc3e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -870,6 +876,9 @@
     <ClInclude Include="..\Public\Dynamic_Crane.h">
       <Filter>03.GameObjects\01.Environment\02.Dynamic\01.Crane</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Camera_Macaron_Gimmick_Wall.h">
+      <Filter>03.GameObjects\00.Camera\02.Event\02.Macaron_Gimmick\00.Wall</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -1225,6 +1234,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Dynamic_Crane.cpp">
       <Filter>03.GameObjects\01.Environment\02.Dynamic\01.Crane</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Macaron_Gimmick_Wall.cpp">
+      <Filter>03.GameObjects\00.Camera\02.Event\02.Macaron_Gimmick\00.Wall</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

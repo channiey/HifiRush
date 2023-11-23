@@ -4,6 +4,15 @@
 BEGIN(Client)
 class CState_Macaron_Gimmick final : public CState_Macaron_Base
 {
+	enum PROGRESS_ID 
+	{
+		APPEAR,
+		TIMMING,
+		SUCCESS_DISAPPEAR,
+		FAILURE_DISAPPEAR,
+		PROGRESS_END
+	};
+
 private:
 	CState_Macaron_Gimmick();
 	CState_Macaron_Gimmick(const CState_Macaron_Gimmick& rhs);
@@ -20,6 +29,19 @@ public:
 
 public:
 	const wstring		Check_Transition() override;
+
+protected:
+	virtual void		Check_Progress(const _double& fTimeDelta) override;
+	virtual void		Set_Transform() override;
+	virtual void		Play_Sound() override;
+
+private:
+	void				Set_UI(const _bool& bActive);
+
+private:
+	PROGRESS_ID			m_eProgressID = PROGRESS_ID::PROGRESS_END;
+	const _float		m_fTimeLimit = 4.f;
+	_float				m_fAcc = 0.f;
 
 public:
 	static CState_Macaron_Gimmick* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);

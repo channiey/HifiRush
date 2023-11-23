@@ -69,7 +69,11 @@ void CMacaron::Set_State(const OBJ_STATE& eState)
 	if (OBJ_STATE::STATE_ACTIVE == eState)
 	{
 		if (nullptr == ENGINE_INSTANCE->Get_GameObject_InCurLevel_InLayerFirst(LayerNames[LAYER_ID::LAYER_ENEMY]))
+		{
+			if (FAILED(CPlayerController::GetInstance()->Change_ControlPlayer(PLAYER_TYPE::MACARON)))
+				return;
 			m_pStateMachineCom->Set_State(StateNames_MA[STATE_MA::STATE_GIMMICK_MA]);
+		}
 		else
 			m_pStateMachineCom->Set_State(StateNames_MA[STATE_MA::STATE_BATTLE_MA]);
 	}

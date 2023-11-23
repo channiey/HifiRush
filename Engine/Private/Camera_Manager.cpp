@@ -124,10 +124,10 @@ HRESULT CCamera_Manager::Change_Camera(const _uint& iKey, const _float& fLerpTim
 	if (m_pCurCamera != m_pNextCamera)
 		m_bCameraChange = TRUE;
 
+	m_pNextCamera->Set_State(CGameObject::STATE_ACTIVE);
+	
 	m_tLerpTimeDesc.Start(fLerpTime, eLerpMode);
 	m_tLerpFovDesc.Start(m_pCurCamera->Get_Camera()->Get_ProjDesc().fFovy, m_pNextCamera->Get_Camera()->Get_ProjDesc().fFovy, fLerpTime, eLerpMode);
-
-	m_pNextCamera->Set_State(CGameObject::STATE_ACTIVE);
 
 	return S_OK;
 }
