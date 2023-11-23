@@ -305,6 +305,21 @@ HRESULT CLoader::Load_Prototype()
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Dynamic/DoorDebris", PivotMatrix))))
 			return E_FAIL;
 
+		/* For.Prototype_Component_Model_Custom_Wall_Macaron_Broken */
+		PivotMatrix = Matrix::CreateScale(0.01f);
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Wall_Macaron_Broken"),
+			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Custom/Wall_Macaron_Broken", PivotMatrix))))
+			return E_FAIL;
+
+		/* For.Prototype_Component_Model_Custom_Wall_Macaron_UnBroken */
+		PivotMatrix = Matrix::CreateScale(0.01f);
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Wall_Macaron_UnBroken"),
+			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Custom/Wall_Macaron_UnBroken", PivotMatrix))))
+			return E_FAIL;
+
+
+
+
 		/* For.Prototype_Component_Model_Chai_Guitar_Explore */
 		{
 			PivotMatrix = Matrix::CreateRotationY(DEG2RAD(180.f)) * Matrix::CreateRotationZ(DEG2RAD(180.f)) * Matrix::CreateRotationX(DEG2RAD(90.f));

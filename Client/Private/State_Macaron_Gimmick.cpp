@@ -3,6 +3,10 @@
 
 #include "Camera_Follow.h"
 
+#include "UiManager.h"
+
+#include "Dynamic.h"
+
 CState_Macaron_Gimmick::CState_Macaron_Gimmick()
 {
 }
@@ -79,6 +83,13 @@ void CState_Macaron_Gimmick::Exit()
 	CCamera_Follow* pCam = dynamic_cast<CCamera_Follow*>(ENGINE_INSTANCE->Get_Camera(CAMERA_ID::CAM_FOLLOW));
 	if (nullptr != pCam)
 		pCam->Reset();
+
+	if (RESULT_TYPE::SUCCESS == m_eResultType)
+	{
+		CUiManager::GetInstance()->On_Dialouge(2, L"들어가서 끝까지 열심히 싸워줘 차이!");
+	}
+
+	m_eResultType = RESULT_TYPE::NONE;
 }
 
 const wstring CState_Macaron_Gimmick::Check_Transition()
@@ -125,6 +136,8 @@ void CState_Macaron_Gimmick::Check_Progress(const _double& fTimeDelta)
 					m_pModel->Set_Animation(pAnim, pAnim->Get_TickPerFrame(), DF_TW_TIME);	
 				}
 				m_eProgressID = CState_Macaron_Gimmick::PROGRESS_ID::FAILURE_DISAPPEAR;
+
+				m_eResultType = RESULT_TYPE::FAILURE;
 			}
 
 			/* 슛 */
@@ -144,6 +157,8 @@ void CState_Macaron_Gimmick::Check_Progress(const _double& fTimeDelta)
 						pAnim->Get_TickPerFrame() * 10 + DF_TW_TIME,
 						LERP_MODE::SMOOTHER_STEP
 					);
+
+					m_eResultType = RESULT_TYPE::SUCCESS;
 				}
 
 				m_eProgressID = CState_Macaron_Gimmick::PROGRESS_ID::SUCCESS_DISAPPEAR;
@@ -166,9 +181,24 @@ void CState_Macaron_Gimmick::Check_Progress(const _double& fTimeDelta)
 			}
 		}
 
+		/* Boomb */
 		if (!m_pModel->Is_Tween() && 18 == tDesc.cur.iCurFrame)
 		{
 			ENGINE_INSTANCE->Shake_Camera(0.7f, 15);
+
+			CGameObject* pTarget = ENGINE_INSTANCE->Get_GameObject_InCurLevel(LayerNames[LAYER_ENV_INTERACTALBE], L"Env_Dynamic_Macaron_Wall_000");
+			if (nullptr != pTarget)
+			{
+				if (Vec4(m_pMacaron->Get_Transform()->Get_FinalPosition() - pTarget->Get_Transform()->Get_FinalPosition()).OneW().Length() <= 5.f)
+				{
+					CDynamic* pDynamic = dynamic_cast<CDynamic*>(pTarget);
+					if (nullptr != pDynamic)
+					{
+						pDynamic->Set_On();
+						ENGINE_INSTANCE->Play_Sound(EFC_MACARON_BREAK_WALL, CHANNEL_ID::PLAYER_MACARON, 0.8f);
+					}
+				}
+			}
 		}
 
 		if (!m_pModel->Is_Tween() && 40 == tDesc.cur.iCurFrame)
@@ -202,6 +232,12 @@ void CState_Macaron_Gimmick::Check_Progress(const _double& fTimeDelta)
 		break;
 	case CState_Macaron_Gimmick::PROGRESS_ID::FAILURE_DISAPPEAR:
 	{
+		if (!m_pModel->Is_Tween() && 20 == tDesc.cur.iCurFrame)
+		{
+			CUiManager::GetInstance()->On_Dialouge(2, L"이런 부수지 못했군");
+		}
+		
+
 		if (!m_pModel->Is_Tween() && 65 == tDesc.cur.iCurFrame)
 		{
 			Exit();

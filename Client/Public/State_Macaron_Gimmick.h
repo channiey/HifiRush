@@ -13,6 +13,14 @@ class CState_Macaron_Gimmick final : public CState_Macaron_Base
 		PROGRESS_END
 	};
 
+	enum class RESULT_TYPE
+	{
+		SUCCESS,
+		FAILURE,
+		NONE,
+		TYPEEND 
+	};
+
 private:
 	CState_Macaron_Gimmick();
 	CState_Macaron_Gimmick(const CState_Macaron_Gimmick& rhs);
@@ -42,6 +50,9 @@ private:
 	PROGRESS_ID			m_eProgressID = PROGRESS_ID::PROGRESS_END;
 	const _float		m_fTimeLimit = 4.f;
 	_float				m_fAcc = 0.f;
+
+	RESULT_TYPE			m_eResultType = RESULT_TYPE::NONE;
+	
 
 public:
 	static CState_Macaron_Gimmick* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);

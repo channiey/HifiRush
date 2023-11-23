@@ -4,6 +4,7 @@
 #include "EngineInstance.h"
 #include "Animation.h"
 
+#include "UiManager.h"
 #include "Camera_Follow.h"
 #ifdef _DEBUG
 #include "ImGui_Manager.h"
@@ -74,6 +75,8 @@ HRESULT CDynamic_Crane::Set_On()
 
 	m_eProgress = CDynamic_Crane::PROGRESS_TYPE::WAIT_CRANE;
 
+	CUiManager::GetInstance()->On_Dialouge(1, L"역시 명중이야!");
+
 	return S_OK;
 }
 
@@ -112,6 +115,8 @@ void CDynamic_Crane::Check_Progress(_double fTimeDelta)
 				m_eProgress = CDynamic_Crane::PROGRESS_TYPE::ACTIVE_CRANE;
 
 				m_bWait = FALSE;
+
+				CUiManager::GetInstance()->On_Dialouge(0, L"잠시만 이게 무슨 소리지?");
 			}
 		}
 	}
@@ -123,6 +128,8 @@ void CDynamic_Crane::Check_Progress(_double fTimeDelta)
 			CCamera_Follow* pCam = dynamic_cast<CCamera_Follow*>(ENGINE_INSTANCE->Get_Camera(CAMERA_ID::CAM_FOLLOW));
 			if (nullptr != pCam)
 				pCam->Reset();
+
+			CUiManager::GetInstance()->On_Dialouge(0, L"크레인이 움직일줄은 생각도 못했어");
 		}
 		if (!m_pModelCom->Is_Tween() && 135 == m_pModelCom->Get_TweenDesc().cur.iCurFrame)
 		{
@@ -193,5 +200,7 @@ CDynamic_Crane* CDynamic_Crane::Clone(void* pArg)
 
 void CDynamic_Crane::Free()
 {
+	Set_Off();
+
 	__super::Free();
 }

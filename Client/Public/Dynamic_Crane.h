@@ -60,7 +60,7 @@ protected:
 private:
 	PROGRESS_TYPE			m_eProgress		= PROGRESS_TYPE::TYPEEND;
 
-	const _float			m_fWaitTime		= 0.75f;
+	const _float			m_fWaitTime		= 1.5f;
 	_float					m_fWaitAcc		= 0.f;
 	_bool					m_bWait			= FALSE;
 

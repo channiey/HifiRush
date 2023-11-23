@@ -8,24 +8,32 @@ class CDynamic_Macaron_Wall final : public CDynamic
 {
 	enum MODEL_TYPE
 	{
-		BROKEN_WALL,
-		UNBROKEN_WALL,
+		BROKEN,
+		UNBROKEN,
 		DEBRIS,
 		MODEL_TYPEEND
 	};
 
+	enum class STATE_TYPE
+	{
+		UNBROKEN,
+		BROKEN,
+		TYPEEND
+	};
+
+
 	enum ANIM_MA_WALL
 	{
-		IDLE_MA_WALL,
-		ACTIVE_MA_WALL,
+		BROKE_WALL,
 		TYPEEND_MA_WALL
 	};
 
 	const string m_AnimNames[ANIM_MA_WALL::TYPEEND_MA_WALL]
 	{
-		"IDLE",
-		"ACTIVE"
+		"bg1210_event_020",
 	};
+
+	
 
 protected:
 	CDynamic_Macaron_Wall(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -42,6 +50,7 @@ public:
 protected:
 	virtual HRESULT			Set_On() override;
 	virtual HRESULT			Set_Off() override;
+	virtual void			Check_Progress(_double fTimeDelta) override;
 
 protected:
 	HRESULT					Ready_Components();
@@ -49,6 +58,12 @@ protected:
 
 protected:
 	HRESULT					Bind_ShaderResources();
+
+private:
+	STATE_TYPE				m_eStateType				= CDynamic_Macaron_Wall::STATE_TYPE::UNBROKEN;
+	CShader*				m_pShaderCom_Dynamic		= { nullptr };
+	CShader*				m_pShaderCom_Static 		= { nullptr };
+	CModel*					m_pModelComs[CDynamic_Macaron_Wall::MODEL_TYPE::MODEL_TYPEEND];
 
 public:
 	static CDynamic_Macaron_Wall* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
