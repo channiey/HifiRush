@@ -22,7 +22,8 @@
 #include "Camera_Debug.h"
 #include "Camera_Follow.h"
 #include "Camera_Parry.h"
-#include "Camera_Peppermint_Gimmick.h"
+#include "Camera_Peppermint_Gimmick_Aim.h"
+#include "Camera_Peppermint_Gimmick_Crane.h"
 
 /* UI */
 #include "Ui_Hud.h"
@@ -435,9 +436,14 @@ HRESULT CLoader::Load_Prototype()
 			CCamera_Parry::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		/* For.Prototype_GameObject_Camera_Parry */
+		/* For.Prototype_GameObject_Camera_Peppermint_Gimmick_Aim */
 		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Camera_Peppermint_Gimmick"),
-			CCamera_Peppermint_Gimmick::Create(m_pDevice, m_pContext))))
+			CCamera_Peppermint_Gimmick_Aim::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Camera_Peppermint_Gimmick_Crane */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Camera_Peppermint_Gimmick_Crane"),
+			CCamera_Peppermint_Gimmick_Crane::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For.Prototype_GameObject_Player_Chai */

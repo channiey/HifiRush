@@ -5,6 +5,8 @@
 
 #include "Peppermint_Bullet.h"
 
+#include "Dynamic_Crane.h"
+
 #include "UiManager.h"
 #include "Ui.h"
 
@@ -30,7 +32,7 @@ HRESULT CState_Peppermint_Gimmick::Enter()
 	Set_Transform();
 
 	/* 카메라 보간 시작 */
-	ENGINE_INSTANCE->Change_Camera(CAMERA_ID::CAM_PEPPERMINT_GIMMICK, 0.2f);
+	ENGINE_INSTANCE->Change_Camera(CAMERA_ID::CAM_PEPPERMINT_GIMMICK_AIM, 0.2f);
 
 	/* UI */
 	Set_UI(TRUE);
@@ -86,17 +88,36 @@ void CState_Peppermint_Gimmick::Exit()
 
 	CPlayerController::GetInstance()->SetOff_Player(PLAYER_TYPE::PEPPERMINT);
 
-	/* 카메라 보간 시작 */
-	ENGINE_INSTANCE->Change_Camera(CAMERA_ID::CAM_FOLLOW, 0.2f);
-
-	CCamera_Follow* pCam = dynamic_cast<CCamera_Follow*>(ENGINE_INSTANCE->Get_Camera(CAMERA_ID::CAM_FOLLOW));
-	if (nullptr != pCam)
-	{
-		pCam->Reset();
-	}
-
 	/* UI */
 	Set_UI(FALSE);
+
+	/* 카메라 보간 시작 */
+	{
+		CGameObject*	pTarget	= ENGINE_INSTANCE->Get_GameObject_InCurLevel(LayerNames[LAYER_ID::LAYER_ENV_INTERACTALBE], L"Env_Dynamic_Crane_000");
+		CDynamic_Crane* pCrane	= dynamic_cast<CDynamic_Crane*>(pTarget);
+
+		if (nullptr == pCrane)
+		{
+			ENGINE_INSTANCE->Change_Camera(CAMERA_ID::CAM_FOLLOW, 0.2f);
+	
+			CCamera_Follow* pCam = dynamic_cast<CCamera_Follow*>(ENGINE_INSTANCE->Get_Camera(CAMERA_ID::CAM_FOLLOW));
+			if (nullptr != pCam)
+				pCam->Reset();
+		}
+		else
+		{
+			if (CDynamic_Crane::PROGRESS_TYPE::WAIT_CRANE != pCrane->Get_Progress()
+				&& CDynamic_Crane::PROGRESS_TYPE::ACTIVE_CRANE != pCrane->Get_Progress())
+			{
+				ENGINE_INSTANCE->Change_Camera(CAMERA_ID::CAM_FOLLOW, 0.2f);
+
+				CCamera_Follow* pCam = dynamic_cast<CCamera_Follow*>(ENGINE_INSTANCE->Get_Camera(CAMERA_ID::CAM_FOLLOW));
+				if (nullptr != pCam)
+					pCam->Reset();
+			}
+
+		}
+	}
 }
 
 const wstring CState_Peppermint_Gimmick::Check_Transition()

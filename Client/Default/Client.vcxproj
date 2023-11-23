@@ -185,10 +185,11 @@
     <ClInclude Include="..\Public\BeatManager.h" />
     <ClInclude Include="..\Public\Blader.h" />
     <ClInclude Include="..\Public\Blader_Arm.h" />
+    <ClInclude Include="..\Public\Camera_Peppermint_Gimmick_Crane.h" />
     <ClInclude Include="..\Public\Camera_Debug.h" />
     <ClInclude Include="..\Public\Camera_Follow.h" />
     <ClInclude Include="..\Public\Camera_Parry.h" />
-    <ClInclude Include="..\Public\Camera_Peppermint_Gimmick.h" />
+    <ClInclude Include="..\Public\Camera_Peppermint_Gimmick_Aim.h" />
     <ClInclude Include="..\Public\Camera_Saber_Appear.h" />
     <ClInclude Include="..\Public\Chai_Guitar_Explore.h" />
     <ClInclude Include="..\Public\Character.h" />
@@ -328,10 +329,11 @@
     <ClCompile Include="..\Private\BeatManager.cpp" />
     <ClCompile Include="..\Private\Blader.cpp" />
     <ClCompile Include="..\Private\Blader_Arm.cpp" />
+    <ClCompile Include="..\Private\Camera_Peppermint_Gimmick_Crane.cpp" />
     <ClCompile Include="..\Private\Camera_Debug.cpp" />
     <ClCompile Include="..\Private\Camera_Follow.cpp" />
     <ClCompile Include="..\Private\Camera_Parry.cpp" />
-    <ClCompile Include="..\Private\Camera_Peppermint_Gimmick.cpp" />
+    <ClCompile Include="..\Private\Camera_Peppermint_Gimmick_Aim.cpp" />
     <ClCompile Include="..\Private\Camera_Saber_Appear.cpp" />
     <ClCompile Include="..\Private\Chai_Guitar_Explore.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />

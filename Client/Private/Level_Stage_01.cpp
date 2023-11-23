@@ -20,7 +20,7 @@ HRESULT CLevel_Stage_01::Initialize()
 		return E_FAIL;
 
 	/* Sound */
-	if (FAILED(ENGINE_INSTANCE->Register_BGM(BGM_FAST_RUSH, BGM_CUR, BgmVolumeInNotBattle)))
+	if (FAILED(ENGINE_INSTANCE->Register_BGM(BGM_FAST_PREBATTLE, BGM_CUR, BgmVolumeInNotBattle)))
 		return E_FAIL;
 	
 	/* Battle */

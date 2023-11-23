@@ -9,6 +9,7 @@
 
 #include "Camera_Debug.h"
 #include "Camera_Follow.h"
+#include "Camera_Peppermint_Gimmick_Crane.h"
 
 
 CImGui_Window_Mid_Cam::CImGui_Window_Mid_Cam()
@@ -39,9 +40,10 @@ void CImGui_Window_Mid_Cam::Show_Window()
 				const char* strCamName = Util_String::WC2C(CameraNames[Pair->first]);
 				if (ImGui::Button(strCamName))
 				{
-					string DebugCamName = Util_String::ToString(wstring(CameraNames[CAM_DEBUG]));
+					string DebugCamName = Util_String::ToString(wstring(CameraNames[CAMERA_ID::CAM_DEBUG]));
+					string DebugCamName2 = Util_String::ToString(wstring(CameraNames[CAMERA_ID::CAM_PEPPERMINT_GIMMICK_CRANE]));
 					{
-						if (DebugCamName == string(strCamName))
+						if (DebugCamName == string(strCamName)|| DebugCamName2 == string(strCamName))
 							m_pImGui_Manager->m_bDebugCam = TRUE;
 						else 
 							m_pImGui_Manager->m_bDebugCam = FALSE;
@@ -64,11 +66,14 @@ void CImGui_Window_Mid_Cam::Show_Window()
 
 				switch (iCurCamKey)
 				{
-				case Client::CAM_DEBUG:
+				case CAMERA_ID::CAM_DEBUG:
 					Show_Property_DebugCam();
 					break;
-				case Client::CAM_FOLLOW:
+				case CAMERA_ID::CAM_FOLLOW:
 					Show_Property_FollowCam();
+					break;
+				case CAMERA_ID::CAM_PEPPERMINT_GIMMICK_CRANE:
+					Show_Property_Peppermint_Gimmick_Crane_Cam();
 					break;
 				default:
 					break;
@@ -160,6 +165,22 @@ HRESULT CImGui_Window_Mid_Cam::Show_Property_FollowCam()
 
 	return S_OK;
 
+}
+
+HRESULT CImGui_Window_Mid_Cam::Show_Property_Peppermint_Gimmick_Crane_Cam()
+{
+	CCamera_Peppermint_Gimmick_Crane* pCam = dynamic_cast<CCamera_Peppermint_Gimmick_Crane*>(ENGINE_INSTANCE->Get_CurCamera());
+
+	if (nullptr == pCam) return E_FAIL;
+
+	_bool bMove = pCam->Is_Debug_Move();
+
+	if (ImGui::Checkbox("Move", &bMove))
+	{
+		pCam->Set_Debug_Move(bMove);
+	}
+
+	return S_OK;
 }
 
 

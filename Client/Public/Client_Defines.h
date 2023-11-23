@@ -122,13 +122,26 @@ namespace Client
 	};
 
 	/* Camera */
-	enum CAMERA_ID { CAM_DEBUG, CAM_FOLLOW, CAM_PARRY, CAM_PEPPERMINT_GIMMICK, CAM_END };
+	enum CAMERA_ID 
+	{ 
+		CAM_DEBUG, 
+		CAM_FOLLOW,
+
+		CAM_PARRY, 
+		
+		CAM_PEPPERMINT_GIMMICK_AIM, 
+		CAM_PEPPERMINT_GIMMICK_CRANE, 
+		
+		CAM_END 
+	};
+
 	static const wchar_t* CameraNames[CAM_END]
 	{
 		L"Camera_Debug",
 		L"Camera_Follow",
 		L"Camera_Parry",
-		L"Camera_Peppermint_Gimmick"
+		L"Camera_Peppermint_Gimmick_Aim",
+		L"Camera_Peppermint_Gimmick_Crane"
 	};
 
 	static const _float CamFov_Follow_Default	= XMConvertToRadians(60.0f);
@@ -180,6 +193,7 @@ namespace Client
 		BGM_FAST_DEV, 
 		BGM_FAST_HEATWAVE,
 		BGM_FAST_MISSION,
+		BGM_FAST_PREBATTLE,
 		BGM_FAST_PULSE, 
 		BGM_FAST_RUSH, 
 		BGM_FAST_SECURITY, 

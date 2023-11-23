@@ -1,5 +1,5 @@
 #include "..\Default\stdafx.h"
-#include "..\Public\Camera_Peppermint_Gimmick.h"
+#include "..\Public\Camera_Peppermint_Gimmick_Aim.h"
 
 #include "EngineInstance.h"
 
@@ -13,24 +13,24 @@
 #include "ImGui_Manager.h"
 #endif // _DEBUG
 
-CCamera_Peppermint_Gimmick::CCamera_Peppermint_Gimmick(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CCamera_Peppermint_Gimmick_Aim::CCamera_Peppermint_Gimmick_Aim(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
 {
 
 }
 
-CCamera_Peppermint_Gimmick::CCamera_Peppermint_Gimmick(const CCamera_Peppermint_Gimmick& rhs)
+CCamera_Peppermint_Gimmick_Aim::CCamera_Peppermint_Gimmick_Aim(const CCamera_Peppermint_Gimmick_Aim& rhs)
 	: CGameObject(rhs)
 {
 
 }
 
-HRESULT CCamera_Peppermint_Gimmick::Initialize_Prototype()
+HRESULT CCamera_Peppermint_Gimmick_Aim::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CCamera_Peppermint_Gimmick::Initialize(void* pArg)
+HRESULT CCamera_Peppermint_Gimmick_Aim::Initialize(void* pArg)
 {
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
@@ -45,13 +45,13 @@ HRESULT CCamera_Peppermint_Gimmick::Initialize(void* pArg)
 	
 	m_eState = CGameObject::STATE_UNACTIVE;
 
-	if (FAILED(ENGINE_INSTANCE->Add_Camera(CAMERA_ID::CAM_PEPPERMINT_GIMMICK, this)))
+	if (FAILED(ENGINE_INSTANCE->Add_Camera(CAMERA_ID::CAM_PEPPERMINT_GIMMICK_AIM, this)))
 		return E_FAIL;
 
 	return S_OK;
 }
 
-void CCamera_Peppermint_Gimmick::Tick(_double fTimeDelta)
+void CCamera_Peppermint_Gimmick_Aim::Tick(_double fTimeDelta)
 {
 	if (nullptr == m_pCameraCom->Get_TargetObj())
 		return;
@@ -69,13 +69,15 @@ void CCamera_Peppermint_Gimmick::Tick(_double fTimeDelta)
 #endif // _DEBUG
 }
 
-void CCamera_Peppermint_Gimmick::LateTick(_double fTimeDelta)
+void CCamera_Peppermint_Gimmick_Aim::LateTick(_double fTimeDelta)
 {
 	if (nullptr == m_pCameraCom->Get_TargetObj())
 		return;
+
+	__super::LateTick(fTimeDelta);
 }
 
-void CCamera_Peppermint_Gimmick::Set_State(const OBJ_STATE& eState)
+void CCamera_Peppermint_Gimmick_Aim::Set_State(const OBJ_STATE& eState)
 {
 	__super::Set_State(eState);
 
@@ -103,7 +105,7 @@ void CCamera_Peppermint_Gimmick::Set_State(const OBJ_STATE& eState)
 	}
 }
 
-HRESULT CCamera_Peppermint_Gimmick::Ready_Components()
+HRESULT CCamera_Peppermint_Gimmick_Aim::Ready_Components()
 {
 	/* Com_Transform */
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Transform"),
@@ -125,7 +127,7 @@ HRESULT CCamera_Peppermint_Gimmick::Ready_Components()
 	return S_OK;
 }
 
-HRESULT CCamera_Peppermint_Gimmick::Find_Target()
+HRESULT CCamera_Peppermint_Gimmick_Aim::Find_Target()
 {
 	CGameObject* pObject = CPlayerController::GetInstance()->Get_Player(PLAYER_TYPE::PEPPERMINT);
 
@@ -137,7 +139,7 @@ HRESULT CCamera_Peppermint_Gimmick::Find_Target()
 	return S_OK;
 }
 
-void CCamera_Peppermint_Gimmick::Rotate(const _double& fTimeDelta)
+void CCamera_Peppermint_Gimmick_Aim::Rotate(const _double& fTimeDelta)
 {
 	CEngineInstance* pGameInstance = GET_INSTANCE(CEngineInstance);
 
@@ -157,33 +159,33 @@ void CCamera_Peppermint_Gimmick::Rotate(const _double& fTimeDelta)
 	RELEASE_INSTANCE(CEngineInstance);
 }
 
-CCamera_Peppermint_Gimmick* CCamera_Peppermint_Gimmick::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CCamera_Peppermint_Gimmick_Aim* CCamera_Peppermint_Gimmick_Aim::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CCamera_Peppermint_Gimmick* pInstance = new CCamera_Peppermint_Gimmick(pDevice, pContext);
+	CCamera_Peppermint_Gimmick_Aim* pInstance = new CCamera_Peppermint_Gimmick_Aim(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created : CCamera_Peppermint_Gimmick");
+		MSG_BOX("Failed to Created : CCamera_Peppermint_Gimmick_Aim");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-CGameObject* CCamera_Peppermint_Gimmick::Clone(void* pArg)
+CGameObject* CCamera_Peppermint_Gimmick_Aim::Clone(void* pArg)
 {
-	CCamera_Peppermint_Gimmick* pInstance = new CCamera_Peppermint_Gimmick(*this);
+	CCamera_Peppermint_Gimmick_Aim* pInstance = new CCamera_Peppermint_Gimmick_Aim(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned : CCamera_Peppermint_Gimmick");
+		MSG_BOX("Failed to Cloned : CCamera_Peppermint_Gimmick_Aim");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CCamera_Peppermint_Gimmick::Free()
+void CCamera_Peppermint_Gimmick_Aim::Free()
 {
 	__super::Free();
 

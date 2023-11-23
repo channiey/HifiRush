@@ -32,7 +32,7 @@ public:
 	virtual HRESULT			Set_Off() { return S_OK; }
 
 protected:
-	virtual void			Check_Progress() {};
+	virtual void			Check_Progress(_double fTimeDelta) {};
 
 protected:
 	HRESULT					Ready_Components();

@@ -26,7 +26,7 @@ public:
 private:
 	HRESULT	Show_Property_DebugCam();
 	HRESULT	Show_Property_FollowCam();
-
+	HRESULT	Show_Property_Peppermint_Gimmick_Crane_Cam();
 
 
 public:

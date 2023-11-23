@@ -4,6 +4,7 @@
 #include "EngineInstance.h"
 #include "Animation.h"
 
+#include "Camera_Follow.h"
 #ifdef _DEBUG
 #include "ImGui_Manager.h"
 #endif // _DEBUG
@@ -31,20 +32,20 @@ HRESULT CDynamic_Crane::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	CAnimation* pAnim = m_pModelCom->Get_Animation(m_AnimNames[PROGRESS_TYPE::IDLE]);
+	CAnimation* pAnim = m_pModelCom->Get_Animation(m_AnimNames[PROGRESS_TYPE::IDLE_CRANE]);
 
 	if (nullptr == pAnim) return E_FAIL;
 
 	m_pModelCom->Set_Animation(pAnim, pAnim->Get_TickPerFrame(), DF_TW_TIME);
 
-	m_eProgress = CDynamic_Crane::PROGRESS_TYPE::IDLE;
+	m_eProgress = CDynamic_Crane::PROGRESS_TYPE::IDLE_CRANE;
 
 	return S_OK;
 }
 
 void CDynamic_Crane::Tick(_double fTimeDelta)
 {
-	Check_Progress();
+	Check_Progress(fTimeDelta);
 
 	__super::Tick(fTimeDelta);
 }
@@ -64,46 +65,78 @@ HRESULT CDynamic_Crane::Render()
 
 HRESULT CDynamic_Crane::Set_On()
 {
-	if (CDynamic_Crane::PROGRESS_TYPE::ACTIVE == m_eProgress) 
+	if (CDynamic_Crane::PROGRESS_TYPE::ACTIVE_CRANE == m_eProgress)
 		return E_FAIL;
 
-	CAnimation* pAnim = m_pModelCom->Get_Animation(m_AnimNames[PROGRESS_TYPE::ACTIVE]);
+	m_bWait = TRUE;
 
-	if (nullptr == pAnim) return E_FAIL;
+	ENGINE_INSTANCE->Change_Camera(CAMERA_ID::CAM_PEPPERMINT_GIMMICK_CRANE, 1.f, LERP_MODE::SMOOTH_STEP);
 
-	m_pModelCom->Set_Animation(pAnim, pAnim->Get_TickPerFrame(), DF_TW_TIME);
-
-	m_eProgress = CDynamic_Crane::PROGRESS_TYPE::ACTIVE;
+	m_eProgress = CDynamic_Crane::PROGRESS_TYPE::WAIT_CRANE;
 
 	return S_OK;
 }
 
 HRESULT CDynamic_Crane::Set_Off()
 {
-	CAnimation* pAnim = m_pModelCom->Get_Animation(m_AnimNames[PROGRESS_TYPE::IDLE]);
+	CAnimation* pAnim = m_pModelCom->Get_Animation(m_AnimNames[PROGRESS_TYPE::IDLE_CRANE]);
 
 	if (nullptr == pAnim) return E_FAIL;
 
 	m_pModelCom->Set_Animation(pAnim, pAnim->Get_TickPerFrame(), DF_TW_TIME);
 
-	m_eProgress = CDynamic_Crane::PROGRESS_TYPE::IDLE;
+	m_eProgress = CDynamic_Crane::PROGRESS_TYPE::IDLE_CRANE;
+
+	m_fWaitAcc	= 0.f;
+
+	m_bWait		= FALSE;
 
 	return S_OK;
 }
 
-void CDynamic_Crane::Check_Progress()
+void CDynamic_Crane::Check_Progress(_double fTimeDelta)
 {
-	if (CDynamic_Crane::PROGRESS_TYPE::ACTIVE == m_eProgress)
+	if (CDynamic_Crane::PROGRESS_TYPE::WAIT_CRANE == m_eProgress)
 	{
+		if (m_bWait)
+		{
+			m_fWaitAcc += fTimeDelta;
+			if (m_fWaitTime <= m_fWaitAcc)
+			{
+				CAnimation* pAnim = m_pModelCom->Get_Animation(m_AnimNames[PROGRESS_TYPE::ACTIVE_CRANE]);
+
+				if (nullptr == pAnim) return;
+
+				m_pModelCom->Set_Animation(pAnim, pAnim->Get_TickPerFrame(), DF_TW_TIME);
+
+				m_eProgress = CDynamic_Crane::PROGRESS_TYPE::ACTIVE_CRANE;
+
+				m_bWait = FALSE;
+			}
+		}
+	}
+	else if (CDynamic_Crane::PROGRESS_TYPE::ACTIVE_CRANE == m_eProgress)
+	{
+		if (!m_pModelCom->Is_Tween() && 100 == m_pModelCom->Get_TweenDesc().cur.iCurFrame)
+		{
+			ENGINE_INSTANCE->Change_Camera(CAMERA_ID::CAM_FOLLOW);
+			CCamera_Follow* pCam = dynamic_cast<CCamera_Follow*>(ENGINE_INSTANCE->Get_Camera(CAMERA_ID::CAM_FOLLOW));
+			if (nullptr != pCam)
+				pCam->Reset();
+		}
 		if (!m_pModelCom->Is_Tween() && 135 == m_pModelCom->Get_TweenDesc().cur.iCurFrame)
 		{
-			CAnimation* pAnim = m_pModelCom->Get_Animation(m_AnimNames[PROGRESS_TYPE::ACTIVATED_IDLE]);
+			CAnimation* pAnim = m_pModelCom->Get_Animation(m_AnimNames[PROGRESS_TYPE::ACTIVATED_IDLE_CRANE]);
 
 			if (nullptr == pAnim) return;
 
 			m_pModelCom->Set_Animation(pAnim, pAnim->Get_TickPerFrame(), DF_TW_TIME);
 
-			m_eProgress = CDynamic_Crane::PROGRESS_TYPE::ACTIVATED_IDLE;
+			m_eProgress = CDynamic_Crane::PROGRESS_TYPE::ACTIVATED_IDLE_CRANE;
+
+			m_fWaitAcc = 0.f;
+
+			m_bWait = FALSE;
 		}
 	}
 }

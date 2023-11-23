@@ -9,13 +9,13 @@ END
 
 BEGIN(Client)
 
-class CCamera_Peppermint_Gimmick final : public CGameObject
+class CCamera_Peppermint_Gimmick_Aim final : public CGameObject
 {
 
 private:
-	CCamera_Peppermint_Gimmick(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CCamera_Peppermint_Gimmick(const CCamera_Peppermint_Gimmick& rhs);
-	virtual ~CCamera_Peppermint_Gimmick() = default;
+	CCamera_Peppermint_Gimmick_Aim(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CCamera_Peppermint_Gimmick_Aim(const CCamera_Peppermint_Gimmick_Aim& rhs);
+	virtual ~CCamera_Peppermint_Gimmick_Aim() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -38,7 +38,7 @@ private:
 	CCamera*			m_pCameraCom = { nullptr };
 
 public:
-	static CCamera_Peppermint_Gimmick* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CCamera_Peppermint_Gimmick_Aim* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };

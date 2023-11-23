@@ -436,12 +436,6 @@
     <Filter Include="03.GameObjects\05.Projectile\01.Korsica_Wind">
       <UniqueIdentifier>{f826e3f5-39cb-4aa7-95c5-b7090062515e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.GameObjects\00.Camera\02.Event\99.01.Saber_Appear">
-      <UniqueIdentifier>{841cfffb-7132-4952-a087-facfd5a2a8b8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.GameObjects\00.Camera\02.Event\02.Peppermint_Gimmick">
-      <UniqueIdentifier>{7d18dd86-190e-4250-99e0-de0d5ae67df8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03.GameObjects\10.UI\00.HUD\00.Player">
       <UniqueIdentifier>{7ad75233-2540-4df6-93b5-615b4897d8ff}</UniqueIdentifier>
     </Filter>
@@ -495,6 +489,18 @@
     </Filter>
     <Filter Include="03.GameObjects\10.UI\01.Gimmick\00.Peppermint\02.Target %28Not Used%29">
       <UniqueIdentifier>{ad5733e2-2219-48d3-9b05-2f0b73ac0aa4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\00.Camera\02.Event\99.Saber_Appear %28Not Used%29">
+      <UniqueIdentifier>{841cfffb-7132-4952-a087-facfd5a2a8b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\00.Camera\02.Event\01.Peppermint_Gimmick">
+      <UniqueIdentifier>{7d18dd86-190e-4250-99e0-de0d5ae67df8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\00.Camera\02.Event\01.Peppermint_Gimmick\00.Aim">
+      <UniqueIdentifier>{fe968088-8fec-4607-93ec-e29a8e9f7295}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\00.Camera\02.Event\01.Peppermint_Gimmick\01.Crane">
+      <UniqueIdentifier>{338dd800-8591-42f0-9fd2-646b9c6818bf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -763,7 +769,7 @@
       <Filter>01.GameManager\03.UiManager</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Camera_Saber_Appear.h">
-      <Filter>03.GameObjects\00.Camera\02.Event\99.01.Saber_Appear</Filter>
+      <Filter>03.GameObjects\00.Camera\02.Event\99.Saber_Appear %28Not Used%29</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Ui_Fight_Logo.h">
       <Filter>03.GameObjects\10.UI\03.Fight</Filter>
@@ -831,9 +837,6 @@
     <ClInclude Include="..\Public\Korsica_Wind.h">
       <Filter>03.GameObjects\05.Projectile\01.Korsica_Wind</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Camera_Peppermint_Gimmick.h">
-      <Filter>03.GameObjects\00.Camera\02.Event\02.Peppermint_Gimmick</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Ui_Hud.h">
       <Filter>03.GameObjects\10.UI\00.HUD\00.Player</Filter>
     </ClInclude>
@@ -849,9 +852,6 @@
     <ClInclude Include="..\Public\Dynamic.h">
       <Filter>03.GameObjects\01.Environment\02.Dynamic\00.Dynamic</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Dynamic_Crane.h">
-      <Filter>03.GameObjects\01.Environment\02.Dynamic\01.Crane</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Dynamic_Switch.h">
       <Filter>03.GameObjects\01.Environment\02.Dynamic\02.Switch</Filter>
     </ClInclude>
@@ -860,6 +860,15 @@
     </ClInclude>
     <ClInclude Include="..\Public\ImGui_Window_Mid_Dynamic.h">
       <Filter>97.ImGui\01.Windows\01.Mid\04.Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera_Peppermint_Gimmick_Aim.h">
+      <Filter>03.GameObjects\00.Camera\02.Event\01.Peppermint_Gimmick\00.Aim</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera_Peppermint_Gimmick_Crane.h">
+      <Filter>03.GameObjects\00.Camera\02.Event\01.Peppermint_Gimmick\01.Crane</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Dynamic_Crane.h">
+      <Filter>03.GameObjects\01.Environment\02.Dynamic\01.Crane</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1116,7 +1125,7 @@
       <Filter>01.GameManager\03.UiManager</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Camera_Saber_Appear.cpp">
-      <Filter>03.GameObjects\00.Camera\02.Event\99.01.Saber_Appear</Filter>
+      <Filter>03.GameObjects\00.Camera\02.Event\99.Saber_Appear %28Not Used%29</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Ui_Fight_Logo.cpp">
       <Filter>03.GameObjects\10.UI\03.Fight</Filter>
@@ -1184,9 +1193,6 @@
     <ClCompile Include="..\Private\Korsica_Wind.cpp">
       <Filter>03.GameObjects\05.Projectile\01.Korsica_Wind</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Camera_Peppermint_Gimmick.cpp">
-      <Filter>03.GameObjects\00.Camera\02.Event\02.Peppermint_Gimmick</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Ui_Hud.cpp">
       <Filter>03.GameObjects\10.UI\00.HUD\00.Player</Filter>
     </ClCompile>
@@ -1202,9 +1208,6 @@
     <ClCompile Include="..\Private\Dynamic.cpp">
       <Filter>03.GameObjects\01.Environment\02.Dynamic\00.Dynamic</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Dynamic_Crane.cpp">
-      <Filter>03.GameObjects\01.Environment\02.Dynamic\01.Crane</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Dynamic_Switch.cpp">
       <Filter>03.GameObjects\01.Environment\02.Dynamic\02.Switch</Filter>
     </ClCompile>
@@ -1213,6 +1216,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\ImGui_Window_Mid_Dynamic.cpp">
       <Filter>97.ImGui\01.Windows\01.Mid\04.Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Peppermint_Gimmick_Aim.cpp">
+      <Filter>03.GameObjects\00.Camera\02.Event\01.Peppermint_Gimmick\00.Aim</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Peppermint_Gimmick_Crane.cpp">
+      <Filter>03.GameObjects\00.Camera\02.Event\01.Peppermint_Gimmick\01.Crane</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Dynamic_Crane.cpp">
+      <Filter>03.GameObjects\01.Environment\02.Dynamic\01.Crane</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

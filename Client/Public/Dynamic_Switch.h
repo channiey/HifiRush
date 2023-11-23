@@ -43,7 +43,7 @@ public:
 protected:
 	virtual HRESULT			Set_On() override;
 	virtual HRESULT			Set_Off() override;
-	virtual void			Check_Progress() override;
+	virtual void			Check_Progress(_double fTimeDelta) override;
 
 protected:
 	HRESULT					Ready_Components();

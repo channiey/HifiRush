@@ -104,7 +104,7 @@ HRESULT CDynamic_Switch::Set_Off()
 	return S_OK;
 }
 
-void CDynamic_Switch::Check_Progress()
+void CDynamic_Switch::Check_Progress(_double fTimeDelta)
 {
 }
 
