@@ -523,23 +523,23 @@
     <Filter Include="03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\01.Idle">
       <UniqueIdentifier>{9b11053e-bff6-4b0d-b1c3-08215b3c1051}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\02.Move">
-      <UniqueIdentifier>{891f54e7-6eed-49c1-a977-75bd81d7eb3a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\02.Act">
+    <Filter Include="03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\03.Act">
       <UniqueIdentifier>{f418e206-d2fc-4a72-83f7-2369d5910fef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\02.Act\00.Appear">
+    <Filter Include="03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\03.Act\00.NonCombat">
       <UniqueIdentifier>{d8f4cd77-d10a-4b14-8b21-37946ebfffcd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\02.Act\01.Damaged">
+    <Filter Include="03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\03.Act\01.Damaged">
       <UniqueIdentifier>{0905665a-54ca-4e38-b072-54ea49d776fe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\02.Act\02.Dead">
+    <Filter Include="03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\03.Act\02.Dead">
       <UniqueIdentifier>{015a93e6-1c58-4523-bc4f-9b483f140a4f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\02.Act\03.Attack">
+    <Filter Include="03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\03.Act\03.Attack">
       <UniqueIdentifier>{41f46c30-5b6b-4174-8be4-f17e8f44963b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\02.Move">
+      <UniqueIdentifier>{891f54e7-6eed-49c1-a977-75bd81d7eb3a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -918,6 +918,30 @@
     <ClInclude Include="..\Public\Gunner.h">
       <Filter>03.GameObjects\03.Character\01.Enemy\02.Gunner\00.Model</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\TriggerSection_C.h">
+      <Filter>03.GameObjects\09.Trigger\Trigger_Battle\02.Section_C</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Gunner_NonCombat.h">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\03.Act\00.NonCombat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Gunner_Idle.h">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\01.Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Gunner_Move.h">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\02.Move</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Gunner_Damaged.h">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\03.Act\01.Damaged</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Gunner_Attack.h">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\03.Act\03.Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Gunner_Dead.h">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\03.Act\02.Dead</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Gunner_Base.h">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\00.Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -1282,6 +1306,30 @@
     </ClCompile>
     <ClCompile Include="..\Private\Gunner.cpp">
       <Filter>03.GameObjects\03.Character\01.Enemy\02.Gunner\00.Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TriggerSection_C.cpp">
+      <Filter>03.GameObjects\09.Trigger\Trigger_Battle\02.Section_C</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Gunner_Attack.cpp">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\03.Act\03.Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Gunner_Base.cpp">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\00.Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Gunner_Damaged.cpp">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\03.Act\01.Damaged</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Gunner_Dead.cpp">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\03.Act\02.Dead</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Gunner_Idle.cpp">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\01.Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Gunner_Move.cpp">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\02.Move</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Gunner_NonCombat.cpp">
+      <Filter>03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\03.Act\00.NonCombat</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

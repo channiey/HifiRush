@@ -6,7 +6,15 @@
 #include "EngineInstance.h"
 #include "Animation.h"
 
+#include "State_Gunner_Idle.h"
+#include "State_Gunner_Move.h"
+#include "State_Gunner_NonCombat.h"
+#include "State_Gunner_Move.h"
+#include "State_Gunner_Attack.h"
+#include "State_Gunner_Damaged.h"
+#include "State_Gunner_Dead.h"
 
+#include "Util_String.h"
 CGunner::CGunner(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CEnemy(pDevice, pContext)
 {
@@ -63,9 +71,7 @@ void CGunner::Set_State(const OBJ_STATE& eState)
 	__super::Set_State(eState);
 
 	if (OBJ_STATE::STATE_ACTIVE == eState)
-	{
-		m_pStateMachineCom->Set_State(StateNames_GU[STATE_APPEAR_GU]);
-	}
+		m_pStateMachineCom->Set_State(StateNames_GU[STATE_NONECOMBAT]);
 }
 
 HRESULT CGunner::Ready_Components()
@@ -102,17 +108,27 @@ HRESULT CGunner::Ready_StateMachine()
 
 	/* Idle */
 	{
-		
+		pState = CState_Gunner_Idle::Create(m_pStateMachineCom, StateNames_GU[STATE_IDLE_GU], this);
+		if (FAILED(m_pStateMachineCom->Add_State(pState)))
+			return E_FAIL;
 	}
 
 	/* Move */
 	{
-	
+		pState = CState_Gunner_Move::Create(m_pStateMachineCom, StateNames_GU[STATE_MOVE_GU], this);
+		if (FAILED(m_pStateMachineCom->Add_State(pState)))
+			return E_FAIL;
 	}
 
 	/* Act */
 	{
-	
+		pState = CState_Gunner_NonCombat::Create(m_pStateMachineCom, StateNames_GU[STATE_NONECOMBAT], this);
+		if (FAILED(m_pStateMachineCom->Add_State(pState)))
+			return E_FAIL;
+
+		pState = CState_Gunner_Attack::Create(m_pStateMachineCom, StateNames_GU[STATE_ATTACK_GU], this);
+		if (FAILED(m_pStateMachineCom->Add_State(pState)))
+			return E_FAIL;
 	}
 
 	return S_OK;

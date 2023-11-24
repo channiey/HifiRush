@@ -4,7 +4,7 @@
 BEGIN(Engine)
 
 #define MAX_MODEL_TRANSFORMS	600 
-#define MAX_MODEL_KEYFRAMES		400 
+#define MAX_MODEL_KEYFRAMES		500 
 
 #define DF_PL_TIME				1.f
 #define DF_TW_TIME				0.1f

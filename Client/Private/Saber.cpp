@@ -53,10 +53,6 @@ void CSaber::Tick(_double fTimeDelta)
 void CSaber::LateTick(_double fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
-
-	/*CModel::TweenDesc desc = m_pModelCom->Get_TweenDesc();
-	cout << desc.cur.iAnimIndex << "\t" << desc.next.iAnimIndex << "\t"
-		<< desc.cur.iCurFrame << "\t" << desc.next.iCurFrame << endl;*/
 }
 
 HRESULT CSaber::Render()

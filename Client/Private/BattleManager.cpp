@@ -81,10 +81,13 @@ HRESULT CBattleManager::Remove_Trigger(const wstring strTriggerTag)
 
 HRESULT CBattleManager::Ready_Pool()
 {
- 	if (FAILED(ENGINE_INSTANCE->Reserve_Pool(LEVEL_ID::LV_STAGE_01, LayerNames[LAYER_ENEMY], L"Enemy_Saber", 5)))
+ 	if (FAILED(ENGINE_INSTANCE->Reserve_Pool(LEVEL_ID::LV_STAGE_01, LayerNames[LAYER_ENEMY], L"Enemy_Saber", 3)))
 		return E_FAIL;
 
 	if (FAILED(ENGINE_INSTANCE->Reserve_Pool(LEVEL_ID::LV_STAGE_01, LayerNames[LAYER_ENEMY], L"Enemy_Blader", 1)))
+		return E_FAIL;
+
+	if (FAILED(ENGINE_INSTANCE->Reserve_Pool(LEVEL_ID::LV_STAGE_01, LayerNames[LAYER_ENEMY], L"Enemy_Gunner", 3)))
 		return E_FAIL;
 	
 	return S_OK;

@@ -14,6 +14,7 @@
 
 #include "Saber.h"
 #include "Blader.h"
+#include "Gunner.h"
 
 /* Weapon */
 #include "Weapon.h"
@@ -66,6 +67,7 @@
 /* Trigger */
 #include "TriggerSection_A.h"
 #include "TriggerSection_B.h"
+#include "TriggerSection_C.h"
 
 CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: m_pDevice(pDevice)
@@ -510,6 +512,11 @@ HRESULT CLoader::Load_Prototype()
 			CBlader::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+		/* For.Prototype_GameObject_Enemy_Gunner */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Enemy_Gunner"),
+			CGunner::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 		/* For.Prototype_GameObject_Trigger_Dummy */
 		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Trigger_Dummy"),
 			CTriggerDummy::Create(m_pDevice, m_pContext))))
@@ -523,6 +530,11 @@ HRESULT CLoader::Load_Prototype()
 		/* For.Prototype_GameObject_Trigger_Section_B */
 		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Trigger_Section_B"),
 			CTriggerSection_B::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Trigger_Section_C */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Trigger_Section_C"),
+			CTriggerSection_C::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For.Prototype_GameObject_Weapon_Blader_Arm */
