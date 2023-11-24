@@ -99,6 +99,14 @@ const _bool CPlayerController::Is_Controll(const PLAYER_TYPE eType)
 	return FALSE;
 }
 
+const _bool CPlayerController::Is_Player(const PLAYER_TYPE eType)
+{
+	if (PLAYER_TYPE::TYPEEND <= eType)
+		return FALSE;
+
+	return (nullptr != m_tPlayerDesc[eType].pPlayer) ? TRUE : FALSE;
+}
+
 CCharacter* CPlayerController::Get_Player(const PLAYER_TYPE& eType)
 {
 	if (PLAYER_TYPE::TYPEEND <= eType)

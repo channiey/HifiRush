@@ -300,6 +300,17 @@ void CChai::Quick_Test()
 			m_pNavMeshAgentCom->Set_CurIndex(iIndex);
 		}
 	}
+	else if (ENGINE_INSTANCE->Key_Down('P'))
+	{
+		const Vec3 vPos = { 93.f, -4.7f, 64.f };
+		const _int iIndex = CNavMesh::GetInstance()->Find_Cell(vPos);
+
+		if (-1 != iIndex)
+		{
+			m_pTransformCom->Set_Position(vPos, TRUE);
+			m_pNavMeshAgentCom->Set_CurIndex(iIndex);
+		}
+	}
 	else if (ENGINE_INSTANCE->Key_Down('Y'))
 	{
 		CUiManager::GetInstance()->On_Dialouge(0, L"다들 준비 됐어?");

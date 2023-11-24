@@ -282,6 +282,12 @@ HRESULT CLoader::Load_Prototype()
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Blader", PivotMatrix))))
 			return E_FAIL;
 
+		/* For.Prototype_Component_Model_Gunner */
+		PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.0125f);
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Gunner"),
+			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Gunner", PivotMatrix))))
+			return E_FAIL;
+
 		/* For.Prototype_Component_Model_Dynamaic_Crane */
 		PivotMatrix = Matrix::CreateScale(0.01f);
 		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Crane"),

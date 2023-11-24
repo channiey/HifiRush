@@ -44,6 +44,7 @@ public:
 	const PLAYER_DESC	Get_PlayerDesc(const PLAYER_TYPE& eType);
 
 	const _bool		Is_Controll(const PLAYER_TYPE eType);
+	const _bool		Is_Player(const PLAYER_TYPE eType);
 
 	HRESULT			Add_Player(CCharacter* pCharacter, const PLAYER_TYPE& eType);
 
