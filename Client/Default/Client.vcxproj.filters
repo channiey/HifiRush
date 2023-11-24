@@ -508,6 +508,9 @@
     <Filter Include="03.GameObjects\00.Camera\02.Event\02.Macaron_Gimmick\00.Wall">
       <UniqueIdentifier>{3ed0956f-6f65-4cbe-b761-5044c22fc3e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.GameObjects\01.Environment\02.Dynamic\04.Bridge">
+      <UniqueIdentifier>{ecfd3831-e6e4-4e7b-8616-910c9375ee91}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -879,6 +882,9 @@
     <ClInclude Include="..\Public\Camera_Macaron_Gimmick_Wall.h">
       <Filter>03.GameObjects\00.Camera\02.Event\02.Macaron_Gimmick\00.Wall</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Dynamic_Bridge.h">
+      <Filter>03.GameObjects\01.Environment\02.Dynamic\04.Bridge</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -1237,6 +1243,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Camera_Macaron_Gimmick_Wall.cpp">
       <Filter>03.GameObjects\00.Camera\02.Event\02.Macaron_Gimmick\00.Wall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Dynamic_Bridge.cpp">
+      <Filter>03.GameObjects\01.Environment\02.Dynamic\04.Bridge</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

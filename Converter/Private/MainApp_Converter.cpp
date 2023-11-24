@@ -111,34 +111,25 @@ HRESULT CMainApp_Converter::Convert_Weapon()
 HRESULT CMainApp_Converter::Convert_SelectiveModel()
 {
 
-	/*{
+	{
 		const MODEL_TYPE	type = MODEL_TYPE::ANIM;
 		const string		savePath = "Environment/Dynamic/";
-		const string		fileName = "AutoDoor";
-		shared_ptr<CConverter> converter = make_shared<CConverter>();
-		if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
-			ASSERT_LOG();
-	}*/
-
-
-	{
-		const MODEL_TYPE	type = MODEL_TYPE::STATIC;
-		const string		savePath = "Environment/Custom/";
-		const string		fileName = "Wall_Macaron_Broken";
+		const string		fileName = "Bridge";
 		shared_ptr<CConverter> converter = make_shared<CConverter>();
 		if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
 			ASSERT_LOG();
 	}
 
 
-	{
+
+	/*{
 		const MODEL_TYPE	type = MODEL_TYPE::STATIC;
 		const string		savePath = "Environment/Custom/";
 		const string		fileName = "Wall_Macaron_UnBroken";
 		shared_ptr<CConverter> converter = make_shared<CConverter>();
 		if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
 			ASSERT_LOG();
-	}
+	}*/
 
 
 
