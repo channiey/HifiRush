@@ -57,16 +57,13 @@ void CCamera_Follow::Tick(_double fTimeDelta)
 	if (!m_pCameraCom->Is_TargetObj() || !m_pCameraCom->Is_LookAtObj())
 		return;
 
-	__super::Tick(fTimeDelta);
 
 	m_pCameraCom->Update(fTimeDelta);
 
-#ifdef _DEBUG
-	if (!CImGui_Manager::GetInstance()->Is_ClickedWindow())// && !ENGINE_INSTANCE->Is_LerpCam())
+	if (!CImGui_Manager::GetInstance()->Is_ClickedWindow() && m_bCanMove && !m_pCameraCom->Is_Shake())
 		Move(fTimeDelta);
-#else
-	Move(fTimeDelta);
-#endif // _DEBUG
+
+	__super::Tick(fTimeDelta);
 }
 
 void CCamera_Follow::LateTick(_double fTimeDelta)

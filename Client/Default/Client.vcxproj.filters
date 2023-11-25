@@ -945,6 +945,9 @@
     <ClInclude Include="..\Public\State_Gunner_Base.h">
       <Filter>03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\00.Base</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\State_Chai_SpecialAttack.h">
+      <Filter>03.GameObjects\03.Character\00.Player\02.Models\00.Chai\States\03.Act\04.Special</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -1333,6 +1336,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\State_Gunner_NonCombat.cpp">
       <Filter>03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\03.Act\00.NonCombat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Chai_SpecialAttack.cpp">
+      <Filter>03.GameObjects\03.Character\00.Player\02.Models\00.Chai\States\03.Act\04.Special</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

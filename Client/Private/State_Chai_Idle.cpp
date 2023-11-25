@@ -78,8 +78,17 @@ const wstring CState_Chai_Idle::Check_Transition()
 	}
 	else if (Input::Attack())
 	{
-		if(!CImGui_Manager::GetInstance()->Is_ClickedWindow())
-			return StateNames_CH[STATE_ATTACK_CH];
+		if (!CImGui_Manager::GetInstance()->Is_ClickedWindow())
+		{
+			if (Input::Special())// && m_pChai->Get_ChaiDesc().Is_Full_ReverbGuage())
+			{
+				return StateNames_CH[STATE_SPECIALATTACK_CH];
+			}
+			else
+			{
+				return StateNames_CH[STATE_ATTACK_CH];
+			}
+		}
 	}
 	else if (Input::Parry())
 	{

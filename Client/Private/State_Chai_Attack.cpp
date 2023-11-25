@@ -80,7 +80,6 @@ const wstring CState_Chai_Attack::Tick(const _double& fTimeDelta)
 
 	if (m_bThrowGuitar)
 	{
-
 		return m_strName;
 	}
 
@@ -342,6 +341,10 @@ void CState_Chai_Attack::Detect_AttackCollision()
 
 				/* 넉백 */
 				KnockBack(dynamic_cast<CCharacter*>(pEnemy));
+
+				/* 리버브 게이지 증가 */
+				if(1 <= m_pChai->m_tFightDesc.iStep)
+					m_pChai->m_tChaiDesc.Add_ReverbGuage();
 			}
 		}
 	}

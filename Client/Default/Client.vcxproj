@@ -210,6 +210,7 @@
     <ClInclude Include="..\Public\Peppermint_Gun.h" />
     <ClInclude Include="..\Public\PlayerController.h" />
     <ClInclude Include="..\Public\Projectile.h" />
+    <ClInclude Include="..\Public\State_Chai_SpecialAttack.h" />
     <ClInclude Include="..\Public\State_Gunner_Attack.h" />
     <ClInclude Include="..\Public\State_Gunner_Base.h" />
     <ClInclude Include="..\Public\State_Gunner_Damaged.h" />
@@ -365,6 +366,7 @@
     <ClCompile Include="..\Private\Peppermint_Gun.cpp" />
     <ClCompile Include="..\Private\PlayerController.cpp" />
     <ClCompile Include="..\Private\Projectile.cpp" />
+    <ClCompile Include="..\Private\State_Chai_SpecialAttack.cpp" />
     <ClCompile Include="..\Private\State_Gunner_Attack.cpp" />
     <ClCompile Include="..\Private\State_Gunner_Base.cpp" />
     <ClCompile Include="..\Private\State_Gunner_Damaged.cpp" />

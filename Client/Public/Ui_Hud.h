@@ -4,7 +4,7 @@
 
 BEGIN(Client)
 
-class CCharacter;
+class CChai;
 
 class CUi_Hud final : public CUi
 {
@@ -58,13 +58,13 @@ private:
 
 private:
 	void			Drop(_double fTimeDelta);
-	void			Set_Player();
+	void			Set_Chai();
 
 private:
 	LERP_FLOAT_DESC	m_tLerpDesc;
 	_bool			m_bMax = FALSE;
 
-	CCharacter*		m_pPlayer = nullptr;
+	CChai*			m_pChai = nullptr;
 
 
 public:

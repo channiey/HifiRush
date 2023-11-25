@@ -71,9 +71,9 @@ const _bool Input::Interact()
 	return ENGINE_INSTANCE->Key_Down('D');
 }
 
-const _bool Input::Magnet()
+const _bool Input::Special()
 {
-	return ENGINE_INSTANCE->Key_Down('Q');
+	return ENGINE_INSTANCE->Key_Pressing('Q');
 }
 
 const _bool Input::Move()

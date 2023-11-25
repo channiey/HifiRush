@@ -56,7 +56,6 @@ void CCamera_Macaron_Gimmick_Wall::Tick(_double fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	m_pCameraCom->Update(fTimeDelta);
-
 }
 
 void CCamera_Macaron_Gimmick_Wall::LateTick(_double fTimeDelta)

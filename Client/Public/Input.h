@@ -24,12 +24,12 @@ public:
 
 
 	/* Action */
+	static const _bool Special();
 	static const _bool Move();
 	static const _bool Jump();
 
 	static const _bool Parry();
 	static const _bool Interact();
-	static const _bool Magnet();
 
 	static const _bool Attack();
 	static const _bool LBtn();

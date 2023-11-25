@@ -164,6 +164,7 @@ public:
 
 	const _bool&			Is_StopAnimation() const { return m_bStopAnim; }
 	void					Stop_Animation(const _bool& bStop) { m_bStopAnim = bStop; }
+	HRESULT					Set_RootPositon_StartFromZero(const _uint& iAnimIndex); /* 루트포지션을 원점으로 만든다. (이니셜라이즈에서 호출)*/
 
 private: 
     HRESULT					Read_BoneData(const string& strPath);
@@ -185,9 +186,10 @@ private:
 	void					Set_RootPosition_Tween(); /* 트윈 중 */
 	void					Set_RootPosition(); /* 트윈 없는 싱글 애니메이션 */
 
+
 	void					Check_SoundEvent();
 
-	class CAnimation* Find_Animation(const string& strName);
+	class CAnimation*		Find_Animation(const string& strName);
 
 private: 
 	TYPE						m_eModelType = TYPE_END;

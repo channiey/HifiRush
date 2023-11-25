@@ -67,6 +67,9 @@ void CCamera::Change_LookAtObj(CGameObject* pObj)
 
 void CCamera::Shake_Camera(const _float& fShakeTime, const _int& iIntensity)
 {
+	if (m_tShakeDesc.bActive)
+		return;
+
 	m_tShakeDesc.bActive	= TRUE;
 	m_tShakeDesc.fAcc		= 0.f;
 	m_tShakeDesc.fShakeTime = fShakeTime;

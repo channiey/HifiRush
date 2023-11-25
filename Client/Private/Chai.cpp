@@ -19,11 +19,12 @@
 #include "State_Chai_Dash.h"
 #include "State_Chai_Jump.h"
 
-/* Attack */
+/* Act */
 #include "State_Chai_Attack.h"
 #include "State_Chai_Damaged.h"
 #include "State_Chai_Parry.h"
 #include "State_Chai_ParryEvent.h"
+#include "State_Chai_SpecialAttack.h"
 
 #ifdef _DEBUG
 #include "ImGui_Manager.h"
@@ -89,9 +90,19 @@ HRESULT CChai::Render()
 HRESULT CChai::Ready_Components()
 {
 	/* Com_Model */
-	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Model_Chai"),
+	{
+		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Model_Chai"),
 		ComponentNames[COM_MODEL], (CComponent**)&m_pModelCom)))
 		return E_FAIL;
+
+		/* 루트 포지션 원점으로 초기화 */
+		{
+			if (FAILED(m_pModelCom->Set_RootPositon_StartFromZero((_uint)ATK_SPECIAL_00)))
+				return E_FAIL;
+			if (FAILED(m_pModelCom->Set_RootPositon_StartFromZero((_uint)ATK_HORIZONTAL_TOPBLADE_03)))
+				return E_FAIL;
+		}
+	}
 
 	/* Com_Rigidbody*/
 	CRigidbody::RIGIDBODY_TYPE eType = CRigidbody::RIGIDBODY_TYPE::DYNAMIC;
@@ -166,6 +177,10 @@ HRESULT CChai::Ready_StateMachine()
 			return E_FAIL;
 
 		pState = CState_Chai_ParryEvent::Create(m_pStateMachineCom, StateNames_CH[STATE_PARRYEVENT_CH], this);
+		if (FAILED(m_pStateMachineCom->Add_State(pState)))
+			return E_FAIL;
+
+		pState = CState_Chai_SpecialAttack::Create(m_pStateMachineCom, StateNames_CH[STATE_SPECIALATTACK_CH], this);
 		if (FAILED(m_pStateMachineCom->Add_State(pState)))
 			return E_FAIL;
 	}

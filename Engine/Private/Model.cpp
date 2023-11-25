@@ -1211,6 +1211,28 @@ void CModel::Set_RootPosition()
 	m_pOwner->Get_Transform()->Set_RootPos(Get_AnimBonePos(BONE_ROOT));
 }
 
+HRESULT CModel::Set_RootPositon_StartFromZero(const _uint& iAnimIndex)
+{
+	if (m_AnimTransforms.size() <= iAnimIndex)
+		return E_FAIL;
+
+	CAnimation* pAnim			= Get_Animation(iAnimIndex);
+	const _uint iMaxFrame		= pAnim->Get_MaxFrameCount();
+	BONE_TYPE	eBoneType		= BONE_ROOT;
+
+	const Vec4	vStartOffset	= Vec4(m_AnimTransforms[iAnimIndex].transforms[0][eBoneType].m[3]);
+
+	for (_uint i = 0; i < iMaxFrame; i++)
+	{
+		Vec4 vRootOffSet = Vec4(m_AnimTransforms[iAnimIndex].transforms[i][eBoneType].m[3]);
+
+		vRootOffSet -= vStartOffset;
+		vRootOffSet.w = 1.f;
+
+		memcpy(&m_AnimTransforms[iAnimIndex].transforms[i][eBoneType].m[3], &vRootOffSet, sizeof(Vec4));
+	}
+}
+
 void CModel::Check_SoundEvent()
 {
 	if (-1 != m_TweenDesc.cur.tSoundEventDesc.eSoundID)

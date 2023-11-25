@@ -47,15 +47,14 @@ enum ANIM_CH
 
 	ATK_DOUBLE_00,
 	ATK_UPPER,
-	ATK_HIGHJUMP,
-	ATK_SPECIAL_00, // ch0000_atk-guitar_100
+	ATK_HIGHJUMP, // ch0000_atk-guitar_060 점프해서 내려 찍기
+	ATK_SPECIAL_00, // ch0000_atk-guitar_100 // HIBIKI
 	ATK_BACKSPIN_00,
 	ATK_WAIT,
 	ATK_NONE_00,
-	ATK_VERTICAL_TOPBLADE_00, // ch0000_atk-guitar_240
+	ATK_HORIZONTAL_TOPBLADE_03, // ch0000_atk-guitar_240 //  PICK SLIDE
 	ATK_FINAL,
-	ATK_HORIZONTAL_SPECIAL_03, // ch0000_atk-sp_020
-
+	ATK_VERTICAL_TOPBLADE_00, // ch0000_atk-sp_020 // POWER CHORD
 	
 	RIDE_BOAD_00,
 	RIDE_BOAD_01,
@@ -134,6 +133,7 @@ enum STATE_CH
 	STATE_DAMAGED_CH,
 	STATE_PARRY_CH,
 	STATE_PARRYEVENT_CH,
+	STATE_SPECIALATTACK_CH,
 	STATE_END_CH
 };
 
@@ -147,11 +147,47 @@ static const wstring StateNames_CH[STATE_CH::STATE_END_CH]
 	L"DAMAGED",
 	L"PARRY",
 	L"PARRYEVENT"
+	L"SPECIALATTACK"
 };
 
 class CChai final : public CCharacter
 {
 	enum CHILD_TYPE	{ CH_WEAPON_RIGHT, CH_END };
+
+public:
+	typedef struct tagChaiDesc
+	{
+		/* Reverb Guage */
+		const _float	fMaxReverbGuage		= 100.f;
+		const _float	fDeltaReverbGuage	= 10.f;
+		_float			fCurReverbGuage		= 0.f;
+		_bool			bFullReverbGuage	= FALSE;
+
+		void Add_ReverbGuage(const _float& fMul = 1.f)
+		{
+			if (bFullReverbGuage)
+				return;
+
+			fCurReverbGuage += fDeltaReverbGuage * fMul;
+			if (fMaxReverbGuage < fCurReverbGuage)
+			{
+				fCurReverbGuage = fMaxReverbGuage;
+				bFullReverbGuage = TRUE;
+			}
+
+		}
+		void Clear_ReverbGuage()
+		{
+			fCurReverbGuage = 0.f;
+			bFullReverbGuage = FALSE;
+		}
+		const _float Get_ReverbGuage_Percent()
+		{
+			return fCurReverbGuage / fMaxReverbGuage;
+		}
+		const _bool& Is_Full_ReverbGuage() const { return bFullReverbGuage; }
+
+	}CHAI_DESC;
 
 private:
 	CChai(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -170,13 +206,14 @@ private:
 	virtual HRESULT		Ready_Chilren() override;
 	virtual HRESULT		Ready_StateMachine() override;
 
-private:
+public:
 	virtual void		OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild = -1) override;
 	virtual void		OnCollision_Stay(CCollider* pCollider, const _int& iIndexAsChild = -1) override;
 	virtual void		OnCollision_Exit(CCollider* pCollider, const _int& iIndexAsChild = -1) override;
 
 public:
 	virtual void		Damaged(CCharacter* pCharacter, const ATK_TYPE& eAtkType) override;
+	CHAI_DESC			Get_ChaiDesc() const { return m_tChaiDesc; }
 
 public:
 	static CChai*		Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -185,8 +222,10 @@ public:
 
 private:
 	HRESULT				Set_OtherPlayer();
-
 	void				Quick_Test();
+
+private:
+	CHAI_DESC			m_tChaiDesc;
 
 private:
 	friend class CState_Chai_Base;
@@ -201,6 +240,7 @@ private:
 	friend class CState_Chai_Damaged;
 	friend class CState_Chai_Parry;
 	friend class CState_Chai_ParryEvent;
+	friend class CState_Chai_SpecialAttack;
 };
 
 END
