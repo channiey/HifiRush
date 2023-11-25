@@ -229,50 +229,67 @@ HRESULT CModel::Update_Anim(_double fTimeDelta)
 			Vec4 vNextAnimRoot = Vec4(Get_AnimBoneLocal(m_TweenDesc.next.iAnimIndex, m_TweenDesc.next.iCurFrame, BONE_ROOT).m[3]);
 			CTransform* pTransform = m_pOwner->Get_Transform();
 
-			if (m_bCurRootAnim)
+			if (m_bCurSaveRoot)
 			{
-				if (m_bNextRootAnim)
+				if (m_bCurRootAnim)
 				{
-					if (Vec4::UnitW != vCurAnimRoot && Vec4::UnitW != vNextAnimRoot)
-						vRootPos = Get_AnimBonePos(BONE_ROOT);
+					if (m_bNextRootAnim)
+					{
+						if (Vec4::UnitW != vCurAnimRoot && Vec4::UnitW != vNextAnimRoot)
+						{
+							if (m_bCurRootLerp)
+								vRootPos = Get_AnimBonePos(BONE_ROOT);
+							else
+								vRootPos = vCurAnimRoot;
+						}
+						else
+						{
+							if (Vec4::UnitW == vCurAnimRoot)
+								vRootPos = vNextAnimRoot;
+							else if (Vec4::UnitW == vNextAnimRoot)
+								vRootPos = vCurAnimRoot;
+						}
+					}
 					else
 					{
-						if (Vec4::UnitW == vCurAnimRoot)
-							vRootPos = vNextAnimRoot;
-						else if (Vec4::UnitW == vNextAnimRoot)
-							vRootPos = vCurAnimRoot;
+						vRootPos = vCurAnimRoot;
 					}
 				}
 				else
 				{
-					vRootPos = vCurAnimRoot;
+					if (m_bNextRootAnim)
+					{
+						vRootPos = vNextAnimRoot;
+
+					}
+					else
+					{
+						vRootPos;
+
+					}
 				}
+				pTransform->Set_RootPos(vRootPos);
+				Vec4 vPos = pTransform->Get_FinalPosition();
+				pTransform->Set_Position(vPos, TRUE);
+				pTransform->Set_RootPos(Vec4::Zero);
 			}
 			else
-			{
-				if (m_bNextRootAnim)
-				{
-					vRootPos = vNextAnimRoot;
-
-				}
-				else
-				{
-					vRootPos;
-
-				}
-			}
-			pTransform->Set_RootPos(vRootPos);
-			Vec4 vPos = pTransform->Get_FinalPosition();
-			pTransform->Set_Position(vPos, TRUE);
-			pTransform->Set_RootPos(Vec4::Zero);
+				Set_RootPosition_Tween();
 
 			m_TweenDesc.cur.ClearAnim();
 			m_TweenDesc.cur = m_TweenDesc.next;
 			m_TweenDesc.ClearNextAnim();
 
 			m_bFinishTween = TRUE;
+
 			m_bCurRootAnim = m_bNextRootAnim;
+			m_bCurRootLerp = m_bNextRootLerp;
+			m_bCurSaveRoot = m_bNextSaveRoot;
+
 			m_bNextRootAnim = TRUE;
+			m_bNextRootLerp = TRUE;
+			m_bNextSaveRoot = TRUE;
+
 			return S_OK;
 		}
 		else
@@ -334,7 +351,7 @@ HRESULT CModel::Bind_Material(CShader * pShader, _uint iMaterialIndex, aiTexture
 	return m_Materials[iMaterialIndex].pTexture[eTextureType]->Bind_ShaderResource(pShader, pConstantName, 0);
 }
 
-void CModel::Set_Animation(const _uint& iAnimIndex, const _double& dSpeed, const _float& fTweenDuration, const _bool bRootAnim)
+void CModel::Set_Animation(const _uint& iAnimIndex, const _double& dSpeed, const _float& fTweenDuration, const _bool bRootAnim, const _bool bRootLerp, const _bool bSaveRootPos)
 {
 	/* 최초 1회 실행  */
 	if (-1 == m_TweenDesc.cur.iAnimIndex)
@@ -343,19 +360,24 @@ void CModel::Set_Animation(const _uint& iAnimIndex, const _double& dSpeed, const
 		Get_Animation(m_TweenDesc.cur.iAnimIndex)->Set_SecondPerFrame(dSpeed);
 		
 		m_bCurRootAnim = bRootAnim;
+		m_bCurRootLerp = bRootLerp;
+		m_bCurSaveRoot = bSaveRootPos;
+
 		return;
 	}
 	m_TweenDesc.ClearNextAnim();
 
 	m_TweenDesc.next.iAnimIndex = iAnimIndex % Get_AnimationCount();
 	m_TweenDesc.fTweenDuration = fTweenDuration;
-	m_bNextRootAnim = bRootAnim;
 
-	//Get_Animation(m_TweenDesc.cur.iAnimIndex)->Set_SecondPerFrame(dSpeed);
+	m_bNextRootAnim = bRootAnim;
+	m_bNextRootLerp = bRootLerp;
+	m_bNextSaveRoot = bSaveRootPos;
+
 	Get_Animation(m_TweenDesc.next.iAnimIndex)->Set_SecondPerFrame(dSpeed);
 }
 
-void CModel::Set_Animation(CAnimation* pAnim, const _double& dSpeed, const _float& fTweenDuration, const _bool bRootAnim)
+void CModel::Set_Animation(CAnimation* pAnim, const _double& dSpeed, const _float& fTweenDuration, const _bool bRootAnim, const _bool bRootLerp, const _bool bSaveRootPos)
 {
 	if (nullptr == pAnim) 
 		return;
@@ -367,7 +389,10 @@ void CModel::Set_Animation(CAnimation* pAnim, const _double& dSpeed, const _floa
 	{
 		m_TweenDesc.cur.iAnimIndex = iAnimIndex % Get_AnimationCount();
 		Get_Animation(m_TweenDesc.cur.iAnimIndex)->Set_SecondPerFrame(dSpeed);
+		
 		m_bCurRootAnim = bRootAnim;
+		m_bCurRootLerp = bRootLerp;
+		m_bCurSaveRoot = bSaveRootPos;
 
 		return;
 	}
@@ -375,9 +400,11 @@ void CModel::Set_Animation(CAnimation* pAnim, const _double& dSpeed, const _floa
 
 	m_TweenDesc.next.iAnimIndex = iAnimIndex % Get_AnimationCount();
 	m_TweenDesc.fTweenDuration = fTweenDuration;
-	m_bNextRootAnim = bRootAnim;
 
-	//Get_Animation(m_TweenDesc.cur.iAnimIndex)->Set_SecondPerFrame(dSpeed);
+	m_bNextRootAnim = bRootAnim;
+	m_bNextRootLerp = bRootLerp;
+	m_bNextSaveRoot = bSaveRootPos;
+
 	Get_Animation(m_TweenDesc.next.iAnimIndex)->Set_SecondPerFrame(dSpeed);
 }
 
@@ -1142,8 +1169,13 @@ void CModel::Set_RootPosition_Tween()
 	{
 		if (m_bNextRootAnim)
 		{
-			if(Vec4::UnitW != vCurAnimRoot && Vec4::UnitW != vNextAnimRoot)
-				vRootPos = Get_AnimBonePos(BONE_ROOT);
+			if (Vec4::UnitW != vCurAnimRoot && Vec4::UnitW != vNextAnimRoot)
+			{
+				if(m_bCurRootLerp)
+					vRootPos = Get_AnimBonePos(BONE_ROOT);
+				else
+					vRootPos = vCurAnimRoot;
+			}
 			else if(Vec4::UnitW == vCurAnimRoot)
 				vRootPos = vNextAnimRoot;
 			else if (Vec4::UnitW == vNextAnimRoot)

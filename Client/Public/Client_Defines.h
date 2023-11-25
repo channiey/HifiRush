@@ -10,7 +10,7 @@ namespace Client
 
 #define FPS_LIMIT		66.f
 	    
-#define CONSOLE_LOG     1
+#define CONSOLE_LOG     0
 #define CURSOL_LOCK     0
 #define CURSOL_HIDE     0
 #define OPEN_IMGUI      0

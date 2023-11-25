@@ -32,7 +32,7 @@ HRESULT CState_Gunner_Attack::Enter()
 	{
 		m_eAttackType = ATTACK_TYPE::AIR;
 		pAnimation = m_pModel->Get_Animation(AnimNames_GU[ATK_JUMP_INTRO_GU]);
-		m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME, FALSE);
+		m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME, TRUE, TRUE, FALSE);
 	}
 
 
@@ -64,11 +64,10 @@ const wstring CState_Gunner_Attack::Check_Transition()
 	const string	strCurAnimName = m_pModel->Get_CurAnimation()->Get_Name();
 	const _int		iCurFrame = m_pModel->Get_TweenDesc().cur.iCurFrame;
 
-	if (AnimNames_GU[ANIM_GU::ATK_GROUND_INTRO_GU] == strCurAnimName)
+	if (AnimNames_GU[ANIM_GU::ATK_GROUND_INTRO_GU] == strCurAnimName) /* Ground */
 	{
 		if (20 == iCurFrame)
 		{
-			//m_pModel->Clear_Animation();
 			CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_GU[ATK_GROUND_WAIT_GU]);
 			m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME);
 		}
@@ -77,7 +76,6 @@ const wstring CState_Gunner_Attack::Check_Transition()
 	{
 		if (25 == iCurFrame)
 		{
-			//m_pModel->Clear_Animation();
 			CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_GU[ATK_GROUND_SHOOT_GU]);
 			m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME);
 		}
@@ -90,22 +88,20 @@ const wstring CState_Gunner_Attack::Check_Transition()
 			return StateNames_GU[STATE_GU::STATE_IDLE_GU];
 		}
 	}
-	else if (AnimNames_GU[ANIM_GU::ATK_JUMP_INTRO_GU] == strCurAnimName)
+	else if (AnimNames_GU[ANIM_GU::ATK_JUMP_INTRO_GU] == strCurAnimName) /* Jump */
 	{
 		if (20 == iCurFrame)
 		{
-			m_pModel->Clear_Animation();
 			CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_GU[ATK_JUMP_WAIT_GU]);
-			m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME, FALSE);
+			m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME, TRUE, TRUE, FALSE);
 		}
 	}
 	else if (AnimNames_GU[ANIM_GU::ATK_JUMP_WAIT_GU] == strCurAnimName)
 	{
 		if (25 == iCurFrame)
 		{
-			m_pModel->Clear_Animation();
 			CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_GU[ATK_JUMP_SHOOT_GU]);
-			m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME, FALSE);
+			m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME, TRUE, TRUE, TRUE);
 		}
 	}
 	else if (AnimNames_GU[ANIM_GU::ATK_JUMP_SHOOT_GU] == strCurAnimName)

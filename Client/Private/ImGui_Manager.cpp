@@ -83,32 +83,32 @@ HRESULT CImGui_Manager::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* p
 
 	/* Create Sub_Window_Nav */
 	pWindow = CImGui_Window_Mid_Nav::Create();
-	NULL_CHECK_RETURN(pWindow, TRUE);
-	pWindow->Set_Active(FALSE);
+	NULL_CHECK_RETURN(pWindow, E_FAIL);
+	pWindow->Set_Active(bOpen);
 	m_pMainWindows.push_back(pWindow);
 
 	/* Create Sub_Window_Cam */
 	pWindow = CImGui_Window_Mid_Cam::Create();
-	NULL_CHECK_RETURN(pWindow, TRUE);
-	pWindow->Set_Active(FALSE);
+	NULL_CHECK_RETURN(pWindow, E_FAIL);
+	pWindow->Set_Active(bOpen);
 	m_pMainWindows.push_back(pWindow);
 
 	/* Create Sub_Window_Trigger */
 	pWindow = CImGui_Window_Mid_Trigger::Create();
-	NULL_CHECK_RETURN(pWindow, TRUE);
-	pWindow->Set_Active(FALSE);
+	NULL_CHECK_RETURN(pWindow, E_FAIL);
+	pWindow->Set_Active(bOpen);
 	m_pMainWindows.push_back(pWindow);
 
 	/* Create Sub_Window_Ui */
 	pWindow = CImGui_Window_Mid_Ui::Create();
-	NULL_CHECK_RETURN(pWindow, TRUE);
-	pWindow->Set_Active(FALSE);
+	NULL_CHECK_RETURN(pWindow, E_FAIL);
+	pWindow->Set_Active(bOpen);
 	m_pMainWindows.push_back(pWindow);
 
 	/* Create Sub_Window_Dynamic */
 	pWindow = CImGui_Window_Mid_Dynamic::Create();
-	NULL_CHECK_RETURN(pWindow, TRUE);
-	pWindow->Set_Active(FALSE);
+	NULL_CHECK_RETURN(pWindow, E_FAIL);
+	pWindow->Set_Active(bOpen);
 	m_pMainWindows.push_back(pWindow);
 
 
@@ -116,7 +116,7 @@ HRESULT CImGui_Manager::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* p
 	/* Create Main_Window Demo */
 	pWindow = CImGui_Window_Main_Demo::Create();
 	NULL_CHECK_RETURN(pWindow, E_FAIL);
-	pWindow->Set_Active(FALSE);
+	pWindow->Set_Active(bOpen);
 	m_pMainWindows.push_back(pWindow);
 	
 	

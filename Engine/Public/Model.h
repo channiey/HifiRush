@@ -139,11 +139,10 @@ public:
 	const TYPE&				Get_Type() const { return m_eModelType; }
 
 public:
-	void					Set_Animation(const _uint& iAnimIndex, const _double& dSpeed = DF_PL_TIME, const _float& fTweenDuration = DF_TW_TIME, const _bool bRootAnim = TRUE);
-	void					Set_Animation(class CAnimation* pAnim, const _double& dSpeed = DF_PL_TIME, const _float& fTweenDuration = DF_TW_TIME, const _bool bRootAnim = TRUE);
+	void					Set_Animation(const _uint& iAnimIndex, const _double& dSpeed = DF_PL_TIME, const _float& fTweenDuration = DF_TW_TIME, const _bool bRootAnim = TRUE, const _bool bRootLerp = TRUE, const _bool bSaveRootPos = TRUE);
+	void					Set_Animation(class CAnimation* pAnim, const _double& dSpeed = DF_PL_TIME, const _float& fTweenDuration = DF_TW_TIME, const _bool bRootAnim = TRUE, const _bool bRootLerp = TRUE, const _bool bSaveRootPos = TRUE);
 	void					Set_SoundEvent(_uint iFrame, _uint eSoundID, _uint eChannelID, float fVolume);
 	void					Set_SoundEvent(SOUND_EVENT_DESC desc);
-
 	void					Set_AnimationSpeed(const _double& dSpeed);
 
 	void					Set_BoneIndex(const BONE_TYPE& eType, const _int iIndex);
@@ -205,8 +204,15 @@ private:
 
 	_bool						m_bRootAnimation = TRUE;
 
-	_bool						m_bCurRootAnim = TRUE;
+	_bool						m_bCurRootAnim	= TRUE;
 	_bool						m_bNextRootAnim = TRUE;
+
+	_bool						m_bCurRootLerp	= TRUE;
+	_bool						m_bNextRootLerp = TRUE;
+
+	_bool						m_bCurSaveRoot	= TRUE;
+	_bool						m_bNextSaveRoot = TRUE;
+	
 
 	_bool						m_bFinishAnimation = FALSE;
 	_bool						m_bFinishTween = FALSE;

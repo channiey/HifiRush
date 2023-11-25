@@ -25,15 +25,9 @@ HRESULT CState_Gunner_Idle::Enter()
 {
 	CAnimation*		pAnimation = m_pModel->Get_Animation(AnimNames_GU[ANIM_GU::IDLE_GU]);
 
-	const _int iRand = rand() % 2;
-	{
-		if(0 == iRand)
-			m_fTimeLimit = (rand() % 10) * 0.1f + 1.5f;
-		else
-			m_fTimeLimit = (rand() % 10) * 0.1f + 0.5f;
-	}
+	m_fTimeLimit = (rand() % 10) * 0.1f + 1.5f;
 
-	m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame() * 0.8f, DF_TW_TIME);
+	m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME);
 
 	return S_OK;
 }
@@ -63,7 +57,7 @@ const wstring CState_Gunner_Idle::Check_Transition()
 	if (m_pGunner->m_tFightDesc.bDamaged)
 		return StateNames_GU[STATE_DAMAGED_GU];
 
-	if (!m_pModel->Is_Tween())
+	if (!m_pModel->Is_Tween() && m_fTimeAcc <= m_fTimeLimit)
 	{
 		const wstring strNextState = Choice_NextState();
 
