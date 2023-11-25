@@ -321,6 +321,7 @@ namespace Client
 		UI_PEPPERMINT_TARGET,
 		UI_PEPPERMINT_MARK,
 
+		UI_SPECIALATTACK,
 		UI_END
 	};
 	static const wchar_t* UINames[UI_ID::UI_END]
@@ -333,7 +334,9 @@ namespace Client
 
 		L"Ui_Peppermint_Aim",
 		L"Ui_Peppermint_Target",
-		L"Ui_Peppermint_Mark"
+		L"Ui_Peppermint_Mark",
+
+		L"Ui_Special_Attack"
 	};
 
 

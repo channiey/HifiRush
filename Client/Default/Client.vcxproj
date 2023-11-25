@@ -301,6 +301,7 @@
     <ClInclude Include="..\Public\Ui.h" />
     <ClInclude Include="..\Public\UiManager.h" />
     <ClInclude Include="..\Public\Ui_Gimmick_Peppermint_Mark.h" />
+    <ClInclude Include="..\Public\Ui_SpecialAttack.h" />
     <ClInclude Include="..\Public\Weapon.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
@@ -459,6 +460,7 @@
     <ClCompile Include="..\Private\Ui.cpp" />
     <ClCompile Include="..\Private\UiManager.cpp" />
     <ClCompile Include="..\Private\Ui_Gimmick_Peppermint_Mark.cpp" />
+    <ClCompile Include="..\Private\Ui_SpecialAttack.cpp" />
     <ClCompile Include="..\Private\Weapon.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">

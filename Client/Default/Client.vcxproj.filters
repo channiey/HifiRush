@@ -544,6 +544,9 @@
     <Filter Include="03.GameObjects\03.Character\00.Player\02.Models\00.Chai\States\03.Act\04.Special">
       <UniqueIdentifier>{5a5f624c-1362-4cc9-8a6c-351d0b88c939}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.GameObjects\10.UI\04.SpecialAttack">
+      <UniqueIdentifier>{a2efae79-8de0-4b0d-8410-28d1f2ec4f11}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -948,6 +951,9 @@
     <ClInclude Include="..\Public\State_Chai_SpecialAttack.h">
       <Filter>03.GameObjects\03.Character\00.Player\02.Models\00.Chai\States\03.Act\04.Special</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Ui_SpecialAttack.h">
+      <Filter>03.GameObjects\10.UI\04.SpecialAttack</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -1339,6 +1345,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\State_Chai_SpecialAttack.cpp">
       <Filter>03.GameObjects\03.Character\00.Player\02.Models\00.Chai\States\03.Act\04.Special</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Ui_SpecialAttack.cpp">
+      <Filter>03.GameObjects\10.UI\04.SpecialAttack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

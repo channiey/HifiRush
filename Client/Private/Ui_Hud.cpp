@@ -98,11 +98,15 @@ HRESULT CUi_Hud::Render()
 			{
 				if (LOGO_SPECIAL == i)
 					m_pShaderCom->Begin(0);
+				else
+					continue;
 			}
 			else
 			{
 				if(LOGO_NORMAL == i)
 					m_pShaderCom->Begin(0);
+				else
+					continue;
 			}
 		}
 		else if (HEALTH_EMPTY <= i && HEALTH_DAMAGED >= i)

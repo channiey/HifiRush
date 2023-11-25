@@ -1,6 +1,9 @@
 #include "..\Default\stdafx.h"
 #include "State_Chai_SpecialAttack.h"
 
+#include "UiManager.h"
+#include "Ui_SpecialAttack.h"
+
 CState_Chai_SpecialAttack::CState_Chai_SpecialAttack()
 {
 }
@@ -19,17 +22,23 @@ HRESULT CState_Chai_SpecialAttack::Initialize(CStateMachine* pStateMachine, cons
 
 HRESULT CState_Chai_SpecialAttack::Enter()
 {
+	if (FAILED(Set_UI()))
+		return E_FAIL;
+
 	CAnimation* pAnimation = nullptr;
 
 	if (Input::LBtn())
 	{
 		m_eAtkType = SPC_ATK_TYPE::HIBIKI;
 		pAnimation = m_pModel->Get_Animation(ANIM_CH::ATK_SPECIAL_00);
+		m_pUI->Set_On(TRUE);
+				
 	}
 	else if (Input::RBtn())
 	{
 		m_eAtkType = SPC_ATK_TYPE::POWER_CHORD;
 		pAnimation = m_pModel->Get_Animation(ANIM_CH::ATK_HORIZONTAL_TOPBLADE_03);
+		m_pUI->Set_On(FALSE);
 	}
 
 
@@ -64,7 +73,9 @@ void CState_Chai_SpecialAttack::Exit()
 
 	m_eAtkType = SPC_ATK_TYPE::TYPEEND;
 
-	m_pChai->Get_ChaiDesc().Clear_ReverbGuage();
+	m_pChai->m_tChaiDesc.Clear_ReverbGuage();
+
+	m_pUI->Set_Off();
 }
 
 const wstring CState_Chai_SpecialAttack::Check_Transition()
@@ -191,6 +202,22 @@ void CState_Chai_SpecialAttack::Update_Camera(const _double& fTimeDelta)
 	default:
 		break;
 	}
+}
+
+HRESULT CState_Chai_SpecialAttack::Set_UI()
+{
+	if (nullptr == m_pUI)
+	{
+		CUi* pUI = CUiManager::GetInstance()->Get_UI(UI_ID::UI_SPECIALATTACK);
+		
+		if (nullptr == pUI)	return E_FAIL;
+		
+		m_pUI = dynamic_cast<CUi_SpecialAttack*>(pUI);
+
+		if (nullptr == m_pUI)	return E_FAIL;
+	}
+
+	return S_OK;
 }
 
 CState_Chai_SpecialAttack* CState_Chai_SpecialAttack::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

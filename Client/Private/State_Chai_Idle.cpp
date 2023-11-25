@@ -80,7 +80,7 @@ const wstring CState_Chai_Idle::Check_Transition()
 	{
 		if (!CImGui_Manager::GetInstance()->Is_ClickedWindow())
 		{
-			if (Input::Special())// && m_pChai->Get_ChaiDesc().Is_Full_ReverbGuage())
+			if (Input::Special() && m_pChai->Get_ChaiDesc().Is_Full_ReverbGuage())
 			{
 				return StateNames_CH[STATE_SPECIALATTACK_CH];
 			}

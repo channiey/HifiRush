@@ -2,6 +2,9 @@
 #include "State_Chai_Base.h"
 
 BEGIN(Client)
+
+class CUi_SpecialAttack;
+
 class CState_Chai_SpecialAttack final : public CState_Chai_Base
 {
 	enum class SPC_ATK_TYPE
@@ -31,9 +34,11 @@ public:
 private:
 	void				KnockBack(CCharacter* pTarget);
 	void				Update_Camera(const _double& fTimeDelta);
+	HRESULT				Set_UI();
 
 private:
 	SPC_ATK_TYPE		m_eAtkType = SPC_ATK_TYPE::TYPEEND;
+	CUi_SpecialAttack*	m_pUI = nullptr;
 
 public:
 	static CState_Chai_SpecialAttack* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);
