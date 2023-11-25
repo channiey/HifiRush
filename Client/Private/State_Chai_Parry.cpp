@@ -36,7 +36,7 @@ HRESULT CState_Chai_Parry::Enter()
 		break;
 	}
 	CAnimation*		pAnimation		= m_pChai->Get_Model()->Get_Animation(eAnimID);
-	const _double	fTimePerFrame	= 1 / pAnimation->Get_TickPerSecond() * 0.3f;
+	const _double	fTimePerFrame	= 1 / pAnimation->Get_TickPerSecond() * 0.6f;
 
 	m_pChai->Get_Model()->Set_Animation(eAnimID, fTimePerFrame, 0.05f);
 

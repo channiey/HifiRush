@@ -66,7 +66,7 @@ static const string AnimNames_GU[ANIM_GU::ANIM_END_GU]
 	"em0200_atk-gun_021",
 	"em0200_atk-gun_022",
 
-	"em0200_dmg-high_500",
+	"em0200_dmg-die_100",
 
 	"em0200_idle_000",
 
@@ -142,6 +142,7 @@ public:
 
 public:
 	virtual void		Set_State(const OBJ_STATE& eState) override;
+	virtual void		Damaged(CCharacter* pCharacter, const ATK_TYPE& eAtkType = ATK_TYPE::LIGHT) override;
 
 private:
 	HRESULT				Ready_Components();

@@ -541,6 +541,9 @@
     <Filter Include="03.GameObjects\03.Character\01.Enemy\02.Gunner\01.States\02.Move">
       <UniqueIdentifier>{891f54e7-6eed-49c1-a977-75bd81d7eb3a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.GameObjects\03.Character\00.Player\02.Models\00.Chai\States\03.Act\04.Special">
+      <UniqueIdentifier>{5a5f624c-1362-4cc9-8a6c-351d0b88c939}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

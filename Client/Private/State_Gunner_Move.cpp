@@ -42,24 +42,7 @@ void CState_Gunner_Move::Exit()
 const wstring CState_Gunner_Move::Check_Transition()
 {
 	if (m_pGunner->m_tFightDesc.bDamaged)
-	{
 		return StateNames_GU[STATE_DAMAGED_GU];
-	}
-
-	/* 최소 거리 필터링 먼저 */
-	if (Get_Distance() <= m_fTargetMinDist)
-	{
-		const wstring strNextState = Choice_NextState();
-
-		if (strNextState == m_strName)
-		{
-			Set_NextAnimation();
-
-			return m_strName;
-		}
-		else
-			return strNextState;
-	}
 
 	if (!m_pModel->Is_Tween() && m_pModel->Is_Quater_Animation())
 		return StateNames_GU[STATE_IDLE_GU];
@@ -81,15 +64,14 @@ void CState_Gunner_Move::Set_Direction()
 	}
 	else
 	{
-		_int iDir = rand() % 4;
-
-		switch (iDir)
+		const _int iRand = rand() % 2;
+		if (0 == iRand)
 		{
-		case 0: m_eDirType = DIR_TYPE::FORWARD; break;
-		case 1: m_eDirType = DIR_TYPE::BACKWARD; break;
-		case 2: m_eDirType = DIR_TYPE::LEFT; break;
-		case 3: m_eDirType = DIR_TYPE::RIGHT; break;
-		default: m_eDirType = DIR_TYPE::FORWARD; break;
+			m_eDirType = DIR_TYPE::LEFT; 
+		}
+		else
+		{
+			m_eDirType = DIR_TYPE::RIGHT;
 		}
 	}
 }

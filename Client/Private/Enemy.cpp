@@ -135,14 +135,14 @@ void CEnemy::OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild)
 {
 	CGameObject*	pGameObject = pCollider->Get_Owner();
 
-	///* 플레이어 무기 맞음 */
-	//if (LayerNames[LAYER_WEAPON] == pGameObject->Get_LayerTag())
-	//{
-	//	if (LayerNames[LAYER_PLAYER] == pGameObject->Get_Parent()->Get_LayerTag())
-	//	{
-	//		Damaged(dynamic_cast<CCharacter*>(pGameObject->Get_Parent()));
-	//	}
-	//}
+	/* 플레이어 무기 맞음 */
+	if (LayerNames[LAYER_WEAPON] == pGameObject->Get_LayerTag())
+	{
+		if (LayerNames[LAYER_PLAYER] == pGameObject->Get_Parent()->Get_LayerTag())
+		{
+			Damaged(dynamic_cast<CCharacter*>(pGameObject->Get_Parent()));
+		}
+	}
 }
 
 void CEnemy::OnCollision_Stay(CCollider* pCollider, const _int& iIndexAsChild)

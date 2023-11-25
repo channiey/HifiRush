@@ -281,7 +281,7 @@ HRESULT CState_Peppermint_Gimmick::Shoot()
 	{
 		tDesc.pOwner = m_pPeppermint;
 
-		tDesc.fSpeedPerSec = 60.f;
+		tDesc.fSpeedPerSec = 70.f;
 
 		CModel::BONE_TYPE		eBoneType = CModel::BONE_SOCKET_RIGHT;
 		CPeppermint::CHILD_TYPE eChildType = CPeppermint::CHILD_TYPE::WP_RIGHT;

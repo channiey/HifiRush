@@ -48,7 +48,15 @@ HRESULT CState_Chai_Attack::Enter()
 	}
 	else if (Input::MBtn())
 	{
-		
+		CAnimation* pAnim = m_pModel->Get_Animation(ATK_THROW_GUITAR_00);
+
+		m_pModel->Set_Animation(pAnim, pAnim->Get_TickPerFrame() * 0.75f, DF_TW_TIME * 0.5f);
+
+		m_bThrowGuitar = TRUE;
+
+		m_pChai->Get_Child(CChai::CHILD_TYPE::CH_WEAPON_RIGHT)->Get_Collider_Sphere()->Set_Active(TRUE);
+
+		return S_OK;
 	}
 
 	m_tAttackDesc.tSoundEventDesc.eSoundID = EFC_CHAI_ATTACK_COMBO_00;
@@ -69,6 +77,12 @@ const wstring CState_Chai_Attack::Tick(const _double& fTimeDelta)
 {
 	if (!CPlayerController::GetInstance()->Is_Controll(PLAYER_TYPE::CHAI))
 		return StateNames_CH[STATE_IDLE_CH];
+
+	if (m_bThrowGuitar)
+	{
+
+		return m_strName;
+	}
 
 	Set_AttackDesc();
 	Detect_AttackCollision();
@@ -129,10 +143,23 @@ void CState_Chai_Attack::Exit()
 	//m_pChai->Get_Child(CChai::CHILD_TYPE::CH_WEAPON_RIGHT)->Get_Collider_Sphere()->Set_Active(FALSE);
 
 	m_pChai->m_tFightDesc.iStep = -1;
+
+
+	if (m_bThrowGuitar)
+	{
+		m_pChai->Get_Child(CChai::CHILD_TYPE::CH_WEAPON_RIGHT)->Get_Collider_Sphere()->Set_Active(FALSE);
+		m_bThrowGuitar = FALSE;
+	}
 }
 
 const wstring CState_Chai_Attack::Check_Transition()
 {
+	if (m_bThrowGuitar && !m_pModel->Is_Tween())
+	{
+		if(80 <= m_pModel->Get_TweenDesc().cur.iCurFrame)
+			return StateNames_CH[STATE_IDLE_CH];
+	}
+
 	if (!m_tAttackDesc.bFirstAttack)
 		return m_strName;
 

@@ -56,6 +56,8 @@ void CGunner::Tick(_double fTimeDelta)
 void CGunner::LateTick(_double fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
+	Debug_Animation();
 }
 
 HRESULT CGunner::Render()
@@ -72,6 +74,14 @@ void CGunner::Set_State(const OBJ_STATE& eState)
 
 	if (OBJ_STATE::STATE_ACTIVE == eState)
 		m_pStateMachineCom->Set_State(StateNames_GU[STATE_NONECOMBAT]);
+}
+
+void CGunner::Damaged(CCharacter* pCharacter, const ATK_TYPE& eAtkType)
+{
+	if (m_tPhysicsDesc.bJump)
+		return;
+
+	__super::Damaged(pCharacter, eAtkType);
 }
 
 HRESULT CGunner::Ready_Components()
@@ -129,6 +139,14 @@ HRESULT CGunner::Ready_StateMachine()
 		pState = CState_Gunner_Attack::Create(m_pStateMachineCom, StateNames_GU[STATE_ATTACK_GU], this);
 		if (FAILED(m_pStateMachineCom->Add_State(pState)))
 			return E_FAIL;
+
+		pState = CState_Gunner_Damaged::Create(m_pStateMachineCom, StateNames_GU[STATE_DAMAGED_GU], this);
+		if (FAILED(m_pStateMachineCom->Add_State(pState)))
+			return E_FAIL;
+
+		pState = CState_Gunner_Dead::Create(m_pStateMachineCom, StateNames_GU[STATE_DEAD_GU], this);
+		if (FAILED(m_pStateMachineCom->Add_State(pState)))
+			return E_FAIL;
 	}
 
 	return S_OK;
@@ -136,17 +154,17 @@ HRESULT CGunner::Ready_StateMachine()
 
 void CGunner::OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild)
 {
-	m_pStateMachineCom->Get_CurState()->OnCollision_Enter(pCollider, iIndexAsChild);
+	__super::OnCollision_Enter(pCollider, iIndexAsChild);
 }
 
 void CGunner::OnCollision_Stay(CCollider* pCollider, const _int& iIndexAsChild)
 {
-	m_pStateMachineCom->Get_CurState()->OnCollision_Stay(pCollider, iIndexAsChild);
+	__super::OnCollision_Stay(pCollider, iIndexAsChild);
 }
 
 void CGunner::OnCollision_Exit(CCollider* pCollider, const _int& iIndexAsChild)
 {
-	m_pStateMachineCom->Get_CurState()->OnCollision_Exit(pCollider, iIndexAsChild);
+	__super::OnCollision_Exit(pCollider, iIndexAsChild);
 }
 
 CGunner* CGunner::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

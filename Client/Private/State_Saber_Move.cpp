@@ -52,7 +52,7 @@ const wstring CState_Saber_Move::Check_Transition()
 	}
 
 	/* 최소 거리 필터링 먼저 */
-	if (Get_Distance() <= m_fTargetMinDist)
+	/*if (Get_Distance() <= m_fTargetMinDist)
 	{
 		const wstring strNextState = Choice_NextState();
 
@@ -64,7 +64,7 @@ const wstring CState_Saber_Move::Check_Transition()
 		}
 		else
 			return strNextState;
-	}
+	}*/
 
 	/* 일반 필터링 시작 */
 	if (m_pModel->Is_Tween())

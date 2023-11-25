@@ -29,14 +29,7 @@ HRESULT CState_Gunner_Base::Initialize(CStateMachine* pStateMachine, const wstri
 
 const wstring CState_Gunner_Base::Choice_NextState()
 {
-	vector<_float> Probabilities = { 0.5f, 0.1f, 0.3f }; // move idle attack
-
-	if (Get_Distance() <= m_fTargetMinDist)
-	{
-		Probabilities[0] = 0.7f;
-		Probabilities[1] = 0.1f;
-		Probabilities[2] = 0.2f;
-	}
+	vector<_float> Probabilities = { 0.6f, 0.4f }; // move idle attack
 
 	random_device			rd;
 	mt19937					gen(rd());
@@ -55,17 +48,14 @@ const wstring CState_Gunner_Base::Choice_NextState()
 	break;
 	case 1:
 	{
-		eNextState = STATE_IDLE_GU;
-	}
-	break;
-	case 2:
-	{
 		if (StateNames_GU[STATE_ATTACK_GU] != m_pStateMachine->Get_CurState()->Get_Name())
 			eNextState = STATE_ATTACK_GU;
+		else
+			eNextState = STATE_MOVE_GU;
 	}
 	break;
 	default:
-		eNextState = STATE_IDLE_GU;
+		eNextState = STATE_MOVE_GU;
 		break;
 	}
 
@@ -89,7 +79,7 @@ void CState_Gunner_Base::Look_Target()
 		vLook = m_pGunner->Get_Transform()->Get_State(CTransform::STATE_LOOK);
 
 		vDir = m_pGunner->m_tFightDesc.pTarget->Get_Transform()->Get_FinalPosition()
-			- m_pGunner->Get_Transform()->Get_FinalPosition();
+				- m_pGunner->Get_Transform()->Get_FinalPosition();
 
 		vLook.y = vDir.y = 0.f;
 

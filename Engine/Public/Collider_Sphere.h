@@ -12,7 +12,7 @@ protected:
 	virtual ~CCollider_Sphere() = default;
 
 public:
-	BoundingSphere Get_Collider() { return *m_pSphere; }
+	BoundingSphere	Get_Collider() { return *m_pSphere; }
 
 public:
 	virtual HRESULT		Initialize_Prototype(CCollider::TYPE eColliderType);

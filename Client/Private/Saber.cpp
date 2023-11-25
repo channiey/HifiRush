@@ -155,7 +155,6 @@ void CSaber::OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild)
 {
 	__super::OnCollision_Enter(pCollider, iIndexAsChild);
 
-	CGameObject* pGameObject = pCollider->Get_Owner();
 }
 
 void CSaber::OnCollision_Stay(CCollider* pCollider, const _int& iIndexAsChild)

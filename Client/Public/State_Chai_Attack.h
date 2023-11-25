@@ -60,6 +60,7 @@ private:
 private:
 	ATTACK_DESC			m_tAttackDesc	= {};
 	ATTACK_DESC			m_tAttackDescForCol = {};
+	_bool				m_bThrowGuitar = FALSE;
 
 
 public:

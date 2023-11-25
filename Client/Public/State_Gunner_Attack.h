@@ -28,8 +28,19 @@ public:
 public:
 	const wstring	Check_Transition() override;
 
+public:
+	const Ray		Get_Ray() const { return m_Ray; }
+	const _bool		Is_Set_Ray() const { return m_bSetRay; }
+
+private:
+	void			Detect_AttackCollision();
+	void			Set_Ray();
+
 private:
 	ATTACK_TYPE		m_eAttackType = ATTACK_TYPE::TYPEEND;
+
+	Ray				m_Ray;
+	_bool			m_bSetRay;
 
 public:
 	static CState_Gunner_Attack* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);

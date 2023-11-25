@@ -33,7 +33,7 @@ public:
 	void Exit() override;
 
 public:
-	const wstring Check_Transition() override;
+	const wstring	Check_Transition() override;
 	void				Detect_AttackCollision();
 
 private:
