@@ -153,7 +153,7 @@ void CState_Macaron_Gimmick::Check_Progress(const _double& fTimeDelta)
 
 					/* 카메라 FOV 보간 시작 */
 					ENGINE_INSTANCE->Get_CurCamera()->Get_Camera()->Lerp_Fov(
-						CamFov_Follow_MacaronGimmick * 0.85f,
+						CamFov_MacaronGimmick * 0.85f,
 						pAnim->Get_TickPerFrame() * 10 + DF_TW_TIME,
 						LERP_MODE::SMOOTHER_STEP
 					);
@@ -205,7 +205,7 @@ void CState_Macaron_Gimmick::Check_Progress(const _double& fTimeDelta)
 		{
 			/* 카메라 FOV 보간 시작 */
 			ENGINE_INSTANCE->Get_CurCamera()->Get_Camera()->Lerp_Fov(
-				CamFov_Follow_MacaronGimmick,
+				CamFov_MacaronGimmick,
 				0.5f,
 				LERP_MODE::SMOOTHER_STEP
 			);

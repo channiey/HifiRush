@@ -115,7 +115,7 @@ HRESULT CCamera_Peppermint_Gimmick_Aim::Ready_Components()
 	/* Com_Camera */
 	CCamera::PROJ_DESC desc;
 	{
-		desc.fFovy = CamFov_Follow_PeppermintGimmick;
+		desc.fFovy = CamFov_PeppermintGimmick;
 		desc.fAspect = g_iWinSizeX / (_float)g_iWinSizeY;
 		desc.fNear = 0.2f;
 		desc.fFar = 1000.0f;

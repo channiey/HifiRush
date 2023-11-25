@@ -7,7 +7,6 @@ class CState_Chai_SpecialAttack final : public CState_Chai_Base
 	enum class SPC_ATK_TYPE
 	{ 
 		HIBIKI, 
-		PICK_SLIDE, 
 		POWER_CHORD,
 		TYPEEND
 	};
@@ -31,6 +30,7 @@ public:
 
 private:
 	void				KnockBack(CCharacter* pTarget);
+	void				Update_Camera(const _double& fTimeDelta);
 
 private:
 	SPC_ATK_TYPE		m_eAtkType = SPC_ATK_TYPE::TYPEEND;

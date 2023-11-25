@@ -96,7 +96,7 @@ void CCamera_Macaron_Gimmick_Wall::Set_State(const OBJ_STATE& eState)
 
 		m_pTransformCom->Rotate(m_pTransformCom->Get_State(CTransform::STATE_LOOK), DEG2RAD(-5.f));
 
-		m_pCameraCom->Set_Fovy(CamFov_Follow_MacaronGimmick);
+		m_pCameraCom->Set_Fovy(CamFov_MacaronGimmick);
 	}
 	
 }
@@ -111,7 +111,7 @@ HRESULT CCamera_Macaron_Gimmick_Wall::Ready_Components()
 	/* Com_Camera */
 	CCamera::PROJ_DESC desc;
 	{
-		desc.fFovy = CamFov_Follow_MacaronGimmick;
+		desc.fFovy = CamFov_MacaronGimmick;
 		desc.fAspect = g_iWinSizeX / (_float)g_iWinSizeY;
 		desc.fNear = 0.2f;
 		desc.fFar = 1000.0f;

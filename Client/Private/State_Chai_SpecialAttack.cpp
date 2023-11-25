@@ -23,18 +23,13 @@ HRESULT CState_Chai_SpecialAttack::Enter()
 
 	if (Input::LBtn())
 	{
-		m_eAtkType = SPC_ATK_TYPE::POWER_CHORD;
-		pAnimation = m_pModel->Get_Animation(ANIM_CH::ATK_VERTICAL_TOPBLADE_00);
+		m_eAtkType = SPC_ATK_TYPE::HIBIKI;
+		pAnimation = m_pModel->Get_Animation(ANIM_CH::ATK_SPECIAL_00);
 	}
 	else if (Input::RBtn())
 	{
-		m_eAtkType = SPC_ATK_TYPE::PICK_SLIDE;
+		m_eAtkType = SPC_ATK_TYPE::POWER_CHORD;
 		pAnimation = m_pModel->Get_Animation(ANIM_CH::ATK_HORIZONTAL_TOPBLADE_03);
-	}
-	else if (Input::MBtn())
-	{
-		m_eAtkType = SPC_ATK_TYPE::HIBIKI;
-		pAnimation = m_pModel->Get_Animation(ANIM_CH::ATK_SPECIAL_00);
 	}
 
 
@@ -53,6 +48,7 @@ HRESULT CState_Chai_SpecialAttack::Enter()
 
 const wstring CState_Chai_SpecialAttack::Tick(const _double& fTimeDelta)
 {
+	Update_Camera(fTimeDelta);
 	
 	return m_strName;
 }
@@ -82,9 +78,6 @@ const wstring CState_Chai_SpecialAttack::Check_Transition()
 	{
 	case CState_Chai_SpecialAttack::SPC_ATK_TYPE::HIBIKI:
 	{
-		if(105 == iCurFrame)
-			ENGINE_INSTANCE->Shake_Camera(0.1f, 10);
-
 		if(120 == iCurFrame)
 			m_pChai->Get_Child(CChai::CHILD_TYPE::CH_WEAPON_RIGHT)->Get_Collider_Sphere()->Set_Active(FALSE);
 
@@ -92,25 +85,10 @@ const wstring CState_Chai_SpecialAttack::Check_Transition()
 			return StateNames_CH[STATE_CH::STATE_IDLE_CH];
 	}
 		break;
-	case CState_Chai_SpecialAttack::SPC_ATK_TYPE::PICK_SLIDE:
-	{
-		if (57 <= iCurFrame)
-		{
-			ENGINE_INSTANCE->Shake_Camera(0.1f, 10);
-			m_pChai->Get_Child(CChai::CHILD_TYPE::CH_WEAPON_RIGHT)->Get_Collider_Sphere()->Set_Active(FALSE);
-		}
-
-		if (95 <= iCurFrame)
-			return StateNames_CH[STATE_CH::STATE_IDLE_CH];
-	}	
-		break;
 	case CState_Chai_SpecialAttack::SPC_ATK_TYPE::POWER_CHORD:
 	{
 		if (80 <= iCurFrame)
-		{
-			ENGINE_INSTANCE->Shake_Camera(0.1f, 10);
 			m_pChai->Get_Child(CChai::CHILD_TYPE::CH_WEAPON_RIGHT)->Get_Collider_Sphere()->Set_Active(FALSE);
-		}
 
 		if (115 <= iCurFrame)
 			return StateNames_CH[STATE_CH::STATE_IDLE_CH];
@@ -138,6 +116,81 @@ void CState_Chai_SpecialAttack::KnockBack(CCharacter* pTarget)
 		vForce *= 10.f;
 
 	pTarget->Get_Rigidbody()->Add_Force(vForce, CRigidbody::FORCE_MODE::IMPULSE);
+}
+
+void CState_Chai_SpecialAttack::Update_Camera(const _double& fTimeDelta)
+{
+	if (m_pModel->Is_Tween())
+		return;
+
+	const _int iCurFrame = m_pModel->Get_TweenDesc().cur.iCurFrame;
+
+	CCamera* pCameraCom = ENGINE_INSTANCE->Get_Camera(CAMERA_ID::CAM_FOLLOW)->Get_Camera();
+
+	switch (m_eAtkType)
+	{
+	case CState_Chai_SpecialAttack::SPC_ATK_TYPE::HIBIKI:
+	{
+		if (70 == iCurFrame)
+		{
+			const _float fLerpTime = m_pModel->Get_CurAnimation()->Get_SecondPerFrame() * 25.f;
+			pCameraCom->Lerp_Fov(CamFov_Follow_Attack_Wide, fLerpTime, LERP_MODE::EASE_OUT);
+			pCameraCom->Lerp_Dist(CamDist_Follow_Attack_Wide, fLerpTime, LERP_MODE::EASE_OUT);
+		}
+
+		if (95 == iCurFrame)
+		{
+
+			const _float fLerpTime = m_pModel->Get_CurAnimation()->Get_SecondPerFrame() * 10.f;
+
+			pCameraCom->Lerp_Fov(CamFov_Follow_Default, fLerpTime, LERP_MODE::SMOOTHER_STEP);
+			pCameraCom->Lerp_Dist(CamDist_Follow_Default, fLerpTime, LERP_MODE::EASE_OUT);
+			//pCameraCom->Lerp_Fov(CamFov_Follow_Attack_Narrow, fLerpTime, LERP_MODE::EASE_IN);
+		}
+
+		//if (105 == iCurFrame)
+			//ENGINE_INSTANCE->Shake_Camera(0.15f, 10);
+
+		/*if (140 == iCurFrame)
+		{
+			pCameraCom->Lerp_Fov(CamFov_Follow_Default, 0.5f, LERP_MODE::SMOOTHER_STEP);
+			pCameraCom->Lerp_Dist(CamDist_Follow_Default, 0.5f, LERP_MODE::EASE_OUT);
+		}*/
+	}
+		break;
+	case CState_Chai_SpecialAttack::SPC_ATK_TYPE::POWER_CHORD:
+	{
+
+		if (8 == iCurFrame)
+		{
+			const _float fLerpTime = m_pModel->Get_CurAnimation()->Get_SecondPerFrame() * 20.f;
+			pCameraCom->Lerp_Fov(CamFov_Follow_Attack_Wide, fLerpTime, LERP_MODE::EASE_OUT);
+			pCameraCom->Lerp_Dist(CamDist_Follow_Attack_Wide, fLerpTime, LERP_MODE::EASE_OUT);
+		}
+
+		//if (70 == iCurFrame)
+		//{
+		//	const _float fLerpTime = m_pModel->Get_CurAnimation()->Get_SecondPerFrame() * 10.f;
+		//	//pCameraCom->Lerp_Fov(CamFov_Follow_Attack_Narrow, fLerpTime, LERP_MODE::EASE_IN);
+
+		//	pCameraCom->Lerp_Fov(CamFov_Follow_Default, fLerpTime, LERP_MODE::SMOOTHER_STEP);
+		//	pCameraCom->Lerp_Dist(CamDist_Follow_Default, fLerpTime, LERP_MODE::EASE_OUT);
+		//}
+
+		//if (80 <= iCurFrame)
+			//ENGINE_INSTANCE->Shake_Camera(0.15f, 10);
+	
+		if (110 == iCurFrame)
+		{
+			pCameraCom->Lerp_Fov(CamFov_Follow_Default, 0.5f, LERP_MODE::SMOOTHER_STEP);
+			pCameraCom->Lerp_Dist(CamDist_Follow_Default, 0.5f, LERP_MODE::EASE_OUT);
+
+		}
+	}
+		break;
+	default:
+		break;
+	}
 }
 
 CState_Chai_SpecialAttack* CState_Chai_SpecialAttack::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

@@ -147,13 +147,17 @@ namespace Client
 		L"Camera_Macaron_Gimmick_Wall"
 	};
 
-	static const _float CamFov_Follow_Default	= XMConvertToRadians(60.0f);
-	static const _float CamFov_Follow_Battle	= XMConvertToRadians(65.0f);
-	static const _float CamFov_Follow_Jump		= XMConvertToRadians(65.0f);
-	static const _float CamFov_Follow_PeppermintGimmick = XMConvertToRadians(40.0f);
-	static const _float CamFov_Follow_MacaronGimmick = XMConvertToRadians(45.0f);
+	static const _float CamFov_Follow_Default		= XMConvertToRadians(60.0f);
+	static const _float CamFov_Follow_Battle		= XMConvertToRadians(65.0f);
+	static const _float CamFov_Follow_Jump			= XMConvertToRadians(65.0f);
+	static const _float CamFov_Follow_Attack_Wide	= XMConvertToRadians(75.0f);
+	static const _float CamFov_Follow_Attack_Narrow = XMConvertToRadians(55.0f);
+
+	static const _float CamFov_PeppermintGimmick	= XMConvertToRadians(40.0f);
+	static const _float CamFov_MacaronGimmick		= XMConvertToRadians(45.0f);
 
 	static const _float CamDist_Follow_Default				= 6.5f;
+	static const _float CamDist_Follow_Attack_Wide			= 8.f;
 	static const _float CamDist_Follow_Battle				= 7.f;
 	static const _float CamDist_Follow_Jump					= 7.f;
 	static const _float CamDist_Follow_Final				= 12.f;
