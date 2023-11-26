@@ -547,6 +547,9 @@
     <Filter Include="03.GameObjects\10.UI\04.SpecialAttack">
       <UniqueIdentifier>{a2efae79-8de0-4b0d-8410-28d1f2ec4f11}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.GameObjects\01.Environment\02.Dynamic\05.AutoDoor">
+      <UniqueIdentifier>{d21c1cbd-6c80-48f9-a753-5c4dd2f67a01}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -954,6 +957,9 @@
     <ClInclude Include="..\Public\Ui_SpecialAttack.h">
       <Filter>03.GameObjects\10.UI\04.SpecialAttack</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Dynamic_AutoDoor.h">
+      <Filter>03.GameObjects\01.Environment\02.Dynamic\05.AutoDoor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -1348,6 +1354,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Ui_SpecialAttack.cpp">
       <Filter>03.GameObjects\10.UI\04.SpecialAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Dynamic_AutoDoor.cpp">
+      <Filter>03.GameObjects\01.Environment\02.Dynamic\05.AutoDoor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

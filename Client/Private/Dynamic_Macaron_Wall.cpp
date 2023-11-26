@@ -28,12 +28,6 @@ HRESULT CDynamic_Macaron_Wall::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	/*CAnimation* pAnim = m_pModelCom->Get_Animation(m_AnimNames[ANIM_MA_WALL::IDLE_MA_WALL]);
-
-	if (nullptr == pAnim) return E_FAIL;
-
-	m_pModelCom->Set_Animation(pAnim, pAnim->Get_TickPerFrame(), DF_TW_TIME);*/
-
 	return S_OK;
 }
 

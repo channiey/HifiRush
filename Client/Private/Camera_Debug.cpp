@@ -36,7 +36,7 @@ HRESULT CCamera_Debug::Initialize(void * pArg)
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float4(0.f, 10.f, -8.f, 1.f));
 	m_pTransformCom->LookAt(_float4(0.f, 0.f, 0.f, 1.f));
 
-	m_fSpeedPerSec = 30.f;
+	m_fSpeedPerSec = 60.f;
 
 	m_eState = CGameObject::STATE_UNACTIVE;
 

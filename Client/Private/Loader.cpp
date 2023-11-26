@@ -49,6 +49,7 @@
 #include "Dynamic_Switch.h"
 #include "Dynamic_Macaron_Wall.h"
 #include "Dynamic_Bridge.h"
+#include "Dynamic_AutoDoor.h"
 
 /* Trigger */
 #include "TriggerDummy.h"
@@ -333,7 +334,17 @@ HRESULT CLoader::Load_Prototype()
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Dynamic/Bridge", PivotMatrix))))
 			return E_FAIL;
 
+		/* For.Prototype_Component_Model_Custom_Prop_Door_A_L */
+		PivotMatrix = Matrix::CreateScale(0.01f);
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Prop_Door_A_L"),
+			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Custom/Prop_Door_A_L", PivotMatrix))))
+			return E_FAIL;
 
+		/* For.Prototype_Component_Model_Custom_Prop_Door_A_R */
+		PivotMatrix = Matrix::CreateScale(0.01f);
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Prop_Door_A_R"),
+			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Environment/Custom/Prop_Door_A_R", PivotMatrix))))
+			return E_FAIL;
 
 
 		/* For.Prototype_Component_Model_Chai_Guitar_Explore */
@@ -583,9 +594,15 @@ HRESULT CLoader::Load_Prototype()
 		/* For.Prototype_GameObject_Env_Dynamic_Macaron_Wall */
 		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Env_Dynamic_Macaron_Wall"), CDynamic_Macaron_Wall::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
+
 		/* For.Prototype_GameObject_Env_Dynamic_Bridge */
 		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Env_Dynamic_Bridge"), CDynamic_Bridge::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
+
+		/* For.Prototype_GameObject_Env_Dynamic_AutoDoor */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Env_Dynamic_AutoDoor"), CDynamic_AutoDoor::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 
 		/* For.Prototype_GameObject_Proto_Static */
 		{

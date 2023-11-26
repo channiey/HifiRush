@@ -195,6 +195,7 @@
     <ClInclude Include="..\Public\Chai_Guitar_Explore.h" />
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\Dynamic.h" />
+    <ClInclude Include="..\Public\Dynamic_AutoDoor.h" />
     <ClInclude Include="..\Public\Dynamic_Bridge.h" />
     <ClInclude Include="..\Public\Dynamic_Crane.h" />
     <ClInclude Include="..\Public\Dynamic_Macaron_Wall.h" />
@@ -352,6 +353,7 @@
     <ClCompile Include="..\Private\Chai_Guitar_Explore.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\Dynamic.cpp" />
+    <ClCompile Include="..\Private\Dynamic_AutoDoor.cpp" />
     <ClCompile Include="..\Private\Dynamic_Bridge.cpp" />
     <ClCompile Include="..\Private\Dynamic_Crane.cpp" />
     <ClCompile Include="..\Private\Dynamic_Macaron_Wall.cpp" />
