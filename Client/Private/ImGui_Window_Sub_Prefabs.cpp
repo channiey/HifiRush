@@ -29,10 +29,18 @@ void CImGui_Window_Sub_Prefabs::Show_Window()
 				&& L"" != m_pImGui_Manager->m_strIndex_CurLayer
 				&& nullptr != m_pImGui_Manager->m_pPrefabObj)
 			{
-				m_pEngineInstance->Add_GameObject(
+				CGameObject* pGameObject = m_pEngineInstance->Add_GameObject(
 					m_pImGui_Manager->m_iIndex_CurLevelID,
 					m_pImGui_Manager->m_strIndex_CurLayer,
 					m_pImGui_Manager->m_pPrefabObj->Get_Name());
+
+				if (nullptr != pGameObject)
+				{
+					Vec4 vPos = ENGINE_INSTANCE->Get_CurCamera()->Get_Transform()->Get_State(CTransform::STATE_LOOK).Normalized() * 25.f;
+					pGameObject->Get_Transform()->Set_Position(vPos.ZeroW() + ENGINE_INSTANCE->Get_CurCamera()->Get_Transform()->Get_FinalPosition());
+
+					m_pImGui_Manager->m_pCurObject = pGameObject;
+				}
 			}
 		}
 		ImGui::SameLine();

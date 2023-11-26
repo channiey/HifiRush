@@ -51,7 +51,7 @@ void CMacaron::Tick(_double fTimeDelta)
 
 void CMacaron::LateTick(_double fTimeDelta)
 {
-	__super::LateTick(fTimeDelta);
+ 	__super::LateTick(fTimeDelta);
 }
 
 HRESULT CMacaron::Render()

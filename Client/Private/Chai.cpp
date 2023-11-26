@@ -239,7 +239,7 @@ void CChai::Damaged(CCharacter* pCharacter, const ATK_TYPE& eAtkType)
 	/* 체력 및 사망 여부 검사 */
 	m_tFightDesc.bDamaged = TRUE;
 
-	m_tStatDesc.fCurHp -= (pCharacter->Get_StatDesc().fAd * 0.5f);
+	m_tStatDesc.fCurHp -= (pCharacter->Get_StatDesc().fAd * 0.25f);
 
 	if (m_tStatDesc.fCurHp <= 0)
 		m_tStatDesc.bDead = TRUE;
