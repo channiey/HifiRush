@@ -24,7 +24,7 @@ HRESULT CState_Gunner_Dead::Enter()
 
 	m_pModel->Set_Animation(pAnimation, fTimePerFrame, DF_TW_TIME);
 
-	//ENGINE_INSTANCE->Play_Sound(EFC_ENEMY_DAMAGED_00, ENEMY_SABER, 0.4f);
+	ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_ENEMY_DEAD_SPARK, CHANNEL_ID::ENEMY_GUNNER, 0.4f);
 
 	return S_OK;
 }
@@ -41,6 +41,7 @@ const wstring CState_Gunner_Dead::LateTick()
 
 void CState_Gunner_Dead::Exit()
 {
+	ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_ENEMY_DEAD_EXPLOSION, CHANNEL_ID::ENEMY_GUNNER, 0.4f);
 
 }
 

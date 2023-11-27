@@ -41,7 +41,7 @@ HRESULT CState_Gunner_Attack::Enter()
 		m_pGunner->m_tPhysicsDesc.bJump = TRUE;
 		m_fOriginHeight = m_pGunner->Get_Transform()->Get_FinalPosition().y;
 
-		ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_GUNNER_JUMP, CHANNEL_ID::ENEMY_GUNNER, 0.5f);
+		ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_GUNNER_JUMP, CHANNEL_ID::ENEMY_GUNNER, 0.3f);
 
 	}
 
@@ -113,6 +113,7 @@ const wstring CState_Gunner_Attack::Check_Transition()
 		{
 			CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_GU[ATK_JUMP_WAIT_GU]);
 			m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame() * 0.75f, DF_TW_TIME, TRUE, TRUE, FALSE);
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_GUNNER_CHARGE, CHANNEL_ID::ENEMY_GUNNER, 0.5f);
 		}
 	}
 	else if (AnimNames_GU[ANIM_GU::ATK_JUMP_WAIT_GU] == strCurAnimName)
@@ -124,6 +125,7 @@ const wstring CState_Gunner_Attack::Check_Transition()
 		{
 			CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_GU[ATK_JUMP_SHOOT_GU]);
 			m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame() * 0.75f, DF_TW_TIME, TRUE, TRUE, TRUE);
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_GUNNER_SHOOT, CHANNEL_ID::ENEMY_GUNNER, 0.5f);
 		}
 	}
 	else if (AnimNames_GU[ANIM_GU::ATK_JUMP_SHOOT_GU] == strCurAnimName)

@@ -48,21 +48,21 @@ HRESULT CState_Blader_Attack::Enter()
 		case 0 :
 		{
 			pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::ATK_JUMP_STRKIE_01_BL]);
-			fTimePerFrame = pAnimation->Get_TickPerFrame() * 0.75f;
+			fTimePerFrame = pAnimation->Get_TickPerFrame() * 0.55f;
 
 		}
 		break;
 		case 1 :
 		{
 			pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::ATK_COMBO_BL]);
-			fTimePerFrame = pAnimation->Get_TickPerFrame() * 0.75f;
+			fTimePerFrame = pAnimation->Get_TickPerFrame() * 0.65f;
 
 		}
 		break;
 		default:
 		{
 			pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::ATK_BLADE_BL]);
-			fTimePerFrame = pAnimation->Get_TickPerFrame() * 0.75f;
+			fTimePerFrame = pAnimation->Get_TickPerFrame() * 0.55f;
 		}
 			break;
 		}
@@ -78,7 +78,9 @@ HRESULT CState_Blader_Attack::Enter()
 
 const wstring CState_Blader_Attack::Tick(const _double& fTimeDelta)
 {
-	Activate_Collider();;
+	Activate_Collider();
+
+	Update_Sound();
 
 	return m_strName;
 }
@@ -246,6 +248,11 @@ void CState_Blader_Attack::Activate_Collider()
 			m_pBodyCollider->Set_Active(FALSE);
 		}
 	}
+}
+
+void CState_Blader_Attack::Update_Sound()
+{
+	const string strCurAnimName = m_pModel->Get_CurAnimation()->Get_Name();
 }
 
 CState_Blader_Attack* CState_Blader_Attack::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)
