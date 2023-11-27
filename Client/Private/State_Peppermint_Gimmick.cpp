@@ -146,6 +146,8 @@ void CState_Peppermint_Gimmick::Check_Progress(const _double& fTimeDelta)
 			Set_UI(FALSE);
 
 			ENGINE_INSTANCE->Play_Sound(EFC_PEPPERMINT_FAILED, CHANNEL_ID::PLAYER_PEPPERMINT, 0.8f);
+
+			CUiManager::GetInstance()->On_Dialouge(1, L"ÀÌ·± ÃÑÀ» ½îÁö ¸øÇßÀÝ¾Æ");
 		}
 
 		if (ENGINE_INSTANCE->Key_Down(VK_LBUTTON))
@@ -216,11 +218,12 @@ void CState_Peppermint_Gimmick::Set_Transform()
 
 void CState_Peppermint_Gimmick::Play_Sound()
 {
-	const _int iRand = rand() % 8;
 
 	SOUND_FILE_ID eSoundID = SOUND_FILE_END;
 	CHANNEL_ID	  eChannelID = CHANNEL_ID::ETC_PLAYER_CALL;
+	eSoundID = SOUND_FILE_ID::EFC_PEPPERMINT_RESPAWN_00;
 
+	/*const _int iRand = rand() % 8;
 	switch (iRand)
 	{
 	case 0:
@@ -249,7 +252,7 @@ void CState_Peppermint_Gimmick::Play_Sound()
 		break;
 	default:
 		break;
-	}
+	}*/
 	
 	ENGINE_INSTANCE->Play_Sound(eSoundID, eChannelID, 0.8f);
 }

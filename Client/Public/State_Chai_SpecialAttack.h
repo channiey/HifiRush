@@ -34,11 +34,15 @@ public:
 private:
 	void				KnockBack(CCharacter* pTarget);
 	void				Update_Camera(const _double& fTimeDelta);
+	void				Update_Sound();
 	HRESULT				Set_UI();
 
 private:
 	SPC_ATK_TYPE		m_eAtkType = SPC_ATK_TYPE::TYPEEND;
 	CUi_SpecialAttack*	m_pUI = nullptr;
+
+	_bool				m_bSoundHibiki = FALSE;
+	_bool				m_bSoundPowerChord = FALSE;
 
 public:
 	static CState_Chai_SpecialAttack* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);

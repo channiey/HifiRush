@@ -65,13 +65,15 @@ HRESULT CTriggerSection_C::Start_Battle()
 {
 	m_bStartBattle = TRUE;
 
+	const _uint iCurLevel = ENGINE_INSTANCE->Get_CurLevelIndex();
+
 	
 	for (auto Pair : m_Flows)
 	{
 		vector<CGameObject*> Clones;
 		for (auto desc : Pair.second)
 		{
-			CGameObject* pClone = ENGINE_INSTANCE->Pop_Pool(ENGINE_INSTANCE->Get_CurLevelIndex(), desc.strPrototypeTag);
+			CGameObject* pClone = ENGINE_INSTANCE->Pop_Pool(iCurLevel, desc.strPrototypeTag);
 
 			if (nullptr != pClone)
 			{
@@ -98,8 +100,8 @@ HRESULT CTriggerSection_C::Update_Battle(_double fTimeDelta)
 HRESULT CTriggerSection_C::Finish_Battle()
 {
 
-
 	return S_OK;
+
 }
 
 void CTriggerSection_C::OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild)

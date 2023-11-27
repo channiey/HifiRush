@@ -48,11 +48,23 @@ HRESULT CDynamic_Switch::Initialize(void* pArg)
 void CDynamic_Switch::Tick(_double fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	if (m_bShot)
+	{
+		m_fTimeAcc += fTimeDelta;
+		if (m_fTimeLimit <= m_fTimeAcc)
+		{
+			m_bShot = FALSE;
+			m_pTarget->Set_On();
+		}
+	}
 }
 
 void CDynamic_Switch::LateTick(_double fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
+	Check_Progress(fTimeDelta);
 }
 
 HRESULT CDynamic_Switch::Render()
@@ -78,7 +90,18 @@ void CDynamic_Switch::OnCollision_Enter(CCollider* pCollider, const _int& iIndex
 					CDynamic* pDynamic = dynamic_cast<CDynamic*>(pTarget);
 					if (nullptr != pDynamic)
 					{
-						pDynamic->Set_On();
+						m_pTarget	= pDynamic;
+						m_bShot		= TRUE;
+
+						m_eStateType = CDynamic_Switch::STATE_TYPE::CLOSING;
+
+						CAnimation* pAnim = m_pModelCom->Get_Animation(m_AnimNames[CDynamic_Switch::STATE_TYPE::CLOSING]);
+
+						if (nullptr == pAnim) return;
+
+						m_pModelCom->Set_Animation(pAnim, pAnim->Get_TickPerFrame(), DF_TW_TIME);
+
+						ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_OBJ_SWITCH_SHOT, CHANNEL_ID::ETC_OBJ_SUB_1, 0.6f);
 					}
 				}
 			}
@@ -101,11 +124,39 @@ HRESULT CDynamic_Switch::Set_On()
 
 HRESULT CDynamic_Switch::Set_Off()
 {
+	m_bShot = FALSE;
+
+	m_fTimeAcc = 0.f;
+	m_fTimeLimit = 0.f;
+
+	m_eStateType = STATE_TYPE::OPEN;
+
 	return S_OK;
 }
 
 void CDynamic_Switch::Check_Progress(_double fTimeDelta)
 {
+	if (m_pModelCom->Is_Tween())
+		return;
+
+	const string strCurAnimName = m_pModelCom->Get_CurAnimation()->Get_Name();
+
+	if (CDynamic_Switch::STATE_TYPE::CLOSING == m_eStateType && m_AnimNames[CDynamic_Switch::STATE_TYPE::CLOSING] == strCurAnimName &&
+		16 == m_pModelCom->Get_CurAnimationFrame())
+	{
+		m_pModelCom->Stop_Animation(TRUE);
+		/*m_pModelCom->Clear_Animation();
+
+		CAnimation* pAnim = m_pModelCom->Get_Animation(m_AnimNames[CDynamic_Switch::STATE_TYPE::CLOSED]);
+
+		if (nullptr == pAnim) return;
+
+		m_pModelCom->Set_Animation(pAnim, pAnim->Get_TickPerFrame(), DF_TW_TIME);*/
+
+		ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_OBJ_SWITCH_SHOT_CLOSED, CHANNEL_ID::ETC_OBJ_SUB_1, 0.6f);
+
+		m_eStateType = CDynamic_Switch::STATE_TYPE::CLOSED;
+	}
 }
 
 HRESULT CDynamic_Switch::Ready_Components()

@@ -42,9 +42,9 @@ private:
 	STATE_TYPE				m_eStateType = CDynamic_AutoDoor::STATE_TYPE::CLOSED;
 	CModel*					m_pModelComs[CDynamic_AutoDoor::MODEL_TYPE::MODEL_TYPEEND];
 
-	const _float			m_fOriginX = 0.f;
-	const _float			m_fTargetX = 7.f;
-	const _float			m_fLerpTime = 0.2f;
+	const _float			m_fOriginX		= 0.f;
+	const _float			m_fTargetX		= 6.5f;
+	const _float			m_fLerpTime		= 0.2f;
 	const _float			m_fColliderSize = 8.f;
 	LERP_FLOAT_DESC			m_tLerpDesc;
 

@@ -71,12 +71,16 @@ HRESULT CTriggerSection_B::Start_Battle()
 	}*/
 
 	/* Pop from Pool */
+
+	const _uint iCurLevel = ENGINE_INSTANCE->Get_CurLevelIndex();
+
+
 	for (auto Pair : m_Flows)
 	{
 		vector<CGameObject*> Clones;
 		for (auto desc : Pair.second)
 		{
-			CGameObject* pClone = ENGINE_INSTANCE->Pop_Pool(ENGINE_INSTANCE->Get_CurLevelIndex(), desc.strPrototypeTag);
+			CGameObject* pClone = ENGINE_INSTANCE->Pop_Pool(iCurLevel, desc.strPrototypeTag);
 
 			if (nullptr != pClone)
 			{

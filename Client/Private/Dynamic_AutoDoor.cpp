@@ -122,7 +122,8 @@ HRESULT CDynamic_AutoDoor::Set_On()
 	/* Open */
 	m_tLerpDesc.Start(m_fOriginX, m_fTargetX, m_fLerpTime, LERP_MODE::EXPONENTIAL);
 
-
+	ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_OBJ_DOOR_OPEN, CHANNEL_ID::ETC_OBJ, 0.7f);
+	
 	return S_OK;
 }
 
@@ -130,6 +131,8 @@ HRESULT CDynamic_AutoDoor::Set_Off()
 {
 	/* Closed */
 	m_tLerpDesc.Start(m_fTargetX, m_fOriginX, m_fLerpTime, LERP_MODE::EXPONENTIAL);
+
+	ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_OBJ_DOOR_CLOSED, CHANNEL_ID::ETC_OBJ, 0.7f);
 
 	return S_OK;
 }

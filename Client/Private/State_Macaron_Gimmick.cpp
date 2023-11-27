@@ -86,7 +86,9 @@ void CState_Macaron_Gimmick::Exit()
 
 	if (RESULT_TYPE::SUCCESS == m_eResultType)
 	{
-		CUiManager::GetInstance()->On_Dialouge(2, L"들어가서 끝까지 열심히 싸워줘 차이!");
+		CUiManager::GetInstance()->On_Dialouge(2, L"언제든지 불러줘 차이!");
+		ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_MACARON_SUCCESS, CHANNEL_ID::PLAYER_MACARON, 0.8f);
+
 	}
 
 	m_eResultType = RESULT_TYPE::NONE;
@@ -235,6 +237,7 @@ void CState_Macaron_Gimmick::Check_Progress(const _double& fTimeDelta)
 		if (!m_pModel->Is_Tween() && 20 == tDesc.cur.iCurFrame)
 		{
 			CUiManager::GetInstance()->On_Dialouge(2, L"이런 부수지 못했군");
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_MACARON_FAILED, CHANNEL_ID::PLAYER_MACARON, 0.8f);
 		}
 		
 
@@ -254,9 +257,6 @@ void CState_Macaron_Gimmick::Set_Transform()
 	CTransform* pTransform_Macaron = m_pMacaron->Get_Transform();
 	CTransform* pTrnasform_Chai = CPlayerController::GetInstance()->Get_Player(PLAYER_TYPE::CHAI)->Get_Transform();
 
-	/* 네비 인덱스 설정 */
-	//m_pMacaron->Get_NavMeshAgent()->Set_CurIndex(CPlayerController::GetInstance()->Get_Player(PLAYER_TYPE::CHAI)->Get_NavMeshAgent()->Get_Index());
-
 	/* 루트 포지션 초기화  */
 	pTransform_Macaron->Set_RootPos(Vec4::Zero, TRUE);
 
@@ -273,11 +273,12 @@ void CState_Macaron_Gimmick::Set_Transform()
 
 void CState_Macaron_Gimmick::Play_Sound()
 {
-	const _int iRand = rand() % 7;
 
 	SOUND_FILE_ID eSoundID		= SOUND_FILE_END;
 	CHANNEL_ID	  eChannelID	= CHANNEL_ID::ETC_PLAYER_CALL;
+	eSoundID = SOUND_FILE_ID::EFC_MACARON_RESPAWN_00;
 
+	/*const _int iRand = rand() % 7;
 	switch (iRand)
 	{
 	case 0:
@@ -304,7 +305,7 @@ void CState_Macaron_Gimmick::Play_Sound()
 	default:
 		eSoundID = SOUND_FILE_ID::EFC_MACARON_RESPAWN_00;
 		break;
-	}
+	}*/
 
 	ENGINE_INSTANCE->Play_Sound(eSoundID, eChannelID, 0.8f);
 }

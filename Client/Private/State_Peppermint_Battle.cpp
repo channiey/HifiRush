@@ -176,7 +176,8 @@ void CState_Peppermint_Battle::Play_Sound()
 	{
 	case APPEAR:
 	{
-		iRand = rand() % 8;
+		eSoundID = SOUND_FILE_ID::EFC_PEPPERMINT_RESPAWN_00;
+		/*iRand = rand() % 8;
 
 		switch (iRand)
 		{
@@ -206,7 +207,7 @@ void CState_Peppermint_Battle::Play_Sound()
 			break;
 		default:
 			break;
-		}
+		}*/
 
 		eChannelID = CHANNEL_ID::ETC_PLAYER_CALL;
 	}

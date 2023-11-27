@@ -129,15 +129,11 @@ CGameObject* CObject_Manager::Pop_Pool(_uint iLevelIndex, const wstring& strProt
 	if (nullptr == pObj) 
 		return nullptr;
 	
-	Safe_AddRef(pObj);
-
 	pPool->pop();
 
 	/* 이벤트를 추가한다. */
 	EVENT_DESC tEvent(iLevelIndex, pObj);
 	m_Events[POP_FROM_POOL].push_back(tEvent);
-
-	Safe_Release(pObj);
 
 	/* 해당 오브젝트는 이번 프레임 마지막에 이벤트가 처리될 때 활성화 된다. */
 
@@ -221,8 +217,6 @@ void CObject_Manager::FinishTick()
 
 		if (nullptr != pLayer)
 			pLayer->Delete_GameObject(iter.pObj);
-
-		Safe_Release(iter.pObj);
 	}
 	m_Events[OBJ_DEL].clear();
 
@@ -237,8 +231,6 @@ void CObject_Manager::FinishTick()
 
 		/* 클론 고유 번호를 지운다. (이름만 남겨둔다) */
 		//iter.pObj->Set_Name(Util_String::Remove_LastNumChar(iter.pObj->Get_Name(), CLONE_PIN_MAX_DIGIT));
-
-		Safe_Release(iter.pObj);
 	}
 	m_Events[RETURN_TO_POOL].clear();
 
@@ -257,8 +249,7 @@ void CObject_Manager::FinishTick()
 		iter.pObj->Set_Name(pLayer->Get_CloneNameWithPin(iter.pObj->Get_Name()));
 		iter.pObj->Set_State(CGameObject::STATE_ACTIVE);
 		pLayer->Push_GameObject(iter.pObj);
-		
-		Safe_Release(iter.pObj);
+			
 	}
 	m_Events[POP_FROM_POOL].clear();
 

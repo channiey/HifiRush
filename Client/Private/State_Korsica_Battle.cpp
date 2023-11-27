@@ -160,9 +160,10 @@ void CState_Korsica_Battle::Set_Transform()
 
 void CState_Korsica_Battle::Play_Sound()
 {
-	_int iRand = rand() % 8;
 	SOUND_FILE_ID eSoundID = SOUND_FILE_END;
+	eSoundID = SOUND_FILE_ID::EFC_KORSICA_RESPAWN_00;
 
+	/*_int iRand = rand() % 8;
 	switch (iRand)
 	{
 	case 0:
@@ -191,7 +192,7 @@ void CState_Korsica_Battle::Play_Sound()
 		break;
 	default:
 		break;
-	}
+	}*/
 
 	ENGINE_INSTANCE->Play_Sound(eSoundID, CHANNEL_ID::ETC_PLAYER_CALL, 0.8f);
 }

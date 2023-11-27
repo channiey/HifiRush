@@ -29,7 +29,7 @@ HRESULT CState_Gunner_Base::Initialize(CStateMachine* pStateMachine, const wstri
 
 const wstring CState_Gunner_Base::Choice_NextState()
 {
-	vector<_float> Probabilities = { 0.6f, 0.4f }; // move idle attack
+	vector<_float> Probabilities = { 0.7f, 0.3f }; // move idle attack
 
 	random_device			rd;
 	mt19937					gen(rd());

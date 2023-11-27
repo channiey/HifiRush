@@ -41,6 +41,7 @@ private:
 
 	Ray				m_Ray;
 	_bool			m_bSetRay;
+	_bool			m_bPlaySound = FALSE;
 
 public:
 	static CState_Gunner_Attack* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);

@@ -24,9 +24,11 @@ public:
 
 private:
 	void Move(const _double& fTimeDelta);
+	void PlaySound();
 
 private:
-	Vec3 m_vScale = {};
+	Vec3	m_vScale = {};
+	_bool	m_bStepSound = FALSE;
 
 public:
 	static CState_Chai_Run* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);

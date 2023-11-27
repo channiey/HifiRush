@@ -1231,6 +1231,8 @@ HRESULT CModel::Set_RootPositon_StartFromZero(const _uint& iAnimIndex)
 
 		memcpy(&m_AnimTransforms[iAnimIndex].transforms[i][eBoneType].m[3], &vRootOffSet, sizeof(Vec4));
 	}
+
+	return TRUE;
 }
 
 void CModel::Check_SoundEvent()

@@ -75,7 +75,11 @@ HRESULT CDynamic_Crane::Set_On()
 
 	m_eProgress = CDynamic_Crane::PROGRESS_TYPE::WAIT_CRANE;
 
-	CUiManager::GetInstance()->On_Dialouge(1, L"역시 명중이야!");
+	//CUiManager::GetInstance()->On_Dialouge(1, L"역시 명중이야!");
+
+	//ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_PEPPERMINT_RESPAWN_05, CHANNEL_ID::ETC_OTHER_CALL, EfcVolumeChai);
+
+	ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_OBJ_CRANE_ALERT, CHANNEL_ID::ETC_OBJ, 0.4f);
 
 	return S_OK;
 }
@@ -116,22 +120,30 @@ void CDynamic_Crane::Check_Progress(_double fTimeDelta)
 
 				m_bWait = FALSE;
 
-				CUiManager::GetInstance()->On_Dialouge(0, L"잠시만 이게 무슨 소리지?");
+				//CUiManager::GetInstance()->On_Dialouge(0, L"잠시만 이게 무슨 소리지?");
+	
+
+				ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_OBJ_CRANE_MOVE_2, CHANNEL_ID::ETC_OBJ_SUB_1, 0.9f);
 			}
 		}
 	}
 	else if (CDynamic_Crane::PROGRESS_TYPE::ACTIVE_CRANE == m_eProgress)
 	{
-		if (!m_pModelCom->Is_Tween() && 100 == m_pModelCom->Get_TweenDesc().cur.iCurFrame)
+		if (!m_pModelCom->Is_Tween() && 60 == m_pModelCom->Get_TweenDesc().cur.iCurFrame)
+		{
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_OBJ_CRANE_STOP, CHANNEL_ID::ETC_OBJ_SUB_2, 0.8f);
+		}
+		else if (!m_pModelCom->Is_Tween() && 100 == m_pModelCom->Get_TweenDesc().cur.iCurFrame)
 		{
 			ENGINE_INSTANCE->Change_Camera(CAMERA_ID::CAM_FOLLOW);
 			CCamera_Follow* pCam = dynamic_cast<CCamera_Follow*>(ENGINE_INSTANCE->Get_Camera(CAMERA_ID::CAM_FOLLOW));
 			if (nullptr != pCam)
 				pCam->Reset();
 
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_CHAI_AMAZE_WITH_CRANE, CHANNEL_ID::TALK_CHAI, 0.6f);
 			CUiManager::GetInstance()->On_Dialouge(0, L"크레인이 움직일줄은 생각도 못했어");
 		}
-		if (!m_pModelCom->Is_Tween() && 135 == m_pModelCom->Get_TweenDesc().cur.iCurFrame)
+		else if (!m_pModelCom->Is_Tween() && 135 == m_pModelCom->Get_TweenDesc().cur.iCurFrame)
 		{
 			CAnimation* pAnim = m_pModelCom->Get_Animation(m_AnimNames[PROGRESS_TYPE::ACTIVATED_IDLE_CRANE]);
 

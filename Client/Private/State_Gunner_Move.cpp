@@ -115,7 +115,7 @@ void CState_Gunner_Move::Set_NextAnimation()
 
 	m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME);
 
-	//ENGINE_INSTANCE->Play_Sound(EFC_SABER_ESCAPING, ENEMY_SABER, 0.4f);
+	ENGINE_INSTANCE->Play_Sound(EFC_SABER_ESCAPING, CHANNEL_ID::ENEMY_GUNNER, 0.4f);
 }
 
 

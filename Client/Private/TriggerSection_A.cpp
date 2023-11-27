@@ -89,12 +89,15 @@ HRESULT CTriggerSection_A::Start_Battle()
 	//ENGINE_INSTANCE->Lerp_BGMSound(BgmVolumeInBattle, 2.f, LERP_MODE::SMOOTHER_STEP);
 
 	/* Pop from Pool */
+
+	const _uint iCurLevel = ENGINE_INSTANCE->Get_CurLevelIndex();
+
 	for (auto Pair : m_Flows)
 	{
 		vector<CGameObject*> Clones;
 		for (auto desc : Pair.second)
 		{
-			CGameObject* pClone = ENGINE_INSTANCE->Pop_Pool(ENGINE_INSTANCE->Get_CurLevelIndex(), desc.strPrototypeTag);
+			CGameObject* pClone = ENGINE_INSTANCE->Pop_Pool(iCurLevel, desc.strPrototypeTag);
 
 			if (nullptr != pClone)
 			{

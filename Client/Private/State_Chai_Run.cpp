@@ -35,6 +35,8 @@ const wstring CState_Chai_Run::Tick(const _double& fTimeDelta)
 
 	Move(fTimeDelta);
 
+	PlaySound();
+
 	return m_strName;
 }
 
@@ -48,6 +50,7 @@ const wstring CState_Chai_Run::LateTick()
 
 void CState_Chai_Run::Exit()
 {
+	m_bStepSound = FALSE;
 }
 
 const wstring CState_Chai_Run::Check_Transition()
@@ -197,6 +200,22 @@ void CState_Chai_Run::Move(const _double& fTimeDelta)
 
 	if (Vec3::Zero == pTranform->Get_Scale())
 		pTranform->Set_Scale(m_vScale);
+}
+
+void CState_Chai_Run::PlaySound()
+{
+	if (m_pModel->Is_Tween())
+		return;
+
+	const _uint iCurFrame = m_pModel->Get_TweenDesc().cur.iCurFrame;
+
+	if (!m_bStepSound && (14 == iCurFrame || 29 == iCurFrame))
+	{
+		m_bStepSound = TRUE;
+		ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_CHAI_FOOTSTEP, CHANNEL_ID::PLAYER_CHAI, 0.6f);
+	}
+	else
+		m_bStepSound = FALSE;
 }
 
 CState_Chai_Run* CState_Chai_Run::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

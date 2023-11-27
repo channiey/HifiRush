@@ -45,8 +45,8 @@ public:
 
 public:
 	HRESULT				Enter() override;
-	const wstring Tick(const _double& fTimeDelta) override;
-	const wstring LateTick() override;
+	const wstring		Tick(const _double& fTimeDelta) override;
+	const wstring		LateTick() override;
 	void				Exit() override;
 
 public:
@@ -57,10 +57,14 @@ private:
 	void				Detect_AttackCollision();
 	void				KnockBack(CCharacter* pTarget);
 
+	void				PlayThrowSound();
+
 private:
 	ATTACK_DESC			m_tAttackDesc	= {};
 	ATTACK_DESC			m_tAttackDescForCol = {};
+
 	_bool				m_bThrowGuitar = FALSE;
+	_bool				m_bThrowSound = FALSE;
 
 
 public:

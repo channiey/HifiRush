@@ -111,7 +111,7 @@ void CState_Gunner_Damaged::Damaged()
 
 
 	m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame() * 0.75f);
-	//ENGINE_INSTANCE->Play_Sound(EFC_ENEMY_DAMAGED_00, ENEMY_SABER, 0.4f);
+	ENGINE_INSTANCE->Play_Sound(EFC_ENEMY_DAMAGED_00, ENEMY_GUNNER, 0.4f);
 
 
 	m_pGunner->m_tFightDesc.bDamaged = FALSE;

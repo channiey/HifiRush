@@ -35,8 +35,13 @@ protected:
 protected:
 	HRESULT					Bind_ShaderResources();
 
+private:	
+	void					Update_Sound();
+
 private:
 	const string			m_strAnimName = "bg0210_event_000";
+	_bool					m_bPlaySound = FALSE;
+	
 
 public:
 	static CDynamic_Bridge* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

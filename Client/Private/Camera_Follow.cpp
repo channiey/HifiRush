@@ -122,6 +122,7 @@ HRESULT CCamera_Follow::Find_Target()
 	m_pCameraCom->Set_TargetObj(pObject);
 	m_pCameraCom->Set_LookAtObj(pObject);
 
+	Reset();
 	return S_OK;
 }
 

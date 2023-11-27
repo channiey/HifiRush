@@ -48,6 +48,9 @@ HRESULT CDynamic_Bridge::Initialize(void* pArg)
 void CDynamic_Bridge::Tick(_double fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	if(!m_pModelCom->Is_StopAnimation())
+		Update_Sound();
 }
 
 void CDynamic_Bridge::LateTick(_double fTimeDelta)
@@ -101,6 +104,8 @@ HRESULT CDynamic_Bridge::Set_Off()
 
 	m_pModelCom->Stop_Animation(TRUE);
 
+	m_bPlaySound = FALSE;
+
 	return S_OK;
 }
 
@@ -138,6 +143,29 @@ HRESULT CDynamic_Bridge::Bind_ShaderResources()
 		return E_FAIL;
 
 	return S_OK;
+}
+
+void CDynamic_Bridge::Update_Sound()
+{
+	const _int iCurFrame = m_pModelCom->Get_TweenDesc().cur.iCurFrame;
+
+	if (!m_bPlaySound && (0 == iCurFrame || 14 == iCurFrame))
+	{
+		ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_OBJ_BRIDGE_FRAME_DOWN, CHANNEL_ID::ETC_OBJ, 0.9f);
+		m_bPlaySound = TRUE;
+	}
+	else if (!m_bPlaySound && (27 == iCurFrame))
+	{
+		ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_OBJ_BRIDGE_CREATE_BODY, CHANNEL_ID::ETC_OBJ, 0.9f);
+		m_bPlaySound = TRUE;
+	}
+	else if (!m_bPlaySound && (56 == iCurFrame || 62 == iCurFrame || 66 == iCurFrame || 69 == iCurFrame || 72 == iCurFrame || 76 == iCurFrame || 79 == iCurFrame || 82 == iCurFrame || 85 == iCurFrame || 89 == iCurFrame || 93 == iCurFrame))
+	{
+		ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_OBJ_BRIDGE_DOWN_BODY, CHANNEL_ID::ETC_OBJ, 0.7f);
+		m_bPlaySound = TRUE;
+	}
+	else
+		m_bPlaySound = FALSE;
 }
 
 CDynamic_Bridge* CDynamic_Bridge::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

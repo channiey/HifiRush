@@ -80,6 +80,7 @@ const wstring CState_Chai_Attack::Tick(const _double& fTimeDelta)
 
 	if (m_bThrowGuitar)
 	{
+		PlayThrowSound();
 		return m_strName;
 	}
 
@@ -124,6 +125,7 @@ const wstring CState_Chai_Attack::Tick(const _double& fTimeDelta)
 	{
 
 	}
+
 	return m_strName;
 }
 
@@ -148,6 +150,7 @@ void CState_Chai_Attack::Exit()
 	{
 		m_pChai->Get_Child(CChai::CHILD_TYPE::CH_WEAPON_RIGHT)->Get_Collider_Sphere()->Set_Active(FALSE);
 		m_bThrowGuitar = FALSE;
+		m_bThrowSound = FALSE;
 	}
 }
 
@@ -203,6 +206,7 @@ const wstring CState_Chai_Attack::Check_Transition()
 				return StateNames_CH[STATE_IDLE_CH];
 		}
 	}
+
 
 	return m_strName;
 }
@@ -364,6 +368,29 @@ void CState_Chai_Attack::KnockBack(CCharacter* pTarget)
 		vForce *= 10.f;
 
 	pTarget->Get_Rigidbody()->Add_Force(vForce, CRigidbody::FORCE_MODE::IMPULSE);
+}
+
+void CState_Chai_Attack::PlayThrowSound()
+{
+	if (m_pModel->Is_Tween())
+		return;
+	
+	const _int iCurFrame = m_pModel->Get_TweenDesc().cur.iCurFrame;
+
+	if (15 == iCurFrame)
+	{
+		ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_CHAI_ATTACK_00, CHANNEL_ID::PLAYER_CHAI, 0.5f);
+		m_bThrowSound = TRUE;
+	}
+	else if (50 == iCurFrame)
+	{
+		ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_CHAI_CATCH_THROWGUITAR, CHANNEL_ID::PLAYER_CHAI, 0.4f);
+		m_bThrowSound = TRUE;
+	}
+	else
+		m_bThrowSound = FALSE;
+
+
 }
 
 CState_Chai_Attack* CState_Chai_Attack::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

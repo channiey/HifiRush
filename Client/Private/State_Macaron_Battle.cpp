@@ -138,7 +138,7 @@ void CState_Macaron_Battle::Check_Progress(const _double& fTimeDelta)
 
 void CState_Macaron_Battle::Set_Transform()
 {
-	CTransform* pTransform_Macaron	= m_pMacaron->Get_Transform();
+	CTransform* pTransform_Macaron		= m_pMacaron->Get_Transform();
 	CTransform* pTrnasform_Chai			= CPlayerController::GetInstance()->Get_Player(PLAYER_TYPE::CHAI)->Get_Transform();
 
 	/* 포지션, 룩 설정 */
@@ -158,7 +158,7 @@ void CState_Macaron_Battle::Set_Transform()
 				fClosedDist = fDist;
 				pEnemyTransform = pEnemy->Get_Transform();
 				iNavIndex = pEnemy->Get_NavMeshAgent()->Get_Index();
-				m_pEnemy = dynamic_cast<CCharacter*>(pEnemy);
+				m_pEnemy = static_cast<CCharacter*>(pEnemy);
 			}
 		}
 
@@ -196,9 +196,10 @@ void CState_Macaron_Battle::Play_Sound()
 	{
 	case APPEAR:
 	{
-		iRand = rand() % 7;
+		eSoundID = SOUND_FILE_ID::EFC_MACARON_RESPAWN_00;
+		//iRand = rand() % 7;
 
-		switch (iRand)
+		/*switch (iRand)
 		{
 		case 0:
 			eSoundID = SOUND_FILE_ID::EFC_MACARON_RESPAWN_00;
@@ -223,7 +224,7 @@ void CState_Macaron_Battle::Play_Sound()
 			break;
 		default:
 			break;
-		}
+		}*/
 
 		eChannelID = CHANNEL_ID::ETC_PLAYER_CALL;
 	}

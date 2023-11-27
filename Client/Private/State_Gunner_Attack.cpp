@@ -30,6 +30,7 @@ HRESULT CState_Gunner_Attack::Enter()
 		m_eAttackType = ATTACK_TYPE::GROUND;
 		pAnimation = m_pModel->Get_Animation(AnimNames_GU[ATK_GROUND_INTRO_GU]);
 		m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame() * 0.75f, DF_TW_TIME);
+		ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_GUNNER_READY, CHANNEL_ID::ENEMY_GUNNER, 0.5f);
 	}
 	else
 	{
@@ -39,8 +40,10 @@ HRESULT CState_Gunner_Attack::Enter()
 
 		m_pGunner->m_tPhysicsDesc.bJump = TRUE;
 		m_fOriginHeight = m_pGunner->Get_Transform()->Get_FinalPosition().y;
+
+		ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_GUNNER_JUMP, CHANNEL_ID::ENEMY_GUNNER, 0.5f);
+
 	}
-	//ENGINE_INSTANCE->Play_Sound(EFC_SABER_CHARGE, ENEMY_SABER, 0.6f);
 
 	return S_OK;
 }
@@ -81,6 +84,7 @@ const wstring CState_Gunner_Attack::Check_Transition()
 		{
 			CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_GU[ATK_GROUND_WAIT_GU]);
 			m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame() * 0.75f, DF_TW_TIME);
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_GUNNER_CHARGE, CHANNEL_ID::ENEMY_GUNNER, 0.5f);
 		}
 	}
 	else if (AnimNames_GU[ANIM_GU::ATK_GROUND_WAIT_GU] == strCurAnimName)
@@ -92,6 +96,7 @@ const wstring CState_Gunner_Attack::Check_Transition()
 		{
 			CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_GU[ATK_GROUND_SHOOT_GU]);
 			m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame() * 0.75f, DF_TW_TIME);
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_GUNNER_SHOOT, CHANNEL_ID::ENEMY_GUNNER, 0.5f);
 		}
 
 	}
@@ -133,7 +138,6 @@ const wstring CState_Gunner_Attack::Check_Transition()
 	return m_strName;
 }
 
-static _int iHit = 0;
 void CState_Gunner_Attack::Detect_AttackCollision()
 {
 	if (m_pModel->Is_Tween())
@@ -153,7 +157,6 @@ void CState_Gunner_Attack::Detect_AttackCollision()
 				if (!m_pGunner->m_tFightDesc.pTarget->Get_FightDesc().bDamaged)
 				{
 					m_pGunner->m_tFightDesc.pTarget->Damaged(m_pGunner, CCharacter::ATK_TYPE::HEAVY);
-					cout << ++iHit << endl;
 				}
 			}
 		}
@@ -171,12 +174,10 @@ void CState_Gunner_Attack::Detect_AttackCollision()
 				if (!m_pGunner->m_tFightDesc.pTarget->Get_FightDesc().bDamaged)
 				{
 					m_pGunner->m_tFightDesc.pTarget->Damaged(m_pGunner, CCharacter::ATK_TYPE::HEAVY);
-					cout << ++iHit << endl;
 				}
 			}
 		}
 	}
-
 }
 
 void CState_Gunner_Attack::Set_Ray()
@@ -184,7 +185,6 @@ void CState_Gunner_Attack::Set_Ray()
 	Matrix matOrigin = m_pModel->Get_SocketBoneMat(CModel::BONE_SOCKET_RIGHT) * m_pGunner->Get_Transform()->Get_FinalMat();
 
 	m_Ray.position = Vec3{ matOrigin.m[3][0],matOrigin.m[3][1], matOrigin.m[3][2] };
-	//memcpy(&m_Ray.position, matOrigin.m[3], sizeof(Vec3));
 	
 	m_Ray.direction = (m_pGunner->m_tFightDesc.pTarget->Get_Transform()->Get_FinalPosition().xyz() - m_Ray.position).Normalized();
 	

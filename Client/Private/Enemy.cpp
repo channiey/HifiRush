@@ -4,6 +4,8 @@
 #include "EngineInstance.h"
 #include "Animation.h"
 
+#include "PlayerController.h"
+
 #include "Weapon.h"
 #include "TriggerDummy.h"
 
@@ -71,25 +73,14 @@ void CEnemy::Set_State(const OBJ_STATE& eState)
 	{
 	case OBJ_STATE::STATE_ACTIVE:
 	{
-		CGameObject* pTarget = ENGINE_INSTANCE->Get_GameObject_InCurLevel_InLayerFirst(LayerNames[LAYER_PLAYER]);
+		CGameObject* pTarget = CPlayerController::GetInstance()->Get_Player(PLAYER_TYPE::CHAI);
 
 		if (nullptr != pTarget)
-			m_tFightDesc.pTarget = dynamic_cast<CCharacter*>(pTarget);
+			m_tFightDesc.pTarget = static_cast<CCharacter*>(pTarget);
 		else
 			Set_State(OBJ_STATE::STATE_UNACTIVE);
 	}
 		break;
-	case OBJ_STATE::STATE_UNACTIVE:
-	{
-
-	}
-		break;
-	case OBJ_STATE::STATE_WILLREMOVED:
-	{
-
-	}
-		break;
-
 	default:
 		break;
 	}

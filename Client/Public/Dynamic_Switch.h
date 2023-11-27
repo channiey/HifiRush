@@ -55,6 +55,13 @@ protected:
 private:
 	STATE_TYPE				m_eStateType = STATE_TYPE::OPEN;
 
+	_bool					m_bShot = FALSE;
+
+	_float					m_fTimeAcc = 0.f;
+	_float					m_fTimeLimit = 0.8f;
+
+	CDynamic*				m_pTarget = nullptr;
+
 public:
 	static CDynamic_Switch* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CDynamic_Switch* Clone(void* pArg) override;

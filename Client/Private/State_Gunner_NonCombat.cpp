@@ -19,17 +19,9 @@ HRESULT CState_Gunner_NonCombat::Initialize(CStateMachine* pStateMachine, const 
 
 HRESULT CState_Gunner_NonCombat::Enter()
 {
-	srand(time(NULL));
-
 	m_pModel->Clear_Animation();
 
-	const _int iRand = rand() % 2;
-	{
-		if (0 == iRand)
-			m_eAnimType = NON_COMBAT_00_GU;
-		else
-			m_eAnimType = NON_COMBAT_01_00_GU;
-	}
+	m_eAnimType		= NON_COMBAT_00_GU;
 
 	CAnimation*		pAnimation = m_pModel->Get_Animation(AnimNames_GU[m_eAnimType]);
 
@@ -72,30 +64,30 @@ const wstring CState_Gunner_NonCombat::Check_Transition()
 		}
 	}
 		break;
-	case ANIM_GU::NON_COMBAT_01_00_GU:
-	{
-		if (!m_pModel->Is_Tween() && m_pModel->Is_Quater_Animation())
-		{
-			m_eAnimType = NON_COMBAT_01_01_GU;
+	//case ANIM_GU::NON_COMBAT_01_00_GU:
+	//{
+	//	if (!m_pModel->Is_Tween() && m_pModel->Is_Quater_Animation())
+	//	{
+	//		m_eAnimType = NON_COMBAT_01_01_GU;
 
-			CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_GU[m_eAnimType]);
+	//		CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_GU[m_eAnimType]);
 
-			m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME);
-		}
-	}
-		break;
-	case ANIM_GU::NON_COMBAT_01_01_GU:
-	{
-		if (!m_pModel->Is_Tween() && m_pModel->Is_Quater_Animation())
-		{
-			m_eAnimType = NON_COMBAT_TO_COMBAT_GU;
+	//		m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME);
+	//	}
+	//}
+	//	break;
+	//case ANIM_GU::NON_COMBAT_01_01_GU:
+	//{
+	//	if (!m_pModel->Is_Tween() && m_pModel->Is_Quater_Animation())
+	//	{
+	//		m_eAnimType = NON_COMBAT_TO_COMBAT_GU;
 
-			CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_GU[m_eAnimType]);
+	//		CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_GU[m_eAnimType]);
 
-			m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME);
-		}
-	}
-		break;
+	//		m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME);
+	//	}
+	//}
+	//	break;
 	case ANIM_GU::NON_COMBAT_TO_COMBAT_GU:
 	{
 		if (!m_pModel->Is_Tween())

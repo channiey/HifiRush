@@ -133,6 +133,7 @@ public:
 	const KEYFRAME_DESC		Get_CurAnimation() const { return m_TweenDesc.cur; }
 	class CAnimation*		Get_CurAnimation() { return m_Animations[m_TweenDesc.cur.iAnimIndex]; }
 	const _uint				Get_CurAnimationIndex() const { return m_TweenDesc.cur.iAnimIndex; }
+	const _uint				Get_CurAnimationFrame() const { return m_TweenDesc.cur.iCurFrame; }
 	const TWEEN_DESC&		Get_TweenDesc() const { return m_TweenDesc; }
 
 	_matrix					Get_PivotMatrix() { return XMLoadFloat4x4(&m_PivotMatrix); }

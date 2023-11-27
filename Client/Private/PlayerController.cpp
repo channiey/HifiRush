@@ -220,7 +220,7 @@ void CPlayerController::Play_Sound(const PLAYER_TYPE& eType)
 		break;
 	}
 
-	ENGINE_INSTANCE->Play_Sound(eSoundID, CHANNEL_ID::PLAYER_CHAI, 0.8f);
+	ENGINE_INSTANCE->Play_Sound(eSoundID, CHANNEL_ID::ETC_OTHER_CALL, 0.8f);
 }
 
 
