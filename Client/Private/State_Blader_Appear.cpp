@@ -40,6 +40,7 @@ HRESULT CState_Blader_Appear::Enter()
 
 	m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME);
 
+	ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_BLADER_APPEAR, CHANNEL_ID::ENEMY_BLADER, 0.5f);
 	return S_OK;
 }
 
@@ -53,12 +54,18 @@ const wstring CState_Blader_Appear::LateTick()
 	/* 두번째 등장 애니메이션 재생 */
 	Play_SecondAnimation();
 
+	if (!m_bPlaySound && !m_pModel->Is_Tween() && AnimNames_BL[ANIM_BL::PARRY_EVENT_START_BL] == m_pModel->Get_CurAnimation()->Get_Name()
+		&& 30 == m_pModel->Get_CurAnimationFrame())
+	{
+		ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_BLADER_ANGRY, CHANNEL_ID::ENEMY_BLADER, 0.6f);
+		m_bPlaySound = TRUE;
+	}
 	return Check_Transition();
 }
 
 void CState_Blader_Appear::Exit()
 {
-
+	m_bPlaySound = FALSE;
 }
 
 const wstring CState_Blader_Appear::Check_Transition()

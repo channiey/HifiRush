@@ -120,6 +120,7 @@ HRESULT CImGui_Manager::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* p
 	m_pMainWindows.push_back(pWindow);
 	
 	
+	m_bActive = FALSE;
 	return S_OK;
 }
 

@@ -39,6 +39,8 @@ private:
 	_bool			m_bCanFinalAttack = FALSE;
 	_bool			m_bFinalAttack = FALSE;
 
+	_bool			m_bPlaySound = FALSE;
+
 public:
 	static CState_Chai_ParryEvent* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);
 	virtual CState* Clone(void* pArg) override;

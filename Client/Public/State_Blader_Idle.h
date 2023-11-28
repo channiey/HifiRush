@@ -23,6 +23,9 @@ public:
 
 	virtual const wstring Choose_NextState() override;
 
+private:
+	_bool	m_bPlaySound = FALSE;
+
 public:
 	static CState_Blader_Idle* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);
 	virtual CState* Clone(void* pArg) override;

@@ -23,6 +23,9 @@ public:
 
 	void		Play_SecondAnimation();
 
+private:
+	_bool		m_bPlaySound = FALSE;
+
 public:
 	static CState_Blader_Appear* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);
 	virtual CState* Clone(void* pArg) override;

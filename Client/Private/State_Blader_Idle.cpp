@@ -41,7 +41,7 @@ HRESULT CState_Blader_Idle::Enter()
 	}
 	else
 	{
-		const _int iRand = rand() % 3;
+		const _int iRand = rand() % 2;
 
 		switch (iRand)
 		{
@@ -69,11 +69,11 @@ HRESULT CState_Blader_Idle::Enter()
 			break;
 		default:
 		{
-			pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::IDLE_SHORT_01_BL]);
+			pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::IDLE_SHORT_00_BL]);
 
 			if (nullptr == pAnimation) return E_FAIL;
 
-			m_fTimeLimit =  CBeatManager::GetInstance()->Get_SPB(4);
+			m_fTimeLimit = CBeatManager::GetInstance()->Get_SPB(4);
 
 			fTimePerFrame = m_fTimeLimit / 55.f;
 		}
@@ -92,6 +92,15 @@ const wstring CState_Blader_Idle::Tick(const _double& fTimeDelta)
 
 	m_fTimeAcc += fTimeDelta;
 
+	if (!m_bPlaySound && AnimNames_BL[ANIM_BL::IDLE_SHORT_00_BL] == m_pModel->Get_CurAnimation()->Get_Name())
+	{
+		if (20 == m_pModel->Get_CurAnimationFrame())
+		{
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_BLADER_PARRY_SWING, CHANNEL_ID::ENEMY_BLADER, 0.5f);
+			m_bPlaySound = TRUE;
+		}
+	}
+
 	return m_strName;
 }
 
@@ -104,6 +113,8 @@ void CState_Blader_Idle::Exit()
 {
 	m_fTimeAcc = 0.f;
 	m_fTimeLimit = 0.f;
+
+	m_bPlaySound = FALSE;
 }
 
 const wstring CState_Blader_Idle::Check_Transition()

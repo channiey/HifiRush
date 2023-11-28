@@ -38,6 +38,12 @@ const wstring CState_Blader_Move::Tick(const _double& fTimeDelta)
 
 const wstring CState_Blader_Move::LateTick()
 {
+
+	if (!m_bPlaySound && !m_pModel->Is_Tween() && 10 == m_pModel->Get_CurAnimationFrame())
+	{
+		m_bPlaySound = TRUE;
+		ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_BLADER_MOVE, CHANNEL_ID::ENEMY_BLADER, 0.7f);
+	}
 	return Check_Transition();
 }
 
@@ -45,6 +51,8 @@ void CState_Blader_Move::Exit()
 {
 	m_fTimeAcc = 0.f;
 	m_fTimeLimit = 0.f;
+
+	m_bPlaySound = FALSE;
 }
 
 const wstring CState_Blader_Move::Check_Transition()

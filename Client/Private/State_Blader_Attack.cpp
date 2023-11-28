@@ -48,21 +48,21 @@ HRESULT CState_Blader_Attack::Enter()
 		case 0 :
 		{
 			pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::ATK_JUMP_STRKIE_01_BL]);
-			fTimePerFrame = pAnimation->Get_TickPerFrame() * 0.55f;
+			fTimePerFrame = pAnimation->Get_TickPerFrame() * 0.6f;
 
 		}
 		break;
 		case 1 :
 		{
 			pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::ATK_COMBO_BL]);
-			fTimePerFrame = pAnimation->Get_TickPerFrame() * 0.65f;
+			fTimePerFrame = pAnimation->Get_TickPerFrame() * 0.7f;
 
 		}
 		break;
 		default:
 		{
 			pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::ATK_BLADE_BL]);
-			fTimePerFrame = pAnimation->Get_TickPerFrame() * 0.55f;
+			fTimePerFrame = pAnimation->Get_TickPerFrame() * 0.6f;
 		}
 			break;
 		}
@@ -109,7 +109,7 @@ void CState_Blader_Attack::OnCollision_Enter(CCollider* pCollider, const _int& i
 		if (CBlader::CHILD_TYPE::ARM_LEFT_BL == iIndexAsChild || CBlader::CHILD_TYPE::ARM_RIGHT_BL == iIndexAsChild)
 		{
 			if (strCurAnimName == AnimNames_BL[ANIM_BL::ATK_SIMPLE])
-				eAtkType = CCharacter::ATK_TYPE::LIGHT;
+				eAtkType = CCharacter::ATK_TYPE::HEAVY;
 			else if (strCurAnimName == AnimNames_BL[ANIM_BL::ATK_JUMP_STRKIE_01_BL])
 				eAtkType = CCharacter::ATK_TYPE::HEAVY;
 			else if (strCurAnimName == AnimNames_BL[ANIM_BL::ATK_COMBO_BL])
@@ -252,7 +252,122 @@ void CState_Blader_Attack::Activate_Collider()
 
 void CState_Blader_Attack::Update_Sound()
 {
+	if (m_pModel->Is_Tween())
+		return;
+
 	const string strCurAnimName = m_pModel->Get_CurAnimation()->Get_Name();
+	const _uint iCurFrame		= m_pModel->Get_CurAnimationFrame();
+
+	if (AnimNames_BL[ANIM_BL::ATK_SIMPLE] == strCurAnimName) 
+	{
+		if (!m_bPlaySound && 45 == iCurFrame)
+		{
+			m_bPlaySound = TRUE;
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_BLADER_ATK_SIMPLE, CHANNEL_ID::ENEMY_BLADER, 0.5f);
+		}
+		else
+			m_bPlaySound = FALSE;
+	}
+	else if (AnimNames_BL[ANIM_BL::ATK_BLADE_BL] == strCurAnimName)
+	{
+		if (!m_bPlaySound && 15 == iCurFrame)
+		{
+			m_bPlaySound = TRUE;
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_BLADER_ATTACK_BLADE_SET_BLADE2, CHANNEL_ID::ENEMY_BLADER, 0.5f);
+		}
+		else if (!m_bPlaySound && 30 == iCurFrame)
+		{
+			m_bPlaySound = TRUE;
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_BLADER_ATTACK_BLADE_SET_BLADE2, CHANNEL_ID::ENEMY_GUNNER, 0.5f);
+		}
+		else if (!m_bPlaySound && 40 == iCurFrame)
+		{
+			m_bPlaySound = TRUE;
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_BLADER_ATTACK_START, CHANNEL_ID::ENEMY_SABER, 0.5f);
+		}
+		else if (!m_bPlaySound && 50 == iCurFrame)
+		{
+			m_bPlaySound = TRUE;
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_BLADER_ATTACK_BLADE_SPIN, CHANNEL_ID::ENEMY_BLADER, 0.5f);
+		}
+		else if (!m_bPlaySound && 90 == iCurFrame)
+		{
+			m_bPlaySound = TRUE;
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_BLADER_LANDING2, CHANNEL_ID::ENEMY_GUNNER, 0.5f);
+		}
+		else
+			m_bPlaySound = FALSE;
+	}
+	else if (AnimNames_BL[ANIM_BL::ATK_JUMP_STRKIE_01_BL] == strCurAnimName)
+	{
+		if (!m_bPlaySound && 25 == iCurFrame)
+		{
+			m_bPlaySound = TRUE;
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_BLADER_MOVE, CHANNEL_ID::ENEMY_SABER, 0.5f);
+		}
+		else if (!m_bPlaySound && 40 == iCurFrame)
+		{
+			m_bPlaySound = TRUE;
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_BLADER_ATTACK_START, CHANNEL_ID::ENEMY_BLADER, 0.5f);
+		}
+		else if (!m_bPlaySound && 60 == iCurFrame)
+		{
+			m_bPlaySound = TRUE;
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_MACARON_SHOT, CHANNEL_ID::ENEMY_GUNNER, 0.5f);
+		}
+		else if (!m_bPlaySound && 75 == iCurFrame)
+		{
+			m_bPlaySound = TRUE;
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_BLADER_LANDING, CHANNEL_ID::ENEMY_SABER, 0.5f);
+		}
+		else
+			m_bPlaySound = FALSE;
+	}
+	else if (AnimNames_BL[ANIM_BL::ATK_COMBO_BL] == strCurAnimName)
+	{
+		if (!m_bPlaySound && 18 == iCurFrame)
+		{
+			m_bPlaySound = TRUE;
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_OBJ_DOOR_CLOSED, CHANNEL_ID::ENEMY_BLADER, 0.5f);
+		}
+		else if (!m_bPlaySound && 28 == iCurFrame)
+		{
+			m_bPlaySound = TRUE;
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_OBJ_DOOR_CLOSED, CHANNEL_ID::ENEMY_GUNNER, 0.5f);
+		}
+		else if (!m_bPlaySound && 50 == iCurFrame)
+		{
+			m_bPlaySound = TRUE;
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_BLADER_ATTACK_START, CHANNEL_ID::ENEMY_SABER, 0.5f);
+		}
+		else if (!m_bPlaySound && 75 == iCurFrame)
+		{
+			m_bPlaySound = TRUE;
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_BLADER_COMBO_SWING_1, CHANNEL_ID::ENEMY_BLADER, 0.5f);
+		}
+		else if (!m_bPlaySound && 90 == iCurFrame)
+		{
+			m_bPlaySound = TRUE;
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_BLADER_COMBO_SWING_2, CHANNEL_ID::ENEMY_GUNNER, 0.5f);
+		}
+		else if (!m_bPlaySound && 110 == iCurFrame)
+		{
+			m_bPlaySound = TRUE;
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_BLADER_COMBO_SWING_3, CHANNEL_ID::ENEMY_SABER, 0.5f);
+		}
+		else if (!m_bPlaySound && 120 == iCurFrame)
+		{
+			m_bPlaySound = TRUE;
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_BLADER_ATTACK_BLADE_SPIN, CHANNEL_ID::ENEMY_BLADER, 0.5f);
+		}
+		else if (!m_bPlaySound && 148 == iCurFrame)
+		{
+			m_bPlaySound = TRUE;
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_BLADER_LANDING, CHANNEL_ID::ENEMY_GUNNER, 0.5f);
+		}
+		else
+			m_bPlaySound = FALSE;
+	}
 }
 
 CState_Blader_Attack* CState_Blader_Attack::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

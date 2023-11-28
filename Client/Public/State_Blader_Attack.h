@@ -34,6 +34,7 @@ private:
 	virtual HRESULT			Set_Animation() override;
 	virtual const wstring	Choose_NextState() override;
 	void					Activate_Collider();
+
 	void					Update_Sound();
 
 
@@ -41,6 +42,8 @@ private:
 	CCollider_Sphere*		m_pLeftArmCollider	= nullptr;
 	CCollider_Sphere*		m_pRightArmCollider	= nullptr;
 	CCollider_Sphere*		m_pBodyCollider		= nullptr;
+
+	_bool					m_bPlaySound		= FALSE;
 
 public:
 	static CState_Blader_Attack* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);

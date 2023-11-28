@@ -35,6 +35,17 @@ const wstring CState_Chai_ParryEvent::Tick(const _double& fTimeDelta)
 	if (m_bCanFinalAttack)
 		FinalAttack();
 
+
+	if (!m_bPlaySound && !m_pModel->Is_Tween())
+	{
+		if (ANIM_CH::ATK_FINAL == m_pModel->Get_CurAnimationIndex() && 25 == m_pModel->Get_CurAnimationFrame())
+		{
+			m_bPlaySound = TRUE;
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_CHAI_FINAL_ATTACK_SWING, CHANNEL_ID::PLAYER_MACARON, 0.9f);
+		}
+	}
+
+
 	return m_strName;
 }
 
@@ -55,6 +66,8 @@ void CState_Chai_ParryEvent::Exit()
 	m_bSuccess = TRUE;
 	m_bCanFinalAttack = FALSE;
 	m_bFinalAttack = FALSE;
+
+	m_bPlaySound = FALSE;
 }
 
 void CState_Chai_ParryEvent::OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild)
@@ -66,6 +79,7 @@ void CState_Chai_ParryEvent::OnCollision_Enter(CCollider* pCollider, const _int&
 		if (m_bParried)
 		{
 			ENGINE_INSTANCE->Shake_Camera(0.3f, 10);
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_BLADER_PARRY, CHANNEL_ID::PLAYER_CHAI, 0.7f);
 		}
 		else
 		{

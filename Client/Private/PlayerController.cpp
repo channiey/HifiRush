@@ -34,7 +34,7 @@ void CPlayerController::LateTick(_double fTimeDelta)
 
 HRESULT CPlayerController::SetOn_Player(const PLAYER_TYPE& eType)
 {
-	if (PLAYER_TYPE::TYPEEND <= eType || nullptr == m_tPlayerDesc[eType].pPlayer ||
+	if (PLAYER_TYPE::TYPEEND <= eType ||
 		PLAYER_STATE::WAIT != m_tPlayerDesc[eType].eState)
 		return E_FAIL;
 
@@ -50,7 +50,7 @@ HRESULT CPlayerController::SetOn_Player(const PLAYER_TYPE& eType)
 
 HRESULT CPlayerController::SetOff_Player(const PLAYER_TYPE& eType)
 {
-	if (PLAYER_TYPE::TYPEEND <= eType || nullptr == m_tPlayerDesc[eType].pPlayer ||
+	if (PLAYER_TYPE::TYPEEND <= eType ||
 		PLAYER_STATE::APPEAR != m_tPlayerDesc[eType].eState)
 		return E_FAIL;
 
@@ -67,7 +67,7 @@ HRESULT CPlayerController::SetOff_Player(const PLAYER_TYPE& eType)
 
 HRESULT CPlayerController::Change_ControlPlayer(const PLAYER_TYPE& eType)
 {
-	if (PLAYER_TYPE::TYPEEND <= eType || nullptr == m_tPlayerDesc[eType].pPlayer)
+	if (PLAYER_TYPE::TYPEEND <= eType )
 		return E_FAIL;
 
 	m_eCurControlPlayerType = eType;
@@ -77,7 +77,7 @@ HRESULT CPlayerController::Change_ControlPlayer(const PLAYER_TYPE& eType)
 
 const PLAYER_STATE CPlayerController::Get_PlayerState(const PLAYER_TYPE& eType)
 {
-	if (PLAYER_TYPE::TYPEEND <= eType || nullptr == m_tPlayerDesc[eType].pPlayer)
+	if (PLAYER_TYPE::TYPEEND <= eType)
 		return PLAYER_STATE::STATE_END;
 
 	return m_tPlayerDesc[eType].eState;
@@ -85,7 +85,7 @@ const PLAYER_STATE CPlayerController::Get_PlayerState(const PLAYER_TYPE& eType)
 
 const PLAYER_DESC CPlayerController::Get_PlayerDesc(const PLAYER_TYPE& eType)
 {
-	if (PLAYER_TYPE::TYPEEND <= eType || nullptr == m_tPlayerDesc[eType].pPlayer)
+	if (PLAYER_TYPE::TYPEEND <= eType)
 		return PLAYER_DESC{};
 
 	return m_tPlayerDesc[eType];

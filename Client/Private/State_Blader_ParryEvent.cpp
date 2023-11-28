@@ -142,6 +142,8 @@ const wstring CState_Blader_ParryEvent::Tick(const _double& fTimeDelta)
 			if (Is_Success())
 			{
 				Set_FinalAttack();
+				m_pBlader->m_tStatDesc.fCurHp = 0.f;
+				ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_BLADER_ATTACK_START, CHANNEL_ID::PLAYER_CHAI, 0.8f);
 			}
 			else
 			{
@@ -160,7 +162,7 @@ const wstring CState_Blader_ParryEvent::Tick(const _double& fTimeDelta)
 
 const wstring CState_Blader_ParryEvent::LateTick()
 {
-	return Check_Transition();
+	return Check_Transition(); 
 }
 
 void CState_Blader_ParryEvent::Exit()
@@ -189,6 +191,8 @@ const wstring CState_Blader_ParryEvent::Check_Transition()
 
 			if(nullptr != pAnimation)
 				m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame(), DF_TW_TIME);
+
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_BLADER_ANGRY, CHANNEL_ID::ENEMY_BLADER, 0.6f);
 		}
 		else if (AnimNames_BL[ANIM_BL::PARRY_EVENT_ING_BL] == strCurAnimName)
 		{
@@ -196,13 +200,13 @@ const wstring CState_Blader_ParryEvent::Check_Transition()
 			{
 				m_pRhythmUI->Set_State(CGameObject::OBJ_STATE::STATE_ACTIVE);
 			}
-			else if (55 == desc.cur.iCurFrame	|| 
-					 70 == desc.cur.iCurFrame	|| 
-					 85 == desc.cur.iCurFrame	|| 
-					 95 == desc.cur.iCurFrame	|| 
-					 105 == desc.cur.iCurFrame)
+			else if (55 == desc.cur.iCurFrame ||
+				70 == desc.cur.iCurFrame ||
+				85 == desc.cur.iCurFrame ||
+				95 == desc.cur.iCurFrame ||
+				105 == desc.cur.iCurFrame)
 			{
-				if (m_iFrmae != desc.cur.iCurFrame) 
+				if (m_iFrmae != desc.cur.iCurFrame)
 				{
 					m_pRhythmUI->On_Beat();
 					ENGINE_INSTANCE->Play_Sound(EFC_BLADER_PARRYEVENT_BEAT_2, CHANNEL_ID::ENEMY_BLADER, 0.6f);
@@ -214,6 +218,8 @@ const wstring CState_Blader_ParryEvent::Check_Transition()
 			{
 				m_pRhythmUI->Set_State(CGameObject::OBJ_STATE::STATE_UNACTIVE);
 			}
+			else if (135 == desc.cur.iCurFrame || 150 == desc.cur.iCurFrame || 165 == desc.cur.iCurFrame || 180 == desc.cur.iCurFrame)
+				ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_BLADER_PARRY_SWING, CHANNEL_ID::ENEMY_BLADER, 0.5f);
 		}
 		else if (AnimNames_BL[ANIM_BL::PARRY_EVENT_FINISH_BL] == strCurAnimName)
 		{
@@ -223,6 +229,14 @@ const wstring CState_Blader_ParryEvent::Check_Transition()
 			if(45 == desc.cur.iCurFrame)
 				return StateNames_BL[STATE_BL::STATE_IDLE_BL];
 		}
+		else if (AnimNames_BL[ANIM_BL::STUN_TO_DEAD_BL] == strCurAnimName && 30 == desc.cur.iCurFrame)
+		{
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_BLADER_DEAD_TALK, CHANNEL_ID::ENEMY_GUNNER, 0.6f);
+		}
+		else if (AnimNames_BL[ANIM_BL::STUN_TO_DEAD_BL] == strCurAnimName && 58 == desc.cur.iCurFrame)
+		{
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_OBJ_CRANE_STOP, CHANNEL_ID::ENEMY_SABER, 0.6f);
+		}
 		else if (AnimNames_BL[ANIM_BL::STUN_TO_DEAD_BL] == strCurAnimName && 70 == desc.cur.iCurFrame)
 		{
 			ENGINE_INSTANCE->Get_Camera(CAMERA_ID::CAM_FOLLOW)->Get_Camera()->Lerp_Dist(CamDist_Follow_Default, 0.5f, LERP_MODE::SMOOTHER_STEP);
@@ -231,9 +245,9 @@ const wstring CState_Blader_ParryEvent::Check_Transition()
 			
 			m_pBlader->Return_To_Pool();
 
-			CUi* pUI = CUiManager::GetInstance()->Get_UI(UI_ID::UI_HUD_BOSS);
-			if (nullptr == pUI)
-				pUI->Set_State(CGameObject::OBJ_STATE::STATE_UNACTIVE);
+			CUiManager::GetInstance()->Get_UI(UI_ID::UI_HUD_BOSS)->Set_State(CGameObject::OBJ_STATE::STATE_UNACTIVE);
+
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_BLADER_DEAD_EXPLOSION, CHANNEL_ID::ENEMY_BLADER, 0.95f);
 		}
 	}
 

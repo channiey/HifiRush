@@ -71,7 +71,7 @@ void CState_Blader_Damaged::Damaged()
 		return;
 
 	/* 패링 이벤트 판별 */
-	if (!m_bParriedEvent && m_pBlader->m_tStatDesc.fCurHp <= 20)
+	if (!m_bParriedEvent && m_pBlader->m_tStatDesc.fCurHp <= 70)
 	{
 		m_pStateMachine->Set_State(StateNames_BL[STATE_BL::STATE_PARRYEVENT_BL]);
 		m_pBlader->m_tFightDesc.bDamaged = FALSE;
@@ -122,6 +122,8 @@ void CState_Blader_Damaged::Damaged()
 
 	m_pBlader->m_tFightDesc.bDamaged = FALSE;
 	m_pBlader->m_tFightDesc.pAttacker = nullptr;
+
+	ENGINE_INSTANCE->Play_Sound(EFC_ENEMY_DAMAGED_00, CHANNEL_ID::ENEMY_BLADER, 0.4f);
 }
 
 CState_Blader_Damaged* CState_Blader_Damaged::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

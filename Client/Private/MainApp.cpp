@@ -89,7 +89,7 @@ void CMainApp::Tick(_double fTimeDelta)
 HRESULT CMainApp::Render()
 {
 	/* 장면 초기화 */
-	if (FAILED(m_pEngineInstance->Clear_BackBuffer_View(_float4(0.5f, 0.5f, 0.5f, 1.f))))
+	if (FAILED(m_pEngineInstance->Clear_BackBuffer_View(_float4(0.f, 0.f, 0.f, 1.f))))
 		return E_FAIL;
 	if (FAILED(m_pEngineInstance->Clear_DepthStencil_View()))
 		return E_FAIL;
