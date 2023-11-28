@@ -48,7 +48,7 @@ HRESULT CPeppermint::Initialize(void* pArg)
 	if (FAILED(CPlayerController::GetInstance()->Add_Player(this, PLAYER_TYPE::PEPPERMINT)))
 		return E_FAIL;
 
-	m_pNavMeshAgentCom->Set_Active(FALSE);
+	//m_pNavMeshAgentCom->Set_Active(FALSE);
 
 	return S_OK;
 }

@@ -126,15 +126,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		if (fTimeAcc >= 1.f / FPS_LIMIT)
 		{
-            /* 0.02f를 넘는 델타타임은 버린다. */
             const _double fTimeDelta = pGameInstance->Compute_TimeDelta(TEXT("Timer_FPS"));
 
-            if (MAX_DELTA >= fTimeDelta)
+            pMainApp->Tick(fTimeDelta);
+            pMainApp->Render();
+            pMainApp->FinishTick();
+            /*if (MAX_DELTA >= fTimeDelta)
             {
 			    pMainApp->Tick(fTimeDelta);
 			    pMainApp->Render();
                 pMainApp->FinishTick();
-            }
+            }*/
 			fTimeAcc = 0.f;
 		}		
 	}

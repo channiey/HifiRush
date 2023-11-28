@@ -35,7 +35,7 @@ HRESULT CLevel_Loading::Initialize(LEVEL_ID eNextLevel)
 
 	m_eNextLevel = eNextLevel;
 
-	/* m_eNextLevel 에 대한 로딩작업을 수행한다. */
+	/* m_eNextLevel 에 대한 로딩 작업을 수행한다. */
 	/* 로딩을 겁나 하고있다. */
 	m_pLoader = CLoader::Create(m_pDevice, m_pContext, m_eNextLevel);
 	if (nullptr == m_pLoader)

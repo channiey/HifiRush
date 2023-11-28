@@ -41,7 +41,7 @@ HRESULT CMacaron::Initialize(void* pArg)
 	if (FAILED(CPlayerController::GetInstance()->Add_Player(this, PLAYER_TYPE::MACARON)))
 		return E_FAIL;
 
-	m_pNavMeshAgentCom->Set_Active(FALSE);
+	//m_pNavMeshAgentCom->Set_Active(FALSE);
 
 	return S_OK;
 }

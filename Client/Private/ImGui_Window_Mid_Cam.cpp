@@ -60,7 +60,7 @@ void CImGui_Window_Mid_Cam::Show_Window()
 		/* Current Camera Property */
 		ImGui::SeparatorText("Property");
 		{
-			if (nullptr != Cameras)
+			if (nullptr != Cameras && !Cameras->empty())
 			{
 				CAMERA_ID iCurCamKey = (CAMERA_ID)ENGINE_INSTANCE->Get_CurCamera()->Get_Camera()->Get_Key();
 
