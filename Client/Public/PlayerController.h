@@ -30,34 +30,34 @@ private:
 	virtual ~CPlayerController() = default;
 
 public:
-	HRESULT			Initialize();
-	void			Tick(_double fTimeDelta);
-	void			LateTick(_double fTimeDelta);
+	HRESULT				Initialize();
+	void				Tick(_double fTimeDelta);
+	void				LateTick(_double fTimeDelta);
 
 public:
-	HRESULT			SetOn_Player(const PLAYER_TYPE& eType);
-	HRESULT			SetOff_Player(const PLAYER_TYPE& eType);
-	HRESULT			Change_ControlPlayer(const PLAYER_TYPE& eType);
+	HRESULT				SetOn_Player(const PLAYER_TYPE& eType);
+	HRESULT				SetOff_Player(const PLAYER_TYPE& eType);
+	HRESULT				Change_ControlPlayer(const PLAYER_TYPE& eType);
 
 	CCharacter*			Get_Player(const PLAYER_TYPE& eType);
 	const PLAYER_STATE	Get_PlayerState(const PLAYER_TYPE& eType);
 	const PLAYER_DESC	Get_PlayerDesc(const PLAYER_TYPE& eType);
 
-	const _bool		Is_Controll(const PLAYER_TYPE eType);
-	const _bool		Is_Player(const PLAYER_TYPE eType);
+	const _bool			Is_Controll(const PLAYER_TYPE eType);
+	const _bool			Is_Player(const PLAYER_TYPE eType);
 
-	HRESULT			Add_Player(CCharacter* pCharacter, const PLAYER_TYPE& eType);
-
-private:
-	void			Update_Player(_double fTimeDelta);
-	void			Play_Sound(const PLAYER_TYPE& eType);
+	HRESULT				Add_Player(CCharacter* pCharacter, const PLAYER_TYPE& eType);
 
 private:
-	PLAYER_DESC		m_tPlayerDesc[PLAYER_TYPE::TYPEEND];
-	PLAYER_TYPE		m_eCurControlPlayerType = PLAYER_TYPE::CHAI;
+	void				Update_Player(_double fTimeDelta);
+	void				Play_Sound(const PLAYER_TYPE& eType);
+
+private:
+	PLAYER_DESC			m_tPlayerDesc[PLAYER_TYPE::TYPEEND];
+	PLAYER_TYPE			m_eCurControlPlayerType = PLAYER_TYPE::CHAI;
 
 public:
-	virtual void	Free() override;
+	virtual void		Free() override;
 };
 
 END

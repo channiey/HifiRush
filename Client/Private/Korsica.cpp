@@ -54,17 +54,21 @@ HRESULT CKorsica::Initialize(void* pArg)
 void CKorsica::Tick(_double fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+	//cout << "CKorsica Tick\t" << m_pModelCom->Get_CurAnimationIndex() << "\t" << m_pModelCom->Get_CurAnimationFrame() << endl;
 }
 
 void CKorsica::LateTick(_double fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+	//cout << "CKorsica Late\t" << m_pModelCom->Get_CurAnimationIndex() << "\t" << m_pModelCom->Get_CurAnimationFrame() << endl;
 }
 
 HRESULT CKorsica::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL;
+
+	//cout << "CKorsica Render\n";
 
 	return S_OK;
 }
@@ -76,9 +80,15 @@ void CKorsica::Set_State(const OBJ_STATE& eState)
 	if (OBJ_STATE::STATE_ACTIVE == eState)
 	{
 		if (nullptr == ENGINE_INSTANCE->Get_GameObject_InCurLevel_InLayerFirst(LayerNames[LAYER_ID::LAYER_ENEMY]))
+		{
 			m_pStateMachineCom->Set_State(StateNames_KO[STATE_KO::STATE_GIMMICK_KO]);
+		}
 		else
+		{
 			m_pStateMachineCom->Set_State(StateNames_KO[STATE_KO::STATE_BATTLE_KO]);
+		}
+			
+		//cout << "CKorsica Set_State\n";
 	}
 }
 

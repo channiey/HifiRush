@@ -48,25 +48,29 @@ HRESULT CPeppermint::Initialize(void* pArg)
 	if (FAILED(CPlayerController::GetInstance()->Add_Player(this, PLAYER_TYPE::PEPPERMINT)))
 		return E_FAIL;
 
-	//m_pNavMeshAgentCom->Set_Active(FALSE);
-
 	return S_OK;
 }
 
 void CPeppermint::Tick(_double fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	//cout << "CPeppermint Tick\t" << m_pModelCom->Get_CurAnimationIndex() << "\t" << m_pModelCom->Get_CurAnimationFrame() << endl;
 }
 
 void CPeppermint::LateTick(_double fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
+	//cout << "CPeppermint Late\t" << m_pModelCom->Get_CurAnimationIndex() << "\t" << m_pModelCom->Get_CurAnimationFrame() << endl;
 }
 
 HRESULT CPeppermint::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL;
+
+	//cout << "CPeppermint Render\n";
 
 	return S_OK;
 }
@@ -85,7 +89,10 @@ void CPeppermint::Set_State(const OBJ_STATE& eState)
 			m_pStateMachineCom->Set_State(StateNames_PE[STATE_PE::STATE_GIMMICK_PE]);
 		}
 		else
+		{
 			m_pStateMachineCom->Set_State(StateNames_PE[STATE_PE::STATE_BATTLE_PE]);
+		}
+		//cout << "CPeppermint Set_State\n";
 	}
 }
 

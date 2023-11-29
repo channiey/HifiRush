@@ -41,25 +41,29 @@ HRESULT CMacaron::Initialize(void* pArg)
 	if (FAILED(CPlayerController::GetInstance()->Add_Player(this, PLAYER_TYPE::MACARON)))
 		return E_FAIL;
 
-	//m_pNavMeshAgentCom->Set_Active(FALSE);
-
 	return S_OK;
 }
 
 void CMacaron::Tick(_double fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	//cout << "CMacaron Tick\t" << m_pModelCom->Get_CurAnimationIndex() << "\t" << m_pModelCom->Get_CurAnimationFrame() << endl;
 }
 
 void CMacaron::LateTick(_double fTimeDelta)
 {
  	__super::LateTick(fTimeDelta);
+
+	//cout << "CMacaron Late\t" << m_pModelCom->Get_CurAnimationIndex() << "\t" << m_pModelCom->Get_CurAnimationFrame() << endl;
 }
 
 HRESULT CMacaron::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL;
+
+	//cout << "CMacaron Render\n";
 
 	return S_OK;
 }
@@ -77,7 +81,11 @@ void CMacaron::Set_State(const OBJ_STATE& eState)
 			m_pStateMachineCom->Set_State(StateNames_MA[STATE_MA::STATE_GIMMICK_MA]);
 		}
 		else
+		{
 			m_pStateMachineCom->Set_State(StateNames_MA[STATE_MA::STATE_BATTLE_MA]);
+		}
+		
+		//cout << "CMacaron Set_State\n";
 	}
 }
 

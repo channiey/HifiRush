@@ -463,6 +463,9 @@ void CModel::Clear_Animation()
 	m_TweenDesc.cur.ClearAnim();
 	m_TweenDesc.next.ClearAnim();
 	m_TweenDesc.ClearNextAnim();
+
+	m_TweenDesc.cur.iAnimIndex = -1;
+	m_TweenDesc.next.iAnimIndex = -1;
 }
 
 const _bool CModel::Is_TwoThirds_Animation()
