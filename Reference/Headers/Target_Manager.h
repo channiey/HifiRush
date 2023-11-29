@@ -14,24 +14,23 @@ private:
 	virtual ~CTarget_Manager() = default;
 
 public:
-	HRESULT Add_RenderTarget(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const wstring& strTargetTag, _uint iSizeX, _uint iSizeY, DXGI_FORMAT ePixelFormat, const _float4& vColor);
-	HRESULT Add_MRT(const wstring& strMRTTag, const wstring& strTargetTag);
-	HRESULT Bind_SRV(class CShader* pShader, const wstring& strTargetTag, const _char* pConstantName);
-
-	/* strMRTTag에 해당하는 list에 담겨있는 타겟들을 장치에 바인딩한다. */
-	HRESULT Begin_MRT(ID3D11DeviceContext* pContext, const wstring& strMRTTag);
-
-	/* 다시 원래 상태로 복구한다(원래 백버퍼 세팅). */
-	HRESULT End_MRT(ID3D11DeviceContext* pContext);
+	HRESULT			Add_RenderTarget(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const wstring& strTargetTag, _uint iSizeX, _uint iSizeY, DXGI_FORMAT ePixelFormat, const _float4& vColor);
+	HRESULT			Add_MRT(const wstring& strMRTTag, const wstring& strTargetTag);
 
 public:
-	HRESULT Ready_Debug(const wstring& strTargetTag, _float fX, _float fY, _float fSizeX, _float fSizeY);
-	HRESULT Render(const wstring& strMRTTag, class CShader* pShader, class CVIBuffer_Rect* pVIBuffer);
+	HRESULT			Bind_SRV(class CShader* pShader, const wstring& strTargetTag, const _char* pConstantName);
+
+	HRESULT			Begin_MRT(ID3D11DeviceContext* pContext, const wstring& strMRTTag);/* strMRTTag에 해당하는 list에 담겨있는 타겟들을 장치에 바인딩한다. */
+	HRESULT			End_MRT(ID3D11DeviceContext* pContext); /* 다시 원래 상태로 복구한다(원래 백버퍼 세팅). */
 
 public:
-	const _bool& Is_DebugRTV() const { return m_bDebugRTV; }
-	void Set_DebugRTV(const _bool& bSet) { m_bDebugRTV = bSet; }
-	void Set_DebugRTV() { m_bDebugRTV = !m_bDebugRTV; }
+	HRESULT			Ready_Debug(const wstring& strTargetTag, _float fX, _float fY, _float fSizeX, _float fSizeY);
+	HRESULT			Render(const wstring& strMRTTag, class CShader* pShader, class CVIBuffer_Rect* pVIBuffer);
+
+public:
+	const _bool&	Is_DebugRTV() const					{ return m_bDebugRTV; }
+	void			Set_DebugRTV(const _bool& bSet)		{ m_bDebugRTV = bSet; }
+	void			Set_DebugRTV()						{ m_bDebugRTV = !m_bDebugRTV; }
 
 private:
 	class CRenderTarget*		Find_RenderTarget(const wstring& strTargetTag);
@@ -43,11 +42,11 @@ private:
 	/* 장치에 동시에 바인딩되어야하는 타겟들을 미리 묶어두겠다. */
 	map<const wstring, list<class CRenderTarget*>>		m_MRTs;
 
-	_bool	m_bDebugRTV = FALSE;
+	_bool												m_bDebugRTV = FALSE;
 
 private:
-	ID3D11RenderTargetView*					m_pBackBufferRTV = { nullptr };
-	ID3D11DepthStencilView*					m_pDSV = { nullptr };
+	ID3D11RenderTargetView*								m_pBackBufferRTV = { nullptr };
+	ID3D11DepthStencilView*								m_pDSV = { nullptr };
 
 public:
 	virtual void Free() override;

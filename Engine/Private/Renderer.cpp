@@ -17,55 +17,65 @@ CRenderer::CRenderer(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 
 HRESULT CRenderer::Initialize_Prototype()
 {
-	D3D11_VIEWPORT		ViewportDesc;
 
 	_uint				iNumViewports = 1;
 
-	m_pContext->RSGetViewports(&iNumViewports, &ViewportDesc);
+	m_pContext->RSGetViewports(&iNumViewports, &m_ViewportDesc);
 
 	/* 렌더 타겟을 생성해서 매니저에 보관 */
 	{
 		/* For.Target_Diffuse */
 		if (FAILED(m_pTarget_Manager->Add_RenderTarget(m_pDevice, m_pContext, TEXT("Target_Diffuse"),
-			ViewportDesc.Width, ViewportDesc.Height, DXGI_FORMAT_R8G8B8A8_UNORM, _float4(1.f, 1.f, 1.f, 0.f))))
+			m_ViewportDesc.Width, m_ViewportDesc.Height, DXGI_FORMAT_R8G8B8A8_UNORM, _float4(1.f, 1.f, 1.f, 0.f))))
 			return E_FAIL;
 
 		/* For.Target_Normal */
 		if (FAILED(m_pTarget_Manager->Add_RenderTarget(m_pDevice, m_pContext, TEXT("Target_Normal"),
-			ViewportDesc.Width, ViewportDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
+			m_ViewportDesc.Width, m_ViewportDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
 			return E_FAIL;
 
 		/* For.Target_Depth */
 		if (FAILED(m_pTarget_Manager->Add_RenderTarget(m_pDevice, m_pContext, TEXT("Target_Depth"),
-			ViewportDesc.Width, ViewportDesc.Height, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(1.f, 1.f, 1.f, 1.f))))
+			m_ViewportDesc.Width, m_ViewportDesc.Height, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(1.f, 1.f, 1.f, 1.f))))
 			return E_FAIL;
 
 		/* For.Target_Shade */
 		if (FAILED(m_pTarget_Manager->Add_RenderTarget(m_pDevice, m_pContext, TEXT("Target_Shade"),
-			ViewportDesc.Width, ViewportDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 1.f))))
+			m_ViewportDesc.Width, m_ViewportDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 1.f))))
 			return E_FAIL;
 
 		/* For.Target_Specular */
 		if (FAILED(m_pTarget_Manager->Add_RenderTarget(m_pDevice, m_pContext, TEXT("Target_Specular"),
-			ViewportDesc.Width, ViewportDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+			m_ViewportDesc.Width, m_ViewportDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+			return E_FAIL;
+
+		/* For.Target_Outline */
+		if (FAILED(m_pTarget_Manager->Add_RenderTarget(m_pDevice, m_pContext, TEXT("Target_Outline"),
+			m_ViewportDesc.Width, m_ViewportDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 			return E_FAIL;
 	}
 
 	/* 디버그용 미니 렌더 창 세팅 */
 	{
-		if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_Diffuse"), 100.0f, 100.f, 200.0f, 200.0f)))
+		if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_Diffuse"), 
+			100.f, 100.f, 200.f, 200.f)))
 			return E_FAIL;
 
-		if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_Normal"), 100.0f, 300.0f, 200.0f, 200.0f)))
+		if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_Normal"), 
+			100.f, 300.f, 200.f, 200.f)))
 			return E_FAIL;
 
-		if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_Depth"), 100.0f, 500.0f, 200.0f, 200.0f)))
+		if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_Depth"), 
+			100.f, 500.f, 200.f, 200.f)))
 			return E_FAIL;
 
-		if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_Shade"), 300.0f, 100.f, 200.0f, 200.0f)))
+
+		if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_Shade"), 
+			300.f, 100.f, 200.f, 200.f)))
 			return E_FAIL;
 
-		if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_Specular"), 300.0f, 300.0f, 200.0f, 200.0f)))
+		if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_Outline"), 
+			300.f, 300.f, 200.f, 200.f)))
 			return E_FAIL;
 	}
 
@@ -90,6 +100,13 @@ HRESULT CRenderer::Initialize_Prototype()
 			return E_FAIL;
 	}
 
+	/* Test */
+	{
+		if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Outline"), TEXT("Target_Outline"))))
+			return E_FAIL;
+	}
+
+
 	/* 버퍼 생성 */
 	m_pVIBuffer = CVIBuffer_Rect::Create(m_pDevice, m_pContext);
 	if (nullptr == m_pVIBuffer)
@@ -100,13 +117,15 @@ HRESULT CRenderer::Initialize_Prototype()
 	if (nullptr == m_pShader)
 		return E_FAIL;
 
-	/* 행렬 세팅 */
-	XMStoreFloat4x4(&m_WorldMatrix, XMMatrixIdentity());
-	m_WorldMatrix._11 = ViewportDesc.Width;
-	m_WorldMatrix._22 = ViewportDesc.Height;
+	/* 행렬 세팅 (화면 꽉채움) */
+	{
+		XMStoreFloat4x4(&m_WorldMatrix, XMMatrixIdentity());
+		m_WorldMatrix._11 = m_ViewportDesc.Width;
+		m_WorldMatrix._22 = m_ViewportDesc.Height;
 
-	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
-	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(ViewportDesc.Width, ViewportDesc.Height, 0.f, 1.f));
+		XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
+		XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(m_ViewportDesc.Width, m_ViewportDesc.Height, 0.f, 1.f));
+	}
 
 	return S_OK;
 }
@@ -137,7 +156,6 @@ HRESULT CRenderer::Add_Debug(CComponent* pDebug)
 	return S_OK;
 }
 
-
 HRESULT CRenderer::Draw_RenderObjects()
 {
 	if (FAILED(Render_Priority()))
@@ -146,6 +164,8 @@ HRESULT CRenderer::Draw_RenderObjects()
 		return S_OK; // E_FAIL;
 	if (FAILED(Render_NonBlend()))
 		return S_OK; // E_FAIL;
+	if (FAILED(Render_OutLine()))
+		return S_OK;
 	if (FAILED(Render_LightAcc()))
 		return S_OK; // E_FAIL;
 	if (FAILED(Render_Deferred()))
@@ -195,20 +215,23 @@ HRESULT CRenderer::Render_NonLight()
 HRESULT CRenderer::Render_NonBlend()
 {
 	/* Diffuse + Normal */
+
 	if (FAILED(m_pTarget_Manager->Begin_MRT(m_pContext, TEXT("MRT_GameObjects"))))
-		return E_FAIL;
-
-	for (auto& pGameObject : m_RenderObjects[RG_NONBLEND])
+		return E_FAIL; /* 백버퍼를 빼고 MRT_GameObjects 렌더 타겟을 바인딩 */
 	{
-		if (nullptr != pGameObject && pGameObject->Is_Active() && pGameObject->Is_Render())
-			pGameObject->Render();
+		for (auto& pGameObject : m_RenderObjects[RG_NONBLEND])
+		{
+			if (nullptr != pGameObject && pGameObject->Is_Active() && pGameObject->Is_Render())
+				pGameObject->Render();
 
-		Safe_Release(pGameObject);
+			Safe_Release(pGameObject);
+		}
+		m_RenderObjects[RG_NONBLEND].clear();
+
 	}
-	m_RenderObjects[RG_NONBLEND].clear();
 
 	if (FAILED(m_pTarget_Manager->End_MRT(m_pContext)))
-		return E_FAIL;
+		return E_FAIL; /* MRT_GameObjects 빼고 다시 백버퍼 바인딩 */
 
 	return S_OK;
 }
@@ -219,7 +242,6 @@ HRESULT CRenderer::Render_LightAcc()
 	if (FAILED(m_pTarget_Manager->Begin_MRT(m_pContext, TEXT("MRT_Lights"))))
 		return E_FAIL;
 
-
 	/* 사각형 버퍼를 직교투영으로 Shade타겟의 사이즈만큼 꽉 채워서 그릴꺼야. */
 	if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", &m_WorldMatrix)))
 		return E_FAIL;
@@ -229,18 +251,18 @@ HRESULT CRenderer::Render_LightAcc()
 		return E_FAIL;
 
 	CPipeLine* pPipeLine = GET_INSTANCE(CPipeLine);
+	{
+		Matrix matVI = pPipeLine->Get_Transform_Inverse(CPipeLine::STATE_VIEW);
+		Matrix matPI = pPipeLine->Get_Transform_Inverse(CPipeLine::STATE_PROJ);
+		Vec4 vCamPos = pPipeLine->Get_CamPosition();
 
-	Matrix matVI = pPipeLine->Get_Transform_Inverse(CPipeLine::STATE_VIEW);
-	Matrix matPI = pPipeLine->Get_Transform_Inverse(CPipeLine::STATE_PROJ);
-	Vec4 vCamPos = pPipeLine->Get_CamPosition();
-
-	if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrixInv", &matVI)))
-		return E_FAIL;
-	if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrixInv", &matPI)))
-		return E_FAIL;
-	if (FAILED(m_pShader->Bind_RawValue("g_vCamPosition", &vCamPos, sizeof(_float4))))
-		return E_FAIL;
-
+		if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrixInv", &matVI)))
+			return E_FAIL;
+		if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrixInv", &matPI)))
+			return E_FAIL;
+		if (FAILED(m_pShader->Bind_RawValue("g_vCamPosition", &vCamPos, sizeof(_float4))))
+			return E_FAIL;
+	}
 	RELEASE_INSTANCE(CPipeLine);
 
 	if (FAILED(m_pTarget_Manager->Bind_SRV(m_pShader, TEXT("Target_Normal"), "g_NormalTexture")))
@@ -257,33 +279,84 @@ HRESULT CRenderer::Render_LightAcc()
 	return S_OK;
 }
 
+HRESULT CRenderer::Render_OutLine()
+{
+	if (FAILED(m_pTarget_Manager->Begin_MRT(m_pContext, TEXT("MRT_Outline"))))
+		return E_FAIL;
+
+	/* Bind */
+	{
+		if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", &m_WorldMatrix)))
+			return E_FAIL;
+
+		if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+			return E_FAIL;
+
+		if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+			return E_FAIL;
+
+		if (FAILED(m_pTarget_Manager->Bind_SRV(m_pShader, TEXT("Target_Diffuse"), "g_DiffuseTexture")))
+			return E_FAIL;
+
+		if (FAILED(m_pTarget_Manager->Bind_SRV(m_pShader, TEXT("Target_Normal"), "g_NormalTexture")))
+			return E_FAIL;
+
+		if (FAILED(m_pShader->Bind_RawValue("MAP_CX", &m_ViewportDesc.Width, sizeof(_float))))
+			return E_FAIL;
+
+		if (FAILED(m_pShader->Bind_RawValue("MAP_CY", &m_ViewportDesc.Height, sizeof(_float))))
+			return E_FAIL;
+	}
+
+	/* Draw */
+	{
+		if (FAILED(m_pShader->Begin(4)))
+			return E_FAIL;
+
+		if (FAILED(m_pVIBuffer->Render()))
+			return E_FAIL;
+	}
+
+	if (FAILED(m_pTarget_Manager->End_MRT(m_pContext)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT CRenderer::Render_Deferred()
 {
 	/* 디퓨즈 타겟과 셰이드 타겟을 서로 곱하여 백버퍼에 최종적으로 찍어낸다. */
 
 	/* 행렬 세팅 */
-	if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", &m_WorldMatrix)))
-		return E_FAIL;
-	if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
-		return E_FAIL;
-	if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
-		return E_FAIL;
+	{
+		if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", &m_WorldMatrix)))
+			return E_FAIL;
+		if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+			return E_FAIL;
+		if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+			return E_FAIL;
+	}
 
-	/* 텍스처 세팅 */
-	if (FAILED(m_pTarget_Manager->Bind_SRV(m_pShader, TEXT("Target_Diffuse"), "g_DiffuseTexture")))
-		return E_FAIL;
+	/* 렌더 타겟 텍스처 세팅 */
+	{
+		if (FAILED(m_pTarget_Manager->Bind_SRV(m_pShader, TEXT("Target_Diffuse"), "g_DiffuseTexture")))
+			return E_FAIL;
 
-	if (FAILED(m_pTarget_Manager->Bind_SRV(m_pShader, TEXT("Target_Shade"), "g_ShadeTexture")))
-		return E_FAIL;
+		if (FAILED(m_pTarget_Manager->Bind_SRV(m_pShader, TEXT("Target_Shade"), "g_ShadeTexture")))
+			return E_FAIL;
 
-	if (FAILED(m_pTarget_Manager->Bind_SRV(m_pShader, TEXT("Target_Specular"), "g_SpecularTexture")))
-		return E_FAIL;
+		if (FAILED(m_pTarget_Manager->Bind_SRV(m_pShader, TEXT("Target_Outline"), "g_OutlineTexture")))
+			return E_FAIL;
+	}
 
-	if (FAILED(m_pShader->Begin(3)))
-		return E_FAIL;
+	/* 그린다 */
+	{
+		if (FAILED(m_pShader->Begin(3)))
+			return E_FAIL;
 
-	if (FAILED(m_pVIBuffer->Render()))
-		return E_FAIL;
+		if (FAILED(m_pVIBuffer->Render()))
+			return E_FAIL;
+	}
 
 	return S_OK;
 }
@@ -313,7 +386,6 @@ HRESULT CRenderer::Render_UI()
 	}
 	m_RenderObjects[RG_UI].clear();
 
-
 	return S_OK;
 }
 
@@ -332,11 +404,13 @@ HRESULT CRenderer::Render_Debug()
 	if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
 		return E_FAIL;
 
-
 	if (FAILED(m_pTarget_Manager->Render(TEXT("MRT_GameObjects"), m_pShader, m_pVIBuffer)))
 		return E_FAIL;
 
 	if (FAILED(m_pTarget_Manager->Render(TEXT("MRT_Lights"), m_pShader, m_pVIBuffer)))
+		return E_FAIL;
+
+	if (FAILED(m_pTarget_Manager->Render(TEXT("MRT_Outline"), m_pShader, m_pVIBuffer)))
 		return E_FAIL;
 
 	return S_OK;

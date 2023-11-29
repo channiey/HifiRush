@@ -117,12 +117,12 @@ HRESULT CLevel_Stage_01::Ready_Light()
 	{
 		ZeroMemory(&LightDesc_Dir, sizeof LightDesc_Dir);
 
-		LightDesc_Dir.eLightType = LIGHT_DESC::LIGHT_DIRECTIONAL;
-		LightDesc_Dir.vLightDir = _float4(1.f, -1.f, 1.f, 0.f);
+		LightDesc_Dir.eLightType	= LIGHT_DESC::LIGHT_DIRECTIONAL;
+		LightDesc_Dir.vLightDir		= _float4(1.f, -1.f, 1.f, 0.f);
 
-		LightDesc_Dir.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-		LightDesc_Dir.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
-		LightDesc_Dir.vSpecular = _float4(0.f, 0.f, 0.f, 0.f);  // _float4(1.f, 1.f, 1.f, 1.f);
+		LightDesc_Dir.vDiffuse		= _float4(1.f, 1.f, 1.f, 1.f);
+		LightDesc_Dir.vAmbient		= _float4(1.f, 1.f, 1.f, 1.f);
+		LightDesc_Dir.vSpecular		= _float4(0.f, 0.f, 0.f, 0.f);  // _float4(1.f, 1.f, 1.f, 1.f);
 	}
 	if (FAILED(ENGINE_INSTANCE->Add_Light(LightDesc_Dir)))
 		return E_FAIL;

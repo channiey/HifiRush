@@ -34,6 +34,7 @@ private:
 	HRESULT Render_NonLight();
 	HRESULT Render_NonBlend();
 	HRESULT Render_LightAcc();
+	HRESULT Render_OutLine();
 	HRESULT Render_Deferred();
 	HRESULT Render_Blend();
 	HRESULT Render_UI();
@@ -52,6 +53,7 @@ private:
 
 	_float4x4							m_WorldMatrix, m_ViewMatrix, m_ProjMatrix;
 
+	D3D11_VIEWPORT						m_ViewportDesc;
 public:
 	static CRenderer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CComponent* Clone(void* pArg) override;

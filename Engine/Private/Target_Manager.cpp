@@ -13,7 +13,8 @@ HRESULT CTarget_Manager::Add_RenderTarget(ID3D11Device * pDevice, ID3D11DeviceCo
 	if (nullptr != Find_RenderTarget(strTargetTag))
 		return E_FAIL;
 
-	CRenderTarget*		pRenderTarget = CRenderTarget::Create(pDevice, pContext, iSizeX, iSizeY, ePixelFormat, vColor);
+	CRenderTarget*	pRenderTarget = CRenderTarget::Create(pDevice, pContext, iSizeX, iSizeY, ePixelFormat, vColor);
+	
 	if (nullptr == pRenderTarget)
 		return E_FAIL;
 
@@ -24,11 +25,14 @@ HRESULT CTarget_Manager::Add_RenderTarget(ID3D11Device * pDevice, ID3D11DeviceCo
 
 HRESULT CTarget_Manager::Add_MRT(const wstring & strMRTTag, const wstring & strTargetTag)
 {
-	CRenderTarget*		pRenderTarget = Find_RenderTarget(strTargetTag);
+	/* 렌더 타겟을 찾는다 (없으면 생성) */
+	CRenderTarget*	pRenderTarget = Find_RenderTarget(strTargetTag);
+	
 	if (nullptr == pRenderTarget)
 		return E_FAIL;
 
-	list<CRenderTarget*>*	pMRTList = Find_MRT(strMRTTag);
+	/* MRT를 찾는다 (없으면 생성) */
+	list<CRenderTarget*>* pMRTList = Find_MRT(strMRTTag);
 
 	if (nullptr == pMRTList)
 	{
@@ -48,6 +52,7 @@ HRESULT CTarget_Manager::Add_MRT(const wstring & strMRTTag, const wstring & strT
 HRESULT CTarget_Manager::Bind_SRV(CShader * pShader, const wstring & strTargetTag, const _char * pConstantName)
 {
 	CRenderTarget*		pRenderTarget = Find_RenderTarget(strTargetTag);
+	
 	if (nullptr == pRenderTarget)
 		return E_FAIL;
 
