@@ -85,6 +85,10 @@ void CCharacter::LateTick(_double fTimeDelta)
 	}
 #endif // _DEBUG
 
+
+	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_SHADOW, this)))
+		return;
+
 	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
 		return;
 }
@@ -97,7 +101,9 @@ HRESULT CCharacter::Render()
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
-	for (_uint i = 0; i < m_pModelCom->Get_MeshCount(); ++i)
+	const _uint iNumMeshes = m_pModelCom->Get_MeshCount();
+
+	for (_uint i = 0; i < iNumMeshes; ++i)
 	{
 		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, m_pModelCom->Get_MaterialIndex(i), aiTextureType_DIFFUSE, "g_DiffuseTexture")))
 			return E_FAIL;
@@ -121,6 +127,37 @@ HRESULT CCharacter::Render()
 		if (FAILED(m_pNavMeshAgentCom->Render()))
 			return E_FAIL;
 	}
+
+	return S_OK;
+}
+
+HRESULT CCharacter::Render_LightDepth()
+{
+	_float4x4		ViewMatrix, ProjMatrix;
+
+	XMStoreFloat4x4(&ViewMatrix, XMMatrixLookAtLH(XMVectorSet(-30.f, 30.f, -30.0f, 1.f), XMVectorSet(0.f, 0.f, 0.f, 1.f), XMVectorSet(0.f, 1.f, 0.f, 0.f)));
+	XMStoreFloat4x4(&ProjMatrix, XMMatrixPerspectiveFovLH(XMConvertToRadians(45.0f), (_float)g_iWinSizeX / g_iWinSizeY, 0.1f, 1000.f));
+
+	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_WorldMatrix")))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &ViewMatrix)))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &ProjMatrix)))
+		return E_FAIL;
+
+	const _uint iNumMeshes = m_pModelCom->Get_MeshCount();
+
+	for (_uint i = 0; i < iNumMeshes; i++)
+	{
+		if (FAILED(m_pModelCom->Bind_Material(m_pShaderCom, m_pModelCom->Get_MaterialIndex(i), aiTextureType_DIFFUSE, "g_DiffuseTexture")))
+			return E_FAIL;
+
+		if (FAILED(m_pModelCom->Render(m_pShaderCom, i, 1)))
+			return E_FAIL;
+	}
+
 
 	return S_OK;
 }

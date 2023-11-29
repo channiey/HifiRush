@@ -24,6 +24,8 @@ public:
 	virtual void		Tick(_double fTimeDelta);
 	virtual void		LateTick(_double fTimeDelta);
 	virtual HRESULT		Render();
+	virtual HRESULT		Render_LightDepth() { return S_OK; }
+
 
 public: 
 	virtual void		OnCollision_Enter(class CCollider* pCollider, const _int& iIndexAsChild = -1) {};

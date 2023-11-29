@@ -12,7 +12,7 @@ class ENGINE_DLL CRenderer final : public CComponent
 public:
 	/* 그리기 순서에 따른 분류 */
 	/* 일단 RG_NONBLEND를 먼저 그린다. 그 후 RG_BLEND는 깊이 정렬 후 그린다. */
-	enum RENDERGROUP { RG_PRIORITY, RG_NONLIGHT, RG_NONBLEND, RG_BLEND, RG_UI, RG_END };
+	enum RENDERGROUP { RG_PRIORITY, RG_SHADOW, RG_NONLIGHT, RG_NONBLEND, RG_BLEND, RG_UI, RG_END };
 
 private:
 	CRenderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);	
@@ -32,6 +32,7 @@ public:
 private:
 	HRESULT Render_Priority();
 	HRESULT Render_NonLight();
+	HRESULT Render_LightDepth();
 	HRESULT Render_NonBlend();
 	HRESULT Render_LightAcc();
 	HRESULT Render_OutLine();

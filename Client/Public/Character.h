@@ -91,6 +91,7 @@ public:
 	virtual void			Tick(_double fTimeDelta);
 	virtual void			LateTick(_double fTimeDelta);
 	virtual HRESULT			Render();
+	virtual HRESULT			Render_LightDepth() override;
 
 public:
 	const STAT_DESC&		Get_StatDesc() const { return m_tStatDesc; }

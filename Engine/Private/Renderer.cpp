@@ -44,9 +44,9 @@ HRESULT CRenderer::Initialize_Prototype()
 			m_ViewportDesc.Width, m_ViewportDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 1.f))))
 			return E_FAIL;
 
-		/* For.Target_Specular */
-		if (FAILED(m_pTarget_Manager->Add_RenderTarget(m_pDevice, m_pContext, TEXT("Target_Specular"),
-			m_ViewportDesc.Width, m_ViewportDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		/* For.Target_LightDepth */
+		if (FAILED(m_pTarget_Manager->Add_RenderTarget(m_pDevice, m_pContext, TEXT("Target_LightDepth"),
+			m_ViewportDesc.Width, m_ViewportDesc.Height, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(1.f, 1.f, 1.f, 1.f))))
 			return E_FAIL;
 
 		/* For.Target_Outline */
@@ -69,13 +69,17 @@ HRESULT CRenderer::Initialize_Prototype()
 			100.f, 500.f, 200.f, 200.f)))
 			return E_FAIL;
 
-
 		if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_Shade"), 
 			300.f, 100.f, 200.f, 200.f)))
 			return E_FAIL;
 
-		if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_Outline"), 
+		if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_LightDepth"),
 			300.f, 300.f, 200.f, 200.f)))
+			return E_FAIL;
+
+		if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_Outline"), 
+			300.f, 500.f, 200.f, 200.f)))
+
 			return E_FAIL;
 	}
 
@@ -96,7 +100,7 @@ HRESULT CRenderer::Initialize_Prototype()
 		if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Lights"), TEXT("Target_Shade"))))
 			return E_FAIL;
 
-		if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Lights"), TEXT("Target_Specular"))))
+		if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_LightDepth"), TEXT("Target_LightDepth"))))
 			return E_FAIL;
 	}
 
@@ -162,6 +166,8 @@ HRESULT CRenderer::Draw_RenderObjects()
 		return S_OK; // E_FAIL;
 	if (FAILED(Render_NonLight()))
 		return S_OK; // E_FAIL;
+	if (FAILED(Render_LightDepth()))
+		return S_OK;
 	if (FAILED(Render_NonBlend()))
 		return S_OK; // E_FAIL;
 	if (FAILED(Render_OutLine()))
@@ -209,6 +215,26 @@ HRESULT CRenderer::Render_NonLight()
 	}
 	m_RenderObjects[RG_NONLIGHT].clear();
 	
+	return S_OK;
+}
+
+HRESULT CRenderer::Render_LightDepth()
+{
+	if (FAILED(m_pTarget_Manager->Begin_MRT(m_pContext, TEXT("MRT_LightDepth"))))
+		return E_FAIL;
+
+	for (auto& pGameObject : m_RenderObjects[RG_SHADOW])
+	{
+		if (nullptr != pGameObject)
+			pGameObject->Render_LightDepth();
+
+		Safe_Release(pGameObject);
+	}
+	m_RenderObjects[RG_SHADOW].clear();
+
+	if (FAILED(m_pTarget_Manager->End_MRT(m_pContext)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -347,6 +373,36 @@ HRESULT CRenderer::Render_Deferred()
 
 		if (FAILED(m_pTarget_Manager->Bind_SRV(m_pShader, TEXT("Target_Outline"), "g_OutlineTexture")))
 			return E_FAIL;
+
+		if (FAILED(m_pTarget_Manager->Bind_SRV(m_pShader, TEXT("Target_LightDepth"), "g_LightDepthTexture")))
+			return E_FAIL;
+
+		/* 가라 */
+		{
+			_float4x4		ViewMatrix, ProjMatrix;
+
+			XMStoreFloat4x4(&ViewMatrix, XMMatrixLookAtLH(XMVectorSet(-30.f, 30.f, -30.0f, 1.f), XMVectorSet(0.f, 0.f, 0.f, 1.f), XMVectorSet(0.f, 1.f, 0.f, 0.f)));
+			XMStoreFloat4x4(&ProjMatrix, XMMatrixPerspectiveFovLH(XMConvertToRadians(45.0f), (_float)m_ViewportDesc.Width / m_ViewportDesc.Height, 0.1f, 1000.f));
+
+			if (FAILED(m_pShader->Bind_Matrix("g_LightViewMatrix", &ViewMatrix)))
+				return E_FAIL;
+
+			if (FAILED(m_pShader->Bind_Matrix("g_LightProjMatrix", &ProjMatrix)))
+				return E_FAIL;
+
+
+			CPipeLine* pPipeLine = GET_INSTANCE(CPipeLine);
+
+			Matrix matVI = pPipeLine->Get_Transform_Inverse(CPipeLine::STATE_VIEW);
+			Matrix matPI = pPipeLine->Get_Transform_Inverse(CPipeLine::STATE_PROJ);
+
+			if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrixInv", &matVI)))
+				return E_FAIL;
+			if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrixInv", &matPI)))
+				return E_FAIL;
+
+			RELEASE_INSTANCE(CPipeLine);
+		}
 	}
 
 	/* 그린다 */
@@ -408,6 +464,9 @@ HRESULT CRenderer::Render_Debug()
 		return E_FAIL;
 
 	if (FAILED(m_pTarget_Manager->Render(TEXT("MRT_Lights"), m_pShader, m_pVIBuffer)))
+		return E_FAIL;
+
+	if (FAILED(m_pTarget_Manager->Render(TEXT("MRT_LightDepth"), m_pShader, m_pVIBuffer)))
 		return E_FAIL;
 
 	if (FAILED(m_pTarget_Manager->Render(TEXT("MRT_Outline"), m_pShader, m_pVIBuffer)))
