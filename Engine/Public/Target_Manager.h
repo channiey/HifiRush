@@ -20,8 +20,8 @@ public:
 public:
 	HRESULT			Bind_SRV(class CShader* pShader, const wstring& strTargetTag, const _char* pConstantName);
 
-	HRESULT			Begin_MRT(ID3D11DeviceContext* pContext, const wstring& strMRTTag);/* strMRTTag에 해당하는 list에 담겨있는 타겟들을 장치에 바인딩한다. */
-	HRESULT			End_MRT(ID3D11DeviceContext* pContext); /* 다시 원래 상태로 복구한다(원래 백버퍼 세팅). */
+	HRESULT			Begin_MRT(ID3D11DeviceContext* pContext, const wstring& strMRTTag, ID3D11DepthStencilView* pDSV = nullptr);/* strMRTTag에 해당하는 list에 담겨있는 타겟들을 장치에 바인딩한다. */
+	HRESULT			End_MRT(ID3D11DeviceContext* pContext, ID3D11DepthStencilView* pDSV = nullptr); /* 다시 원래 상태로 복구한다(원래 백버퍼 세팅). */
 
 public:
 	HRESULT			Ready_Debug(const wstring& strTargetTag, _float fX, _float fY, _float fSizeX, _float fSizeY);

@@ -46,7 +46,7 @@ HRESULT CRenderer::Initialize_Prototype()
 
 		/* For.Target_LightDepth */
 		if (FAILED(m_pTarget_Manager->Add_RenderTarget(m_pDevice, m_pContext, TEXT("Target_LightDepth"),
-			m_ViewportDesc.Width, m_ViewportDesc.Height, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(1.f, 1.f, 1.f, 1.f))))
+			m_ViewportDesc.Width * m_fShadowTargetMag, m_ViewportDesc.Height * m_fShadowTargetMag, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(1.f, 1.f, 1.f, 1.f))))
 			return E_FAIL;
 
 		/* For.Target_Outline */
@@ -104,7 +104,7 @@ HRESULT CRenderer::Initialize_Prototype()
 			return E_FAIL;
 	}
 
-	/* Test */
+	/* For.MRT_Outline */
 	{
 		if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Outline"), TEXT("Target_Outline"))))
 			return E_FAIL;
@@ -130,6 +130,9 @@ HRESULT CRenderer::Initialize_Prototype()
 		XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
 		XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(m_ViewportDesc.Width, m_ViewportDesc.Height, 0.f, 1.f));
 	}
+
+	if (FAILED(Create_ShadowDSV()))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -220,20 +223,51 @@ HRESULT CRenderer::Render_NonLight()
 
 HRESULT CRenderer::Render_LightDepth()
 {
-	if (FAILED(m_pTarget_Manager->Begin_MRT(m_pContext, TEXT("MRT_LightDepth"))))
+	if (FAILED(m_pTarget_Manager->Begin_MRT(m_pContext, TEXT("MRT_LightDepth"), m_pShadowDSV)))
 		return E_FAIL;
 
-	for (auto& pGameObject : m_RenderObjects[RG_SHADOW])
+	m_pContext->ClearDepthStencilView(m_pShadowDSV, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
+
+	/* 그림자를 그리기 위한 DSV를 세팅하기 위해 현재 DSV를 받아둔다. */
+	D3D11_VIEWPORT		ViewportDesc;
+	_float				fOriginalWidth, fOriginalHeight;
+	_uint				iNumViewports = 1;
 	{
-		if (nullptr != pGameObject)
-			pGameObject->Render_LightDepth();
 
-		Safe_Release(pGameObject);
+		m_pContext->RSGetViewports(&iNumViewports, &ViewportDesc);
+
+		fOriginalWidth		= ViewportDesc.Width;
+		fOriginalHeight		= ViewportDesc.Height;
+
+		ViewportDesc.Width	*= m_fShadowTargetMag;
+		ViewportDesc.Height *= m_fShadowTargetMag;
+
+		m_pContext->RSSetViewports(iNumViewports, &ViewportDesc);
 	}
-	m_RenderObjects[RG_SHADOW].clear();
 
-	if (FAILED(m_pTarget_Manager->End_MRT(m_pContext)))
-		return E_FAIL;
+	/* 그림자 렌더 */
+	{
+		for (auto& pGameObject : m_RenderObjects[RG_SHADOW])
+		{
+			if (nullptr != pGameObject)
+				pGameObject->Render_LightDepth();
+
+			Safe_Release(pGameObject);
+		}
+		m_RenderObjects[RG_SHADOW].clear();
+
+		if (FAILED(m_pTarget_Manager->End_MRT(m_pContext, m_pShadowDSV)))
+			return E_FAIL;
+	}
+
+	/* DSV 원래 것으로 교체 */
+	{
+		m_pContext->RSGetViewports(&iNumViewports, &ViewportDesc);
+		ViewportDesc.Width = fOriginalWidth;
+		ViewportDesc.Height = fOriginalHeight;
+
+		m_pContext->RSSetViewports(iNumViewports, &ViewportDesc);
+	}
 
 	return S_OK;
 }
@@ -377,31 +411,26 @@ HRESULT CRenderer::Render_Deferred()
 		if (FAILED(m_pTarget_Manager->Bind_SRV(m_pShader, TEXT("Target_LightDepth"), "g_LightDepthTexture")))
 			return E_FAIL;
 
-		/* 가라 */
+		/* Shadow Light */
 		{
-			_float4x4		ViewMatrix, ProjMatrix;
+			Matrix matView_ShadowLight = ENGINE_INSTANCE->Get_ShadowLight_MatView();
+			Matrix matProj_ShadowLight = ENGINE_INSTANCE->Get_ShadowLight_MatProj();
 
-			XMStoreFloat4x4(&ViewMatrix, XMMatrixLookAtLH(XMVectorSet(-30.f, 30.f, -30.0f, 1.f), XMVectorSet(0.f, 0.f, 0.f, 1.f), XMVectorSet(0.f, 1.f, 0.f, 0.f)));
-			XMStoreFloat4x4(&ProjMatrix, XMMatrixPerspectiveFovLH(XMConvertToRadians(45.0f), (_float)m_ViewportDesc.Width / m_ViewportDesc.Height, 0.1f, 1000.f));
-
-			if (FAILED(m_pShader->Bind_Matrix("g_LightViewMatrix", &ViewMatrix)))
+			if (FAILED(m_pShader->Bind_Matrix("g_LightViewMatrix", &matView_ShadowLight)))
 				return E_FAIL;
 
-			if (FAILED(m_pShader->Bind_Matrix("g_LightProjMatrix", &ProjMatrix)))
+			if (FAILED(m_pShader->Bind_Matrix("g_LightProjMatrix", &matProj_ShadowLight)))
 				return E_FAIL;
 
 
-			CPipeLine* pPipeLine = GET_INSTANCE(CPipeLine);
-
-			Matrix matVI = pPipeLine->Get_Transform_Inverse(CPipeLine::STATE_VIEW);
-			Matrix matPI = pPipeLine->Get_Transform_Inverse(CPipeLine::STATE_PROJ);
+			Matrix matVI = CPipeLine::GetInstance()->Get_Transform_Inverse(CPipeLine::STATE_VIEW);
+			Matrix matPI = CPipeLine::GetInstance()->Get_Transform_Inverse(CPipeLine::STATE_PROJ);
 
 			if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrixInv", &matVI)))
 				return E_FAIL;
+
 			if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrixInv", &matPI)))
 				return E_FAIL;
-
-			RELEASE_INSTANCE(CPipeLine);
 		}
 	}
 
@@ -474,6 +503,38 @@ HRESULT CRenderer::Render_Debug()
 
 	return S_OK;
 
+}
+
+HRESULT CRenderer::Create_ShadowDSV()
+{
+	ID3D11Texture2D* pDepthStencilTexture = nullptr;
+
+	D3D11_TEXTURE2D_DESC	TextureDesc;
+	ZeroMemory(&TextureDesc, sizeof(D3D11_TEXTURE2D_DESC));
+
+	TextureDesc.Width = m_fShadowTargetMag * m_ViewportDesc.Width;
+	TextureDesc.Height = m_fShadowTargetMag * m_ViewportDesc.Height;
+	TextureDesc.MipLevels = 1;
+	TextureDesc.ArraySize = 1;
+	TextureDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+
+	TextureDesc.SampleDesc.Quality = 0;
+	TextureDesc.SampleDesc.Count = 1;
+
+	TextureDesc.Usage = D3D11_USAGE_DEFAULT;
+	TextureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL/*| D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE*/;
+	TextureDesc.CPUAccessFlags = 0;
+	TextureDesc.MiscFlags = 0;
+
+	if (FAILED(m_pDevice->CreateTexture2D(&TextureDesc, nullptr, &pDepthStencilTexture)))
+		return E_FAIL;
+
+	if (FAILED(m_pDevice->CreateDepthStencilView(pDepthStencilTexture, nullptr, &m_pShadowDSV)))
+		return E_FAIL;
+
+	Safe_Release(pDepthStencilTexture);
+
+	return S_OK;
 }
 
 CRenderer * CRenderer::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)

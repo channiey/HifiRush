@@ -42,6 +42,8 @@ private:
 
 	HRESULT Render_Debug();
 
+	HRESULT Create_ShadowDSV();
+
 private:
 	list<class CGameObject*>			m_RenderObjects[RG_END];
 	list<class CComponent*>				m_RenderDebug;
@@ -55,6 +57,11 @@ private:
 	_float4x4							m_WorldMatrix, m_ViewMatrix, m_ProjMatrix;
 
 	D3D11_VIEWPORT						m_ViewportDesc;
+
+	/* Shadow */
+	const _float						m_fShadowTargetMag = 4.f; // 1280 * 720 기준 6배가 최대 
+	ID3D11DepthStencilView*				m_pShadowDSV = nullptr;
+
 public:
 	static CRenderer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CComponent* Clone(void* pArg) override;

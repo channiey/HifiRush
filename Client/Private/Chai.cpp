@@ -77,6 +77,15 @@ void CChai::Tick(_double fTimeDelta)
 void CChai::LateTick(_double fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
+	/* Set Shadow Data */
+	{
+		/* 이 정보를 가지고 모든 캐릭터의 그림자를 생성한다. */
+		Vec4 vFinalPos = m_pTransformCom->Get_FinalPosition();
+
+		ENGINE_INSTANCE->Set_ShadowLight_OriginPos(vFinalPos + g_WorldShadowLightOffset);
+		ENGINE_INSTANCE->Set_ShadowLight_TargetPos(vFinalPos);
+	}
 }
 
 HRESULT CChai::Render()

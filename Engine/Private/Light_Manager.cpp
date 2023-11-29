@@ -1,6 +1,8 @@
 #include "..\Public\Light_Manager.h"
 #include "Light.h"
 
+#include "EngineInstance.h"
+
 IMPLEMENT_SINGLETON(CLight_Manager)
 
 CLight_Manager::CLight_Manager()
@@ -41,6 +43,28 @@ HRESULT CLight_Manager::Render(CShader * pShader, CVIBuffer_Rect * pVIBuffer)
 	}
 
 	return S_OK;
+}
+
+Matrix CLight_Manager::Get_ShadowLight_MatView() const
+{
+	Matrix matView;
+
+	if (m_ShadowLight_OriginPos == m_ShadowLight_TargetPos)
+		return Matrix::Identity;
+
+	XMStoreFloat4x4(&matView, XMMatrixLookAtLH(m_ShadowLight_OriginPos, m_ShadowLight_TargetPos, Vec4::UnitY));
+
+	return matView;
+}
+
+void CLight_Manager::Set_ShadowLight_MatProj()
+{
+	D3D11_VIEWPORT		ViewportDesc;
+	_uint				iNumViewports = 1;
+
+	ENGINE_INSTANCE->Get_Context()->RSGetViewports(&iNumViewports, &ViewportDesc);
+
+	XMStoreFloat4x4(&m_ShadowLight_MatProj, XMMatrixPerspectiveFovLH(XMConvertToRadians(45.0f), (_float)ViewportDesc.Width / (_float)ViewportDesc.Height, 0.1f, 1000.f));
 }
 
 void CLight_Manager::Free()

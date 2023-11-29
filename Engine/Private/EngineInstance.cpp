@@ -59,6 +59,9 @@ HRESULT CEngineInstance::Initialize_Engine(_uint iNumLevels, HINSTANCE hInst, co
 	m_pDevice = *ppDevice;
 	m_pContext = *ppContext;
 
+	/* 초기 투영 매트릭스 설정 */
+	m_pLight_Manager->Set_ShadowLight_MatProj();
+
 	/* 사운드디바이스 초기화 처리. */
 	if (FAILED(m_pSound_Manager->Initialize(strSoundFilePath)))
 		return E_FAIL;
@@ -688,6 +691,54 @@ HRESULT CEngineInstance::Add_Light(const LIGHT_DESC& LightDesc)
 		return E_FAIL;
 
 	return m_pLight_Manager->Add_Light(LightDesc);
+}
+
+void CEngineInstance::Set_ShadowLight_OriginPos(Vec4 vPos)
+{
+	if (nullptr == m_pLight_Manager)
+		return;
+
+	return m_pLight_Manager->Set_ShadowLight_OriginPos(vPos);
+}
+
+Vec4 CEngineInstance::Get_ShadowLight_OriginPos()
+{
+	if (nullptr == m_pLight_Manager)
+		return Vec4();
+
+	return m_pLight_Manager->Get_ShadowLight_OriginPos();
+}
+
+void CEngineInstance::Set_ShadowLight_TargetPos(Vec4 vPos)
+{
+	if (nullptr == m_pLight_Manager)
+		return;
+
+	return m_pLight_Manager->Set_ShadowLight_TargetPos(vPos);
+}
+
+Vec4 CEngineInstance::Get_ShadowLight_TargetPos()
+{
+	if (nullptr == m_pLight_Manager)
+		return Vec4();
+
+	return m_pLight_Manager->Get_ShadowLight_TargetPos();
+}
+
+Matrix CEngineInstance::Get_ShadowLight_MatView()
+{
+	if (nullptr == m_pLight_Manager)
+		return Matrix();
+
+	return m_pLight_Manager->Get_ShadowLight_MatView();
+}
+
+Matrix CEngineInstance::Get_ShadowLight_MatProj()
+{
+	if (nullptr == m_pLight_Manager)
+		return Matrix();
+
+	return m_pLight_Manager->Get_ShadowLight_MatProj();
 }
 
 const _bool CEngineInstance::Is_DebugRTV() const

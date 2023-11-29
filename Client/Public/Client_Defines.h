@@ -21,6 +21,8 @@ namespace Client
 	const unsigned int		g_iWinSizeX = 1280;
 	const unsigned int		g_iWinSizeY = 720;
 
+	const static Vec4		g_WorldShadowLightOffset = { -50.f, 50.f, -50.f, 0.f };
+
 	/* Level */
 	enum LEVEL_ID
 	{

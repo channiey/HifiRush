@@ -125,6 +125,16 @@ public: /* For.Light_Manager */
 	const LIGHT_DESC*	Get_LightDesc(_uint iLightIndex);
 	HRESULT				Add_Light(const LIGHT_DESC& LightDesc);
 
+	void				Set_ShadowLight_OriginPos(Vec4 vPos);
+	Vec4				Get_ShadowLight_OriginPos();
+
+	void				Set_ShadowLight_TargetPos(Vec4 vPos);
+	Vec4				Get_ShadowLight_TargetPos();
+
+	Matrix				Get_ShadowLight_MatView();
+	Matrix				Get_ShadowLight_MatProj();
+
+
 public: /* For.Target_Manager */
 	const _bool Is_DebugRTV() const;
 	void Set_DebugRTV(const _bool& bSet);

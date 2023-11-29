@@ -189,6 +189,11 @@ PS_OUT_SHADOW PS_MAIN_SHADOW(PS_IN In)
 {
     PS_OUT_SHADOW Out = (PS_OUT_SHADOW) 0;
 
+    //vector vMtrlDiffuse = g_DiffuseTexture.Sample(PointSampler, In.vTexcoord);
+    
+    //if (vMtrlDiffuse.a < 0.3f)
+    //    discard;
+    
     Out.vLightDepth = vector(In.vProjPos.w / 1000.0f, In.vProjPos.w / 1000.0f, In.vProjPos.w / 1000.0f, 1.f);
 
     return Out;

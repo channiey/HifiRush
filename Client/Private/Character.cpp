@@ -133,18 +133,17 @@ HRESULT CCharacter::Render()
 
 HRESULT CCharacter::Render_LightDepth()
 {
-	_float4x4		ViewMatrix, ProjMatrix;
+	Matrix matViewShadow = ENGINE_INSTANCE->Get_ShadowLight_MatView();
 
-	XMStoreFloat4x4(&ViewMatrix, XMMatrixLookAtLH(XMVectorSet(-30.f, 30.f, -30.0f, 1.f), XMVectorSet(0.f, 0.f, 0.f, 1.f), XMVectorSet(0.f, 1.f, 0.f, 0.f)));
-	XMStoreFloat4x4(&ProjMatrix, XMMatrixPerspectiveFovLH(XMConvertToRadians(45.0f), (_float)g_iWinSizeX / g_iWinSizeY, 0.1f, 1000.f));
+	Matrix matProjShadow = ENGINE_INSTANCE->Get_ShadowLight_MatProj();
 
 	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &ViewMatrix)))
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &matViewShadow)))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &ProjMatrix)))
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &matProjShadow)))
 		return E_FAIL;
 
 	const _uint iNumMeshes = m_pModelCom->Get_MeshCount();
@@ -157,7 +156,6 @@ HRESULT CCharacter::Render_LightDepth()
 		if (FAILED(m_pModelCom->Render(m_pShaderCom, i, 1)))
 			return E_FAIL;
 	}
-
 
 	return S_OK;
 }
