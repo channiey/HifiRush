@@ -21,7 +21,7 @@ namespace Client
 	const unsigned int		g_iWinSizeX = 1280;
 	const unsigned int		g_iWinSizeY = 720;
 
-	const static Vec4		g_WorldShadowLightOffset = { -50.f, 50.f, -50.f, 0.f };
+	const static Vec4		g_WorldShadowLightOffset = { -35.f, 50.f, -35.f, 0.f };
 
 	/* Level */
 	enum LEVEL_ID
@@ -109,7 +109,15 @@ namespace Client
 	/* Shader */
 	enum SHADER_ID
 	{
-		SHADER_POS, SHADER_NORMAL, SHADER_STATIC, SHADER_VTF, SHADER_CUBE, SHADER_SKY_SPHERE, SHADER_UI_HUD, SHADER_END
+		SHADER_POS, 
+		SHADER_NORMAL, 
+		SHADER_STATIC, 
+		SHADER_VTF, 
+		SHADER_CUBE, 
+		SHADER_SKY_SPHERE, 
+		SHADER_UI_HUD, 
+		SHADER_EFFECT,
+		SHADER_END
 	};
 	static const wchar_t* ShaderNames[SHADER_END] /* 업데이트 순서에 따른 정렬 */
 	{
@@ -119,8 +127,8 @@ namespace Client
 		L"Prototype_Component_Shader_VTF",
 		L"Prototype_Component_Shader_VtxCube",
 		L"Prototype_Component_Shader_VtxSkySphere",
-		L"Prototype_Component_Shader_Ui_Hud"
-
+		L"Prototype_Component_Shader_Ui_Hud",
+		L"Prototype_Component_Shader_Shader_Effect",
 	};
 
 	/* Camera */

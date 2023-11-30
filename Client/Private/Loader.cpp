@@ -71,6 +71,9 @@
 #include "TriggerSection_B.h"
 #include "TriggerSection_C.h"
 
+/* Effect */
+#include "Effect_Trail_Sword.h"
+
 CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: m_pDevice(pDevice)
 	, m_pContext(pContext)
@@ -206,13 +209,22 @@ HRESULT CLoader::Load_Prototype()
 	{
 		string				fileRootPath	=	"../Bin/Resources/Textures/Using";
 		vector<string>		fileNames		=	Util_File::GetAllFileNames(fileRootPath);
-
 		for (string& name : fileNames)
 		{
 			const wstring fileFinalPath = Util_String::ToWString(fileRootPath) + L"/" + Util_String::ToWString(name + ".png");
 
 			if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString(name), CTexture::Create(m_pDevice, m_pContext, fileFinalPath))))
 				return E_FAIL;		
+		}
+
+		fileRootPath		= "../Bin/Resources/Textures/Effects";
+		fileNames			= Util_File::GetAllFileNames(fileRootPath);
+		for (string& name : fileNames)
+		{
+			const wstring fileFinalPath = Util_String::ToWString(fileRootPath) + L"/" + Util_String::ToWString(name + ".png");
+
+			if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, Util_String::ToWString(name), CTexture::Create(m_pDevice, m_pContext, fileFinalPath))))
+				return E_FAIL;
 		}
 	}
 
@@ -603,7 +615,6 @@ HRESULT CLoader::Load_Prototype()
 		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Env_Dynamic_AutoDoor"), CDynamic_AutoDoor::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-
 		/* For.Prototype_GameObject_Proto_Static */
 		{
 			/* 해당 경로 내의 모든 폴더명을 읽어 폴더명으로 오브젝트를 생성한다. */
@@ -617,6 +628,11 @@ HRESULT CLoader::Load_Prototype()
 					return E_FAIL;
 			}
 		}
+
+
+		/* For.Prototype_GameObject_Effect_Trail_Sword */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Effect_Trail_Sword"), CEffect_Trail_Sword::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 	}
 
 	m_strLoading = TEXT("Loading Finish");

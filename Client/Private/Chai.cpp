@@ -80,7 +80,7 @@ void CChai::LateTick(_double fTimeDelta)
 
 	/* Set Shadow Data */
 	{
-		/* 이 정보를 가지고 모든 캐릭터의 그림자를 생성한다. */
+		/* 이 정보를 가지고 모든 다이나믹 캐릭터의 그림자를 생성한다. */
 		Vec4 vFinalPos = m_pTransformCom->Get_FinalPosition();
 
 		ENGINE_INSTANCE->Set_ShadowLight_OriginPos(vFinalPos + g_WorldShadowLightOffset);
@@ -283,6 +283,7 @@ CChai* CChai::Clone(void* pArg)
 void CChai::Free()
 {
 	__super::Free();
+
 	Safe_Release(m_pRigidbodyCom);
 }
 

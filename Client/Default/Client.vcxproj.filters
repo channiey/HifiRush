@@ -550,6 +550,18 @@
     <Filter Include="03.GameObjects\01.Environment\02.Dynamic\05.AutoDoor">
       <UniqueIdentifier>{d21c1cbd-6c80-48f9-a753-5c4dd2f67a01}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.GameObjects\11.Effect">
+      <UniqueIdentifier>{1c1f7089-6ec0-41f0-a16e-94c9a63ff7f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\11.Effect\00.Manager">
+      <UniqueIdentifier>{0cb03069-43e4-444c-bc78-9d83a06d160c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\11.Effect\01.Effects">
+      <UniqueIdentifier>{15bf0235-960c-447b-9460-b88fe49aa271}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\11.Effect\01.Effects\00.Trail_Sword">
+      <UniqueIdentifier>{21b01a8e-f3b5-472e-92a0-45eda8041e50}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -960,6 +972,15 @@
     <ClInclude Include="..\Public\Dynamic_AutoDoor.h">
       <Filter>03.GameObjects\01.Environment\02.Dynamic\05.AutoDoor</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Effect.h">
+      <Filter>03.GameObjects\11.Effect\01.Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect_Trail_Sword.h">
+      <Filter>03.GameObjects\11.Effect\01.Effects\00.Trail_Sword</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EffcetManager.h">
+      <Filter>03.GameObjects\11.Effect\00.Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -1358,6 +1379,15 @@
     <ClCompile Include="..\Private\Dynamic_AutoDoor.cpp">
       <Filter>03.GameObjects\01.Environment\02.Dynamic\05.AutoDoor</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Effect.cpp">
+      <Filter>03.GameObjects\11.Effect\01.Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Trail_Sword.cpp">
+      <Filter>03.GameObjects\11.Effect\01.Effects\00.Trail_Sword</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EffcetManager.cpp">
+      <Filter>03.GameObjects\11.Effect\00.Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1387,6 +1417,9 @@
       <Filter>96.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Ui_Hud.hlsl">
+      <Filter>96.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Effect.hlsl">
       <Filter>96.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

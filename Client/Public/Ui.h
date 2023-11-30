@@ -79,7 +79,7 @@ protected:
 	vector<UI_DESC>		m_TextureLocalDesc;			/* 텍스처 각각의 로컬 포지션 */
 	vector<UI_DESC>		m_TextureLocalDescOrigin;	/* 텍스처 각각의 로컬 포지션 원본 (보간으로 움직이는 애들이 주로 사용) */
 
-	CGameObject*			m_pTarget = { nullptr };
+	CGameObject*		m_pTarget = { nullptr };
 
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;

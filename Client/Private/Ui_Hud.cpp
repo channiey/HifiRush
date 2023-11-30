@@ -296,8 +296,8 @@ HRESULT CUi_Hud::Ready_Components()
 	/* Com_Shader */
 	if (FAILED(__super::Add_Component(LV_STATIC, ShaderNames[SHADER_ID::SHADER_UI_HUD],
 		TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
-
 		return E_FAIL;
+
 	/* Vector Resize */
 	m_pTextureComs.resize(TEX_TYPE::TYPEEND);
 	m_TextureLocalDesc.resize(TEX_TYPE::TYPEEND);
