@@ -12,7 +12,7 @@ class CEffectManager final : public CBase
 	DECLARE_SINGLETON(CEffectManager)
 
 public:
-	enum EFFECT_ID { TRAIL_SWORD_CHAI, ID_END };
+	enum EFFECT_ID { TRAIL_SWORD_CHAI, DAMAGED_EMENY, ID_END };
 
 private:
 	CEffectManager();
@@ -20,6 +20,8 @@ private:
 
 public:
 	HRESULT			Initialize();
+
+	HRESULT			Ready_Effect();
 
 public:
 	CEffect*		Get_Effect(const EFFECT_ID& eID);

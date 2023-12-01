@@ -1,8 +1,11 @@
 #include "../Default/stdafx.h"
-#include "EffcetManager.h"
+#include "EffectManager.h"
 
 #include "EngineInstance.h"
 #include "Effect.h"
+
+#include "Effect_Trail_Sword.h"
+
 
 IMPLEMENT_SINGLETON(CEffectManager)
 
@@ -12,6 +15,32 @@ CEffectManager::CEffectManager()
 
 HRESULT CEffectManager::Initialize()
 {
+	if (FAILED(Ready_Effect()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CEffectManager::Ready_Effect()
+{
+	CGameObject*	pObject = nullptr; 
+	CEffect*		pEffect = nullptr;
+
+	/* For.Effect_Trail_Sword */
+	{
+		pObject = ENGINE_INSTANCE->Add_GameObject(ENGINE_INSTANCE->Get_CurLoadingLevel(), LayerNames[LAYER_EFFECT], L"Effect_Trail_Sword");
+		if (nullptr == pObject)
+			return E_FAIL;
+
+		pEffect = dynamic_cast<CEffect*>(pObject);
+		if (nullptr == pEffect)
+			return E_FAIL;
+
+		m_Effects.emplace(EFFECT_ID(pEffect->Get_EffectID()), pEffect);
+	}
+
+
+
 	return S_OK;
 }
 

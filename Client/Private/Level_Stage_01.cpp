@@ -7,6 +7,7 @@
 #include "BattleManager.h"
 #include "BeatManager.h"
 #include "PlayerController.h"
+#include "EffectManager.h"
 
 CLevel_Stage_01::CLevel_Stage_01(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CLevel(pDevice, pContext)
@@ -41,6 +42,10 @@ HRESULT CLevel_Stage_01::Initialize()
 
 	/* Player Controller */
 	if (FAILED(CPlayerController::GetInstance()->Initialize()))
+		return E_FAIL;
+
+	/* Effect Manager */
+	if(FAILED(CEffectManager::GetInstance()->Initialize()))
 		return E_FAIL;
 
 	return S_OK;

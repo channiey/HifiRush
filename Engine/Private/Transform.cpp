@@ -180,6 +180,13 @@ void CTransform::Set_RootPos(Vec4 vPos, _bool bNotAgent)
 	memcpy(&m_vRootPos, &vRootPos, sizeof(Vec3));
 }
 
+void CTransform::Add_Position(Vec4 vAddPos)
+{
+	Vec4 vNewPos = Get_FinalPosition() + vAddPos;
+
+	Set_Position(vNewPos.OneW());
+}
+
 void CTransform::Set_Scale(const Vec3& vScale)
 {
 	Set_State(CTransform::STATE_RIGHT,

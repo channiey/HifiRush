@@ -255,6 +255,11 @@ HRESULT CLoader::Load_Prototype()
 		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, ShaderNames[SHADER_SKY_SPHERE],
 			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxSkySphere.hlsl"), VTXMESH::Elements, VTXMESH::iNumElements))))
 			return E_FAIL;
+
+		/* For.Prototype_Component_Shader_Effect_WorldTex */
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, ShaderNames[SHADER_EFFECT_WORLDTEX],
+			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Effect_WorldTex.hlsl"), VTXPOSTEX::Elements, VTXPOSTEX::iNumElements))))
+			return E_FAIL;
 	}
 
 	/* For.Model */

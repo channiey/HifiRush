@@ -1,6 +1,9 @@
 #include "..\Default\stdafx.h"
 #include "State_Chai_Attack.h"
 
+#include "EffectManager.h"
+#include "Effect.h"
+
 CState_Chai_Attack::CState_Chai_Attack()
 {
 }
@@ -19,6 +22,13 @@ HRESULT CState_Chai_Attack::Initialize(CStateMachine* pStateMachine, const wstri
 
 HRESULT CState_Chai_Attack::Enter()
 {
+	/* Set Effect */
+	if (nullptr == m_pEffect)
+	{
+		if(FAILED(Ready_Effect()))
+			return E_FAIL;
+	}
+
 	m_tAttackDesc.Reset();
 
 	CModel* pModel = m_pChai->Get_Model();
@@ -126,6 +136,8 @@ const wstring CState_Chai_Attack::Tick(const _double& fTimeDelta)
 
 	}
 
+	Set_Effect();
+
 	return m_strName;
 }
 
@@ -209,6 +221,247 @@ const wstring CState_Chai_Attack::Check_Transition()
 
 
 	return m_strName;
+}
+
+HRESULT CState_Chai_Attack::Ready_Effect()
+{
+	m_pEffect = CEffectManager::GetInstance()->Get_Effect(CEffectManager::EFFECT_ID::TRAIL_SWORD_CHAI);
+	
+	if (nullptr == m_pEffect)
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CState_Chai_Attack::Set_Effect()
+{
+	if (nullptr == m_pEffect)
+		return E_FAIL;
+	
+	CTransform* pTransform_Effect	= m_pEffect->Get_Transform();
+	CTransform* pTransform_Chai		= m_pChai->Get_Transform();
+
+	CModel::KeyframeDesc tDesc = m_pModel->Get_TweenDesc().cur;
+
+	Vec3 vScaleMag{ 5.f };
+	Vec4 vEffectOffset;
+
+	switch (tDesc.iAnimIndex)
+	{
+	case ANIM_CH::ATK_LIGHT_00 :
+	{
+		if (10 == tDesc.iCurFrame)
+		{
+			/* Set World */
+			{
+				/* World */
+				pTransform_Effect->Set_WorldMat(pTransform_Chai->Get_FinalMat());
+
+				/* Position */
+				vEffectOffset = { 0.f, 1.f, 0.f, 0.f };
+				pTransform_Effect->Add_Position(pTransform_Chai->Get_RelativePosition(vEffectOffset));
+				
+				/* Scale */
+				pTransform_Effect->Set_Scale(vScaleMag);
+
+				/* Rotate */
+				pTransform_Effect->Rotate(pTransform_Effect->Get_State(CTransform::STATE_UP), DEG2RAD(-90.f));
+				pTransform_Effect->Rotate(pTransform_Effect->Get_State(CTransform::STATE_RIGHT), DEG2RAD(-20.f));
+				pTransform_Effect->Rotate(pTransform_Effect->Get_State(CTransform::STATE_LOOK), DEG2RAD(-20.f));
+			}
+
+			/* Set Texture Index */
+			m_pEffect->Set_TextureIndex(0);
+
+			/* Start Effect */
+			m_pEffect->Start_Effect();
+		}
+	}
+	break;
+	case ANIM_CH::ATK_LIGHT_01:
+	{
+		if (10 == tDesc.iCurFrame)
+		{
+			/* Set World */
+			{
+				/* World */
+				pTransform_Effect->Set_WorldMat(pTransform_Chai->Get_FinalMat());
+
+				/* Position */
+				vEffectOffset = { 0.f, 1.f, 1.f, 0.f };
+				pTransform_Effect->Add_Position(pTransform_Chai->Get_RelativePosition(vEffectOffset));
+
+				/* Scale */
+				pTransform_Effect->Set_Scale(vScaleMag);
+
+				/* Rotate */
+				pTransform_Effect->Rotate(pTransform_Effect->Get_State(CTransform::STATE_RIGHT), DEG2RAD(90.f));
+			}
+
+
+			/* Set Texture Index */
+			m_pEffect->Set_TextureIndex(0);
+
+			/* Start Effect */
+			m_pEffect->Start_Effect();
+		}
+	}
+	break;
+	case ANIM_CH::ATK_LIGHT_02:
+	{
+		if (10 == tDesc.iCurFrame)
+		{
+			/* Set World */
+			{
+				/* World */
+				pTransform_Effect->Set_WorldMat(pTransform_Chai->Get_FinalMat());
+
+				/* Position */
+				vEffectOffset = { 0.f, 1.f, 1.f, 0.f };
+				pTransform_Effect->Add_Position(pTransform_Chai->Get_RelativePosition(vEffectOffset));
+
+				/* Scale */
+				pTransform_Effect->Set_Scale(vScaleMag);
+
+				/* Rotate */
+				pTransform_Effect->Rotate(pTransform_Effect->Get_State(CTransform::STATE_RIGHT), DEG2RAD(90.f));
+			}
+
+			/* Set Texture Index */
+			m_pEffect->Set_TextureIndex(1);
+
+			/* Start Effect */
+			m_pEffect->Start_Effect();
+		}
+	}
+	break;
+	case ANIM_CH::ATK_LIGHT_03:
+	{
+		if (25 == tDesc.iCurFrame)
+		{
+			/* Set World */
+			{
+				/* World */
+				pTransform_Effect->Set_WorldMat(pTransform_Chai->Get_FinalMat());
+
+				/* Position */
+				vEffectOffset = { 0.f, 1.f, 0.f, 0.f };
+				pTransform_Effect->Add_Position(pTransform_Chai->Get_RelativePosition(vEffectOffset));
+
+				/* Scale */
+				Vec3 vScaleMag{ 5.f };
+				pTransform_Effect->Set_Scale(vScaleMag);
+
+				/* Rotate */
+				pTransform_Effect->Rotate(pTransform_Effect->Get_State(CTransform::STATE_UP), DEG2RAD(-90.f));
+			}
+
+
+			/* Set Texture Index */
+			m_pEffect->Set_TextureIndex(2);
+
+			/* Start Effect */
+			m_pEffect->Start_Effect();
+		}
+	}
+	break;
+	case ANIM_CH::ATK_HEAVY_00:
+	{
+		if (15 == tDesc.iCurFrame)
+		{
+			/* Set World */
+			{
+				/* World */
+				pTransform_Effect->Set_WorldMat(pTransform_Chai->Get_FinalMat());
+
+				/* Position */
+				vEffectOffset = { 0.f, 1.f, 0.f, 0.f };
+				pTransform_Effect->Add_Position(pTransform_Chai->Get_RelativePosition(vEffectOffset));
+
+				/* Scale */
+				pTransform_Effect->Set_Scale(vScaleMag);
+
+				/* Rotate */
+				pTransform_Effect->Rotate(pTransform_Effect->Get_State(CTransform::STATE_UP), DEG2RAD(-90.f));
+				pTransform_Effect->Rotate(pTransform_Effect->Get_State(CTransform::STATE_RIGHT), DEG2RAD(-20.f));
+				pTransform_Effect->Rotate(pTransform_Effect->Get_State(CTransform::STATE_LOOK), DEG2RAD(-20.f));
+			}
+
+			/* Set Texture Index */
+			m_pEffect->Set_TextureIndex(1);
+
+			/* Start Effect */
+			m_pEffect->Start_Effect();
+		}
+	}
+	break;
+	case ANIM_CH::ATK_HEAVY_01:
+	{
+		//if (25 == tDesc.iCurFrame)
+		//{
+		//	/* Set World */
+		//	{
+		//		/* World */
+		//		pTransform_Effect->Set_WorldMat(pTransform_Chai->Get_FinalMat());
+
+		//		/* Position */
+		//		vEffectOffset = { 0.f, 1.f, 1.5f, 0.f };
+		//		pTransform_Effect->Add_Position(pTransform_Chai->Get_RelativePosition(vEffectOffset));
+
+		//		/* Scale */
+		//		Vec3 vScaleMag{ 5.f };
+		//		pTransform_Effect->Set_Scale(vScaleMag);
+
+		//		/* Rotate */
+		//		pTransform_Effect->Rotate(pTransform_Effect->Get_State(CTransform::STATE_UP), DEG2RAD(-90.f));
+		//	}
+
+		//	/* Start Effect */
+		//	m_pEffect->Start_Effect();
+		//}
+	}
+	break;
+	case ANIM_CH::ATK_HEAVY_02:
+	{
+		if (30 == tDesc.iCurFrame)
+		{
+			/* Set World */
+			{
+				/* World */
+				pTransform_Effect->Set_WorldMat(pTransform_Chai->Get_FinalMat());
+
+				/* Position */
+				vEffectOffset = { 0.f, 1.f, 1.f, 0.f };
+				pTransform_Effect->Add_Position(pTransform_Chai->Get_RelativePosition(vEffectOffset));
+
+				/* Scale */
+				Vec3 vScaleMag{ 4.f };
+				pTransform_Effect->Set_Scale(vScaleMag);
+
+				/* Rotate */
+				pTransform_Effect->Rotate(pTransform_Effect->Get_State(CTransform::STATE_UP), DEG2RAD(180.f));
+				pTransform_Effect->Rotate(pTransform_Effect->Get_State(CTransform::STATE_RIGHT), DEG2RAD(-90.f));
+			}
+
+			/* Set Texture Index */
+			m_pEffect->Set_TextureIndex(2);
+
+			/* Start Effect */
+			m_pEffect->Start_Effect();
+		}
+	}
+	break;
+	case ANIM_CH::ATK_THROW_GUITAR_00:
+	{
+
+	}
+	break;
+	default :
+		return S_OK;
+		break;
+	}
+
+	return S_OK;
 }
 
 void CState_Chai_Attack::Set_AttackDesc()

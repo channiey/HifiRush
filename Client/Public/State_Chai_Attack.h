@@ -53,6 +53,10 @@ public:
 	const wstring		Check_Transition() override;
 
 private:
+	virtual HRESULT		Ready_Effect() override;
+	virtual HRESULT		Set_Effect() override;
+
+private:
 	void				Set_AttackDesc();
 	void				Detect_AttackCollision();
 	void				KnockBack(CCharacter* pTarget);

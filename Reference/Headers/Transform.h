@@ -25,6 +25,7 @@ public:
 	Vec3		Get_Rotation(); /* Euler */
 	Vec4		Get_Position()  const { return  static_cast<Vec4>(m_WorldMatrix.m[STATE_POSITION]); }
 	Vec4		Get_RelativePosition(Vec4 vPos);
+	Vec4		Get_RelativePosition(Vec3 vPos) { return Get_RelativePosition(Vec4(vPos.x, vPos.y, vPos.z, 1.f)); }
 	Vec4		Get_FinalPosition();
 
 	Vec4		Get_Right()		const { return  static_cast<Vec4>(m_WorldMatrix.m[STATE_RIGHT]); }
@@ -62,6 +63,8 @@ public:
 	void	Set_State(STATE eState, Vec4 vState);
 
 	void	Set_RootPos(Vec4 vPos, _bool bNotAgent = FALSE);
+
+	void	Add_Position(Vec4 vAddPos);
 
 	void	Clear() { m_WorldMatrix = Matrix::Identity;  m_vRootPos = Vec4::UnitW; }
 

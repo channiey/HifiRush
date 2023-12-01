@@ -1,27 +1,27 @@
 #include "..\Default\stdafx.h"
-#include "Effect_Trail_Sword.h"
+#include "Effect_Damaged_Enemy.h"
 
 #include "EngineInstance.h"
 
 #include "EffectManager.h"
 
-CEffect_Trail_Sword::CEffect_Trail_Sword(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CEffect_Damaged_Enemy::CEffect_Damaged_Enemy(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CEffect(pDevice, pContext)
 
 {
 }
 
-CEffect_Trail_Sword::CEffect_Trail_Sword(const CEffect_Trail_Sword& rhs)
+CEffect_Damaged_Enemy::CEffect_Damaged_Enemy(const CEffect_Damaged_Enemy& rhs)
 	: CEffect(rhs)
 {
 }
 
-HRESULT CEffect_Trail_Sword::Initialize_Prototype()
+HRESULT CEffect_Damaged_Enemy::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CEffect_Trail_Sword::Initialize(void* pArg)
+HRESULT CEffect_Damaged_Enemy::Initialize(void* pArg)
 {
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -29,7 +29,7 @@ HRESULT CEffect_Trail_Sword::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_eEffectID = CEffectManager::EFFECT_ID::TRAIL_SWORD_CHAI;
+	m_eEffectID = CEffectManager::EFFECT_ID::DAMAGED_EMENY;
 
 	Set_State(CGameObject::STATE_UNACTIVE);
 
@@ -38,7 +38,7 @@ HRESULT CEffect_Trail_Sword::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CEffect_Trail_Sword::Tick(_double fTimeDelta)
+void CEffect_Damaged_Enemy::Tick(_double fTimeDelta)
 {
 	if (1.f <= m_tEffectDesc.vUVOffset2.x)
 	{
@@ -51,13 +51,13 @@ void CEffect_Trail_Sword::Tick(_double fTimeDelta)
 	Update_UV(fTimeDelta);
 }
 
-void CEffect_Trail_Sword::LateTick(_double fTimeDelta)
+void CEffect_Damaged_Enemy::LateTick(_double fTimeDelta)
 {
 	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_BLEND, this)))
 		return;
 }
 
-HRESULT CEffect_Trail_Sword::Render()
+HRESULT CEffect_Damaged_Enemy::Render()
 {
 	if (nullptr == m_pVIBufferCom || m_pTextureComs.empty())
 		return E_FAIL;
@@ -70,24 +70,24 @@ HRESULT CEffect_Trail_Sword::Render()
 
 	if (FAILED(m_pShaderCom->Begin(1)))
 		return E_FAIL;
-	
+
 	if (FAILED(m_pVIBufferCom->Render()))
 		return E_FAIL;
 
 	return S_OK;
 }
 
-void CEffect_Trail_Sword::Set_State(const OBJ_STATE& eState)
+void CEffect_Damaged_Enemy::Set_State(const OBJ_STATE& eState)
 {
 	__super::Set_State(eState);
 }
 
-HRESULT CEffect_Trail_Sword::Return_Pool()
+HRESULT CEffect_Damaged_Enemy::Return_Pool()
 {
 	return 	__super::Return_Pool();
 }
 
-HRESULT CEffect_Trail_Sword::Start_Effect()
+HRESULT CEffect_Damaged_Enemy::Start_Effect()
 {
 	Set_State(CGameObject::OBJ_STATE::STATE_ACTIVE);
 
@@ -97,14 +97,14 @@ HRESULT CEffect_Trail_Sword::Start_Effect()
 	return S_OK;
 }
 
-HRESULT CEffect_Trail_Sword::Finish_Effect()
+HRESULT CEffect_Damaged_Enemy::Finish_Effect()
 {
 	Set_State(CGameObject::OBJ_STATE::STATE_UNACTIVE);
 
 	return S_OK;
 }
 
-HRESULT CEffect_Trail_Sword::Ready_Components()
+HRESULT CEffect_Damaged_Enemy::Ready_Components()
 {
 	/* Com_Shader */
 	if (FAILED(__super::Add_Component(LV_STATIC, ShaderNames[SHADER_EFFECT_WORLDTEX],
@@ -118,25 +118,25 @@ HRESULT CEffect_Trail_Sword::Ready_Components()
 
 	/* Texture */
 	{
-		m_pTextureComs.resize(CEffect_Trail_Sword::TEXTURE_TYPE::TEXTURE_TYPEEND);
-		
+		m_pTextureComs.resize(CEffect_Damaged_Enemy::TEXTURE_TYPE::TEXTURE_TYPEEND);
+
 		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("T_VFX_tk_swing_tc_02"),
-			TEXT("Com_Texture_TRAIL_LIGHT"), (CComponent**)&m_pTextureComs[CEffect_Trail_Sword::TEXTURE_TYPE::TRAIL_LIGHT])))
+			TEXT("Com_Texture_TRAIL_LIGHT"), (CComponent**)&m_pTextureComs[CEffect_Damaged_Enemy::TEXTURE_TYPE::TRAIL_LIGHT])))
 			return E_FAIL;
 
 		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("T_VFX_tk_swing_tc_05"),
-			TEXT("Com_Texture_TRAIL_MIDDLE"), (CComponent**)&m_pTextureComs[CEffect_Trail_Sword::TEXTURE_TYPE::TRAIL_MIDDLE])))
+			TEXT("Com_Texture_TRAIL_MIDDLE"), (CComponent**)&m_pTextureComs[CEffect_Damaged_Enemy::TEXTURE_TYPE::TRAIL_MIDDLE])))
 			return E_FAIL;
 
 		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("T_VFX_ym_swing_tc_01"),
-			TEXT("Com_Texture_TRAIL_HEAVY"), (CComponent**)&m_pTextureComs[CEffect_Trail_Sword::TEXTURE_TYPE::TRAIL_HEAVY])))
+			TEXT("Com_Texture_TRAIL_HEAVY"), (CComponent**)&m_pTextureComs[CEffect_Damaged_Enemy::TEXTURE_TYPE::TRAIL_HEAVY])))
 			return E_FAIL;
 	}
 
 	return S_OK;
 }
 
-HRESULT CEffect_Trail_Sword::Bind_ShaderResources()
+HRESULT CEffect_Damaged_Enemy::Bind_ShaderResources()
 {
 	if (FAILED(m_pTextureComs[m_iTextureIndex]->Bind_ShaderResource(m_pShaderCom, "g_DiffuseTexture", 0)))
 		return E_FAIL;
@@ -147,7 +147,7 @@ HRESULT CEffect_Trail_Sword::Bind_ShaderResources()
 	return S_OK;
 }
 
-void CEffect_Trail_Sword::Update_UV(_double fTimeDelta)
+void CEffect_Damaged_Enemy::Update_UV(_double fTimeDelta)
 {
 	/* vUVOffset1 - Head */
 	m_tEffectDesc.vUVOffset1.x = m_tTimeDesc.fPercentage;
@@ -167,33 +167,33 @@ void CEffect_Trail_Sword::Update_UV(_double fTimeDelta)
 	}
 }
 
-CEffect_Trail_Sword* CEffect_Trail_Sword::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CEffect_Damaged_Enemy* CEffect_Damaged_Enemy::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CEffect_Trail_Sword* pInstance = new CEffect_Trail_Sword(pDevice, pContext);
+	CEffect_Damaged_Enemy* pInstance = new CEffect_Damaged_Enemy(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created : CEffect_Trail_Sword");
+		MSG_BOX("Failed to Created : CEffect_Damaged_Enemy");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-CEffect_Trail_Sword* CEffect_Trail_Sword::Clone(void* pArg)
+CEffect_Damaged_Enemy* CEffect_Damaged_Enemy::Clone(void* pArg)
 {
-	CEffect_Trail_Sword* pInstance = new CEffect_Trail_Sword(*this);
+	CEffect_Damaged_Enemy* pInstance = new CEffect_Damaged_Enemy(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned : CEffect_Trail_Sword");
+		MSG_BOX("Failed to Cloned : CEffect_Damaged_Enemy");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CEffect_Trail_Sword::Free()
+void CEffect_Damaged_Enemy::Free()
 {
 	__super::Free();
 }

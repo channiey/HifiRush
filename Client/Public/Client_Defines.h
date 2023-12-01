@@ -116,7 +116,7 @@ namespace Client
 		SHADER_CUBE, 
 		SHADER_SKY_SPHERE, 
 		SHADER_UI_HUD, 
-		SHADER_EFFECT,
+		SHADER_EFFECT_WORLDTEX,
 		SHADER_END
 	};
 	static const wchar_t* ShaderNames[SHADER_END] /* 업데이트 순서에 따른 정렬 */
@@ -128,7 +128,7 @@ namespace Client
 		L"Prototype_Component_Shader_VtxCube",
 		L"Prototype_Component_Shader_VtxSkySphere",
 		L"Prototype_Component_Shader_Ui_Hud",
-		L"Prototype_Component_Shader_Shader_Effect",
+		L"Prototype_Component_Shader_Shader_Effect_WorldTex",
 	};
 
 	/* Camera */

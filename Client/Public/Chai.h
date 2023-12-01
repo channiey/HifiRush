@@ -153,7 +153,7 @@ static const wstring StateNames_CH[STATE_CH::STATE_END_CH]
 class CChai final : public CCharacter
 {
 	enum CHILD_TYPE	{ CH_WEAPON_RIGHT, CH_END };
-
+	
 public:
 	typedef struct tagChaiDesc
 	{

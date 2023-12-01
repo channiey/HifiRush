@@ -19,10 +19,45 @@ class CEffect abstract : public CGameObject
 public:
 	typedef struct tagEffectDesc /* 셰이더에 넘겨줄 구조체 */
 	{
-		_bool	bCW = FALSE;
-		Vec2	vUVOffset;
+		Vec2	vUVOffset1;
+		Vec2	vUVOffset2;
 
+		void Reset()
+		{
+			ZeroMemory(&vUVOffset1, sizeof(Vec2));
+			ZeroMemory(&vUVOffset2, sizeof(Vec2));
+		}
 	}EFFECT_DESC;
+
+	typedef struct tagTimeDesc
+	{
+		_float fTimeAcc;
+		_float fTimeLimit = 0.3f;
+		_float fPercentage = 0.f;
+		_bool  bFull = FALSE;
+
+		void Update(_double fTimeDelta)
+		{
+			if (bFull) return;
+
+			fTimeAcc += fTimeDelta;
+
+			fPercentage = fTimeAcc / fTimeLimit;
+			if (1 < fPercentage)
+			{
+				fPercentage = 1.f;
+				fTimeAcc = fTimeLimit;
+				bFull = TRUE;
+			}
+		}
+		void Reset()
+		{
+			fTimeAcc = 0.f;
+			fPercentage = 0.f;
+			bFull = FALSE;
+		}
+
+	}TIME_DESC;
 
 protected:
 	CEffect(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -38,6 +73,8 @@ public:
 
 public:
 	virtual void			Set_State(const OBJ_STATE& eState) override;
+	void					Set_TextureIndex(const _uint& iIndex);
+
 	virtual HRESULT			Return_Pool();
 
 public:
@@ -48,11 +85,8 @@ public:
 	EFFECT_DESC				Get_EffectDesc() const	{ return m_tEffectDesc; }
 	_uint					Get_EffectID() const	{ return m_eEffectID; }
 
-	void					Set_TargetObject(CGameObject* pTargetObject) { m_pTargetObject = pTargetObject; }
 	void					Set_EffectDesc(EFFECT_DESC tDesc) { memcpy(& m_tEffectDesc, & tDesc, sizeof(EFFECT_DESC)); }
 	
-	void					Set_CW(const _bool& bCW) { m_tEffectDesc.bCW = bCW; }
-
 protected:
 	HRESULT					Ready_Components();
 
@@ -71,16 +105,14 @@ protected:
 
 	vector<CModel*>			m_pModelComs;
 	vector<CTexture*>		m_pTextureComs;
-	
-protected:
-	CGameObject*			m_pTargetObject = { nullptr };
 
 protected:
+	_uint					m_eEffectID		= 0;
+
+	TIME_DESC				m_tTimeDesc		= {};
 	EFFECT_DESC				m_tEffectDesc	= {};
 
-	_uint					m_eEffectID		= 0;
-	_float					m_fAccTime		= 0.f;
-	_float					m_fLifeTime		= 0.3f;
+	_uint					m_iTextureIndex;
 
 public:
 	virtual CEffect*		Clone(void* pArg) = 0;

@@ -166,23 +166,23 @@ HRESULT CRenderer::Add_Debug(CComponent* pDebug)
 HRESULT CRenderer::Draw_RenderObjects()
 {
 	if (FAILED(Render_Priority()))
-		return S_OK; // E_FAIL;
+		return S_OK; 
 	if (FAILED(Render_NonLight()))
-		return S_OK; // E_FAIL;
+		return S_OK; 
 	if (FAILED(Render_LightDepth()))
 		return S_OK;
-	if (FAILED(Render_NonBlend()))
-		return S_OK; // E_FAIL;
-	if (FAILED(Render_OutLine()))
+	if (FAILED(Render_NonBlend())) /* 디퓨즈, 노말 */
+		return S_OK; 
+	if (FAILED(Render_OutLine()))  /* 아웃라인 (노말 참고)*/
 		return S_OK;
 	if (FAILED(Render_LightAcc()))
-		return S_OK; // E_FAIL;
+		return S_OK; 
 	if (FAILED(Render_Deferred()))
-		return S_OK; // E_FAIL;
+		return S_OK; 
 	if (FAILED(Render_Blend()))
-		return S_OK; // E_FAIL;
+		return S_OK; 
 	if (FAILED(Render_UI()))
-		return S_OK; // E_FAIL;
+		return S_OK; 
 	
 	if (ENGINE_INSTANCE->Is_DebugRTV())
 	{

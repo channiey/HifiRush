@@ -200,8 +200,9 @@
     <ClInclude Include="..\Public\Dynamic_Crane.h" />
     <ClInclude Include="..\Public\Dynamic_Macaron_Wall.h" />
     <ClInclude Include="..\Public\Dynamic_Switch.h" />
-    <ClInclude Include="..\Public\EffcetManager.h" />
+    <ClInclude Include="..\Public\EffectManager.h" />
     <ClInclude Include="..\Public\Effect.h" />
+    <ClInclude Include="..\Public\Effect_Damaged_Enemy.h" />
     <ClInclude Include="..\Public\Gunner.h" />
     <ClInclude Include="..\Public\ImGui_Window_Mid_Dynamic.h" />
     <ClInclude Include="..\Public\Korsica.h" />
@@ -353,7 +354,7 @@
     <ClCompile Include="..\Private\Camera_Parry.cpp" />
     <ClCompile Include="..\Private\Camera_Peppermint_Gimmick_Aim.cpp" />
     <ClCompile Include="..\Private\Camera_Saber_Appear.cpp" />
-    <ClCompile Include="..\Private\EffcetManager.cpp" />
+    <ClCompile Include="..\Private\EffectManager.cpp" />
     <ClCompile Include="..\Private\Effect.cpp" />
     <ClCompile Include="..\Private\Chai_Guitar_Explore.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
@@ -363,6 +364,7 @@
     <ClCompile Include="..\Private\Dynamic_Crane.cpp" />
     <ClCompile Include="..\Private\Dynamic_Macaron_Wall.cpp" />
     <ClCompile Include="..\Private\Dynamic_Switch.cpp" />
+    <ClCompile Include="..\Private\Effect_Damaged_Enemy.cpp" />
     <ClCompile Include="..\Private\Gunner.cpp" />
     <ClCompile Include="..\Private\ImGui_Window_Mid_Dynamic.cpp" />
     <ClCompile Include="..\Private\Korsica.cpp" />
@@ -486,7 +488,7 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_Effect.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Effect_WorldTex.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Ui_Hud.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VTF.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

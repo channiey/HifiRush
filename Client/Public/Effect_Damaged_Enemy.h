@@ -4,14 +4,14 @@
 
 BEGIN(Client)
 
-class CEffect_Trail_Sword final : public CEffect
+class CEffect_Damaged_Enemy final : public CEffect
 {
-	enum TEXTURE_TYPE { TRAIL_LIGHT, TRAIL_MIDDLE, TRAIL_HEAVY, TEXTURE_TYPEEND };
+	enum TEXTURE_TYPE { STAR_SMALL, STAR_BIG, TRAIL_MIDDLE, TRAIL_HEAVY, TEXTURE_TYPEEND };
 
 protected:
-	CEffect_Trail_Sword(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CEffect_Trail_Sword(const CEffect_Trail_Sword& rhs);
-	virtual ~CEffect_Trail_Sword() = default;
+	CEffect_Damaged_Enemy(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CEffect_Damaged_Enemy(const CEffect_Damaged_Enemy& rhs);
+	virtual ~CEffect_Damaged_Enemy() = default;
 
 public:
 	virtual HRESULT			Initialize_Prototype();
@@ -41,8 +41,8 @@ private:
 	const float				m_fUVDelta = 0.5f;
 
 public:
-	static CEffect_Trail_Sword*		Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CEffect_Trail_Sword*	Clone(void* pArg) override;
+	static CEffect_Damaged_Enemy* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual CEffect_Damaged_Enemy* Clone(void* pArg) override;
 	virtual void					Free() override;
 };
 

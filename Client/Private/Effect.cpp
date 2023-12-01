@@ -61,7 +61,7 @@ void CEffect::LateTick(_double fTimeDelta)
 		}
 	}
 
-	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONLIGHT, this)))
+	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
 		return;
 }
 
@@ -81,6 +81,14 @@ void CEffect::Set_State(const OBJ_STATE& eState)
 	__super::Set_State(eState);
 }
 
+void CEffect::Set_TextureIndex(const _uint& iIndex)
+{
+	if (m_pTextureComs.size() <= iIndex)
+		return;
+
+	m_iTextureIndex = iIndex;
+}
+
 HRESULT CEffect::Return_Pool()
 {
 	return ENGINE_INSTANCE->Return_Pool(ENGINE_INSTANCE->Get_CurLevelIndex(), this);
@@ -88,10 +96,6 @@ HRESULT CEffect::Return_Pool()
 
 HRESULT CEffect::Ready_Components()
 {
-	/* Com_Shader */
-	if (FAILED(__super::Add_Component(LV_STATIC, ShaderNames[SHADER_ID::SHADER_EFFECT],
-		ComponentNames[COM_SHADER], (CComponent**)&m_pShaderCom)))
-
 	/* Com_Renderer */
 	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Renderer"),
 		ComponentNames[COM_RENDERER], (CComponent**)&m_pRendererCom)))
@@ -123,12 +127,9 @@ HRESULT CEffect::Bind_ShaderResources()
 
 const _bool CEffect::Is_Finish_LifeTime(_double fTimeDelta)
 {
-	m_fAccTime += fTimeDelta;
+	m_tTimeDesc.Update(fTimeDelta);
 
-	if (m_fLifeTime <= m_fAccTime)
-		return TRUE;
-
-	return FALSE;
+	return m_tTimeDesc.bFull;
 }
 
 void CEffect::Free()

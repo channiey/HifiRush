@@ -562,6 +562,9 @@
     <Filter Include="03.GameObjects\11.Effect\01.Effects\00.Trail_Sword">
       <UniqueIdentifier>{21b01a8e-f3b5-472e-92a0-45eda8041e50}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.GameObjects\11.Effect\01.Effects\01.Damaged_Enemy">
+      <UniqueIdentifier>{9aa83727-32aa-4ad9-813a-d43bace32253}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -978,8 +981,11 @@
     <ClInclude Include="..\Public\Effect_Trail_Sword.h">
       <Filter>03.GameObjects\11.Effect\01.Effects\00.Trail_Sword</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\EffcetManager.h">
+    <ClInclude Include="..\Public\EffectManager.h">
       <Filter>03.GameObjects\11.Effect\00.Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect_Damaged_Enemy.h">
+      <Filter>03.GameObjects\11.Effect\01.Effects\01.Damaged_Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1385,8 +1391,11 @@
     <ClCompile Include="..\Private\Effect_Trail_Sword.cpp">
       <Filter>03.GameObjects\11.Effect\01.Effects\00.Trail_Sword</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\EffcetManager.cpp">
+    <ClCompile Include="..\Private\EffectManager.cpp">
       <Filter>03.GameObjects\11.Effect\00.Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Damaged_Enemy.cpp">
+      <Filter>03.GameObjects\11.Effect\01.Effects\01.Damaged_Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1419,7 +1428,7 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Ui_Hud.hlsl">
       <Filter>96.ShaderFiles</Filter>
     </FxCompile>
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_Effect.hlsl">
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Effect_WorldTex.hlsl">
       <Filter>96.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

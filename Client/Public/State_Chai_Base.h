@@ -20,6 +20,7 @@ class CGameObjet;
 END
 
 BEGIN(Client)
+class CEffect;
 
 class CState_Chai_Base abstract : public CState
 {
@@ -32,8 +33,13 @@ protected:
 	virtual HRESULT Initialize(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);
 
 protected:
-	CChai* m_pChai = { nullptr };
-	CModel* m_pModel = { nullptr };
+	virtual HRESULT Ready_Effect()	{ return S_OK; }
+	virtual HRESULT Set_Effect()	{ return S_OK; }
+
+protected:
+	CChai*		m_pChai = { nullptr };
+	CModel*		m_pModel = { nullptr };
+	CEffect*	m_pEffect = { nullptr };
 
 public:
 	virtual CState* Clone(void* pArg) = 0;
