@@ -33,7 +33,7 @@ HRESULT CState_Chai_Damaged::Enter()
 	CAnimation* pAnimation = nullptr;
 	_double		fTimePerFrame = 0.f;
 
-	switch (eAtkType)
+	/*switch (eAtkType)
 	{
 	case CCharacter::ATK_TYPE::LIGHT: 
 	{
@@ -60,7 +60,12 @@ HRESULT CState_Chai_Damaged::Enter()
 		fTimePerFrame = 1 / pAnimation->Get_TickPerSecond() * 0.5f;
 	}
 		break;
-	}
+	}*/
+
+	eAnimID = ANIM_CH::DMG_HEAVY;
+	pAnimation = m_pChai->Get_Model()->Get_Animation(eAnimID);
+	fTimePerFrame = 1 / pAnimation->Get_TickPerSecond();
+
 	m_pChai->Get_Model()->Set_Animation(eAnimID, fTimePerFrame, DF_TW_TIME);
 
 	/* Set Look */

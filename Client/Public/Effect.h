@@ -100,6 +100,7 @@ protected:
 	const _bool				Is_Finish_LifeTime(_double fTimeDelta);
 
 	Matrix					Get_Matrix_By_Billboard();
+	Matrix					Get_Matrix_Billboard();
 
 protected:
 	CShader*				m_pShaderComs[SHADER_TYPE::SHADER_END];

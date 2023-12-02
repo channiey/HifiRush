@@ -66,7 +66,9 @@ HRESULT CState_Chai_Attack::Enter()
 
 		m_bThrowGuitar = TRUE;
 
-		m_pChai->Get_Child(CChai::CHILD_TYPE::CH_WEAPON_RIGHT)->Get_Collider_Sphere()->Set_Active(TRUE);
+		m_pGuitarCollider = m_pChai->Get_Child(CChai::CHILD_TYPE::CH_WEAPON_RIGHT)->Get_Collider_Sphere();
+
+		m_pGuitarCollider->Set_Active(TRUE);
 
 		return S_OK;
 	}
@@ -155,14 +157,10 @@ void CState_Chai_Attack::Exit()
 {
 	m_tAttackDesc.Reset();
 
-	//m_pChai->Get_Child(CChai::CHILD_TYPE::CH_WEAPON_RIGHT)->Get_Collider_Sphere()->Set_Active(FALSE);
-
 	m_pChai->m_tFightDesc.iStep = -1;
-
 
 	if (m_bThrowGuitar)
 	{
-		m_pChai->Get_Child(CChai::CHILD_TYPE::CH_WEAPON_RIGHT)->Get_Collider_Sphere()->Set_Active(FALSE);
 		m_bThrowGuitar = FALSE;
 		m_bThrowSound = FALSE;
 	}
@@ -172,6 +170,9 @@ const wstring CState_Chai_Attack::Check_Transition()
 {
 	if (m_bThrowGuitar && !m_pModel->Is_Tween())
 	{
+		if (m_pGuitarCollider->Is_Active() && 60 <= m_pModel->Get_TweenDesc().cur.iCurFrame)
+			m_pGuitarCollider->Set_Active(FALSE);
+		
 		if(80 <= m_pModel->Get_TweenDesc().cur.iCurFrame)
 			return StateNames_CH[STATE_IDLE_CH];
 	}

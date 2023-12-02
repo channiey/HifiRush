@@ -1,6 +1,10 @@
 #pragma once
 #include "State_Chai_Base.h"
 
+BEGIN(Engine)
+class CCollider_Sphere;
+END
+
 BEGIN(Client)
 class CState_Chai_Attack final : public CState_Chai_Base
 { 
@@ -71,6 +75,7 @@ private:
 	_bool				m_bThrowGuitar = FALSE;
 	_bool				m_bThrowSound = FALSE;
 
+	CCollider_Sphere*	m_pGuitarCollider = nullptr;
 
 public:
 	static CState_Chai_Attack* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);

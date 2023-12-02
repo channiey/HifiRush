@@ -115,8 +115,6 @@ const _bool CEffect::Is_Finish_LifeTime(_double fTimeDelta)
 
 Matrix CEffect::Get_Matrix_By_Billboard()
 {
-	CTransform* pCamTransform = ENGINE_INSTANCE->Get_CurCamera()->Get_Transform();
-
 	Matrix matVI = ENGINE_INSTANCE->Get_Transform(CPipeLine::STATE_VIEW);
 	
 	memcpy(matVI.m[3], &Vec4::UnitW, sizeof(Vec4));
@@ -128,6 +126,15 @@ Matrix CEffect::Get_Matrix_By_Billboard()
 	memcpy(matFinal.m[3], &vFinalPosition, sizeof(Vec4));
 
 	return matFinal;
+}
+
+Matrix CEffect::Get_Matrix_Billboard()
+{
+	Matrix matVI = ENGINE_INSTANCE->Get_Transform(CPipeLine::STATE_VIEW);
+
+	memcpy(matVI.m[3], &Vec4::UnitW, sizeof(Vec4));
+
+	return matVI.Invert();
 }
 
 void CEffect::Free()

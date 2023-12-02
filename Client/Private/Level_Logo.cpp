@@ -15,6 +15,11 @@ HRESULT CLevel_Logo::Initialize()
 	if (FAILED(CLevel_Loading::Parse_LevelData(LV_LOGO)))
 		return E_FAIL;
 
+	/*CGameObject* pGameObject = ENGINE_INSTANCE->Add_GameObject(LV_LOGO, LayerNames[LAYER_ID::LAYER_UI], L"Prototype_GameObject_BackGround");
+
+	if (nullptr == pGameObject)
+		return E_FAIL;*/
+
 	return S_OK;
 }
 

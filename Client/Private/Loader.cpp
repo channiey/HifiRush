@@ -37,6 +37,7 @@
 #include "Ui_Gimmick_Peppermint_Target.h"
 #include "Ui_Gimmick_Peppermint_Mark.h"
 #include "Ui_SpecialAttack.h"
+#include "BackGround.h"
 
 /* Env Static */
 #include "SkyBox.h"
@@ -490,6 +491,10 @@ HRESULT CLoader::Load_Prototype()
 		/* For.Prototype_GameObject_Ui_Hud_Boss */
 		if (FAILED(pEngineInstance->Add_Prototype(UINames[UI_ID::UI_SPECIALATTACK],
 			CUi_SpecialAttack::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_BackGround */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Prototype_GameObject_BackGround"), CBackGround::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For.Prototype_GameObject_Camera_Debug */

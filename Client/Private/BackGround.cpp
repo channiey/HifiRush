@@ -25,10 +25,12 @@ HRESULT CBackGround::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	/* UI는 별도의 뷰 행렬과 투영행렬로 그린다. */
-	m_ViewMatrix = Matrix::Identity;
+	m_pTransformCom->Set_Scale(_float3(m_fSizeX, m_fSizeY, 1.f));
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION,
+		XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
 
-	m_ProjMatrix = Matrix::CreateOrthographic(g_iWinSizeX, g_iWinSizeY, 0.f, 1.f);
+	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
+	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(g_iWinSizeX, g_iWinSizeY, 0.f, 1.f));
 
 	return S_OK;
 }

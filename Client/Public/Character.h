@@ -57,7 +57,7 @@ public:
 		_bool	bLanding = FALSE;
 
 		_bool   bDash = FALSE;
-		_float	fDashPower = 300.f;
+		_float	fDashPower = 400.f;
 
 		_float  fGroundedRayDistance = 5.f;
 
