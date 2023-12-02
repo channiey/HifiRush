@@ -984,9 +984,6 @@
     <ClInclude Include="..\Public\EffectManager.h">
       <Filter>03.GameObjects\11.Effect\00.Manager</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Effect_Damaged_Enemy.h">
-      <Filter>03.GameObjects\11.Effect\01.Effects\01.Damaged_Enemy</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -1393,9 +1390,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\EffectManager.cpp">
       <Filter>03.GameObjects\11.Effect\00.Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Effect_Damaged_Enemy.cpp">
-      <Filter>03.GameObjects\11.Effect\01.Effects\01.Damaged_Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

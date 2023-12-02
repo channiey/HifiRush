@@ -59,6 +59,9 @@ void CEffect_Trail_Sword::LateTick(_double fTimeDelta)
 
 HRESULT CEffect_Trail_Sword::Render()
 {
+	if (m_pTextureComs.size() <= m_iTextureIndex)
+		return E_FAIL;
+
 	if (nullptr == m_pVIBufferCom || m_pTextureComs.empty())
 		return E_FAIL;
 

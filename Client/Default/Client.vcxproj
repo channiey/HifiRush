@@ -202,7 +202,6 @@
     <ClInclude Include="..\Public\Dynamic_Switch.h" />
     <ClInclude Include="..\Public\EffectManager.h" />
     <ClInclude Include="..\Public\Effect.h" />
-    <ClInclude Include="..\Public\Effect_Damaged_Enemy.h" />
     <ClInclude Include="..\Public\Gunner.h" />
     <ClInclude Include="..\Public\ImGui_Window_Mid_Dynamic.h" />
     <ClInclude Include="..\Public\Korsica.h" />
@@ -364,7 +363,6 @@
     <ClCompile Include="..\Private\Dynamic_Crane.cpp" />
     <ClCompile Include="..\Private\Dynamic_Macaron_Wall.cpp" />
     <ClCompile Include="..\Private\Dynamic_Switch.cpp" />
-    <ClCompile Include="..\Private\Effect_Damaged_Enemy.cpp" />
     <ClCompile Include="..\Private\Gunner.cpp" />
     <ClCompile Include="..\Private\ImGui_Window_Mid_Dynamic.cpp" />
     <ClCompile Include="..\Private\Korsica.cpp" />

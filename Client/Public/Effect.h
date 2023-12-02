@@ -59,6 +59,7 @@ public:
 
 	}TIME_DESC;
 
+
 protected:
 	CEffect(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CEffect(const CEffect& rhs);
