@@ -5,6 +5,7 @@
 #include "Effect.h"
 
 #include "Effect_Trail_Sword.h"
+#include "Effect_Damaged_Enemy.h"
 
 
 IMPLEMENT_SINGLETON(CEffectManager)
@@ -39,8 +40,11 @@ HRESULT CEffectManager::Ready_Effect()
 		m_Effects.emplace(EFFECT_ID(pEffect->Get_EffectID()), pEffect);
 	}
 
-
-
+	/* For.Effect_Damaged_Enemy */
+	{
+		if (FAILED(ENGINE_INSTANCE->Reserve_Pool(LEVEL_ID::LV_STAGE_01, LayerNames[LAYER_EFFECT], L"Effect_Damaged_Enemy", 5)))
+			return E_FAIL;
+	}
 	return S_OK;
 }
 

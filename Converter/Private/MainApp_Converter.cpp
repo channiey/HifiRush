@@ -20,14 +20,17 @@ HRESULT CMainApp_Converter::Start_Convert()
 		/*if (FAILED(Convert_Env_Static()))
 			return E_FAIL;*/
 
-		//if (FAILED(Convert_Env_Anim()))
-		//	return E_FAIL;
+		/*if (FAILED(Convert_Env_Anim()))
+			return E_FAIL;*/
 
 		/*if (FAILED(Convert_Weapon()))
 			return E_FAIL;*/
-		
-		if (FAILED(Convert_SelectiveModel()))
+
+		if (FAILED(Convert_EffectMesh()))
 			return E_FAIL;
+		
+		/*if (FAILED(Convert_SelectiveModel()))
+			return E_FAIL;*/
 
 		/*if (FAILED(Convert_Custom()))
 			return E_FAIL;*/
@@ -107,14 +110,71 @@ HRESULT CMainApp_Converter::Convert_Weapon()
 
 }
 
+HRESULT CMainApp_Converter::Convert_EffectMesh()
+{
+	const MODEL_TYPE	type = MODEL_TYPE::STATIC;
+
+	const string		filePath = "../Assets/EffectMesh/";
+	vector<string>		fileNames = Utils_File::Get_AllFolderNames(filePath);
+	const string		savePath = "EffectMesh/";
+
+	for (string& name : fileNames)
+	{
+		shared_ptr<CConverter> converter = make_shared<CConverter>();
+		if (FAILED(converter->Binarize_Model(name, savePath + name, type)))
+			ASSERT_LOG();
+	}
+	return S_OK;
+}
+
 
 HRESULT CMainApp_Converter::Convert_SelectiveModel()
 {
 
 	{
 		const MODEL_TYPE	type = MODEL_TYPE::STATIC;
+		const string		savePath = "Environment/EffectMesh/";
+		const string		fileName = "Cylinder_A";
+		shared_ptr<CConverter> converter = make_shared<CConverter>();
+		if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
+			ASSERT_LOG();
+	}
+	{
+		const MODEL_TYPE	type = MODEL_TYPE::STATIC;
 		const string		savePath = "Environment/Custom/";
-		const string		fileName = "Prop_Door_A_L";
+		const string		fileName = "Prop_Door_A_R";
+		shared_ptr<CConverter> converter = make_shared<CConverter>();
+		if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
+			ASSERT_LOG();
+	}
+	{
+		const MODEL_TYPE	type = MODEL_TYPE::STATIC;
+		const string		savePath = "Environment/Custom/";
+		const string		fileName = "Prop_Door_A_R";
+		shared_ptr<CConverter> converter = make_shared<CConverter>();
+		if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
+			ASSERT_LOG();
+	}
+	{
+		const MODEL_TYPE	type = MODEL_TYPE::STATIC;
+		const string		savePath = "Environment/Custom/";
+		const string		fileName = "Prop_Door_A_R";
+		shared_ptr<CConverter> converter = make_shared<CConverter>();
+		if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
+			ASSERT_LOG();
+	}
+	{
+		const MODEL_TYPE	type = MODEL_TYPE::STATIC;
+		const string		savePath = "Environment/Custom/";
+		const string		fileName = "Prop_Door_A_R";
+		shared_ptr<CConverter> converter = make_shared<CConverter>();
+		if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
+			ASSERT_LOG();
+	}
+	{
+		const MODEL_TYPE	type = MODEL_TYPE::STATIC;
+		const string		savePath = "Environment/Custom/";
+		const string		fileName = "Prop_Door_A_R";
 		shared_ptr<CConverter> converter = make_shared<CConverter>();
 		if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
 			ASSERT_LOG();

@@ -68,10 +68,7 @@ void CEffect::LateTick(_double fTimeDelta)
 HRESULT CEffect::Render()
 {
 	if (FAILED(__super::Render()))
-		return E_FAIL;
-
-	if (FAILED(Bind_ShaderResources()))
-		return E_FAIL;
+		E_FAIL;
 
 	return S_OK;
 }
@@ -106,22 +103,6 @@ HRESULT CEffect::Ready_Components()
 		ComponentNames[COM_TRANSFORM], (CComponent**)&m_pTransformCom)))
 		return E_FAIL;
 
-	/* 모델과 텍스처는 파생 클래스에서 스스로 추가한다. */
-
-	return S_OK;
-}
-
-HRESULT CEffect::Bind_ShaderResources()
-{
-	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_WorldMatrix")))
-		return E_FAIL;
-
-	if (FAILED(ENGINE_INSTANCE->Bind_TransformToShader(m_pShaderCom, "g_ViewMatrix", CPipeLine::STATE_VIEW)))
-		return E_FAIL;
-
-	if (FAILED(ENGINE_INSTANCE->Bind_TransformToShader(m_pShaderCom, "g_ProjMatrix", CPipeLine::STATE_PROJ)))
-		return E_FAIL;
-
 	return S_OK;
 }
 
@@ -130,6 +111,23 @@ const _bool CEffect::Is_Finish_LifeTime(_double fTimeDelta)
 	m_tTimeDesc.Update(fTimeDelta);
 
 	return m_tTimeDesc.bFull;
+}
+
+Matrix CEffect::Get_Matrix_By_Billboard()
+{
+	CTransform* pCamTransform = ENGINE_INSTANCE->Get_CurCamera()->Get_Transform();
+
+	Matrix matVI = ENGINE_INSTANCE->Get_Transform(CPipeLine::STATE_VIEW);
+	
+	memcpy(matVI.m[3], &Vec4::UnitW, sizeof(Vec4));
+
+	Matrix matFinal = m_pTransformCom->Get_FinalMat() * matVI.Invert();
+
+	Vec4 vFinalPosition = m_pTransformCom->Get_FinalPosition();
+
+	memcpy(matFinal.m[3], &vFinalPosition, sizeof(Vec4));
+
+	return matFinal;
 }
 
 void CEffect::Free()

@@ -62,6 +62,7 @@ private:
 	void				KnockBack(CCharacter* pTarget);
 
 	void				PlayThrowSound();
+	void				LockOn();
 
 private:
 	ATTACK_DESC			m_tAttackDesc	= {};

@@ -1,6 +1,9 @@
 #include "..\Default\stdafx.h"
 #include "State_Saber_Damaged.h"
 
+#include "Effect.h"
+#include "EffectManager.h"
+
 CState_Saber_Damaged::CState_Saber_Damaged()
 {
 }
@@ -31,6 +34,28 @@ const wstring CState_Saber_Damaged::Tick(const _double& fTimeDelta)
 		Damaged();
 	}
 
+
+
+	// Effect 
+	/*if (!m_pModel->Is_Tween() && 10 == m_pModel->Get_CurAnimationFrame() && !m_bPlayEffect)
+	{
+		m_bPlayEffect = TRUE;
+
+		CGameObject* pClone = ENGINE_INSTANCE->Pop_Pool(ENGINE_INSTANCE->Get_CurLevelIndex(), L"Effect_Damaged_Enemy");
+		if (nullptr != pClone)
+		{
+			CEffect* pEffect = dynamic_cast<CEffect*>(pClone);
+			if (nullptr != pEffect)
+			{
+				m_bPlayEffect = TRUE;
+
+				Vec4 vPos = m_pSaber->Get_Transform()->Get_FinalPosition();
+				vPos.y += 1.f;
+				pEffect->Get_Transform()->Set_Position(vPos);
+				pEffect->Start_Effect();
+			}
+		}
+	}*/
 	return m_strName;
 }
 
@@ -43,6 +68,8 @@ void CState_Saber_Damaged::Exit()
 {
 	m_pSaber->m_tFightDesc.bDamaged = FALSE;
 	m_pSaber->m_tFightDesc.pAttacker = nullptr;
+
+	m_bPlayEffect = FALSE;
 }
 
 const wstring CState_Saber_Damaged::Check_Transition()
@@ -58,6 +85,10 @@ const wstring CState_Saber_Damaged::Check_Transition()
 
 void CState_Saber_Damaged::Damaged()
 {
+	PlayEffect();
+
+
+	m_bPlayEffect = FALSE;
 	if (m_pSaber->m_tStatDesc.bDead)
 	{
 		m_pStateMachine->Set_State(StateNames_SA[STATE_DEAD_SA]);
@@ -135,6 +166,28 @@ void CState_Saber_Damaged::Damaged()
 
 	m_pSaber->m_tFightDesc.bDamaged = FALSE;
 	m_pSaber->m_tFightDesc.pAttacker = nullptr;
+
+
+
+	
+}
+
+void CState_Saber_Damaged::PlayEffect()
+{
+	CGameObject* pClone = ENGINE_INSTANCE->Pop_Pool(ENGINE_INSTANCE->Get_CurLevelIndex(), L"Effect_Damaged_Enemy");
+	if (nullptr != pClone)
+	{
+		CEffect* pEffect = dynamic_cast<CEffect*>(pClone);
+		if (nullptr != pEffect)
+		{
+			m_bPlayEffect = TRUE;
+
+			Vec4 vPos = m_pSaber->Get_Transform()->Get_FinalPosition();
+			vPos.y += 1.f;
+			pEffect->Get_Transform()->Set_Position(vPos);
+			pEffect->Start_Effect();
+		}
+	}
 }
 
 CState_Saber_Damaged* CState_Saber_Damaged::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

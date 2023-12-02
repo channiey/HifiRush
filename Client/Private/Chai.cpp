@@ -7,6 +7,10 @@
 #include "Weapon.h"
 #include "PlayerController.h"
 
+/* Effect */
+#include "EffectManager.h"
+#include "Effect.h"
+
 /* UI */
 #include "UiManager.h"
 #include "Ui_Dialouge.h"
@@ -343,6 +347,22 @@ void CChai::Quick_Test()
 	else if (ENGINE_INSTANCE->Key_Down('U'))
 	{
 		CUiManager::GetInstance()->On_Dialouge(4, L"음료수를 마시면 체력을 회복할 수 있습니다.");
+	}
+	else if (ENGINE_INSTANCE->Key_Down('L'))
+	{
+		CGameObject* pClone = ENGINE_INSTANCE->Pop_Pool(ENGINE_INSTANCE->Get_CurLevelIndex(), L"Effect_Damaged_Enemy");
+		if (nullptr != pClone)
+		{
+			CEffect* pEffect = dynamic_cast<CEffect*>(pClone);
+			if (nullptr != pEffect)
+			{
+
+				Vec4 vPos = Get_Transform()->Get_FinalPosition();
+				vPos.y += 1.f;
+				pEffect->Get_Transform()->Set_Position(vPos);
+				pEffect->Start_Effect();
+			}
+		}
 	}
 }
 

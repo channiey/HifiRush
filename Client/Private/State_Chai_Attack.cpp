@@ -29,6 +29,8 @@ HRESULT CState_Chai_Attack::Enter()
 			return E_FAIL;
 	}
 
+	LockOn();
+
 	m_tAttackDesc.Reset();
 
 	CModel* pModel = m_pChai->Get_Model();
@@ -601,7 +603,7 @@ void CState_Chai_Attack::Detect_AttackCollision()
 
 				/* 리버브 게이지 증가 */
 				if(1 <= m_pChai->m_tFightDesc.iStep)
-					m_pChai->m_tChaiDesc.Add_ReverbGuage();
+					m_pChai->m_tChaiDesc.Add_ReverbGuage();		
 			}
 		}
 	}
@@ -644,6 +646,35 @@ void CState_Chai_Attack::PlayThrowSound()
 		m_bThrowSound = FALSE;
 
 
+}
+
+void CState_Chai_Attack::LockOn()
+{
+	Vec4 vPlayerPos = m_pChai->Get_Transform()->Get_FinalPosition();
+	Vec3 vPlayerLook = m_pChai->Get_Transform()->Get_Forward().xyz().Normalized();
+	const _float fMaxAngle = 90.f;
+	const _float fMaxDist = 10.f;
+
+	list<CGameObject*>* pEnemyList = ENGINE_INSTANCE->Get_Layer(ENGINE_INSTANCE->Get_CurLevelIndex(), LayerNames[LAYER_ENEMY]);
+
+	if (nullptr == pEnemyList) return;
+
+	for (auto pEnemy : *pEnemyList)
+	{
+		if (pEnemy != nullptr && pEnemy->Is_Active())
+		{
+			Vec3 vDirToEnemy = pEnemy->Get_Transform()->Get_FinalPosition().xyz() - vPlayerPos.xyz();
+
+			const _float fAngle = XMVectorGetX(XMVector3AngleBetweenNormals(vPlayerLook, XMVector3Normalize(vDirToEnemy))) * (180.0f / XM_PI);
+			const _float fDist = XMVectorGetX(XMVector3Length(vDirToEnemy));
+
+			if (fAngle <= fMaxAngle / 2 && fDist <= fMaxDist)
+			{
+				m_pChai->Get_Transform()->Set_Look(vDirToEnemy.ZeroY().Normalized());
+				return;
+			}
+		}
+	}
 }
 
 CState_Chai_Attack* CState_Chai_Attack::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

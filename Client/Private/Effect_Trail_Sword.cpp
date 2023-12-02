@@ -59,19 +59,16 @@ void CEffect_Trail_Sword::LateTick(_double fTimeDelta)
 
 HRESULT CEffect_Trail_Sword::Render()
 {
-	if (m_pTextureComs.size() <= m_iTextureIndex)
-		return E_FAIL;
-
-	if (nullptr == m_pVIBufferCom || m_pTextureComs.empty())
-		return E_FAIL;
-
-	if (FAILED(__super::Render()))
+	if (m_pTextureComs.size() <= m_iTextureIndex || 
+		nullptr == m_pShaderComs[SHADER_TYPE::TEX] ||
+		nullptr == m_pVIBufferCom ||
+		m_pTextureComs.empty())
 		return E_FAIL;
 
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Begin(1)))
+	if (FAILED(m_pShaderComs[SHADER_TYPE::TEX]->Begin(1)))
 		return E_FAIL;
 	
 	if (FAILED(m_pVIBufferCom->Render()))
@@ -110,8 +107,8 @@ HRESULT CEffect_Trail_Sword::Finish_Effect()
 HRESULT CEffect_Trail_Sword::Ready_Components()
 {
 	/* Com_Shader */
-	if (FAILED(__super::Add_Component(LV_STATIC, ShaderNames[SHADER_EFFECT_WORLDTEX],
-		ComponentNames[COM_SHADER], (CComponent**)&m_pShaderCom)))
+	if (FAILED(__super::Add_Component(LV_STATIC, ShaderNames[SHADER_EFFECT_TEX],
+		ComponentNames[COM_SHADER], (CComponent**)&m_pShaderComs[SHADER_TYPE::TEX])))
 		return E_FAIL;
 
 	/* Com_VIBuffer */
@@ -141,10 +138,19 @@ HRESULT CEffect_Trail_Sword::Ready_Components()
 
 HRESULT CEffect_Trail_Sword::Bind_ShaderResources()
 {
-	if (FAILED(m_pTextureComs[m_iTextureIndex]->Bind_ShaderResource(m_pShaderCom, "g_DiffuseTexture", 0)))
+	if (FAILED(m_pTextureComs[m_iTextureIndex]->Bind_ShaderResource(m_pShaderComs[SHADER_TYPE::TEX], "g_DiffuseTexture", 0)))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_EffectDesc", &m_tEffectDesc, sizeof(EFFECT_DESC))))
+	if (FAILED(m_pShaderComs[SHADER_TYPE::TEX]->Bind_RawValue("g_EffectDesc", &m_tEffectDesc, sizeof(EFFECT_DESC))))
+		return E_FAIL;
+
+	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderComs[SHADER_TYPE::TEX], "g_WorldMatrix")))
+		return E_FAIL;
+
+	if (FAILED(ENGINE_INSTANCE->Bind_TransformToShader(m_pShaderComs[SHADER_TYPE::TEX], "g_ViewMatrix", CPipeLine::STATE_VIEW)))
+		return E_FAIL;
+
+	if (FAILED(ENGINE_INSTANCE->Bind_TransformToShader(m_pShaderComs[SHADER_TYPE::TEX], "g_ProjMatrix", CPipeLine::STATE_PROJ)))
 		return E_FAIL;
 
 	return S_OK;

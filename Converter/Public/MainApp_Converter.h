@@ -16,9 +16,9 @@ private:
 	HRESULT	Convert_Env_Static();
 	HRESULT Convert_Env_Anim();
 	HRESULT	Convert_Weapon();
+	HRESULT	Convert_EffectMesh();
 
 	HRESULT Convert_SelectiveModel();
-
 	HRESULT Convert_Custom();
 };
 

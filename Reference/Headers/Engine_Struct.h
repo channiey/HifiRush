@@ -207,6 +207,15 @@ namespace Engine
 
 		LERP_MODE	eMode = LERP_MODE::DEFAULT; // https://chicounity3d.wordpress.com/2014/05/23/how-to-lerp-like-a-pro/
 
+		_bool Is_Half()
+		{
+			if (0.5f <= fCurTime / fEndTime)
+				return TRUE;
+
+			return FALSE;
+		}
+
+
 		void Start(const _double _fStartValue, const _double _fTargetValue, const _double _fTime, const LERP_MODE _eMode = LERP_MODE::DEFAULT)
 		{
 			bActive = TRUE;
@@ -301,6 +310,15 @@ namespace Engine
 		_bool		bActive = FALSE;
 
 		LERP_MODE	eMode = LERP_MODE::DEFAULT; // https://chicounity3d.wordpress.com/2014/05/23/how-to-lerp-like-a-pro/
+
+		_bool Is_Half()
+		{
+			if (0.5f <= fCurTime / fEndTime)
+				return TRUE;
+			
+			return FALSE;
+		}
+
 
 		void Start(const _double _fTime, const LERP_MODE _eMode = LERP_MODE::DEFAULT)
 		{

@@ -73,6 +73,7 @@
 
 /* Effect */
 #include "Effect_Trail_Sword.h"
+#include "Effect_Damaged_Enemy.h"
 
 CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: m_pDevice(pDevice)
@@ -256,9 +257,14 @@ HRESULT CLoader::Load_Prototype()
 			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxSkySphere.hlsl"), VTXMESH::Elements, VTXMESH::iNumElements))))
 			return E_FAIL;
 
-		/* For.Prototype_Component_Shader_Effect_WorldTex */
-		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, ShaderNames[SHADER_EFFECT_WORLDTEX],
-			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Effect_WorldTex.hlsl"), VTXPOSTEX::Elements, VTXPOSTEX::iNumElements))))
+		/* For.Prototype_Component_Shader_Effect_Tex */
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, ShaderNames[SHADER_EFFECT_TEX],
+			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Effect_Tex.hlsl"), VTXPOSTEX::Elements, VTXPOSTEX::iNumElements))))
+			return E_FAIL;
+
+		/* For.Prototype_Component_Shader_Effect_Mesh */
+		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, ShaderNames[SHADER_EFFECT_MESH],
+			CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Effect_Mesh.hlsl"), VTXMESH::Elements, VTXMESH::iNumElements))))
 			return E_FAIL;
 	}
 
@@ -637,6 +643,9 @@ HRESULT CLoader::Load_Prototype()
 
 		/* For.Prototype_GameObject_Effect_Trail_Sword */
 		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Effect_Trail_Sword"), CEffect_Trail_Sword::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+		/* For.Prototype_GameObject_Effect_Damaged_Enemy */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Effect_Damaged_Enemy"), CEffect_Damaged_Enemy::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 	}
 

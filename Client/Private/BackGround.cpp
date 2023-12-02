@@ -73,7 +73,7 @@ HRESULT CBackGround::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Texture*/
-	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Texture_BackGround"),
+	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("T_HFR_Logo"),
 		TEXT("Com_Texture"), (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
 

@@ -17,6 +17,9 @@ BEGIN(Client)
 class CEffect abstract : public CGameObject
 {
 public:
+
+	enum SHADER_TYPE { TEX, MESH, SHADER_END };
+
 	typedef struct tagEffectDesc /* 셰이더에 넘겨줄 구조체 */
 	{
 		Vec2	vUVOffset1;
@@ -59,6 +62,8 @@ public:
 
 	}TIME_DESC;
 
+	
+
 
 protected:
 	CEffect(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -92,17 +97,16 @@ protected:
 	HRESULT					Ready_Components();
 
 protected:
-	HRESULT					Bind_ShaderResources();
-
-protected:
 	const _bool				Is_Finish_LifeTime(_double fTimeDelta);
 
+	Matrix					Get_Matrix_By_Billboard();
+
 protected:
-	CShader*				m_pShaderCom	= { nullptr };
+	CShader*				m_pShaderComs[SHADER_TYPE::SHADER_END];
 	CRenderer*				m_pRendererCom	= { nullptr };
 	CTransform*				m_pTransformCom = { nullptr };
 
-	CVIBuffer_Rect*			m_pVIBufferCom = { nullptr };
+	CVIBuffer_Rect*			m_pVIBufferCom	= { nullptr };
 
 	vector<CModel*>			m_pModelComs;
 	vector<CTexture*>		m_pTextureComs;
