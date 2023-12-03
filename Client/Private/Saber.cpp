@@ -42,7 +42,7 @@ HRESULT CSaber::Initialize(void* pArg)
 	if (FAILED(Ready_StateMachine()))
 		return E_FAIL;
 
-	m_tStatDesc.fCurHp = m_tStatDesc.fMaxHp = 200.f;
+	m_tStatDesc.fCurHp = m_tStatDesc.fMaxHp = 300.f;
 
 	return S_OK;
 }

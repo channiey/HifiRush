@@ -350,7 +350,7 @@ void CChai::Quick_Test()
 	}
 	else if (ENGINE_INSTANCE->Key_Down('L'))
 	{
-		CGameObject* pClone = ENGINE_INSTANCE->Pop_Pool(ENGINE_INSTANCE->Get_CurLevelIndex(), L"Effect_Damaged_Enemy");
+		CGameObject* pClone = ENGINE_INSTANCE->Pop_Pool(ENGINE_INSTANCE->Get_CurLevelIndex(), L"Effect_Explosion_Enemy");
 		if (nullptr != pClone)
 		{
 			CEffect* pEffect = dynamic_cast<CEffect*>(pClone);
@@ -358,7 +358,7 @@ void CChai::Quick_Test()
 			{
 
 				Vec4 vPos = Get_Transform()->Get_FinalPosition();
-				vPos.y += 1.f;
+				vPos.y += 1.5f;
 				pEffect->Get_Transform()->Set_Position(vPos);
 				pEffect->Start_Effect();
 			}

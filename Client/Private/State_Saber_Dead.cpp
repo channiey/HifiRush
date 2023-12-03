@@ -1,6 +1,8 @@
 #include "..\Default\stdafx.h"
 #include "State_Saber_Dead.h"
 
+#include "Effect.h"
+
 CState_Saber_Dead::CState_Saber_Dead()
 {
 }
@@ -25,9 +27,6 @@ HRESULT CState_Saber_Dead::Enter()
 
 	m_pModel->Set_Animation(eAnimID, fTimePerFrame, DF_TW_TIME);
 
-	ENGINE_INSTANCE->Play_Sound(EFC_ENEMY_DAMAGED_00, ENEMY_SABER, 0.4f);
-
-
 	return S_OK;
 }
 
@@ -43,7 +42,7 @@ const wstring CState_Saber_Dead::LateTick()
 
 void CState_Saber_Dead::Exit()
 {
-
+	Play_Effect();
 }
 
 const wstring CState_Saber_Dead::Check_Transition()
@@ -57,6 +56,24 @@ const wstring CState_Saber_Dead::Check_Transition()
 		}
 	}
 	return m_strName;
+}
+
+void CState_Saber_Dead::Play_Effect()
+{
+	CGameObject* pClone = ENGINE_INSTANCE->Pop_Pool(ENGINE_INSTANCE->Get_CurLevelIndex(), L"Effect_Damaged_Enemy");
+	if (nullptr != pClone)
+	{
+		CEffect* pEffect = dynamic_cast<CEffect*>(pClone);
+		if (nullptr != pEffect)
+		{
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_ENEMY_DEAD_EXPLOSION, CHANNEL_ID::ENEMY_EMPTY, 0.7f);
+
+			Vec4 vPos = m_pSaber->Get_Transform()->Get_FinalPosition();
+			vPos.y += 1.5f;
+			pEffect->Get_Transform()->Set_Position(vPos);
+			pEffect->Start_Effect();
+		}
+	}
 }
 
 CState_Saber_Dead* CState_Saber_Dead::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

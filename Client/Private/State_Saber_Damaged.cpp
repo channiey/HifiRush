@@ -30,32 +30,8 @@ HRESULT CState_Saber_Damaged::Enter()
 const wstring CState_Saber_Damaged::Tick(const _double& fTimeDelta)
 {
 	if (m_pSaber->m_tFightDesc.bDamaged)
-	{
 		Damaged();
-	}
 
-
-
-	// Effect 
-	/*if (!m_pModel->Is_Tween() && 10 == m_pModel->Get_CurAnimationFrame() && !m_bPlayEffect)
-	{
-		m_bPlayEffect = TRUE;
-
-		CGameObject* pClone = ENGINE_INSTANCE->Pop_Pool(ENGINE_INSTANCE->Get_CurLevelIndex(), L"Effect_Damaged_Enemy");
-		if (nullptr != pClone)
-		{
-			CEffect* pEffect = dynamic_cast<CEffect*>(pClone);
-			if (nullptr != pEffect)
-			{
-				m_bPlayEffect = TRUE;
-
-				Vec4 vPos = m_pSaber->Get_Transform()->Get_FinalPosition();
-				vPos.y += 1.f;
-				pEffect->Get_Transform()->Set_Position(vPos);
-				pEffect->Start_Effect();
-			}
-		}
-	}*/
 	return m_strName;
 }
 

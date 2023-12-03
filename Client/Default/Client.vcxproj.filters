@@ -565,6 +565,9 @@
     <Filter Include="03.GameObjects\11.Effect\01.Effects\01.Damaged_Enemy">
       <UniqueIdentifier>{9aa83727-32aa-4ad9-813a-d43bace32253}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.GameObjects\11.Effect\01.Effects\02.Explosion_Enemy">
+      <UniqueIdentifier>{5d08fe37-3991-4d41-a3d9-cec7902f197a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -987,6 +990,9 @@
     <ClInclude Include="..\Public\Effect_Damaged_Enemy.h">
       <Filter>03.GameObjects\11.Effect\01.Effects\01.Damaged_Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Effect_Explosion_Enemy.h">
+      <Filter>03.GameObjects\11.Effect\01.Effects\02.Explosion_Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -1396,6 +1402,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Effect_Damaged_Enemy.cpp">
       <Filter>03.GameObjects\11.Effect\01.Effects\01.Damaged_Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Explosion_Enemy.cpp">
+      <Filter>03.GameObjects\11.Effect\01.Effects\02.Explosion_Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

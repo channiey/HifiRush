@@ -196,6 +196,7 @@ namespace Client
 		ENEMY_SABER,
 		ENEMY_BLADER,
 		ENEMY_GUNNER,
+		ENEMY_EMPTY,
 
 		/* Etc */
 

@@ -75,6 +75,7 @@
 /* Effect */
 #include "Effect_Trail_Sword.h"
 #include "Effect_Damaged_Enemy.h"
+#include "Effect_Explosion_Enemy.h"
 
 CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: m_pDevice(pDevice)
@@ -645,12 +646,16 @@ HRESULT CLoader::Load_Prototype()
 			}
 		}
 
-
 		/* For.Prototype_GameObject_Effect_Trail_Sword */
 		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Effect_Trail_Sword"), CEffect_Trail_Sword::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
+
 		/* For.Prototype_GameObject_Effect_Damaged_Enemy */
 		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Effect_Damaged_Enemy"), CEffect_Damaged_Enemy::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Effect_Explosion_Enemy */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Effect_Explosion_Enemy"), CEffect_Explosion_Enemy::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 	}
 

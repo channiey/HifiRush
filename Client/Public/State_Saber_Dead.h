@@ -21,6 +21,9 @@ public:
 public:
 	const wstring Check_Transition() override;
 
+private:
+	void Play_Effect();
+
 public:
 	static CState_Saber_Dead* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);
 	virtual CState* Clone(void* pArg) override;
