@@ -164,6 +164,10 @@ void CState_Chai_Attack::Exit()
 		m_bThrowGuitar = FALSE;
 		m_bThrowSound = FALSE;
 	}
+
+	m_pChai->m_tFightDesc.bDamaged = FALSE;
+	m_pChai->m_tFightDesc.pAttacker = nullptr;
+
 }
 
 const wstring CState_Chai_Attack::Check_Transition()

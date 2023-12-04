@@ -4,6 +4,8 @@
 
 #include "Character.h"
 
+#include "Effect.h"
+
 #ifdef _DEBUG
 #include "ImGui_Manager.h"
 #endif // _DEBUG
@@ -92,6 +94,12 @@ HRESULT CProjectile::Return_To_Pool()
 	ENGINE_INSTANCE->Return_Pool(ENGINE_INSTANCE->Get_CurLevelIndex(), this);
 
 	m_pCollider->Set_Active(FALSE);
+
+	if (nullptr != m_pEffect)
+	{
+		m_pEffect->Finish_Effect();
+		m_pEffect = nullptr;
+	}
 
 	return S_OK;
 }

@@ -76,6 +76,7 @@
 #include "Effect_Trail_Sword.h"
 #include "Effect_Damaged_Enemy.h"
 #include "Effect_Explosion_Enemy.h"
+#include "Effect_Projectile_Peppermint.h"
 
 CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: m_pDevice(pDevice)
@@ -656,6 +657,10 @@ HRESULT CLoader::Load_Prototype()
 
 		/* For.Prototype_GameObject_Effect_Explosion_Enemy */
 		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Effect_Explosion_Enemy"), CEffect_Explosion_Enemy::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Effect_Projectile_Peppermint */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Effect_Projectile_Peppermint"), CEffect_Projectile_Peppermint::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 	}
 

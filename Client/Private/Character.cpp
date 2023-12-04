@@ -62,7 +62,7 @@ void CCharacter::Tick(_double fTimeDelta)
 }
 
 void CCharacter::LateTick(_double fTimeDelta)
-   {
+{
 	__super::LateTick(fTimeDelta);
 
 	if (!CImGui_Manager::GetInstance()->Is_DebugCam())

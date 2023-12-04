@@ -86,8 +86,11 @@ HRESULT CEffect_Explosion_Enemy::Return_Pool()
 
 HRESULT CEffect_Explosion_Enemy::Start_Effect()
 {
+	return S_OK;
+
 	m_tLerpScaleExplosion.Start(m_fMinScaleExplosion, m_fMaxScaleExplosion, m_fLerpTimeExplosion, LERP_MODE::SMOOTHER_STEP);
 	m_tLerpDissoveAmount.Clear();
+	
 	return S_OK;
 }
 

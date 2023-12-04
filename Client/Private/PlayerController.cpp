@@ -23,8 +23,6 @@ HRESULT CPlayerController::Initialize()
 
 void CPlayerController::Tick(_double fTimeDelta)
 {
-	m_eCurControlPlayerType;
-
 	Update_Player(fTimeDelta);
 }
 
@@ -32,12 +30,14 @@ void CPlayerController::LateTick(_double fTimeDelta)
 {
 }
 
-HRESULT CPlayerController::SetOn_Player(const PLAYER_TYPE& eType)
+HRESULT CPlayerController::SetOn_Player(PLAYER_TYPE eType)
 {
-	if (PLAYER_TYPE::TYPEEND <= eType ||
-		PLAYER_STATE::WAIT != m_tPlayerDesc[eType].eState)
+	if (eType < PLAYER_TYPE::CHAI || PLAYER_TYPE::TYPEEND <= eType)
 		return E_FAIL;
-
+		
+	if (PLAYER_STATE::WAIT != m_tPlayerDesc[eType].eState)
+		return E_FAIL;
+		
 	m_tPlayerDesc[eType].pPlayer->Set_State(CGameObject::STATE_ACTIVE);
 
 	m_tPlayerDesc[eType].eState = PLAYER_STATE::APPEAR;
@@ -48,10 +48,12 @@ HRESULT CPlayerController::SetOn_Player(const PLAYER_TYPE& eType)
 	return S_OK;
 }
 
-HRESULT CPlayerController::SetOff_Player(const PLAYER_TYPE& eType)
+HRESULT CPlayerController::SetOff_Player(PLAYER_TYPE eType)
 {
-	if (PLAYER_TYPE::TYPEEND <= eType ||
-		PLAYER_STATE::APPEAR != m_tPlayerDesc[eType].eState)
+	if (eType < PLAYER_TYPE::CHAI || PLAYER_TYPE::TYPEEND <= eType)
+		return E_FAIL;
+
+	if (PLAYER_STATE::APPEAR != m_tPlayerDesc[eType].eState)
 		return E_FAIL;
 
 	m_tPlayerDesc[eType].pPlayer->Set_State(CGameObject::STATE_UNACTIVE);
@@ -65,9 +67,9 @@ HRESULT CPlayerController::SetOff_Player(const PLAYER_TYPE& eType)
 	return S_OK;
 }
 
-HRESULT CPlayerController::Change_ControlPlayer(const PLAYER_TYPE& eType)
+HRESULT CPlayerController::Change_ControlPlayer(PLAYER_TYPE eType)
 {
-	if (PLAYER_TYPE::TYPEEND <= eType )
+	if (eType < PLAYER_TYPE::CHAI || PLAYER_TYPE::TYPEEND <= eType)
 		return E_FAIL;
 
 	m_eCurControlPlayerType = eType;
@@ -75,49 +77,55 @@ HRESULT CPlayerController::Change_ControlPlayer(const PLAYER_TYPE& eType)
 	return S_OK;
 }
 
-const PLAYER_STATE CPlayerController::Get_PlayerState(const PLAYER_TYPE& eType)
+const PLAYER_STATE CPlayerController::Get_PlayerState(PLAYER_TYPE eType)
 {
-	if (PLAYER_TYPE::TYPEEND <= eType)
+	if (eType < PLAYER_TYPE::CHAI || PLAYER_TYPE::TYPEEND <= eType)
 		return PLAYER_STATE::STATE_END;
 
 	return m_tPlayerDesc[eType].eState;
 }
 
-const PLAYER_DESC CPlayerController::Get_PlayerDesc(const PLAYER_TYPE& eType)
+const PLAYER_DESC CPlayerController::Get_PlayerDesc(PLAYER_TYPE eType)
 {
-	if (PLAYER_TYPE::TYPEEND <= eType)
+	if (eType < PLAYER_TYPE::CHAI || PLAYER_TYPE::TYPEEND <= eType)
 		return PLAYER_DESC{};
 
 	return m_tPlayerDesc[eType];
 }
 
-const _bool CPlayerController::Is_Controll(const PLAYER_TYPE eType)
+const _bool CPlayerController::Is_Controll(PLAYER_TYPE eType)
 {
+	if (eType < PLAYER_TYPE::CHAI || PLAYER_TYPE::TYPEEND <= eType)
+		return FALSE;
+
 	if (eType == m_eCurControlPlayerType)
 		return TRUE;
 
 	return FALSE;
 }
 
-const _bool CPlayerController::Is_Player(const PLAYER_TYPE eType)
+const _bool CPlayerController::Is_Player(PLAYER_TYPE eType)
 {
-	if (PLAYER_TYPE::TYPEEND <= eType)
+	if (eType < PLAYER_TYPE::CHAI || PLAYER_TYPE::TYPEEND <= eType)
 		return FALSE;
 
 	return (nullptr != m_tPlayerDesc[eType].pPlayer) ? TRUE : FALSE;
 }
 
-CCharacter* CPlayerController::Get_Player(const PLAYER_TYPE& eType)
+CCharacter* CPlayerController::Get_Player(PLAYER_TYPE eType)
 {
-	if (PLAYER_TYPE::TYPEEND <= eType)
+	if (eType < PLAYER_TYPE::CHAI || PLAYER_TYPE::TYPEEND <= eType)
 		return nullptr;
 
 	return m_tPlayerDesc[eType].pPlayer;
 }
 
-HRESULT CPlayerController::Add_Player(CCharacter* pCharacter, const PLAYER_TYPE& eType)
+HRESULT CPlayerController::Add_Player(CCharacter* pCharacter, PLAYER_TYPE eType)
 {
-	if (PLAYER_TYPE::TYPEEND <= eType || nullptr != m_tPlayerDesc[eType].pPlayer)
+	if (eType < PLAYER_TYPE::CHAI || PLAYER_TYPE::TYPEEND <= eType)
+		return E_FAIL;
+
+	if(nullptr != m_tPlayerDesc[eType].pPlayer)
 		return E_FAIL;
 
 	m_tPlayerDesc[eType].pPlayer = pCharacter;
@@ -149,8 +157,11 @@ void CPlayerController::Update_Player(_double fTimeDelta)
 	}
 }
 
-void CPlayerController::Play_Sound(const PLAYER_TYPE& eType)
+void CPlayerController::Play_Sound(PLAYER_TYPE eType)
 {
+	if (eType < PLAYER_TYPE::CHAI || PLAYER_TYPE::TYPEEND <= eType)
+		return;
+
 	const _int iRand = rand() % 4;
 	SOUND_FILE_ID eSoundID = SOUND_FILE_END;
 
@@ -217,6 +228,7 @@ void CPlayerController::Play_Sound(const PLAYER_TYPE& eType)
 		}
 		break;
 	default:
+		return;
 		break;
 	}
 

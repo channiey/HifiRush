@@ -79,14 +79,16 @@ void CKorsica::Set_State(const OBJ_STATE& eState)
 
 	if (OBJ_STATE::STATE_ACTIVE == eState)
 	{
-		if (nullptr == ENGINE_INSTANCE->Get_GameObject_InCurLevel_InLayerFirst(LayerNames[LAYER_ID::LAYER_ENEMY]))
+		m_pStateMachineCom->Set_State(StateNames_KO[STATE_KO::STATE_BATTLE_KO]);
+
+		/*if (nullptr == ENGINE_INSTANCE->Get_GameObject_InCurLevel_InLayerFirst(LayerNames[LAYER_ID::LAYER_ENEMY]))
 		{
 			m_pStateMachineCom->Set_State(StateNames_KO[STATE_KO::STATE_GIMMICK_KO]);
 		}
 		else
 		{
 			m_pStateMachineCom->Set_State(StateNames_KO[STATE_KO::STATE_BATTLE_KO]);
-		}
+		}*/
 			
 		//cout << "CKorsica Set_State\n";
 	}
@@ -107,14 +109,8 @@ HRESULT CKorsica::Ready_Components()
 		ComponentNames[COM_MODEL], (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 
-	/* Com_Rigidbody*/
-	CRigidbody::RIGIDBODY_TYPE eType = CRigidbody::RIGIDBODY_TYPE::DYNAMIC;
-	if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Rigidbody"),
-		ComponentNames[COM_RIGIDBODY], (CComponent**)&m_pRigidbodyCom, &eType)))
-		return E_FAIL;
-
 	/* Com_NavMeshAgent*/
-	const _int iIndex = 0;
+	/*const _int iIndex = 0;
 	{
 		if (iIndex < 0)
 			return E_FAIL;
@@ -124,7 +120,7 @@ HRESULT CKorsica::Ready_Components()
 		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_NavMeshAgent"),
 			ComponentNames[COM_NAVMESHAGENT], (CComponent**)&m_pNavMeshAgentCom, &tDesc)))
 			return E_FAIL;
-	}
+	}*/
 
 	/* Com_Collider */
 	CCollider_Sphere* pCollider = nullptr;

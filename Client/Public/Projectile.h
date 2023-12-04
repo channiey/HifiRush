@@ -13,6 +13,7 @@ END
 
 BEGIN(Client)
 class CCharacter;
+class CEffect;
 
 class CProjectile abstract : public CGameObject
 {
@@ -60,6 +61,8 @@ protected:
 protected:
 	HRESULT					Bind_ShaderResources();
 
+	virtual HRESULT			Set_Effect() { return S_OK; }
+
 private:
 	void					Check_LifeTime(_double fTimeDelta);
 
@@ -76,6 +79,8 @@ protected:
 protected:
 	_float					m_fLimit		= 1.f;
 	_float					m_fAcc			= 0.f;
+
+	CEffect*				m_pEffect		= nullptr;
 
 public:
 	virtual CProjectile*	Clone(void* pArg) = 0;

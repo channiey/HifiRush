@@ -134,7 +134,7 @@ void CState_Peppermint_Battle::Set_Transform()
 	CTransform* pTrnasform_Chai			= CPlayerController::GetInstance()->Get_Player(PLAYER_TYPE::CHAI)->Get_Transform();
 
 	/* 네비 인덱스 설정 */
-	m_pPeppermint->Get_NavMeshAgent()->Set_CurIndex(CPlayerController::GetInstance()->Get_Player(PLAYER_TYPE::CHAI)->Get_NavMeshAgent()->Get_Index());
+	//m_pPeppermint->Get_NavMeshAgent()->Set_CurIndex(CPlayerController::GetInstance()->Get_Player(PLAYER_TYPE::CHAI)->Get_NavMeshAgent()->Get_Index());
 	
 	/* 루트 포지션 초기화  */
 	pTransform_Peppermint->Set_RootPos(Vec4::Zero, TRUE);

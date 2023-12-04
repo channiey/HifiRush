@@ -7,7 +7,7 @@
 #include "Effect_Trail_Sword.h"
 #include "Effect_Damaged_Enemy.h"
 #include "Effect_Explosion_Enemy.h"
-
+#include "Effect_Projectile_Peppermint.h"
 
 IMPLEMENT_SINGLETON(CEffectManager)
 
@@ -50,6 +50,12 @@ HRESULT CEffectManager::Ready_Effect()
 	/* For.Effect_Explosion_Enemy */
 	{
 		if (FAILED(ENGINE_INSTANCE->Reserve_Pool(LEVEL_ID::LV_STAGE_01, LayerNames[LAYER_EFFECT], L"Effect_Explosion_Enemy", 5)))
+			return E_FAIL;
+	}
+
+	/* For.Effect_Projectile_Peppermint */
+	{
+		if (FAILED(ENGINE_INSTANCE->Reserve_Pool(LEVEL_ID::LV_STAGE_01, LayerNames[LAYER_EFFECT], L"Effect_Projectile_Peppermint", 5)))
 			return E_FAIL;
 	}
 	return S_OK;

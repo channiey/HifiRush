@@ -5,6 +5,9 @@
 
 #include "Peppermint.h"
 
+#include "EffectManager.h"
+#include "Effect.h"
+
 CPeppermint_Bullet::CPeppermint_Bullet(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CProjectile(pDevice, pContext)
 {
@@ -81,6 +84,10 @@ void CPeppermint_Bullet::OnCollision_Exit(CCollider* pCollider, const _int& iInd
 
 HRESULT CPeppermint_Bullet::Shoot(PROJECTILE_DESC tDesc)
 {
+	/* Effect */
+	/*if (FAILED(Set_Effect()))
+		return E_FAIL;*/
+
 	memcpy(&m_tDesc, &tDesc, sizeof(PROJECTILE_DESC));
 
 	if (nullptr == m_tDesc.pOwner)
@@ -98,6 +105,27 @@ HRESULT CPeppermint_Bullet::Shoot(PROJECTILE_DESC tDesc)
 HRESULT CPeppermint_Bullet::Ready_Components()
 {
 	return S_OK;
+}
+
+HRESULT CPeppermint_Bullet::Set_Effect()
+{
+	CGameObject* pClone = ENGINE_INSTANCE->Pop_Pool(ENGINE_INSTANCE->Get_CurLevelIndex(), L"Effect_Projectile_Peppermint");
+	
+	if (nullptr != pClone)
+	{
+		m_pEffect = dynamic_cast<CEffect*>(pClone);
+		if (nullptr != m_pEffect)
+		{
+			m_pEffect->Set_Target(this);
+			m_pEffect->Start_Effect();
+			
+			return S_OK;
+		}
+		else 
+			return E_FAIL;
+	}
+
+	return E_FAIL;
 }
 
 HRESULT CPeppermint_Bullet::Bind_ShaderResources()

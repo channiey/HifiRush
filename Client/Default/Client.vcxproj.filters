@@ -568,6 +568,9 @@
     <Filter Include="03.GameObjects\11.Effect\01.Effects\02.Explosion_Enemy">
       <UniqueIdentifier>{5d08fe37-3991-4d41-a3d9-cec7902f197a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.GameObjects\11.Effect\01.Effects\03.Projectile_Peppermint">
+      <UniqueIdentifier>{aefa851e-e24a-427a-92f4-d1de827171d6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -993,6 +996,9 @@
     <ClInclude Include="..\Public\Effect_Explosion_Enemy.h">
       <Filter>03.GameObjects\11.Effect\01.Effects\02.Explosion_Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Effect_Projectile_Peppermint.h">
+      <Filter>03.GameObjects\11.Effect\01.Effects\03.Projectile_Peppermint</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -1405,6 +1411,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Effect_Explosion_Enemy.cpp">
       <Filter>03.GameObjects\11.Effect\01.Effects\02.Explosion_Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Projectile_Peppermint.cpp">
+      <Filter>03.GameObjects\11.Effect\01.Effects\03.Projectile_Peppermint</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -129,7 +129,7 @@ void CState_Korsica_Battle::Set_Transform()
 	pTransform_Korsica->Set_RootPos(Vec4::Zero, TRUE);
 
 	/* 네비 인덱스 설정 */
-	m_pKorsica->Get_NavMeshAgent()->Set_CurIndex(CPlayerController::GetInstance()->Get_Player(PLAYER_TYPE::CHAI)->Get_NavMeshAgent()->Get_Index());
+	//m_pKorsica->Get_NavMeshAgent()->Set_CurIndex(CPlayerController::GetInstance()->Get_Player(PLAYER_TYPE::CHAI)->Get_NavMeshAgent()->Get_Index());
 
 	/* 포지션 설정 */
 	Vec4 vPlayerPos = pTrnasform_Chai->Get_FinalPosition();

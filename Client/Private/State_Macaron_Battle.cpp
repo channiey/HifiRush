@@ -51,6 +51,7 @@ void CState_Macaron_Battle::Exit()
 	m_eProgressID	= PROGRESS_END;
 	m_bAttack		= FALSE;
 	m_pEnemy		= nullptr;
+
 	CPlayerController::GetInstance()->SetOff_Player(PLAYER_TYPE::MACARON);
 }
 
@@ -168,7 +169,7 @@ void CState_Macaron_Battle::Set_Transform()
 		pTransform_Macaron->Set_Look(pEnemyTransform->Get_State(CTransform::STATE_LOOK) * -1.f);
 
 		/* 네비 인덱스 설정 */
-		m_pMacaron->Get_NavMeshAgent()->Set_CurIndex(iNavIndex);
+		//m_pMacaron->Get_NavMeshAgent()->Set_CurIndex(iNavIndex);
 
 	}
 	else
@@ -179,7 +180,7 @@ void CState_Macaron_Battle::Set_Transform()
 		pTransform_Macaron->Set_Look(pTrnasform_Chai->Get_State(CTransform::STATE_LOOK));
 
 		/* 네비 인덱스 설정 */
-		m_pMacaron->Get_NavMeshAgent()->Set_CurIndex(CPlayerController::GetInstance()->Get_Player(PLAYER_TYPE::CHAI)->Get_NavMeshAgent()->Get_Index());
+		//m_pMacaron->Get_NavMeshAgent()->Set_CurIndex(CPlayerController::GetInstance()->Get_Player(PLAYER_TYPE::CHAI)->Get_NavMeshAgent()->Get_Index());
 	}
 
 	/* 루트 포지션 초기화  */

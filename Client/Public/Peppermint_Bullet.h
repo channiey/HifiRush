@@ -28,6 +28,8 @@ public:
 private:
 	HRESULT					Ready_Components();
 
+	virtual HRESULT			Set_Effect() override;
+
 private:
 	HRESULT					Bind_ShaderResources();
 

@@ -92,7 +92,7 @@ public:
 	_uint					Get_EffectID() const	{ return m_eEffectID; }
 
 	void					Set_EffectDesc(EFFECT_DESC tDesc) { memcpy(& m_tEffectDesc, & tDesc, sizeof(EFFECT_DESC)); }
-	
+	void					Set_Target(CGameObject* pTarget) { m_pTarget = pTarget; }
 protected:
 	HRESULT					Ready_Components();
 
@@ -119,6 +119,8 @@ protected:
 	EFFECT_DESC				m_tEffectDesc	= {};
 
 	_uint					m_iTextureIndex;
+
+	CGameObject*			m_pTarget = nullptr;
 
 public:
 	virtual CEffect*		Clone(void* pArg) = 0;
