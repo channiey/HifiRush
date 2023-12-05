@@ -38,6 +38,11 @@ HRESULT CEnemy::Initialize(void* pArg)
 	/*if (FAILED(Ready_Chilren()))
 		return E_FAIL;*/
 
+
+	for (auto& pCollider : m_pColliderComs)
+		if (nullptr != pCollider)
+			pCollider->Set_Active(FALSE);
+
 	return S_OK;
 }
 
@@ -46,7 +51,23 @@ void CEnemy::Tick(_double fTimeDelta)
 	if (nullptr == m_tFightDesc.pTarget)
 		return;
 
-	__super::Tick(fTimeDelta);
+	if (!CImGui_Manager::GetInstance()->Is_DebugCam() && m_bActive)
+	{
+		if (nullptr != m_pStateMachineCom)
+		{
+			if (FAILED(m_pStateMachineCom->Tick(fTimeDelta)))
+				return;
+		}
+
+		if (nullptr != m_pRigidbodyCom)
+			m_pRigidbodyCom->Tick(fTimeDelta);
+	}
+
+	for (auto& pCollider : m_pColliderComs)
+	{
+		if (m_bActive && nullptr != pCollider && pCollider->Is_Active())
+			pCollider->Update(m_pTransformCom->Get_FinalMat());
+	}
 }
 
 void CEnemy::LateTick(_double fTimeDelta)
@@ -54,7 +75,29 @@ void CEnemy::LateTick(_double fTimeDelta)
 	if (nullptr == m_tFightDesc.pTarget)
 		return;
 
-	__super::LateTick(fTimeDelta);
+	if (!CImGui_Manager::GetInstance()->Is_DebugCam() && m_bActive)
+	{
+		if (FAILED(m_pModelCom->Update(fTimeDelta)))
+			return;
+
+		if (nullptr != m_pStateMachineCom)
+		{
+			if (FAILED(m_pStateMachineCom->LateTick(fTimeDelta)))
+				return;
+		}
+	}
+
+	for (auto& pCollider : m_pColliderComs)
+	{
+		if (m_bActive && nullptr != pCollider && pCollider->Is_Active() && CImGui_Manager::GetInstance()->Is_Render_Collider())
+			m_pRendererCom->Add_Debug(pCollider);
+	}
+
+	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_SHADOW, this)))
+		return;
+
+	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
+		return;
 }
 
 HRESULT CEnemy::Render()
@@ -88,14 +131,43 @@ void CEnemy::Set_State(const OBJ_STATE& eState)
 
 HRESULT CEnemy::Return_To_Pool()
 {
-	Reset_Desc();
-	
-	for(auto pChild : m_Children)
+	Set_State(STATE_UNACTIVE);
+
+	for (auto pChild : m_Children)
 	{
 		pChild->Set_State(OBJ_STATE::STATE_UNACTIVE);
 	}
 
-	return ENGINE_INSTANCE->Return_Pool(ENGINE_INSTANCE->Get_CurLevelIndex(), this);
+	for (auto& pCollider : m_pColliderComs)
+		if (nullptr != pCollider)
+			pCollider->Set_Active(FALSE);
+	
+	m_bActive = FALSE;
+
+	return S_OK;
+	
+	//Reset_Desc();
+	//
+	//for(auto pChild : m_Children)
+	//{
+	//	pChild->Set_State(OBJ_STATE::STATE_UNACTIVE);
+	//}
+	//
+	//return ENGINE_INSTANCE->Return_Pool(ENGINE_INSTANCE->Get_CurLevelIndex(), this);
+}
+
+void CEnemy::Set_EnemyActive(const _bool bActive)
+{
+	m_bActive = bActive;
+
+	if (m_bActive)
+	{
+		for (auto& pCollider : m_pColliderComs)
+			if (nullptr != pCollider)
+				pCollider->Set_Active(TRUE);
+
+		m_pTransformCom->Set_WorldMat(m_matOrigin);
+	}
 }
 
 HRESULT CEnemy::Ready_Components()

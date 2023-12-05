@@ -33,7 +33,9 @@ public:
 	HRESULT				Return_To_Pool();
 
 	const _bool			Is_EnemyActive() const { return m_bActive; }
-	void				Set_EnemyActive(const _bool bActive) { m_bActive = bActive; }
+	void				Set_EnemyActive(const _bool bActive);
+
+	void				Set_MatOrigin(Matrix matOrigin) { m_matOrigin = matOrigin; }
 protected:
 	HRESULT				Ready_Components();
 
@@ -46,6 +48,8 @@ protected:
 	CTriggerBattle*		m_pBattleTrigger = nullptr;
 
 	_bool				m_bActive = FALSE;
+
+	Matrix				m_matOrigin;
 
 public:
 	virtual CEnemy*		Clone(void* pArg) PURE;

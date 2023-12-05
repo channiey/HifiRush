@@ -46,7 +46,7 @@ HRESULT CBlader::Initialize(void* pArg)
 	if (FAILED(Ready_StateMachine()))
 		return E_FAIL;
 
-	m_tStatDesc.fCurHp = m_tStatDesc.fMaxHp = 200.f;
+	m_tStatDesc.fCurHp = m_tStatDesc.fMaxHp = 400.f;
 	return S_OK;
 }
 
@@ -76,6 +76,11 @@ void CBlader::Set_State(const OBJ_STATE& eState)
 
 	if (OBJ_STATE::STATE_ACTIVE == eState)
 	{
+		if (!m_bActive)
+		{
+			m_bActive = TRUE;
+			return;
+		}
 		m_pStateMachineCom->Set_State(StateNames_BL[STATE_APPEAR_BL]);
 	}
 }

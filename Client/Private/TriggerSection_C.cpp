@@ -40,6 +40,9 @@ HRESULT CTriggerSection_C::Initialize(void* pArg)
 
 	CBattleManager::GetInstance()->Add_Trigger(m_strTriggerTag, this);
 
+	if (FAILED(Pop_Enemy()))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -68,9 +71,8 @@ HRESULT CTriggerSection_C::Start_Battle()
 {
 	m_bStartBattle = TRUE;
 
-	const _uint iCurLevel = ENGINE_INSTANCE->Get_CurLevelIndex();
+	/*const _uint iCurLevel = ENGINE_INSTANCE->Get_CurLevelIndex();
 
-	
 	for (auto Pair : m_Flows)
 	{
 		vector<CGameObject*> Clones;
@@ -89,8 +91,13 @@ HRESULT CTriggerSection_C::Start_Battle()
 			}
 		}
 		m_Clones.push_back(Clones);
-	}
+	}*/
 
+	for (auto& pEnemy : m_Clones.front())
+	{
+		static_cast<CEnemy*>(pEnemy)->Set_EnemyActive(TRUE);
+		pEnemy->Set_State(CGameObject::STATE_ACTIVE);
+	}
 
 	return S_OK;
 }

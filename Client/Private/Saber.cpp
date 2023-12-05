@@ -42,7 +42,7 @@ HRESULT CSaber::Initialize(void* pArg)
 	if (FAILED(Ready_StateMachine()))
 		return E_FAIL;
 
-	m_tStatDesc.fCurHp = m_tStatDesc.fMaxHp = 1000.f;
+	m_tStatDesc.fCurHp = m_tStatDesc.fMaxHp = 500.f;
 
 	return S_OK;
 }
@@ -72,8 +72,6 @@ void CSaber::Set_State(const OBJ_STATE& eState)
 	if (OBJ_STATE::STATE_ACTIVE == eState)
 	{
 		m_pStateMachineCom->Set_State(StateNames_SA[STATE_APPEAR_SA]);
-
-		m_tStatDesc.fCurHp = m_tStatDesc.fMaxHp = 150.f;
 	}
 }
 

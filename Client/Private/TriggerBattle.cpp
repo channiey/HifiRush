@@ -8,6 +8,8 @@
 #include "ImGui_Manager.h"
 #endif // _DEBUG
 
+#include "Enemy.h"
+
 CTriggerBattle::CTriggerBattle(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
 {
@@ -66,6 +68,40 @@ HRESULT CTriggerBattle::Render()
 	}
 
 	return S_OK;
+}
+
+HRESULT CTriggerBattle::Pop_Enemy()
+{
+	const _uint iCurLevel = ENGINE_INSTANCE->Get_CurLoadingLevel();
+
+	for (auto Pair : m_Flows)
+	{
+		vector<CGameObject*> Clones;
+		for (auto desc : Pair.second)
+		{
+			CGameObject* pClone = ENGINE_INSTANCE->Add_GameObject(
+				ENGINE_INSTANCE->Get_CurLoadingLevel(),
+				LayerNames[LAYER_ENEMY],
+				desc.strPrototypeTag);
+
+			if (nullptr != pClone)
+			{
+				pClone->Get_Transform()->Set_WorldMat(desc.matWorld);
+				pClone->Get_NavMeshAgent()->Set_CurIndex(desc.iCellIndex);
+				Clones.push_back(pClone);
+
+
+				static_cast<CEnemy*>(pClone)->Set_EnemyActive(FALSE);
+				static_cast<CEnemy*>(pClone)->Set_MatOrigin(desc.matWorld);
+				pClone->Get_Transform()->Set_Position(Vec3{ -1000.f, -500.f, -1000.f }, TRUE);
+
+				pClone->Set_State(CGameObject::OBJ_STATE::STATE_ACTIVE);
+			}
+		}
+		m_Clones.push_back(Clones);
+	}
+
+	return TRUE;
 }
 
 HRESULT CTriggerBattle::Add_Clone(const _uint iFlowLevel, CGameObject* pObject)

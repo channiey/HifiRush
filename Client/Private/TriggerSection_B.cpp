@@ -40,6 +40,9 @@ HRESULT CTriggerSection_B::Initialize(void* pArg)
 
 	CBattleManager::GetInstance()->Add_Trigger(m_strTriggerTag, this);
 
+	if (FAILED(Pop_Enemy()))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -66,16 +69,7 @@ HRESULT CTriggerSection_B::Render()
 
 HRESULT CTriggerSection_B::Start_Battle()
 {
-	/*CCamera* pCameraCom = ENGINE_INSTANCE->Get_CurCamera()->Get_Camera();
-	if (nullptr != pCameraCom && CAMERA_ID::CAM_FOLLOW == (CAMERA_ID)pCameraCom->Get_Key())
-	{
-		pCameraCom->Lerp_Fov(CamFov_Follow_Battle, 1.5f, LERP_MODE::SMOOTHER_STEP);
-		pCameraCom->Lerp_Dist(CamDist_Follow_Battle + 1.f, 1.5f, LERP_MODE::SMOOTHER_STEP);
-	}*/
-
-	/* Pop from Pool */
-
-	const _uint iCurLevel = ENGINE_INSTANCE->Get_CurLevelIndex();
+	/*const _uint iCurLevel = ENGINE_INSTANCE->Get_CurLevelIndex();
 
 
 	for (auto Pair : m_Flows)
@@ -96,6 +90,11 @@ HRESULT CTriggerSection_B::Start_Battle()
 			}
 		}
 		m_Clones.push_back(Clones);
+	}*/
+
+	for (auto& pEnemy : m_Clones.front())
+	{
+		static_cast<CEnemy*>(pEnemy)->Set_EnemyActive(TRUE);
 	}
 
 	return S_OK;

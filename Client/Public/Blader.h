@@ -174,6 +174,8 @@ public:
 	virtual void		Free() override;
 
 private:
+	_bool				m_bActive = FALSE;
+private:
 	friend class CState_Blader_Base;
 	friend class CState_Blader_Idle;
 	friend class CState_Blader_Move;
