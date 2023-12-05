@@ -13,6 +13,9 @@ enum ANIM_KO
 	BATTLE_ATTACK_KO,
 	BATTLE_DISAPPEAR_KO,
 
+	ENDING_WINK_KO,
+	ENDING_IDLE_KO,
+
 	ANIM_KO_END,
 };
 
@@ -20,20 +23,23 @@ static const string AnimNames_KO[ANIM_KO::ANIM_KO_END]
 {
 	"ch4000_atk_000",
 	"ch4000_atk_002",
-	"ch4000_atk_003"
+	"ch4000_atk_003",
+
+	"ch4000_talk-action_050",
+	"ch4000_talk-idle_000",
 };
 
 enum STATE_KO
 {
 	STATE_BATTLE_KO,
-	//STATE_GIMMICK_KO,
+	STATE_ENDING_KO,
 	STATE_END_KO
 };
 
 static const wstring StateNames_KO[STATE_KO::STATE_END_KO]
 { 
-	L"BATTLE"//,
-	//L"GIMMICK"
+	L"BATTLE",
+	L"ENDING"
 };
 
 class CKorsica final : public CCharacter

@@ -571,6 +571,18 @@
     <Filter Include="03.GameObjects\11.Effect\01.Effects\03.Projectile_Peppermint">
       <UniqueIdentifier>{aefa851e-e24a-427a-92f4-d1de827171d6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.GameObjects\03.Character\00.Player\02.Models\00.Chai\States\04.Ending">
+      <UniqueIdentifier>{491903b7-56a4-44a6-8838-55657c993617}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\00.Player\02.Models\01.Peppermint\States\03.Ending">
+      <UniqueIdentifier>{c12b0bf0-1a94-4f14-9d75-3458c0531662}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\00.Player\02.Models\02.Macaron\States\03.Ending">
+      <UniqueIdentifier>{5296fa95-74d8-4f3c-b406-4f9ae0827d65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\00.Player\02.Models\03.Korsica\States\03.Ending">
+      <UniqueIdentifier>{802c3b0a-48a1-433e-aae3-e2c36f15e608}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

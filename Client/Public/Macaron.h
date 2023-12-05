@@ -18,6 +18,9 @@ enum ANIM_MA
 	GIMMICK_SUCCESS_DISAPPEAR_MA,
 	GIMMICK_FAILURE_DISAPPEAR_MA,
 
+	ENDING_START_MA,
+	ENDING_IDLE_MA,
+
 	ANIM_MA_END,
 };
 
@@ -30,20 +33,25 @@ static const string AnimNames_MA[ANIM_MA::ANIM_MA_END]
 	"ch2000_action_020",
 	"ch2000_action_021",
 	"ch2000_action_022",
-	"ch2000_action_040"
+	"ch2000_action_040",
+
+	"ch2000_talk-idle_003",
+	"ch2000_talk-idle_005"
 };
 
 enum STATE_MA
 {
 	STATE_BATTLE_MA,
 	STATE_GIMMICK_MA,
+	STATE_ENDING_MA,
 	STATE_END_MA
 };
 
 static const wstring StateNames_MA[STATE_MA::STATE_END_MA]
 {
 	L"BATTLE",
-	L"GIMMICK"
+	L"GIMMICK",
+	L"ENDING"
 };
 
 static const Vec4 vMacaron_Gimmick_Relative_Pos{ -4.f, 0.f, 1.f, 1.f };

@@ -48,6 +48,8 @@ private:
 
 	_bool			m_bCanMove		= TRUE;
 
+	_float			m_fAcc			= 0.f;
+	_bool			m_bInit			= FALSE;
 public:
 	static CCamera_Follow* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;

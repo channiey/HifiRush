@@ -8,6 +8,8 @@
 
 #include "Character.h"
 
+#include "PlayerController.h"
+
 CCamera_Follow::CCamera_Follow(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObject(pDevice, pContext)
 {
@@ -43,6 +45,15 @@ HRESULT CCamera_Follow::Initialize(void * pArg)
 
 	m_eState = CGameObject::STATE_ACTIVE;
 
+	/*if (Find_Target())
+	{
+		Vec4 vPos{ 0.f, 1.8f, CamDist_Follow_Default, 1.f };
+
+		vPos = m_pCameraCom->Get_TargetObj()->Get_Transform()->Get_RelativePosition(vPos.xyz());
+
+		m_pTransformCom->Set_Position(vPos);
+	}*/
+
 	return S_OK;
 }
 
@@ -56,7 +67,22 @@ void CCamera_Follow::Tick(_double fTimeDelta)
 
 	if (!m_pCameraCom->Is_TargetObj() || !m_pCameraCom->Is_LookAtObj())
 		return;
+	
+	if (!m_bInit && fTimeDelta < 0.02f)
+	{
+		m_fAcc += fTimeDelta;
+		if (m_fAcc <= 5.f)
+		{
+			/*m_bInit = TRUE;
 
+			Vec4 vPos{ 0.f, 1.8f, CamDist_Follow_Default, 1.f };
+
+			vPos = m_pCameraCom->Get_TargetObj()->Get_Transform()->Get_RelativePosition(vPos.xyz());
+
+			m_pTransformCom->Set_Position(vPos);*/
+			return;
+		}
+	}
 
 	m_pCameraCom->Update(fTimeDelta);
 
@@ -115,8 +141,7 @@ HRESULT CCamera_Follow::Ready_Components()
 
 HRESULT CCamera_Follow::Find_Target()
 {
-	CGameObject* pObject = ENGINE_INSTANCE->Get_GameObject(ENGINE_INSTANCE->Get_CurLevelIndex(), LayerNames[LAYER_PLAYER], L"Player_Chai_000");
-
+	CGameObject* pObject = CPlayerController::GetInstance()->Get_Player(PLAYER_TYPE::CHAI);
 	if (nullptr == pObject) return E_FAIL;
 
 	m_pCameraCom->Set_TargetObj(pObject);

@@ -17,6 +17,9 @@ enum ANIM_PE
 	GIMMICK_SHOOT_PE,
 	GIMMICK_DISAPPEAR_PE,
 
+	ENDING_WINK_PE,
+	ENDING_IDLE_PE,
+
 	ANIM_PE_END,
 };
 
@@ -28,13 +31,17 @@ static const string AnimNames_PE[ANIM_PE::ANIM_PE_END]
 
 	"ch1000_gun_000",
 	"ch1000_gun_100",
-	"ch1000_gun_030"
+	"ch1000_gun_030",
+
+	"ch1000_talk-action_180",
+	"ch1000_talk-idle_000"
 };
 
 enum STATE_PE
 {
 	STATE_BATTLE_PE,
 	STATE_GIMMICK_PE,
+	STAET_ENDING_PE,
 	STATE_END_PE
 };
 
@@ -42,6 +49,7 @@ static const wstring StateNames_PE[STATE_PE::STATE_END_PE]
 {
 	L"BATTLE",
 	L"GIMMICK",
+	L"ENDING",
 };
 
 static const Vec4 vPeppermint_Gimmick_Relative_Pos{ -2.f, 0.f, 0.f, 1.f };
