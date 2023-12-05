@@ -64,7 +64,7 @@ void CCharacter::Tick(_double fTimeDelta)
 void CCharacter::LateTick(_double fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
-
+	
 	if (!CImGui_Manager::GetInstance()->Is_DebugCam())
 	{
 		if (FAILED(m_pModelCom->Update(fTimeDelta)))
@@ -77,14 +77,11 @@ void CCharacter::LateTick(_double fTimeDelta)
 		}
 	}
 
-#ifdef _DEBUG
 	for (auto& pCollider : m_pColliderComs)
 	{
 		if (nullptr != pCollider && pCollider->Is_Active() && CImGui_Manager::GetInstance()->Is_Render_Collider())
 			m_pRendererCom->Add_Debug(pCollider);
 	}
-#endif // _DEBUG
-
 
 	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_SHADOW, this)))
 		return;

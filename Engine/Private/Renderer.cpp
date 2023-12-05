@@ -275,7 +275,6 @@ HRESULT CRenderer::Render_LightDepth()
 HRESULT CRenderer::Render_NonBlend()
 {
 	/* Diffuse + Normal */
-
 	if (FAILED(m_pTarget_Manager->Begin_MRT(m_pContext, TEXT("MRT_GameObjects"))))
 		return E_FAIL; /* 백버퍼를 빼고 MRT_GameObjects 렌더 타겟을 바인딩 */
 	{

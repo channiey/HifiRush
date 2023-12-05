@@ -116,6 +116,7 @@ void CState_Korsica_Battle::Check_Progress(const _double& fTimeDelta)
 	}
 		break;
 	default:
+		Exit();
 		break;
 	}
 }

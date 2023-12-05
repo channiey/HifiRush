@@ -84,6 +84,9 @@ public:
 	virtual void			Free() override;
 
 private:
+	_bool					m_bActive = FALSE;
+	_bool					m_bInit = FALSE;
+private:
 	friend class CState_Peppermint_Base;
 	friend class CState_Peppermint_Battle;
 	friend class CState_Peppermint_Gimmick;

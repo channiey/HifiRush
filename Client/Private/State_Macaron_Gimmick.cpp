@@ -248,6 +248,7 @@ void CState_Macaron_Gimmick::Check_Progress(const _double& fTimeDelta)
 	}
 		break;
 	default:
+		Exit();
 		break;
 	}
 }

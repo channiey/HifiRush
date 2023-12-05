@@ -7,6 +7,8 @@
 #include "UiManager.h"
 #include "Ui.h"
 
+#include "Enemy.h"
+
 IMPLEMENT_SINGLETON(CBattleManager)
 
 CBattleManager::CBattleManager()
@@ -31,6 +33,22 @@ HRESULT CBattleManager::LateUpdate(const _double fTimedelta)
 	return S_OK;
 }
 
+const _bool CBattleManager::Is_In_Battle()
+{
+	list<CGameObject*>* pEnemies = ENGINE_INSTANCE->Get_Layer(ENGINE_INSTANCE->Get_CurLevelIndex(), LayerNames[LAYER_ID::LAYER_ENEMY]);
+
+	if (nullptr != pEnemies && !pEnemies->empty())
+	{
+		for (auto& pEnemy : *pEnemies)
+		{
+			if (static_cast<CEnemy*>(pEnemy)->Is_EnemyActive())
+				return TRUE;
+		}
+	}
+
+	return FALSE;
+}
+
 HRESULT CBattleManager::Add_Trigger(const wstring strTriggerTag, CTriggerBattle* pTrigger)
 {
 	if (nullptr == pTrigger)
@@ -53,7 +71,6 @@ void CBattleManager::OnTrigger_Enter(const wstring strTriggerTag)
 	m_pCurBattleTriggers = pTriggerBattle;
 	m_pCurBattleTriggers->Start_Battle();
 	m_pCurBattleTriggers->Get_Collider_Sphere()->Set_Active(FALSE);
-	m_bBattle = TRUE;
 }
 
 void CBattleManager::OnTrigger_Stay(const wstring strTriggerTag)

@@ -133,6 +133,7 @@ void CState_Macaron_Battle::Check_Progress(const _double& fTimeDelta)
 	}
 		break;
 	default:
+		Exit();
 		break;
 	}
 }
@@ -241,6 +242,7 @@ void CState_Macaron_Battle::Play_Sound()
 	}
 	break;
 	default:
+		return;
 		break;
 	}
 

@@ -26,14 +26,14 @@ static const string AnimNames_KO[ANIM_KO::ANIM_KO_END]
 enum STATE_KO
 {
 	STATE_BATTLE_KO,
-	STATE_GIMMICK_KO,
+	//STATE_GIMMICK_KO,
 	STATE_END_KO
 };
 
 static const wstring StateNames_KO[STATE_KO::STATE_END_KO]
 { 
-	L"BATTLE",
-	L"GIMMICK"
+	L"BATTLE"//,
+	//L"GIMMICK"
 };
 
 class CKorsica final : public CCharacter
@@ -73,6 +73,9 @@ public:
 	virtual CKorsica*	Clone(void* pArg) override;
 	virtual void		Free() override;
 
+private:
+	_bool					m_bActive = FALSE;
+	_bool					m_bInit = FALSE;
 private:
 	friend class CState_Peppermint_Base;
 	friend class CState_Peppermint_Battle;

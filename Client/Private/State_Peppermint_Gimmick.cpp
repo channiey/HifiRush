@@ -190,6 +190,7 @@ void CState_Peppermint_Gimmick::Check_Progress(const _double& fTimeDelta)
 	}
 		break;
 	default:
+		Exit();
 		break;
 	}
 }

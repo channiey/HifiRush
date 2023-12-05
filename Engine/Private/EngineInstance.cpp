@@ -126,7 +126,6 @@ void CEngineInstance::LateTick(_double fTimeDelta)
 void CEngineInstance::FinishTick()
 {
 	m_pObject_Manager->FinishTick();
-	m_pProfiler_Manager->FinishTick();
 }
 
 void CEngineInstance::Clear(_uint iLevelIndex)

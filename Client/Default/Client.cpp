@@ -128,24 +128,20 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		{
             const _double fTimeDelta = pGameInstance->Compute_TimeDelta(TEXT("Timer_FPS"));
 
-            //if (0.016 <= fTimeDelta)
-            //{
-            //    cout << "\n\n\n\n! ! % # % # %  # % ! % @ # #\n";
-            //    cout << fTimeDelta << "! ! % # % # %  # % ! % @ # #\n";
-            //    cout << "! ! % # % # %  # % ! % @ # #\n\n\n\n";
-            //}
-            //else
-            //    cout << fTimeDelta << endl;
+           /* if (0.016 <= fTimeDelta)
+            {
+                cout << "\n\n\n\n! ! % # % # %  # % ! % @ # #\n";
+                cout << fTimeDelta << "! ! % # % # %  # % ! % @ # #\n";
+                cout << "! ! % # % # %  # % ! % @ # #\n\n\n\n";
+            }*/
+          /*  else
+                cout << fTimeDelta << endl;*/
 
             pMainApp->Tick(fTimeDelta);
             pMainApp->Render();
             pMainApp->FinishTick();
-            /*if (MAX_DELTA >= fTimeDelta)
-            {
-			    pMainApp->Tick(fTimeDelta);
-			    pMainApp->Render();
-                pMainApp->FinishTick();
-            }*/
+
+
 			fTimeAcc = 0.f;
 		}		
 	}

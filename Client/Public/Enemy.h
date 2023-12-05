@@ -32,6 +32,8 @@ public:
 	
 	HRESULT				Return_To_Pool();
 
+	const _bool			Is_EnemyActive() const { return m_bActive; }
+	void				Set_EnemyActive(const _bool bActive) { m_bActive = bActive; }
 protected:
 	HRESULT				Ready_Components();
 
@@ -42,6 +44,8 @@ protected:
 
 protected:
 	CTriggerBattle*		m_pBattleTrigger = nullptr;
+
+	_bool				m_bActive = FALSE;
 
 public:
 	virtual CEnemy*		Clone(void* pArg) PURE;

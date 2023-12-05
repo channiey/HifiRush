@@ -34,7 +34,7 @@ public:
 	HRESULT			LateUpdate(const _double fTimedelta);
 
 public:
-	const _bool&	Is_Battle() const { return m_bBattle; }
+	const _bool		Is_In_Battle();
 	HRESULT			Add_Trigger(const wstring strTriggerTag, CTriggerBattle* pTrigger);
 
 public:

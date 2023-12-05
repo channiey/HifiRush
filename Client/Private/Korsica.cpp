@@ -14,6 +14,10 @@
 #include "State_Korsica_Battle.h"
 #include "State_Korsica_Gimmick.h"
 
+#include "ImGui_Manager.h"
+
+#include "BattleManager.h"
+
 CKorsica::CKorsica(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCharacter(pDevice, pContext)
 {
@@ -53,14 +57,54 @@ HRESULT CKorsica::Initialize(void* pArg)
 
 void CKorsica::Tick(_double fTimeDelta)
 {
-	__super::Tick(fTimeDelta);
-	//cout << "CKorsica Tick\t" << m_pModelCom->Get_CurAnimationIndex() << "\t" << m_pModelCom->Get_CurAnimationFrame() << endl;
+	if (!CImGui_Manager::GetInstance()->Is_DebugCam() && m_bActive)
+	{
+		if (nullptr != m_pStateMachineCom)
+		{
+			if (FAILED(m_pStateMachineCom->Tick(fTimeDelta)))
+				return;
+		}
+
+		if (nullptr != m_pRigidbodyCom)
+			m_pRigidbodyCom->Tick(fTimeDelta);
+	}
+
+	for (auto& pCollider : m_pColliderComs)
+	{
+		if (nullptr != pCollider && pCollider->Is_Active())
+			pCollider->Update(m_pTransformCom->Get_FinalMat());
+	}
+	/*cout << "CKorsica Tick\t" << m_pModelCom->Get_CurAnimationIndex() << "\t" << m_pModelCom->Get_CurAnimationFrame() 
+		<< "\t" << m_pModelCom->Get_TweenDesc().next.iAnimIndex << "\t" << m_pModelCom->Get_TweenDesc().next.iCurFrame << "\t" << m_pModelCom->Get_TweenDesc().cur.fRatio << endl;*/
 }
 
 void CKorsica::LateTick(_double fTimeDelta)
 {
-	__super::LateTick(fTimeDelta);
-	//cout << "CKorsica Late\t" << m_pModelCom->Get_CurAnimationIndex() << "\t" << m_pModelCom->Get_CurAnimationFrame() << endl;
+	if (!CImGui_Manager::GetInstance()->Is_DebugCam() && m_bActive)
+	{
+		if (FAILED(m_pModelCom->Update(fTimeDelta)))
+			return;
+
+		if (nullptr != m_pStateMachineCom)
+		{
+			if (FAILED(m_pStateMachineCom->LateTick(fTimeDelta)))
+				return;
+		}
+	}
+
+	for (auto& pCollider : m_pColliderComs)
+	{
+		if (nullptr != pCollider && pCollider->Is_Active() && CImGui_Manager::GetInstance()->Is_Render_Collider())
+			m_pRendererCom->Add_Debug(pCollider);
+	}
+
+	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_SHADOW, this)))
+		return;
+
+	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
+		return;
+	//cout << "CKorsica Late\t" << m_pModelCom->Get_CurAnimationIndex() << "\t" << m_pModelCom->Get_CurAnimationFrame()
+	//	<< "\t" << m_pModelCom->Get_TweenDesc().next.iAnimIndex << "\t" << m_pModelCom->Get_TweenDesc().next.iCurFrame << "\t" << m_pModelCom->Get_TweenDesc().cur.fRatio << endl;
 }
 
 HRESULT CKorsica::Render()
@@ -74,23 +118,38 @@ HRESULT CKorsica::Render()
 }
 
 void CKorsica::Set_State(const OBJ_STATE& eState)
-{
-	__super::Set_State(eState);
-
+{	
 	if (OBJ_STATE::STATE_ACTIVE == eState)
 	{
-		m_pStateMachineCom->Set_State(StateNames_KO[STATE_KO::STATE_BATTLE_KO]);
-
-		/*if (nullptr == ENGINE_INSTANCE->Get_GameObject_InCurLevel_InLayerFirst(LayerNames[LAYER_ID::LAYER_ENEMY]))
+		if (!m_bInit)
 		{
-			m_pStateMachineCom->Set_State(StateNames_KO[STATE_KO::STATE_GIMMICK_KO]);
+			m_bInit = TRUE;
+			return;
 		}
-		else
-		{
-			m_pStateMachineCom->Set_State(StateNames_KO[STATE_KO::STATE_BATTLE_KO]);
-		}*/
-			
+
+		m_bActive = TRUE;
+
+		m_pModelCom->Stop_Animation(FALSE);
+
+		for (auto& pCollider : m_pColliderComs)
+			if (nullptr != pCollider)
+				pCollider->Set_Active(TRUE);
+
+		m_pStateMachineCom->Set_State(StateNames_KO[STATE_KO::STATE_BATTLE_KO]);
+		
 		//cout << "CKorsica Set_State\n";
+	}
+	else
+	{
+		m_bActive = FALSE;
+
+		m_pTransformCom->Set_Position(Vec3{ 1000.f, -500.f, 1000.f });
+
+		m_pModelCom->Stop_Animation(TRUE);
+
+		for (auto& pCollider : m_pColliderComs)
+			if (nullptr != pCollider)
+				pCollider->Set_Active(FALSE);
 	}
 }
 
@@ -145,9 +204,9 @@ HRESULT CKorsica::Ready_StateMachine()
 	if (FAILED(m_pStateMachineCom->Add_State(pState)))
 		return E_FAIL;
 
-	pState = CState_Korsica_Gimmick::Create(m_pStateMachineCom, StateNames_KO[STATE_GIMMICK_KO], this);
+	/*pState = CState_Korsica_Gimmick::Create(m_pStateMachineCom, StateNames_KO[STATE_GIMMICK_KO], this);
 	if (FAILED(m_pStateMachineCom->Add_State(pState)))
-		return E_FAIL;
+		return E_FAIL;*/
 
 	return S_OK;
 }

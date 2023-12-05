@@ -73,9 +73,25 @@ void CMainApp::Tick(_double fTimeDelta)
 {
 	CBeatManager::GetInstance()->Update(fTimeDelta);
 
-	m_pEngineInstance->Tick(fTimeDelta);
+	{
+		//system_clock::time_point start_time = system_clock::now();
 
-	m_pEngineInstance->LateTick(fTimeDelta);
+		m_pEngineInstance->Tick(fTimeDelta);
+
+		/*system_clock::time_point end_time = system_clock::now();
+		milliseconds mill = duration_cast<milliseconds>(end_time - start_time);
+		cout << "Tick \t" << mill.count() << "ms" << endl;*/
+	}
+
+	{
+		//system_clock::time_point start_time = system_clock::now();
+		
+		m_pEngineInstance->LateTick(fTimeDelta);
+		
+		/*system_clock::time_point end_time = system_clock::now();
+		milliseconds mill = duration_cast<milliseconds>(end_time - start_time);
+		cout << "Late \t" << mill.count() << "ms" << endl;*/
+	}
 
 #ifdef _DEBUG
 	if (m_pEngineInstance->Key_Down(VK_F1))
@@ -88,15 +104,30 @@ void CMainApp::Tick(_double fTimeDelta)
 
 HRESULT CMainApp::Render()
 {
+
 	/* 장면 초기화 */
-	if (FAILED(m_pEngineInstance->Clear_BackBuffer_View(_float4(0.f, 0.f, 0.f, 1.f))))
-		return E_FAIL;
-	if (FAILED(m_pEngineInstance->Clear_DepthStencil_View()))
-		return E_FAIL;
 	{
+		//system_clock::time_point start_time = system_clock::now();
+		if (FAILED(m_pEngineInstance->Clear_BackBuffer_View(_float4(0.f, 0.f, 0.f, 1.f))))
+			return E_FAIL;
+		if (FAILED(m_pEngineInstance->Clear_DepthStencil_View()))
+			return E_FAIL;
+
+		/*system_clock::time_point end_time = system_clock::now();
+		milliseconds mill = duration_cast<milliseconds>(end_time - start_time);
+		cout << "장면초기화 \t" << mill.count() << "ms" << endl;*/
+	}
+
+
+	{
+		//system_clock::time_point start_time = system_clock::now();
 		/* 게임 내 객체 렌더링 */
 		if (FAILED(m_pRenderer->Draw_RenderObjects()))
 			return E_FAIL;
+
+		/*system_clock::time_point end_time = system_clock::now();
+		milliseconds mill = duration_cast<milliseconds>(end_time - start_time);
+		cout << "Render_Draw_RenderObjects \t" << mill.count() << "ms" << endl;*/
 
 		/* ImGui 업데이트 및 렌더링 */
 #ifdef _DEBUG
@@ -107,8 +138,19 @@ HRESULT CMainApp::Render()
 		}
 #endif // _DEBUG
 	}
-	if(FAILED(m_pEngineInstance->Present()))
-		return E_FAIL;
+
+
+	{
+		//system_clock::time_point start_time = system_clock::now();
+		if(FAILED(m_pEngineInstance->Present()))
+			return E_FAIL;
+
+		/*system_clock::time_point end_time = system_clock::now();
+		milliseconds mill = duration_cast<milliseconds>(end_time - start_time);
+		cout << "Render_Draw_Present \t" << mill.count() << "ms" << endl;*/
+
+	}
+
 	return S_OK;
 }
 

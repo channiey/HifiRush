@@ -3,6 +3,7 @@
 #include <process.h>
 
 #include "Engine_Defines.h" /* TODO 상호 참조 오류 가능성 존재*/
+using namespace chrono;
 
 using namespace std;
 namespace Client
@@ -211,7 +212,7 @@ namespace Client
 		ETC_OBJ_SUB_1,
 		ETC_OBJ_SUB_2,
 
-		CHANNEL_ID_END = MAX_CHANNEL
+		CHANNEL_ID_END = 31
 	};
 
 

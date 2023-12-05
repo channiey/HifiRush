@@ -10,6 +10,8 @@
 #include "ImGui_Manager.h"
 #endif // _DEBUG
 
+#include "Enemy.h"
+
 CTriggerSection_A::CTriggerSection_A(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CTriggerBattle(pDevice, pContext)
 {
@@ -104,6 +106,8 @@ HRESULT CTriggerSection_A::Start_Battle()
 				pClone->Get_Transform()->Set_WorldMat(desc.matWorld);
 				pClone->Get_NavMeshAgent()->Set_CurIndex(desc.iCellIndex);
 				Clones.push_back(pClone);
+
+				static_cast<CEnemy*>(pClone)->Set_EnemyActive(TRUE);
 			}
 		}
 		m_Clones.push_back(Clones);
@@ -130,7 +134,13 @@ HRESULT CTriggerSection_A::Finish_Battle()
 
 void CTriggerSection_A::OnCollision_Enter(CCollider* pCollider, const _int& iIndexAsChild)
 {
-	CBattleManager::GetInstance()->OnTrigger_Enter(m_strTriggerTag);
+	if (nullptr != pCollider->Get_Owner())
+	{
+		if (L"Player_Chai_000" == pCollider->Get_Owner()->Get_Name())
+		{
+			CBattleManager::GetInstance()->OnTrigger_Enter(m_strTriggerTag);
+		}
+	}
 }
 
 void CTriggerSection_A::OnCollision_Stay(CCollider* pCollider, const _int& iIndexAsChild)

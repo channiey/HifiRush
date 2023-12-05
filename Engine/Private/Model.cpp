@@ -187,6 +187,8 @@ HRESULT CModel::Update_Anim(_double fTimeDelta)
 		m_TweenDesc.cur.fRatio = (pCurAnim->Get_FrameAcc() / dSecondPerFrame);
 		if (1.f < m_TweenDesc.cur.fRatio)
 			m_TweenDesc.cur.fRatio = 0.5f;
+		else if (m_TweenDesc.cur.fRatio < 0.f)
+			m_TweenDesc.cur.fRatio = 0.f;
 
 		/* 현재 애니메이션 종료시 */
 		if (0 == m_TweenDesc.cur.iNextFrame)

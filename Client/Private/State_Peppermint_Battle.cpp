@@ -124,6 +124,7 @@ void CState_Peppermint_Battle::Check_Progress(const _double& fTimeDelta)
 	}
 		break;
 	default:
+		Exit();
 		break;
 	}
 }
@@ -224,6 +225,7 @@ void CState_Peppermint_Battle::Play_Sound()
 	}
 		break;
 	default:
+		return;
 		break;
 	}
 

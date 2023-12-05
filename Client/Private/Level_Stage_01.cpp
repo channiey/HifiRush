@@ -9,6 +9,9 @@
 #include "PlayerController.h"
 #include "EffectManager.h"
 
+#include "ImGui_Manager.h"
+
+#include "Character.h"
 CLevel_Stage_01::CLevel_Stage_01(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -53,11 +56,30 @@ HRESULT CLevel_Stage_01::Initialize()
 
 HRESULT CLevel_Stage_01::Tick(_float fTimeDelta)
 {
+	if (!CImGui_Manager::GetInstance()->Is_DebugCam())
+	{
+		if (ENGINE_INSTANCE->Key_Down(0x31))
+			CPlayerController::GetInstance()->SetOn_Player(PLAYER_TYPE::PEPPERMINT);
+		else if (ENGINE_INSTANCE->Key_Down(0x32))
+			CPlayerController::GetInstance()->SetOn_Player(PLAYER_TYPE::MACARON);
+		else if (ENGINE_INSTANCE->Key_Down(0x33))
+			CPlayerController::GetInstance()->SetOn_Player(PLAYER_TYPE::KORSICA);
+	}
+
 	/* Late Initialize ´À³¦ */
 	if (!ENGINE_INSTANCE->Is_PlayBGM())
 	{
+
+		// << Temp
+		CPlayerController::GetInstance()->Get_Player(PLAYER_TYPE::PEPPERMINT)->Get_Transform()->Set_Position(Vec3{ 1000.f, -500.f, 1000.f });
+		CPlayerController::GetInstance()->Get_Player(PLAYER_TYPE::MACARON)->Get_Transform()->Set_Position(Vec3{ 1000.f, -500.f, 1000.f });
+		CPlayerController::GetInstance()->Get_Player(PLAYER_TYPE::KORSICA)->Get_Transform()->Set_Position(Vec3{ 1000.f, -500.f, 1000.f });
+
+		// << :
+	
 		ENGINE_INSTANCE->Play_BGM();
 		CBeatManager::GetInstance()->Reset();
+		ENGINE_INSTANCE->Set_CurCamera(CAMERA_ID::CAM_FOLLOW);
 	}
 
 	CPlayerController::GetInstance()->Tick(fTimeDelta);

@@ -10,6 +10,10 @@
 #include "State_Macaron_Battle.h"
 #include "State_Macaron_Gimmick.h"
 
+#include "ImGui_Manager.h"
+
+#include "BattleManager.h"
+
 CMacaron::CMacaron(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCharacter(pDevice, pContext)
 {
@@ -46,16 +50,54 @@ HRESULT CMacaron::Initialize(void* pArg)
 
 void CMacaron::Tick(_double fTimeDelta)
 {
-	__super::Tick(fTimeDelta);
+	if (!CImGui_Manager::GetInstance()->Is_DebugCam() && m_bActive)
+	{
+		if (nullptr != m_pStateMachineCom)
+		{
+			if (FAILED(m_pStateMachineCom->Tick(fTimeDelta)))
+				return;
+		}
 
-	//cout << "CMacaron Tick\t" << m_pModelCom->Get_CurAnimationIndex() << "\t" << m_pModelCom->Get_CurAnimationFrame() << endl;
+		if (nullptr != m_pRigidbodyCom)
+			m_pRigidbodyCom->Tick(fTimeDelta);
+	}
+
+	for (auto& pCollider : m_pColliderComs)
+	{
+		if (nullptr != pCollider && pCollider->Is_Active())
+			pCollider->Update(m_pTransformCom->Get_FinalMat());
+	}
+	/*cout << "CMacaron Tick\t" << m_pModelCom->Get_CurAnimationIndex() << "\t" << m_pModelCom->Get_CurAnimationFrame()
+		<< "\t" << m_pModelCom->Get_TweenDesc().next.iAnimIndex << "\t" << m_pModelCom->Get_TweenDesc().next.iCurFrame << "\t" << m_pModelCom->Get_TweenDesc().cur.fRatio << endl;*/
 }
 
 void CMacaron::LateTick(_double fTimeDelta)
 {
- 	__super::LateTick(fTimeDelta);
+	if (!CImGui_Manager::GetInstance()->Is_DebugCam() && m_bActive)
+	{
+		if (FAILED(m_pModelCom->Update(fTimeDelta)))
+			return;
 
-	//cout << "CMacaron Late\t" << m_pModelCom->Get_CurAnimationIndex() << "\t" << m_pModelCom->Get_CurAnimationFrame() << endl;
+		if (nullptr != m_pStateMachineCom)
+		{
+			if (FAILED(m_pStateMachineCom->LateTick(fTimeDelta)))
+				return;
+		}
+	}
+
+	for (auto& pCollider : m_pColliderComs)
+	{
+		if (nullptr != pCollider && pCollider->Is_Active() && CImGui_Manager::GetInstance()->Is_Render_Collider())
+			m_pRendererCom->Add_Debug(pCollider);
+	}
+
+	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_SHADOW, this)))
+		return;
+
+	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
+		return;
+	/*cout << "CMacaron Late\t" << m_pModelCom->Get_CurAnimationIndex() << "\t" << m_pModelCom->Get_CurAnimationFrame()
+		<< "\t" << m_pModelCom->Get_TweenDesc().next.iAnimIndex << "\t" << m_pModelCom->Get_TweenDesc().next.iCurFrame << "\t" << m_pModelCom->Get_TweenDesc().cur.fRatio << endl;*/
 }
 
 HRESULT CMacaron::Render()
@@ -70,14 +112,27 @@ HRESULT CMacaron::Render()
 
 void CMacaron::Set_State(const OBJ_STATE& eState)
 {
-	__super::Set_State(eState);
-
 	if (OBJ_STATE::STATE_ACTIVE == eState)
 	{
-		if (nullptr == ENGINE_INSTANCE->Get_GameObject_InCurLevel_InLayerFirst(LayerNames[LAYER_ID::LAYER_ENEMY]))
+		if (!m_bInit)
+		{
+			m_bInit = TRUE;
+			return;
+		}
+
+		m_bActive = TRUE;
+
+		m_pModelCom->Stop_Animation(FALSE);
+
+		for (auto& pCollider : m_pColliderComs)
+			if (nullptr != pCollider)
+				pCollider->Set_Active(TRUE);
+
+		if (FALSE == CBattleManager::GetInstance()->Is_In_Battle())
 		{
 			if (FAILED(CPlayerController::GetInstance()->Change_ControlPlayer(PLAYER_TYPE::MACARON)))
 				return;
+
 			m_pStateMachineCom->Set_State(StateNames_MA[STATE_MA::STATE_GIMMICK_MA]);
 		}
 		else
@@ -86,6 +141,18 @@ void CMacaron::Set_State(const OBJ_STATE& eState)
 		}
 		
 		//cout << "CMacaron Set_State\n";
+	}
+	else
+	{
+		m_bActive = FALSE;
+
+		m_pTransformCom->Set_Position(Vec3{ 1000.f, -500.f, 1000.f });
+
+		m_pModelCom->Stop_Animation(TRUE);
+
+		for (auto& pCollider : m_pColliderComs)
+			if (nullptr != pCollider)
+				pCollider->Set_Active(FALSE);
 	}
 }
 

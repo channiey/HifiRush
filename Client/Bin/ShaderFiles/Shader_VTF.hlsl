@@ -71,12 +71,6 @@ matrix GetAnimationMatrix(VS_IN input)
     nextFrame[0] = g_TweenFrames.cur.iNextFrame;
     ratio[0] = g_TweenFrames.cur.fRatio;
 
-	/* next */
-    animIndex[1] = g_TweenFrames.next.iAnimIndex;
-    currFrame[1] = g_TweenFrames.next.iCurFrame;
-    nextFrame[1] = g_TweenFrames.next.iNextFrame;
-    ratio[1] = g_TweenFrames.next.fRatio;
-
     float4 c0, c1, c2, c3;
     float4 n0, n1, n2, n3;
     matrix curr = 0;
@@ -103,6 +97,12 @@ matrix GetAnimationMatrix(VS_IN input)
 		/* if next */
         if (animIndex[1] >= 0)
         {
+            /* next */
+            animIndex[1] = g_TweenFrames.next.iAnimIndex;
+            currFrame[1] = g_TweenFrames.next.iCurFrame;
+            nextFrame[1] = g_TweenFrames.next.iNextFrame;
+            ratio[1] = g_TweenFrames.next.fRatio;
+            
             c0 = g_TransformMap.Load(int4(indices[i] * 4 + 0, currFrame[1], animIndex[1], 0));
             c1 = g_TransformMap.Load(int4(indices[i] * 4 + 1, currFrame[1], animIndex[1], 0));
             c2 = g_TransformMap.Load(int4(indices[i] * 4 + 2, currFrame[1], animIndex[1], 0));

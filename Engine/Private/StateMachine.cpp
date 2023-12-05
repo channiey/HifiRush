@@ -14,10 +14,10 @@ CStateMachine::CStateMachine(const CStateMachine & rhs)
 {
 	for (auto& Pair : m_pStates)
 	{
-		Safe_AddRef(Pair.second);
+		//Safe_AddRef(Pair.second);
 	}
 
-	Safe_AddRef(m_pCurState);
+	//Safe_AddRef(m_pCurState);
 }
 
 HRESULT CStateMachine::Initialize_Prototype()
@@ -79,7 +79,7 @@ HRESULT CStateMachine::Add_State(CState* pState)
 			return E_FAIL;
 	}
 
-	Safe_AddRef(m_pCurState);
+	//Safe_AddRef(m_pCurState);
 
 	return S_OK;
 }
@@ -114,21 +114,21 @@ HRESULT CStateMachine::Change_State(const wstring& strStateTag)
 	if (nullptr == m_pCurState)
 	{
 		m_pPrevState = m_pCurState = pNextState;
-		Safe_AddRef(m_pCurState);
+		//Safe_AddRef(m_pCurState);
 	}
 	else
 	{
 		m_pPrevState = m_pCurState;
 		
 		m_pCurState->Exit();
-		Safe_Release(m_pCurState);
+		//Safe_Release(m_pCurState);
 
 		m_pCurState = pNextState;
-		Safe_AddRef(m_pCurState);
+		//Safe_AddRef(m_pCurState);
 	}
 
 	m_pCurState = pNextState;
-	Safe_AddRef(m_pCurState);
+	//Safe_AddRef(m_pCurState);
 
 	m_pCurState->Enter();
 

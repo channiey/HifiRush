@@ -14,6 +14,10 @@
 #include "State_Peppermint_Battle.h"
 #include "State_Peppermint_Gimmick.h"
 
+#include "ImGui_Manager.h"
+
+#include "BattleManager.h"
+
 CPeppermint::CPeppermint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCharacter(pDevice, pContext)
 {
@@ -53,16 +57,55 @@ HRESULT CPeppermint::Initialize(void* pArg)
 
 void CPeppermint::Tick(_double fTimeDelta)
 {
-	__super::Tick(fTimeDelta);
+	if (!CImGui_Manager::GetInstance()->Is_DebugCam())
+	{
+		if (nullptr != m_pStateMachineCom && m_bActive)
+		{
+			if (FAILED(m_pStateMachineCom->Tick(fTimeDelta)))
+				return;
+		}
 
-	//cout << "CPeppermint Tick\t" << m_pModelCom->Get_CurAnimationIndex() << "\t" << m_pModelCom->Get_CurAnimationFrame() << endl;
+		if (nullptr != m_pRigidbodyCom)
+			m_pRigidbodyCom->Tick(fTimeDelta);
+	}
+
+	for (auto& pCollider : m_pColliderComs)
+	{
+		if (nullptr != pCollider && pCollider->Is_Active())
+			pCollider->Update(m_pTransformCom->Get_FinalMat());
+	}
+	/*cout << "CPeppermint Tick\t" << m_pModelCom->Get_CurAnimationIndex() << "\t" << m_pModelCom->Get_CurAnimationFrame()
+		<< "\t" << m_pModelCom->Get_TweenDesc().next.iAnimIndex << "\t" << m_pModelCom->Get_TweenDesc().next.iCurFrame << "\t" << m_pModelCom->Get_TweenDesc().cur.fRatio << endl;*/
 }
 
 void CPeppermint::LateTick(_double fTimeDelta)
 {
-	__super::LateTick(fTimeDelta);
+	if (!CImGui_Manager::GetInstance()->Is_DebugCam() && m_bActive)
+	{
+		if (FAILED(m_pModelCom->Update(fTimeDelta)))
+			return;
 
-	//cout << "CPeppermint Late\t" << m_pModelCom->Get_CurAnimationIndex() << "\t" << m_pModelCom->Get_CurAnimationFrame() << endl;
+		if (nullptr != m_pStateMachineCom)
+		{
+			if (FAILED(m_pStateMachineCom->LateTick(fTimeDelta)))
+				return;
+		}
+	}
+
+	for (auto& pCollider : m_pColliderComs)
+	{
+		if (nullptr != pCollider && pCollider->Is_Active() && CImGui_Manager::GetInstance()->Is_Render_Collider())
+			m_pRendererCom->Add_Debug(pCollider);
+	}
+
+	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_SHADOW, this)))
+		return;
+
+	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
+		return;
+
+	/*cout << "CPeppermint Late\t" << m_pModelCom->Get_CurAnimationIndex() << "\t" << m_pModelCom->Get_CurAnimationFrame()
+		<< "\t" << m_pModelCom->Get_TweenDesc().next.iAnimIndex << "\t" << m_pModelCom->Get_TweenDesc().next.iCurFrame << "\t" << m_pModelCom->Get_TweenDesc().cur.fRatio << endl;*/
 }
 
 HRESULT CPeppermint::Render()
@@ -77,11 +120,23 @@ HRESULT CPeppermint::Render()
 
 void CPeppermint::Set_State(const OBJ_STATE& eState)
 {
-	__super::Set_State(eState);
-
 	if (OBJ_STATE::STATE_ACTIVE == eState)
 	{
-		if (nullptr == ENGINE_INSTANCE->Get_GameObject_InCurLevel_InLayerFirst(LayerNames[LAYER_ID::LAYER_ENEMY]))
+		if (!m_bInit)
+		{
+			m_bInit = TRUE;
+			return;
+		}
+
+		m_bActive = TRUE;
+
+		m_pModelCom->Stop_Animation(FALSE);
+
+		for (auto& pCollider : m_pColliderComs)
+			if (nullptr != pCollider)
+				pCollider->Set_Active(TRUE);
+
+		if (FALSE == CBattleManager::GetInstance()->Is_In_Battle())
 		{
 			if (FAILED(CPlayerController::GetInstance()->Change_ControlPlayer(PLAYER_TYPE::PEPPERMINT)))
 				return;
@@ -93,6 +148,18 @@ void CPeppermint::Set_State(const OBJ_STATE& eState)
 			m_pStateMachineCom->Set_State(StateNames_PE[STATE_PE::STATE_BATTLE_PE]);
 		}
 		//cout << "CPeppermint Set_State\n";
+	}
+	else
+	{
+		m_bActive = FALSE;
+
+		m_pTransformCom->Set_Position(Vec3{ 1000.f, -500.f, 1000.f });
+
+		m_pModelCom->Stop_Animation(TRUE);
+
+		for (auto& pCollider : m_pColliderComs)
+			if (nullptr != pCollider)
+				pCollider->Set_Active(FALSE);
 	}
 }
 

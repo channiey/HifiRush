@@ -293,7 +293,7 @@ void CChai::Free()
 
 HRESULT CChai::Set_OtherPlayer()
 {
-	if (!CImGui_Manager::GetInstance()->Is_DebugCam())
+	/*if (!CImGui_Manager::GetInstance()->Is_DebugCam())
 	{
 		if (ENGINE_INSTANCE->Key_Down(0x31))
 			CPlayerController::GetInstance()->SetOn_Player(PLAYER_TYPE::PEPPERMINT);
@@ -301,7 +301,7 @@ HRESULT CChai::Set_OtherPlayer()
 			CPlayerController::GetInstance()->SetOn_Player(PLAYER_TYPE::MACARON);
 		else if (ENGINE_INSTANCE->Key_Down(0x33))
 			CPlayerController::GetInstance()->SetOn_Player(PLAYER_TYPE::KORSICA);
-	}
+	}*/
 	return S_OK;
 }
 
