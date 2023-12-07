@@ -12,6 +12,9 @@
 #include "ImGui_Manager.h"
 
 #include "Character.h"
+
+#include "Enemy.h"
+
 CLevel_Stage_01::CLevel_Stage_01(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -24,7 +27,7 @@ HRESULT CLevel_Stage_01::Initialize()
 		return E_FAIL;
 
 	/* Sound */
-	if (FAILED(ENGINE_INSTANCE->Register_BGM(BGM_FAST_PREBATTLE, BGM_CUR, BgmVolumeInNotBattle)))
+	if (FAILED(ENGINE_INSTANCE->Register_BGM(BGM_FAST_PREBATTLE, BGM_CUR, 0.4f)))
 		return E_FAIL;
 	
 	/* Battle */
@@ -82,6 +85,22 @@ HRESULT CLevel_Stage_01::Tick(_float fTimeDelta)
 		ENGINE_INSTANCE->Set_CurCamera(CAMERA_ID::CAM_FOLLOW);
 	}
 
+	if (ENGINE_INSTANCE->Key_Down('N'))
+	{
+		list<CGameObject*>* pEnemies = ENGINE_INSTANCE->Get_Layer(ENGINE_INSTANCE->Get_CurLevelIndex(), LayerNames[LAYER_ENEMY]);
+
+		if (nullptr != pEnemies && !pEnemies->empty())
+		{
+			for (auto& pEnemy : *pEnemies)
+			{
+				if (static_cast<CEnemy*>(pEnemy)->Is_EnemyActive())
+				{
+					static_cast<CEnemy*>(pEnemy)->Return_To_Pool();
+				}
+			}
+		}
+	}
+
 	CPlayerController::GetInstance()->Tick(fTimeDelta);
 
 	return S_OK;
@@ -131,6 +150,11 @@ HRESULT CLevel_Stage_01::Check_Collision()
 
 	ENGINE_INSTANCE->Check_Collision_Layer(LayerNames[LAYER_ENV_INTERACTALBE]
 		, LayerNames[LAYER_PROJECTILE]
+		, CCollider::SPHERE
+		, CCollider::SPHERE);
+
+	ENGINE_INSTANCE->Check_Collision_Layer(LayerNames[LAYER_PLAYER]
+		, LayerNames[LAYER_NPC]
 		, CCollider::SPHERE
 		, CCollider::SPHERE);
 

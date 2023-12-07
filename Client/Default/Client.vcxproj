@@ -211,6 +211,11 @@
     <ClInclude Include="..\Public\Korsica_Stick.h" />
     <ClInclude Include="..\Public\Korsica_Wind.h" />
     <ClInclude Include="..\Public\Macaron.h" />
+    <ClInclude Include="..\Public\Npc.h" />
+    <ClInclude Include="..\Public\Npc_Robot_Bridge.h" />
+    <ClInclude Include="..\Public\Npc_Robot_Clean.h" />
+    <ClInclude Include="..\Public\Npc_Robot_Joy.h" />
+    <ClInclude Include="..\Public\Npc_Robot_Security.h" />
     <ClInclude Include="..\Public\Peppermint.h" />
     <ClInclude Include="..\Public\Peppermint_Bullet.h" />
     <ClInclude Include="..\Public\Peppermint_Gun.h" />
@@ -375,6 +380,11 @@
     <ClCompile Include="..\Private\Korsica_Stick.cpp" />
     <ClCompile Include="..\Private\Korsica_Wind.cpp" />
     <ClCompile Include="..\Private\Macaron.cpp" />
+    <ClCompile Include="..\Private\Npc.cpp" />
+    <ClCompile Include="..\Private\Npc_Robot_Bridge.cpp" />
+    <ClCompile Include="..\Private\Npc_Robot_Clean.cpp" />
+    <ClCompile Include="..\Private\Npc_Robot_Joy.cpp" />
+    <ClCompile Include="..\Private\Npc_Robot_Security.cpp" />
     <ClCompile Include="..\Private\Peppermint.cpp" />
     <ClCompile Include="..\Private\Peppermint_Bullet.cpp" />
     <ClCompile Include="..\Private\Peppermint_Gun.cpp" />

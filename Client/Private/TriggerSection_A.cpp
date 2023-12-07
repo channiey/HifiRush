@@ -6,6 +6,7 @@
 
 #include "BattleManager.h"
 
+#include "UiManager.h"
 #ifdef _DEBUG
 #include "ImGui_Manager.h"
 #endif // _DEBUG
@@ -95,6 +96,11 @@ HRESULT CTriggerSection_A::Start_Battle()
 	for (auto& pEnemy : m_Clones.front())
 	{
 		static_cast<CEnemy*>(pEnemy)->Set_EnemyActive(TRUE);
+
+		CGameObject* pNpc = ENGINE_INSTANCE->Get_GameObject_InCurLevel(LayerNames[LAYER_ID::LAYER_NPC], L"Npc_Robot_Security");
+		if (nullptr != pNpc)
+			pNpc->Set_State(CGameObject::STATE_UNACTIVE);
+
 	}
 	return S_OK;
 }
@@ -121,6 +127,9 @@ void CTriggerSection_A::OnCollision_Enter(CCollider* pCollider, const _int& iInd
 		if (L"Player_Chai_000" == pCollider->Get_Owner()->Get_Name())
 		{
 			CBattleManager::GetInstance()->OnTrigger_Enter(m_strTriggerTag);
+
+			CUiManager::GetInstance()->On_Dialouge(2, L"차이! 힘들면 우리를 불러!");
+
 		}
 	}
 }

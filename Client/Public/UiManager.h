@@ -24,7 +24,7 @@ public:
 	HRESULT			Add_UI(const UI_ID& eID, CUi* pUi);
 
 public:
-	HRESULT			On_Dialouge(_uint eCharacterType, const wstring& strText);
+	HRESULT			On_Dialouge(_uint eCharacterType, const wstring& strText, _bool bSound = FALSE, _uint iSoundID = 0, _uint iChannelID = 0, _float fVolume = 0.f);
 
 private:
 	CUi*			Find_UI(const UI_ID& eID);

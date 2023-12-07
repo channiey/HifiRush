@@ -2,6 +2,7 @@
 #include "State_Peppermint_Battle.h"
 
 #include "Peppermint_Bullet.h"
+#include "Enemy.h"
 
 CState_Peppermint_Battle::CState_Peppermint_Battle()
 {
@@ -153,11 +154,14 @@ void CState_Peppermint_Battle::Set_Transform()
 		Vec4 vLook = { 100.f, 100.f, 100.f, 0.f };
 		for (auto& pEnemy : *pEnemies)
 		{
-			Vec4 vDir = pEnemy->Get_Transform()->Get_FinalPosition() -
-				pTransform_Peppermint->Get_FinalPosition();
+			if (static_cast<CEnemy*>(pEnemy)->Is_EnemyActive())
+			{
+				Vec4 vDir = pEnemy->Get_Transform()->Get_FinalPosition() -
+					pTransform_Peppermint->Get_FinalPosition();
 
-			if (vDir.Length() <= vLook.Length())
-				vLook = vDir;
+				if (vDir.Length() <= vLook.Length())
+					vLook = vDir;
+			}
 		}
 		pTransform_Peppermint->Set_Look(vLook.ZeroY().Normalized());
 	}

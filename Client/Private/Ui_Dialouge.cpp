@@ -114,6 +114,7 @@ HRESULT CUi_Dialouge::Render()
 			m_pShaderCom->Begin(1);
 
 			m_pVIBufferCom->Render();
+
 		}
 	}
 
@@ -126,31 +127,52 @@ HRESULT CUi_Dialouge::Render()
 	return S_OK;
 }
 
-HRESULT CUi_Dialouge::On_Dialouge(_uint iCharacterType, const wstring& strText)
+HRESULT CUi_Dialouge::On_Dialouge(_uint iCharacterType, const wstring& strText, _bool bSound, _uint iSoundID, _uint iChannelID, _float fVolume)
 {
-	if (_uint(TEX_TYPE::DLG_WIN_00) <= iCharacterType)
-		return E_FAIL;
+	/* 사전 필터링 */
+	if(!m_Dialouges.empty())
+	{
+		DIALOUGE_DESC desc;
+		desc = m_Dialouges.front();
 
-	Clear_Dialouge();
-
-	wsprintf(m_szConversationText, strText.c_str());
-
-	m_eCurCharacter		= (CUi_Dialouge::TEX_TYPE)iCharacterType;
-
-	m_eProgress			= CUi_Dialouge::PROGRESS_ID::INTRO;
-
-	m_tLerpDesc_Alpha.Start(0.f, 1.f, m_fInOutTroTime, LERP_MODE::EASE_IN);
+		if (desc.eCharacterType == iCharacterType && desc.strText == strText)
+			return S_OK;
+	}
 	
-	Set_CharacterName();
+	wstring wstrText{ m_szConversationText };
+
+	if (m_eCurCharacter == iCharacterType && wstrText == strText.c_str())
+		return S_OK;
+
+
+	DIALOUGE_DESC desc;
+	{
+		desc.strText = strText;
+		desc.eCharacterType = (CUi_Dialouge::TEX_TYPE)iCharacterType;
+
+		if (bSound)
+		{
+			desc.bSound = TRUE;
+			desc.iSoundID = iSoundID;
+			desc.iChannelID = iChannelID;
+			desc.fVolume = fVolume;
+		}
+	}
+	m_Dialouges.push(desc);
 
 	Set_State(OBJ_STATE::STATE_ACTIVE);
 	
+	Check_Dialouge();
+
 	return S_OK;
 }
 
 void CUi_Dialouge::Off_Dialouge()
 {
 	Clear_Dialouge();
+
+	if (Check_Dialouge())
+		return;
 
 	Set_State(OBJ_STATE::STATE_UNACTIVE);
 }
@@ -164,6 +186,8 @@ void CUi_Dialouge::Clear_Dialouge()
 	m_fAcc = 0.f;
 
 	m_tLerpDesc_Alpha.Clear();
+
+
 }
 
 HRESULT CUi_Dialouge::Ready_Components()
@@ -225,6 +249,32 @@ HRESULT CUi_Dialouge::Ready_Components()
 		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("T_talk_saber"),
 			TEXT("Com_Texture_T_talk_saber"), (CComponent**)&m_pTextureComs[TEX_TYPE::FACE_SABER])))
 			return E_FAIL;
+
+		// << New 
+
+		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("T_talk_Worker3050_normal_00"),
+			TEXT("Com_Texture_T_talk_Worker3050_normal_00"), (CComponent**)&m_pTextureComs[TEX_TYPE::FACE_ROBOT_SECURITY])))
+			return E_FAIL;
+
+		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("T_talk_robotA"),
+			TEXT("Com_Texture_T_talk_robotA"), (CComponent**)&m_pTextureComs[TEX_TYPE::FACE_ROBOT_CLEAN])))
+			return E_FAIL;
+
+		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("T_talk_Worker3000_normal_00"),
+			TEXT("Com_Texture_T_talk_Worker3000_normal_00"), (CComponent**)&m_pTextureComs[TEX_TYPE::FACE_ROBOT_JOY])))
+			return E_FAIL;
+
+		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("T_Talk_NPC_SkillUpMachine"),
+			TEXT("Com_Texture_T_Talk_NPC_SkillUpMachine"), (CComponent**)&m_pTextureComs[TEX_TYPE::FACE_ROBOT_BRIDGE])))
+			return E_FAIL;
+
+		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("T_talk_Gunner"),
+			TEXT("Com_Texture_T_talk_Gunner"), (CComponent**)&m_pTextureComs[TEX_TYPE::FACE_GUNNER])))
+			return E_FAIL;
+
+		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("T_talk_T_ModelViewerIcon_Enemy_RedBrutal"),
+			TEXT("Com_Texture_T_talk_T_ModelViewerIcon_Enemy_RedBrutal"), (CComponent**)&m_pTextureComs[TEX_TYPE::FACE_BLADER])))
+			return E_FAIL;
 	}
 
 	return S_OK;
@@ -233,7 +283,7 @@ HRESULT CUi_Dialouge::Ready_Components()
 HRESULT CUi_Dialouge::Bind_ShaderResources()
 {
 	const _float fAlpha = (_float)m_tLerpDesc_Alpha.fCurValue;
-
+	
 	m_pShaderCom->Bind_RawValue("g_Alpha", &fAlpha, sizeof(_float));
 
 	return S_OK;
@@ -270,10 +320,57 @@ void CUi_Dialouge::Set_CharacterName()
 	case Client::CUi_Dialouge::FACE_SABER:
 		wsprintf(m_szCharacterName, L"Saber");
 		break;
+	case Client::CUi_Dialouge::FACE_ROBOT_SECURITY:
+		wsprintf(m_szCharacterName, L"NPK_6540");
+		break;
+	case Client::CUi_Dialouge::FACE_ROBOT_CLEAN:
+		wsprintf(m_szCharacterName, L"NPK_1240");
+		break;
+	case Client::CUi_Dialouge::FACE_ROBOT_JOY:
+		wsprintf(m_szCharacterName, L"NPK_1310");
+		break;
+	case Client::CUi_Dialouge::FACE_ROBOT_BRIDGE:
+		wsprintf(m_szCharacterName, L"NPK_3440");
+		break;
+	case Client::CUi_Dialouge::FACE_GUNNER:
+		wsprintf(m_szCharacterName, L"Gunner");
+		break;
+	case Client::CUi_Dialouge::FACE_BLADER:
+		wsprintf(m_szCharacterName, L"Blader");
+		break;
 	default:
 		wsprintf(m_szCharacterName, L"???");
 		break;
 	}
+}
+
+const _bool CUi_Dialouge::Check_Dialouge()
+{
+	if (CUi_Dialouge::PROGRESS_ID::PROGRESS_END == m_eProgress && !m_Dialouges.empty())
+	{
+		DIALOUGE_DESC desc = m_Dialouges.front();
+
+		m_Dialouges.pop();
+
+		wsprintf(m_szConversationText, desc.strText.c_str());
+
+		m_eCurCharacter = desc.eCharacterType;
+
+		m_eProgress = CUi_Dialouge::PROGRESS_ID::INTRO;
+
+		m_tLerpDesc_Alpha.Start(0.f, 1.f, m_fInOutTroTime, LERP_MODE::EASE_IN);
+
+		Set_CharacterName();
+
+		if (desc.bSound)
+		{
+			ENGINE_INSTANCE->Play_Sound(desc.iSoundID, desc.iChannelID, desc.fVolume);
+		}
+
+		return TRUE;
+	}
+	else
+		return FALSE;
 }
 
 CUi_Dialouge* CUi_Dialouge::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

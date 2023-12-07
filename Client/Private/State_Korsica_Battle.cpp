@@ -3,6 +3,7 @@
 
 #include "Korsica_Wind.h"
 
+#include "Enemy.h"
 CState_Korsica_Battle::CState_Korsica_Battle()
 {
 }
@@ -145,11 +146,15 @@ void CState_Korsica_Battle::Set_Transform()
 		Vec4 vLook = { 100.f, 100.f, 100.f, 0.f };
 		for (auto& pEnemy : *pEnemies)
 		{
-			Vec4 vDir = pEnemy->Get_Transform()->Get_FinalPosition() -
-				pTransform_Korsica->Get_FinalPosition();
+			if (static_cast<CEnemy*>(pEnemy)->Is_EnemyActive())
+			{
+				Vec4 vDir = pEnemy->Get_Transform()->Get_FinalPosition() -
+					pTransform_Korsica->Get_FinalPosition();
 
-			if (vDir.Length() <= vLook.Length())
-				vLook = vDir;
+				if (vDir.Length() <= vLook.Length())
+					vLook = vDir;
+
+			}
 		}
 		pTransform_Korsica->Set_Look(vLook.ZeroY().Normalized());
 	}
@@ -213,7 +218,7 @@ HRESULT CState_Korsica_Battle::Attack()
 	{
 		tDesc.pOwner = m_pKorsica;
 
-		tDesc.fSpeedPerSec = 25.f;
+		tDesc.fSpeedPerSec = 30.f;
 		tDesc.vDir = m_pKorsica->Get_Transform()->Get_State(CTransform::STATE_LOOK);
 
 		CModel::BONE_TYPE		eBontType = CModel::BONE_SOCKET_RIGHT;

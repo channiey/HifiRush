@@ -144,8 +144,8 @@ void CProjectile::Translate(_double fTimeDelta)
 
 HRESULT CProjectile::Bind_ShaderResources()
 {
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &DirectX::Colors::Aquamarine, sizeof(Vec4))))
-		return E_FAIL;
+	/*if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &DirectX::Colors::Aquamarine, sizeof(Vec4))))
+		return E_FAIL;*/
 
 	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;

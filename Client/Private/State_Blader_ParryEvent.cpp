@@ -174,6 +174,10 @@ void CState_Blader_ParryEvent::Exit()
 
 	m_pBlader->Get_Child(CBlader::CHILD_TYPE::ARM_LEFT_BL)->Get_Collider_Sphere()->Set_Active(FALSE);
 	m_pBlader->Get_Child(CBlader::CHILD_TYPE::ARM_RIGHT_BL)->Get_Collider_Sphere()->Set_Active(FALSE);
+
+	CUiManager::GetInstance()->On_Dialouge(3, L"드디어 Blader를 해치웠군! 수고했어 차이!");
+	CUiManager::GetInstance()->On_Dialouge(0, L"후 이제 집에 갈 수 있다!");
+
 }
 
 const wstring CState_Blader_ParryEvent::Check_Transition()
@@ -294,7 +298,8 @@ const _bool CState_Blader_ParryEvent::Is_Success()
 
 	if (nullptr != pState)
 	{
-		return pState->Is_Success();
+		return TRUE;
+		//return pState->Is_Success();
 	}
 
 	return FALSE;

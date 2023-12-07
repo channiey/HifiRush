@@ -17,6 +17,23 @@ HRESULT CState_Gunner_Attack::Initialize(CStateMachine* pStateMachine, const wst
 	if (FAILED(__super::Initialize(pStateMachine, strStateName, pOwner)))
 		return E_FAIL;
 
+	m_pDevice = ENGINE_INSTANCE->Get_Device();
+	m_pContext = ENGINE_INSTANCE->Get_Context();
+
+	m_pBatch = new PrimitiveBatch<VertexPositionColor>(m_pContext);
+	m_pEffect = new BasicEffect(m_pDevice);
+
+	m_pEffect->SetVertexColorEnabled(true);
+
+	const void* pShaderByteCodes = nullptr;
+	size_t			iLength = 0;
+
+	m_pEffect->GetVertexShaderBytecode(&pShaderByteCodes, &iLength);
+
+	if (FAILED(m_pDevice->CreateInputLayout(VertexPositionColor::InputElements, VertexPositionColor::InputElementCount, pShaderByteCodes, iLength, &m_pInputLayout)))
+		return E_FAIL;
+
+
 	return S_OK;
 }
 
@@ -65,6 +82,8 @@ void CState_Gunner_Attack::Exit()
 	m_bSetRay = FALSE;
 
 	m_eAttackType = ATTACK_TYPE::TYPEEND;
+
+	m_pGunner->m_bDebugRay = FALSE;
 }
 
 const wstring CState_Gunner_Attack::Check_Transition()
@@ -90,13 +109,19 @@ const wstring CState_Gunner_Attack::Check_Transition()
 	else if (AnimNames_GU[ANIM_GU::ATK_GROUND_WAIT_GU] == strCurAnimName)
 	{
 		if (5 <= iCurFrame && !m_bSetRay)
+		{
 			Set_Ray();
+			m_pGunner->m_bDebugRay = TRUE;
+
+		}
 
 		if (25 == iCurFrame)
 		{
 			CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_GU[ATK_GROUND_SHOOT_GU]);
 			m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame() * 0.75f, DF_TW_TIME);
 			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_GUNNER_SHOOT, CHANNEL_ID::ENEMY_GUNNER, 0.5f);
+
+			m_pGunner->m_bDebugRay = FALSE;
 		}
 
 	}
@@ -119,13 +144,19 @@ const wstring CState_Gunner_Attack::Check_Transition()
 	else if (AnimNames_GU[ANIM_GU::ATK_JUMP_WAIT_GU] == strCurAnimName)
 	{
 		if (5 <= iCurFrame && !m_bSetRay)
+		{
 			Set_Ray();
+			m_pGunner->m_bDebugRay = TRUE;
+
+		}
 
 		if (25 == iCurFrame)
 		{
 			CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_GU[ATK_JUMP_SHOOT_GU]);
 			m_pModel->Set_Animation(pAnimation, pAnimation->Get_TickPerFrame() * 0.75f, DF_TW_TIME, TRUE, TRUE, TRUE);
 			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_GUNNER_SHOOT, CHANNEL_ID::ENEMY_GUNNER, 0.5f);
+
+			m_pGunner->m_bDebugRay = FALSE;
 		}
 	}
 	else if (AnimNames_GU[ANIM_GU::ATK_JUMP_SHOOT_GU] == strCurAnimName)
@@ -191,6 +222,29 @@ void CState_Gunner_Attack::Set_Ray()
 	m_Ray.direction = (m_pGunner->m_tFightDesc.pTarget->Get_Transform()->Get_FinalPosition().xyz() - m_Ray.position).Normalized();
 	
 	m_bSetRay = TRUE;
+}
+
+void CState_Gunner_Attack::Render_Ray()
+{
+	m_vColor;
+
+	m_pEffect->SetWorld(XMMatrixIdentity());
+
+	m_pEffect->SetView(ENGINE_INSTANCE->Get_Transform(CPipeLine::TRANSFORM_STATE::STATE_VIEW));
+	m_pEffect->SetProjection(ENGINE_INSTANCE->Get_Transform(CPipeLine::TRANSFORM_STATE::STATE_PROJ));
+
+
+	m_pEffect->Apply(m_pContext);
+
+	m_pContext->IASetInputLayout(m_pInputLayout);
+
+	m_pBatch->Begin();
+
+	DX::DrawRay(m_pBatch, m_Ray.position, m_Ray.direction, FALSE, XMLoadFloat4(&m_vColor));
+
+	m_pBatch->End();
+
+	return;
 }
 
 CState_Gunner_Attack* CState_Gunner_Attack::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

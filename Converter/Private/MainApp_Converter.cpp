@@ -26,11 +26,11 @@ HRESULT CMainApp_Converter::Start_Convert()
 		/*if (FAILED(Convert_Weapon()))
 			return E_FAIL;*/
 
-		if (FAILED(Convert_EffectMesh()))
-			return E_FAIL;
-		
-		/*if (FAILED(Convert_SelectiveModel()))
+		/*if (FAILED(Convert_EffectMesh()))
 			return E_FAIL;*/
+		
+		if (FAILED(Convert_SelectiveModel()))
+			return E_FAIL;
 
 		/*if (FAILED(Convert_Custom()))
 			return E_FAIL;*/
@@ -130,8 +130,59 @@ HRESULT CMainApp_Converter::Convert_EffectMesh()
 
 HRESULT CMainApp_Converter::Convert_SelectiveModel()
 {
+	{
+
+		const MODEL_TYPE	type = MODEL_TYPE::ANIM;
+
+		const string		filePath = "../Assets/Character";
+		const string		fileName = "Robot_Bridge";
+		const string		savePath = "Character/";
+
+		shared_ptr<CConverter> converter = make_shared<CConverter>();
+		if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
+			ASSERT_LOG();
+	}
 
 	{
+
+		const MODEL_TYPE	type = MODEL_TYPE::ANIM;
+
+		const string		filePath = "../Assets/Character";
+		const string		fileName = "Robot_Clean";
+		const string		savePath = "Character/";
+
+		shared_ptr<CConverter> converter = make_shared<CConverter>();
+		if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
+			ASSERT_LOG();
+	}
+
+	{
+
+		const MODEL_TYPE	type = MODEL_TYPE::ANIM;
+
+		const string		filePath = "../Assets/Character";
+		const string		fileName = "Robot_Joy";
+		const string		savePath = "Character/";
+
+		shared_ptr<CConverter> converter = make_shared<CConverter>();
+		if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
+			ASSERT_LOG();
+	}
+
+	{
+
+		const MODEL_TYPE	type = MODEL_TYPE::ANIM;
+
+		const string		filePath = "../Assets/Character";
+		const string		fileName = "Robot_Security";
+		const string		savePath = "Character/";
+
+		shared_ptr<CConverter> converter = make_shared<CConverter>();
+		if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
+			ASSERT_LOG();
+	}
+
+	/*{
 		const MODEL_TYPE	type = MODEL_TYPE::STATIC;
 		const string		savePath = "Environment/EffectMesh/";
 		const string		fileName = "Cylinder_A";
@@ -186,7 +237,7 @@ HRESULT CMainApp_Converter::Convert_SelectiveModel()
 		shared_ptr<CConverter> converter = make_shared<CConverter>();
 		if (FAILED(converter->Binarize_Model(fileName, savePath + fileName, type)))
 			ASSERT_LOG();
-	}
+	}*/
 
 
 	/*{

@@ -11,6 +11,7 @@
 #include "ImGui_Manager.h"
 #endif // _DEBUG
 
+#include "UiManager.h"
 CDynamic_Switch::CDynamic_Switch(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CDynamic(pDevice, pContext)
 {
@@ -102,6 +103,10 @@ void CDynamic_Switch::OnCollision_Enter(CCollider* pCollider, const _int& iIndex
 						m_pModelCom->Set_Animation(pAnim, pAnim->Get_TickPerFrame(), DF_TW_TIME);
 
 						ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_OBJ_SWITCH_SHOT, CHANNEL_ID::ETC_OBJ_SUB_1, 0.6f);
+						
+						CUiManager::GetInstance()->On_Dialouge(1, L"좋아 명중이야!");
+						//CUiManager::GetInstance()->On_Dialouge(0, L"그걸 맞추다니 페퍼민트 대단한걸?");
+
 					}
 				}
 			}

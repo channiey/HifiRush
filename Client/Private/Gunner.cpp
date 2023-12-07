@@ -65,6 +65,16 @@ HRESULT CGunner::Render()
 	if (FAILED(__super::Render()))
 		return E_FAIL;
 
+	/*if (m_bDebugRay)
+	{
+		CState_Gunner_Attack* pState = dynamic_cast<CState_Gunner_Attack*>(m_pStateMachineCom->Get_CurState());
+		if (nullptr != pState)
+		{
+			pState->Render_Ray();
+		}
+		
+	}*/
+
 	return S_OK;
 }
 

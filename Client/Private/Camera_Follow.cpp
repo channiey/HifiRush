@@ -10,6 +10,8 @@
 
 #include "PlayerController.h"
 
+#include "UiManager.h"
+
 CCamera_Follow::CCamera_Follow(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObject(pDevice, pContext)
 {
@@ -41,18 +43,22 @@ HRESULT CCamera_Follow::Initialize(void * pArg)
 		m_pCameraCom->Set_MouseSensitiveY(0.1f);
 		m_pCameraCom->Set_Distance(CamDist_Follow_Default);
 		m_pCameraCom->Set_LookAtOffSet(Vec4{0.f, 1.8f, 0.f, 1.f });
+		m_pCameraCom->Set_TargetOffSet(Vec4{ 0.f, Cam_TargetOffsetHeight_Default, 0.f, 1.f });
 	}
 
 	m_eState = CGameObject::STATE_ACTIVE;
 
-	/*if (Find_Target())
+	if (S_OK == Find_Target())
 	{
 		Vec4 vPos{ 0.f, 1.8f, CamDist_Follow_Default, 1.f };
 
 		vPos = m_pCameraCom->Get_TargetObj()->Get_Transform()->Get_RelativePosition(vPos.xyz());
 
 		m_pTransformCom->Set_Position(vPos);
-	}*/
+		m_pTransformCom->LookAt(Calculate_Look());
+
+		m_vAngle.x = 3.14f * -0.5f;
+	}
 
 	return S_OK;
 }
@@ -71,18 +77,25 @@ void CCamera_Follow::Tick(_double fTimeDelta)
 	if (!m_bInit && fTimeDelta < 0.02f)
 	{
 		m_fAcc += fTimeDelta;
-		if (m_fAcc <= 5.f)
+		if (5.f <= m_fAcc && !m_bSecondInit)
 		{
-			/*m_bInit = TRUE;
-
-			Vec4 vPos{ 0.f, 1.8f, CamDist_Follow_Default, 1.f };
-
-			vPos = m_pCameraCom->Get_TargetObj()->Get_Transform()->Get_RelativePosition(vPos.xyz());
-
-			m_pTransformCom->Set_Position(vPos);*/
-			return;
+			CUiManager::GetInstance()->On_Dialouge(1, L"차이! 빌딩 옥상 어딘가에 Blader가 있다는 소식을 전달받았어");
+			CUiManager::GetInstance()->On_Dialouge(2, L"우리 각자 다른 구역을 수색할테니, 전투가 발생하면 우리를 불러!");
+			CUiManager::GetInstance()->On_Dialouge(0, L"좋아 시작해보자고!");
+			m_bSecondInit = TRUE;
 		}
+
+		if (10.f <= m_fAcc)
+		{
+			m_bInit = TRUE;
+
+			m_pCameraCom->Lerp_Fov(CamFov_Follow_Default, 0.5f, LERP_MODE::EASE_OUT);
+		}
+		else
+			return;
 	}
+
+	if (!m_bInit) return;
 
 	m_pCameraCom->Update(fTimeDelta);
 
@@ -126,7 +139,7 @@ HRESULT CCamera_Follow::Ready_Components()
 	/* Com_Camera */
 	CCamera::PROJ_DESC desc;
 	{
-		desc.fFovy = CamFov_Follow_Default;
+		desc.fFovy = CamFov_Follow_Attack_Wide;
 		desc.fAspect = g_iWinSizeX / (_float)g_iWinSizeY;
 		desc.fNear = 0.2f;
 		desc.fFar = 1000.0f;
@@ -190,7 +203,7 @@ const Vec4 CCamera_Follow::Calculate_Position(const _double& fTimeDelta)
 		vCamLocal.w = 0.f;
 	}
 
-	return vCamLocal + m_pCameraCom->Get_TargetObj()->Get_Transform()->Get_FinalPosition();
+	return vCamLocal + m_pCameraCom->Get_TargetObj()->Get_Transform()->Get_FinalPosition() + m_pCameraCom->Get_TargetOffSet().ZeroW();
 }
 
 const Vec4 CCamera_Follow::Calculate_Look()

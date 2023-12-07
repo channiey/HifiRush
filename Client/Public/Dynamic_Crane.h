@@ -63,6 +63,7 @@ private:
 	const _float			m_fWaitTime		= 1.5f;
 	_float					m_fWaitAcc		= 0.f;
 	_bool					m_bWait			= FALSE;
+	_bool bSet = FALSE;
 
 public:
 	static CDynamic_Crane*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

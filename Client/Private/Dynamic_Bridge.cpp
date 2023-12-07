@@ -11,6 +11,8 @@
 #include "ImGui_Manager.h"
 #endif // _DEBUG
 
+#include "UiManager.h"
+
 CDynamic_Bridge::CDynamic_Bridge(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CDynamic(pDevice, pContext)
 {
@@ -47,18 +49,35 @@ HRESULT CDynamic_Bridge::Initialize(void* pArg)
 
 void CDynamic_Bridge::Tick(_double fTimeDelta)
 {
+	if (m_iCol == 2 && !m_bStart)
+	{
+		m_fAcc += fTimeDelta;
+		if (3.f <= m_fAcc)
+		{
+			Set_On();
+			m_bStart = TRUE;
+
+		}
+	}
 	__super::Tick(fTimeDelta);
 
 	if(!m_pModelCom->Is_StopAnimation())
 		Update_Sound();
 }
 
+
 void CDynamic_Bridge::LateTick(_double fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	if (!m_pModelCom->Is_Tween() && 100 == m_pModelCom->Get_TweenDesc().cur.iCurFrame)
+	if (!m_pModelCom->Is_Tween() && 100 == m_pModelCom->Get_TweenDesc().cur.iCurFrame && !bSet)
+	{
 		m_pModelCom->Stop_Animation(TRUE);
+		CUiManager::GetInstance()->On_Dialouge(0, L"오? 신기한데?");
+		ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_CHAI_AMAZE_WITH_CRANE, CHANNEL_ID::TALK_CHAI, 0.9f);
+
+		bSet = TRUE;
+	}
 }
 
 HRESULT CDynamic_Bridge::Render()
@@ -73,7 +92,35 @@ void CDynamic_Bridge::OnCollision_Enter(CCollider* pCollider, const _int& iIndex
 {
 	if (L"Player_Chai_000" == pCollider->Get_Owner()->Get_Name())
 	{
-		Set_On();
+		++m_iCol;
+
+		if (1 == m_iCol)
+		{
+			ENGINE_INSTANCE->Get_CurCamera()->Get_Camera()->Lerp_Dist(CamDist_Follow_NPC_TALK, 0.7f, LERP_MODE::SMOOTHER_STEP);
+			CUiManager::GetInstance()->On_Dialouge(14, L"다리를 지나가려면 옆 빌딩의 적들을 해치워야 합니다!");
+			CUiManager::GetInstance()->On_Dialouge(0, L"이런, 그냥 지나갈 수가 없군");
+		}
+		else if (2 == m_iCol)
+		{
+			ENGINE_INSTANCE->Get_CurCamera()->Get_Camera()->Lerp_Dist(CamDist_Follow_NPC_TALK, 0.7f, LERP_MODE::SMOOTHER_STEP);
+
+			CUiManager::GetInstance()->On_Dialouge(14, L"고생하셨습니다 다리를 열어드리겠습니다!");
+			CUiManager::GetInstance()->On_Dialouge(0, L"오케이 좋았어!");
+
+			//m_pCollider->Set_Active(FALSE);
+
+			CGameObject* pNpc = ENGINE_INSTANCE->Get_GameObject_InCurLevel(LayerNames[LAYER_ID::LAYER_NPC], L"Npc_Robot_Joy");
+			if (nullptr != pNpc)
+				pNpc->Set_State(CGameObject::STATE_UNACTIVE);
+
+			pNpc = nullptr;
+			pNpc = ENGINE_INSTANCE->Get_GameObject_InCurLevel(LayerNames[LAYER_ID::LAYER_NPC], L"Npc_Robot_Clean");
+			if (nullptr != pNpc)
+				pNpc->Set_State(CGameObject::STATE_UNACTIVE);
+
+		}
+
+		//Set_On();
 	}
 }
 
@@ -83,6 +130,12 @@ void CDynamic_Bridge::OnCollision_Stay(CCollider* pCollider, const _int& iIndexA
 
 void CDynamic_Bridge::OnCollision_Exit(CCollider* pCollider, const _int& iIndexAsChild)
 {
+	ENGINE_INSTANCE->Get_CurCamera()->Get_Camera()->Lerp_Dist(CamDist_Follow_Default, 0.7f, LERP_MODE::SMOOTHER_STEP);
+
+	if (2 == m_iCol)
+	{
+		m_pCollider->Set_Active(FALSE);
+	}
 }
 
 HRESULT CDynamic_Bridge::Set_On()
@@ -121,7 +174,7 @@ HRESULT CDynamic_Bridge::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Collider */
-	CCollider::COLLIDERDESC	ColliderDesc(Vec3{ 0.f, 5.f, 0.f }, 5.f);
+	CCollider::COLLIDERDESC	ColliderDesc(Vec3{ 0.f, 6.f, 0.f }, 6.f);
 	{
 		if (FAILED(__super::Add_Component(LV_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
 			ComponentNames[COM_COLLIDER_SPHERE], (CComponent**)&m_pCollider, &ColliderDesc)))

@@ -26,13 +26,6 @@ HRESULT CState_Blader_Appear::Initialize(CStateMachine* pStateMachine, const wst
 
 HRESULT CState_Blader_Appear::Enter()
 {
-	CUi* pUi = CUiManager::GetInstance()->Get_UI(UI_ID::UI_HUD_BOSS);
-	if (nullptr == pUi)
-		return E_FAIL;
-
-	pUi->Set_Target(m_pBlader);
-	pUi->Set_State(CGameObject::STATE_ACTIVE);
-
 	CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::APPEAR_BL]);
 
 	if (nullptr == pAnimation)
@@ -65,6 +58,13 @@ const wstring CState_Blader_Appear::LateTick()
 
 void CState_Blader_Appear::Exit()
 {
+	CUi* pUi = CUiManager::GetInstance()->Get_UI(UI_ID::UI_HUD_BOSS);
+	if (nullptr == pUi)
+		return;
+
+	pUi->Set_Target(m_pBlader);
+	pUi->Set_State(CGameObject::STATE_ACTIVE);
+
 	m_bPlaySound = FALSE;
 }
 
@@ -82,6 +82,8 @@ void CState_Blader_Appear::Play_SecondAnimation()
 
 	if (!m_pModel->Is_Tween() && AnimNames_BL[ANIM_BL::APPEAR_BL] == pCurAnimation->Get_Name() && 36 <= m_pModel->Get_TweenDesc().cur.iCurFrame)
 	{
+		CUiManager::GetInstance()->On_Dialouge(0, L"저 놈이 무시무시한 Blader인가보군!");
+
 		CAnimation* pAnimation = m_pModel->Get_Animation(AnimNames_BL[ANIM_BL::PARRY_EVENT_START_BL]);
 
 		if (nullptr != pAnimation)

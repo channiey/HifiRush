@@ -50,6 +50,9 @@ void CPeppermint_Bullet::LateTick(_double fTimeDelta)
 
 HRESULT CPeppermint_Bullet::Render()
 {
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &DirectX::Colors::Aquamarine, sizeof(Vec4))))
+		return E_FAIL;
+
 	if (FAILED(__super::Render()))
 		return E_FAIL;
 

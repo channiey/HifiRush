@@ -17,6 +17,16 @@ class CUi_Dialouge final : public CUi
 		DLG_WIN_00, DLG_WIN_01, DLG_WIN_02, DLG_WIN_03, 
 		
 		DLG_NAME, 
+
+
+		// << : New 
+		FACE_ROBOT_SECURITY,
+		FACE_ROBOT_CLEAN,
+		FACE_ROBOT_JOY,
+		FACE_ROBOT_BRIDGE,
+
+		FACE_GUNNER,
+		FACE_BLADER,
 		
 		TYPEEND 
 	};
@@ -26,7 +36,20 @@ class CUi_Dialouge final : public CUi
 		INTRO, FIX, OUTTRO, PROGRESS_END
 	};
 
-	
+	typedef struct tagDialougeDesc
+	{
+		wstring strText;
+
+		TEX_TYPE eCharacterType;
+
+		_bool	bSound = FALSE;
+
+		_uint	iSoundID;
+		_uint	iChannelID;
+		_float	fVolume;
+
+	}DIALOUGE_DESC;
+
 private:
 	CUi_Dialouge(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CUi_Dialouge(const CGameObject& rhs);
@@ -40,7 +63,7 @@ public:
 	virtual HRESULT Render();
 
 public:
-	HRESULT			On_Dialouge(_uint iCharacterType, const wstring& strText);
+	HRESULT			On_Dialouge(_uint iCharacterType, const wstring& strText, _bool bSound = FALSE, _uint iSoundID = 0, _uint iChannelID = 0, _float fVolume = 0.f);
 	void			Off_Dialouge();
 	void			Clear_Dialouge();
 
@@ -52,12 +75,13 @@ private:
 	void			Render_Text();
 	void			Set_CharacterName();
 
+	const _bool		Check_Dialouge();
 
 private:
 
 	/* Progress */
 	_float 			m_fAcc				= 0.f;
-	const _float	m_fLimit			= 3.f;
+	const _float	m_fLimit			= 2.8f;
 
 	LERP_FLOAT_DESC m_tLerpDesc_Alpha	= {};
 	const _float	m_fInOutTroTime		= 0.1f;
@@ -76,10 +100,13 @@ private:
 	const _float	m_fNameTextSize			= 0.4f;
 	const _float	m_fDlgWindowTextSize	= 0.5f;
 
+
+	queue<DIALOUGE_DESC> m_Dialouges;
+
 public:
 	static CUi_Dialouge*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CUi_Dialouge*	Clone(void* pArg) override;
-	virtual void		Free() override;
+	virtual void			Free() override;
 };
 
 END

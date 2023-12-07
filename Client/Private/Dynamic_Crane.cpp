@@ -133,15 +133,17 @@ void CDynamic_Crane::Check_Progress(_double fTimeDelta)
 		{
 			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_OBJ_CRANE_STOP, CHANNEL_ID::ETC_OBJ_SUB_2, 0.8f);
 		}
-		else if (!m_pModelCom->Is_Tween() && 100 == m_pModelCom->Get_TweenDesc().cur.iCurFrame)
+		else if (!m_pModelCom->Is_Tween() && 100 == m_pModelCom->Get_TweenDesc().cur.iCurFrame && !bSet)
 		{
 			ENGINE_INSTANCE->Change_Camera(CAMERA_ID::CAM_FOLLOW);
 			CCamera_Follow* pCam = dynamic_cast<CCamera_Follow*>(ENGINE_INSTANCE->Get_Camera(CAMERA_ID::CAM_FOLLOW));
 			if (nullptr != pCam)
 				pCam->Reset();
 
-			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_CHAI_AMAZE_WITH_CRANE, CHANNEL_ID::TALK_CHAI, 0.6f);
+			ENGINE_INSTANCE->Play_Sound(SOUND_FILE_ID::EFC_CHAI_AMAZE_WITH_CRANE, CHANNEL_ID::TALK_CHAI, 0.9f);
 			CUiManager::GetInstance()->On_Dialouge(0, L"크레인이 움직일줄은 생각도 못했어");
+
+			bSet = TRUE;
 		}
 		else if (!m_pModelCom->Is_Tween() && 135 == m_pModelCom->Get_TweenDesc().cur.iCurFrame)
 		{

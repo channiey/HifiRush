@@ -10,6 +10,8 @@
 #include "ImGui_Manager.h"
 #endif // _DEBUG
 
+#include "UiManager.h"
+
 #include "Enemy.h"
 
 
@@ -120,6 +122,8 @@ void CTriggerSection_B::OnCollision_Enter(CCollider* pCollider, const _int& iInd
 		if (L"Player_Chai_000" == pCollider->Get_Owner()->Get_Name())
 		{
 			CBattleManager::GetInstance()->OnTrigger_Enter(m_strTriggerTag);
+			CUiManager::GetInstance()->On_Dialouge(0, L"이 녀석들인가 보군");
+
 		}
 	}
 }

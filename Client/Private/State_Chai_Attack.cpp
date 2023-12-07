@@ -4,6 +4,7 @@
 #include "EffectManager.h"
 #include "Effect.h"
 
+#include "Enemy.h"
 CState_Chai_Attack::CState_Chai_Attack()
 {
 }
@@ -666,7 +667,7 @@ void CState_Chai_Attack::LockOn()
 
 	for (auto pEnemy : *pEnemyList)
 	{
-		if (pEnemy != nullptr && pEnemy->Is_Active())
+		if (pEnemy != nullptr && pEnemy->Is_Active() && static_cast<CEnemy*>(pEnemy)->Is_EnemyActive())
 		{
 			Vec3 vDirToEnemy = pEnemy->Get_Transform()->Get_FinalPosition().xyz() - vPlayerPos.xyz();
 

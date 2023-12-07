@@ -49,6 +49,11 @@ void CKorsica_Wind::LateTick(_double fTimeDelta)
 
 HRESULT CKorsica_Wind::Render()
 {
+	Vec4 vColor{ 0.498039246f, 1.f, 0.831372619f, 0.3f };
+
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &vColor, sizeof(Vec4))))
+		return E_FAIL;
+
 	if (FAILED(__super::Render()))
 		return E_FAIL;
 

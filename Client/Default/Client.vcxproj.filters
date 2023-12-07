@@ -145,12 +145,6 @@
     <Filter Include="03.GameObjects\03.Character\02.NPC">
       <UniqueIdentifier>{400c1cb4-75ac-4a99-bc55-470322a4b2a8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.GameObjects\03.Character\02.NPC\BehaviourTree">
-      <UniqueIdentifier>{207d0508-a741-48ad-9799-79381a8db791}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.GameObjects\03.Character\02.NPC\BehaviourTree\Node">
-      <UniqueIdentifier>{7eaab9ba-f843-43ce-b19a-2e07c2861e5e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03.GameObjects\03.Character\01.Enemy">
       <UniqueIdentifier>{d8a59102-c15d-4530-9b3a-1b805113122c}</UniqueIdentifier>
     </Filter>
@@ -583,6 +577,18 @@
     <Filter Include="03.GameObjects\03.Character\00.Player\02.Models\03.Korsica\States\03.Ending">
       <UniqueIdentifier>{802c3b0a-48a1-433e-aae3-e2c36f15e608}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.GameObjects\03.Character\02.NPC\00.Robot_Clean">
+      <UniqueIdentifier>{da56d6e2-228b-4944-a29e-12a0f879916f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\02.NPC\01.Robot_Bridge">
+      <UniqueIdentifier>{5b41fab7-42a7-4177-86f0-7967bdd792b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\02.NPC\02.Robot_Security">
+      <UniqueIdentifier>{fd56741e-1951-4113-b06f-da0be82fa3ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObjects\03.Character\02.NPC\03.Robot_Joy">
+      <UniqueIdentifier>{933417c4-6611-41d0-a0da-643d17b87aec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -1011,6 +1017,21 @@
     <ClInclude Include="..\Public\Effect_Projectile_Peppermint.h">
       <Filter>03.GameObjects\11.Effect\01.Effects\03.Projectile_Peppermint</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Npc.h">
+      <Filter>03.GameObjects\03.Character\02.NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Npc_Robot_Clean.h">
+      <Filter>03.GameObjects\03.Character\02.NPC\00.Robot_Clean</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Npc_Robot_Bridge.h">
+      <Filter>03.GameObjects\03.Character\02.NPC\01.Robot_Bridge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Npc_Robot_Joy.h">
+      <Filter>03.GameObjects\03.Character\02.NPC\03.Robot_Joy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Npc_Robot_Security.h">
+      <Filter>03.GameObjects\03.Character\02.NPC\02.Robot_Security</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\MainApp.cpp">
@@ -1426,6 +1447,21 @@
     </ClCompile>
     <ClCompile Include="..\Private\Effect_Projectile_Peppermint.cpp">
       <Filter>03.GameObjects\11.Effect\01.Effects\03.Projectile_Peppermint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Npc.cpp">
+      <Filter>03.GameObjects\03.Character\02.NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Npc_Robot_Clean.cpp">
+      <Filter>03.GameObjects\03.Character\02.NPC\00.Robot_Clean</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Npc_Robot_Bridge.cpp">
+      <Filter>03.GameObjects\03.Character\02.NPC\01.Robot_Bridge</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Npc_Robot_Joy.cpp">
+      <Filter>03.GameObjects\03.Character\02.NPC\03.Robot_Joy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Npc_Robot_Security.cpp">
+      <Filter>03.GameObjects\03.Character\02.NPC\02.Robot_Security</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

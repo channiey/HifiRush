@@ -31,7 +31,7 @@ HRESULT CUiManager::Add_UI(const UI_ID& eID, CUi* pUi)
 	return S_OK;
 }
 
-HRESULT CUiManager::On_Dialouge(_uint eCharacterType, const wstring& strText)
+HRESULT CUiManager::On_Dialouge(_uint eCharacterType, const wstring& strText, _bool bSound, _uint iSoundID, _uint iChannelID, _float fVolume)
 {
 	if (nullptr == m_pDialouge)
 	{
@@ -45,7 +45,7 @@ HRESULT CUiManager::On_Dialouge(_uint eCharacterType, const wstring& strText)
 				return E_FAIL;
 		}
 	}
-	return m_pDialouge->On_Dialouge(eCharacterType, strText);
+	return m_pDialouge->On_Dialouge(eCharacterType, strText, bSound, iSoundID, iChannelID, fVolume);
 }
 
 CUi* CUiManager::Find_UI(const UI_ID& eID)

@@ -16,6 +16,12 @@
 #include "Blader.h"
 #include "Gunner.h"
 
+#include "Npc_Robot_Clean.h"
+#include "Npc_Robot_Bridge.h"
+#include "Npc_Robot_Joy.h"
+#include "Npc_Robot_Security.h"
+
+
 /* Weapon */
 #include "Weapon.h"
 
@@ -318,6 +324,32 @@ HRESULT CLoader::Load_Prototype()
 			CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Gunner", PivotMatrix))))
 			return E_FAIL;
 
+		{
+			/* For.Prototype_Component_Model_Robot_Bridge */
+			PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.0125f);
+			if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Robot_Bridge"),
+				CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Robot_Bridge", PivotMatrix))))
+				return E_FAIL;
+
+			/* For.Prototype_Component_Model_Robot_Clean */
+			PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.0125f);
+			if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Robot_Clean"),
+				CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Robot_Clean", PivotMatrix))))
+				return E_FAIL;
+
+			/* For.Prototype_Component_Model_Robot_Joy */
+			PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.0125f);
+			if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Robot_Joy"),
+				CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Robot_Joy", PivotMatrix))))
+				return E_FAIL;
+
+			/* For.Prototype_Component_Model_Robot_Security */
+			PivotMatrix = Matrix::CreateRotationY(DEG2RAD(270.f)) * Matrix::CreateScale(0.0125f);
+			if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Robot_Security"),
+				CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Character/Robot_Security", PivotMatrix))))
+				return E_FAIL;
+		}
+
 		/* For.Prototype_Component_Model_Dynamaic_Crane */
 		PivotMatrix = Matrix::CreateScale(0.01f);
 		if (FAILED(pEngineInstance->Add_PrototypeCom(LV_STATIC, TEXT("Prototype_Component_Model_Crane"),
@@ -562,6 +594,26 @@ HRESULT CLoader::Load_Prototype()
 		/* For.Prototype_GameObject_Enemy_Gunner */
 		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Enemy_Gunner"),
 			CGunner::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Npc_Robot_Clean */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Npc_Robot_Clean"),
+			CNpc_Robot_Clean::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Npc_Robot_Joy */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Npc_Robot_Joy"),
+			CNpc_Robot_Joy::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Npc_Robot_Security */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Npc_Robot_Security"),
+			CNpc_Robot_Security::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For.Prototype_GameObject_Npc_Robot_Bridge */
+		if (FAILED(pEngineInstance->Add_Prototype(TEXT("Npc_Robot_Bridge"),
+			CNpc_Robot_Bridge::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For.Prototype_GameObject_Trigger_Dummy */

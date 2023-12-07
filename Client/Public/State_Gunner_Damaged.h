@@ -22,6 +22,10 @@ public:
 	const wstring	Check_Transition() override;
 
 	void			Damaged();
+	void PlayEffect();
+
+private:
+	_bool			m_bPlayEffect = FALSE;
 
 public:
 	static CState_Gunner_Damaged* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);

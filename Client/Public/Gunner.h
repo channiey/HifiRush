@@ -160,6 +160,9 @@ public:
 	virtual void		Free() override;
 
 private:
+	_bool				m_bDebugRay = FALSE;
+
+private:
 	friend class CState_Gunner_Base;
 	friend class CState_Gunner_Idle;
 	friend class CState_Gunner_Move;

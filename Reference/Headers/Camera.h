@@ -97,7 +97,7 @@ public:
 	void				Lerp_Fov(const _float& fTargetValue, const _double& fTime, const LERP_MODE& eMode = LERP_MODE::DEFAULT);
 	void				Lerp_Dist(const _float fStartValue, const _float& fTargetValue, const _double& fTime, const LERP_MODE& eMode = LERP_MODE::DEFAULT);
 	void				Lerp_Dist(const _float& fTargetValue, const _double& fTime, const LERP_MODE& eMode = LERP_MODE::DEFAULT);
-
+	void				Lerp_TargetOffsetHeight(const _float& fTargetValue, const _double& fTime, const LERP_MODE& eMode = LERP_MODE::DEFAULT);
 public:
 	void				Change_TargetObj(CGameObject* pObj);
 	void				Change_LookAtObj(CGameObject* pObj);
@@ -129,7 +129,7 @@ private:
 
 	LERP_FLOAT_DESC		m_tLerpFov;
 	LERP_FLOAT_DESC		m_tLerpDist;
-
+	LERP_FLOAT_DESC		m_tLerpTargetOffsetHeight;
 	SHAKE_DESC			m_tShakeDesc;
 
 public:

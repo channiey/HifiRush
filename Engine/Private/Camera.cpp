@@ -57,6 +57,11 @@ void CCamera::Lerp_Dist(const _float& fTargetValue, const _double& fTime, const 
 	m_tLerpDist.Start(m_fDistance, fTargetValue, fTime, eMode);
 }
 
+void CCamera::Lerp_TargetOffsetHeight(const _float& fTargetValue, const _double& fTime, const LERP_MODE& eMode)
+{
+	m_tLerpTargetOffsetHeight.Start(m_vTargetOffset.y, fTargetValue, fTime, eMode);
+}
+
 void CCamera::Change_TargetObj(CGameObject* pObj)
 {
 }
@@ -90,6 +95,12 @@ void CCamera::Update_Lerp(const _double fDeltaTime)
 	{
 		m_tLerpDist.Update(fDeltaTime);
 		m_fDistance = m_tLerpDist.fCurValue;
+	}
+
+	if (m_tLerpTargetOffsetHeight.bActive)
+	{
+		m_tLerpTargetOffsetHeight.Update(fDeltaTime);
+		m_vLookAtOffset.y = m_tLerpTargetOffsetHeight.fCurValue;
 	}
 }
 

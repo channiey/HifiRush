@@ -5,6 +5,8 @@
 #include "ImGui_Manager.h"
 #endif // _DEBUG
 
+#include "EffectManager.h"
+#include "Effect.h"
 CState_Blader_Damaged::CState_Blader_Damaged()
 {
 }
@@ -49,6 +51,8 @@ void CState_Blader_Damaged::Exit()
 	m_pBlader->m_tFightDesc.pAttacker = nullptr;
 
 	m_bParriedEvent = FALSE;
+
+	m_bPlayEffect = FALSE;
 }
 
 const wstring CState_Blader_Damaged::Check_Transition()
@@ -69,6 +73,8 @@ void CState_Blader_Damaged::Damaged()
 	
 	if (nullptr == pCharacter) 
 		return;
+
+	PlayEffect();
 
 	/* 패링 이벤트 판별 */
 	if (!m_bParriedEvent && m_pBlader->m_tStatDesc.fCurHp <= 50)
@@ -124,6 +130,24 @@ void CState_Blader_Damaged::Damaged()
 	m_pBlader->m_tFightDesc.pAttacker = nullptr;
 
 	ENGINE_INSTANCE->Play_Sound(EFC_ENEMY_DAMAGED_00, CHANNEL_ID::ENEMY_BLADER, 0.4f);
+}
+
+void CState_Blader_Damaged::PlayEffect()
+{
+	CGameObject* pClone = ENGINE_INSTANCE->Pop_Pool(ENGINE_INSTANCE->Get_CurLevelIndex(), L"Effect_Damaged_Enemy");
+	if (nullptr != pClone)
+	{
+		CEffect* pEffect = dynamic_cast<CEffect*>(pClone);
+		if (nullptr != pEffect)
+		{
+			m_bPlayEffect = TRUE;
+
+			Vec4 vPos = m_pBlader->Get_Transform()->Get_FinalPosition();
+			vPos.y += 1.5f;
+			pEffect->Get_Transform()->Set_Position(vPos);
+			pEffect->Start_Effect();
+		}
+	}
 }
 
 CState_Blader_Damaged* CState_Blader_Damaged::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

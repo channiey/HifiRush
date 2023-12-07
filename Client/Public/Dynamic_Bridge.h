@@ -42,7 +42,11 @@ private:
 	const string			m_strAnimName = "bg0210_event_000";
 	_bool					m_bPlaySound = FALSE;
 	
+	_uint					m_iCol = 0;
 
+	_float					m_fAcc = 0.f;
+	_bool					m_bStart = FALSE;
+	_bool bSet = FALSE;
 public:
 	static CDynamic_Bridge* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CDynamic_Bridge* Clone(void* pArg) override;

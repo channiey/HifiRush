@@ -25,6 +25,11 @@ public:
 
 	_bool	m_bParriedEvent = FALSE;
 
+private:
+	void PlayEffect();
+
+	_bool			m_bPlayEffect = FALSE;
+
 public:
 	static CState_Blader_Damaged* Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner);
 	virtual CState* Clone(void* pArg) override;

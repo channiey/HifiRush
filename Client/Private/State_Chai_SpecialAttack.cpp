@@ -4,6 +4,7 @@
 #include "UiManager.h"
 #include "Ui_SpecialAttack.h"
 
+#include "Enemy.h"
 CState_Chai_SpecialAttack::CState_Chai_SpecialAttack()
 {
 }
@@ -277,6 +278,35 @@ HRESULT CState_Chai_SpecialAttack::Set_UI()
 	}
 
 	return S_OK;
+}
+
+void CState_Chai_SpecialAttack::LockOn()
+{
+	Vec4 vPlayerPos = m_pChai->Get_Transform()->Get_FinalPosition();
+	Vec3 vPlayerLook = m_pChai->Get_Transform()->Get_Forward().xyz().Normalized();
+	const _float fMaxAngle = 90.f;
+	const _float fMaxDist = 10.f;
+
+	list<CGameObject*>* pEnemyList = ENGINE_INSTANCE->Get_Layer(ENGINE_INSTANCE->Get_CurLevelIndex(), LayerNames[LAYER_ENEMY]);
+
+	if (nullptr == pEnemyList) return;
+
+	for (auto pEnemy : *pEnemyList)
+	{
+		if (pEnemy != nullptr && pEnemy->Is_Active() && static_cast<CEnemy*>(pEnemy)->Is_EnemyActive())
+		{
+			Vec3 vDirToEnemy = pEnemy->Get_Transform()->Get_FinalPosition().xyz() - vPlayerPos.xyz();
+
+			const _float fAngle = XMVectorGetX(XMVector3AngleBetweenNormals(vPlayerLook, XMVector3Normalize(vDirToEnemy))) * (180.0f / XM_PI);
+			const _float fDist = XMVectorGetX(XMVector3Length(vDirToEnemy));
+
+			if (fAngle <= fMaxAngle / 2 && fDist <= fMaxDist)
+			{
+				m_pChai->Get_Transform()->Set_Look(vDirToEnemy.ZeroY().Normalized());
+				return;
+			}
+		}
+	}
 }
 
 CState_Chai_SpecialAttack* CState_Chai_SpecialAttack::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

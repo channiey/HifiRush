@@ -37,6 +37,8 @@ private:
 	void				Update_Sound();
 	HRESULT				Set_UI();
 
+	void				LockOn();
+
 private:
 	SPC_ATK_TYPE		m_eAtkType = SPC_ATK_TYPE::TYPEEND;
 	CUi_SpecialAttack*	m_pUI = nullptr;

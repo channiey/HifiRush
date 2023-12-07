@@ -1,5 +1,6 @@
 #include "..\Default\stdafx.h"
 #include "State_Macaron_Battle.h"
+#include "Enemy.h"
 
 CState_Macaron_Battle::CState_Macaron_Battle()
 {
@@ -153,14 +154,18 @@ void CState_Macaron_Battle::Set_Transform()
 		_uint		iNavIndex = 0;
 		for (auto& pEnemy : *pEnemies)
 		{
-			_float fDist = Vec4(pTrnasform_Chai->Get_FinalPosition() - pEnemy->Get_Transform()->Get_FinalPosition()).Length();
-			
-			if (fDist < fClosedDist)
+			if (static_cast<CEnemy*>(pEnemy)->Is_EnemyActive())
 			{
-				fClosedDist = fDist;
-				pEnemyTransform = pEnemy->Get_Transform();
-				iNavIndex = pEnemy->Get_NavMeshAgent()->Get_Index();
-				m_pEnemy = static_cast<CCharacter*>(pEnemy);
+				_float fDist = Vec4(pTrnasform_Chai->Get_FinalPosition() - pEnemy->Get_Transform()->Get_FinalPosition()).Length();
+			
+				if (fDist < fClosedDist)
+				{
+					fClosedDist = fDist;
+					pEnemyTransform = pEnemy->Get_Transform();
+					iNavIndex = pEnemy->Get_NavMeshAgent()->Get_Index();
+					m_pEnemy = static_cast<CCharacter*>(pEnemy);
+				}
+
 			}
 		}
 

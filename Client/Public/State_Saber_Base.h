@@ -44,8 +44,8 @@ protected:
 	CSaber*				m_pSaber = { nullptr };
 	CModel*				m_pModel = { nullptr };
 
-	_float				m_fTargetMinDist = 3.f;
-	_float				m_fTargetMaxDist = 7.f;
+	_float				m_fTargetMinDist = 1.f;
+	_float				m_fTargetMaxDist = 4.f;
 
 	_double				m_fTimeLimit = 0.f;
 	_double				m_fTimeAcc = 0.f;

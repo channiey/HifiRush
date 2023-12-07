@@ -1,6 +1,9 @@
 #include "..\Default\stdafx.h"
 #include "State_Gunner_Damaged.h"
 
+#include "EffectManager.h"
+#include "Effect.h"
+
 CState_Gunner_Damaged::CState_Gunner_Damaged()
 {
 }
@@ -41,6 +44,8 @@ void CState_Gunner_Damaged::Exit()
 {
 	m_pGunner->m_tFightDesc.bDamaged = FALSE;
 	m_pGunner->m_tFightDesc.pAttacker = nullptr;
+
+	m_bPlayEffect = FALSE;
 }
 
 const wstring CState_Gunner_Damaged::Check_Transition()
@@ -56,6 +61,8 @@ const wstring CState_Gunner_Damaged::Check_Transition()
 
 void CState_Gunner_Damaged::Damaged()
 {
+	PlayEffect();
+
 	if (m_pGunner->m_tStatDesc.bDead)
 	{
 		m_pStateMachine->Set_State(StateNames_GU[STATE_DEAD_GU]);
@@ -116,6 +123,24 @@ void CState_Gunner_Damaged::Damaged()
 
 	m_pGunner->m_tFightDesc.bDamaged = FALSE;
 	m_pGunner->m_tFightDesc.pAttacker = nullptr;
+}
+
+void CState_Gunner_Damaged::PlayEffect()
+{
+	CGameObject* pClone = ENGINE_INSTANCE->Pop_Pool(ENGINE_INSTANCE->Get_CurLevelIndex(), L"Effect_Damaged_Enemy");
+	if (nullptr != pClone)
+	{
+		CEffect* pEffect = dynamic_cast<CEffect*>(pClone);
+		if (nullptr != pEffect)
+		{
+			m_bPlayEffect = TRUE;
+
+			Vec4 vPos = m_pGunner->Get_Transform()->Get_FinalPosition();
+			vPos.y += 1.f;
+			pEffect->Get_Transform()->Set_Position(vPos);
+			pEffect->Start_Effect();
+		}
+	}
 }
 
 CState_Gunner_Damaged* CState_Gunner_Damaged::Create(CStateMachine* pStateMachine, const wstring& strStateName, CGameObject* pOwner)

@@ -12,8 +12,8 @@ namespace Client
 #define FPS_LIMIT		66.f
 	    
 #define CONSOLE_LOG     0
-#define CURSOL_LOCK     0
-#define CURSOL_HIDE     0
+#define CURSOL_LOCK     1
+#define CURSOL_HIDE     1
 #define OPEN_IMGUI      0
 
 #define MAX_DELTA		0.02f
@@ -176,6 +176,10 @@ namespace Client
 	static const _float CamDist_Follow_Final				= 12.f;
 	static const _float CamDist_Follow_PeppermintGimmick	= 5.f;
 	static const _float CamDist_Follow_MacaronGimmick		= 6.f;
+	static const _float CamDist_Follow_NPC_TALK				= 8.5f;
+
+	static const _float Cam_TargetOffsetHeight_Default = 0.f;
+	static const _float Cam_TargetOffsetHeight_NpcTalk = 2.f;
 
 	static const _float CamDist_Parry_Default	= 20.f;
 
@@ -211,6 +215,8 @@ namespace Client
 		ETC_OBJ,
 		ETC_OBJ_SUB_1,
 		ETC_OBJ_SUB_2,
+
+		DIALOUGE,
 
 		CHANNEL_ID_END = 31
 	};
